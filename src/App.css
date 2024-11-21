@@ -1,0 +1,35 @@
+.login-bg {
+  background-color: #fc9b4e;
+}
+.h-100vh {
+  height: 100vh;
+}
+.white-bg {
+  background: #ffffff;
+}
+.login-box-shadow {
+  box-shadow: 0px 29px 67.3px 0px #00000029;
+}
+.h-fill {
+  height: -webkit-fill-available !important;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.loginimg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.welcome-font {
+  font-family: "Bebas Neue", sans-serif !important;
+  font-size: 4rem;
+  color: #1c1c1c;
+  font-weight: 400;
+}
