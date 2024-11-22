@@ -10,10 +10,15 @@ body {
   font-family: "Inter", sans-serif !important;
 }
 .black-text2 {
-  color: #1D1D1D;
+  color: #1d1d1d;
+  font-weight: 500;
 }
 .black-text {
   color: #1c1c1c;
+  font-weight: 500;
+}
+.black-text3 {
+  color: #000000;
   font-weight: 500;
 }
 .input-bg {
@@ -46,7 +51,6 @@ body {
   text-align: center;
 }
 .header {
-  border: 1px solid red;
   position: sticky;
   top: 0;
   left: 0;
@@ -56,6 +60,9 @@ body {
 .home {
   overflow-y: scroll;
   overflow-x: hidden;
+}
+.grey-border {
+  border: 1px solid #999999;
 }
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {
@@ -99,7 +106,6 @@ body {
     font-size: 1.2rem;
   }
 }
-
 @media only screen and (min-width: 2560px) {
   .x-small-font {
     font-size: 0.7rem;
