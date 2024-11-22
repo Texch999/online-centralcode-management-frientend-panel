@@ -3,4 +3,5 @@ export const Images = {
   LoginImageTwo: "assets/login_image_two.png",
   loginUserImages: "assets/loginPassword.png",
   loginUserLock: "assets/loginUser.png",
+  S7Logo: "assets/S7_Logo.png",
 };
