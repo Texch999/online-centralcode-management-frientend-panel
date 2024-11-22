@@ -1,7 +1,13 @@
-import React from "react";
 import { Images } from "../images";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    localStorage?.setItem("isLoggedIn", true);
+    navigate("/dashboard");
+    window.location.reload();
+  };
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center w-100">
       <div
@@ -31,7 +37,9 @@ function Login() {
                 ></img>
                 <input className="input-css" placeholder="Password" />
               </div>
-              <button className="orange-btn mt-3 w-100">Submit</button>
+              <button className="orange-btn mt-3 w-100" onClick={handleLogin}>
+                Submit
+              </button>
             </div>
           </div>
           <img
