@@ -21,7 +21,10 @@ function Login() {
                   alt="iconimg"
                   src={Images.loginUserImages}
                 ></img>
-                <input className="input-css" placeholder="Username" />
+                <input
+                  className="input-css black-text"
+                  placeholder="Username"
+                />
               </div>
               <div className="d-flex align-items-center input-bg loginbox-radius my-2 px-2">
                 <img
@@ -29,9 +32,12 @@ function Login() {
                   alt="iconimg"
                   src={Images.loginUserLock}
                 ></img>
-                <input className="input-css" placeholder="Password" />
+                <input
+                  className="input-css black-text"
+                  placeholder="Password"
+                />
               </div>
-              <button className="orange-btn mt-3 w-100">Submit</button>
+              <button className="orange-btn mt-3 w-100">Sign In</button>
             </div>
           </div>
           <img
