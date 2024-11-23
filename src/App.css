@@ -46,6 +46,24 @@
   padding: 0.5rem !important;
   text-align: center !important;
 }
+.balck-btn {
+  background: #3d3d3d !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+}
+.grey-btn {
+  background: #7e7e7e !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+}
 .dropdown-toggle::after {
   display: none !important;
 }
@@ -99,7 +117,7 @@
   text-align: center;
 }
 .logo-img {
-  height: 10vh;
+  height: 8vh;
 }
 .grey-clr {
   color: #999999;
