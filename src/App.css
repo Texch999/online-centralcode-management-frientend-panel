@@ -38,21 +38,33 @@
   line-height: 2;
 }
 .saffron-btn {
-  background: #ffa310;
-  border: none;
-  outline: none;
-  color: #ffffff;
-  font-weight: 500;
-  padding: 0.5rem;
-  text-align: center;
+  background: #ffa310 !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+}
+.dropdown-toggle::after {
+  display: none !important;
+}
+.br-0px {
+  border-radius: 0px !important;
 }
 .white-btn {
-  border: none;
-  outline: none;
-  color: #000000;
-  font-weight: 500;
-  padding: 0.5rem;
-  text-align: center;
+  background: #ffffff !important;
+  outline: 1px solid #e0e0e0 !important;
+  border: none !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+}
+.white-btn:hover {
+  color: #000000 !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  background: #f1f1f1 !important;
 }
 .rust-red-btn {
   background: #d0431c;
@@ -96,4 +108,62 @@
   background: none;
   border: none;
   outline: none;
+}
+.black-text2 {
+  color: #1d1d1d;
+  font-weight: 500;
+}
+.black-text {
+  color: #1c1c1c;
+  font-weight: 500;
+}
+.black-text3 {
+  color: #000000;
+  font-weight: 500;
+}
+.input-bg {
+  background: #f2f2f2;
+}
+.icon-img {
+  height: 1.2rem;
+  width: 1.2rem;
+}
+.loginbox-radius {
+  border-radius: 0.375rem;
+}
+.input-css {
+  background: #f2f2f2;
+  border: none;
+  outline: none;
+  color: #1c1c1c;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+.orange-btn {
+  background: #fc9b4e;
+  border-radius: 0.375rem;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #ffffff !important;
+}
+.home {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  height: -webkit-fill-available !important;
+}
+.grey-border {
+  border: 2px solid #e0e0e0;
 }
