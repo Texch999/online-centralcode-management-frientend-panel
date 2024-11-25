@@ -20,6 +20,7 @@ function Login() {
     window.location.reload();
   };
 
+
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center w-100">
       <div
