@@ -11,6 +11,7 @@ import {
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { Images } from "../images";
+import SubHeader from "./SubHeader";
 
 function Header() {
   const navigate = useNavigate();
@@ -86,25 +87,25 @@ function Header() {
             </Dropdown.Toggle>
             <Dropdown.Menu className="w-100 br-0px p-0 medium-font">
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/casino")}
               >
                 Casino
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/sports")}
               >
                 Sports
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/fancy-results")}
               >
                 Fancy Results
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/market-results")}
               >
                 Market Results
@@ -113,6 +114,7 @@ function Header() {
           </Dropdown>
         )}
       </div>
+      {role === "Management" && <SubHeader />}
     </div>
   );
 }
