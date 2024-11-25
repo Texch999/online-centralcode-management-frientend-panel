@@ -82,3 +82,6 @@
 .border-black{
   border: 0.5px solid #0000001A
 }
+.overflow-y{
+  overflow-y: hidden;
+}

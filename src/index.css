@@ -25,14 +25,14 @@ body {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.table-body-height::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 5px;
 }
-.table-body-height::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 5px;
 }
-.table-body-height::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f0f0f0;
 }
 

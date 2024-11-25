@@ -16,6 +16,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import ScrollTable from "../../components/ScrollTable";
 
 ChartJS.register(
   BarElement,
@@ -182,7 +183,7 @@ function Homepage() {
         backgroundColor: "#98BDFF",
         borderColor: "",
         borderRadius: 5,
-        data: [20, 20, 30, 40, 45, 46, 50],
+        data:[15,20,25,30,35,40,60],
       },
 
       {
@@ -190,27 +191,27 @@ function Homepage() {
         backgroundColor: "#4B49AC",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 18, 19, 29, 39, 44, 49],
+        data:[15, 20, 25, 30,35,40, 70],
       },
       {
         label: "casino & Sports Sales",
         backgroundColor: "#F3797E",
         borderColor: "",
         borderRadius: 5,
-        data: [16, 19, 25, 32, 43, 45, 52],
+        data:[15,20,25,30,35,40,80],
       },
     ],
   };
 
   return (
-    <div className="p-2 pb-2">
+    <div className="p-2 overflow-y">
       <h5 className="blck-text">Welcome sri</h5>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
 
       <div className="d-flex w-100 mt-2">
-        <div className="col-6 p-2">
+        <div className="col-6 pe-2">
           <div className="d-flex flex-column">
             <div className="dashboard-white-bg pb-2">
               <div className="d-flex flex-column p-2">
@@ -244,46 +245,43 @@ function Homepage() {
                 <Bar data={barData} />
               </div>
             </div>
-            <div className="mt-3">
-              <div className="d-flex flex-column">
-                <div className="d-flex">
-                  <div className="col-3 blue-bg-box me-1">
-                    <div className="d-flex flex-column text-white px-2">
-                      <div className="small-font py-2">Casino Sales</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                  <div className="col-3 voilet-bg-box me-1">
-                    <div className="d-flex flex-column text-white px-2">
-                      <div className="small-font py-2">Sports Sales</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                  <div className="col-3 box-3 me-1">
-                    <div className="d-flex flex-column text-white px-2">
-                      <div className="small-font py-2">S+C Sales</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                  <div className="col-3 pink-bg-box">
-                    <div className="d-flex flex-column text-white px-2">
-                      <div className="small-font py-2">Total Profit</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="w-100 d-flex mt-2">
-                  <div className="w-100">
-                    <Table columns={customerCols} data={customerData} />
+            <div className="d-flex flex-column mt-3">
+              <div className="d-flex">
+                <div className="col-3 pe-1">
+                  <div className="d-flex flex-column text-white px-2 blue-bg-box">
+                    <div className="small-font py-2">Casino Sales</div>
+                    <h6 className="py-1">50000000000</h6>
                   </div>
                 </div>
+                <div className="col-3 pe-1">
+                  <div className=" voilet-bg-box d-flex flex-column text-white px-2">
+                    <div className="small-font py-2">Sports Sales</div>
+                    <h6 className="py-1">50000000000</h6>
+                  </div>
+                </div>
+                <div className="col-3 pe-1">
+                  <div className="box-3 d-flex flex-column text-white px-2">
+                    <div className="small-font py-2">S+C Sales</div>
+                    <h6 className="py-1">50000000000</h6>
+                  </div>
+                </div>
+                <div className="col-3 ">
+                  <div className="pink-bg-box d-flex flex-column text-white px-2">
+                    <div className="small-font py-2">Total Profit</div>
+                    <h6 className="py-1">50000000000</h6>
+                  </div>
+                </div>
+              </div>
+
+              <div className="white-bg radius mt-3">
+                <ScrollTable columns={customerCols} data={customerData} />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="col-6 p-2">
+        <div className="col-6 ps-2">
           <div className="d-flex flex-column">
             <div className="d-flex w-100 mb-2">
               <div className="col-6 blue-bg-box p-2 me-2">
@@ -370,55 +368,12 @@ function Homepage() {
                 </select>
               </div>
             </div>
-            <div className="mt-2">
-              <Table columns={cols} data={siteData} itemsPerPage={3} />
+            <div className="mt-2 white-bg radius">
+              <ScrollTable columns={cols} data={siteData} />
             </div>
           </div>
         </div>
       </div>
-
-      {/* <div className="d-flex w-100">
-        <div className="col-6 d-flex p-2">
-          <div className="d-flex flex-column">
-            <div className="d-flex w-100">
-              <div className="col-3 blue-bg-box me-3">
-                <div className="d-flex flex-column text-white px-2">
-                  <div className="small-font py-2">Casino Sales</div>
-                  <h6 className="py-1">50000000000</h6>
-                </div>
-              </div>
-              <div className="col-3 voilet-bg-box me-3">
-                <div className="d-flex flex-column text-white px-2">
-                  <div className="small-font py-2">Sports Sales</div>
-                  <h6 className="py-1">50000000000</h6>
-                </div>
-              </div>
-              <div className="col-3 box-3 me-3">
-                <div className="d-flex flex-column text-white px-2">
-                  <div className="small-font py-2">S+C Sales</div>
-                  <h6 className="py-1">50000000000</h6>
-                </div>
-              </div>
-              <div className="col-3 pink-bg-box">
-                <div className="d-flex flex-column text-white px-2">
-                  <div className="small-font py-2">Total Profit</div>
-                  <h6 className="py-1">50000000000</h6>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-100 d-flex mt-2">
-              <div className="w-100">
-                <Table columns={customerCols} data={customerData} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-6 ">
-          <Table columns={cols} data={siteData} />
-        </div>
-      </div> */}
     </div>
   );
 }
