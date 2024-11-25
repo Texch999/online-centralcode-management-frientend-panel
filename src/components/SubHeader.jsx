@@ -112,7 +112,7 @@ function SubHeader() {
               {menu.options.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn2 medium-font"
+                  className="white-btn yellow-hover medium-font"
                   onClick={() => navigate(option.path)}
                 >
                   {option.label}

@@ -87,25 +87,25 @@ function Header() {
             </Dropdown.Toggle>
             <Dropdown.Menu className="w-100 br-0px p-0 medium-font">
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/casino")}
               >
                 Casino
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/sports")}
               >
                 Sports
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/fancy-results")}
               >
                 Fancy Results
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn medium-font"
+                className="white-btn white-hover medium-font"
                 onClick={() => navigate("/market-results")}
               >
                 Market Results
