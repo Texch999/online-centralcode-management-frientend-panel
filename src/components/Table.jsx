@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from "react-icons/md";
 
-function Table({ data, columns, title, footer, itemsPerPage }) {
+function Table({ data, columns, footer, itemsPerPage }) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(data?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
