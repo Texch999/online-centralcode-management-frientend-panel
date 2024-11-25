@@ -11,6 +11,7 @@ import {
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { Images } from "../images";
+import SubHeader from "./SubHeader";
 
 function Header() {
   const navigate = useNavigate();
@@ -113,6 +114,7 @@ function Header() {
           </Dropdown>
         )}
       </div>
+      {role === "Management" && <SubHeader />}
     </div>
   );
 }

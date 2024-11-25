@@ -4,7 +4,6 @@ import Login from "./components/Login";
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./pages/home/Homepage";
 import Header from "./components/Header";
-import SubHeader from "./components/SubHeader";
 import Casino from "./pages/casino/Casino";
 import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 
@@ -17,12 +16,7 @@ function App() {
         <Login />
       ) : (
         <div>
-          {isLoggedIn && (
-            <>
-              <Header />
-              {role === "Management" && <SubHeader />}
-            </>
-          )}
+          {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
               <Route path="/dashboard" element={<Homepage />} />
