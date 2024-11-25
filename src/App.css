@@ -27,6 +27,11 @@
   align-items: center;
   justify-content: center;
 }
+.flex-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 .loginimg {
   position: absolute;
   left: 0;
@@ -271,4 +276,7 @@
 }
 .red-font {
   color: #d0431c;
+}
+.orange-bg {
+  background: #fffadd;
 }

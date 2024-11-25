@@ -10,7 +10,7 @@ body {
   font-family: "Inter", sans-serif !important;
 }
 .table-body-height {
-  max-height: 22vh;
+  max-height: 23vh;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
