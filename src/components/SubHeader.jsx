@@ -5,6 +5,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 function SubHeader() {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
   const navigate = useNavigate();
   const menuItems = [
     {
@@ -82,6 +83,7 @@ function SubHeader() {
 
   const handleDropdownToggle = (index, isOpen) => {
     setActiveDropdown(isOpen ? index : null);
+    setActiveIndex(index);
   };
 
   return (
@@ -95,7 +97,7 @@ function SubHeader() {
             <Dropdown.Toggle
               variant="none"
               className={`${
-                activeDropdown === index ? "grey-btn" : "balck-btn"
+                activeIndex === index ? "grey-btn" : "balck-btn"
               } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
@@ -106,7 +108,7 @@ function SubHeader() {
                 <FaChevronDown size={16} className="ms-2" />
               )}
             </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0 medium-font">
+            <Dropdown.Menu className="w-100 br-0px p-0 medium-font text-ellipsis">
               {menu.options.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}

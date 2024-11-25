@@ -4,8 +4,8 @@ import Login from "./components/Login";
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./pages/home/Homepage";
 import Header from "./components/Header";
-import SubHeader from "./components/SubHeader";
 import Casino from "./pages/casino/Casino";
+import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import ManagementTeam from "./pages/add-team/ManagementTeam";
 
 function App() {
@@ -17,16 +17,12 @@ function App() {
         <Login />
       ) : (
         <div>
-          {isLoggedIn && (
-            <>
-              <Header />
-              {role === "Management" && <SubHeader />}
-            </>
-          )}
+          {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
               <Route path="/dashboard" element={<Homepage />} />
               <Route path="/casino" element={<Casino />} />
+              <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/management-team" element={<ManagementTeam />} />
             </Routes>
           </div>
