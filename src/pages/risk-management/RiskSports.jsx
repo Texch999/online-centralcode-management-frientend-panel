@@ -43,6 +43,12 @@ function RiskSports() {
       exposure: <div className="red-font">10000000</div>,
       exp_profit: "10000000",
     },
+    {
+      s_no: "4",
+      name: "Srinivas",
+      exposure: <div className="red-font">10000000</div>,
+      exp_profit: "10000000",
+    },
   ];
 
   return (
@@ -86,6 +92,13 @@ function RiskSports() {
           data={HIGH_PROFIT_PLAYERS_DATA}
         />
       </div>
+      <h6 className="black-text my-3">
+        Match Odds (High Risk & Last Bet Players Matches)
+      </h6>
+      <ScrollTable
+        columns={HIGH_PROFIT_PLAYERS_COLUMNS}
+        data={HIGH_PROFIT_PLAYERS_DATA}
+      />
     </div>
   );
 }
