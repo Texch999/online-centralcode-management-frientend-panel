@@ -1,13 +1,25 @@
 import { Images } from "../images";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Login() {
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState();
   const navigate = useNavigate();
+
   const handleLogin = () => {
-    localStorage?.setItem("isLoggedIn", true);
+    if (!username.trim()) {
+      setError("Username is required");
+      return;
+    }
+    const role =
+      username.toLowerCase() === "management" ? "Management" : "Central Panel";
+    localStorage.setItem("role", role);
+    localStorage.setItem("isLoggedIn", true);
     navigate("/dashboard");
     window.location.reload();
   };
+
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center w-100">
       <div
@@ -21,21 +33,33 @@ function Login() {
               We are Glad to see you back with us
             </div>
             <div className="py-4">
-              <div className="d-flex align-items-center input-bg loginbox-radius my-2 px-2">
+              <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
                 <img
                   className="icon-img"
                   alt="iconimg"
                   src={Images.loginUserImages}
-                ></img>
-                <input className="input-css" placeholder="Username" />
+                />
+                <input
+                  className="input-css"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
-              <div className="d-flex align-items-center input-bg loginbox-radius my-2 px-2">
+              {error && (
+                <div className="small-font text-danger mt-1">{error}</div>
+              )}
+              <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
                 <img
                   className="icon-img"
                   alt="iconimg"
                   src={Images.loginUserLock}
                 ></img>
-                <input className="input-css" placeholder="Password" />
+                <input
+                  className="input-css"
+                  type="password"
+                  placeholder="Password"
+                />
               </div>
               <button className="orange-btn mt-3 w-100" onClick={handleLogin}>
                 Submit
