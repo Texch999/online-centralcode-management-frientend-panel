@@ -46,6 +46,16 @@
   padding: 0.5rem !important;
   text-align: center !important;
 }
+.saffron-btn2 {
+  background: #ffa310 !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+  border-radius: 0.375rem;
+}
 .balck-btn {
   background: #3d3d3d !important;
   border: none !important;
@@ -153,6 +163,10 @@
   color: #000000;
   font-weight: 500;
 }
+.black-text4 {
+  color: #1b1b1b;
+  font-weight: 500;
+}
 .input-bg {
   background: #f2f2f2;
 }
@@ -201,4 +215,25 @@
 }
 .white-space{
   white-space: nowrap;
+}
+.yellow-font {
+  color: #ffa310;
+  font-weight: 500;
+}
+.input-css2 {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  color: #727272;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+.input-pill {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  color: #727272;
+  font-weight: 500;
+  padding: 0.25rem;
 }
