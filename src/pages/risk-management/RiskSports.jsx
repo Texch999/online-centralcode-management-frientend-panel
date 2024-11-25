@@ -138,7 +138,11 @@ function RiskSports() {
         Match Odds (High Risk & Last Bet Players Matches)
       </h6>
       <div className="rounded">
-        <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} tableHeight={"table-height"} />
+        <ScrollTable
+          columns={MATCH_ODDS_COLUMNS}
+          data={MATCH_ODDS_DATA}
+          headerPadding={"p-0"}
+        />
       </div>
     </div>
   );
