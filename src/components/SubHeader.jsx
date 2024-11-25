@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
+import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function SubHeader() {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -110,7 +110,7 @@ function SubHeader() {
               {menu.options.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn medium-font"
+                  className="white-btn2 medium-font"
                   onClick={() => navigate(option.path)}
                 >
                   {option.label}

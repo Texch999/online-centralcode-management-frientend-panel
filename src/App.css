@@ -78,11 +78,25 @@
   font-weight: 500 !important;
   padding: 0.5rem !important;
 }
+.white-btn2 {
+  background: #ffffff !important;
+  outline: 1px solid #e0e0e0 !important;
+  border: none !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+}
 .white-btn:hover {
   color: #000000 !important;
   font-weight: 500 !important;
   padding: 0.5rem !important;
   background: #f1f1f1 !important;
+}
+.white-btn2:hover {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  background: #ffa310 !important;
 }
 .rust-red-btn {
   background: #d0431c;
