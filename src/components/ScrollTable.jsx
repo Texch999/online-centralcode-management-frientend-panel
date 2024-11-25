@@ -1,11 +1,11 @@
-function ScrollTable({ data, columns, footer }) {
+function ScrollTable({ data, columns, footer, tableHeight }) {
   return (
-    <div className="w-100 table-body-height">
+    <div className={`w-100 table-body-height ${tableHeight}`}>
       <table className="w-100 white-bg fixed-table">
         <thead>
           <tr className="border">
             {columns?.map((column, index) => (
-              <th key={index} className="small-font black-text px-2 py-1">
+              <th key={index} className="small-font black-text p-2">
                 {column?.header}
               </th>
             ))}
