@@ -233,6 +233,10 @@
 .grey-border {
   border: 2px solid #e0e0e0;
 }
+.chat-border {
+  border-left: 2px solid #e0e0e0;
+  border-right: 2px solid #e0e0e0;
+}
 .yellow-font {
   color: #ffa310;
   font-weight: 500;
@@ -288,4 +292,11 @@
 }
 .fw-600 {
   font-weight: 600;
+}
+.align-top {
+  vertical-align: top;
+}
+.chat-img {
+  height: 1.5rem;
+  width: 1.5rem;
 }

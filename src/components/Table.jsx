@@ -61,7 +61,7 @@ function Table({ data, columns, footer, itemsPerPage }) {
                   <td
                     key={column?.field}
                     style={{ width: column?.width }}
-                    className="small-font p-2"
+                    className="align-top small-font p-2"
                   >
                     {row[column?.field]}
                   </td>

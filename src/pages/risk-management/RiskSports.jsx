@@ -55,9 +55,9 @@ function RiskSports() {
   ];
 
   const MATCH_ODDS_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Sports", field: "sports" },
-    { header: "Match Name", field: "matchName" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Sports", field: "sports", width: "10%" },
+    { header: "Match Name", field: "matchName", width: "40%" },
     {
       header: (
         <div className="orange-bg text-center border">
@@ -70,8 +70,9 @@ function RiskSports() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "", field: "view" },
+    { header: "", field: "view", width: "5%" },
   ];
 
   const MATCH_ODDS_DATA = [
@@ -91,14 +92,18 @@ function RiskSports() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 
   const FANCY_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Sports", field: "sports" },
-    { header: "Match Name", field: "matchName" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Sports", field: "sports", width: "10%" },
+    { header: "Match Name", field: "matchName", width: "30%" },
     {
       header: (
         <div className="orange-bg text-center border">
@@ -110,9 +115,10 @@ function RiskSports() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "Status", field: "status" },
-    { header: "", field: "view" },
+    { header: "Status", field: "status", width: "10%" },
+    { header: "", field: "view", width: "5%" },
   ];
   const FANCY_DATA = [
     {
@@ -132,7 +138,11 @@ function RiskSports() {
         </div>
       ),
       status: <button className="green-btn">Declared</button>,
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 

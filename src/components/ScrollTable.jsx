@@ -35,7 +35,7 @@ function ScrollTable({
                 {columns?.map((column, colIndex) => (
                   <td
                     key={colIndex}
-                    className="small-font black-text p-2"
+                    className="align-top small-font black-text p-2"
                     style={{ width: column?.width || "auto" }}
                   >
                     {row[column?.field]}
