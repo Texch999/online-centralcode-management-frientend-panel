@@ -16,6 +16,9 @@ import {
 } from "chart.js";
 import ScrollTable from "../../components/ScrollTable";
 import { useNavigate } from "react-router-dom";
+import { PiHandCoinsFill, PiUsersThreeFill } from "react-icons/pi";
+import { FaCoins } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi";
 
 ChartJS.register(
   BarElement,
@@ -28,12 +31,10 @@ ChartJS.register(
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
-
-
 function Homepage() {
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
-  
+
   const buttons = ["Casino Winners", "Casino Looser"];
 
   const handleClick = (index) => {
@@ -491,12 +492,7 @@ function Homepage() {
         data: [15, 20, 25, 30, 35, 40, 80],
       },
     ],
-
   };
-
-
-
-
 
   return (
     <div className="p-2">
@@ -513,7 +509,7 @@ function Homepage() {
                 <div className="d-flex flex-between align-items-center">
                   <div className="medium-font black-text">Sales Report</div>
                   <div
-                    className="viewall-btn orange-clr small-font px-2 py-1 pointer"
+                    className="viewall-btn orange-clr small-font px-2 py-1 pointer fw-800"
                     onClick={() => navigate("/dashboard-view-all")}
                   >
                     View All
@@ -525,12 +521,12 @@ function Homepage() {
               </div>
               <div className="hor-grey-line"></div>
               <div>
-                <Bar data={barData}/>
+                <Bar data={barData} />
               </div>
             </div>
 
             <div className="d-flex flex-column mt-3">
-              <div className="d-flex">
+              <div className="d-flex mb-3">
                 <div className="col-3 pe-1">
                   <div className="d-flex flex-column text-white px-2 blue-bg-box">
                     <div className="small-font py-2">Casino Sales</div>
@@ -557,13 +553,11 @@ function Homepage() {
                 </div>
               </div>
 
-              <div className="white-bg radius mt-3 box-shadow">
-                <ScrollTable
-                  columns={customerCols}
-                  data={customerData}
-                  tableHeight={"h-fill"}
-                />
-              </div>
+              <ScrollTable
+                columns={customerCols}
+                data={customerData}
+                tableHeight="h-50vh"
+              />
             </div>
           </div>
         </div>
@@ -578,7 +572,7 @@ function Homepage() {
                       Total Sale Revenue
                     </div>
                     <div>
-                      <FcSalesPerformance className="white-text w-100 h-5vh" />
+                      <FaCoins className="white-text w-100 h-5vh" />
                     </div>
                   </div>
                   <h5 className="white-text">500000000</h5>
@@ -598,7 +592,7 @@ function Homepage() {
                       Total Vendor Payment
                     </div>
                     <div>
-                      <RiSecurePaymentLine className="white-text w-100 h-5vh" />
+                      <PiHandCoinsFill className="white-text w-100 h-5vh" />
                     </div>
                   </div>
                   <h5 className="white-text">30000000</h5>
@@ -618,7 +612,7 @@ function Homepage() {
                   <div className="d-flex flex-between align-items-center">
                     <div className="white-text medium-font">Total Admins</div>
                     <div>
-                      <ImUsers className="white-text w-100 h-5vh" />
+                      <HiUserGroup className="white-text w-100 h-5vh" />
                     </div>
                   </div>
                   <h5 className="white-text">50000</h5>
@@ -658,33 +652,29 @@ function Homepage() {
                   );
                 })}
               </div>
-              <div className="white-bg px-1 py-1 radius pointer border-black">
-                <select className="select-none pointer w-100">
+              <div className="px-1 py-1 radius pointer input-css2">
+                <select className="all-none w-100">
                   <option>Today</option>
                   <option>Tomorrow</option>
                   <option>yesterday</option>
                 </select>
               </div>
             </div>
-            <div>
+            <div className="mt-3">
               {activeBtn === 0 && (
-                <div className="mt-2 white-bg radius box-shadow">
-                  <ScrollTable
-                    columns={cols}
-                    data={siteWinnerData}
-                    tableHeight={"h-fill"}
-                  />
-                </div>
+                <ScrollTable
+                  columns={cols}
+                  data={siteWinnerData}
+                  tableHeight="h-50vh"
+                />
               )}
 
               {activeBtn === 1 && (
-                <div className="mt-2 white-bg radius box-shadow">
-                  <ScrollTable
-                    columns={cols}
-                    data={siteLooseData}
-                    tableHeight={"h-fill"}
-                  />
-                </div>
+                <ScrollTable
+                  columns={cols}
+                  data={siteLooseData}
+                  tableHeight="h-50vh"
+                />
               )}
             </div>
           </div>

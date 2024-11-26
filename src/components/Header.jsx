@@ -71,7 +71,7 @@ function Header() {
             onClick={() => navigate("/dashboard")}
           >
             <PiSquaresFourFill size={24} className="me-2" />
-            <span className="medium-font">Dashboard</span>
+            <span className="medium-font pointer">Dashboard</span>
           </div>
           {role === "Management" ? (
             <div
