@@ -11,22 +11,26 @@ import "../add-team/style.css";
 import "../../App.css";
 
 const ManagementTeam = () => {
-  const [tableData, setTableData] = useState([
-    {
+  // State for managing table data, modals, and form data
+  const [tableData, setTableData] = useState(
+    Array.from({ length: 15 }, (_, index) => ({
+      id: index + 1,
       role: "Designer",
-      name: "Jayanta",
-      loginName: "Jayanta121",
-      phone: "+91 7551456732",
-      email: "jayanta@demo.com",
-    },
-    // more data...
-  ]);
+      name: `Jayanta ${index + 1}`,
+      loginname: `Jayanta121_${index + 1}`,
+      phone: `+91 755145673${index}`,
+      email: `jayanta${index + 1}@demo.com`,
+    }))
+  );
 
-  // State for managing the Add Management modal visibility
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [isBlockPopupVisible, setIsBlockPopupVisible] = useState(false);
+  const [modalState, setModalState] = useState({
+    showAddModal: false,
+    isBlockPopupVisible: false,
+  });
+
   const [isEditing, setIsEditing] = useState(false);
-  const [editingRowIndex, setEditingRowIndex] = useState(null);
+  const [editingRowId, setEditingRowId] = useState(null);
+
   const [formData, setFormData] = useState({
     role: "",
     name: "",
@@ -38,8 +42,13 @@ const ManagementTeam = () => {
     managementPassword: "",
   });
 
+  // Helper functions for modal management
+  const toggleModal = (modalName, value) => {
+    setModalState((prev) => ({ ...prev, [modalName]: value }));
+  };
+
   // Functions to handle showing and hiding the Add Management modal
-  const handleAddShow = () => {
+  const handleAddModal = (isOpen) => {
     setFormData({
       role: "",
       name: "",
@@ -51,115 +60,106 @@ const ManagementTeam = () => {
       managementPassword: "",
     });
     setIsEditing(false);
-    setShowAddModal(true);
+    toggleModal("showAddModal", isOpen);
   };
-  const handleAddClose = () => setShowAddModal(false);
 
   // Handles opening the modal for editing an existing entry
-  const handleEdit = (rowIndex) => {
-    const rowData = tableData[rowIndex];
-    setFormData({
-      role: rowData.role,
-      name: rowData.name,
-      loginName: rowData.loginName,
-      phoneNumber: rowData.phone,
-      email: rowData.email,
-      password: "",
-      confirmPassword: "",
-      managementPassword: "",
-    });
-    setIsEditing(true);
-    setEditingRowIndex(rowIndex);
-    setShowAddModal(true);
+  const handleEdit = (rowId) => {
+    const rowData = tableData.find((row) => row.id === rowId);
+    if (rowData) {
+      setFormData({
+        role: rowData.role,
+        name: rowData.name,
+        loginName: rowData.loginName,
+        phoneNumber: rowData.phone,
+        email: rowData.email,
+        password: "",
+        confirmPassword: "",
+        managementPassword: "",
+      });
+      setIsEditing(true);
+      setEditingRowId(rowId);
+      toggleModal("showAddModal", true);
+    }
   };
 
   // Handles form submission to either add or edit data
   const handleFormSubmit = (newData) => {
-    if (isEditing) {
-      // Update existing entry
-      const updatedTableData = [...tableData];
-      updatedTableData[editingRowIndex] = {
-        ...updatedTableData[editingRowIndex],
-        role: newData.role,
-        name: newData.name,
-        loginName: newData.loginName,
-        phone: newData.phoneNumber,
-        email: newData.email,
-      };
-      setTableData(updatedTableData);
-    } else {
-      // Add new entry
-      setTableData([
-        ...tableData,
-        {
-          role: newData.role,
-          name: newData.name,
-          loginName: newData.loginName,
-          phone: newData.phoneNumber,
-          email: newData.email,
-        },
-      ]);
-    }
-    setShowAddModal(false);
+    setTableData((prevData) => {
+      if (isEditing) {
+        return prevData.map((item) =>
+          item.id === editingRowId ? { ...item, ...newData } : item
+        );
+      }
+      return [...prevData, { id: Date.now(), ...newData }];
+    });
+    toggleModal("showAddModal", false);
   };
 
   // Handles opening the block account confirmation pop-up
   const handleBlockPopup = () => {
-    setIsBlockPopupVisible(true);
+    toggleModal("isBlockPopupVisible", true);
   };
 
+  // Simplified column definitions
   const columns = [
-    { header: "Role", field: "role" },
-    { header: "Name", field: "name" },
-    { header: "Login Name", field: "loginName" },
-    { header: "Phone", field: "phone" },
-    { header: "Email", field: "email" },
-    { header: "Action", field: "action" },
+    {
+      header: "Role",
+      field: "role",
+    },
+    {
+      header: "Name",
+      field: "name",
+    },
+    {
+      header: "Login Name",
+      field: "loginname",
+    },
+    {
+      header: "Phone",
+      field: "phone",
+    },
+    {
+      header: "Email",
+      field: "email",
+    },
+    {
+      header: "Action",
+      field: "action",
+    },
   ];
-  // const data = [
-  //   {role:"Admin"}
-  // ]
-  const tableDataWithActions = tableData.map((row, index) => ({
+
+  // Adding action buttons to each row of data
+  const tableDataWithActions = tableData.map((row) => ({
     ...row,
     action: (
-      <div>
-        <GrEdit
-          className="add-management-icon"
-          onClick={() => handleEdit(index)}
-        />
-        <MdLockReset className="add-management-icon" />
-        <MdBlockFlipped
-          className="add-management-icon"
-          onClick={() => handleBlockPopup()}
-        />
-        <RiDeleteBinLine className="add-management-icon" />
-      </div>
+      <ActionButtons
+        rowId={row.id}
+        onEdit={handleEdit}
+        onBlock={handleBlockPopup}
+      />
     ),
   }));
 
   return (
-    <div className="management-team-wrapper-container">
-      <div className="container-fluid py-3 bg-light">
+    <div>
+      
+      <div className="container-fluid py-3 mng-team-search-con">
         <div className="row align-items-center">
           <div className="col-md-6 text-start">
-            <h4 className="text-warning mb-0">Add Management Team</h4>
+            <h6 className="yellow-font my-2">Add Management Team</h6>
           </div>
           {/* Right-side actions */}
           <div className="col-md-6 text-end d-flex justify-content-end gap-3">
             {/* Search Box */}
-            <div className="d-flex align-items-center border rounded px-3">
-              <FaSearch className="me-2 text-secondary" />
-              <input
-                type="text"
-                className="form-control border-0 p-0"
-                placeholder="Search..."
-                style={{ boxShadow: "none" }}
-              />
+            <div className="input-pill d-flex align-items-center rounded-pill px-2">
+              <FaSearch size={17} className="grey-clr me-2" />
+              <input className="small-font all-none" placeholder="Search..." />
             </div>
             {/* Add New Button */}
             <button
               className="add-new-btn d-flex align-items-center"
-              onClick={handleAddShow}
+              onClick={() => handleAddModal(true)}
             >
               <FaPlus className="me-2" />
               Add New
@@ -170,26 +170,27 @@ const ManagementTeam = () => {
 
       <div className="management-team-wrapper rounded-bg">
         <Table
+          className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={14}
+          itemsPerPage={12}
         />
       </div>
 
       {/* AddManagementPopup Modal - Controlled by showAddModal */}
       <AddManagementPopup
-        show={showAddModal}
-        onClose={handleAddClose}
+        show={modalState.showAddModal}
+        onClose={() => toggleModal("showAddModal", false)}
         formData={formData}
         setFormData={setFormData}
         onSubmit={handleFormSubmit}
       />
 
       {/* Block Account Modal */}
-      {isBlockPopupVisible && (
+      {modalState.isBlockPopupVisible && (
         <div className="popup-overlay">
           <BlockAccountPopup
-            onClose={() => setIsBlockPopupVisible(false)}
+            onClose={() => toggleModal("isBlockPopupVisible", false)}
             onSubmit={handleFormSubmit}
           />
         </div>
@@ -197,5 +198,15 @@ const ManagementTeam = () => {
     </div>
   );
 };
+
+// Separate ActionButtons component for cleaner code
+const ActionButtons = ({ rowId, onEdit, onBlock }) => (
+  <div>
+    <GrEdit className="add-management-icon" onClick={() => onEdit(rowId)} />
+    <MdLockReset className="add-management-icon" />
+    <MdBlockFlipped className="add-management-icon" onClick={() => onBlock()} />
+    <RiDeleteBinLine className="add-management-icon" />
+  </div>
+);
 
 export default ManagementTeam;

@@ -1,4 +1,5 @@
 import React from "react";
+import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -43,17 +44,17 @@ const AddManagementPopup = ({
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>
+      <div className="d-flex justify-content-between align-items-center pt-4 px-4">
+        <h6 className="mb-0 add-management-popup-header">
           {formData.name ? "Edit Management Team" : "Add Management Team"}
-        </Modal.Title>
-      </Modal.Header>
+        </h6>
+        <MdOutlineClose size={25} type="button" onClick={onClose} aria-label="Close"/>
+      </div>
       <Modal.Body>
-        <form onSubmit={handleSubmit}>
-          {/* Row 1: Role, Name, Login Name */}
+        <form className="add-management-popup-form px-3" onSubmit={handleSubmit}>
           <div className="row mb-3">
             <div className="col-md-4">
-              <label>Role:</label>
+              <label>Role</label>
               <select
                 name="role"
                 value={formData.role}
@@ -67,7 +68,7 @@ const AddManagementPopup = ({
               </select>
             </div>
             <div className="col-md-4">
-              <label>Name:</label>
+              <label>Name</label>
               <input
                 type="text"
                 name="name"
@@ -78,7 +79,7 @@ const AddManagementPopup = ({
               />
             </div>
             <div className="col-md-4">
-              <label>Login Name:</label>
+              <label>Login Name</label>
               <input
                 type="text"
                 name="loginName"
@@ -93,7 +94,7 @@ const AddManagementPopup = ({
           {/* Row 2: Phone Number, Password, Confirm Password */}
           <div className="row mb-3">
             <div className="col-md-4">
-              <label>Phone Number:</label>
+              <label>Phone Number</label>
               <input
                 type="text"
                 name="phoneNumber"
@@ -104,7 +105,7 @@ const AddManagementPopup = ({
               />
             </div>
             <div className="col-md-4 position-relative">
-              <label>Password:</label>
+              <label>Password</label>
               <input
                 type={showPassword.password ? "text" : "password"}
                 name="password"
@@ -118,8 +119,8 @@ const AddManagementPopup = ({
                 onClick={() => togglePasswordVisibility("password")}
                 style={{
                   position: "absolute",
-                  right: "20px",
-                  top: "50%",
+                  right: "25px",
+                  top: "55%",
                   cursor: "pointer",
                 }}
               >
@@ -127,7 +128,7 @@ const AddManagementPopup = ({
               </span>
             </div>
             <div className="col-md-4 position-relative">
-              <label>Confirm Password:</label>
+              <label>Confirm Password</label>
               <input
                 type={showPassword.confirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -141,8 +142,8 @@ const AddManagementPopup = ({
                 onClick={() => togglePasswordVisibility("confirmPassword")}
                 style={{
                   position: "absolute",
-                  right: "20px",
-                  top: "50%",
+                  right: "25px",
+                  top: "55%",
                   cursor: "pointer",
                 }}
               >
@@ -151,8 +152,8 @@ const AddManagementPopup = ({
             </div>
           </div>
 
-          {/* Row 3: Email, Management Password, Submit */}
-          <div className="row mb-3">
+          {/* Row 3: Email, Management Password, Submit Button */}
+          <div className="row mb-3 align-items-end">
             <div className="col-md-4">
               <label>Email:</label>
               <input
@@ -165,7 +166,7 @@ const AddManagementPopup = ({
               />
             </div>
             <div className="col-md-4 position-relative">
-              <label>Management Password:</label>
+              <label>Management Password</label>
               <input
                 type={showPassword.managementPassword ? "text" : "password"}
                 name="managementPassword"
@@ -179,20 +180,16 @@ const AddManagementPopup = ({
                 onClick={() => togglePasswordVisibility("managementPassword")}
                 style={{
                   position: "absolute",
-                  right: "20px",
-                  top: "50%",
+                  right: "25px",
+                  top: "55%",
                   cursor: "pointer",
                 }}
               >
                 {showPassword.managementPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
-            <div className="col-md-4 d-flex justify-content-center mt-3">
-              <Button
-                className="w-75"
-                variant="warning"
-                onClick={handleSubmit}
-              >
+            <div className="col-md-4 d-flex justify-content-center">
+              <Button className="saffron-btn2 add-mng-pop-btn w-100" onClick={handleSubmit}>
                 Submit
               </Button>
             </div>
