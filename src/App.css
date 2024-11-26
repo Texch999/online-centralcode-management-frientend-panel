@@ -130,10 +130,9 @@
   text-align: center;
 }
 .active-btn {
-  border: 1px solid #18b962;
-  background: #18b962;
+  border: 2px solid #18b962;
+  background: #b3ffd6;
   border-radius: 0.25rem;
-  border: none;
   outline: none;
   color: #18b962;
   font-weight: 500;
@@ -144,7 +143,6 @@
   border: 1px solid #f43a23;
   background: #f43a23;
   border-radius: 0.25rem;
-  border: none;
   outline: none;
   color: #f43a23;
   font-weight: 500;

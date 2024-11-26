@@ -93,6 +93,47 @@ function RiskSports() {
     },
   ];
 
+  const FANCY_COLUMNS = [
+    { header: "Market Date & Time", field: "dateTime" },
+    { header: "Sports", field: "sports" },
+    { header: "Match Name", field: "matchName" },
+    {
+      header: (
+        <div className="orange-bg text-center border">
+          <div>P/L</div>
+          <div className="w-100  flex-around border-top">
+            <span>NO</span>
+            <span>YES</span>
+          </div>
+        </div>
+      ),
+      field: "profit_loss",
+    },
+    { header: "Status", field: "status" },
+    { header: "", field: "view" },
+  ];
+  const FANCY_DATA = [
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      status: <button className="active-btn">Declared</button>,
+      view: <BsEye size={18} className="black-text" />,
+    },
+  ];
+
   return (
     <div>
       <div className="flex-between">
@@ -134,16 +175,32 @@ function RiskSports() {
           data={HIGH_PROFIT_PLAYERS_DATA}
         />
       </div>
-      <h6 className="black-text my-3">
-        Match Odds (High Risk & Last Bet Players Matches)
-      </h6>
-      <div className="rounded">
-        <ScrollTable
-          columns={MATCH_ODDS_COLUMNS}
-          data={MATCH_ODDS_DATA}
-          headerPadding={"p-0"}
-        />
-      </div>
+      <>
+        <h6 className="black-text my-3">
+          Match Odds (High Risk & Last Bet Players Matches)
+        </h6>
+        <div className="rounded">
+          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+        </div>
+      </>
+      <>
+        <h6 className="black-text my-3">Book Maker 1</h6>
+        <div className="rounded">
+          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+        </div>
+      </>
+      <>
+        <h6 className="black-text my-3"> Book Maker 2</h6>
+        <div className="rounded">
+          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+        </div>
+      </>
+      <>
+        <h6 className="black-text my-3">Fancy</h6>
+        <div className="rounded">
+          <ScrollTable columns={FANCY_COLUMNS} data={FANCY_DATA} />
+        </div>
+      </>
     </div>
   );
 }
