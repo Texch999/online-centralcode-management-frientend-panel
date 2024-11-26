@@ -183,9 +183,14 @@ function RiskCasino() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Risk Management - Casino</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
+        <div className="d-flex align-items-center">
+          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
+            <FaSearch size={16} className="grey-clr me-2" />
+            <input className="small-font all-none" placeholder="Search..." />
+          </div>
+          <div className="small-font">
+            P/L : <span className="white-btn2 green-font">10000000</span>
+          </div>
         </div>
       </div>
       <div className="small-font pb-3 d-flex">

@@ -1,7 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function ScrollTable({ data, columns, footer, tableHeight, headerPadding }) {
+function ScrollTable({
+  data = [],
+  columns = [],
+  footer = [],
+  tableHeight = "",
+  headerPadding = "",
+}) {
   return (
     <div className={`w-100 ${tableHeight ? tableHeight : "table-body-height"}`}>
       <table className="w-100 white-bg fixed-table">
@@ -69,7 +75,7 @@ function ScrollTable({ data, columns, footer, tableHeight, headerPadding }) {
 }
 
 ScrollTable.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       header: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
@@ -77,7 +83,7 @@ ScrollTable.propTypes = {
       field: PropTypes.string.isRequired,
       width: PropTypes.string,
     })
-  ).isRequired,
+  ),
   footer: PropTypes.arrayOf(
     PropTypes.shape({
       header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -85,12 +91,6 @@ ScrollTable.propTypes = {
   ),
   tableHeight: PropTypes.string,
   headerPadding: PropTypes.string,
-};
-
-ScrollTable.defaultProps = {
-  footer: [],
-  tableHeight: "",
-  headerPadding: "",
 };
 
 export default ScrollTable;
