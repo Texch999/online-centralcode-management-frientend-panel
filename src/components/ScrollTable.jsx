@@ -15,7 +15,9 @@ function ScrollTable({ data, columns, footer, tableHeight, headerPadding }) {
                 }`}
                 style={{ width: column?.width || "auto" }}
               >
-                {column?.header}
+                {typeof column?.header === "string"
+                  ? column.header
+                  : column?.header}
               </th>
             ))}
           </tr>
@@ -70,14 +72,15 @@ ScrollTable.propTypes = {
   data: PropTypes.array.isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
-      header: PropTypes.string.isRequired,
+      header: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+        .isRequired,
       field: PropTypes.string.isRequired,
       width: PropTypes.string,
     })
   ).isRequired,
   footer: PropTypes.arrayOf(
     PropTypes.shape({
-      header: PropTypes.string.isRequired,
+      header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     })
   ),
   tableHeight: PropTypes.string,

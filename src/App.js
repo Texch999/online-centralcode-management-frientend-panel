@@ -12,6 +12,7 @@ import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
 import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
+import RiskCasino from "./pages/risk-management/RiskCasino";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -37,6 +38,7 @@ function App() {
                 path="/risk-bet-history/:matchName"
                 element={<RiskBetHistory />}
               />
+              <Route path="/risk-casino" element={<RiskCasino />} />
             </Routes>
           </div>
         </div>

@@ -121,10 +121,10 @@ const ReferenceData = () => {
   ];
 
   const REJECTION_COLUMNS = [
-    { header: "Reason", field: "reason", width:"50%", },
-    { header: "Discriptions", field: "discriptions" },
-    { header: "Status", field: "status" },
-    { header: "Action", field: "action" },
+    { header: "Reason", field: "reason", width:"30%", },
+    { header: "Discriptions", field: "discriptions",width:"30%", },
+    { header: "Status", field: "status",width:"30%", },
+    { header: "Action", field: "action",width:"30%", },
   ];
   const REJECTION_DATA = [
     {
