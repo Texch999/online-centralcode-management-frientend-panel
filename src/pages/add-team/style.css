@@ -1,35 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-.management-team-wrapper-container{
+.management-team-wrapper-container {
   width: 95%;
   margin: auto;
 }
 
-.add-management-icon{
-    height: 22px;
-    width: 22px;
-    margin: 0 0.4rem 0 0.4rem;
-    color: #454242;
-    cursor: pointer;
-  }
+.add-management-icon {
+  height: 22px;
+  width: 22px;
+  margin: 0 0.4rem 0 0.4rem;
+  color: #454242;
+  cursor: pointer;
+}
 
-  .management-team-wrapper{
-    /* width: 95%; */
-    margin: auto;
-  }
+.management-team-wrapper {
+  /* width: 95%; */
+  margin: auto;
+}
+.blue-font {
+  color: #1912c8;
+}
 
-  .add-new-btn {
-    font-size: 14px;
-    background-color: #ffffff;
-    color: #1912C8;
-    border: 1px solid rgba(0, 0, 0, 0.1); 
-    border-radius: 25px;
-    padding: 10px 20px 10px 20px;
-    font-weight: 500;
-    cursor: pointer; 
-  }
+.add-new-btn {
+  font-size: 14px;
+  background-color: #ffffff;
 
-  /* Target the table header (th) */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  padding: 10px 20px 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Target the table header (th) */
 .management-team-wrapper th {
   background-color: #f4f4f4;
   color: #333;
@@ -50,27 +51,18 @@
   font-size: 14px;
 }
 
-/* Add hover effect for rows */
-.management-team-wrapper tr:hover td {
-  background-color: #f5f5c0;
-}
-
 /* popup additional Styling */
-.add-management-popup-header{
+.add-management-popup-header {
   color: #1b1b1b;
   font-weight: 600;
   font-size: 18px;
 }
 
-/* .btn-close-btn{
-  color: #1B1B1B;
-} */
-
 .add-management-popup-form label {
   font-weight: 500;
-  color: #1B1B1B;
+  color: #1b1b1b;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 0.3rem;
 }
 
 .add-management-popup-form input::placeholder {
@@ -79,18 +71,29 @@
   font-weight: 500;
 }
 
-.add-management-popup-form input{
-  padding: 16px 20px 16px 20px;
-  background-color: #F2F2F2;
+.add-management-popup-form input {
+  padding: 8px 10px 5px 8px;
+  background-color: #f2f2f2;
 }
 
 .add-management-popup-form select {
-  padding: 16px 20px 16px 20px;   
-  color: #333;              
-  background-color: #f5f5f5;   
-  font-size: 14px;    
+  padding: 8px 10px 5px 8px;
+  color: #333;
+  background-color: #f5f5f5;
+  font-size: 14px;
 }
 
-.add-mng-pop-btn{
-  padding: 16px 20px 16px 20px !important; 
+.add-mng-pop-btn {
+  padding: 8px 20px 8px 20px !important;
+}
+
+.dw-active-btn{
+  background-color: #18B962;
+  color: white;
+  font-size: 14px;
+}
+
+.mini-container{
+  border-radius: 10px !important;
+  padding: 10px;
 }

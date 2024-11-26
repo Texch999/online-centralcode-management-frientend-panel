@@ -101,7 +101,6 @@ const ManagementTeam = () => {
     toggleModal("isBlockPopupVisible", true);
   };
 
-  // Simplified column definitions
   const columns = [
     {
       header: "Role",
@@ -124,7 +123,7 @@ const ManagementTeam = () => {
       field: "email",
     },
     {
-      header: "Action",
+      header:<div className="text-center">Action</div>,
       field: "action",
     },
   ];
@@ -143,31 +142,23 @@ const ManagementTeam = () => {
 
   return (
     <div>
-      
-      <div className="container-fluid py-3 mng-team-search-con">
-        <div className="row align-items-center">
-          <div className="col-md-6 text-start">
-            <h6 className="yellow-font my-2">Add Management Team</h6>
+      <div className="flex-between mb-3 mt-2">
+        <h6 className="yellow-font mb-0">Add Management Team</h6>
+        <div className="d-flex align-items-center">
+          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
+            <FaSearch size={16} className="grey-clr me-2" />
+            <input className="small-font all-none" placeholder="Search..." />
           </div>
-          {/* Right-side actions */}
-          <div className="col-md-6 text-end d-flex justify-content-end gap-3">
-            {/* Search Box */}
-            <div className="input-pill d-flex align-items-center rounded-pill px-2">
-              <FaSearch size={17} className="grey-clr me-2" />
-              <input className="small-font all-none" placeholder="Search..." />
-            </div>
-            {/* Add New Button */}
-            <button
-              className="add-new-btn d-flex align-items-center"
-              onClick={() => handleAddModal(true)}
-            >
-              <FaPlus className="me-2" />
-              Add New
-            </button>
-          </div>
+          <button
+            className="small-font blue-font border px-3 py-1 rounded-pill"
+            onClick={() => handleAddModal(true)}
+          >
+            <FaPlus className="me-2" />
+            Add New
+          </button>
         </div>
       </div>
-
+      
       <div className="management-team-wrapper rounded-bg">
         <Table
           className="black-text"
@@ -201,7 +192,7 @@ const ManagementTeam = () => {
 
 // Separate ActionButtons component for cleaner code
 const ActionButtons = ({ rowId, onEdit, onBlock }) => (
-  <div>
+  <div className="text-center">
     <GrEdit className="add-management-icon" onClick={() => onEdit(rowId)} />
     <MdLockReset className="add-management-icon" />
     <MdBlockFlipped className="add-management-icon" onClick={() => onBlock()} />
