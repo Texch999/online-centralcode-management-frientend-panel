@@ -8,7 +8,7 @@
   background: #ffffff;
 }
 .login-box-shadow {
-  box-shadow: 0px 29px 67.3px 0px #00000029;
+  box-shadow: 0px 25px 65px 0px #00000029;
 }
 .h-fill {
   height: -webkit-fill-available !important;
@@ -21,6 +21,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 .loginimg {
   position: absolute;
@@ -46,6 +56,34 @@
   padding: 0.5rem !important;
   text-align: center !important;
 }
+.saffron-btn2 {
+  background: #ffa310 !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+  border-radius: 0.25rem;
+}
+.balck-btn {
+  background: #3d3d3d !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+}
+.grey-btn {
+  background: #7e7e7e !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+}
 .dropdown-toggle::after {
   display: none !important;
 }
@@ -60,15 +98,30 @@
   font-weight: 500 !important;
   padding: 0.5rem !important;
 }
-.white-btn:hover {
+.white-btn2 {
+  background: #ffffff !important;
+  outline: 1px solid #e0e0e0 !important;
+  border: none !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  border-radius: 0.25rem;
+}
+.white-hover:hover {
   color: #000000 !important;
   font-weight: 500 !important;
   padding: 0.5rem !important;
   background: #f1f1f1 !important;
 }
+.yellow-hover:hover {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.5rem !important;
+  background: #ffa310 !important;
+}
 .rust-red-btn {
   background: #d0431c;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
   border: none;
   outline: none;
   color: #ffffff;
@@ -79,7 +132,7 @@
 .active-btn {
   border: 1px solid #18b962;
   background: #18b962;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
   border: none;
   outline: none;
   color: #18b962;
@@ -90,7 +143,7 @@
 .inactive-btn {
   border: 1px solid #f43a23;
   background: #f43a23;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
   border: none;
   outline: none;
   color: #f43a23;
@@ -99,7 +152,7 @@
   text-align: center;
 }
 .logo-img {
-  height: 10vh;
+  height: 8vh;
 }
 .grey-clr {
   color: #999999;
@@ -121,6 +174,10 @@
   color: #000000;
   font-weight: 500;
 }
+.black-text4 {
+  color: #1b1b1b;
+  font-weight: 500;
+}
 .input-bg {
   background: #f2f2f2;
 }
@@ -129,7 +186,7 @@
   width: 1.2rem;
 }
 .loginbox-radius {
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
 }
 .input-css {
   background: #f2f2f2;
@@ -138,11 +195,11 @@
   color: #1c1c1c;
   font-weight: 500;
   padding: 0.5rem;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
 }
 .orange-btn {
   background: #fc9b4e;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
   border: none;
   outline: none;
   color: #ffffff;
@@ -159,9 +216,12 @@
   background: #ffffff !important;
 }
 .home {
+  background: #f5f7ff;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 0.5rem;
+  scrollbar-width: none;
+  padding: 0.75rem;
+  padding-bottom: 10vh !important;
   height: -webkit-fill-available !important;
 }
 .grey-border {
@@ -178,4 +238,53 @@
 }
 .w-50{
   width: 50%;
+}
+.yellow-font {
+  color: #ffa310;
+  font-weight: 500;
+}
+.input-css2 {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  color: #727272;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+.input-pill {
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  color: #727272;
+  font-weight: 500;
+  padding: 0.25rem;
+}
+.flex-start {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.grey-bg {
+  background: #eeeeee;
+}
+.black-border {
+  border: 1px solid #1d1d1d;
+}
+.br-3px {
+  border-radius: 3px;
+}
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.green-font {
+  color: #18b962 !important;
+}
+.red-font {
+  color: #d0431c;
+}
+.orange-bg {
+  background: #fffadd;
 }

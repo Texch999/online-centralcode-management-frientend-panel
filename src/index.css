@@ -12,6 +12,33 @@ body {
 .bg-check{
   background-color: yellow;
 }
+.table-body-height {
+  max-height: 23vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+}
+.fixed-table thead {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+}
+.fixed-table tbody {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {
     font-size: 0.4rem;
