@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Casino from "./pages/casino/Casino";
 import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import RiskSports from "./pages/risk-management/RiskSports";
+import DashboardViewAll from "./pages/home/DashboardViewAll";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -24,6 +25,7 @@ function App() {
               <Route path="/casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/risk-sports" element={<RiskSports />} />
+              <Route path="/dashboard-view-all" element={<DashboardViewAll/>}/>
             </Routes>
           </div>
         </div>

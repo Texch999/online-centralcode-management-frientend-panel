@@ -17,6 +17,7 @@ import {
   Legend,
 } from "chart.js";
 import ScrollTable from "../../components/ScrollTable";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
   BarElement,
@@ -30,6 +31,7 @@ ChartJS.register(
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 function Homepage() {
+  const navigate = useNavigate();
   const customerCols = [
     { header: "Customer Name", field: "customer" },
     { header: "Role", field: "role" },
@@ -204,7 +206,7 @@ function Homepage() {
   };
 
   return (
-    <div className="p-2 overflow-y">
+    <div className="p-2">
       <h5 className="blck-text">Welcome sri</h5>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
@@ -217,7 +219,7 @@ function Homepage() {
               <div className="d-flex flex-column p-2">
                 <div className="d-flex flex-between align-items-center">
                   <div className="medium-font black-text">Sales Report</div>
-                  <div className="viewall-btn orange-clr small-font px-2 py-1 pointer">
+                  <div className="viewall-btn orange-clr small-font px-2 py-1 pointer" onClick={()=>navigate("/dashboard-view-all")}>
                     View All
                   </div>
                 </div>

@@ -75,13 +75,16 @@
   color: #ffffff;
   border: none;
 }
-.select-none{
+.select-none {
   outline: none;
   border: none;
 }
-.border-black{
-  border: 0.5px solid #0000001A
+.border-black {
+  border: 0.5px solid #0000001a;
 }
-.overflow-y{
+.overflow-y {
   overflow-y: hidden;
+}
+.h-50vh {
+  height: 50vh;
 }
