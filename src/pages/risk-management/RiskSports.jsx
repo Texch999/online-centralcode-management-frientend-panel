@@ -131,7 +131,7 @@ function RiskSports() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      status: <button className="active-btn">Declared</button>,
+      status: <button className="green-btn">Declared</button>,
       view: <BsEye size={18} className="black-text" />,
     },
   ];
@@ -150,7 +150,7 @@ function RiskSports() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 ${
+              className={`me-3 px-3 ${
                 activeSport === sport ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleSportClick(sport)}

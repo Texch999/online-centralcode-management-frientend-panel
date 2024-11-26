@@ -129,7 +129,7 @@
   padding: 0.5rem;
   text-align: center;
 }
-.active-btn {
+.green-btn {
   border: 2px solid #18b962;
   background: #b3ffd6;
   border-radius: 0.25rem;
@@ -139,15 +139,27 @@
   padding: 0.5rem;
   text-align: center;
 }
-.inactive-btn {
+.red-btn {
   border: 1px solid #f43a23;
-  background: #f43a23;
+  background: #ffcac3;
   border-radius: 0.25rem;
   outline: none;
   color: #f43a23;
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
+}
+.back-btn {
+  background: #e8ebf5;
+  padding: 0.25rem;
+  color: #18b962;
+  border-radius: 3px;
+}
+.lay-btn {
+  background: #e8ebf5;
+  padding: 0.25rem;
+  color: #d0431c;
+  border-radius: 3px;
 }
 .logo-img {
   height: 8vh;
