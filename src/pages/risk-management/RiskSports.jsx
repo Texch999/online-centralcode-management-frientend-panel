@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import ScrollTable from "../../components/ScrollTable";
+import { BsEye } from "react-icons/bs";
 
 function RiskSports() {
   const [activeSport, setActiveSport] = useState("Cricket");
@@ -51,6 +52,47 @@ function RiskSports() {
     },
   ];
 
+  const MATCH_ODDS_COLUMNS = [
+    { header: "Market Date & Time", field: "dateTime" },
+    { header: "Sports", field: "sports" },
+    { header: "Match Name", field: "matchName" },
+    {
+      header: (
+        <div className="orange-bg text-center border">
+          <div>P/L</div>
+          <div className="w-100  flex-around border-top">
+            <span>1</span>
+            <span>X</span>
+            <span>2</span>
+          </div>
+        </div>
+      ),
+      field: "profit_loss",
+    },
+    { header: "", field: "view" },
+  ];
+
+  const MATCH_ODDS_DATA = [
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      view: <BsEye size={18} className="black-text" />,
+    },
+  ];
+
   return (
     <div>
       <div className="flex-between">
@@ -95,10 +137,13 @@ function RiskSports() {
       <h6 className="black-text my-3">
         Match Odds (High Risk & Last Bet Players Matches)
       </h6>
-      <ScrollTable
-        columns={HIGH_PROFIT_PLAYERS_COLUMNS}
-        data={HIGH_PROFIT_PLAYERS_DATA}
-      />
+      <div className="rounded">
+        <ScrollTable
+          columns={MATCH_ODDS_COLUMNS}
+          data={MATCH_ODDS_DATA}
+          headerPadding={"p-0"}
+        />
+      </div>
     </div>
   );
 }

@@ -1,11 +1,12 @@
-function ScrollTable({ data, columns, footer }) {
+function ScrollTable({ data, columns, footer, tableHeight, headerPadding }) {
+  console.log(headerPadding, "===>headerPadding");
   return (
-    <div className="w-100 table-body-height">
+    <div className={`w-100 table-body-height ${tableHeight}`}>
       <table className="w-100 white-bg fixed-table">
         <thead>
           <tr className="border">
             {columns?.map((column, index) => (
-              <th key={index} className="small-font black-text px-2 py-1">
+              <th key={index} className="small-font black-text p-2">
                 {column?.header}
               </th>
             ))}
@@ -16,7 +17,10 @@ function ScrollTable({ data, columns, footer }) {
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className="border">
                 {columns?.map((column) => (
-                  <td key={column?.field} className="small-font black-text p-2">
+                  <td
+                    key={column?.field}
+                    className={`${headerPadding} small-font black-text p-2`}
+                  >
                     {row[column?.field]}
                   </td>
                 ))}
