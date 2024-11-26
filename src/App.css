@@ -167,3 +167,15 @@
 .grey-border {
   border: 2px solid #e0e0e0;
 }
+.saffron-clr{
+  color: #ffa310 !important;
+}
+.w-10{
+  width: 20%;
+}
+.br-10{
+  border-radius: 10px;
+}
+.w-50{
+  width: 50%;
+}

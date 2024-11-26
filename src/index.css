@@ -9,6 +9,9 @@ body {
   background: #f5f7ff !important;
   font-family: "Inter", sans-serif !important;
 }
+.bg-check{
+  background-color: yellow;
+}
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {
     font-size: 0.4rem;
