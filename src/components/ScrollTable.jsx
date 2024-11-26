@@ -1,12 +1,33 @@
-function ScrollTable({ data, columns, footer, tableHeight }) {
+import React from "react";
+import PropTypes from "prop-types";
+
+function ScrollTable({
+  data = [],
+  columns = [],
+  footer = [],
+  tableHeight = "",
+  headerPadding = "",
+}) {
   return (
-    <div className={`w-100 ${tableHeight ? tableHeight : "table-body-height"}`}>
+    <div
+      className={`w-100 table-wrapper ${
+        tableHeight ? tableHeight : "table-body-height"
+      }`}
+    >
       <table className="w-100 white-bg fixed-table">
-        <thead>
-          <tr className="border">
+        <thead className="border-bottom">
+          <tr className="border-bottom">
             {columns?.map((column, index) => (
-              <th key={index} className="small-font black-text p-2">
-                {column?.header}
+              <th
+                key={index}
+                className={`border-bottom small-font black-text px-2 ${
+                  headerPadding ? headerPadding : "py-2"
+                }`}
+                style={{ width: column?.width || "auto" }}
+              >
+                {typeof column?.header === "string"
+                  ? column.header
+                  : column?.header}
               </th>
             ))}
           </tr>
@@ -14,16 +35,20 @@ function ScrollTable({ data, columns, footer, tableHeight }) {
         <tbody>
           {data?.length > 0 ? (
             data.map((row, rowIndex) => (
-              <tr key={rowIndex} className="border">
-                {columns?.map((column) => (
-                  <td key={column?.field} className="small-font black-text p-2">
+              <tr key={rowIndex} className="border-top">
+                {columns?.map((column, colIndex) => (
+                  <td
+                    key={colIndex}
+                    className="align-top small-font black-text p-2"
+                    style={{ width: column?.width || "auto" }}
+                  >
                     {row[column?.field]}
                   </td>
                 ))}
               </tr>
             ))
           ) : (
-            <tr className="border">
+            <tr className="border-top">
               <td
                 colSpan={columns?.length}
                 className="text-center black-text p-2"
@@ -34,12 +59,13 @@ function ScrollTable({ data, columns, footer, tableHeight }) {
           )}
         </tbody>
         {footer?.length > 0 && (
-          <tfoot className="border">
+          <tfoot className="border-top">
             <tr>
               {footer.map((column, footerIndex) => (
                 <th
                   key={footerIndex}
                   className="text-center small-font black-text p-2"
+                  style={{ width: column?.width || "auto" }}
                 >
                   {column.header}
                 </th>
@@ -51,5 +77,24 @@ function ScrollTable({ data, columns, footer, tableHeight }) {
     </div>
   );
 }
+
+ScrollTable.propTypes = {
+  data: PropTypes.array,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      header: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+        .isRequired,
+      field: PropTypes.string.isRequired,
+      width: PropTypes.string,
+    })
+  ),
+  footer: PropTypes.arrayOf(
+    PropTypes.shape({
+      header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    })
+  ),
+  tableHeight: PropTypes.string,
+  headerPadding: PropTypes.string,
+};
 
 export default ScrollTable;

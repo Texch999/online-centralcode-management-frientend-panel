@@ -11,6 +11,7 @@ import RiskSports from "./pages/risk-management/RiskSports";
 import AddDirectorAdmin from "./pages/add-team/AddDirectorAdmin";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
+import RiskCasino from "./pages/risk-management/RiskCasino";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -30,11 +31,12 @@ function App() {
               <Route path="/management-team" element={<ManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route path="/risk-sports" element={<RiskSports />} />
-              <Route path="/downline-list" element={<UserProfileDashboard/>} />
+              <Route path="/downline-list" element={<UserProfileDashboard />} />
               <Route
                 path="/risk-bet-history/:matchName"
                 element={<RiskBetHistory />}
               />
+              <Route path="/risk-casino" element={<RiskCasino />} />
             </Routes>
           </div>
         </div>

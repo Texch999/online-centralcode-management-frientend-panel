@@ -1,26 +1,8 @@
-import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import ScrollTable from "../../components/ScrollTable";
 import { BsEye } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
 
-function RiskSports() {
-  const navigate = useNavigate();
-  const [activeSport, setActiveSport] = useState("Cricket");
-
-  const SPORTS_BUTTONS = [
-    "Cricket",
-    "Football",
-    "Tennis",
-    "Horse Racing",
-    "Greyhound Racing",
-    "Kabaddi",
-  ];
-
-  const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
-  };
-
+function RiskCasino() {
   const HIGH_PROFIT_PLAYERS_COLUMNS = [
     { header: "S.NO", field: "s_no" },
     { header: "U.ID", field: "name" },
@@ -54,10 +36,10 @@ function RiskSports() {
     },
   ];
 
-  const MATCH_ODDS_COLUMNS = [
+  //WEBSITE_WISE
+  const WEBSITE_WISE_COLUMNS = [
     { header: "Market Date & Time", field: "dateTime", width: "15%" },
-    { header: "Sports", field: "sports", width: "10%" },
-    { header: "Match Name", field: "matchName", width: "40%" },
+    { header: "Website", field: "website", width: "50%" },
     {
       header: (
         <div className="orange-bg text-center">
@@ -74,39 +56,10 @@ function RiskSports() {
     },
     { header: "", field: "view", width: "5%" },
   ];
-
-  const MATCH_ODDS_DATA = [
+  const WEBSITE_WISE_DATA = [
     {
       dateTime: "01-10-2024  16:11:00",
-      sports: "Cricket",
-      matchName: (
-        <div>
-          New Zealand Wo vs South Africa Wo - Match ODDS <br />
-          M. ID: 12345678934567
-        </div>
-      ),
-      profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
-        </div>
-      ),
-      view: (
-        <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      dateTime: "01-10-2024  16:11:00",
-      sports: "Cricket",
-      matchName: (
-        <div>
-          New Zealand Wo vs South Africa Wo - Match ODDS <br />
-          M. ID: 12345678934567
-        </div>
-      ),
+      website: "T Exchange",
       profit_loss: (
         <div className="w-100 flex-around">
           <span className="red-font">10000000</span>
@@ -122,36 +75,32 @@ function RiskSports() {
     },
   ];
 
-  const FANCY_COLUMNS = [
+  // PROVIDER_WISE
+  const PROVIDER_WISE_COLUMNS = [
     { header: "Market Date & Time", field: "dateTime", width: "15%" },
-    { header: "Sports", field: "sports", width: "10%" },
-    { header: "Match Name", field: "matchName", width: "30%" },
+    { header: "Provider Name", field: "providerName", width: "15%" },
+    { header: "Provider ID", field: "providerId", width: "35%" },
     {
       header: (
         <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
-            <span>NO</span>
-            <span>YES</span>
+            <span>1</span>
+            <span>X</span>
+            <span>2</span>
           </div>
         </div>
       ),
       field: "profit_loss",
       width: "30%",
     },
-    { header: "Status", field: "status", width: "10%" },
     { header: "", field: "view", width: "5%" },
   ];
-  const FANCY_DATA = [
+  const PROVIDER_WISE_DATA = [
     {
       dateTime: "01-10-2024  16:11:00",
-      sports: "Cricket",
-      matchName: (
-        <div onClick={() => navigate("/risk-bet-history/matchName")}>
-          New Zealand Wo vs South Africa Wo - Match ODDS <br />
-          M. ID: 12345678934567
-        </div>
-      ),
+      providerName: "Ezugi",
+      providerId: "12345678912345",
       profit_loss: (
         <div className="w-100 flex-around">
           <span className="red-font">10000000</span>
@@ -159,7 +108,6 @@ function RiskSports() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      status: <button className="green-btn">Declared</button>,
       view: (
         <div className="w-100 flex-center">
           <BsEye size={18} className="black-text" />
@@ -168,34 +116,101 @@ function RiskSports() {
     },
   ];
 
+  //GAME_WISE
+  const GAME_WISE_COLUMNS = [
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Game Name", field: "gameName", width: "50%" },
+    {
+      header: (
+        <div className="orange-bg text-center">
+          <div>P/L</div>
+          <div className="w-100  flex-around border-top">
+            <span>1</span>
+            <span>X</span>
+            <span>2</span>
+          </div>
+        </div>
+      ),
+      field: "profit_loss",
+      width: "30%",
+    },
+    { header: "", field: "view", width: "5%" },
+  ];
+  const GAME_WISE_DATA = [
+    {
+      dateTime: "01-10-2024  16:11:00",
+      gameName: "Andar Bahar",
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+  ];
+
+  //TABLE_WISE
+  const TABLE_WISE_COLUMNS = [
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Table ID", field: "tableId", width: "15%" },
+    {
+      header: "Table Name(Game Name, Provider and Website)",
+      field: "tableName",
+      width: "35%",
+    },
+    {
+      header: (
+        <div className="orange-bg text-center">
+          <div>P/L</div>
+          <div className="w-100  flex-around border-top">
+            <span>1</span>
+            <span>X</span>
+            <span>2</span>
+          </div>
+        </div>
+      ),
+      field: "profit_loss",
+      width: "30%",
+    },
+    { header: "", field: "view", width: "5%" },
+  ];
+  const TABLE_WISE_DATA = [
+    {
+      dateTime: "01-10-2024  16:11:00",
+      tableId: "12345678912345",
+      tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      view: "",
+    },
+  ];
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Risk Management - Sports</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
+        <h6 className="yellow-font mb-0">Risk Management - Casino</h6>
+        <div className="d-flex align-items-center">
+          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
+            <FaSearch size={16} className="grey-clr me-2" />
+            <input className="small-font all-none" placeholder="Search..." />
+          </div>
+          <div className="small-font">
+            P/L : <span className="white-btn2 green-font">10000000</span>
+          </div>
         </div>
       </div>
-      <div className="flex-between border-bottom small-font pb-3">
-        <div className="d-flex">
-          {SPORTS_BUTTONS?.map((sport, index) => (
-            <div
-              key={index}
-              className={`me-3 px-3 ${
-                activeSport === sport ? "saffron-btn2" : "white-btn2"
-              }`}
-              onClick={() => handleSportClick(sport)}
-            >
-              {sport}
-            </div>
-          ))}
-        </div>
-        <div>
-          P/L : <span className="white-btn2 green-font">10000000</span>
-        </div>
-      </div>
-      <div className="small-font py-3 d-flex">
+      <div className="small-font pb-3 d-flex">
         <div className="saffron-btn2 me-3">Top - Exp High Profit Players</div>
         <div className="white-btn2 me-3">Top Last Minute Bet Players</div>
       </div>
@@ -211,42 +226,48 @@ function RiskSports() {
       </div>
       <>
         <h6 className="black-text my-3">
-          Match Odds (High Risk & Last Bet Players Matches)
+          Casino Websites (High Risk & Last Bet Players)
         </h6>
         <div className="rounded">
           <ScrollTable
-            columns={MATCH_ODDS_COLUMNS}
-            data={MATCH_ODDS_DATA}
+            columns={WEBSITE_WISE_COLUMNS}
+            data={WEBSITE_WISE_DATA}
             headerPadding="py-0"
           />
         </div>
       </>
       <>
-        <h6 className="black-text my-3">Book Maker 1</h6>
+        <h6 className="black-text my-3">
+          Casino Providers Wise (High Risk & Last Bet Players)
+        </h6>
         <div className="rounded">
           <ScrollTable
-            columns={MATCH_ODDS_COLUMNS}
-            data={MATCH_ODDS_DATA}
+            columns={PROVIDER_WISE_COLUMNS}
+            data={PROVIDER_WISE_DATA}
             headerPadding="py-0"
           />
         </div>
       </>
       <>
-        <h6 className="black-text my-3"> Book Maker 2</h6>
+        <h6 className="black-text my-3">
+          Game Wise (High Risk & Last Bet Players)
+        </h6>
         <div className="rounded">
           <ScrollTable
-            columns={MATCH_ODDS_COLUMNS}
-            data={MATCH_ODDS_DATA}
+            columns={GAME_WISE_COLUMNS}
+            data={GAME_WISE_DATA}
             headerPadding="py-0"
           />
         </div>
       </>
       <>
-        <h6 className="black-text my-3">Fancy</h6>
+        <h6 className="black-text my-3">
+          Table Wise (High Risk & Last Bet Players)
+        </h6>
         <div className="rounded">
           <ScrollTable
-            columns={FANCY_COLUMNS}
-            data={FANCY_DATA}
+            columns={TABLE_WISE_COLUMNS}
+            data={TABLE_WISE_DATA}
             headerPadding="py-0"
           />
         </div>
@@ -255,4 +276,4 @@ function RiskSports() {
   );
 }
 
-export default RiskSports;
+export default RiskCasino;

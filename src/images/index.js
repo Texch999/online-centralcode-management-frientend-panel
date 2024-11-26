@@ -6,5 +6,6 @@ export const Images = {
   S7Logo: "/assets/S7_Logo.png",
   ProfileImage: "/assets/Profile_Image.png",
   addManagementPopup: "assets/popup_image.png",
-  dashboardProfile : "assets\dasboard_profile.png"
+  dashboardProfile: "assetsdasboard_profile.png",
+  ChatIcon: "/assets/Chat_Icon.png",
 };

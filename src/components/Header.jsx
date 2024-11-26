@@ -52,67 +52,73 @@ function Header() {
           />
         </div>
       </div>
-      <div className="d-flex grey-border">
-        <div
-          className={`${isDashboard ? "saffron-btn" : "white-btn"}`}
-          onClick={() => navigate("/dashboard")}
-        >
-          <PiSquaresFourFill size={24} className="me-2" />
-          <span className="medium-font">Dashboard</span>
-        </div>
-        {role === "Management" ? (
+      <div className="flex-between grey-border">
+        <div className="d-flex">
           <div
-            className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
-            onClick={() => navigate("/management")}
+            className={`${isDashboard ? "saffron-btn" : "white-btn"}`}
+            onClick={() => navigate("/dashboard")}
           >
-            <FaUserCog size={24} className="me-2" />
-            <span className="medium-font">{role}</span>
+            <PiSquaresFourFill size={24} className="me-2" />
+            <span className="medium-font">Dashboard</span>
           </div>
-        ) : (
-          <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
-            <Dropdown.Toggle
-              variant="none"
-              className={`${
-                !isDashboard ? "saffron-btn" : "white-btn"
-              } br-0px d-flex align-items-center`}
-              id="dropdown-autoclose-true"
+          {role === "Management" ? (
+            <div
+              className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
+              onClick={() => navigate("/management")}
             >
               <FaUserCog size={24} className="me-2" />
               <span className="medium-font">{role}</span>
-              {isDropdownOpen ? (
-                <FaChevronUp size={16} className="ms-2" />
-              ) : (
-                <FaChevronDown size={16} className="ms-2" />
-              )}
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0">
-              <Dropdown.Item
-                className="white-btn white-hover small-font"
-                onClick={() => navigate("/casino")}
+            </div>
+          ) : (
+            <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
+              <Dropdown.Toggle
+                variant="none"
+                className={`${
+                  !isDashboard ? "saffron-btn" : "white-btn"
+                } br-0px d-flex align-items-center`}
+                id="dropdown-autoclose-true"
               >
-                Casino
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="white-btn white-hover small-font"
-                onClick={() => navigate("/sports")}
-              >
-                Sports
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="white-btn white-hover small-font"
-                onClick={() => navigate("/fancy-results")}
-              >
-                Fancy Results
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="white-btn white-hover small-font"
-                onClick={() => navigate("/market-results")}
-              >
-                Market Results
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )}
+                <FaUserCog size={24} className="me-2" />
+                <span className="medium-font">{role}</span>
+                {isDropdownOpen ? (
+                  <FaChevronUp size={16} className="ms-2" />
+                ) : (
+                  <FaChevronDown size={16} className="ms-2" />
+                )}
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="w-100 br-0px p-0">
+                <Dropdown.Item
+                  className="white-btn white-hover small-font"
+                  onClick={() => navigate("/casino")}
+                >
+                  Casino
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="white-btn white-hover small-font"
+                  onClick={() => navigate("/sports")}
+                >
+                  Sports
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="white-btn white-hover small-font"
+                  onClick={() => navigate("/fancy-results")}
+                >
+                  Fancy Results
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="white-btn white-hover small-font"
+                  onClick={() => navigate("/market-results")}
+                >
+                  Market Results
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
+        </div>
+        <div className="flex-center p-2 chat-border me-3">
+          <img className="chat-img" src={Images?.ChatIcon} alt="Chat_Icon" />
+          <span className="ms-2 black-text3 medium-font">Chat</span>
+        </div>
       </div>
       {role === "Management" && <SubHeader />}
     </div>
