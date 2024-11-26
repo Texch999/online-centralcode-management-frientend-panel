@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import ScrollTable from "../../components/ScrollTable";
 import { BsEye } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 function RiskSports() {
+  const navigate = useNavigate();
   const [activeSport, setActiveSport] = useState("Cricket");
 
   const SPORTS_BUTTONS = [
@@ -93,21 +95,62 @@ function RiskSports() {
     },
   ];
 
+  const FANCY_COLUMNS = [
+    { header: "Market Date & Time", field: "dateTime" },
+    { header: "Sports", field: "sports" },
+    { header: "Match Name", field: "matchName" },
+    {
+      header: (
+        <div className="orange-bg text-center border">
+          <div>P/L</div>
+          <div className="w-100  flex-around border-top">
+            <span>NO</span>
+            <span>YES</span>
+          </div>
+        </div>
+      ),
+      field: "profit_loss",
+    },
+    { header: "Status", field: "status" },
+    { header: "", field: "view" },
+  ];
+  const FANCY_DATA = [
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div onClick={() => navigate("/risk-bet-history/matchName")}>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      status: <button className="green-btn">Declared</button>,
+      view: <BsEye size={18} className="black-text" />,
+    },
+  ];
+
   return (
     <div>
-      <div className="flex-between">
-        <h6 className="yellow-font my-2">Risk Management - Sports</h6>
+      <div className="flex-between mb-3 mt-2">
+        <h6 className="yellow-font mb-0">Risk Management - Sports</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="flex-between border-bottom small-font py-3">
+      <div className="flex-between border-bottom small-font pb-3">
         <div className="d-flex">
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 ${
+              className={`me-3 px-3 ${
                 activeSport === sport ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleSportClick(sport)}
@@ -134,16 +177,32 @@ function RiskSports() {
           data={HIGH_PROFIT_PLAYERS_DATA}
         />
       </div>
-      <h6 className="black-text my-3">
-        Match Odds (High Risk & Last Bet Players Matches)
-      </h6>
-      <div className="rounded">
-        <ScrollTable
-          columns={MATCH_ODDS_COLUMNS}
-          data={MATCH_ODDS_DATA}
-          headerPadding={"p-0"}
-        />
-      </div>
+      <>
+        <h6 className="black-text my-3">
+          Match Odds (High Risk & Last Bet Players Matches)
+        </h6>
+        <div className="rounded">
+          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+        </div>
+      </>
+      <>
+        <h6 className="black-text my-3">Book Maker 1</h6>
+        <div className="rounded">
+          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+        </div>
+      </>
+      <>
+        <h6 className="black-text my-3"> Book Maker 2</h6>
+        <div className="rounded">
+          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+        </div>
+      </>
+      <>
+        <h6 className="black-text my-3">Fancy</h6>
+        <div className="rounded">
+          <ScrollTable columns={FANCY_COLUMNS} data={FANCY_DATA} />
+        </div>
+      </>
     </div>
   );
 }

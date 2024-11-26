@@ -9,6 +9,7 @@ import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import ManagementTeam from "./pages/add-team/ManagementTeam";
 import RiskSports from "./pages/risk-management/RiskSports";
 import AddDirectorAdmin from "./pages/add-team/AddDirectorAdmin";
+import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -28,6 +29,10 @@ function App() {
               <Route path="/management-team" element={<ManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route path="/risk-sports" element={<RiskSports />} />
+              <Route
+                path="/risk-bet-history/:matchName"
+                element={<RiskBetHistory />}
+              />
             </Routes>
           </div>
         </div>

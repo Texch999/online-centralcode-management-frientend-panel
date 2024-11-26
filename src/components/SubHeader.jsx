@@ -42,6 +42,7 @@ function SubHeader() {
     {
       label: "Wallet",
       options: [
+        { label: "My Vendors Account", path: "/my-vendors-account" },
         { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
         {
           label: "Offline Deposit/Withdraw",
@@ -54,6 +55,7 @@ function SubHeader() {
     {
       label: "Reports",
       options: [
+        { label: "My Statement", path: "/my-statement" },
         { label: "P/L Report Downline Admins", path: "/pl-report-downline" },
         { label: "P/L Casino Report", path: "/pl-casino-report" },
         { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
@@ -65,6 +67,7 @@ function SubHeader() {
     {
       label: "Owner Settings",
       options: [
+        { label: "Results", path: "/results" },
         { label: "Reference Data", path: "/reference-data" },
         { label: "Privacy Policy", path: "/privacy-policy" },
         { label: "Activity Logs", path: "/activity-logs" },
@@ -73,6 +76,7 @@ function SubHeader() {
     {
       label: "Promotions",
       options: [
+        { label: "Create Promotions Type", path: "/create-promotion-type" },
         { label: "Sports Promotions", path: "/sports-promotions" },
         { label: "Casino Promotions", path: "/casino-promotions" },
         { label: "Banners (Casino/Sports)", path: "/banners" },
@@ -108,11 +112,11 @@ function SubHeader() {
                 <FaChevronDown size={16} className="ms-2" />
               )}
             </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0 medium-font text-ellipsis">
+            <Dropdown.Menu className="w-100 br-0px p-0  text-ellipsis">
               {menu.options.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn yellow-hover medium-font"
+                  className="white-btn yellow-hover small-font"
                   onClick={() => navigate(option.path)}
                 >
                   {option.label}
