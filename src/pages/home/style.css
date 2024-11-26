@@ -69,7 +69,7 @@
   border: 1px solid #0000001a;
   border-radius: 20px;
 }
-.white-box:hover {
+.active-saffron-btn {
   background: #ffa310;
   border-radius: 20px;
   color: #ffffff;
@@ -87,4 +87,14 @@
 }
 .h-50vh {
   height: 50vh;
+}
+.h-fill{
+  /* height: -webkit-fill-available; */
+  height: 80vh;
+}
+.dark-orange-clr{
+  color: #D0431C;
+}
+.green-clr{
+  color: #189a55;
 }

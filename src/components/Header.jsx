@@ -12,6 +12,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
+import { ImUserPlus } from "react-icons/im";
 
 function Header() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function Header() {
         </div>
         <div className="d-flex align-items-center">
           <div className="flex-center grey-border px-3 py-1 rounded-pill me-2">
-            <FaUserClock size={18} />
+            <ImUserPlus size={19} />
             <span className="ps-2 black-text2 small-font">
               Vendor Registration and List
             </span>

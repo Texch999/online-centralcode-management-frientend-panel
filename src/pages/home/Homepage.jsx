@@ -4,8 +4,6 @@ import { FcSalesPerformance } from "react-icons/fc";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { IoMdTrendingUp } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
-import Table from "../../components/Table";
-
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -30,8 +28,11 @@ ChartJS.register(
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
+
+
 function Homepage() {
   const navigate = useNavigate();
+  const [activeBtn, setActiveBtn] = useState(0);
   const customerCols = [
     { header: "Customer Name", field: "customer" },
     { header: "Role", field: "role" },
@@ -81,6 +82,32 @@ function Homepage() {
       sc: <div>100000</div>,
       pay: <div>209888</div>,
     },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
   ];
 
   const cols = [
@@ -90,7 +117,7 @@ function Homepage() {
     { header: "Profit & Loss", field: "pl" },
   ];
 
-  const siteData = [
+  const siteLooseData = [
     {
       customer: (
         <div className="d-flex flex-column">
@@ -110,7 +137,7 @@ function Homepage() {
           <div>Casino Park</div>
         </div>
       ),
-      pl: <div>-500000</div>,
+      pl: <div className="dark-orange-clr">-500000</div>,
     },
     {
       customer: (
@@ -131,7 +158,7 @@ function Homepage() {
           <div>Casino Park</div>
         </div>
       ),
-      pl: <div>-500000</div>,
+      pl: <div className="dark-orange-clr">-500000</div>,
     },
     {
       customer: (
@@ -152,7 +179,7 @@ function Homepage() {
           <div>Casino Park</div>
         </div>
       ),
-      pl: <div>-500000</div>,
+      pl: <div className="dark-orange-clr">-500000</div>,
     },
     {
       customer: (
@@ -173,7 +200,262 @@ function Homepage() {
           <div>Casino Park</div>
         </div>
       ),
-      pl: <div>-500000</div>,
+      pl: <div className="dark-orange-clr">-500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="dark-orange-clr">-500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="dark-orange-clr">-500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="dark-orange-clr">-500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="dark-orange-clr">-500000</div>,
+    },
+  ];
+
+  const siteWinnerData = [
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
     },
   ];
 
@@ -185,7 +467,7 @@ function Homepage() {
         backgroundColor: "#98BDFF",
         borderColor: "",
         borderRadius: 5,
-        data:[15,20,25,30,35,40,60],
+        data: [15, 20, 25, 30, 35, 40, 60],
       },
 
       {
@@ -193,16 +475,26 @@ function Homepage() {
         backgroundColor: "#4B49AC",
         borderColor: "",
         borderRadius: 5,
-        data:[15, 20, 25, 30,35,40, 70],
+        data: [15, 20, 25, 30, 35, 40, 70],
       },
       {
         label: "casino & Sports Sales",
         backgroundColor: "#F3797E",
         borderColor: "",
         borderRadius: 5,
-        data:[15,20,25,30,35,40,80],
+        data: [15, 20, 25, 30, 35, 40, 80],
       },
     ],
+
+  };
+
+
+
+
+  const buttons = ["Casino Winners", "Casino Looser"];
+
+  const handleClick = (index) => {
+    setActiveBtn(index);
   };
 
   return (
@@ -219,7 +511,10 @@ function Homepage() {
               <div className="d-flex flex-column p-2">
                 <div className="d-flex flex-between align-items-center">
                   <div className="medium-font black-text">Sales Report</div>
-                  <div className="viewall-btn orange-clr small-font px-2 py-1 pointer" onClick={()=>navigate("/dashboard-view-all")}>
+                  <div
+                    className="viewall-btn orange-clr small-font px-2 py-1 pointer"
+                    onClick={() => navigate("/dashboard-view-all")}
+                  >
                     View All
                   </div>
                 </div>
@@ -228,23 +523,8 @@ function Homepage() {
                 </div>
               </div>
               <div className="hor-grey-line"></div>
-
-              <div className="d-flex flex-between w-100 black-text small-font p-2">
-                <div className="col-3 d-flex align-items-center">
-                  <div className="light-blue-btn "></div>
-                  <div className="white-space mx-2">Casino Sales</div>
-                </div>
-                <div className="col-3 d-flex align-items-center">
-                  <div className="blue-btn"></div>
-                  <div className="white-space mx-2">Sports Sales</div>
-                </div>
-                <div className="col-3 d-flex align-items-center">
-                  <div className="pink-btn"></div>
-                  <div className="mx-2 white-space">Casino & Sports Sales</div>
-                </div>
-              </div>
               <div>
-                <Bar data={barData} />
+                <Bar data={barData}/>
               </div>
             </div>
 
@@ -277,7 +557,11 @@ function Homepage() {
               </div>
 
               <div className="white-bg radius mt-3">
-                <ScrollTable columns={customerCols} data={customerData} />
+                <ScrollTable
+                  columns={customerCols}
+                  data={customerData}
+                  tableHeight={"h-fill"}
+                />
               </div>
             </div>
           </div>
@@ -328,7 +612,7 @@ function Homepage() {
               </div>
             </div>
             <div className="d-flex w-100">
-              <div className="col-6 blue-bg-box p-2 me-2">
+              <div className="col-6 box-3 p-2 me-2">
                 <div className="d-flex flex-column ">
                   <div className="d-flex flex-between align-items-center">
                     <div className="white-text medium-font">Total Admins</div>
@@ -359,8 +643,19 @@ function Homepage() {
             </div>
             <div className="d-flex flex-between small-font mt-4">
               <div className="d-flex pointer">
-                <div className="white-box px-2 py-1">Casino Winners</div>
-                <div className="mx-2 white-box px-2 py-1">Casino Looser</div>
+                {buttons.map((btn, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`px-2 py-1 me-1 white-box ${
+                        activeBtn === index ? "active-saffron-btn " : ""
+                      }`}
+                      onClick={() => handleClick(index)}
+                    >
+                      {btn}
+                    </div>
+                  );
+                })}
               </div>
               <div className="white-bg px-1 py-1 radius pointer border-black">
                 <select className="select-none pointer w-100">
@@ -370,8 +665,26 @@ function Homepage() {
                 </select>
               </div>
             </div>
-            <div className="mt-2 white-bg radius">
-              <ScrollTable columns={cols} data={siteData} />
+            <div>
+              {activeBtn === 0 && (
+                <div className="mt-2 white-bg radius">
+                  <ScrollTable
+                    columns={cols}
+                    data={siteWinnerData}
+                    tableHeight={"h-fill"}
+                  />
+                </div>
+              )}
+
+              {activeBtn === 1 && (
+                <div className="mt-2 white-bg radius">
+                  <ScrollTable
+                    columns={cols}
+                    data={siteLooseData}
+                    tableHeight={"h-fill"}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

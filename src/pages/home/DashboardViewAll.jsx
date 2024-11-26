@@ -82,6 +82,32 @@ const DashboardViewAll = () => {
       pay: <div>209888</div>,
     },
     {
+        customer: (
+          <div className="d-flex flex-column">
+            <div>Srinivas</div>
+            <div>S&C-5%</div>
+          </div>
+        ),
+        role: <div>Direcor</div>,
+        casino: <div>-</div>,
+        sports: <div>-</div>,
+        sc: <div>100000</div>,
+        pay: <div>209888</div>,
+      },
+      {
+        customer: (
+          <div className="d-flex flex-column">
+            <div>Srinivas</div>
+            <div>S&C-5%</div>
+          </div>
+        ),
+        role: <div>Direcor</div>,
+        casino: <div>-</div>,
+        sports: <div>-</div>,
+        sc: <div>100000</div>,
+        pay: <div>209888</div>,
+      },
+    {
       customer: (
         <div className="d-flex flex-column">
           <div>Srinivas</div>
@@ -115,7 +141,7 @@ const DashboardViewAll = () => {
               </div>
               <div className="hor-grey-line mt-1"></div>
 
-              <div className="d-flex flex-between w-100 black-text small-font p-2">
+              {/* <div className="d-flex flex-between w-100 black-text small-font p-2">
                 <div className="col-3 d-flex align-items-center">
                   <div className="light-blue-btn "></div>
                   <div className="white-space mx-2">Casino Sales</div>
@@ -128,7 +154,8 @@ const DashboardViewAll = () => {
                   <div className="pink-btn"></div>
                   <div className="mx-2 white-space">Casino & Sports Sales</div>
                 </div>
-              </div>
+              </div> */}
+
               <div>
                 <Bar data={barData} />
               </div>
@@ -165,24 +192,22 @@ const DashboardViewAll = () => {
                 <div className="col-6 d-flex">
                   <div className="col pe-1 flex-column">
                     <lable className="small-font mb-1">Date</lable>
-                 
-                      <input
-                        type="date"
-                        placeholder="date"
-                        className="all-none input-css2 small-font"
-                      />
-                   
+
+                    <input
+                      type="date"
+                      placeholder="date"
+                      className="all-none input-css2 small-font"
+                    />
                   </div>
 
                   <div className="col pe-1 flex-column">
                     <lable className="small-font mb-1">Customer Name</lable>
-                   
-                      <input
-                        type="text"
-                        placeholder="Enter"
-                        className="all-none input-css2 small-font"
-                      />
-                
+
+                    <input
+                      type="text"
+                      placeholder="Enter"
+                      className="all-none input-css2 small-font"
+                    />
                   </div>
 
                   <div className="col flex-column">
@@ -198,7 +223,11 @@ const DashboardViewAll = () => {
               </div>
 
               <div className="mt-3">
-                <ScrollTable columns={customerCols} data={customerData} tableHeight="h-50vh" />
+                <ScrollTable
+                  columns={customerCols}
+                  data={customerData}
+                  tableHeight={"h-fill"}
+                />
               </div>
             </div>
           </div>
