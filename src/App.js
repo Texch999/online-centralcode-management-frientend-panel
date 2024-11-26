@@ -10,6 +10,8 @@ import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import RiskSports from "./pages/risk-management/RiskSports";
 import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
 import ReferenceData from "./pages/ownerSettings/ReferenceData";
+import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
+import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -30,6 +32,11 @@ function App() {
               <Route path="/risk-sports" element={<RiskSports />} />
               <Route path="/match/:matchName" element={<IndividualMatch />} />
               <Route path="/reference-data" element={<ReferenceData />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route
+                path="/risk-bet-history/:matchName"
+                element={<RiskBetHistory />}
+              />
             </Routes>
           </div>
         </div>

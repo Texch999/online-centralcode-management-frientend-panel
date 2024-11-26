@@ -129,7 +129,7 @@
   padding: 0.5rem;
   text-align: center;
 }
-.active-btn {
+.green-btn {
   border: 2px solid #18b962;
   background: #b3ffd6;
   border-radius: 0.25rem;
@@ -139,9 +139,9 @@
   padding: 0.5rem;
   text-align: center;
 }
-.inactive-btn {
+.red-btn {
   border: 1px solid #f43a23;
-  background: #f43a23;
+  background: #ffcac3;
   border-radius: 0.25rem;
   outline: none;
   color: #f43A23;
@@ -149,6 +149,18 @@
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
+}
+.back-btn {
+  background: #e8ebf5;
+  padding: 0.25rem;
+  color: #18b962;
+  border-radius: 3px;
+}
+.lay-btn {
+  background: #e8ebf5;
+  padding: 0.25rem;
+  color: #d0431c;
+  border-radius: 3px;
 }
 .logo-img {
   height: 8vh;
@@ -317,4 +329,7 @@
 }
 .box-shadow-table{
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+.fw-600{
+  font-weight: 600;
 }

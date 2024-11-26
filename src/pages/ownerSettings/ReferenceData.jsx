@@ -4,10 +4,13 @@ import Table from "../../components/Table";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
+import AddNewPopUp from "./AddNewPopUp";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
   const ACTIVE_BTNS = ["Rejection Reasons", "Security Questions"];
+  const [addNewModalRejection, setAddNewModalRejection] = useState(false);
+  const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
@@ -22,7 +25,7 @@ const ReferenceData = () => {
     {
       questions: <div>What is your name?</div>,
 
-      status: <div className="active-btn w-50">Active</div>,
+      status: <div className="green-btn w-50">Active</div>,
 
       action: (
         <div className="large-font">
@@ -43,8 +46,78 @@ const ReferenceData = () => {
         </div>
       ),
     },
-   
-  
+    {
+      questions: <div>What is your name?</div>,
+
+      status: <div className="green-btn w-50">Active</div>,
+
+      action: (
+        <div className="large-font">
+          <span>
+            <LiaPenSolid />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan />
+          </span>
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+    {
+      questions: <div>What is your name?</div>,
+
+      status: <div className="green-btn w-50">Active</div>,
+
+      action: (
+        <div className="large-font">
+          <span>
+            <LiaPenSolid />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan />
+          </span>
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+    {
+      questions: <div>What is your name?</div>,
+
+      status: <div className="green-btn w-30">Active</div>,
+
+      action: (
+        <div className="large-font">
+          <span>
+            <LiaPenSolid />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan />
+          </span>
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
   ];
 
   const REJECTION_COLUMNS = [
@@ -66,7 +139,7 @@ const ReferenceData = () => {
         </div>
       ),
 
-      status: <div className="active-btn">Active</div>,
+      status: <div className="green-btn">Active</div>,
 
       action: (
         <div className="large-font">
@@ -99,7 +172,7 @@ const ReferenceData = () => {
         </div>
       ),
 
-      status: <div className="active-btn">Active</div>,
+      status: <div className="green-btn">Active</div>,
 
       action: (
         <div className="large-font">
@@ -132,7 +205,7 @@ const ReferenceData = () => {
         </div>
       ),
 
-      status: <div className="active-btn">Active</div>,
+      status: <div className="green-btn">Active</div>,
 
       action: (
         <div className="large-font">
@@ -165,7 +238,7 @@ const ReferenceData = () => {
         </div>
       ),
 
-      status: <div className="active-btn">Active</div>,
+      status: <div className="green-btn">Active</div>,
 
       action: (
         <div className="large-font">
@@ -198,7 +271,7 @@ const ReferenceData = () => {
         </div>
       ),
 
-      status: <div className="active-btn">Active</div>,
+      status: <div className="green-btn">Active</div>,
 
       action: (
         <div className="large-font">
@@ -243,16 +316,35 @@ const ReferenceData = () => {
       </div>
       <div className="grey-border w-100 mt-4"></div>
       <div className="d-flex w-100 flex-between">
-        <div className="col-7 ">{activeBtn==='Rejection Reasons'? "Rejection Reasons" : "Security Questions"}</div>
-        <div className="col-2 ">
+        <div className="col-7 fw-600">
+          {activeBtn === "Rejection Reasons"
+            ? "Rejection Reasons"
+            : "Add Security Questions"}
+        </div>
+        {activeBtn==="Rejection Reasons"?<div className="col-5 d-flex flex-between"> <div className="col-5 ">
           <select className="input-css2 col-12 mt-4 small-font">
             <option>All</option>
           </select>
         </div>
-        <div className="saffron-btn2 small-font pointer mt-4 col-1">Submit</div>
-        <div className="bg-white small-font pointer mt-4 col-1 p-2 blue-font grey-border rounded flex-center">
+        <div className="saffron-btn2 small-font pointer mt-4 col-3 mx-2">Submit</div>
+        <div
+          className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center "
+          onClick={() => setAddNewModalRejection(true)}
+        >
           <IoAddOutline className="large-font" /> Add new
+        </div></div>:<div className="col-5 d-flex flex-between"> <div className="col-5 ">
+          <select className="input-css2 col-12 mt-4 small-font">
+            <option>All</option>
+          </select>
         </div>
+        <div className="saffron-btn2 small-font pointer mt-4 col-3">Submit</div>
+        <div
+          className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center"
+          onClick={() => setAddNewModalSecurity(true)}
+        >
+          <IoAddOutline className="large-font" /> Add new
+        </div></div>}
+       
       </div>
       <div className="white-bg login-box-shadow p-1 mt-4 rounded">
         {activeBtn === "Rejection Reasons" ? (
@@ -269,6 +361,12 @@ const ReferenceData = () => {
           />
         )}
       </div>
+      <AddNewPopUp
+        setAddNewModalRejection={setAddNewModalRejection}
+        addNewModalRejection={addNewModalRejection}
+        setAddNewModalSecurity={setAddNewModalSecurity}
+        addNewModalSecurity={addNewModalSecurity}
+      />
     </div>
   );
 };
