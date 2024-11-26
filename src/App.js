@@ -8,6 +8,7 @@ import Casino from "./pages/casino/Casino";
 import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import RiskSports from "./pages/risk-management/RiskSports";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
+import RiskCasino from "./pages/risk-management/RiskCasino";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -29,6 +30,7 @@ function App() {
                 path="/risk-bet-history/:matchName"
                 element={<RiskBetHistory />}
               />
+              <Route path="/risk-casino" element={<RiskCasino />} />
             </Routes>
           </div>
         </div>
