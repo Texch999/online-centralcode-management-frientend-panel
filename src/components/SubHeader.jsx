@@ -112,11 +112,11 @@ function SubHeader() {
                 <FaChevronDown size={16} className="ms-2" />
               )}
             </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0 medium-font text-ellipsis">
+            <Dropdown.Menu className="w-100 br-0px p-0  text-ellipsis">
               {menu.options.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn yellow-hover medium-font"
+                  className="white-btn yellow-hover small-font"
                   onClick={() => navigate(option.path)}
                 >
                   {option.label}

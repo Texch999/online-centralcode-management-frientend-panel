@@ -85,27 +85,27 @@ function Header() {
                 <FaChevronDown size={16} className="ms-2" />
               )}
             </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0 medium-font">
+            <Dropdown.Menu className="w-100 br-0px p-0">
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/casino")}
               >
                 Casino
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/sports")}
               >
                 Sports
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/fancy-results")}
               >
                 Fancy Results
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/market-results")}
               >
                 Market Results
