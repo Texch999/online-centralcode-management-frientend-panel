@@ -144,7 +144,8 @@
   background: #f43a23;
   border-radius: 0.25rem;
   outline: none;
-  color: #f43a23;
+  color: #f43A23;
+  
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
@@ -229,7 +230,7 @@
   color: #ffa310 !important;
 }
 .w-10{
-  width: 20%;
+  width: 10%;
 }
 .br-10{
   border-radius: 10px;
@@ -239,6 +240,10 @@
 }
 .yellow-font {
   color: #ffa310;
+  font-weight: 500;
+}
+.blue-font {
+  color: #1912C8;
   font-weight: 500;
 }
 .input-css2 {
@@ -285,4 +290,31 @@
 }
 .orange-bg {
   background: #fffadd;
+}
+.pointer{
+  cursor: pointer;
+}
+.w-70{
+  width: 70%;
+}
+.w-30{
+  width: 30%;
+}
+.w-40{
+  width: 40%;
+}
+.w-80{
+  width: 80%;
+}
+.w-90{
+  width: 90%;
+}
+.w-15{
+  width: 15%;
+}
+.check-bg{
+  background-color: yellow;
+}
+.box-shadow-table{
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
