@@ -1,6 +1,6 @@
 function ScrollTable({ data, columns, footer, tableHeight }) {
   return (
-    <div className={`w-100 table-body-height ${tableHeight}`}>
+    <div className={`w-100 ${tableHeight ? tableHeight : "table-body-height"}`}>
       <table className="w-100 white-bg fixed-table">
         <thead>
           <tr className="border">
