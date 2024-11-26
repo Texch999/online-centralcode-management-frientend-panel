@@ -333,3 +333,22 @@
 .fw-600 {
   font-weight: 600;
 }
+.green-bg{
+  background: #4BAE4F;
+}
+.skyblue-clr{
+  color: #2F96E3;
+}
+.relative{
+  position: relative;
+}
+.absolute{
+  position: absolute;
+}
+.grey-clr{
+  color:#1B1B1B66
+}
+.remove-list{
+  left: -9rem;
+  top: 0rem;
+}

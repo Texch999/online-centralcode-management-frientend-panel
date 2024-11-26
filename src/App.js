@@ -13,6 +13,8 @@ import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 import RiskCasino from "./pages/risk-management/RiskCasino";
+import ActivityLogs from "./pages/ownerSettings/ActivityLogs";
+import RecentAccessIp from "./pages/ownerSettings/RecentAccessIp";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -39,6 +41,8 @@ function App() {
                 element={<RiskBetHistory />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
+              <Route path="/activity-logs" element={<ActivityLogs />} />
+              <Route path="/userActivity/:userActivity" element={<RecentAccessIp />} />
             </Routes>
           </div>
         </div>
