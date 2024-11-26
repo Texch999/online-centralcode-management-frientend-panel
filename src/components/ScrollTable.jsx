@@ -9,14 +9,18 @@ function ScrollTable({
   headerPadding = "",
 }) {
   return (
-    <div className={`w-100 ${tableHeight ? tableHeight : "table-body-height"}`}>
+    <div
+      className={`w-100 table-wrapper ${
+        tableHeight ? tableHeight : "table-body-height"
+      }`}
+    >
       <table className="w-100 white-bg fixed-table">
-        <thead>
-          <tr className="border">
+        <thead className="border-bottom">
+          <tr className="border-bottom">
             {columns?.map((column, index) => (
               <th
                 key={index}
-                className={`small-font black-text px-2 ${
+                className={`border-bottom small-font black-text px-2 ${
                   headerPadding ? headerPadding : "py-2"
                 }`}
                 style={{ width: column?.width || "auto" }}
@@ -31,7 +35,7 @@ function ScrollTable({
         <tbody>
           {data?.length > 0 ? (
             data.map((row, rowIndex) => (
-              <tr key={rowIndex} className="border">
+              <tr key={rowIndex} className="border-top">
                 {columns?.map((column, colIndex) => (
                   <td
                     key={colIndex}
@@ -44,7 +48,7 @@ function ScrollTable({
               </tr>
             ))
           ) : (
-            <tr className="border">
+            <tr className="border-top">
               <td
                 colSpan={columns?.length}
                 className="text-center black-text p-2"
@@ -55,7 +59,7 @@ function ScrollTable({
           )}
         </tbody>
         {footer?.length > 0 && (
-          <tfoot className="border">
+          <tfoot className="border-top">
             <tr>
               {footer.map((column, footerIndex) => (
                 <th
