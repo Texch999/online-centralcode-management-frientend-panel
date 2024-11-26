@@ -88,13 +88,23 @@
 .h-50vh {
   height: 50vh;
 }
-.h-fill{
+.h-fill {
   /* height: -webkit-fill-available; */
   height: 80vh;
 }
-.dark-orange-clr{
-  color: #D0431C;
+.dark-orange-clr {
+  color: #d0431c;
 }
-.green-clr{
+.green-clr {
   color: #189a55;
+}
+.font-20{
+  font-size: 20px;
+}
+.box-shadow{
+  box-shadow: 0px 0px 9.6px 0px #00000029;
+
+}
+.font-15{
+  font-size: 15px;
 }

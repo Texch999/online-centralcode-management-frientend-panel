@@ -8,6 +8,10 @@ import Casino from "./pages/casino/Casino";
 import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import RiskSports from "./pages/risk-management/RiskSports";
 import DashboardViewAll from "./pages/home/DashboardViewAll";
+import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
+import CasinoVendor from "./pages/casino/CasinoVendor";
+import CasinoGames from "./pages/casino/CasinoGames";
+import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -26,6 +30,13 @@ function App() {
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/risk-sports" element={<RiskSports />} />
               <Route path="/dashboard-view-all" element={<DashboardViewAll/>}/>
+              <Route
+                path="/risk-bet-history/:matchName"
+                element={<RiskBetHistory />}
+              />
+              <Route path="/casino-vendor" element={<CasinoVendor/>}/>
+              <Route path="/casino-games" element={<CasinoGames/>}/>
+              <Route path="/vendor-registartion" element={<VendorRegistration/>}/>
             </Routes>
           </div>
         </div>

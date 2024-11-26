@@ -131,7 +131,7 @@ const DashboardViewAll = () => {
       <div className="d-flex w-100 mt-2">
         <div className="col-12 pe-2">
           <div className="d-flex flex-column">
-            <div className="dashboard-white-bg pb-2">
+            <div className="dashboard-white-bg box-shadow pb-2">
               <div className="d-flex flex-column p-2">
                 <div className="medium-font black-text">Sales Report</div>
 
@@ -141,20 +141,6 @@ const DashboardViewAll = () => {
               </div>
               <div className="hor-grey-line mt-1"></div>
 
-              {/* <div className="d-flex flex-between w-100 black-text small-font p-2">
-                <div className="col-3 d-flex align-items-center">
-                  <div className="light-blue-btn "></div>
-                  <div className="white-space mx-2">Casino Sales</div>
-                </div>
-                <div className="col-3 d-flex align-items-center">
-                  <div className="blue-btn"></div>
-                  <div className="white-space mx-2">Sports Sales</div>
-                </div>
-                <div className="col-3 d-flex align-items-center">
-                  <div className="pink-btn"></div>
-                  <div className="mx-2 white-space">Casino & Sports Sales</div>
-                </div>
-              </div> */}
 
               <div>
                 <Bar data={barData} />
@@ -222,7 +208,7 @@ const DashboardViewAll = () => {
                 </div>
               </div>
 
-              <div className="mt-3">
+              <div className="mt-3 white-bg radius box-shadow">
                 <ScrollTable
                   columns={customerCols}
                   data={customerData}

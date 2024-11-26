@@ -18,6 +18,13 @@ function Header() {
   const navigate = useNavigate();
   const role = localStorage?.getItem("role");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isActiveBtn, setIsActiveBtn]=useState(false);
+
+  const handleRegisterBtn=()=>{
+    setIsActiveBtn(true);
+    navigate("/vendor-registartion")
+
+  }
   const handleLogout = () => {
     localStorage.clear();
     window.location.reload();
@@ -38,9 +45,9 @@ function Header() {
           </div>
         </div>
         <div className="d-flex align-items-center">
-          <div className="flex-center grey-border px-3 py-1 rounded-pill me-2">
+          <div className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${isActiveBtn ? "active-saffron-btn white-text ":""}`} onClick={handleRegisterBtn}>
             <ImUserPlus size={19} />
-            <span className="ps-2 black-text2 small-font">
+            <span className="ps-2  small-font">
               Vendor Registration and List
             </span>
           </div>
@@ -86,27 +93,27 @@ function Header() {
                 <FaChevronDown size={16} className="ms-2" />
               )}
             </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0 medium-font">
+            <Dropdown.Menu className="w-100 br-0px p-0">
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/casino")}
               >
                 Casino
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/sports")}
               >
                 Sports
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/fancy-results")}
               >
                 Fancy Results
               </Dropdown.Item>
               <Dropdown.Item
-                className="white-btn white-hover medium-font"
+                className="white-btn white-hover small-font"
                 onClick={() => navigate("/market-results")}
               >
                 Market Results

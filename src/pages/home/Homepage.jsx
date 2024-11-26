@@ -33,6 +33,12 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 function Homepage() {
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
+  
+  const buttons = ["Casino Winners", "Casino Looser"];
+
+  const handleClick = (index) => {
+    setActiveBtn(index);
+  };
   const customerCols = [
     { header: "Customer Name", field: "customer" },
     { header: "Role", field: "role" },
@@ -491,11 +497,6 @@ function Homepage() {
 
 
 
-  const buttons = ["Casino Winners", "Casino Looser"];
-
-  const handleClick = (index) => {
-    setActiveBtn(index);
-  };
 
   return (
     <div className="p-2">
@@ -507,7 +508,7 @@ function Homepage() {
       <div className="d-flex w-100 mt-2">
         <div className="col-6 pe-2">
           <div className="d-flex flex-column">
-            <div className="dashboard-white-bg pb-2">
+            <div className="dashboard-white-bg pb-2 box-shadow">
               <div className="d-flex flex-column p-2">
                 <div className="d-flex flex-between align-items-center">
                   <div className="medium-font black-text">Sales Report</div>
@@ -556,7 +557,7 @@ function Homepage() {
                 </div>
               </div>
 
-              <div className="white-bg radius mt-3">
+              <div className="white-bg radius mt-3 box-shadow">
                 <ScrollTable
                   columns={customerCols}
                   data={customerData}
@@ -642,7 +643,7 @@ function Homepage() {
               </div>
             </div>
             <div className="d-flex flex-between small-font mt-4">
-              <div className="d-flex pointer">
+              <div className="d-flex pointer medium-font">
                 {buttons.map((btn, index) => {
                   return (
                     <div
@@ -667,7 +668,7 @@ function Homepage() {
             </div>
             <div>
               {activeBtn === 0 && (
-                <div className="mt-2 white-bg radius">
+                <div className="mt-2 white-bg radius box-shadow">
                   <ScrollTable
                     columns={cols}
                     data={siteWinnerData}
@@ -677,7 +678,7 @@ function Homepage() {
               )}
 
               {activeBtn === 1 && (
-                <div className="mt-2 white-bg radius">
+                <div className="mt-2 white-bg radius box-shadow">
                   <ScrollTable
                     columns={cols}
                     data={siteLooseData}
