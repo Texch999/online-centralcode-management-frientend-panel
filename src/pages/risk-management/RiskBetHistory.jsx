@@ -3,9 +3,17 @@ import { useParams } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 import Table from "./../../components/Table";
 import { MdOutlineDelete, MdOutlineModeEditOutline } from "react-icons/md";
+import { useState } from "react";
+import EditBetPopup from "./EditBetPopup";
 
 function RiskBetHistory() {
   const { matchName } = useParams();
+  const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+
+  const handleEditBetPopupOpen = () => {
+    setEditBetPopupOpen(true);
+  };
+
   const BET_HISTORY_COLUMNS = [
     { header: "Date & Time/IP Add", field: "dateTime" },
     { header: "User / Market Name", field: "users" },
@@ -63,7 +71,10 @@ function RiskBetHistory() {
         <div>
           <div className="green-btn">Expo</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
+            <MdOutlineModeEditOutline
+              size={18}
+              onClick={handleEditBetPopupOpen}
+            />
             <MdOutlineDelete size={18} />
           </div>
         </div>
@@ -115,13 +126,17 @@ function RiskBetHistory() {
         <div>
           <div className="green-btn">Expo</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
+            <MdOutlineModeEditOutline
+              size={18}
+              onClick={handleEditBetPopupOpen}
+            />
             <MdOutlineDelete size={18} />
           </div>
         </div>
       ),
     },
   ];
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -149,7 +164,7 @@ function RiskBetHistory() {
           </select>
         </div>
         <div className="col-4 flex-column me-3">
-          <label className="black-text4 small-font mb-1">Bet Position</label>{" "}
+          <label className="black-text4 small-font mb-1">Bet Position</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
@@ -165,6 +180,10 @@ function RiskBetHistory() {
           itemsPerPage={1}
         />
       </div>
+      <EditBetPopup
+        editBetPopupOpen={editBetPopupOpen}
+        setEditBetPopupOpen={setEditBetPopupOpen}
+      />
     </div>
   );
 }

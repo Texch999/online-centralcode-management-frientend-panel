@@ -43,10 +43,6 @@
   color: #1c1c1c;
   font-weight: 400;
 }
-.input-bg,
-.orange-btn {
-  line-height: 2;
-}
 .saffron-btn {
   background: #ffa310 !important;
   border: none !important;
@@ -263,6 +259,10 @@
   align-items: flex-start;
   justify-content: flex-start;
 }
+.grey-font {
+  color: #727272;
+  font-weight: 500;
+}
 .grey-bg {
   background: #eeeeee;
 }
@@ -285,4 +285,7 @@
 }
 .orange-bg {
   background: #fffadd;
+}
+.fw-600 {
+  font-weight: 600;
 }
