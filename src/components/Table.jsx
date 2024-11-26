@@ -6,14 +6,17 @@ function Table({ data, columns, footer, itemsPerPage }) {
   const totalPages = Math.ceil(data?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, data?.length);
-  const currentData = data && data?.slice(startIndex, endIndex);
+  const currentData = data?.slice(startIndex, endIndex);
   const hasData = data?.length > 0;
+
   const handlePageChange = (page) => {
     if (hasData) setCurrentPage(page);
   };
+
   const maxPageButtons = 5;
   const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
   const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
   const pageButtons = Array.from(
     { length: endPage - startPage + 1 },
     (_, i) => {
@@ -31,6 +34,7 @@ function Table({ data, columns, footer, itemsPerPage }) {
       );
     }
   );
+
   const renderPagination = hasData && totalPages > 1;
 
   return (
@@ -41,6 +45,7 @@ function Table({ data, columns, footer, itemsPerPage }) {
             {columns?.map((column, index) => (
               <th
                 key={index}
+                style={{ width: column?.width }}
                 className="small-font px-2 py-1 border-top border-bottom"
               >
                 {column?.header}
@@ -53,7 +58,11 @@ function Table({ data, columns, footer, itemsPerPage }) {
             currentData.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-bottom">
                 {columns?.map((column) => (
-                  <td key={column?.field} className="small-font p-2">
+                  <td
+                    key={column?.field}
+                    style={{ width: column?.width }}
+                    className="align-top small-font p-2"
+                  >
                     {row[column?.field]}
                   </td>
                 ))}
@@ -73,6 +82,7 @@ function Table({ data, columns, footer, itemsPerPage }) {
               {footer.map((column, footerIndex) => (
                 <th
                   key={footerIndex}
+                  style={{ width: column?.width }}
                   className="text-center table-head small-font px-1 border-top"
                 >
                   {column.header}
