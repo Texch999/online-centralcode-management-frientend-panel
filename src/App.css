@@ -43,10 +43,6 @@
   color: #1c1c1c;
   font-weight: 400;
 }
-.input-bg,
-.orange-btn {
-  line-height: 2;
-}
 .saffron-btn {
   background: #ffa310 !important;
   border: none !important;
@@ -144,8 +140,8 @@
   background: #ffcac3;
   border-radius: 0.25rem;
   outline: none;
-  color: #f43A23;
-  
+  color: #f43a23;
+
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
@@ -238,16 +234,16 @@
 .grey-border {
   border: 2px solid #e0e0e0;
 }
-.saffron-clr{
+.saffron-clr {
   color: #ffa310 !important;
 }
-.w-10{
+.w-10 {
   width: 10%;
 }
-.br-10{
+.br-10 {
   border-radius: 10px;
 }
-.w-50{
+.w-50 {
   width: 50%;
 }
 .yellow-font {
@@ -255,7 +251,7 @@
   font-weight: 500;
 }
 .blue-font {
-  color: #1912C8;
+  color: #1912c8;
   font-weight: 500;
 }
 .input-css2 {
@@ -280,6 +276,10 @@
   align-items: flex-start;
   justify-content: flex-start;
 }
+.grey-font {
+  color: #727272;
+  font-weight: 500;
+}
 .grey-bg {
   background: #eeeeee;
 }
@@ -303,33 +303,33 @@
 .orange-bg {
   background: #fffadd;
 }
-.pointer{
+.pointer {
   cursor: pointer;
 }
-.w-70{
+.w-70 {
   width: 70%;
 }
-.w-30{
+.w-30 {
   width: 30%;
 }
-.w-40{
+.w-40 {
   width: 40%;
 }
-.w-80{
+.w-80 {
   width: 80%;
 }
-.w-90{
+.w-90 {
   width: 90%;
 }
-.w-15{
+.w-15 {
   width: 15%;
 }
-.check-bg{
-  background-color: yellow;
+
+.box-shadow-table {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
-.box-shadow-table{
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-}
-.fw-600{
+
+.fw-600 {
   font-weight: 600;
 }

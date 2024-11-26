@@ -182,25 +182,41 @@ function RiskSports() {
           Match Odds (High Risk & Last Bet Players Matches)
         </h6>
         <div className="rounded">
-          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+          <ScrollTable
+            columns={MATCH_ODDS_COLUMNS}
+            data={MATCH_ODDS_DATA}
+            headerPadding="py-0"
+          />
         </div>
       </>
       <>
         <h6 className="black-text my-3">Book Maker 1</h6>
         <div className="rounded">
-          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+          <ScrollTable
+            columns={MATCH_ODDS_COLUMNS}
+            data={MATCH_ODDS_DATA}
+            headerPadding="py-0"
+          />
         </div>
       </>
       <>
         <h6 className="black-text my-3"> Book Maker 2</h6>
         <div className="rounded">
-          <ScrollTable columns={MATCH_ODDS_COLUMNS} data={MATCH_ODDS_DATA} />
+          <ScrollTable
+            columns={MATCH_ODDS_COLUMNS}
+            data={MATCH_ODDS_DATA}
+            headerPadding="py-0"
+          />
         </div>
       </>
       <>
         <h6 className="black-text my-3">Fancy</h6>
         <div className="rounded">
-          <ScrollTable columns={FANCY_COLUMNS} data={FANCY_DATA} />
+          <ScrollTable
+            columns={FANCY_COLUMNS}
+            data={FANCY_DATA}
+            headerPadding="py-0"
+          />
         </div>
       </>
     </div>

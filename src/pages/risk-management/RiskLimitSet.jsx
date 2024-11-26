@@ -220,7 +220,7 @@ function RiskLimitSet() {
           </select>
         </div>
         <div className="col-4 flex-column me-3">
-          <label className="black-text4 small-font mb-1">Admin</label>{" "}
+          <label className="black-text4 small-font mb-1">Admin</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
