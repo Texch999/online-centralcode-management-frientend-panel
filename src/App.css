@@ -8,7 +8,9 @@
   background: #ffffff;
 }
 .login-box-shadow {
-  box-shadow: 0px 25px 65px 0px #00000029;
+  /* box-shadow: 0px 25px 65px 0px #00000029; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .h-fill {
   height: -webkit-fill-available !important;
@@ -261,7 +263,6 @@
   font-weight: 500;
   padding: 0.25rem;
 }
-
 .flex-start {
   display: flex;
   align-items: flex-start;
@@ -278,7 +279,7 @@
   border: 1px solid #1d1d1d;
 }
 .br-3px {
-  border-radius: 3px;
+  border-radius: 2px;
 }
 .text-ellipsis {
   white-space: nowrap;
@@ -303,4 +304,13 @@
 .chat-img {
   height: 1.5rem;
   width: 1.5rem;
+}
+.border-left {
+  border-left: 1px solid #dee2e6 !important;
+}
+.border-right {
+  border-right: 1px solid #dee2e6 !important;
+}
+.mb-1rem {
+  margin-bottom: -1rem;
 }

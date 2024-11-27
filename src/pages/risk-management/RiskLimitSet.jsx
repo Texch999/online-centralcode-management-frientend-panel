@@ -212,14 +212,14 @@ function RiskLimitSet() {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex w-75">
-        <div className="col-4 flex-column me-3">
+      <div className="row w-75">
+        <div className="col-4 flex-column">
           <label className="black-text4 small-font mb-1">Role</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
         </div>
-        <div className="col-4 flex-column me-3">
+        <div className="col-4 flex-column">
           <label className="black-text4 small-font mb-1">Admin</label>
           <select className="input-css2 small-font">
             <option>Select</option>
@@ -229,7 +229,7 @@ function RiskLimitSet() {
           <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>
-      <div className="white-bg login-box-shadow rounded mt-3 pb-3">
+      <div className="white-bg login-box-shadow rounded-top mt-3 pb-3 mb-1rem">
         <div className="px-3">
           <div className="row">
             {fields?.map((field, index) => (
@@ -254,8 +254,9 @@ function RiskLimitSet() {
             </div>
           </div>
         </div>
-        <Table columns={RISK_COLUMNS} data={RISK_DATA} itemsPerPage={2} />
       </div>
+      <hr className="m-0" />
+      <Table columns={RISK_COLUMNS} data={RISK_DATA} itemsPerPage={2} />
     </div>
   );
 }

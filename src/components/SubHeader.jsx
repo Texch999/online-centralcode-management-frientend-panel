@@ -6,6 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 function SubHeader() {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
+  console.log(activeDropdown, activeIndex);
   const navigate = useNavigate();
   const menuItems = [
     {
@@ -86,8 +87,8 @@ function SubHeader() {
   ];
 
   const handleDropdownToggle = (index, isOpen) => {
-    setActiveDropdown(isOpen ? index : null);
     setActiveIndex(index);
+    setActiveDropdown(isOpen ? index : null);
   };
 
   return (

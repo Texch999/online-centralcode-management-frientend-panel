@@ -80,7 +80,7 @@
   border: none;
 }
 .border-black {
-  border: 1px solid #0000001A
+  border: 1px solid #0000001a;
 }
 .overflow-y {
   overflow-y: hidden;
@@ -99,14 +99,16 @@
   font-size: 20px;
 }
 .box-shadow {
-  box-shadow: 0px 0px 9.6px 0px #00000029;
+  /* box-shadow: 0px 0px 9.6px 0px #00000029; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .font-15 {
   font-size: 15px;
 }
-.fw-800{
+.fw-800 {
   font-weight: 800;
 }
-.radius-20{
+.radius-20 {
   border-radius: 20px;
 }

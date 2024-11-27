@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import ScrollTable from "../../components/ScrollTable";
 import { useNavigate } from "react-router-dom";
-import { PiHandCoinsFill} from "react-icons/pi";
+import { PiHandCoinsFill } from "react-icons/pi";
 import { FaCoins } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 

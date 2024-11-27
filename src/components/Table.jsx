@@ -25,7 +25,7 @@ function Table({ data, columns, footer, itemsPerPage }) {
         <div
           key={pageNumber}
           onClick={() => handlePageChange(pageNumber)}
-          className={`flex-center small-font px-2 black-text2 mx-1 br-3px ${
+          className={`chat-img flex-center small-font black-text2 mx-1 br-3px ${
             currentPage === pageNumber ? "grey-bg black-border" : "border"
           }`}
         >
@@ -38,65 +38,70 @@ function Table({ data, columns, footer, itemsPerPage }) {
   const renderPagination = hasData && totalPages > 1;
 
   return (
-    <div className="white-bg">
-      <table className="w-100">
-        <thead>
-          <tr>
-            {columns?.map((column, index) => (
-              <th
-                key={index}
-                style={{ width: column?.width }}
-                className="small-font px-2 py-1 border-top border-bottom"
-              >
-                {column?.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {hasData && currentData?.length > 0 ? (
-            currentData.map((row, rowIndex) => (
-              <tr key={rowIndex} className="border-bottom">
-                {columns?.map((column) => (
-                  <td
-                    key={column?.field}
-                    style={{ width: column?.width }}
-                    className="align-top small-font p-2"
-                  >
-                    {row[column?.field]}
-                  </td>
-                ))}
-              </tr>
-            ))
-          ) : (
+    <div>
+      <div className="w-100 table-wrapper">
+        <table className="w-100 white-bg" style={{ borderRadius: "10px" }}>
+          <thead className="border-bottom">
             <tr className="border-bottom">
-              <td colSpan={columns?.length} className="text-center p-2">
-                <h6 className="mb-0">No Data Available</h6>
-              </td>
-            </tr>
-          )}
-        </tbody>
-        {footer && footer?.length > 0 && (
-          <tfoot className="py-2 border">
-            <tr>
-              {footer.map((column, footerIndex) => (
+              {columns?.map((column, index) => (
                 <th
-                  key={footerIndex}
+                  key={index}
                   style={{ width: column?.width }}
-                  className="text-center table-head small-font px-1 border-top"
+                  className="border-bottom small-font black-text p-2"
                 >
-                  {column.header}
+                  {column?.header}
                 </th>
               ))}
             </tr>
-          </tfoot>
-        )}
-      </table>
+          </thead>
+          <tbody>
+            {hasData && currentData?.length > 0 ? (
+              currentData.map((row, rowIndex) => (
+                <tr key={rowIndex} className="border-top">
+                  {columns?.map((column) => (
+                    <td
+                      key={column?.field}
+                      style={{ width: column?.width }}
+                      className="align-top small-font black-text p-2"
+                    >
+                      {row[column?.field]}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr className="border-top">
+                <td
+                  colSpan={columns?.length}
+                  className="text-center black-text p-2"
+                >
+                  <h6 className="mb-0">No Data Available</h6>
+                </td>
+              </tr>
+            )}
+          </tbody>
+          {footer && footer?.length > 0 && (
+            <tfoot className="border-top">
+              <tr>
+                {footer.map((column, footerIndex) => (
+                  <th
+                    key={footerIndex}
+                    style={{ width: column?.width }}
+                    className="text-center small-font black-text p-2"
+                  >
+                    {column.header}
+                  </th>
+                ))}
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      </div>
       {renderPagination && (
         <div className="d-flex align-items-center justify-content-end mt-3 me-3">
           <div className="d-flex">
             <div
-              className={`flex-center p-1 black-text2 me-1 br-3px ${
+              className={`chat-img flex-center black-text2 me-1 br-3px ${
                 currentPage > 1 ? "grey-bg black-border" : "border"
               }`}
               onClick={
@@ -107,7 +112,7 @@ function Table({ data, columns, footer, itemsPerPage }) {
             </div>
             {pageButtons}
             <div
-              className={`flex-center p-1 black-text2 ms-1 br-3px ${
+              className={`chat-img flex-center black-text2 ms-1 br-3px ${
                 currentPage < totalPages ? "grey-bg black-border" : "border"
               }`}
               onClick={
