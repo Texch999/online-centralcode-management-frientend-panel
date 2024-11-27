@@ -82,31 +82,31 @@ const DashboardViewAll = () => {
       pay: <div>209888</div>,
     },
     {
-        customer: (
-          <div className="d-flex flex-column">
-            <div>Srinivas</div>
-            <div>S&C-5%</div>
-          </div>
-        ),
-        role: <div>Direcor</div>,
-        casino: <div>-</div>,
-        sports: <div>-</div>,
-        sc: <div>100000</div>,
-        pay: <div>209888</div>,
-      },
-      {
-        customer: (
-          <div className="d-flex flex-column">
-            <div>Srinivas</div>
-            <div>S&C-5%</div>
-          </div>
-        ),
-        role: <div>Direcor</div>,
-        casino: <div>-</div>,
-        sports: <div>-</div>,
-        sc: <div>100000</div>,
-        pay: <div>209888</div>,
-      },
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
     {
       customer: (
         <div className="d-flex flex-column">
@@ -141,74 +141,70 @@ const DashboardViewAll = () => {
               </div>
               <div className="hor-grey-line mt-1"></div>
 
-
               <div>
                 <Bar data={barData} />
               </div>
             </div>
 
             <div className="d-flex flex-column mt-3">
-              <div className="d-flex w-100 align-items-center">
-                <div className="col-6 d-flex">
-                  <div className="col pe-1">
-                    <div className="d-flex flex-column text-white px-2 blue-bg-box">
-                      <div className="small-font py-1">Casino Sales</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                  <div className="col pe-1">
-                    <div className=" voilet-bg-box d-flex flex-column text-white px-2">
-                      <div className="small-font py-1">Sports Sales</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                  <div className="col pe-1">
-                    <div className="box-3 d-flex flex-column text-white px-2">
-                      <div className="small-font py-1">S+C Sales</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
-                  </div>
-                  <div className="col pe-2 ">
-                    <div className="pink-bg-box d-flex flex-column text-white px-2">
-                      <div className="small-font py-1">Total Profit</div>
-                      <h6 className="py-1">50000000000</h6>
-                    </div>
+              <div className="row w-100 align-items-center">
+                <div className="col-2">
+                  <div className="d-flex flex-column text-white px-2 blue-bg-box">
+                    <div className="small-font py-1">Casino Sales</div>
+                    <h6 className="py-1">50000000000</h6>
                   </div>
                 </div>
-                <div className="col-6 d-flex">
-                  <div className="col pe-1 flex-column">
-                    <lable className="small-font mb-1">Date</lable>
-
-                    <input
-                      type="date"
-                      placeholder="date"
-                      className="all-none input-css2 small-font"
-                    />
+                <div className="col-2">
+                  <div className=" voilet-bg-box d-flex flex-column text-white px-2">
+                    <div className="small-font py-1">Sports Sales</div>
+                    <h6 className="py-1">50000000000</h6>
                   </div>
-
-                  <div className="col pe-1 flex-column">
-                    <lable className="small-font mb-1">Customer Name</lable>
-
-                    <input
-                      type="text"
-                      placeholder="Enter"
-                      className="all-none input-css2 small-font"
-                    />
+                </div>
+                <div className="col-2">
+                  <div className="box-3 d-flex flex-column text-white px-2">
+                    <div className="small-font py-1">S+C Sales</div>
+                    <h6 className="py-1">50000000000</h6>
                   </div>
-
-                  <div className="col flex-column">
-                    <lable className="small-font mb-1">Sales Type</lable>
-                    <select className="input-css2 small-font text-black">
-                      <option>All</option>
-                      <option>Casino</option>
-                      <option>Sports</option>
-                      <option>Sports & Casino</option>
-                    </select>
+                </div>
+                <div className="col-2">
+                  <div className="pink-bg-box d-flex flex-column text-white px-2">
+                    <div className="small-font py-1">Total Profit</div>
+                    <h6 className="py-1">50000000000</h6>
                   </div>
+                </div>
+
+                <div className="col-2 flex-column">
+                  <lable className="small-font mb-1">Date</lable>
+
+                  <input
+                    type="date"
+                    placeholder="date"
+                    className="all-none input-css2 small-font"
+                  />
+                </div>
+
+                <div className="col-1 flex-column">
+                  <lable className="small-font mb-1 white-space">Customer Name</lable>
+
+                  <input
+                    type="text"
+                    placeholder="Enter"
+                    className="all-none input-css2 small-font"
+                  />
+                </div>
+
+                <div className="col-1 flex-column">
+                  <lable className="small-font mb-1">Sales Type</lable>
+                  <select className="input-css2 small-font text-black">
+                    <option>All</option>
+                    <option>Casino</option>
+                    <option>Sports</option>
+                    <option>Sports & Casino</option>
+                  </select>
                 </div>
               </div>
 
-              <div className="mt-3 white-bg radius box-shadow">
+              <div className="mt-3 radius box-shadow">
                 <ScrollTable
                   columns={customerCols}
                   data={customerData}

@@ -107,10 +107,10 @@ const VendorRegistration = () => {
   
 
   return (
-    <div>
-      <h4 className="black-text">Register Vendor</h4>
+    <div className="">
+      <h4 className="black-text my-3">Register Vendor</h4>
       <div className="d-flex flex-between medium-font">
-        <div className="d-flex mt-3">
+        <div className="d-flex">
           {buttons.map((btn, index) => {
             return (
               <div
@@ -136,7 +136,7 @@ const VendorRegistration = () => {
 
       <div className="mt-3">
         {activeBtn === 0 && (
-          <div className="white-bg radius box-shadow">
+          <div className="radius box-shadow">
             <Table columns={cols} data={data} itemsPerPage={4} />
           </div>
         )}

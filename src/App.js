@@ -17,6 +17,7 @@ import Sports from "./pages/sports/Sports";
 import FancyResult from "./pages/fancy-result/FancyResult";
 import MarketResult from "./pages/market-result/MarketResult";
 import LiveBetList from "./pages/risk-management/LiveBetList";
+import SportProviders from "./pages/sports/SportProviders";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -53,6 +54,7 @@ function App() {
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route path="/live-bet-list" element={<LiveBetList />} />
+              <Route path="/sports-providers" element={<SportProviders/>}/>
             </Routes>
           </div>
         </div>

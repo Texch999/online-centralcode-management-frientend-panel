@@ -1,8 +1,13 @@
 import React from "react";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Sports = () => {
+  const navigate =useNavigate();
+  const handleSportNextPage=(vendor, provider)=>{
+    navigate("/sports-providers", {state:{vendor, provider}})
+  }
   const cols = [
     { header: "S No", field: "sno" },
     { header: "Vendor Name & Company", field: "vendorname" },
@@ -28,8 +33,8 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       providers: (
-        <div className="d-flex flex-column">
-          <div className="mb-2 ">ODDS</div>
+        <div className="d-flex flex-column pointer">
+          <div className="mb-2 " onClick={()=>handleSportNextPage("Jitendra", "Odds")}>ODDS</div>
           <div className="mb-2 ">Bookmaker 1 </div>
           <div className="mb-2 ">Bookmaker 2 </div>
           <div className="mb-2 ">Fancy </div>
@@ -113,7 +118,7 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       providers: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <div className="mb-2 ">ODDS</div>
           <div className="mb-2 ">Bookmaker 1 </div>
           <div className="mb-2 ">Bookmaker 2 </div>
@@ -198,7 +203,7 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       providers: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <div className="mb-2 ">ODDS</div>
           <div className="mb-2 ">Bookmaker 1 </div>
           <div className="mb-2 ">Bookmaker 2 </div>
@@ -283,7 +288,7 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       providers: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <div className="mb-2 ">ODDS</div>
           <div className="mb-2 ">Bookmaker 1 </div>
           <div className="mb-2 ">Bookmaker 2 </div>
@@ -360,7 +365,7 @@ const Sports = () => {
   return (
     <div>
       <div className="d-flex flex-between align-items-center">
-        <h4>Sports</h4>
+        <h4 className="my-3">Sports</h4>
         <div className="small-font">
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>

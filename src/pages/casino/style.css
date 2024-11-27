@@ -35,7 +35,7 @@
   display: inline-block;
 }
 .form-check-input:checked {
-  background-color: green !important;
+  background-color: #18B962 !important;
   border-color: 1.2px solid #0000001a !important;
 }
 .w-40 {
@@ -44,4 +44,10 @@
 
 .checkbox input[type="checkbox"]:checked {
   background-color: #ffa310 !important;
+}
+.form-switch .form-check-input {
+  width: 4em !important;
+}
+.form-check-input {
+  height: 1.5em !important;
 }

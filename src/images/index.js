@@ -6,4 +6,5 @@ export const Images = {
   S7Logo: "/assets/S7_Logo.png",
   ProfileImage: "/assets/Profile_Image.png",
   ChatIcon: "/assets/Chat_Icon.png",
+  qnmark:"/assets/question-mark 1.png",
 };

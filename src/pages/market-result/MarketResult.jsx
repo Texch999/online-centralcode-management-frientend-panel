@@ -181,9 +181,9 @@ const MarketResult = () => {
   ];
   return (
     <div>
-      <h4>Market Result</h4>
+      <h4 className="my-3">Market Result</h4>
 
-      <div className="row mt-3 w-100 text-black small-font">
+      <div className="row w-100 text-black small-font">
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">Select Sport</label>
           <select className="input-css2 small-font">

@@ -251,8 +251,8 @@ const FancyResult = () => {
 
   return (
     <div className="p-2">
-      <h4>Fancy Result</h4>
-      <div className="my-3 row w-100 text-black small-font ">
+      <h4 className="my-3">Fancy Result</h4>
+      <div className="mb-3 row w-100 text-black small-font ">
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">Select Sport</label>
           <select className="white-input">
@@ -303,7 +303,7 @@ const FancyResult = () => {
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end">
-          <div className="white-input rounded-pill w-100">
+          <div className="white-input flex-between rounded-pill w-100">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"
