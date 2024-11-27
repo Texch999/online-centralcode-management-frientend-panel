@@ -319,6 +319,7 @@
 .flex-end {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-end;
 }
 .white-bg2 {
   background-color: #ffffff;

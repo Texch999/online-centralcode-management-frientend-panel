@@ -154,8 +154,11 @@ const FancyResult = () => {
     { header: "MatchName", field: "match" },
     { header: "Event Id", field: "eid" },
     { header: "Market Id", field: "mid" },
-    { header: "Result Status", field: "resstatus" },
-    { header: "Action", field: "action" },
+    {
+      header: <div className="flex-center">Result Status</div>,
+      field: "resstatus",
+    },
+    { header: <div className="flex-center">Action</div>, field: "action" },
   ];
 
   const sportData = [
@@ -165,9 +168,13 @@ const FancyResult = () => {
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
       mid: <div>1.234567366</div>,
-      resstatus: <div className="green-btn">Open</div>,
+      resstatus: (
+        <div className="flex-center">
+          <div className="green-btn">Open</div>
+        </div>
+      ),
       action: (
-        <div className="">
+        <div className="flex-center">
           <BsEye className="font-15 text-black" />
         </div>
       ),
@@ -178,9 +185,13 @@ const FancyResult = () => {
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
       mid: <div>1.234567366</div>,
-      resstatus: <div className="green-btn">Open</div>,
+      resstatus: (
+        <div className="flex-center">
+          <div className="green-btn">Open</div>
+        </div>
+      ),
       action: (
-        <div className="">
+        <div className="flex-center">
           <BsEye className="font-15 text-black" />
         </div>
       ),
@@ -191,9 +202,13 @@ const FancyResult = () => {
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
       mid: <div>1.234567366</div>,
-      resstatus: <div className="green-btn">Open</div>,
+      resstatus: (
+        <div className="flex-center">
+          <div className="green-btn">Open</div>
+        </div>
+      ),
       action: (
-        <div className="">
+        <div className="flex-center">
           <BsEye className="font-15 text-black" />
         </div>
       ),
@@ -204,9 +219,13 @@ const FancyResult = () => {
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
       mid: <div>1.234567366</div>,
-      resstatus: <div className="green-btn">Open</div>,
+      resstatus: (
+        <div className="flex-center">
+          <div className="green-btn">Open</div>
+        </div>
+      ),
       action: (
-        <div className="">
+        <div className="flex-center">
           <BsEye className="font-15 text-black" />
         </div>
       ),
@@ -217,9 +236,13 @@ const FancyResult = () => {
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
       mid: <div>1.234567366</div>,
-      resstatus: <div className="green-btn">Open</div>,
+      resstatus: (
+        <div className="flex-center">
+          <div className="green-btn">Open</div>
+        </div>
+      ),
       action: (
-        <div className="">
+        <div className="flex-center">
           <BsEye className="font-15 text-black" />
         </div>
       ),
@@ -229,29 +252,27 @@ const FancyResult = () => {
   return (
     <div className="p-2">
       <h4>Fancy Result</h4>
-      <div className="my-3 d-flex w-100 align-items-center">
-        <div className="col-12 d-flex">
-          <div className="col-2 d-flex flex-column text-black small-font pe-2">
-            <label className="mb-1">Select Sport</label>
-            <select className="white-input">
-              <option>Select</option>
-              <option>sport1</option>
-              <option>sport1</option>
-              <option>sport1</option>
-            </select>
-          </div>
-          <div className="col-2 d-flex flex-column text-black small-font px-2">
-            <label className="mb-1">Select Match</label>
-            <select className="white-input">
-              <option>Select</option>
-              <option>match1</option>
-              <option>match1</option>
-              <option>match1</option>
-            </select>
-          </div>
-          <div className="col-2 mt-4 px-2">
-            <div className="saffron-btn br-5 small-font">Search</div>
-          </div>
+      <div className="my-3 row w-100 text-black small-font ">
+        <div className="col-2 d-flex flex-column">
+          <label className="mb-1">Select Sport</label>
+          <select className="white-input">
+            <option>Select</option>
+            <option>sport1</option>
+            <option>sport1</option>
+            <option>sport1</option>
+          </select>
+        </div>
+        <div className="col-2 d-flex flex-column">
+          <label className="mb-1">Select Match</label>
+          <select className="white-input">
+            <option>Select</option>
+            <option>match1</option>
+            <option>match1</option>
+            <option>match1</option>
+          </select>
+        </div>
+        <div className="col-2 flex-end">
+          <div className="w-100 saffron-btn br-5 small-font">Search</div>
         </div>
       </div>
 
@@ -259,38 +280,35 @@ const FancyResult = () => {
         <ScrollTable columns={cols} data={data} itemsPerPage={3} />
       </div>
 
-      <div className="mt-3 d-flex w-100 align-items-center">
-        <div className="col-12 d-flex">
-          <div className="col-2 d-flex flex-column text-black small-font pe-2">
-            <label className="mb-1">Select Sport</label>
-            <select className="white-input">
-              <option>Select</option>
-              <option>Cricket</option>
-              <option>sport1</option>
-              <option>sport1</option>
-            </select>
-          </div>
-          <div className="col-2 d-flex flex-column text-black small-font px-2">
-            <label className="mb-1">From</label>
-            <input className="white-input" type="date" />
-          </div>
-          <div className="col-2 d-flex flex-column text-black small-font px-2">
-            <label className="mb-1">To</label>
-            <input className="white-input" type="date" />
-          </div>
-          <div className="col-2 mt-3 px-2">
-            <div className="saffron-btn br-5 small-font">Submit</div>
-          </div>
-          <div className="col-2"></div>
-
-          <div className="col-2 mt-3">
-            <div className="d-flex align-items-center white-input radius-50">
-              <FaSearch size={18} className="grey-clr me-2" />
-              <input
-                className="all-none small-font"
-                placeholder="Search Here..."
-              />
-            </div>
+      <div className="row mt-3 w-100 text-black small-font">
+        <div className="col-2 d-flex flex-column">
+          <label className="mb-1">Select Sport</label>
+          <select className="input-css2 small-font">
+            <option>Select</option>
+            <option>Cricket</option>
+            <option>sport1</option>
+            <option>sport1</option>
+          </select>
+        </div>
+        <div className="col-2 d-flex flex-column">
+          <label className="mb-1">From</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col-2 d-flex flex-column">
+          <label className="mb-1">To</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col-2 flex-end">
+          <div className="w-100 saffron-btn br-5 small-font">Submit</div>
+        </div>
+        <div className="col-2"></div>
+        <div className="col-2 flex-end">
+          <div className="white-input rounded-pill w-100">
+            <FaSearch size={15} className="grey-clr me-2" />
+            <input
+              className="all-none small-font"
+              placeholder="Search Match..."
+            />
           </div>
         </div>
       </div>
