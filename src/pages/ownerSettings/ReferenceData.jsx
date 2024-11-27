@@ -300,8 +300,9 @@ const ReferenceData = () => {
 
   return (
     <div>
-      <div className="d-flex justify-content-between w-100">
-        <h6 className="yellow-font">Reference Data</h6>
+      <div className="flex-between mb-3 mt-2">
+        <h6 className="yellow-font mb-0">Reference Data</h6>
+        
       </div>
       <div className="d-flex col-3 flex-between small-font">
         {ACTIVE_BTNS?.map((item, index) => (

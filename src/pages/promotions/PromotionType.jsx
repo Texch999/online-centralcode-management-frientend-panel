@@ -414,7 +414,7 @@ const PromotionType = () => {
         </div>
       )}
 
-      <div className="white-bg login-box-shadow p-1 mt-4 rounded">
+      <div className="mt-4 ">
         {activeBtn === "Promotion Type" ? (
           <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={3} />
         ) : (

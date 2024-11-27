@@ -22,6 +22,10 @@ import CasinoGames from "./pages/casino/CasinoGames";
 import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 
 import LiveBetList from "./pages/risk-management/LiveBetList";
+import SportsPromotions from "./pages/promotions/SportsPromotions";
+import CasinoPromotions from "./pages/promotions/CasinoPromotions";
+import Broadcasting from "./pages/promotions/Broadcasting";
+import SandCBanner from "./pages/promotions/SandCBanner";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -62,6 +66,10 @@ function App() {
               <Route path="/userActivity/:userActivity" element={<RecentAccessIp />} />
               <Route path="/create-promotion-type" element={<PromotionType />} />
               <Route path="/live-bet-list" element={<LiveBetList />} />
+              <Route path="/sports-promotions" element={<SportsPromotions />} />
+              <Route path="/casino-promotions" element={<CasinoPromotions />} />
+              <Route path="/broadcasting" element={<Broadcasting />} />
+              <Route path="/banners" element={<SandCBanner />} />
             </Routes>
           </div>
         </div>

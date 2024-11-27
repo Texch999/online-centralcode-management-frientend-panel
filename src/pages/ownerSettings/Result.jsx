@@ -316,8 +316,8 @@ const Result = () => {
         </div>
       ),
       viewFancy: (
-        <div className="flex-center large-font w-100 flex-center">
-          <MdOutlineRemoveRedEye />
+        <div className="  w-60  flex-center">
+          <MdOutlineRemoveRedEye  size={18}/>
         </div>
       ),
     },
@@ -370,8 +370,167 @@ const Result = () => {
         </div>
       ),
       viewFancy: (
-        <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+        <div className="  w-60  flex-center">
+        <MdOutlineRemoveRedEye  size={18}/>
+      </div>
+      ),
+    },
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      sports: <div>Cricket</div>,
+      seriesName: (
+        <div>
+          ICICI T20 Women World Cup <br /> 2024
+          <br />
+          M. ID: 1.11045677544
+        </div>
+      ),
+      oddsRiskLoss: <div>1000000000</div>,
+      matchName: (
+        <div
+          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
+          className="pointer"
+        >
+          New Zealand Wo <br /> vs South Africa Wo
+          <br />M ID: 11023843754858
+        </div>
+      ),
+
+      result: (
+        <div>
+          <span className="green-font"> New Zealand Wo</span>
+          <br />R ID: 12345678943323
+        </div>
+      ),
+      runs: (
+        <div className="green-font">
+          Balls: 17.2
+          <br />
+          Runs: 220
+        </div>
+      ),
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+      viewFancy: (
+        <div className="  w-60  flex-center">
+        <MdOutlineRemoveRedEye  size={18}/>
+      </div>
+      ),
+    },
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      sports: <div>Cricket</div>,
+      seriesName: (
+        <div>
+          ICICI T20 Women World Cup <br /> 2024
+          <br />
+          M. ID: 1.11045677544
+        </div>
+      ),
+      oddsRiskLoss: <div>1000000000</div>,
+      matchName: (
+        <div
+          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
+          className="pointer"
+        >
+          New Zealand Wo <br /> vs South Africa Wo
+          <br />M ID: 11023843754858
+        </div>
+      ),
+
+      result: (
+        <div>
+          <span className="green-font"> New Zealand Wo</span>
+          <br />R ID: 12345678943323
+        </div>
+      ),
+      runs: (
+        <div className="green-font">
+          Balls: 17.2
+          <br />
+          Runs: 220
+        </div>
+      ),
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+      viewFancy: (
+        <div className="  w-60  flex-center">
+        <MdOutlineRemoveRedEye  size={18}/>
+      </div>
+      ),
+    },
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      sports: <div>Cricket</div>,
+      seriesName: (
+        <div>
+          ICICI T20 Women World Cup <br /> 2024
+          <br />
+          M. ID: 1.11045677544
+        </div>
+      ),
+      oddsRiskLoss: <div>1000000000</div>,
+      matchName: (
+        <div
+          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
+          className="pointer"
+        >
+          New Zealand Wo <br /> vs South Africa Wo
+          <br />M ID: 11023843754858
+        </div>
+      ),
+
+      result: (
+        <div>
+          <span className="green-font"> New Zealand Wo</span>
+          <br />R ID: 12345678943323
+        </div>
+      ),
+      runs: (
+        <div className="green-font">
+          Balls: 17.2
+          <br />
+          Runs: 220
+        </div>
+      ),
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+      viewFancy: (
+        <div className="  w-60  flex-center">
+          <MdOutlineRemoveRedEye  size={18}/>
         </div>
       ),
     },
@@ -423,9 +582,9 @@ const Result = () => {
         </div>
       ),
       viewFancy: (
-        <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
-        </div>
+        <div className="  w-60  flex-center">
+        <MdOutlineRemoveRedEye  size={18}/>
+      </div>
       ),
     },
     {
@@ -476,188 +635,30 @@ const Result = () => {
         </div>
       ),
       viewFancy: (
-        <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      seriesName: (
-        <div>
-          ICICI T20 Women World Cup <br /> 2024
-          <br />
-          M. ID: 1.11045677544
-        </div>
-      ),
-      oddsRiskLoss: <div>1000000000</div>,
-      matchName: (
-        <div
-          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
-          className="pointer"
-        >
-          New Zealand Wo <br /> vs South Africa Wo
-          <br />M ID: 11023843754858
-        </div>
-      ),
-
-      result: (
-        <div>
-          <span className="green-font"> New Zealand Wo</span>
-          <br />R ID: 12345678943323
-        </div>
-      ),
-      runs: (
-        <div className="green-font">
-          Balls: 17.2
-          <br />
-          Runs: 220
-        </div>
-      ),
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-      viewFancy: (
-        <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      seriesName: (
-        <div>
-          ICICI T20 Women World Cup <br /> 2024
-          <br />
-          M. ID: 1.11045677544
-        </div>
-      ),
-      oddsRiskLoss: <div>1000000000</div>,
-      matchName: (
-        <div
-          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
-          className="pointer"
-        >
-          New Zealand Wo <br /> vs South Africa Wo
-          <br />M ID: 11023843754858
-        </div>
-      ),
-
-      result: (
-        <div>
-          <span className="green-font"> New Zealand Wo</span>
-          <br />R ID: 12345678943323
-        </div>
-      ),
-      runs: (
-        <div className="green-font">
-          Balls: 17.2
-          <br />
-          Runs: 220
-        </div>
-      ),
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-      viewFancy: (
-        <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      seriesName: (
-        <div>
-          ICICI T20 Women World Cup <br /> 2024
-          <br />
-          M. ID: 1.11045677544
-        </div>
-      ),
-      oddsRiskLoss: <div>1000000000</div>,
-      matchName: (
-        <div
-          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
-          className="pointer"
-        >
-          New Zealand Wo <br /> vs South Africa Wo
-          <br />M ID: 11023843754858
-        </div>
-      ),
-
-      result: (
-        <div>
-          <span className="green-font"> New Zealand Wo</span>
-          <br />R ID: 12345678943323
-        </div>
-      ),
-      runs: (
-        <div className="green-font">
-          Balls: 17.2
-          <br />
-          Runs: 220
-        </div>
-      ),
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-      viewFancy: (
-        <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
-        </div>
+        <div className="  w-60  flex-center">
+        <MdOutlineRemoveRedEye  size={18}/>
+      </div>
       ),
     },
   ];
 
   return (
     <div>
-      <div className="d-flex justify-content-between w-100">
-        <h6 className="saffron-clr">Result</h6>
-        <div className="grey-border rounded-pill grey-clr d-flex align-items-center px-2">
+      <div className="flex-between mb-3 mt-2">
+        <h6 className="yellow-font mb-0">Results</h6>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
+    
       <div className="d-flex w-10 flex-between small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2 pointer px-4"
+                ? "saffron-btn2  px-4"
                 : "white-btn2 pointer px-4"
             }`}
             onClick={() => handleSportClick(item)}
@@ -720,7 +721,9 @@ const Result = () => {
           </>
         )}
 
-        <div className="saffron-btn2 small-font pointer mt-4 col-2">Submit</div>
+        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+          Submit
+        </div>
       </div>
 
       <div className="mt-4">
