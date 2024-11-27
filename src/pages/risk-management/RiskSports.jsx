@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 function RiskSports() {
   const navigate = useNavigate();
   const [activeSport, setActiveSport] = useState("Cricket");
-
   const SPORTS_BUTTONS = [
     "Cricket",
     "Football",
@@ -16,7 +15,6 @@ function RiskSports() {
     "Greyhound Racing",
     "Kabaddi",
   ];
-
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
@@ -60,7 +58,7 @@ function RiskSports() {
     { header: "Match Name", field: "matchName", width: "40%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -74,7 +72,6 @@ function RiskSports() {
     },
     { header: "", field: "view", width: "5%" },
   ];
-
   const MATCH_ODDS_DATA = [
     {
       dateTime: "01-10-2024  16:11:00",
@@ -94,7 +91,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -116,7 +117,37 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -128,10 +159,11 @@ function RiskSports() {
     { header: "Match Name", field: "matchName", width: "30%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>NO</span>
+            <span></span>
             <span>YES</span>
           </div>
         </div>
@@ -139,7 +171,11 @@ function RiskSports() {
       field: "profit_loss",
       width: "30%",
     },
-    { header: "Status", field: "status", width: "10%" },
+    {
+      header: <div className="text-center">Status</div>,
+      field: "status",
+      width: "10%",
+    },
     { header: "", field: "view", width: "5%" },
   ];
   const FANCY_DATA = [
@@ -159,10 +195,80 @@ function RiskSports() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      status: <button className="green-btn">Declared</button>,
+      status: (
+        <div className="text-center">
+          <button className="green-btn">Declared</button>
+        </div>
+      ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">-</span>
+          <span>10000000</span>
+          <span className="green-font">-</span>
+        </div>
+      ),
+      status: (
+        <div className="text-center">
+          <button className="green-btn">Live</button>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div onClick={() => navigate("/risk-bet-history/matchName")}>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      status: (
+        <div className="text-center">
+          <button className="green-btn">Declared</button>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -199,7 +305,7 @@ function RiskSports() {
         <div className="saffron-btn2 me-3">Top - Exp High Profit Players</div>
         <div className="white-btn2 me-3">Top Last Minute Bet Players</div>
       </div>
-      <div className="d-flex">
+      <div className="d-flex border">
         <ScrollTable
           columns={HIGH_PROFIT_PLAYERS_COLUMNS}
           data={HIGH_PROFIT_PLAYERS_DATA}
@@ -210,46 +316,38 @@ function RiskSports() {
         />
       </div>
       <>
-        <h6 className="black-text my-3">
+        <h6 className="black-text mt-4 mb-3">
           Match Odds (High Risk & Last Bet Players Matches)
         </h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={MATCH_ODDS_COLUMNS}
-            data={MATCH_ODDS_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <ScrollTable
+          columns={MATCH_ODDS_COLUMNS}
+          data={MATCH_ODDS_DATA}
+          headerPadding="py-0"
+        />
       </>
       <>
-        <h6 className="black-text my-3">Book Maker 1</h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={MATCH_ODDS_COLUMNS}
-            data={MATCH_ODDS_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <h6 className="black-text mt-4 mb-3">Book Maker 1</h6>
+        <ScrollTable
+          columns={MATCH_ODDS_COLUMNS}
+          data={MATCH_ODDS_DATA}
+          headerPadding="py-0"
+        />
       </>
       <>
-        <h6 className="black-text my-3"> Book Maker 2</h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={MATCH_ODDS_COLUMNS}
-            data={MATCH_ODDS_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <h6 className="black-text mt-4 mb-3"> Book Maker 2</h6>
+        <ScrollTable
+          columns={MATCH_ODDS_COLUMNS}
+          data={MATCH_ODDS_DATA}
+          headerPadding="py-0"
+        />
       </>
       <>
-        <h6 className="black-text my-3">Fancy</h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={FANCY_COLUMNS}
-            data={FANCY_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <h6 className="black-text mt-4 mb-3">Fancy</h6>
+        <ScrollTable
+          columns={FANCY_COLUMNS}
+          data={FANCY_DATA}
+          headerPadding="py-0"
+        />
       </>
     </div>
   );

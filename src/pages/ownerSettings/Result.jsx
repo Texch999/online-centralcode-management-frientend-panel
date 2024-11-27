@@ -257,14 +257,14 @@ const Result = () => {
     },
   ];
   const CRICKET_COLUMNS = [
-    { header: "Date & Time", field: "dateTime" , width:"10%", },
-    { header: "Sports", field: "sports" , width:"10%", },
-    { header: "Series Name", field: "seriesName" , width:"20%",},
-    { header: "Match Name", field: "matchName", width:"20%", },
-    { header: "Result", field: "result" , width:"10%",},
-    { header: "Runs", field: "runs" , width:"10%",},
-    { header: "Result Date & Time", field: "resultDateTime", width:"12%", },
-    { header: "View Fancy", field: "viewFancy" , width:"8%",},
+    { header: "Date & Time", field: "dateTime", width: "10%" },
+    { header: "Sports", field: "sports", width: "10%" },
+    { header: "Series Name", field: "seriesName", width: "20%" },
+    { header: "Match Name", field: "matchName", width: "20%" },
+    { header: "Result", field: "result", width: "10%" },
+    { header: "Runs", field: "runs", width: "10%" },
+    { header: "Result Date & Time", field: "resultDateTime", width: "12%" },
+    { header: "View Fancy", field: "viewFancy", width: "8%" },
   ];
 
   const CRICKET_DATA = [
@@ -723,7 +723,7 @@ const Result = () => {
         <div className="saffron-btn2 small-font pointer mt-4 col-2">Submit</div>
       </div>
 
-      <div className="white-bg login-box-shadow p-1 mt-4 rounded">
+      <div className="mt-4">
         {activeBtn === "Sports" ? (
           <Table
             columns={CRICKET_COLUMNS}

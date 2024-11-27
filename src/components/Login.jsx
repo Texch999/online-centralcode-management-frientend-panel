@@ -1,10 +1,13 @@
 import { Images } from "../images";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { IoEyeOffOutline } from "react-icons/io5";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState();
+  const [pswdVisiblity, setpswdVisibility] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -19,6 +22,9 @@ function Login() {
     navigate("/dashboard");
     window.location.reload();
   };
+  const handlePasswordVisibility = () => {
+    setpswdVisibility(!pswdVisiblity);
+  };
 
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center w-100">
@@ -29,7 +35,7 @@ function Login() {
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
           <div className="ps-4 pe-5 flex-column px-5 w-75">
             <div className="welcome-font">WELCOME</div>
-            <div className="black-text">
+            <div className="black-text white-space">
               We are Glad to see you back with us
             </div>
             <div className="py-4">
@@ -57,9 +63,16 @@ function Login() {
                 ></img>
                 <input
                   className="input-css"
-                  type="password"
+                  type={pswdVisiblity ? "text" : "password"}
                   placeholder="Password"
                 />
+                <span onClick={handlePasswordVisibility}>
+                  {pswdVisiblity ? (
+                    <IoEyeOffOutline />
+                  ) : (
+                    <MdOutlineRemoveRedEye />
+                  )}
+                </span>
               </div>
               <button className="orange-btn mt-3 w-100" onClick={handleLogin}>
                 Submit

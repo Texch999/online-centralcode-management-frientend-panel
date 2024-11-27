@@ -363,7 +363,7 @@ const ReferenceData = () => {
           </div>
         )}
       </div>
-      <div className="white-bg login-box-shadow p-1 mt-4 rounded">
+      <div className=" mt-4 ">
         {activeBtn === "Rejection Reasons" ? (
           <Table
             columns={REJECTION_COLUMNS}

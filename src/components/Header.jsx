@@ -12,11 +12,18 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
+import { ImUserPlus } from "react-icons/im";
 
 function Header() {
   const navigate = useNavigate();
   const role = localStorage?.getItem("role");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isActiveBtn, setIsActiveBtn] = useState(false);
+
+  const handleRegisterBtn = () => {
+    setIsActiveBtn(true);
+    navigate("/vendor-registartion");
+  };
   const handleLogout = () => {
     localStorage.clear();
     window.location.reload();
@@ -37,9 +44,14 @@ function Header() {
           </div>
         </div>
         <div className="d-flex align-items-center">
-          <div className="flex-center grey-border px-3 py-1 rounded-pill me-2">
-            <FaUserClock size={18} />
-            <span className="ps-2 black-text2 small-font">
+          <div
+            className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
+              isActiveBtn ? "active-saffron-btn white-text " : ""
+            }`}
+            onClick={handleRegisterBtn}
+          >
+            <ImUserPlus size={19} />
+            <span className="ps-2  small-font">
               Vendor Registration and List
             </span>
           </div>
@@ -59,7 +71,7 @@ function Header() {
             onClick={() => navigate("/dashboard")}
           >
             <PiSquaresFourFill size={24} className="me-2" />
-            <span className="medium-font">Dashboard</span>
+            <span className="medium-font pointer">Dashboard</span>
           </div>
           {role === "Management" ? (
             <div

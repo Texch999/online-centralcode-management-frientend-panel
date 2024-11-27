@@ -16,6 +16,12 @@ import RiskCasino from "./pages/risk-management/RiskCasino";
 import ActivityLogs from "./pages/ownerSettings/ActivityLogs";
 import RecentAccessIp from "./pages/ownerSettings/RecentAccessIp";
 import PromotionType from "./pages/promotions/PromotionType";
+import DashboardViewAll from "./pages/home/DashboardViewAll";
+import CasinoVendor from "./pages/casino/CasinoVendor";
+import CasinoGames from "./pages/casino/CasinoGames";
+import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
+
+import LiveBetList from "./pages/risk-management/LiveBetList";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -38,13 +44,24 @@ function App() {
               <Route path="/reference-data" element={<ReferenceData />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route
+                path="/dashboard-view-all"
+                element={<DashboardViewAll />}
+              />
+              <Route
                 path="/risk-bet-history/:matchName"
                 element={<RiskBetHistory />}
+              />
+              <Route path="/casino-vendor" element={<CasinoVendor />} />
+              <Route path="/casino-games" element={<CasinoGames />} />
+              <Route
+                path="/vendor-registartion"
+                element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
               <Route path="/activity-logs" element={<ActivityLogs />} />
               <Route path="/userActivity/:userActivity" element={<RecentAccessIp />} />
               <Route path="/create-promotion-type" element={<PromotionType />} />
+              <Route path="/live-bet-list" element={<LiveBetList />} />
             </Routes>
           </div>
         </div>

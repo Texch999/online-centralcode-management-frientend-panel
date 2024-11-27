@@ -1,0 +1,47 @@
+.active-btn-table {
+  border: 2px solid #18b962;
+  background: #b3ffd6;
+  border-radius: 0.25rem;
+  outline: none;
+  color: #18b962;
+  font-weight: 500;
+  text-align: center;
+  width: 40%;
+  padding: 0.1rem;
+}
+.inactive-btn-table {
+  border: 1px solid #f43a23;
+  background: #ffcac3;
+  border-radius: 0.25rem;
+  outline: none;
+  color: #f43a23;
+  font-weight: 500;
+  text-align: center;
+  width: 48%;
+  padding: 0.1rem;
+}
+.round-red-dot {
+  height: 6px;
+  width: 6px;
+  background-color: #f43a23;
+  border-radius: 50%;
+  display: inline-block;
+}
+.round-green-dot {
+  height: 6px;
+  width: 6px;
+  background-color: #18b962;
+  border-radius: 50%;
+  display: inline-block;
+}
+.form-check-input:checked {
+  background-color: green !important;
+  border-color: 1.2px solid #0000001a !important;
+}
+.w-40 {
+  width: 40vw;
+}
+
+.checkbox input[type="checkbox"]:checked {
+  background-color: #ffa310 !important;
+}

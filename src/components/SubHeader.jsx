@@ -86,8 +86,8 @@ function SubHeader() {
   ];
 
   const handleDropdownToggle = (index, isOpen) => {
-    setActiveDropdown(isOpen ? index : null);
     setActiveIndex(index);
+    setActiveDropdown(isOpen ? index : null);
   };
 
   return (
