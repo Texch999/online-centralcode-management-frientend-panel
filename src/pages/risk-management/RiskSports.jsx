@@ -60,7 +60,7 @@ function RiskSports() {
     { header: "Match Name", field: "matchName", width: "40%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -120,6 +120,28 @@ function RiskSports() {
         </div>
       ),
     },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
   ];
 
   const FANCY_COLUMNS = [
@@ -128,7 +150,7 @@ function RiskSports() {
     { header: "Match Name", field: "matchName", width: "30%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>NO</span>

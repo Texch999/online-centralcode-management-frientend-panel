@@ -5,18 +5,25 @@ import { IoMdAdd } from "react-icons/io";
 import { FaChevronDown } from "react-icons/fa";
 import NewProvidersPopup from "./NewProvidersPopup";
 import NewGamesPopup from "./NewGamesPopup";
+import AddNewProvider from "./AddNewProvider";
 
 const VendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
   const [activeBtn, setActiveBtn] = useState(0);
   const [newProvidersModal, setNewProvidersModal] =useState(false);
   const [newGamesModal, setNewGamesModal]=useState(false);
+  const[addNewProvider, setAddNewProvider]=useState(false);
   const handleProvidersModal=()=>{
     setNewProvidersModal(!newProvidersModal);
   }
 
   const handleGamesModal=()=>{
     setNewGamesModal(!newGamesModal)
+  }
+
+  const addNewProviderModal=()=>{
+    setAddNewProvider(!addNewProvider);
+
   }
 
   const handleClick = (index) => {
@@ -60,10 +67,7 @@ const VendorRegistration = () => {
       action: (
         <div className="d-flex flex-column">
           <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
+         
         </div>
       ),
     },
@@ -93,10 +97,7 @@ const VendorRegistration = () => {
       action: (
         <div className="d-flex flex-column">
           <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
-          <MdOutlineEdit className="orange-clr font-20" />
+        
         </div>
       ),
     },
@@ -124,7 +125,7 @@ const VendorRegistration = () => {
             );
           })}
         </div>
-        <div className="flex-center white-bg grey-border px-3 py-1 rounded-pill me-2 pointer black-text2">
+        <div className="flex-center white-bg grey-border px-3 py-1 rounded-pill me-2 pointer black-text2" onClick={addNewProviderModal}>
           <IoMdAdd size={19} />
           <span className="ps-2  small-font">Add New Provider</span>
         </div>
@@ -163,6 +164,7 @@ const VendorRegistration = () => {
 
       <NewProvidersPopup show={newProvidersModal} setShow={setNewProvidersModal}/>
       <NewGamesPopup show={newGamesModal} setShow={setNewGamesModal}/>
+      <AddNewProvider show={addNewProvider} setShow={setAddNewProvider}/>
     </div>
   );
 };

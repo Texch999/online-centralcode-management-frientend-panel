@@ -42,7 +42,7 @@ function RiskCasino() {
     { header: "Website", field: "website", width: "50%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -82,7 +82,7 @@ function RiskCasino() {
     { header: "Provider ID", field: "providerId", width: "35%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -122,7 +122,7 @@ function RiskCasino() {
     { header: "Game Name", field: "gameName", width: "50%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -166,7 +166,7 @@ function RiskCasino() {
     },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
