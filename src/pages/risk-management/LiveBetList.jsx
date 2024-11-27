@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdOutlineDelete, MdOutlineModeEditOutline } from "react-icons/md";
+import {
+  MdOutlineDelete,
+  MdOutlineModeEditOutline,
+  MdLoop,
+} from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
 
 function LiveBetList() {
@@ -71,7 +75,7 @@ function LiveBetList() {
       selection: (
         <div>
           <div>Selection: Chennai Super Kings</div>
-          <div>Side: Back</div>
+          <div className="back-clr">Side: Back</div>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -126,7 +130,7 @@ function LiveBetList() {
       selection: (
         <div>
           <div>Selection: Chennai Super Kings</div>
-          <div>Side: Back</div>
+          <div className="lay-clr">Side: Lay</div>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -136,16 +140,13 @@ function LiveBetList() {
       lay: <div className="lay-btn">10000000</div>,
       status: (
         <div>
-          <div className="green-btn">Deleted</div>
+          <div className="red-btn">Deleted</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
-              size={18}
-              onClick={handleEditBetPopupOpen}
-            />
-            <MdOutlineDelete size={18} />
+            <MdLoop size={20} className="red-font" />
           </div>
         </div>
       ),
+      rowColor: "red-font",
     },
     {
       dateTime: (
@@ -191,16 +192,10 @@ function LiveBetList() {
       lay: <div className="lay-btn">10000000</div>,
       status: (
         <div>
-          <div className="green-btn">Edited</div>
-          <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
-              size={18}
-              onClick={handleEditBetPopupOpen}
-            />
-            <MdOutlineDelete size={18} />
-          </div>
+          <div className="edit-btn">Edited</div>
         </div>
       ),
+      rowColor: "yellow-font",
     },
   ];
   return (
@@ -265,7 +260,8 @@ function LiveBetList() {
         columns={BET_HISTORY_COLUMNS}
         data={BET_HISTORY_DATA}
         itemsPerPage={5}
-      />{" "}
+        rowColor={(row) => row?.rowColor}
+      />
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}

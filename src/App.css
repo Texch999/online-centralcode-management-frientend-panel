@@ -138,11 +138,21 @@
   text-align: center;
 }
 .red-btn {
-  border: 1px solid #f43a23;
+  border: 2px solid #f43a23;
   background: #ffcac3;
   border-radius: 0.35rem;
   outline: none;
   color: #f43a23;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
+.edit-btn {
+  border: 2px solid #ffa310;
+  background: #ffe2b3;
+  border-radius: 0.35rem;
+  outline: none;
+  color: #ffa310;
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
@@ -245,8 +255,7 @@
   border-right: 2px solid #e0e0e0;
 }
 .yellow-font {
-  color: #ffa310;
-  font-weight: 500;
+  color: #ffa310 !important;
 }
 .input-css2 {
   background: #ffffff;
@@ -292,7 +301,7 @@
   color: #18b962 !important;
 }
 .red-font {
-  color: #d0431c;
+  color: #d0431c !important;
 }
 .orange-bg {
   background: #fffadd;
@@ -315,4 +324,10 @@
 }
 .mb-1rem {
   margin-bottom: -1rem;
+}
+.back-clr {
+  color: #2f96e3;
+}
+.lay-clr {
+  color: #fe7373;
 }

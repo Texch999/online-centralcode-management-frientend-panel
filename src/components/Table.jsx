@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from "react-icons/md";
 
-function Table({ data, columns, footer, itemsPerPage }) {
+function Table({ data, columns, footer, itemsPerPage, rowColor }) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(data?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -62,7 +62,9 @@ function Table({ data, columns, footer, itemsPerPage }) {
                     <td
                       key={column?.field}
                       style={{ width: column?.width }}
-                      className="align-top small-font black-text p-2"
+                      className={`${
+                        rowColor ? rowColor(row) : "black-text"
+                      } align-top small-font p-2`}
                     >
                       {row[column?.field]}
                     </td>
