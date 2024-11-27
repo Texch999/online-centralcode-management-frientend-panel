@@ -245,7 +245,7 @@ function DeletedBetHistory() {
       <Table
         columns={BET_HISTORY_COLUMNS}
         data={BET_HISTORY_DATA}
-        itemsPerPage={5}
+        itemsPerPage={2}
         rowColor={(row) => row?.rowColor}
       />
     </div>
