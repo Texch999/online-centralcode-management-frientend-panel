@@ -75,12 +75,9 @@
   color: #ffffff;
   border: none;
 }
-.select-none {
-  outline: none;
-  border: none;
-}
+
 .border-black {
-  border: 1px solid #0000001A
+  border: 1px solid #0000001a;
 }
 .overflow-y {
   overflow-y: hidden;
@@ -104,9 +101,24 @@
 .font-15 {
   font-size: 15px;
 }
-.fw-800{
+.fw-800 {
   font-weight: 800;
 }
-.radius-20{
+.radius-20 {
   border-radius: 20px;
+}
+.white-input{
+  background: #FFFFFF;
+  border: 1px solid #0000001A;
+  padding: 0.6rem;
+  border-radius: 5px;
+}
+.br-5{
+  border-radius: 5px;
+}
+.w-fit{
+  width: fit-content;
+}
+.radius-50{
+  border-radius: 50px;
 }

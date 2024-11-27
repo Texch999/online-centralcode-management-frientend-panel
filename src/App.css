@@ -196,7 +196,7 @@
 }
 .input-css {
   background: #f2f2f2;
-  border: none;
+  border: 2px solid #f2f2f2;
   outline: none;
   color: #1c1c1c;
   font-weight: 500;
@@ -303,4 +303,16 @@
 .chat-img {
   height: 1.5rem;
   width: 1.5rem;
+}
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.white-bg2 {
+  background-color: #ffffff;
+}
+.white-bg2:hover {
+  background-color: #ffa310;
+  border: none;
+  color: white;
 }

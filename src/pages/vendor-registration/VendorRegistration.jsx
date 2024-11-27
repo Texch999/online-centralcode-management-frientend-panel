@@ -125,9 +125,12 @@ const VendorRegistration = () => {
             );
           })}
         </div>
-        <div className="flex-center white-bg grey-border px-3 py-1 rounded-pill me-2 pointer black-text2" onClick={addNewProviderModal}>
+        <div className="flex-center white-bg2 grey-border px-3 py-1 rounded-pill me-2 pointer black-text2 " 
+        onClick={()=>{addNewProviderModal()
+          handleClick(null)
+        }}>
           <IoMdAdd size={19} />
-          <span className="ps-2  small-font">Add New Provider</span>
+          <span className="ps-2 medium-font">Add New Provider</span>
         </div>
       </div>
 
@@ -140,16 +143,17 @@ const VendorRegistration = () => {
         {activeBtn === 1 && (
           <div className="dashboard-white-bg box-shadow radius p-3">
             <div className="d-felx w-100 d-flex align-items-center">
-              <div className="col-4 felx-column px-2 text-black pointer">
-                <label className="medium-font">Providers</label>
-                <div className="input-css small-font text-black w-100 d-flex flex-between" onClick={handleProvidersModal}>
+              <div className="col-4 felx-column px-2 text-black ">
+                <label className="small-font">Providers</label>
+                <div className="input-css small-font text-black pointer w-100 d-flex flex-between" 
+                onClick={handleProvidersModal}>
                 <span> Select</span>
                   <FaChevronDown className="font-15 grey-clr" />
                 </div>
               </div>
-              <div className="col-4 felx-column px-2 text-black pointer">
-                <label className="medium-font">Games</label>
-                <div className="input-css small-font text-black w-100 d-flex flex-between" onClick={handleGamesModal}>
+              <div className="col-4 felx-column px-2 text-black">
+                <label className="small-font">Games</label>
+                <div className="input-css small-font text-black pointer w-100 d-flex flex-between" onClick={handleGamesModal}>
                   <span> Select</span>
                   <FaChevronDown className="font-15 grey-clr" />
                 </div>

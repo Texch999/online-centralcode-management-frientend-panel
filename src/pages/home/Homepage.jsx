@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import ScrollTable from "../../components/ScrollTable";
 import { useNavigate } from "react-router-dom";
-import { PiHandCoinsFill} from "react-icons/pi";
+import { PiHandCoinsFill } from "react-icons/pi";
 import { FaCoins } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 
@@ -650,7 +650,7 @@ function Homepage() {
                 })}
               </div>
               <div className=" pointer">
-                <select className="all-none w-100 input-css2 px-1 py-2 radius-20 text-black">
+                <select className="all-none w-100 input-css2 px-2 py-2 radius-20 text-black">
                   <option>Today</option>
                   <option>Tomorrow</option>
                   <option>yesterday</option>

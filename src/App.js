@@ -13,6 +13,9 @@ import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
 import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 import RiskCasino from "./pages/risk-management/RiskCasino";
+import Sports from "./pages/sports/Sports";
+import FancyResult from "./pages/fancy-result/FancyResult";
+import MarketResult from "./pages/market-result/MarketResult";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -45,6 +48,9 @@ function App() {
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
+              <Route path="/sports" element={<Sports/>}/>
+              <Route path="/fancy-results" element={<FancyResult/>}/>
+              <Route path="/market-results" element={<MarketResult/>} />
             </Routes>
           </div>
         </div>
