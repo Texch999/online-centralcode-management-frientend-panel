@@ -13,6 +13,7 @@ import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
 import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 import RiskCasino from "./pages/risk-management/RiskCasino";
+import LiveBetList from "./pages/risk-management/LiveBetList";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -45,6 +46,7 @@ function App() {
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
+              <Route path="/live-bet-list" element={<LiveBetList />} />
             </Routes>
           </div>
         </div>

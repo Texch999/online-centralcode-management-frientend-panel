@@ -91,7 +91,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -113,7 +117,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -135,7 +143,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -190,7 +202,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -198,7 +214,7 @@ function RiskSports() {
       dateTime: "01-10-2024  16:11:00",
       sports: "Cricket",
       matchName: (
-        <div onClick={() => navigate("/risk-bet-history/matchName")}>
+        <div>
           New Zealand Wo vs South Africa Wo - Match ODDS <br />
           M. ID: 12345678934567
         </div>
@@ -217,7 +233,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
@@ -244,7 +264,11 @@ function RiskSports() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye
+            size={18}
+            onClick={() => navigate("/risk-bet-history/matchName")}
+            className="black-text"
+          />
         </div>
       ),
     },
