@@ -30,7 +30,6 @@
   cursor: pointer;
 }
 
-/* Target the table header (th) */
 .management-team-wrapper th {
   background-color: #f4f4f4;
   color: #333;
@@ -40,10 +39,6 @@
   font-size: 14px;
 }
 
-/* Target the <th> element that has "Action" as its content */
-/* .management-team-wrapper th:nth-child(6) {} */
-
-/* Target the table data cells (td) */
 .management-team-wrapper table td {
   border-bottom: 1px solid #e0e0e0;
   border: none;
@@ -83,6 +78,32 @@
   font-size: 14px;
 }
 
+
+/* ----------- */
+
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #FFA310; 
+  box-shadow: 0 0 5px #FFA310; 
+}
+
+.select-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none; 
+  display: flex;
+  align-items: center;
+}
+/* ----------- */
+
 .add-mng-pop-btn {
   padding: 8px 20px 8px 20px !important;
 }
@@ -96,4 +117,93 @@
 .mini-container{
   border-radius: 10px !important;
   padding: 10px;
+}
+
+.super-admin-top-container {
+  position: relative;
+  padding-left: 3.5rem;
+}
+
+.super-admin-top-container img{
+  width: 160px;
+  height: 170px;
+}
+
+.super-admin-profile-img-con {
+  position: absolute;
+  transform: translateY(-30%);
+  left: 20%;
+  z-index: 10;
+}
+
+.super-admin-img-down-content{
+  margin-top: 120px !important;
+}
+
+/* .classnamee{
+  margin: ;
+} */
+
+.mini-container{
+  padding: 0px 0px;
+}
+
+.top-container{
+  padding: 0px 0px;
+}
+
+.director-admin-profile-top-con{
+  background-image: url("../../../public/assets/admin_profile_bg.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 20px;
+}
+
+.director-admin-profile-top-bg-dark{
+  background-color: #2B2C40;
+}
+
+.director-top-bg-icon{
+  background-color: #484964;
+  padding: 7px;
+  border-radius: 50%;
+}
+
+.director-admin-profile-active-btn{
+  background-color: #56CA00;
+}
+
+.director-profile-tab-btn button{
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.director-admin-profile-bottom-section-right{
+  border: solid 2px #FFA310;
+  border-radius: 1rem;
+  background-color: #F5F7FF !important;
+  margin-right: 1rem;
+}
+
+.director-admin-profile-bottom-section-right input{
+  background-color: #ffffff;
+}
+
+.direct-admin-profile-bottom-card{
+  width: 30%;
+}
+
+
+.director-admin-profile-toggle-btn .form-check-input {
+  background-color: #B3FFD6; 
+  border-color: rgba(24, 185, 98, 0.4); 
+  height: 25px;
+  width: 60px;
+  margin-right: 8px;
+}
+
+.director-admin-profile-toggle-btn .form-check-input:checked {
+  background-color: #B3FFD6;
+  border-color: rgba(24, 185, 98, 0.4);
+
 }

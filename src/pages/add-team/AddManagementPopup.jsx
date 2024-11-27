@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IoIosArrowUp } from "react-icons/io";
+import { FiChevronDown } from "react-icons/fi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../add-team/style.css";
 import "../../App.css";
@@ -18,6 +20,12 @@ const AddManagementPopup = ({
     confirmPassword: false,
     managementPassword: false,
   });
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Event handlers for managing focus state
+  const handleFocus = () => setIsOpen(true);
+  const handleBlur = () => setIsOpen(false);
 
   // Handle form value changes
   const handleChange = (e) => {
@@ -42,31 +50,52 @@ const AddManagementPopup = ({
     onSubmit(formData);
   };
 
+
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <div className="d-flex justify-content-between align-items-center pt-4 px-4">
         <h6 className="mb-0 add-management-popup-header">
           {formData.name ? "Edit Management Team" : "Add Management Team"}
         </h6>
-        <MdOutlineClose size={25} type="button" onClick={onClose} aria-label="Close"/>
+        <MdOutlineClose
+          size={25}
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+        />
       </div>
       <Modal.Body>
-        <form className="add-management-popup-form px-3" onSubmit={handleSubmit}>
+        <form
+          className="add-management-popup-form px-3"
+          onSubmit={handleSubmit}
+        >
           <div className="row mb-3">
-            <div className="col-md-4">
+            <div className="col-md-4 position-relative">
               <label>Role</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="form-control"
-              >
-                <option value="">Select</option>
-                <option value="Accounts">Accounts</option>
-                <option value="Designer">Designer</option>
-                <option value="Company Team">Company Team</option>
-              </select>
+              <div className="custom-select-wrapper">
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  className="form-control custom-select"
+                >
+                  <option value="">Select</option>
+                  <option value="Accounts">Accounts</option>
+                  <option value="Designer">Designer</option>
+                  <option value="Company Team">Company Team</option>
+                </select>
+                <div className="select-icon">
+                  {isOpen ? (
+                    <IoIosArrowUp className="up-icon" />
+                  ) : (
+                    <FiChevronDown className="down-icon" />
+                  )}
+                </div>
+              </div>
             </div>
+
             <div className="col-md-4">
               <label>Name</label>
               <input
@@ -124,7 +153,7 @@ const AddManagementPopup = ({
                   cursor: "pointer",
                 }}
               >
-                {showPassword.password ? <FaEyeSlash /> : <FaEye />}
+                {showPassword.password ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
             <div className="col-md-4 position-relative">
@@ -147,7 +176,7 @@ const AddManagementPopup = ({
                   cursor: "pointer",
                 }}
               >
-                {showPassword.confirmPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword.confirmPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
           </div>
@@ -185,11 +214,14 @@ const AddManagementPopup = ({
                   cursor: "pointer",
                 }}
               >
-                {showPassword.managementPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword.managementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
             <div className="col-md-4 d-flex justify-content-center">
-              <Button className="saffron-btn2 add-mng-pop-btn w-100" onClick={handleSubmit}>
+              <Button
+                className="saffron-btn2 add-mng-pop-btn w-100"
+                onClick={handleSubmit}
+              >
                 Submit
               </Button>
             </div>

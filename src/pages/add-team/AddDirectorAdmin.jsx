@@ -281,7 +281,7 @@ const AddDirectorAdmin = () => {
       </div>
 
       <div className="white-bg login-box-shadow rounded pt-2 pb-3">
-        <Table data={tableDataWithActions} columns={columns} itemsPerPage={8} />
+        <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
       </div>
 
       {/* Modal Component */}

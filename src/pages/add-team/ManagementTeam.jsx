@@ -164,7 +164,7 @@ const ManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={12}
+          itemsPerPage={10}
         />
       </div>
 
