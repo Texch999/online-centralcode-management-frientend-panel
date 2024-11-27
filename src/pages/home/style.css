@@ -96,7 +96,9 @@
   font-size: 20px;
 }
 .box-shadow {
-  box-shadow: 0px 0px 9.6px 0px #00000029;
+  /* box-shadow: 0px 0px 9.6px 0px #00000029; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .font-15 {
   font-size: 15px;
@@ -107,18 +109,18 @@
 .radius-20 {
   border-radius: 20px;
 }
-.white-input{
-  background: #FFFFFF;
-  border: 1px solid #0000001A;
+.white-input {
+  background: #ffffff;
+  border: 1px solid #0000001a;
   padding: 0.6rem;
   border-radius: 5px;
 }
-.br-5{
+.br-5 {
   border-radius: 5px;
 }
-.w-fit{
+.w-fit {
   width: fit-content;
 }
-.radius-50{
+.radius-50 {
   border-radius: 50px;
 }

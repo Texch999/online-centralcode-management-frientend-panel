@@ -16,6 +16,7 @@ import RiskCasino from "./pages/risk-management/RiskCasino";
 import Sports from "./pages/sports/Sports";
 import FancyResult from "./pages/fancy-result/FancyResult";
 import MarketResult from "./pages/market-result/MarketResult";
+import LiveBetList from "./pages/risk-management/LiveBetList";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -48,9 +49,10 @@ function App() {
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
-              <Route path="/sports" element={<Sports/>}/>
-              <Route path="/fancy-results" element={<FancyResult/>}/>
-              <Route path="/market-results" element={<MarketResult/>} />
+              <Route path="/sports" element={<Sports />} />
+              <Route path="/fancy-results" element={<FancyResult />} />
+              <Route path="/market-results" element={<MarketResult />} />
+              <Route path="/live-bet-list" element={<LiveBetList />} />
             </Routes>
           </div>
         </div>
