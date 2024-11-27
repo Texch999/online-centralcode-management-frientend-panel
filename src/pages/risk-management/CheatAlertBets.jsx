@@ -8,14 +8,18 @@ import {
 } from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
 
-function LiveBetList() {
+function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState();
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
+  };
+  const handleChange = (e) => {
+    setSelectedType(e.target.value);
   };
   const SPORTS_BUTTONS = [
     "All",
@@ -30,7 +34,7 @@ function LiveBetList() {
     "Kabaddi",
     "Casino",
   ];
-  const BET_HISTORY_COLUMNS = [
+  const CHEAT_ALERTS_COLUMNS = [
     { header: "Date & Time/IP Add", field: "dateTime" },
     { header: "User / Market Name", field: "users" },
     { header: "M.ID - Game Name - Match.ID", field: "matchName" },
@@ -40,7 +44,172 @@ function LiveBetList() {
     { header: "Lay", field: "lay" },
     { header: "Status", field: "status", width: "10%" },
   ];
-  const BET_HISTORY_DATA = [
+  const CHEAT_DATA = [
+    {
+      dateTime: (
+        <div>
+          <span className="red-font">Last Min: 00:10sec</span>
+          <br />
+          01-10-2024
+          <br />
+          16:11:00
+          <br />
+          IP: 157.47.47.187
+        </div>
+      ),
+      users: (
+        <div>
+          M.Name: T Exchange
+          <br />
+          User: Srinivas {">"} Ag: Jayanta {">"} <br />
+          Mas: Lokesh {">"} S M: Sangram {">"}
+          <br />S A: Sudheer {">"} Adm: Nani {">"}
+          <br />
+          Sup A: Harish {">"} Dir: Sri Lakshmi
+        </div>
+      ),
+      matchName: (
+        <div>
+          M ID: 1.11045677544
+          <br />
+          Match: Chennai Super Kings <br /> vs Rajasthan Royals (T20 World Cup)
+          <br />
+          Match ID: 11023843754858
+        </div>
+      ),
+      betPlaced: <div>Odds</div>,
+      selection: (
+        <div>
+          <div>Selection: Chennai Super Kings</div>
+          <div className="back-clr">Side: Back</div>
+          <div>Odds Rate: 1.50</div>
+          <div>B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      back: <div className="back-btn">10000000</div>,
+      lay: <div className="lay-btn">10000000</div>,
+      status: (
+        <div>
+          <div className="green-btn">Settled</div>
+          <div className="flex-around mt-2">
+            <MdOutlineModeEditOutline
+              size={18}
+              onClick={handleEditBetPopupOpen}
+            />
+            <MdOutlineDelete size={18} />
+          </div>
+        </div>
+      ),
+    },
+    {
+      dateTime: (
+        <div>
+          <span className="red-font">Last Min: 00:10sec</span>
+          <br />
+          01-10-2024
+          <br />
+          16:11:00
+          <br />
+          IP: 157.47.47.187
+        </div>
+      ),
+      users: (
+        <div>
+          M.Name: T Exchange
+          <br />
+          User: Srinivas {">"} Ag: Jayanta {">"} <br />
+          Mas: Lokesh {">"} S M: Sangram {">"}
+          <br />S A: Sudheer {">"} Adm: Nani {">"}
+          <br />
+          Sup A: Harish {">"} Dir: Sri Lakshmi
+        </div>
+      ),
+      matchName: (
+        <div>
+          M ID: 1.11045677544
+          <br />
+          Match: Chennai Super Kings <br /> vs Rajasthan Royals (T20 World Cup)
+          <br />
+          Match ID: 11023843754858
+        </div>
+      ),
+      betPlaced: <div>Odds</div>,
+      selection: (
+        <div>
+          <div>Selection: Chennai Super Kings</div>
+          <div className="lay-clr">Side: Lay</div>
+          <div>Odds Rate: 1.50</div>
+          <div>B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      back: <div className="back-btn">10000000</div>,
+      lay: <div className="lay-btn">10000000</div>,
+      status: (
+        <div>
+          <div className="red-btn">Deleted</div>
+          <div className="flex-around mt-2">
+            <MdLoop size={20} className="red-font" />
+          </div>
+        </div>
+      ),
+      rowColor: "red-font",
+    },
+    {
+      dateTime: (
+        <div>
+          <span className="red-font">Last Min: 00:10sec</span>
+          <br />
+          01-10-2024
+          <br />
+          16:11:00
+          <br />
+          IP: 157.47.47.187
+        </div>
+      ),
+      users: (
+        <div>
+          M.Name: T Exchange
+          <br />
+          User: Srinivas {">"} Ag: Jayanta {">"} <br />
+          Mas: Lokesh {">"} S M: Sangram {">"}
+          <br />S A: Sudheer {">"} Adm: Nani {">"}
+          <br />
+          Sup A: Harish {">"} Dir: Sri Lakshmi
+        </div>
+      ),
+      matchName: (
+        <div>
+          M ID: 1.11045677544
+          <br />
+          Match: Chennai Super Kings <br /> vs Rajasthan Royals (T20 World Cup)
+          <br />
+          Match ID: 11023843754858
+        </div>
+      ),
+      betPlaced: <div>Odds</div>,
+      selection: (
+        <div>
+          <div>Selection: Chennai Super Kings</div>
+          <div>Side: Back</div>
+          <div>Odds Rate: 1.50</div>
+          <div>B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      back: <div className="back-btn">10000000</div>,
+      lay: <div className="lay-btn">10000000</div>,
+      status: (
+        <div>
+          <div className="edit-btn">Edited</div>
+        </div>
+      ),
+      rowColor: "yellow-font",
+    },
+  ];
+
+  const ALERTS_DATA = [
     {
       dateTime: (
         <div>
@@ -49,6 +218,8 @@ function LiveBetList() {
           16:11:00
           <br />
           IP: 157.47.47.187
+          <br />
+          <span className="red-font">IP: 157.47.47.187</span>
         </div>
       ),
       users: (
@@ -198,18 +369,14 @@ function LiveBetList() {
       rowColor: "yellow-font",
     },
   ];
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Live Bet List - Sports/Casino</h6>
-        <div className="d-flex align-items-center">
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
-          </div>
-          <div className="small-font">
-            P/L : <span className="white-btn2 green-font">10000000</span>
-          </div>
+        <h6 className="yellow-font mb-0">Cheat/Alert Bets</h6>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
+          <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
       <div className="d-flex small-font pb-3">
@@ -227,27 +394,28 @@ function LiveBetList() {
       </div>
       <div className="row mb-3">
         <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">
-            Order of Display
-          </label>
+          <label className="black-text4 small-font mb-1">Cheat/Alert</label>
+          <select onChange={handleChange} className="input-css2 small-font">
+            <option value="cheats">Cheats</option>
+            <option value="alerts">Alerts</option>
+          </select>
+        </div>
+        <div className="col flex-column">
+          <label className="black-text4 small-font mb-1">From</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col flex-column">
+          <label className="black-text4 small-font mb-1">To</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col flex-column">
+          <label className="black-text4 small-font mb-1">User Name</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
         </div>
         <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">High Value</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
-        </div>
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">Last</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
-        </div>
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">Bet Status</label>
+          <label className="black-text4 small-font mb-1">Website Name</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
@@ -257,8 +425,8 @@ function LiveBetList() {
         </div>
       </div>
       <Table
-        columns={BET_HISTORY_COLUMNS}
-        data={BET_HISTORY_DATA}
+        columns={CHEAT_ALERTS_COLUMNS}
+        data={selectedType === "alerts" ? ALERTS_DATA : CHEAT_DATA}
         itemsPerPage={2}
         rowColor={(row) => row?.rowColor}
       />
@@ -270,4 +438,4 @@ function LiveBetList() {
   );
 }
 
-export default LiveBetList;
+export default CheatAlertBets;
