@@ -5,4 +5,7 @@ export const Images = {
   loginUserLock: "assets/loginUser.png",
   S7Logo: "/assets/S7_Logo.png",
   ProfileImage: "/assets/Profile_Image.png",
+  ChatIcon: "/assets/Chat_Icon.png",
+  Poster1: "/assets/poster1.png",
+  Poster2: "/assets/poster2.png",
 };

@@ -12,14 +12,14 @@ const RecentAccessIp = () => {
   const [activeRow, setActiveRow] = useState(null);
 
   const ACTIVITY_COLUMNS = [
-    { header: "Prod", field: "prod" },
+    { header: "Prod", field: "prod", width: "10%" },
 
-    { header: "First Date/Time", field: "firstDateTime" },
-    { header: "Last Date/Time", field: "lastDateTime" },
-    { header: "Duration", field: "duration" },
-    { header: "Method", field: "method" },
-    { header: "IP", field: "ip" },
-    { header: "Configure", field: "configure" },
+    { header: "First Date/Time", field: "firstDateTime", width: "20%" },
+    { header: "Last Date/Time", field: "lastDateTime", width: "20%" },
+    { header: "Duration", field: "duration", width: "20%" },
+    { header: "Method", field: "method", width: "20%" },
+    { header: "IP", field: "ip", width: "20%" },
+    { header: "Configure", field: "configure", width: "10%" },
   ];
   const ACTIVITY_DATA = [
     {
@@ -44,7 +44,46 @@ const RecentAccessIp = () => {
 
       configure: (
         <div className="relative">
-          <IoSettingsOutline size={24} onClick={() => setActiveRow(true)} />
+          <div className="w-100 flex-center pointer">
+            <IoSettingsOutline
+              size={24}
+              onClick={() => setActiveRow(!activeRow)}
+            />
+          </div>
+
+          {activeRow && (
+            <div className="absolute box-shadow-table remove-list p-2 rounded white-bg">
+              Remove From Allow list
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      prod: (
+        <div>
+          <FaCheckCircle className="green-font" size={24} />
+        </div>
+      ),
+
+      firstDateTime: <div>10-10-2024 13:08:00</div>,
+
+      lastDateTime: <div>11-10-2024 13:08:00</div>,
+
+      duration: (
+        <div>
+          <span>10s</span>
+        </div>
+      ),
+      method: <div>Web</div>,
+      location: <div>Boulder, Colorado</div>,
+      ip: <div>157.47.47.187</div>,
+      configure: (
+        <div className="relative">
+          <div className="w-100 flex-center">
+            <IoSettingsOutline size={24} onClick={() => setActiveRow(true)} />
+          </div>
+
           <div className="absolute box-shadow-table remove-list p-2 rounded white-bg">
             Remove From Allow list
           </div>
@@ -71,8 +110,14 @@ const RecentAccessIp = () => {
       location: <div>Boulder, Colorado</div>,
       ip: <div>157.47.47.187</div>,
       configure: (
-        <div>
-          <IoSettingsOutline size={24} />
+        <div className="relative">
+          <div className="w-100 flex-center">
+            <IoSettingsOutline size={24} onClick={() => setActiveRow(true)} />
+          </div>
+
+          <div className="absolute box-shadow-table remove-list p-2 rounded white-bg">
+            Remove From Allow list
+          </div>
         </div>
       ),
     },
@@ -96,8 +141,14 @@ const RecentAccessIp = () => {
       location: <div>Boulder, Colorado</div>,
       ip: <div>157.47.47.187</div>,
       configure: (
-        <div>
-          <IoSettingsOutline size={24} />
+        <div className="relative">
+          <div className="w-100 flex-center">
+            <IoSettingsOutline size={24} onClick={() => setActiveRow(true)} />
+          </div>
+
+          <div className="absolute box-shadow-table remove-list p-2 rounded white-bg">
+            Remove From Allow list
+          </div>
         </div>
       ),
     },
@@ -121,8 +172,14 @@ const RecentAccessIp = () => {
       location: <div>Boulder, Colorado</div>,
       ip: <div>157.47.47.187</div>,
       configure: (
-        <div>
-          <IoSettingsOutline size={24} />
+        <div className="relative">
+          <div className="w-100 flex-center">
+            <IoSettingsOutline size={24} onClick={() => setActiveRow(true)} />
+          </div>
+
+          <div className="absolute box-shadow-table remove-list p-2 rounded white-bg">
+            Remove From Allow list
+          </div>
         </div>
       ),
     },
@@ -146,33 +203,14 @@ const RecentAccessIp = () => {
       location: <div>Boulder, Colorado</div>,
       ip: <div>157.47.47.187</div>,
       configure: (
-        <div>
-          <IoSettingsOutline size={24} />
-        </div>
-      ),
-    },
-    {
-      prod: (
-        <div>
-          <FaCheckCircle className="green-font" size={24} />
-        </div>
-      ),
+        <div className="relative">
+          <div className="w-100 flex-center">
+            <IoSettingsOutline size={24} onClick={() => setActiveRow(true)} />
+          </div>
 
-      firstDateTime: <div>10-10-2024 13:08:00</div>,
-
-      lastDateTime: <div>11-10-2024 13:08:00</div>,
-
-      duration: (
-        <div>
-          <span>10s</span>
-        </div>
-      ),
-      method: <div>Web</div>,
-      location: <div>Boulder, Colorado</div>,
-      ip: <div>157.47.47.187</div>,
-      configure: (
-        <div>
-          <IoSettingsOutline size={24} />
+          <div className="absolute box-shadow-table remove-list p-2 rounded white-bg">
+            Remove From Allow list
+          </div>
         </div>
       ),
     },
@@ -186,11 +224,6 @@ const RecentAccessIp = () => {
 
             <FaGreaterThan className="medium-font m-1" />
             <h6 className="saffron-clr">{userActivity}</h6>
-          </div>
-
-          <div className="grey-border rounded-pill grey-clr d-flex align-items-center px-2">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
           </div>
         </div>
       </div>

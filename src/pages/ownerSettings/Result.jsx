@@ -257,14 +257,14 @@ const Result = () => {
     },
   ];
   const CRICKET_COLUMNS = [
-    { header: "Date & Time", field: "dateTime" },
-    { header: "Sports", field: "sports" },
-    { header: "Series Name", field: "seriesName" },
-    { header: "Match Name", field: "matchName" },
-    { header: "Result", field: "result" },
-    { header: "Runs", field: "runs" },
-    { header: "Result Date & Time", field: "resultDateTime" },
-    { header: "View Fancy", field: "viewFancy" },
+    { header: "Date & Time", field: "dateTime" , width:"10%", },
+    { header: "Sports", field: "sports" , width:"10%", },
+    { header: "Series Name", field: "seriesName" , width:"20%",},
+    { header: "Match Name", field: "matchName", width:"20%", },
+    { header: "Result", field: "result" , width:"10%",},
+    { header: "Runs", field: "runs" , width:"10%",},
+    { header: "Result Date & Time", field: "resultDateTime", width:"12%", },
+    { header: "View Fancy", field: "viewFancy" , width:"8%",},
   ];
 
   const CRICKET_DATA = [
@@ -316,7 +316,7 @@ const Result = () => {
         </div>
       ),
       viewFancy: (
-        <div className="flex-center large-font">
+        <div className="flex-center large-font w-100 flex-center">
           <MdOutlineRemoveRedEye />
         </div>
       ),

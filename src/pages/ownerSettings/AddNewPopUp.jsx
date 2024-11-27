@@ -38,7 +38,7 @@ const AddNewPopUp = ({
                 <input
                   type="text"
                   placeholder="Enter"
-                  className="all-none input-bg small-font p-1 rounded"
+                  className="all-none input-bg small-font p-2 rounded"
                 />
               </div>
 
@@ -90,7 +90,7 @@ const AddNewPopUp = ({
                 <input
                   type="text"
                   placeholder="Enter"
-                  className="all-none input-bg small-font p-1 rounded"
+                  className="all-none input-bg small-font p-2 rounded"
                 />
               </div>
               <div className="row">

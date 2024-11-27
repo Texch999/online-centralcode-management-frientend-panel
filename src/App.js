@@ -15,6 +15,7 @@ import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 import RiskCasino from "./pages/risk-management/RiskCasino";
 import ActivityLogs from "./pages/ownerSettings/ActivityLogs";
 import RecentAccessIp from "./pages/ownerSettings/RecentAccessIp";
+import PromotionType from "./pages/promotions/PromotionType";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -43,6 +44,7 @@ function App() {
               <Route path="/risk-casino" element={<RiskCasino />} />
               <Route path="/activity-logs" element={<ActivityLogs />} />
               <Route path="/userActivity/:userActivity" element={<RecentAccessIp />} />
+              <Route path="/create-promotion-type" element={<PromotionType />} />
             </Routes>
           </div>
         </div>

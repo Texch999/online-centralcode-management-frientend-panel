@@ -55,12 +55,12 @@ function RiskSports() {
   ];
 
   const MATCH_ODDS_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Sports", field: "sports" },
-    { header: "Match Name", field: "matchName" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Sports", field: "sports", width: "10%" },
+    { header: "Match Name", field: "matchName", width: "40%" },
     {
       header: (
-        <div className="orange-bg text-center border">
+        <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -70,8 +70,9 @@ function RiskSports() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "", field: "view" },
+    { header: "", field: "view", width: "5%" },
   ];
 
   const MATCH_ODDS_DATA = [
@@ -91,17 +92,43 @@ function RiskSports() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      sports: "Cricket",
+      matchName: (
+        <div>
+          New Zealand Wo vs South Africa Wo - Match ODDS <br />
+          M. ID: 12345678934567
+        </div>
+      ),
+      profit_loss: (
+        <div className="w-100 flex-around">
+          <span className="red-font">10000000</span>
+          <span>10000000</span>
+          <span className="green-font">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 
   const FANCY_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Sports", field: "sports" },
-    { header: "Match Name", field: "matchName" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Sports", field: "sports", width: "10%" },
+    { header: "Match Name", field: "matchName", width: "30%" },
     {
       header: (
-        <div className="orange-bg text-center border">
+        <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>NO</span>
@@ -110,9 +137,10 @@ function RiskSports() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "Status", field: "status" },
-    { header: "", field: "view" },
+    { header: "Status", field: "status", width: "10%" },
+    { header: "", field: "view", width: "5%" },
   ];
   const FANCY_DATA = [
     {
@@ -132,7 +160,11 @@ function RiskSports() {
         </div>
       ),
       status: <button className="green-btn">Declared</button>,
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 

@@ -38,11 +38,11 @@ function RiskCasino() {
 
   //WEBSITE_WISE
   const WEBSITE_WISE_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Website", field: "website" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Website", field: "website", width: "50%" },
     {
       header: (
-        <div className="orange-bg text-center border">
+        <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -52,8 +52,9 @@ function RiskCasino() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "", field: "view" },
+    { header: "", field: "view", width: "5%" },
   ];
   const WEBSITE_WISE_DATA = [
     {
@@ -66,18 +67,22 @@ function RiskCasino() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 
   // PROVIDER_WISE
   const PROVIDER_WISE_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Provider Name", field: "providerName" },
-    { header: "Provider ID", field: "providerId" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Provider Name", field: "providerName", width: "15%" },
+    { header: "Provider ID", field: "providerId", width: "35%" },
     {
       header: (
-        <div className="orange-bg text-center border">
+        <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -87,8 +92,9 @@ function RiskCasino() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "", field: "view" },
+    { header: "", field: "view", width: "5%" },
   ];
   const PROVIDER_WISE_DATA = [
     {
@@ -102,17 +108,21 @@ function RiskCasino() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 
   //GAME_WISE
   const GAME_WISE_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Game Name", field: "gameName" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Game Name", field: "gameName", width: "50%" },
     {
       header: (
-        <div className="orange-bg text-center border">
+        <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -122,8 +132,9 @@ function RiskCasino() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "", field: "view" },
+    { header: "", field: "view", width: "5%" },
   ];
   const GAME_WISE_DATA = [
     {
@@ -136,21 +147,26 @@ function RiskCasino() {
           <span className="green-font">10000000</span>
         </div>
       ),
-      view: <BsEye size={18} className="black-text" />,
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
     },
   ];
 
   //TABLE_WISE
   const TABLE_WISE_COLUMNS = [
-    { header: "Market Date & Time", field: "dateTime" },
-    { header: "Table ID", field: "tableId" },
+    { header: "Market Date & Time", field: "dateTime", width: "15%" },
+    { header: "Table ID", field: "tableId", width: "15%" },
     {
       header: "Table Name(Game Name, Provider and Website)",
       field: "tableName",
+      width: "35%",
     },
     {
       header: (
-        <div className="orange-bg text-center border">
+        <div className="orange-bg text-center">
           <div>P/L</div>
           <div className="w-100  flex-around border-top">
             <span>1</span>
@@ -160,8 +176,9 @@ function RiskCasino() {
         </div>
       ),
       field: "profit_loss",
+      width: "30%",
     },
-    { header: "", field: "view" },
+    { header: "", field: "view", width: "5%" },
   ];
   const TABLE_WISE_DATA = [
     {
@@ -183,9 +200,14 @@ function RiskCasino() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Risk Management - Casino</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
+        <div className="d-flex align-items-center">
+          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
+            <FaSearch size={16} className="grey-clr me-2" />
+            <input className="small-font all-none" placeholder="Search..." />
+          </div>
+          <div className="small-font">
+            P/L : <span className="white-btn2 green-font">10000000</span>
+          </div>
         </div>
       </div>
       <div className="small-font pb-3 d-flex">

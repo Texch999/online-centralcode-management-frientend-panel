@@ -28,6 +28,11 @@ body {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.table-wrapper {
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0px 15px 35px 0px #00000030;
+}
 ::-webkit-scrollbar {
   width: 5px;
 }

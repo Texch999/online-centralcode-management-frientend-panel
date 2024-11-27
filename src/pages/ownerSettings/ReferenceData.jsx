@@ -16,9 +16,9 @@ const ReferenceData = () => {
   };
 
   const SECURITY_COLUMNS = [
-    { header: "Questions", field: "questions" },
-    { header: "Status", field: "status" },
-    { header: "Action", field: "action" },
+    { header: "Questions", field: "questions", width: "80%" },
+    { header: "Status", field: "status", width: "10%" },
+    { header: "Action", field: "action", width: "10%" },
   ];
 
   const SECURITY_DATA = [
@@ -121,10 +121,10 @@ const ReferenceData = () => {
   ];
 
   const REJECTION_COLUMNS = [
-    { header: "Reason", field: "reason", width:"30%", },
-    { header: "Discriptions", field: "discriptions",width:"30%", },
-    { header: "Status", field: "status",width:"30%", },
-    { header: "Action", field: "action",width:"30%", },
+    { header: "Reason", field: "reason", width: "30%" },
+    { header: "Discriptions", field: "discriptions", width: "55%" },
+    { header: "Status", field: "status", width: "10%" },
+    { header: "Action", field: "action", width: "5%" },
   ];
   const REJECTION_DATA = [
     {
@@ -139,7 +139,11 @@ const ReferenceData = () => {
         </div>
       ),
 
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div className="green-btn">
+          <div className="w-100 flex-center">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
@@ -321,30 +325,43 @@ const ReferenceData = () => {
             ? "Rejection Reasons"
             : "Add Security Questions"}
         </div>
-        {activeBtn==="Rejection Reasons"?<div className="col-5 d-flex flex-between"> <div className="col-5 ">
-          <select className="input-css2 col-12 mt-4 small-font">
-            <option>All</option>
-          </select>
-        </div>
-        <div className="saffron-btn2 small-font pointer mt-4 col-3 mx-2">Submit</div>
-        <div
-          className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center "
-          onClick={() => setAddNewModalRejection(true)}
-        >
-          <IoAddOutline className="large-font" /> Add new
-        </div></div>:<div className="col-5 d-flex flex-between"> <div className="col-5 ">
-          <select className="input-css2 col-12 mt-4 small-font">
-            <option>All</option>
-          </select>
-        </div>
-        <div className="saffron-btn2 small-font pointer mt-4 col-3">Submit</div>
-        <div
-          className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center"
-          onClick={() => setAddNewModalSecurity(true)}
-        >
-          <IoAddOutline className="large-font" /> Add new
-        </div></div>}
-       
+        {activeBtn === "Rejection Reasons" ? (
+          <div className="col-5 d-flex flex-between">
+            {" "}
+            <div className="col-5 ">
+              <select className="input-css2 col-12 mt-4 small-font">
+                <option>All</option>
+              </select>
+            </div>
+            <div className="saffron-btn2 small-font pointer mt-4 col-3 mx-2">
+              Submit
+            </div>
+            <div
+              className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center "
+              onClick={() => setAddNewModalRejection(true)}
+            >
+              <IoAddOutline className="large-font" /> Add new
+            </div>
+          </div>
+        ) : (
+          <div className="col-5 d-flex flex-between">
+            {" "}
+            <div className="col-5 ">
+              <select className="input-css2 col-12 mt-4 small-font">
+                <option>All</option>
+              </select>
+            </div>
+            <div className="saffron-btn2 small-font pointer mt-4 col-3">
+              Submit
+            </div>
+            <div
+              className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center"
+              onClick={() => setAddNewModalSecurity(true)}
+            >
+              <IoAddOutline className="large-font" /> Add new
+            </div>
+          </div>
+        )}
       </div>
       <div className="white-bg login-box-shadow p-1 mt-4 rounded">
         {activeBtn === "Rejection Reasons" ? (
