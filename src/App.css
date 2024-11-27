@@ -8,7 +8,9 @@
   background: #ffffff;
 }
 .login-box-shadow {
-  box-shadow: 0px 25px 65px 0px #00000029;
+  /* box-shadow: 0px 25px 65px 0px #00000029; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .h-fill {
   height: -webkit-fill-available !important;
@@ -60,7 +62,7 @@
   font-weight: 500 !important;
   padding: 0.5rem !important;
   text-align: center !important;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
 }
 .balck-btn {
   background: #3d3d3d !important;
@@ -101,7 +103,7 @@
   color: #000000 !important;
   font-weight: 500 !important;
   padding: 0.5rem !important;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
 }
 .white-hover:hover {
   color: #000000 !important;
@@ -117,7 +119,7 @@
 }
 .rust-red-btn {
   background: #d0431c;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
   border: none;
   outline: none;
   color: #ffffff;
@@ -128,7 +130,7 @@
 .green-btn {
   border: 2px solid #18b962;
   background: #b3ffd6;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
   outline: none;
   color: #18b962;
   font-weight: 500;
@@ -136,11 +138,21 @@
   text-align: center;
 }
 .red-btn {
-  border: 1px solid #f43a23;
+  border: 2px solid #f43a23;
   background: #ffcac3;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
   outline: none;
   color: #f43a23;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
+.edit-btn {
+  border: 2px solid #ffa310;
+  background: #ffe2b3;
+  border-radius: 0.35rem;
+  outline: none;
+  color: #ffa310;
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
@@ -150,12 +162,14 @@
   padding: 0.25rem;
   color: #18b962;
   border-radius: 3px;
+  text-align: center;
 }
 .lay-btn {
   background: #e8ebf5;
   padding: 0.25rem;
   color: #d0431c;
   border-radius: 3px;
+  text-align: center;
 }
 .logo-img {
   height: 8vh;
@@ -192,7 +206,7 @@
   width: 1.2rem;
 }
 .loginbox-radius {
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
 }
 .input-css {
   background: #f2f2f2;
@@ -201,11 +215,11 @@
   color: #1c1c1c;
   font-weight: 500;
   padding: 0.5rem;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
 }
 .orange-btn {
   background: #fc9b4e;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
   border: none;
   outline: none;
   color: #ffffff;
@@ -233,13 +247,15 @@
 .grey-border {
   border: 2px solid #e0e0e0;
 }
+.white-space {
+  white-space: nowrap;
+}
 .chat-border {
   border-left: 2px solid #e0e0e0;
   border-right: 2px solid #e0e0e0;
 }
 .yellow-font {
-  color: #ffa310;
-  font-weight: 500;
+  color: #ffa310 !important;
 }
 .input-css2 {
   background: #ffffff;
@@ -248,7 +264,7 @@
   color: #727272;
   font-weight: 500;
   padding: 0.5rem;
-  border-radius: 0.25rem;
+  border-radius: 0.35rem;
 }
 .input-pill {
   background: #ffffff;
@@ -274,7 +290,7 @@
   border: 1px solid #1d1d1d;
 }
 .br-3px {
-  border-radius: 3px;
+  border-radius: 2px;
 }
 .text-ellipsis {
   white-space: nowrap;
@@ -285,7 +301,7 @@
   color: #18b962 !important;
 }
 .red-font {
-  color: #d0431c;
+  color: #d0431c !important;
 }
 .orange-bg {
   background: #fffadd;
@@ -299,4 +315,19 @@
 .chat-img {
   height: 1.5rem;
   width: 1.5rem;
+}
+.border-left {
+  border-left: 1px solid #dee2e6 !important;
+}
+.border-right {
+  border-right: 1px solid #dee2e6 !important;
+}
+.mb-1rem {
+  margin-bottom: -1rem;
+}
+.back-clr {
+  color: #2f96e3;
+}
+.lay-clr {
+  color: #fe7373;
 }

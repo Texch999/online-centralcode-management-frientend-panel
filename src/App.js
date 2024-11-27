@@ -9,9 +9,16 @@ import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import ManagementTeam from "./pages/add-team/ManagementTeam";
 import RiskSports from "./pages/risk-management/RiskSports";
 import AddDirectorAdmin from "./pages/add-team/AddDirectorAdmin";
+import DashboardViewAll from "./pages/home/DashboardViewAll";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
+import CasinoVendor from "./pages/casino/CasinoVendor";
+import CasinoGames from "./pages/casino/CasinoGames";
+import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import RiskCasino from "./pages/risk-management/RiskCasino";
+import LiveBetList from "./pages/risk-management/LiveBetList";
+import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
+import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -33,10 +40,26 @@ function App() {
               <Route path="/risk-sports" element={<RiskSports />} />
               <Route path="/downline-list" element={<UserProfileDashboard />} />
               <Route
+                path="/dashboard-view-all"
+                element={<DashboardViewAll />}
+              />
+              <Route
                 path="/risk-bet-history/:matchName"
                 element={<RiskBetHistory />}
               />
+              <Route path="/casino-vendor" element={<CasinoVendor />} />
+              <Route path="/casino-games" element={<CasinoGames />} />
+              <Route
+                path="/vendor-registartion"
+                element={<VendorRegistration />}
+              />
               <Route path="/risk-casino" element={<RiskCasino />} />
+              <Route path="/live-bet-list" element={<LiveBetList />} />
+              <Route
+                path="/deleted-bet-history"
+                element={<DeletedBetHistory />}
+              />
+              <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
             </Routes>
           </div>
         </div>

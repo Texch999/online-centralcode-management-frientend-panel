@@ -42,12 +42,12 @@ function RiskCasino() {
     { header: "Website", field: "website", width: "50%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -61,10 +61,42 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       website: "T Exchange",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      website: "T Exchange",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      website: "T Exchange",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -82,12 +114,12 @@ function RiskCasino() {
     { header: "Provider ID", field: "providerId", width: "35%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -102,10 +134,44 @@ function RiskCasino() {
       providerName: "Ezugi",
       providerId: "12345678912345",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      providerName: "Ezugi",
+      providerId: "12345678912345",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      providerName: "Ezugi",
+      providerId: "12345678912345",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -122,12 +188,12 @@ function RiskCasino() {
     { header: "Game Name", field: "gameName", width: "50%" },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -141,10 +207,42 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       gameName: "Andar Bahar",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      gameName: "Andar Bahar",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center">
+          <BsEye size={18} className="black-text" />
+        </div>
+      ),
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      gameName: "Andar Bahar",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -166,12 +264,12 @@ function RiskCasino() {
     },
     {
       header: (
-        <div className="orange-bg text-center">
+        <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -186,10 +284,36 @@ function RiskCasino() {
       tableId: "12345678912345",
       tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: "",
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      tableId: "12345678912345",
+      tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
+        </div>
+      ),
+      view: "",
+    },
+    {
+      dateTime: "01-10-2024  16:11:00",
+      tableId: "12345678912345",
+      tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
+      profit_loss: (
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: "",
@@ -225,52 +349,44 @@ function RiskCasino() {
         />
       </div>
       <>
-        <h6 className="black-text my-3">
+        <h6 className="black-text mt-4 mb-3">
           Casino Websites (High Risk & Last Bet Players)
         </h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={WEBSITE_WISE_COLUMNS}
-            data={WEBSITE_WISE_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <ScrollTable
+          columns={WEBSITE_WISE_COLUMNS}
+          data={WEBSITE_WISE_DATA}
+          headerPadding="py-0"
+        />
       </>
       <>
-        <h6 className="black-text my-3">
+        <h6 className="black-text mt-4 mb-3">
           Casino Providers Wise (High Risk & Last Bet Players)
         </h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={PROVIDER_WISE_COLUMNS}
-            data={PROVIDER_WISE_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <ScrollTable
+          columns={PROVIDER_WISE_COLUMNS}
+          data={PROVIDER_WISE_DATA}
+          headerPadding="py-0"
+        />
       </>
       <>
-        <h6 className="black-text my-3">
+        <h6 className="black-text mt-4 mb-3">
           Game Wise (High Risk & Last Bet Players)
         </h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={GAME_WISE_COLUMNS}
-            data={GAME_WISE_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <ScrollTable
+          columns={GAME_WISE_COLUMNS}
+          data={GAME_WISE_DATA}
+          headerPadding="py-0"
+        />
       </>
       <>
-        <h6 className="black-text my-3">
+        <h6 className="black-text mt-4 mb-3">
           Table Wise (High Risk & Last Bet Players)
         </h6>
-        <div className="rounded">
-          <ScrollTable
-            columns={TABLE_WISE_COLUMNS}
-            data={TABLE_WISE_DATA}
-            headerPadding="py-0"
-          />
-        </div>
+        <ScrollTable
+          columns={TABLE_WISE_COLUMNS}
+          data={TABLE_WISE_DATA}
+          headerPadding="py-0"
+        />
       </>
     </div>
   );
