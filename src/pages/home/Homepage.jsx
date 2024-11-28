@@ -471,7 +471,7 @@ function Homepage() {
         backgroundColor: "#98BDFF",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 60],
+        data: [15, 20, 25, 30, 35, 40, 52],
       },
 
       {
@@ -479,14 +479,14 @@ function Homepage() {
         backgroundColor: "#4B49AC",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 70],
+        data: [15, 20, 25, 30, 35, 40, 49],
       },
       {
         label: "casino & Sports Sales",
         backgroundColor: "#F3797E",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 80],
+        data: [15, 20, 25, 30, 35, 40, 55],
       },
     ],
   };
@@ -517,7 +517,7 @@ function Homepage() {
                 </div>
               </div>
               <div className="hor-grey-line"></div>
-              <div>
+              <div className="px-3 py-2">
                 <Bar data={barData} />
               </div>
             </div>

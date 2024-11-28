@@ -10,7 +10,7 @@ function ScrollTable({
 }) {
   return (
     <div
-      className={`w-100 table-wrapper ${
+      className={`w-100 table-wrapper overflow ${
         tableHeight ? tableHeight : "table-body-height"
       }`}
     >

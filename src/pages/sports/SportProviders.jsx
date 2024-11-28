@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
+import ActionPopup from "../casino/ActionPopup";
 
 const SportProviders = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { vendor, provider } = location.state || {};
   const handleGameMatches = (match) => {
-    navigate("/sports-matches", { state: { vendor, provider, match } });
+    // navigate("/sports-matches", { state: { vendor, provider, match } });
+    navigate("/cricket", { state: { vendor, provider, match } });
   };
-
+  const [isActive, setIsACtive] = useState(false);
+  const handleActiveModal = () => {
+    setIsACtive(!isActive);
+  };
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
     { header: "Games", field: "games" },
@@ -30,7 +35,7 @@ const SportProviders = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Cricket")}
@@ -46,7 +51,7 @@ const SportProviders = () => {
       ),
       pl: <div className="dark-orange-clr">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch" onClick={handleActiveModal}>
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -64,7 +69,7 @@ const SportProviders = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Football")}
@@ -98,7 +103,7 @@ const SportProviders = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Tennis")}
@@ -249,6 +254,7 @@ const SportProviders = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
+      <ActionPopup show={isActive} setShow={setIsACtive}/>
     </div>
   );
 };

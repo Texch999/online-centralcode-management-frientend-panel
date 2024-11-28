@@ -79,7 +79,7 @@ const Sports = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <span
             className=" font-20"
             onClick={() => handleSportNextPage("Jitendra", "Odds")}

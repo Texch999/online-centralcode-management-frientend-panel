@@ -17,6 +17,8 @@ const SportsMatches = () => {
   const handleDeleteModal = () => {
     setDeleteModal(!deleteModal);
   };
+
+  
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
     { header: "Upcoming Matches", field: "upmatches" },
@@ -60,7 +62,7 @@ const SportsMatches = () => {
       pl: <div className="dark-orange-clr">500000</div>,
       action: (
         <div class="d-flex flex-center">
-         <div onClick={handleBlockModal}>
+          <div onClick={handleBlockModal}>
             <MdBlock className="font-20 dark-orange-clr mx-2" />
           </div>
           <div onClick={handleDeleteModal}>
@@ -111,8 +113,12 @@ const SportsMatches = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
-      <BlockPopup show={blockModal} setShow={setBlockModal} title={"Match"}/>
-      <DeletePopup show={deleteModal} setShow={setDeleteModal} title={"Match"}/>
+      <BlockPopup show={blockModal} setShow={setBlockModal} title={"Match"} />
+      <DeletePopup
+        show={deleteModal}
+        setShow={setDeleteModal}
+        title={"Match"}
+      />
     </div>
   );
 };

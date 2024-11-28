@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
+import ActionPopup from './ActionPopup';
 
 const CasinoGames = () => {
   const naviagte = useNavigate();
   const location = useLocation();
   const { vendor, provider, game } = location.state || {};
+  const [isActive, setIsACtive] = useState(false);
+  const handleActiveModal = () => {
+    setIsACtive(!isActive);
+  };
 
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
@@ -28,7 +33,7 @@ const CasinoGames = () => {
       ),
       pl: <div className="dark-orange-clr">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch" onClick={handleActiveModal}>
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -149,6 +154,7 @@ const CasinoGames = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
+      <ActionPopup show={isActive} setShow={setIsACtive}/>
     </div>
   );
 };

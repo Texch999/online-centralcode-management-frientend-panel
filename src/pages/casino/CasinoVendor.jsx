@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "../casino/style.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
+import ActionPopup from "./ActionPopup";
 
 const CasinoVendor = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { vendor, provider } = location.state || {};
+  const [isActive, setIsACtive] = useState(false);
+  const handleActiveModal = () => {
+    setIsACtive(!isActive);
+  };
 
   const handleGamesPage = (game) => {
     navigate("/casino-games", { state: { vendor, provider, game } });
@@ -44,7 +49,7 @@ const CasinoVendor = () => {
       ),
       pl: <div className="dark-orange-clr">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch" onClick={handleActiveModal}>
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -243,6 +248,7 @@ const CasinoVendor = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
+      <ActionPopup show={isActive} setShow={setIsACtive}/>
     </div>
   );
 };

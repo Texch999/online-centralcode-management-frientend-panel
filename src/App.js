@@ -25,6 +25,7 @@ import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 import RegisterNewVendor from "./pages/vendor-registration/RegisterNewVendor";
 import SportsMatches from "./pages/sports/SportsMatches";
+import Cricket from './pages/cricket/Cricket';
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -71,6 +72,7 @@ function App() {
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
               <Route path="/sports-matches" element={<SportsMatches/>}/>
+              <Route path="/cricket" element={<Cricket/>}/>
             </Routes>
           </div>
         </div>
