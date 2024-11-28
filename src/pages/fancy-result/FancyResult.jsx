@@ -149,7 +149,7 @@ const FancyResult = () => {
   ];
 
   const sportcols = [
-    { header: "Sport", field: "sport" },
+    { header: <div className="flex-center">Sport</div>, field: "sport" },
     { header: "Date & Time", field: "date" },
     { header: "MatchName", field: "match" },
     { header: "Event Id", field: "eid" },
@@ -163,7 +163,7 @@ const FancyResult = () => {
 
   const sportData = [
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -180,7 +180,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -197,7 +197,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -214,7 +214,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -231,7 +231,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -303,10 +303,10 @@ const FancyResult = () => {
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end">
-          <div className="white-input flex-between rounded-pill w-100">
-            <FaSearch size={15} className="grey-clr me-2" />
+          <div className="white-input d-flex rounded-pill align-items-center w-100 px-2">
+            <FaSearch className="grey-clr font-15" />
             <input
-              className="all-none small-font"
+              className="all-none small-font ms-2"
               placeholder="Search Match..."
             />
           </div>

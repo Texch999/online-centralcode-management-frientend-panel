@@ -1,24 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
+import { IoEyeOutline } from "react-icons/io5";
 
 const SportProviders = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const { vendor, provider } = location.state || {};
+  const handleGameMatches = (match) => {
+    navigate("/sports-matches", { state: { vendor, provider, match } });
+  };
 
   const cols = [
-    { header: "S No", field: "sno" },
+    { header: <div className="flex-center">S No</div>, field: "sno" },
     { header: "Games", field: "games" },
+    { header: "", field: "eye" },
     { header: "Status", field: "status" },
+
     { header: "Profit & Loss", field: "pl" },
     { header: "Action", field: "action" },
   ];
 
   const data = [
     {
-      sno: <div>1</div>,
-      games: <div className="pointer">Cricket</div>,
+      sno: <div className="flex-center">1</div>,
+      games: (
+        <div className="pointer" onClick={() => handleGameMatches("Cricket")}>
+          Cricket{" "}
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Cricket")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="green-clr">
           <span className="round-green-dot mx-1"></span>ON
@@ -37,8 +57,22 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div>2</div>,
-      games: <div className="pointer">Football</div>,
+      sno: <div className="flex-center">2</div>,
+      games: (
+        <div className="pointer" onClick={() => handleGameMatches("Football")}>
+          Football
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Football")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -57,8 +91,23 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div>3</div>,
-      games: <div className="pointer">Tennis</div>,
+      sno: <div className="flex-center">3</div>,
+      games: (
+        <div className="pointer" onClick={() => handleGameMatches("Tennis")}>
+          Tennis
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Tennis")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
+
       status: (
         <div className="green-clr">
           <span className="round-green-dot mx-1"></span>ON
@@ -77,8 +126,22 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div>4</div>,
-      games: <div className="pointer">Sic bo</div>,
+      sno: <div className="flex-center">4</div>,
+      games: (
+        <div className="pointer" onClick={() => handleGameMatches("Sic Bo")}>
+          Sic bo
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Sic Bo")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -97,8 +160,25 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div>5</div>,
-      games: <div className="pointer">Tables Game</div>,
+      sno: <div className="flex-center">5</div>,
+      games: (
+        <div
+          className="pointer"
+          onClick={() => handleGameMatches("Table Game")}
+        >
+          Tables Game
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Table Game")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -117,8 +197,25 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div>6</div>,
-      games: <div className="pointer">Black Jack</div>,
+      sno: <div className="flex-center">6</div>,
+      games: (
+        <div
+          className="pointer"
+          onClick={() => handleGameMatches("Black Jack")}
+        >
+          Black Jack
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Black Jack")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -139,11 +236,13 @@ const SportProviders = () => {
   ];
   return (
     <div>
-      <div className="pointer" onClick={() => navigate(-1)}>
-        <span className="grey-clr">Sports {">"}</span>{" "}
-        <span className="grey-clr">{vendor}</span>{" "}
+      <div className="pointer large-font" onClick={() => navigate(-1)}>
+        <span className="grey-clr">
+          Sports <span className="mx-1 font-20">{">"}</span>
+        </span>
+        <span className="text-black">{vendor}</span>
         <span>
-          {">"}
+          <span className="mx-1 font-20">{">"}</span>
           {provider}
         </span>
       </div>

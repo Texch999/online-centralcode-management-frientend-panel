@@ -23,6 +23,8 @@ import LiveBetList from "./pages/risk-management/LiveBetList";
 import SportProviders from "./pages/sports/SportProviders";
 import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
+import RegisterNewVendor from "./pages/vendor-registration/RegisterNewVendor";
+import SportsMatches from "./pages/sports/SportsMatches";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -62,12 +64,13 @@ function App() {
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route path="/live-bet-list" element={<LiveBetList />} />
-              <Route path="/sports-providers" element={<SportProviders/>}/>
+              <Route path="/sports-providers" element={<SportProviders />} />
               <Route
                 path="/deleted-bet-history"
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
+              <Route path="/sports-matches" element={<SportsMatches/>}/>
             </Routes>
           </div>
         </div>

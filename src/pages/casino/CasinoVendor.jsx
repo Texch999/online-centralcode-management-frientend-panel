@@ -2,6 +2,7 @@ import React from "react";
 import "../casino/style.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
+import { IoEyeOutline } from "react-icons/io5";
 
 const CasinoVendor = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const CasinoVendor = () => {
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
     { header: "Games", field: "games" },
+    { header: "", field: "eye" },
     { header: "Status", field: "status" },
     { header: "Profit & Loss", field: "pl" },
     { header: "Action", field: "action" },
@@ -26,6 +28,13 @@ const CasinoVendor = () => {
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Poker")}>
           Poker
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span className=" font-20" onClick={() => handleGamesPage("Poker")}>
+            <IoEyeOutline className="orange-clr" />
+          </span>
         </div>
       ),
       status: (
@@ -52,6 +61,16 @@ const CasinoVendor = () => {
           Teenpati
         </div>
       ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Teenpati")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr align-items-center">
           <span className="round-red-dot mx-1"></span>OFF
@@ -74,6 +93,16 @@ const CasinoVendor = () => {
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Roulette")}>
           Roulette
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Roulette")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
         </div>
       ),
       status: (
@@ -100,6 +129,13 @@ const CasinoVendor = () => {
           Sic bo
         </div>
       ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span className=" font-20" onClick={() => handleGamesPage("Sic Bo")}>
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -124,6 +160,16 @@ const CasinoVendor = () => {
           Tables Game
         </div>
       ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Table Game")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -146,6 +192,16 @@ const CasinoVendor = () => {
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Black Jack")}>
           Black Jack
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Black Jack")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
         </div>
       ),
       status: (

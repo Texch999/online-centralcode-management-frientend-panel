@@ -4,7 +4,7 @@ import ScrollTable from "../../components/ScrollTable";
 
 const MarketResult = () => {
   const sportcols = [
-    { header: "Sport", field: "sport" },
+    { header: <div className="flex-center">Sport</div>, field: "sport" },
     { header: "Date & Time", field: "date" },
     { header: "MatchName/Id", field: "match" },
     { header: "Market", field: "mar" },
@@ -18,7 +18,7 @@ const MarketResult = () => {
 
   const data = [
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -41,7 +41,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -64,7 +64,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -87,7 +87,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -110,7 +110,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -133,7 +133,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -156,7 +156,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -180,7 +180,7 @@ const MarketResult = () => {
     },
   ];
   return (
-    <div>
+    <div className="p-2">
       <h4 className="my-3">Market Result</h4>
 
       <div className="row w-100 text-black small-font">

@@ -42,8 +42,13 @@
   width: 40vw;
 }
 
-.checkbox input[type="checkbox"]:checked {
-  background-color: #ffa310 !important;
+input[type="checkbox"]:checked {
+  accent-color: #ffa310 !important;
+  color: white;
+}
+input[type="checkbox"] {
+  accent-color: #ffa310 !important;
+  color: white;
 }
 .form-switch .form-check-input {
   width: 4em !important;
