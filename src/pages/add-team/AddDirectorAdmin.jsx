@@ -33,7 +33,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["techx.com"],
       shareRent: ["10%"],
       billing: "0",
-      pl: "5000000",
+      pl: <div className="red-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -53,7 +53,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["sparkbook999.com"],
       shareRent: ["100000"],
       billing: "10000000",
-      pl: "5000000",
+      pl: <div className="red-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -73,7 +73,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["casinopark.com"],
       shareRent: ["100000"],
       billing: "0",
-      pl: "5000000",
+      pl: <div className="red-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -90,10 +90,15 @@ const AddDirectorAdmin = () => {
       name: "Jayanta",
       loginname: "Jayanta121",
       inUsed: "UAI",
-      linkWebsites: ["casinocafe.com", "sparkbook999.com", "fun77.com", "diamondexchange.com"],
+      linkWebsites: [
+        "casinocafe.com",
+        "sparkbook999.com",
+        "fun77.com",
+        "diamondexchange.com",
+      ],
       shareRent: ["10%", "500000", "5%", "200000"],
       billing: "0",
-      pl: "5000000",
+      pl: <div className="red-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -113,7 +118,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["fun88.com"],
       shareRent: ["10%"],
       billing: "0",
-      pl: "5000000",
+      pl: <div className="green-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -133,7 +138,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["sparkbook999.com"],
       shareRent: ["100000"],
       billing: "0",
-      pl: "2000000",
+      pl: <div className="green-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -153,7 +158,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["techx.com"],
       shareRent: ["100000"],
       billing: "0",
-      pl: "2000000",
+      pl: <div className="red-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -170,10 +175,15 @@ const AddDirectorAdmin = () => {
       name: "Jayanta",
       loginname: "Jayanta121",
       inUsed: "UAI",
-      linkWebsites: ["casinocafe.com", "sparkbook999.com", "fun77.com", "diamondexchange.com"],
+      linkWebsites: [
+        "casinocafe.com",
+        "sparkbook999.com",
+        "fun77.com",
+        "diamondexchange.com",
+      ],
       shareRent: ["10%", "2000000", "2000000", "2000000"],
       billing: "0",
-      pl: "5000000",
+      pl: <div className="green-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -193,7 +203,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["fun88.com"],
       shareRent: ["100000"],
       billing: "0",
-      pl: "5000000",
+      pl: <div className="red-font">5000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -213,7 +223,7 @@ const AddDirectorAdmin = () => {
       linkWebsites: ["sparkbook999.com"],
       shareRent: ["10%"],
       billing: "0",
-      pl: "2000000",
+      pl: <div className="green-font">2000000</div>,
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
@@ -225,7 +235,6 @@ const AddDirectorAdmin = () => {
       ),
     },
   ];
-
 
   const columns = [
     { header: "Role", field: "role" },
@@ -280,9 +289,7 @@ const AddDirectorAdmin = () => {
         </div>
       </div>
 
-      <div className="white-bg login-box-shadow rounded pt-2 pb-3">
-        <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
-      </div>
+      <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
 
       {/* Modal Component */}
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />

@@ -1,40 +1,44 @@
 import React from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { Modal, Button } from 'react-bootstrap';
+import { AiOutlineClose } from "react-icons/ai";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Images} from "../../images";
+import { Images } from "../../images";
 import "../add-team/style.css";
 
-const BlockAccountPopup = ({ onClose, onBlock }) => {
+const BlockAccountPopup = ({ isOpen, onRequestClose, onBlock }) => {
   return (
-    <div className="popup-overlay d-flex justify-content-center align-items-center">
-      <div className="popup-content bg-white rounded p-4" style={{ maxWidth: '450px', width: '100%', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-        {/* Close Button */}
+    <Modal show={isOpen} onHide={onRequestClose} centered size='md'>
+      <Modal.Body className="py-4 px-3">
         <div className="d-flex justify-content-end">
-          <FaTimes onClick={onClose} style={{ cursor: 'pointer' }} />
+          <AiOutlineClose onClick={onRequestClose} style={{ cursor: 'pointer' }} />
         </div>
 
-        {/* Image */}
         <div className="text-center mb-3">
-          <img src={Images.addManagementPopup} alt="Question Mark Icon" style={{ width: '60px' }} />
+          <img
+            src={Images.addManagementPopup}
+            alt="Question Mark Icon"
+            style={{ width: '90px' }}
+          />
         </div>
 
-        {/* Title and Description */}
         <div className="text-center mb-3">
-          <h5 className="fw-bold">Are You Sure to Block this Account</h5>
-          <p className="text-muted">Lorem Ipsum is simply dummy text of the printing.</p>
+          <h5 className="fw-600 large-font">Are You Sure to Block this Account</h5>
+          <p className="text-muted small-font">Lorem Ipsum is simply dummy text of the printing.</p>
         </div>
 
-        {/* Buttons */}
-        <div className="d-flex justify-content-between">
-          <button className="btn btn-outline-secondary block-account-btn" onClick={onClose}>
+        <div className="d-flex justify-content-between gap-3">
+          <Button className='white-btn w-50' onClick={onRequestClose}>
             Cancel
-          </button>
-          <button className="btn saffron-btn text-white block-account-btn" onClick={onBlock}>
+          </Button>
+          <Button
+            className='saffron-btn2 w-50'
+            onClick={onBlock}
+          >
             Block
-          </button>
+          </Button>
         </div>
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

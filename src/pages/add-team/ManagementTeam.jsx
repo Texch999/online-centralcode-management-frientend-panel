@@ -9,6 +9,7 @@ import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import "../add-team/style.css";
 import "../../App.css";
+import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 
 const ManagementTeam = () => {
   // State for managing table data, modals, and form data
@@ -26,6 +27,8 @@ const ManagementTeam = () => {
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
+    isResetPasswordVisible: false,
+    blockAccountId: null,
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -97,8 +100,19 @@ const ManagementTeam = () => {
   };
 
   // Handles opening the block account confirmation pop-up
-  const handleBlockPopup = () => {
-    toggleModal("isBlockPopupVisible", true);
+  const handleBlockPopup = (rowId) => {
+    setModalState({ ...modalState, isBlockPopupVisible: true, blockAccountId: rowId });
+  };
+
+  // Handles blocking account confirmation
+  const handleBlockAccount = () => {
+    setTableData((prevData) => prevData.filter((row) => row.id !== modalState.blockAccountId));
+    toggleModal("isBlockPopupVisible", false);
+  };
+
+  // New handler for Reset Password Popup
+  const handleResetPasswordPopup = (isOpen) => {
+    toggleModal("isResetPasswordVisible", isOpen);
   };
 
   const columns = [
@@ -123,7 +137,7 @@ const ManagementTeam = () => {
       field: "email",
     },
     {
-      header:<div className="text-center">Action</div>,
+      header: <div className="text-center">Action</div>,
       field: "action",
     },
   ];
@@ -136,6 +150,7 @@ const ManagementTeam = () => {
         rowId={row.id}
         onEdit={handleEdit}
         onBlock={handleBlockPopup}
+        onResetPassword={handleResetPasswordPopup}
       />
     ),
   }));
@@ -158,7 +173,7 @@ const ManagementTeam = () => {
           </button>
         </div>
       </div>
-      
+
       <div className="management-team-wrapper rounded-bg">
         <Table
           className="black-text"
@@ -168,7 +183,7 @@ const ManagementTeam = () => {
         />
       </div>
 
-      {/* AddManagementPopup Modal - Controlled by showAddModal */}
+      {/* AddManagementPopup Modal */}
       <AddManagementPopup
         show={modalState.showAddModal}
         onClose={() => toggleModal("showAddModal", false)}
@@ -178,24 +193,30 @@ const ManagementTeam = () => {
       />
 
       {/* Block Account Modal */}
-      {modalState.isBlockPopupVisible && (
-        <div className="popup-overlay">
-          <BlockAccountPopup
-            onClose={() => toggleModal("isBlockPopupVisible", false)}
-            onSubmit={handleFormSubmit}
-          />
-        </div>
-      )}
+      <BlockAccountPopup
+        isOpen={modalState.isBlockPopupVisible}
+        onRequestClose={() => toggleModal("isBlockPopupVisible", false)}
+        onBlock={handleBlockAccount}
+      />
+
+      {/* Reset Password Modal */}
+      <ManagementResetPasswordPopup
+        isOpen={modalState.isResetPasswordVisible}
+        onRequestClose={() => toggleModal("isResetPasswordVisible", false)}
+      />
     </div>
   );
 };
 
 // Separate ActionButtons component for cleaner code
-const ActionButtons = ({ rowId, onEdit, onBlock }) => (
+const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword }) => (
   <div className="text-center">
     <GrEdit className="add-management-icon" onClick={() => onEdit(rowId)} />
-    <MdLockReset className="add-management-icon" />
-    <MdBlockFlipped className="add-management-icon" onClick={() => onBlock()} />
+    <MdLockReset
+      className="add-management-icon"
+      onClick={() => onResetPassword(true)}
+    />
+    <MdBlockFlipped className="add-management-icon" onClick={() => onBlock(rowId)} />
     <RiDeleteBinLine className="add-management-icon" />
   </div>
 );
