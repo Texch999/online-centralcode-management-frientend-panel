@@ -211,7 +211,7 @@
 }
 .input-css {
   background: #f2f2f2;
-  border: none;
+  border: 2px solid #f2f2f2;
   outline: none;
   color: #1c1c1c;
   font-weight: 500;
@@ -417,6 +417,19 @@
   border-radius: 5px;
 }
 
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.white-bg2 {
+  background-color: #ffffff;
+}
+.white-bg2:hover {
+  background-color: #ffa310;
+  border: none;
+  color: white;
+}
 .border-left {
   border-left: 1px solid #dee2e6 !important;
 }
@@ -440,7 +453,4 @@
   display: flex;
   align-items: end;
   justify-content: center;
-}
-.check-bg{
-  background-color: yellow;
 }

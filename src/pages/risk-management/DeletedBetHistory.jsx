@@ -8,15 +8,12 @@ import {
 } from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
 
-function LiveBetList() {
+function DeletedBetHistory() {
   const [activeSport, setActiveSport] = useState("All");
-  const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
-  const handleEditBetPopupOpen = () => {
-    setEditBetPopupOpen(true);
-  };
+
   const SPORTS_BUTTONS = [
     "All",
     "Toss",
@@ -85,16 +82,13 @@ function LiveBetList() {
       lay: <div className="lay-btn">10000000</div>,
       status: (
         <div>
-          <div className="green-btn">Settled</div>
+          <div className="red-btn">Deleted</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
-              size={18}
-              onClick={handleEditBetPopupOpen}
-            />
-            <MdOutlineDelete size={18} />
+            <MdLoop size={20} className="red-font" />
           </div>
         </div>
       ),
+      rowColor: "red-font",
     },
     {
       dateTime: (
@@ -192,24 +186,22 @@ function LiveBetList() {
       lay: <div className="lay-btn">10000000</div>,
       status: (
         <div>
-          <div className="edit-btn">Edited</div>
+          <div className="red-btn">Deleted</div>
+          <div className="flex-around mt-2">
+            <MdLoop size={20} className="red-font" />
+          </div>
         </div>
       ),
-      rowColor: "yellow-font",
+      rowColor: "red-font",
     },
   ];
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Live Bet List - Sports/Casino</h6>
-        <div className="d-flex align-items-center">
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
-          </div>
-          <div className="small-font">
-            P/L : <span className="white-btn2 green-font">10000000</span>
-          </div>
+        <h6 className="yellow-font mb-0">Deleted Bet History</h6>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
+          <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
       <div className="d-flex small-font pb-3">
@@ -225,34 +217,28 @@ function LiveBetList() {
           </div>
         ))}
       </div>
-      <div className="row mb-3">
+      <div className="row w-75 mb-3">
         <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">
-            Order of Display
-          </label>
+          <label className="black-text4 small-font mb-1">From</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col flex-column">
+          <label className="black-text4 small-font mb-1">To</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col flex-column">
+          <label className="black-text4 small-font mb-1">User Name</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
         </div>
         <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">High Value</label>
+          <label className="black-text4 small-font mb-1">Website Name</label>
           <select className="input-css2 small-font">
             <option>Select</option>
           </select>
         </div>
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">Last</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
-        </div>
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">Bet Status</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
-        </div>
-        <div className="col  flex-column d-flex align-items-end justify-content-end">
+        <div className="col flex-column d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>
@@ -262,12 +248,8 @@ function LiveBetList() {
         itemsPerPage={2}
         rowColor={(row) => row?.rowColor}
       />
-      <EditBetPopup
-        editBetPopupOpen={editBetPopupOpen}
-        setEditBetPopupOpen={setEditBetPopupOpen}
-      />
     </div>
   );
 }
 
-export default LiveBetList;
+export default DeletedBetHistory;

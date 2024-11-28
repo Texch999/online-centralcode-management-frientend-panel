@@ -17,6 +17,7 @@ import { PiHandCoinsFill } from "react-icons/pi";
 import { FaCoins } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 
+
 ChartJS.register(
   BarElement,
   CategoryScale,
@@ -27,6 +28,8 @@ ChartJS.register(
 );
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+// import React from "react";
+
 
 function Homepage() {
   const navigate = useNavigate();
@@ -523,29 +526,29 @@ function Homepage() {
             </div>
 
             <div className="d-flex flex-column mt-3">
-              <div className="d-flex mb-3">
+              <div className="d-flex mb-3 w-100">
                 <div className="col-3 pe-1">
                   <div className="d-flex flex-column text-white px-2 blue-bg-box">
                     <div className="small-font py-2">Casino Sales</div>
-                    <h6 className="py-1">50000000000</h6>
+                    <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
                 <div className="col-3 pe-1">
                   <div className=" voilet-bg-box d-flex flex-column text-white px-2">
                     <div className="small-font py-2">Sports Sales</div>
-                    <h6 className="py-1">50000000000</h6>
+                    <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
                 <div className="col-3 pe-1">
                   <div className="box-3 d-flex flex-column text-white px-2">
                     <div className="small-font py-2">S+C Sales</div>
-                    <h6 className="py-1">50000000000</h6>
+                    <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
                 <div className="col-3 ">
                   <div className="pink-bg-box d-flex flex-column text-white px-2">
                     <div className="small-font py-2">Total Profit</div>
-                    <h6 className="py-1">50000000000</h6>
+                    <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
               </div>
@@ -650,7 +653,7 @@ function Homepage() {
                 })}
               </div>
               <div className=" pointer">
-                <select className="all-none w-100 input-css2 px-1 py-2 radius-20 text-black">
+                <select className="all-none w-100 input-css2 px-2 py-2 radius-20 text-black">
                   <option>Today</option>
                   <option>Tomorrow</option>
                   <option>yesterday</option>
@@ -677,6 +680,10 @@ function Homepage() {
           </div>
         </div>
       </div>
+    <div>
+      <h1>Homepage</h1>
+      {/* <Table /> */}
+    </div>
     </div>
   );
 }

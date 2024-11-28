@@ -44,10 +44,10 @@ function RiskCasino() {
       header: (
         <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -61,10 +61,10 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       website: "T Exchange",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -77,10 +77,10 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       website: "T Exchange",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -93,10 +93,10 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       website: "T Exchange",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -116,10 +116,10 @@ function RiskCasino() {
       header: (
         <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -134,10 +134,10 @@ function RiskCasino() {
       providerName: "Ezugi",
       providerId: "12345678912345",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -151,10 +151,10 @@ function RiskCasino() {
       providerName: "Ezugi",
       providerId: "12345678912345",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -168,10 +168,10 @@ function RiskCasino() {
       providerName: "Ezugi",
       providerId: "12345678912345",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -190,10 +190,10 @@ function RiskCasino() {
       header: (
         <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -207,10 +207,10 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       gameName: "Andar Bahar",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -223,10 +223,10 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       gameName: "Andar Bahar",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -239,10 +239,10 @@ function RiskCasino() {
       dateTime: "01-10-2024  16:11:00",
       gameName: "Andar Bahar",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: (
@@ -266,10 +266,10 @@ function RiskCasino() {
       header: (
         <div className="orange-bg text-center border-left border-right">
           <div>P/L</div>
-          <div className="w-100  flex-around border-top">
-            <span>1</span>
-            <span>X</span>
-            <span>2</span>
+          <div className="w-100 d-flex border-top">
+            <span className="col">MAX-Limit</span>
+            <span className="col">X</span>
+            <span className="col">P/L</span>
           </div>
         </div>
       ),
@@ -284,10 +284,10 @@ function RiskCasino() {
       tableId: "12345678912345",
       tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: "",
@@ -297,10 +297,10 @@ function RiskCasino() {
       tableId: "12345678912345",
       tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: "",
@@ -310,10 +310,10 @@ function RiskCasino() {
       tableId: "12345678912345",
       tableName: "Benelux Singshot > Auto Roulette > Evolution > T Casino Park",
       profit_loss: (
-        <div className="w-100 flex-around">
-          <span className="red-font">10000000</span>
-          <span>10000000</span>
-          <span className="green-font">10000000</span>
+        <div className="w-100 d-flex">
+          <span className="red-font col text-center">10000000</span>
+          <span className="col text-center">10000000</span>
+          <span className="green-font col text-center">10000000</span>
         </div>
       ),
       view: "",

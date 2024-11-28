@@ -2,15 +2,14 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 
-const CasinoGames = () => {
-  const naviagte = useNavigate();
+const SportProviders = () => {
+    const navigate = useNavigate();
   const location = useLocation();
-  const { vendor, provider, game } = location.state || {};
+  const { vendor, provider } = location.state || {};
 
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
-    { header: "Market ID", field: "mid" },
-    { header: "Table Number", field: "tno" },
+    { header: "S No", field: "sno" },
+    { header: "Games", field: "games" },
     { header: "Status", field: "status" },
     { header: "Profit & Loss", field: "pl" },
     { header: "Action", field: "action" },
@@ -18,9 +17,8 @@ const CasinoGames = () => {
 
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
-      mid: <div className="pointer">12345678123456</div>,
-      tno: <div>Table No 1</div>,
+      sno: <div>1</div>,
+      games: <div className="pointer">Cricket</div>,
       status: (
         <div className="green-clr">
           <span className="round-green-dot mx-1"></span>ON
@@ -39,9 +37,28 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">2</div>,
-      mid: <div className="pointer">12345678123456</div>,
-      tno: <div>Table No 2</div>,
+      sno: <div>2</div>,
+      games: <div className="pointer">Football</div>,
+      status: (
+        <div className="dark-orange-clr">
+          <span className="round-red-dot mx-1"></span>OFF
+        </div>
+      ),
+      pl: <div className="dark-orange-clr">500000</div>,
+      action: (
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input w-40"
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefault"
+          />
+        </div>
+      ),
+    },
+    {
+      sno: <div>3</div>,
+      games: <div className="pointer">Tennis</div>,
       status: (
         <div className="green-clr">
           <span className="round-green-dot mx-1"></span>ON
@@ -60,12 +77,11 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">3</div>,
-      mid: <div className="pointer">12345678123456</div>,
-      tno: <div>Table No 3</div>,
+      sno: <div>4</div>,
+      games: <div className="pointer">Sic bo</div>,
       status: (
-        <div className="green-clr">
-          <span className="round-green-dot mx-1"></span>ON
+        <div className="dark-orange-clr">
+          <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
       pl: <div className="dark-orange-clr">500000</div>,
@@ -81,12 +97,11 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">4</div>,
-      mid: <div className="pointer">12345678123456</div>,
-      tno: <div>Table No 4</div>,
+      sno: <div>5</div>,
+      games: <div className="pointer">Tables Game</div>,
       status: (
-        <div className="green-clr">
-          <span className="round-green-dot mx-1"></span>ON
+        <div className="dark-orange-clr">
+          <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
       pl: <div className="dark-orange-clr">500000</div>,
@@ -102,12 +117,11 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">5</div>,
-      mid: <div className="pointer">12345678123456</div>,
-      tno: <div>Table No 5</div>,
+      sno: <div>6</div>,
+      games: <div className="pointer">Black Jack</div>,
       status: (
-        <div className="green-clr">
-          <span className="round-green-dot mx-1"></span>ON
+        <div className="dark-orange-clr">
+          <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
       pl: <div className="dark-orange-clr">500000</div>,
@@ -125,27 +139,14 @@ const CasinoGames = () => {
   ];
   return (
     <div>
-      <div className="d-flex flex-between">
-        <div className="pointer my-2 large-font" onClick={() => naviagte(-1)}>
-          <span className="grey-clr">
-            Casino<span className="mx-1">{">"}</span>
-          </span>{" "}
-          <span className="grey-clr">
-            {vendor}
-            <span className="mx-1">{">"}</span>
-          </span>{" "}
-          <span className="grey-clr">{provider}</span>
-          <span>
-            <span className="mx-1">{">"}</span>
-            {game}
-          </span>
-        </div>
-
-        <div className="small-font">
-          Total P/L : <span className="green-clr mx-1">20000</span>
-        </div>
+      <div className="pointer" onClick={() => navigate(-1)}>
+        <span className="grey-clr">Sports {">"}</span>{" "}
+        <span className="grey-clr">{vendor}</span>{" "}
+        <span>
+          {">"}
+          {provider}
+        </span>
       </div>
-
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
@@ -153,4 +154,4 @@ const CasinoGames = () => {
   );
 };
 
-export default CasinoGames;
+export default SportProviders;
