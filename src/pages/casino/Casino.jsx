@@ -9,7 +9,8 @@ import ActionPopup from "./ActionPopup";
 function Casino() {
   const navigate = useNavigate();
   const params = useParams();
-
+ const [isSwitchOn, setIsSwitchOn]=useState(false);
+ const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isActive, setIsACtive]=useState(false);
   const handleActiveModal=()=>{
     setIsACtive(!isActive)
