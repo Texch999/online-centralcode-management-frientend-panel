@@ -8,4 +8,6 @@ export const Images = {
   ChatIcon: "/assets/Chat_Icon.png",
   Poster1: "/assets/poster1.png",
   Poster2: "/assets/poster2.png",
+  Casino1: "/assets/casino1.png",
+  Cricket1: "/assets/cricket1.png",
 };

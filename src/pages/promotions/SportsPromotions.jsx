@@ -93,7 +93,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -138,7 +138,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -184,7 +184,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -229,7 +229,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -274,7 +274,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -321,11 +321,11 @@ const SportsPromotions = () => {
                 ref={datePickerRef}
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
-                className="all-none w-70 small-font"
+                className="all-none w-90 small-font p-1"
               />
               <FaRegCalendarMinus
                 onClick={handleIconClick}
-                className="pointer"
+                className="pointer me-2"
               />
             </div>
           </div>
@@ -337,11 +337,11 @@ const SportsPromotions = () => {
                 ref={datePickerRef}
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
-                className="all-none w-70 small-font"
+                className="all-none w-90 small-font p-1"
               />
               <FaRegCalendarMinus
                 onClick={handleIconClick}
-                className="pointer"
+                className="pointer me-2"
               />
             </div>
           </div>
@@ -368,7 +368,7 @@ const SportsPromotions = () => {
         </div>
 
         <div
-          className="white-bg p-2 grey-border blue-font br-10 small-font pointer mt-4 col-1"
+          className="white-bg p-2 grey-border flex-center blue-font br-10 small-font pointer mt-4 col-1"
           onClick={() => setAddPromotionsModal(!addPromotionsModal)}
         >
           <IoAddOutline className="large-font" /> Add New
@@ -395,7 +395,10 @@ const SportsPromotions = () => {
         addPromotionsModal={addPromotionsModal}
         userPromotion={userPromotion}
       />
+
+<FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
     </div>
+
   );
 };
 

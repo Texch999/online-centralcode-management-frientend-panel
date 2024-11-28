@@ -7,6 +7,7 @@ import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
+import FullPosterPopUp from "./FullPosterPopUp";
 
 const SandCBanner = () => {
   const [activeBtn, setActiveBtn] = useState("User Posters");
@@ -31,11 +32,10 @@ const SandCBanner = () => {
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
-    { header: "Sports", field: "sports", width: "10%" },
-    { header: "Poster Type", field: "posterType", width: "10%" },
-    { header: "Promotion Msg", field: "promotionMsg", width: "10%" },
+    { header: "Type", field: "type", width: "10%" },
     { header: "Websites", field: "websites", width: "10%" },
-    { header: "Poster", field: "Poster", width: "20%" },
+    { header: "Poster Location", field: "posterLocation", width: "10%" },
+    { header: "Poster", field: "Poster", width: "40%" },
     { header: "", field: "icons", width: "10%" },
   ];
 
@@ -48,29 +48,35 @@ const SandCBanner = () => {
           16:11:00
         </div>
       ),
-      sports: <div>Cricket</div>,
-      posterType: (
+      type: <div>Sports</div>,
+      websites: (
         <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
+          www.texchange.com <br />
+          www.diamondexchange.com <br />
+          www.fun77.com
         </div>
       ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
+      posterLocation: <div>Home Page</div>,
+
       Poster: (
         <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
+          <div>
+            <img src={Images.Poster1} alt="Poster" />
 
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+
+            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
+
+            <TbArrowsDiagonal
+              className="absolute zoom-out1 white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
         </div>
       ),
       icons: (
@@ -93,75 +99,35 @@ const SandCBanner = () => {
           16:11:00
         </div>
       ),
-      sports: <div>Cricket</div>,
-      posterType: (
+      type: <div>Sports</div>,
+      websites: (
         <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
+          www.texchange.com <br />
+          www.diamondexchange.com <br />
+          www.fun77.com
         </div>
       ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
+      posterLocation: <div>Home Page</div>,
+
       Poster: (
         <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
+          <div>
+            <img src={Images.Poster1} alt="Poster" />
 
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
 
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
+            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
 
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      posterType: (
-        <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
-        </div>
-      ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
+            <TbArrowsDiagonal
+              className="absolute zoom-out1 white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
         </div>
       ),
       icons: (
@@ -184,29 +150,35 @@ const SandCBanner = () => {
           16:11:00
         </div>
       ),
-      sports: <div>Cricket</div>,
-      posterType: (
+      type: <div>Sports</div>,
+      websites: (
         <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
+          www.texchange.com <br />
+          www.diamondexchange.com <br />
+          www.fun77.com
         </div>
       ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
+      posterLocation: <div>Home Page</div>,
+
       Poster: (
         <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
+          <div>
+            <img src={Images.Poster1} alt="Poster" />
 
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+
+            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
+
+            <TbArrowsDiagonal
+              className="absolute zoom-out1 white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
         </div>
       ),
       icons: (
@@ -229,29 +201,35 @@ const SandCBanner = () => {
           16:11:00
         </div>
       ),
-      sports: <div>Cricket</div>,
-      posterType: (
+      type: <div>Sports</div>,
+      websites: (
         <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
+          www.texchange.com <br />
+          www.diamondexchange.com <br />
+          www.fun77.com
         </div>
       ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
+      posterLocation: <div>Home Page</div>,
+
       Poster: (
         <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
+          <div>
+            <img src={Images.Poster1} alt="Poster" />
 
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+
+            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
+
+            <TbArrowsDiagonal
+              className="absolute zoom-out1 white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
         </div>
       ),
       icons: (
@@ -266,6 +244,60 @@ const SandCBanner = () => {
         </div>
       ),
     },
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      type: <div>Sports</div>,
+      websites: (
+        <div>
+          www.texchange.com <br />
+          www.diamondexchange.com <br />
+          www.fun77.com
+        </div>
+      ),
+      posterLocation: <div>Home Page</div>,
+
+      Poster: (
+        <div className="relative poster-img">
+          <div>
+            <img src={Images.Poster1} alt="Poster" />
+
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+
+            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
+
+            <TbArrowsDiagonal
+              className="absolute zoom-out1 white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
+        </div>
+      ),
+      icons: (
+        <div className="d-flex w-50 flex-between">
+          <span onClick={() => setEditPoster(!editPoster)}>
+            <LiaPenSolid size={18} className="pointer" />
+          </span>
+
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+    },
+
+   
+    
   ];
 
   return (
@@ -277,14 +309,14 @@ const SandCBanner = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex w-25 flex-between small-font">
+      <div className="d-flex col-2 flex-between small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2  px-3"
+                : "white-btn2 pointer px-2"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -293,10 +325,10 @@ const SandCBanner = () => {
         ))}
       </div>
 
-      <div className="w-100 grey-border mt-2"></div>
+      <hr />
 
       <div>
-        <div className="d-flex w-20 flex-between mt-4 small-font">
+        <div className="d-flex col-2 flex-between mt-4 small-font">
           {ACTIVE_BTNS2?.map((item, index) => (
             <div
               key={index}
@@ -346,9 +378,12 @@ const SandCBanner = () => {
               ref={datePickerRef}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              className="all-none w-70 small-font"
+              className="all-none w-90 small-font p-1"
             />
-            <FaRegCalendarMinus onClick={handleIconClick} className="pointer" />
+            <FaRegCalendarMinus
+              onClick={handleIconClick}
+              className="pointer me-2"
+            />
           </div>
         </div>
 
@@ -359,9 +394,12 @@ const SandCBanner = () => {
               ref={datePickerRef}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              className="all-none w-70 small-font"
+              className="all-none w-90 small-font p-1"
             />
-            <FaRegCalendarMinus onClick={handleIconClick} className="pointer" />
+            <FaRegCalendarMinus
+              onClick={handleIconClick}
+              className="pointer me-2"
+            />
           </div>
         </div>
       </div>
@@ -371,19 +409,22 @@ const SandCBanner = () => {
           <label className="black-text4 small-font " htmlFor="poster">
             Upload Poster
             <input type="file" style={{ display: "none" }} id="poster" />
-            <div className="white-bg small-font d-flex flex-between p-2 rounded mt-2">
+            <div className="white-bg small-font grey-border d-flex flex-between p-2 rounded mt-2">
               Select File <MdOutlineFileUpload />
             </div>
           </label>
         </div>
-        <div className="white-bg small-font pointer mt-4 yellow-font p-2 rounded grey-border col-2">
+        <div className="white-bg small-font pointer mt-4 yellow-font p-2 rounded dashed-border flex-center col-2">
           Upload More
         </div>
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="saffron-btn2 small-font pointer mt-4  col-3">
           Submit
         </div>
       </div>
-      <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
+      <div className="mt-4">
+        <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
+      </div>
+      <FullPosterPopUp fullPoster={fullPoster} setFullPoster={setFullPoster}/>
     </div>
   );
 };

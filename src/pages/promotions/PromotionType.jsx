@@ -344,18 +344,19 @@ const PromotionType = () => {
 
   return (
     <div>
-      <div className="d-flex justify-content-between w-100">
-        <h6 className="saffron-clr">Promotion Type</h6>
-        <div className="grey-border rounded-pill grey-clr d-flex align-items-center px-2">
+       <div className="flex-between mb-3 mt-2">
+        <h6 className="yellow-font mb-0">Promotion Type</h6>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
+     
       <div className="d-flex col-3 flex-between small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
-            className={`me-3 ${
+            className={`me-4 ${
               activeBtn === item
                 ? "saffron-btn2  px-4"
                 : "white-btn2 pointer px-4"
@@ -369,7 +370,7 @@ const PromotionType = () => {
       {activeBtn === "Promotion Type" ? (
         <div className="d-flex w-100 flex-between mt-2">
           <div className="d-flex w-80">
-            <div className="col-1 flex-column me-3">
+            <div className="col-2 flex-column me-3">
               <label className="black-text4 small-font mb-1">Promotion</label>
               <select className="input-css2 small-font">
                 <option>All</option>
@@ -397,7 +398,7 @@ const PromotionType = () => {
           </div>
           <div className="col-6 flex-column me-3 ">
             <label className="black-text4 small-font " htmlFor="poster">
-              Promotion Type
+            Upload Poster
               <input type="file" style={{ display: "none" }} id="poster" />
               <div className="input-css2 small-font d-flex flex-between">
                 Upload <MdOutlineFileUpload />
@@ -416,7 +417,7 @@ const PromotionType = () => {
 
       <div className="mt-4 ">
         {activeBtn === "Promotion Type" ? (
-          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={3} />
+          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={5} />
         ) : (
           <Table
             columns={CRICKET_COLUMNS}

@@ -9,12 +9,16 @@ import { IoTv } from "react-icons/io5";
 
 const ActivityLogs = () => {
   const datePickerRef = useRef(null);
+  const datePickerRef2 = useRef(null);
   const navigation = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const [startDate2, setStartDate2] = useState(new Date());
 
   const handleIconClick = () => {
     datePickerRef?.current?.setFocus();
+  };
+  const handleIconClick2 = () => {
+    datePickerRef2?.current?.setFocus();
   };
 
   const handleMatchClick = (userActivity) => {
@@ -51,8 +55,7 @@ const ActivityLogs = () => {
 
       userAdmin: (
         <div
-        onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
-          className="pointer"
+        
         >
          Jayanta <br />
          Super Admin
@@ -82,12 +85,13 @@ const ActivityLogs = () => {
         </div>
       ),
       iplogin: (
-        <div>
+        <div className="w-50 flex-center">
           4
         </div>
       ),
       show: (
-        <div className="saffron-btn2 w-100">
+        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        >
         view
         </div>
       ),
@@ -139,12 +143,13 @@ const ActivityLogs = () => {
         </div>
       ),
       iplogin: (
-        <div>
+        <div className="w-50 flex-center">
           4
         </div>
       ),
       show: (
-        <div className="saffron-btn2 w-100">
+        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        >
         view
         </div>
       ),
@@ -196,12 +201,13 @@ const ActivityLogs = () => {
         </div>
       ),
       iplogin: (
-        <div>
+        <div className="w-50 flex-center">
           4
         </div>
       ),
       show: (
-        <div className="saffron-btn2 w-100">
+        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        >
         view
         </div>
       ),
@@ -253,12 +259,13 @@ const ActivityLogs = () => {
         </div>
       ),
       iplogin: (
-        <div>
-          4
-        </div>
+        <div className="w-50 flex-center">
+        4
+      </div>
       ),
       show: (
-        <div className="saffron-btn2 w-100">
+        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        >
         view
         </div>
       ),
@@ -310,12 +317,13 @@ const ActivityLogs = () => {
         </div>
       ),
       iplogin: (
-        <div>
+        <div className="w-50 flex-center">
           4
         </div>
       ),
       show: (
-        <div className="saffron-btn2 w-100">
+        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        >
         view
         </div>
       ),
@@ -338,9 +346,9 @@ const ActivityLogs = () => {
               ref={datePickerRef}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              className="all-none w-70 small-font"
+              className="all-none w-90 small-font p-1"
             />
-            <FaRegCalendarMinus onClick={handleIconClick} className="pointer" />
+            <FaRegCalendarMinus onClick={handleIconClick} className="pointer me-1" />
           </div>
         </div>
 
@@ -348,19 +356,19 @@ const ActivityLogs = () => {
           <span className="small-font">To</span>
           <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
             <DatePicker
-              ref={datePickerRef}
+              ref={datePickerRef2}
               selected={startDate2}
               onChange={(date) => setStartDate2(date)}
-              className="all-none w-70 small-font"
+              className="all-none w-90 small-font p-1"
             />
-            <FaRegCalendarMinus onClick={handleIconClick} className="pointer" />
+            <FaRegCalendarMinus onClick={handleIconClick2} className="pointer me-1" />
           </div>
         </div>
 
         <div className="saffron-btn2 small-font pointer mt-4 col-4">Submit</div>
       </div>
-      <div className="white-bg login-box-shadow p-1 mt-4 rounded">
-        <Table columns={ACTIVITY_COLUMNS} data={ACTIVITY_DATA} itemsPerPage={3} />
+      <div className="mt-4">
+        <Table columns={ACTIVITY_COLUMNS} data={ACTIVITY_DATA} itemsPerPage={4} />
       </div>
     </div>
   );

@@ -43,8 +43,8 @@ const CasinoPromotions = () => {
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Poster Type", field: "posterType", width: "10%" },
-    { header: "Promotion Msg", field: "promotionMsg", width: "10%" },
-    { header: "Websites", field: "websites", width: "10%" },
+    { header: "Promotion Msg", field: "promotionMsg", width: "15%" },
+    { header: "Websites", field: "websites", width: "15%" },
     { header: "Poster", field: "Poster", width: "20%" },
     { header: "", field: "icons", width: "10%" },
   ];
@@ -74,7 +74,7 @@ const CasinoPromotions = () => {
       websites: <div>www.texchange.com</div>,
       Poster: (
         <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
+          <img src={Images.Casino1} alt="Poster" />
 
           <TbArrowsDiagonal
             className="absolute zoom-out white-bg pointer"
@@ -84,7 +84,143 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
+          <span onClick={() => setEditPoster(!editPoster)}>
+            <LiaPenSolid size={18} className="pointer" />
+          </span>
+
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+    },
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      sports: <div>Cricket</div>,
+      posterType: (
+        <div>
+          1st Deposit Bonus <br />{" "}
+          <span className="yellow-font">Code: ABCD234XY</span>
+        </div>
+      ),
+      promotionMsg: (
+        <div>
+          Welcome Package Rs 15000 <br />
+          off Upto 100000
+        </div>
+      ),
+      websites: <div>www.texchange.com</div>,
+      Poster: (
+        <div className="relative poster-img">
+          <img src={Images.Casino1} alt="Poster" />
+
+          <TbArrowsDiagonal
+            className="absolute zoom-out white-bg pointer"
+            size={18}
+            onClick={() => setFullPoster(!fullPoster)}
+          />
+        </div>
+      ),
+      icons: (
+        <div className="d-flex w-30 flex-between">
+          <span onClick={() => setEditPoster(!editPoster)}>
+            <LiaPenSolid size={18} className="pointer" />
+          </span>
+
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+    },
+
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      sports: <div>Cricket</div>,
+      posterType: (
+        <div>
+          1st Deposit Bonus <br />{" "}
+          <span className="yellow-font">Code: ABCD234XY</span>
+        </div>
+      ),
+      promotionMsg: (
+        <div>
+          Welcome Package Rs 15000 <br />
+          off Upto 100000
+        </div>
+      ),
+      websites: <div>www.texchange.com</div>,
+      Poster: (
+        <div className="relative poster-img">
+          <img src={Images.Casino1} alt="Poster" />
+
+          <TbArrowsDiagonal
+            className="absolute zoom-out white-bg pointer"
+            size={18}
+            onClick={() => setFullPoster(!fullPoster)}
+          />
+        </div>
+      ),
+      icons: (
+        <div className="d-flex w-30 flex-between">
+          <span onClick={() => setEditPoster(!editPoster)}>
+            <LiaPenSolid size={18} className="pointer" />
+          </span>
+
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+    },
+    {
+      dateTime: (
+        <div>
+          1-10-2024
+          <br />
+          16:11:00
+        </div>
+      ),
+      sports: <div>Cricket</div>,
+      posterType: (
+        <div>
+          1st Deposit Bonus <br />{" "}
+          <span className="yellow-font">Code: ABCD234XY</span>
+        </div>
+      ),
+      promotionMsg: (
+        <div>
+          Welcome Package Rs 15000 <br />
+          off Upto 100000
+        </div>
+      ),
+      websites: <div>www.texchange.com</div>,
+      Poster: (
+        <div className="relative poster-img">
+          <img src={Images.Casino1} alt="Poster" />
+
+          <TbArrowsDiagonal
+            className="absolute zoom-out white-bg pointer"
+            size={18}
+            onClick={() => setFullPoster(!fullPoster)}
+          />
+        </div>
+      ),
+      icons: (
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -129,143 +265,7 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      posterType: (
-        <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
-        </div>
-      ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      posterType: (
-        <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
-        </div>
-      ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      sports: <div>Cricket</div>,
-      posterType: (
-        <div>
-          1st Deposit Bonus <br />{" "}
-          <span className="yellow-font">Code: ABCD234XY</span>
-        </div>
-      ),
-      promotionMsg: (
-        <div>
-          Welcome Package Rs 15000 <br />
-          off Upto 100000
-        </div>
-      ),
-      websites: <div>www.texchange.com</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-30 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -354,7 +354,7 @@ const CasinoPromotions = () => {
         </div>
 
         <div
-          className="white-bg p-2 grey-border blue-font br-10 small-font pointer mt-4 col-1"
+          className="white-bg p-2 grey-border flex-center blue-font br-10 small-font pointer mt-4 col-1"
           onClick={() => setCasinoPromotion(!casinoPromotion)}
         >
           <IoAddOutline className="large-font" /> Add New
@@ -381,6 +381,9 @@ const CasinoPromotions = () => {
         casinoPromotion={casinoPromotion}
         
       />
+
+      
+<FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
     </div>
   );
 };

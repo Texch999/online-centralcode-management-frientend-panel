@@ -10,10 +10,10 @@ const PrivacyPolicy = () => {
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const REJECTION_COLUMNS = [
-    { header: "Country", field: "country", width: "30%" },
+    { header: "Country", field: "country", width: "20%" },
     { header: "Policy Details", field: "policyDetails", width: "30%" },
     { header: "Showing Website", field: "showingWebsite", width: "30%" },
-    { header: "Status", field: "status", width: "30%" },
+    { header: "Status", field: "status", width: "10%" },
     { header: "Action", field: "action", width: "30%" },
   ];
   const REJECTION_DATA = [
@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
 
       policyDetails: (
         <div
-          className="saffron-btn2 w-30 pointer"
+          className="saffron-btn2 w-20 pointer"
           onClick={() => setShowPrivacyModal(true)}
         >
           View
@@ -36,15 +36,19 @@ const PrivacyPolicy = () => {
           txchange.com
         </div>
       ),
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div>
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -62,7 +66,7 @@ const PrivacyPolicy = () => {
 
       policyDetails: (
         <div
-          className="saffron-btn2 w-30 pointer"
+          className="saffron-btn2 w-20 pointer"
           onClick={() => setShowPrivacyModal(true)}
         >
           View
@@ -76,15 +80,19 @@ const PrivacyPolicy = () => {
           txchange.com
         </div>
       ),
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div>
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -102,7 +110,7 @@ const PrivacyPolicy = () => {
 
       policyDetails: (
         <div
-          className="saffron-btn2 w-30 pointer"
+          className="saffron-btn2 w-20 pointer"
           onClick={() => setShowPrivacyModal(true)}
         >
           View
@@ -116,15 +124,19 @@ const PrivacyPolicy = () => {
           txchange.com
         </div>
       ),
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div>
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -142,7 +154,7 @@ const PrivacyPolicy = () => {
 
       policyDetails: (
         <div
-          className="saffron-btn2 w-30 pointer"
+          className="saffron-btn2 w-20 pointer"
           onClick={() => setShowPrivacyModal(true)}
         >
           View
@@ -156,15 +168,19 @@ const PrivacyPolicy = () => {
           txchange.com
         </div>
       ),
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div>
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -182,7 +198,7 @@ const PrivacyPolicy = () => {
 
       policyDetails: (
         <div
-          className="saffron-btn2 w-30 pointer"
+          className="saffron-btn2 w-20 pointer"
           onClick={() => setShowPrivacyModal(true)}
         >
           View
@@ -196,15 +212,19 @@ const PrivacyPolicy = () => {
           txchange.com
         </div>
       ),
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div>
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -217,6 +237,51 @@ const PrivacyPolicy = () => {
         </div>
       ),
     },
+    {
+      country: <div>India</div>,
+
+      policyDetails: (
+        <div
+          className="saffron-btn2 w-20 pointer"
+          onClick={() => setShowPrivacyModal(true)}
+        >
+          View
+        </div>
+      ),
+
+      showingWebsite: (
+        <div>
+          we2Call.com <br />
+          www.ravana.com <br />
+          txchange.com
+        </div>
+      ),
+      status: (
+        <div>
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
+
+      action: (
+        <div className="large-font">
+          <span>
+            <LiaPenSolid size={18} />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+
   ];
   return (
     <div>
@@ -239,13 +304,12 @@ const PrivacyPolicy = () => {
           </div>
         </div>
       </div>
-      
-        <Table
-          columns={REJECTION_COLUMNS}
-          data={REJECTION_DATA}
-          itemsPerPage={3}
-        />
-      
+
+      <Table
+        columns={REJECTION_COLUMNS}
+        data={REJECTION_DATA}
+        itemsPerPage={5}
+      />
 
       <AddPrivacyPolicyPopUp
         setAddPrivacyModal={setAddPrivacyModal}

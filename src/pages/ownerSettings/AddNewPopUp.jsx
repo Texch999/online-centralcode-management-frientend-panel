@@ -71,7 +71,7 @@ const AddNewPopUp = ({
         >
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
-              <h6>Add Security Reasons</h6>
+              <h6>Add Security Questions</h6>
               <IoClose
                 className="pointer"
                 onClick={() => setAddNewModalSecurity(false)}

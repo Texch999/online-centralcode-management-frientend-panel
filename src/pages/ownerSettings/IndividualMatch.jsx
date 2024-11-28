@@ -3,6 +3,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { FaSearch } from "react-icons/fa";
 import { FaGreaterThan } from "react-icons/fa6";
+import { FiChevronRight } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 
 const IndividualMatch = () => {
@@ -287,21 +288,21 @@ const IndividualMatch = () => {
       <div className="mt-2">
         <div className="d-flex justify-content-between w-100">
           <div className="d-flex ">
-            <FaGreaterThan className="medium-font mx-2" />
+            <FiChevronRight className=" mx-2" size={18}/>
             <h6>Result</h6>
-            <FaGreaterThan className="medium-font mx-2" />
+            <FiChevronRight className=" mx-2" size={18}/>
             <h6>Cricket</h6>
-            <FaGreaterThan className="medium-font mx-2" />
+            <FiChevronRight className=" mx-2 saffron-clr" size={18}/>
             <h6 className="saffron-clr">{matchName}</h6>
           </div>
 
-          <div className="grey-border rounded-pill grey-clr d-flex align-items-center px-2">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
-          </div>
+          <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
+          <input className="small-font all-none" placeholder="Search..." />
+        </div>
         </div>
       </div>
-      <div className="white-bg login-box-shadow p-1 mt-4 rounded">
+      <div className=" mt-4 ">
         <Table columns={RISK_COLUMNS} data={RISK_DATA} itemsPerPage={5} />
       </div>
     </div>

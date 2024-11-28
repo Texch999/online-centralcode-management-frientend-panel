@@ -30,10 +30,10 @@ const ReferenceData = () => {
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -54,10 +54,10 @@ const ReferenceData = () => {
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -78,10 +78,10 @@ const ReferenceData = () => {
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -97,15 +97,15 @@ const ReferenceData = () => {
     {
       questions: <div>What is your name?</div>,
 
-      status: <div className="green-btn w-30">Active</div>,
+      status: <div className="green-btn w-50">Active</div>,
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -121,10 +121,10 @@ const ReferenceData = () => {
   ];
 
   const REJECTION_COLUMNS = [
-    { header: "Reason", field: "reason", width: "30%" },
+    { header: "Reason", field: "reason", width: "15%" },
     { header: "Discriptions", field: "discriptions", width: "55%" },
     { header: "Status", field: "status", width: "10%" },
-    { header: "Action", field: "action", width: "5%" },
+    { header: "Action", field: "action", width: "10%" },
   ];
   const REJECTION_DATA = [
     {
@@ -132,26 +132,26 @@ const ReferenceData = () => {
 
       discriptions: (
         <div>
-          It means that a customer’s account lacks the necessary funds to cover{" "}
-          <br />a withdrawal, purchase, or payment. For example, if someone
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
           tries to <br />
           withdraw cash from an ATM
         </div>
       ),
 
       status: (
-        <div className="green-btn">
-          <div className="w-100 flex-center">Active</div>
+        <div >
+          <div className="w-50  green-btn">Active</div>
         </div>
       ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -169,22 +169,26 @@ const ReferenceData = () => {
 
       discriptions: (
         <div>
-          It means that a customer’s account lacks the necessary funds to cover{" "}
-          <br />a withdrawal, purchase, or payment. For example, if someone
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
           tries to <br />
           withdraw cash from an ATM
         </div>
       ),
 
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div >
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -197,27 +201,32 @@ const ReferenceData = () => {
         </div>
       ),
     },
+   
     {
       reason: <div>Insufficient Balance</div>,
 
       discriptions: (
         <div>
-          It means that a customer’s account lacks the necessary funds to cover{" "}
-          <br />a withdrawal, purchase, or payment. For example, if someone
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
           tries to <br />
           withdraw cash from an ATM
         </div>
       ),
 
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div >
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -230,27 +239,32 @@ const ReferenceData = () => {
         </div>
       ),
     },
+   
     {
       reason: <div>Insufficient Balance</div>,
 
       discriptions: (
         <div>
-          It means that a customer’s account lacks the necessary funds to cover{" "}
-          <br />a withdrawal, purchase, or payment. For example, if someone
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
           tries to <br />
           withdraw cash from an ATM
         </div>
       ),
 
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div >
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -263,27 +277,32 @@ const ReferenceData = () => {
         </div>
       ),
     },
+   
     {
       reason: <div>Insufficient Balance</div>,
 
       discriptions: (
         <div>
-          It means that a customer’s account lacks the necessary funds to cover{" "}
-          <br />a withdrawal, purchase, or payment. For example, if someone
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
           tries to <br />
           withdraw cash from an ATM
         </div>
       ),
 
-      status: <div className="green-btn">Active</div>,
+      status: (
+        <div >
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
 
       action: (
         <div className="large-font">
           <span>
-            <LiaPenSolid />
+            <LiaPenSolid size={18}/>
           </span>
           <span className="ms-2">
-            <FaRegTrashCan />
+            <FaRegTrashCan size={18}/>
           </span>
         </div>
       ),
@@ -296,6 +315,9 @@ const ReferenceData = () => {
         </div>
       ),
     },
+   
+
+   
   ];
 
   return (
@@ -310,7 +332,7 @@ const ReferenceData = () => {
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2 pointer px-4"
+                ? "saffron-btn2 px-4"
                 : "white-btn2 pointer px-4"
             }`}
             onClick={() => handleSportClick(item)}
@@ -319,12 +341,12 @@ const ReferenceData = () => {
           </div>
         ))}
       </div>
-      <div className="grey-border w-100 mt-4"></div>
+      <hr />
       <div className="d-flex w-100 flex-between">
         <div className="col-7 fw-600">
           {activeBtn === "Rejection Reasons"
             ? "Rejection Reasons"
-            : "Add Security Questions"}
+            : "Security Questions"}
         </div>
         {activeBtn === "Rejection Reasons" ? (
           <div className="col-5 d-flex flex-between">
@@ -346,7 +368,7 @@ const ReferenceData = () => {
           </div>
         ) : (
           <div className="col-5 d-flex flex-between">
-            {" "}
+           
             <div className="col-5 ">
               <select className="input-css2 col-12 mt-4 small-font">
                 <option>All</option>
@@ -369,13 +391,13 @@ const ReferenceData = () => {
           <Table
             columns={REJECTION_COLUMNS}
             data={REJECTION_DATA}
-            itemsPerPage={3}
+            itemsPerPage={4}
           />
         ) : (
           <Table
             columns={SECURITY_COLUMNS}
             data={SECURITY_DATA}
-            itemsPerPage={3}
+            itemsPerPage={4}
           />
         )}
       </div>
