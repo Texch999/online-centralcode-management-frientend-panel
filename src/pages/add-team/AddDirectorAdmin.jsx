@@ -90,7 +90,12 @@ const AddDirectorAdmin = () => {
       name: "Jayanta",
       loginname: "Jayanta121",
       inUsed: "UAI",
-      linkWebsites: ["casinocafe.com", "sparkbook999.com", "fun77.com", "diamondexchange.com"],
+      linkWebsites: [
+        "casinocafe.com",
+        "sparkbook999.com",
+        "fun77.com",
+        "diamondexchange.com",
+      ],
       shareRent: ["10%", "500000", "5%", "200000"],
       billing: "0",
       pl: "5000000",
@@ -170,7 +175,12 @@ const AddDirectorAdmin = () => {
       name: "Jayanta",
       loginname: "Jayanta121",
       inUsed: "UAI",
-      linkWebsites: ["casinocafe.com", "sparkbook999.com", "fun77.com", "diamondexchange.com"],
+      linkWebsites: [
+        "casinocafe.com",
+        "sparkbook999.com",
+        "fun77.com",
+        "diamondexchange.com",
+      ],
       shareRent: ["10%", "2000000", "2000000", "2000000"],
       billing: "0",
       pl: "5000000",
@@ -226,7 +236,6 @@ const AddDirectorAdmin = () => {
     },
   ];
 
-
   const columns = [
     { header: "Role", field: "role" },
     { header: "Name", field: "name" },
@@ -280,9 +289,7 @@ const AddDirectorAdmin = () => {
         </div>
       </div>
 
-      <div className="white-bg login-box-shadow rounded pt-2 pb-3">
-        <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
-      </div>
+      <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
 
       {/* Modal Component */}
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />

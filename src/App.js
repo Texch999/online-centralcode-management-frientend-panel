@@ -34,10 +34,11 @@ import MarketResult from "./pages/market-result/MarketResult";
 import SportProviders from "./pages/sports/SportProviders";
 import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
+import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
+import SettledHistory from "./pages/wallet/SettledHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
-  const role = localStorage?.getItem("role");
   return (
     <div>
       {!isLoggedIn ? (
@@ -85,12 +86,17 @@ function App() {
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route path="/live-bet-list" element={<LiveBetList />} />
-              <Route path="/sports-providers" element={<SportProviders/>}/>
+              <Route path="/sports-providers" element={<SportProviders />} />
               <Route
                 path="/deleted-bet-history"
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
+              <Route
+                path="/my-vendors-account"
+                element={<MyVendorsAccount />}
+              />
+              <Route path="/settled-history" element={<SettledHistory />} />
             </Routes>
           </div>
         </div>
