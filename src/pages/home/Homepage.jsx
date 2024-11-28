@@ -680,10 +680,7 @@ function Homepage() {
           </div>
         </div>
       </div>
-    <div>
-      <h1>Homepage</h1>
-      {/* <Table /> */}
-    </div>
+   
     </div>
   );
 }

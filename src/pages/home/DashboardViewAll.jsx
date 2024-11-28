@@ -204,7 +204,7 @@ const DashboardViewAll = () => {
                 </div>
               </div>
 
-              <div className="mt-3 radius box-shadow">
+              <div className="mt-3 ">
                 <ScrollTable
                   columns={customerCols}
                   data={customerData}
