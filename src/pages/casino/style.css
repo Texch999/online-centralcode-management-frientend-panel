@@ -6,8 +6,8 @@
   color: #18b962;
   font-weight: 500;
   text-align: center;
-  width: 40%;
-  padding: 0.1rem;
+  width: fit-content;
+  padding: 0.2rem;
 }
 .inactive-btn-table {
   border: 1px solid #f43a23;
@@ -17,8 +17,8 @@
   color: #f43a23;
   font-weight: 500;
   text-align: center;
-  width: 48%;
-  padding: 0.1rem;
+  width: fit-content;
+  padding: 0.2rem;
 }
 .round-red-dot {
   height: 6px;
@@ -35,7 +35,7 @@
   display: inline-block;
 }
 .form-check-input:checked {
-  background-color: green !important;
+  background-color: #18B962 !important;
   border-color: 1.2px solid #0000001a !important;
 }
 .w-40 {
@@ -44,4 +44,10 @@
 
 .checkbox input[type="checkbox"]:checked {
   background-color: #ffa310 !important;
+}
+.form-switch .form-check-input {
+  width: 4em !important;
+}
+.form-check-input {
+  height: 1.5em !important;
 }

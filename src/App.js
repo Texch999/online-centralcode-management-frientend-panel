@@ -16,7 +16,11 @@ import CasinoGames from "./pages/casino/CasinoGames";
 import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import RiskCasino from "./pages/risk-management/RiskCasino";
+import Sports from "./pages/sports/Sports";
+import FancyResult from "./pages/fancy-result/FancyResult";
+import MarketResult from "./pages/market-result/MarketResult";
 import LiveBetList from "./pages/risk-management/LiveBetList";
+import SportProviders from "./pages/sports/SportProviders";
 import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 
@@ -54,7 +58,11 @@ function App() {
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
+              <Route path="/sports" element={<Sports />} />
+              <Route path="/fancy-results" element={<FancyResult />} />
+              <Route path="/market-results" element={<MarketResult />} />
               <Route path="/live-bet-list" element={<LiveBetList />} />
+              <Route path="/sports-providers" element={<SportProviders/>}/>
               <Route
                 path="/deleted-bet-history"
                 element={<DeletedBetHistory />}

@@ -13,7 +13,7 @@ const CasinoVendor = () => {
   };
 
   const cols = [
-    { header: "S No", field: "sno" },
+    { header: <div className="flex-center">S No</div>, field: "sno" },
     { header: "Games", field: "games" },
     { header: "Status", field: "status" },
     { header: "Profit & Loss", field: "pl" },
@@ -22,7 +22,7 @@ const CasinoVendor = () => {
 
   const data = [
     {
-      sno: <div>1</div>,
+      sno: <div className="flex-center">1</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Poker")}>
           Poker
@@ -46,14 +46,14 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div>2</div>,
+      sno: <div className="flex-center">2</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Teenpati")}>
           Teenpati
         </div>
       ),
       status: (
-        <div className="dark-orange-clr">
+        <div className="dark-orange-clr align-items-center">
           <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
@@ -70,7 +70,7 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div>3</div>,
+      sno: <div className="flex-center">3</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Roulette")}>
           Roulette
@@ -94,7 +94,7 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div>4</div>,
+      sno: <div className="flex-center">4</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Sic bo")}>
           Sic bo
@@ -118,7 +118,7 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div>5</div>,
+      sno: <div className="flex-center">5</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Tables Game")}>
           Tables Game
@@ -142,7 +142,7 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div>6</div>,
+      sno: <div className="flex-center">6</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Black Jack")}>
           Black Jack
@@ -169,15 +169,22 @@ const CasinoVendor = () => {
 
   return (
     <div>
-      <div className="pointer" onClick={() => navigate(-1)}>
-        <span className="grey-clr">Casino {">"}</span>{" "}
-        <span className="grey-clr">{vendor}</span>{" "}
-        <span>
-          {">"}
-          {provider}
-        </span>
+      <div className="d-flex flex-between">
+        <div className="pointer my-2 large-font" onClick={() => navigate(-1)}>
+          <span className="grey-clr">
+            Casino<span className="mx-1">{">"}</span>
+          </span>
+          <span className="grey-clr">{vendor}</span>
+          <span>
+            <span className="mx-1">{">"}</span>
+            {provider}
+          </span>
+        </div>
+        <div className="small-font">
+          Total P/L : <span className="green-clr mx-1">20000</span>
+        </div>
       </div>
-      <div className="white-bg radius mt-3">
+      <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
     </div>

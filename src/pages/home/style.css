@@ -75,10 +75,7 @@
   color: #ffffff;
   border: none;
 }
-.select-none {
-  outline: none;
-  border: none;
-}
+
 .border-black {
   border: 1px solid #0000001a;
 }
@@ -112,3 +109,19 @@
 .radius-20 {
   border-radius: 20px;
 }
+.white-input {
+  background: #ffffff;
+  border: 1px solid #0000001a;
+  padding: 0.6rem;
+  border-radius: 5px;
+}
+.br-5 {
+  border-radius: 5px;
+}
+.w-fit {
+  width: fit-content;
+}
+.radius-50 {
+  border-radius: 50px;
+}
+

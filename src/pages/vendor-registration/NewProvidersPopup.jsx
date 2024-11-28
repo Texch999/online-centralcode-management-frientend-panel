@@ -16,48 +16,66 @@ const NewProvidersPopup = ({ show, setShow }) => {
         <div className="d-flex w-100 flex-column small-font">
           <div className="d-flex my-2">
             <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              Ezugi
+              <label htmlFor="ezugi" className="pointer">
+                <input type="checkbox" id="ezugi" className="mx-2" />
+                Ezugi
+              </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              Evolution
+              <label htmlFor="evolution" className="pointer">
+                <input type="checkbox" className="mx-2" id="evolution" />
+                Evolution
+              </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              Asian Games
-            </div>
-          </div>
-          <div className="d-flex my-2">
-            <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              GammaStack
-            </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              Playtech
-            </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              Real Gaming
+              <label htmlFor="asian games" className="pointer">
+                <input type="checkbox" id="asian games" className="mx-2" />
+                Asian Games
+              </label>
             </div>
           </div>
           <div className="d-flex my-2">
             <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              NetEnt
+              <label htmlFor="gammastack" className="pointer">
+                <input type="checkbox" className="mx-2" id="gammastack" />
+                GammaStack
+              </label>
+            </div>
+            <div className="input-css d-flex flex-between small-font mx-2">
+              <label htmlFor="playtech" className="pointer">
+                <input type="checkbox" className="mx-2" id="playtech" />
+                Playtech
+              </label>
+            </div>
+            <div className="input-css d-flex flex-between small-font mx-2">
+              <label htmlFor="real gming" className="pointer">
+                <input type="checkbox" className="mx-2" id="real gaming" />
+                Real Gaming
+              </label>
+            </div>
+          </div>
+          <div className="d-flex my-2">
+            <div className="input-css d-flex flex-between small-font mx-2">
+              <label htmlFor="netent" className="pointer">
+                <input type="checkbox" className="mx-2" id="netent" />
+                NetEnt
+              </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2 checkbox">
-              <input type="checkbox" className="mx-2" />
-              Pragmatic Play
+              <label htmlFor="pragmatic play" className="pointer">
+                <input type="checkbox" className="mx-2" id="pragmatic play" />
+                Pragmatic Play
+              </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
-              <input type="checkbox" className="mx-2" />
-              Real Gaming
+              <label htmlFor="real gaming" className="pointer">
+                <input type="checkbox" className="mx-2" id="real gaming" />
+                Real Gaming
+              </label>
             </div>
           </div>
 
-          <div className="saffron-btn2 br-5 mx-2 pointer">Submit</div>
+          <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Submit</div>
         </div>
       </div>
     </Modal>
