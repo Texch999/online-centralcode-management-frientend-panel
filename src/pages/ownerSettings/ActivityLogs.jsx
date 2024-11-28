@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
 import { FaRegCalendarMinus } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
+import DatePicker from "react-datepicker";
 
 const ActivityLogs = () => {
   const datePickerRef = useRef(null);
@@ -41,72 +41,63 @@ const ActivityLogs = () => {
   const ACTIVITY_DATA = [
     {
       prod: (
-        <div >
-         <FaCheckCircle className="green-font" size={24}/>
+        <div>
+          <FaCheckCircle className="green-font" size={24} />
         </div>
       ),
-      device: <div><IoTv  size={24}/></div>,
+      device: (
+        <div>
+          <IoTv size={24} />
+        </div>
+      ),
       dateTime: (
         <div>
-         11-10-2024 <br />
-         13:08:00
+          11-10-2024 <br />
+          13:08:00
         </div>
       ),
 
       userAdmin: (
-        <div
-        
-        >
-         Jayanta <br />
-         Super Admin
+        <div>
+          Jayanta <br />
+          Super Admin
         </div>
       ),
 
       duration: (
         <div>
-          <span >10s</span>
-         
+          <span>10s</span>
         </div>
       ),
-      executable: <div >Google Crome</div>,
-      location: (
-        <div>
-         Boulder, Colorado
-        </div>
-      ),
-      url: (
-        <div className="skyblue-clr">
-          https://www.madmin.we2call.com/
-        </div>
-      ),
-      ip: (
-        <div>
-          157.47.47.187
-        </div>
-      ),
-      iplogin: (
-        <div className="w-50 flex-center">
-          4
-        </div>
-      ),
+      executable: <div>Google Crome</div>,
+      location: <div>Boulder, Colorado</div>,
+      url: <div className="skyblue-clr">https://www.madmin.we2call.com/</div>,
+      ip: <div>157.47.47.187</div>,
+      iplogin: <div className="w-50 flex-center">4</div>,
       show: (
-        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        <div
+          className="saffron-btn2 w-100 pointer"
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
         >
-        view
+          view
         </div>
       ),
     },
     {
       prod: (
-        <div >
-         <FaCheckCircle className="green-font" size={24}/>
+        <div>
+          <FaCheckCircle className="green-font" size={24} />
         </div>
       ),
-      device: <div><IoTv  size={24}/></div>,
+      device: (
+        <div>
+          <IoTv size={24} />
+        </div>
+      ),
       dateTime: (
         <div>
-         11-10-2024 <br />
-         13:08:00
+          11-10-2024 <br />
+          13:08:00
         </div>
       ),
 
@@ -115,221 +106,171 @@ const ActivityLogs = () => {
           onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
           className="pointer"
         >
-         Jayanta <br />
-         Super Admin
+          Jayanta <br />
+          Super Admin
         </div>
       ),
 
       duration: (
         <div>
-          <span >10s</span>
-         
+          <span>10s</span>
         </div>
       ),
-      executable: <div >Google Crome</div>,
-      location: (
-        <div>
-         Boulder, Colorado
-        </div>
-      ),
-      url: (
-        <div className="skyblue-clr">
-          https://www.madmin.we2call.com/
-        </div>
-      ),
-      ip: (
-        <div>
-          157.47.47.187
-        </div>
-      ),
-      iplogin: (
-        <div className="w-50 flex-center">
-          4
-        </div>
-      ),
+      executable: <div>Google Crome</div>,
+      location: <div>Boulder, Colorado</div>,
+      url: <div className="skyblue-clr">https://www.madmin.we2call.com/</div>,
+      ip: <div>157.47.47.187</div>,
+      iplogin: <div className="w-50 flex-center">4</div>,
       show: (
-        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        <div
+          className="saffron-btn2 w-100 pointer"
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
         >
-        view
+          view
         </div>
       ),
     },
     {
       prod: (
-        <div >
-         <FaCheckCircle className="green-font" size={24}/>
+        <div>
+          <FaCheckCircle className="green-font" size={24} />
         </div>
       ),
-      device: <div><IoTv  size={24}/></div>,
+      device: (
+        <div>
+          <IoTv size={24} />
+        </div>
+      ),
       dateTime: (
         <div>
-         11-10-2024 <br />
-         13:08:00
+          11-10-2024 <br />
+          13:08:00
         </div>
       ),
 
       userAdmin: (
         <div
-        onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
           className="pointer"
         >
-         Jayanta <br />
-         Super Admin
+          Jayanta <br />
+          Super Admin
         </div>
       ),
 
       duration: (
         <div>
-          <span >10s</span>
-         
+          <span>10s</span>
         </div>
       ),
-      executable: <div >Google Crome</div>,
-      location: (
-        <div>
-         Boulder, Colorado
-        </div>
-      ),
-      url: (
-        <div className="skyblue-clr">
-          https://www.madmin.we2call.com/
-        </div>
-      ),
-      ip: (
-        <div>
-          157.47.47.187
-        </div>
-      ),
-      iplogin: (
-        <div className="w-50 flex-center">
-          4
-        </div>
-      ),
+      executable: <div>Google Crome</div>,
+      location: <div>Boulder, Colorado</div>,
+      url: <div className="skyblue-clr">https://www.madmin.we2call.com/</div>,
+      ip: <div>157.47.47.187</div>,
+      iplogin: <div className="w-50 flex-center">4</div>,
       show: (
-        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        <div
+          className="saffron-btn2 w-100 pointer"
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
         >
-        view
+          view
         </div>
       ),
     },
     {
       prod: (
-        <div >
-         <FaCheckCircle className="green-font" size={24}/>
+        <div>
+          <FaCheckCircle className="green-font" size={24} />
         </div>
       ),
-      device: <div><IoTv  size={24}/></div>,
+      device: (
+        <div>
+          <IoTv size={24} />
+        </div>
+      ),
       dateTime: (
         <div>
-         11-10-2024 <br />
-         13:08:00
+          11-10-2024 <br />
+          13:08:00
         </div>
       ),
 
       userAdmin: (
         <div
-        onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
           className="pointer"
         >
-         Jayanta <br />
-         Super Admin
+          Jayanta <br />
+          Super Admin
         </div>
       ),
 
       duration: (
         <div>
-          <span >10s</span>
-         
+          <span>10s</span>
         </div>
       ),
-      executable: <div >Google Crome</div>,
-      location: (
-        <div>
-         Boulder, Colorado
-        </div>
-      ),
-      url: (
-        <div className="skyblue-clr">
-          https://www.madmin.we2call.com/
-        </div>
-      ),
-      ip: (
-        <div>
-          157.47.47.187
-        </div>
-      ),
-      iplogin: (
-        <div className="w-50 flex-center">
-        4
-      </div>
-      ),
+      executable: <div>Google Crome</div>,
+      location: <div>Boulder, Colorado</div>,
+      url: <div className="skyblue-clr">https://www.madmin.we2call.com/</div>,
+      ip: <div>157.47.47.187</div>,
+      iplogin: <div className="w-50 flex-center">4</div>,
       show: (
-        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        <div
+          className="saffron-btn2 w-100 pointer"
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
         >
-        view
+          view
         </div>
       ),
     },
     {
       prod: (
-        <div >
-         <FaCheckCircle className="green-font" size={24}/>
+        <div>
+          <FaCheckCircle className="green-font" size={24} />
         </div>
       ),
-      device: <div><IoTv  size={24}/></div>,
+      device: (
+        <div>
+          <IoTv size={24} />
+        </div>
+      ),
       dateTime: (
         <div>
-         11-10-2024 <br />
-         13:08:00
+          11-10-2024 <br />
+          13:08:00
         </div>
       ),
 
       userAdmin: (
         <div
-        onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
           className="pointer"
         >
-         Jayanta <br />
-         Super Admin
+          Jayanta <br />
+          Super Admin
         </div>
       ),
 
       duration: (
         <div>
-          <span >10s</span>
-         
+          <span>10s</span>
         </div>
       ),
-      executable: <div >Google Crome</div>,
-      location: (
-        <div>
-         Boulder, Colorado
-        </div>
-      ),
-      url: (
-        <div className="skyblue-clr">
-          https://www.madmin.we2call.com/
-        </div>
-      ),
-      ip: (
-        <div>
-          157.47.47.187
-        </div>
-      ),
-      iplogin: (
-        <div className="w-50 flex-center">
-          4
-        </div>
-      ),
+      executable: <div>Google Crome</div>,
+      location: <div>Boulder, Colorado</div>,
+      url: <div className="skyblue-clr">https://www.madmin.we2call.com/</div>,
+      ip: <div>157.47.47.187</div>,
+      iplogin: <div className="w-50 flex-center">4</div>,
       show: (
-        <div className="saffron-btn2 w-100 pointer" onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
+        <div
+          className="saffron-btn2 w-100 pointer"
+          onClick={() => handleMatchClick("Jayanta (11-10-2024,13:08:00)")}
         >
-        view
+          view
         </div>
       ),
     },
-    
-    
   ];
 
   return (
@@ -348,7 +289,10 @@ const ActivityLogs = () => {
               onChange={(date) => setStartDate(date)}
               className="all-none w-90 small-font p-1"
             />
-            <FaRegCalendarMinus onClick={handleIconClick} className="pointer me-1" />
+            <FaRegCalendarMinus
+              onClick={handleIconClick}
+              className="pointer me-1"
+            />
           </div>
         </div>
 
@@ -361,14 +305,21 @@ const ActivityLogs = () => {
               onChange={(date) => setStartDate2(date)}
               className="all-none w-90 small-font p-1"
             />
-            <FaRegCalendarMinus onClick={handleIconClick2} className="pointer me-1" />
+            <FaRegCalendarMinus
+              onClick={handleIconClick2}
+              className="pointer me-1"
+            />
           </div>
         </div>
 
         <div className="saffron-btn2 small-font pointer mt-4 col-4">Submit</div>
       </div>
       <div className="mt-4">
-        <Table columns={ACTIVITY_COLUMNS} data={ACTIVITY_DATA} itemsPerPage={4} />
+        <Table
+          columns={ACTIVITY_COLUMNS}
+          data={ACTIVITY_DATA}
+          itemsPerPage={4}
+        />
       </div>
     </div>
   );
