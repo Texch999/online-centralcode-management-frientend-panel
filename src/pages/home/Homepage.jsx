@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
-import React from "react";
+// import React from "react";
 import Table from "../../components/Table"
 
 function Homepage() {
@@ -682,6 +682,7 @@ function Homepage() {
     <div>
       <h1>Homepage</h1>
       {/* <Table /> */}
+    </div>
     </div>
   );
 }
