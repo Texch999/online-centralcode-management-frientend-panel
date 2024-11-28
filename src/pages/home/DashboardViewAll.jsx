@@ -173,7 +173,7 @@ const DashboardViewAll = () => {
                   </div>
                 </div>
 
-                <div className="col-2 flex-column">
+                <div className="col flex-column">
                   <lable className="small-font mb-1">Date</lable>
 
                   <input
@@ -183,7 +183,7 @@ const DashboardViewAll = () => {
                   />
                 </div>
 
-                <div className="col-1 flex-column">
+                <div className="col flex-column">
                   <lable className="small-font mb-1 white-space">Customer Name</lable>
 
                   <input
@@ -193,7 +193,7 @@ const DashboardViewAll = () => {
                   />
                 </div>
 
-                <div className="col-1 flex-column">
+                <div className="col flex-column">
                   <lable className="small-font mb-1">Sales Type</lable>
                   <select className="input-css2 small-font text-black">
                     <option>All</option>
