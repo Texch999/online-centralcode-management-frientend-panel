@@ -30,6 +30,18 @@ import CricketLiveStreaming from "./pages/cricket/CricketLiveStreaming";
 import VendorRegistration from "./pages/vendor-registration/casino/casino/VendorRegistration";
 import SportsVendorRegistration from "./pages/vendor-registration/casino/sports/SportsVendorRegistration";
 import CricketScoreboard from "./pages/cricket/CricketScoreboard";
+import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
+import SettledHistory from "./pages/wallet/SettledHistory";
+import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
+import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
+import Tickets from "./pages/wallet/Tickets";
+import ActivityLogs from "./pages/ownerSettings/ActivityLogs";
+import RecentAccessIp from './pages/ownerSettings/RecentAccessIp';
+import PromotionType from './pages/promotions/PromotionType';
+import SportsPromotions from './pages/promotions/SportsPromotions';
+import CasinoPromotions from './pages/promotions/CasinoPromotions';
+import Broadcasting from './pages/promotions/Broadcasting';
+import SandCBanner from './pages/promotions/SandCBanner';
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -65,10 +77,23 @@ function App() {
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
+              <Route path="/activity-logs" element={<ActivityLogs />} />
+              <Route
+                path="/userActivity/:userActivity"
+                element={<RecentAccessIp />}
+              />
+              <Route
+                path="/create-promotion-type"
+                element={<PromotionType />}
+              />
+              <Route path="/live-bet-list" element={<LiveBetList />} />
+              <Route path="/sports-promotions" element={<SportsPromotions />} />
+              <Route path="/casino-promotions" element={<CasinoPromotions />} />
+              <Route path="/broadcasting" element={<Broadcasting />} />
+              <Route path="/banners" element={<SandCBanner />} />
               <Route path="/sports" element={<Sports />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
-              <Route path="/live-bet-list" element={<LiveBetList />} />
               <Route path="/sports-providers" element={<SportProviders />} />
               <Route
                 path="/deleted-bet-history"
@@ -88,6 +113,13 @@ function App() {
               />
               <Route path="/sports-vendor-registration" element={<SportsVendorRegistration/>}/>
               <Route path="/cricket-scoreboard" element={<CricketScoreboard/>}/>
+              <Route path="/settled-history" element={<SettledHistory />} />
+              <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
+              <Route
+                path="/offline-deposit-withdraw"
+                element={<OfflineDepositWithdraw />}
+              />
+              <Route path="/tickets" element={<Tickets />} />
             </Routes>
           </div>
         </div>

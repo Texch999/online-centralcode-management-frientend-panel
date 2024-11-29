@@ -322,7 +322,7 @@ function RiskSports() {
         <ScrollTable
           columns={MATCH_ODDS_COLUMNS}
           data={MATCH_ODDS_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
       <>
@@ -330,7 +330,7 @@ function RiskSports() {
         <ScrollTable
           columns={MATCH_ODDS_COLUMNS}
           data={MATCH_ODDS_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
       <>
@@ -338,7 +338,7 @@ function RiskSports() {
         <ScrollTable
           columns={MATCH_ODDS_COLUMNS}
           data={MATCH_ODDS_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
       <>
@@ -346,7 +346,7 @@ function RiskSports() {
         <ScrollTable
           columns={FANCY_COLUMNS}
           data={FANCY_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
     </div>

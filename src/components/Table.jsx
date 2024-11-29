@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from "react-icons/md";
 
-function Table({ data, columns, footer, itemsPerPage, rowColor }) {
+function Table({
+  data,
+  columns,
+  footer,
+  itemsPerPage,
+  rowColor,
+  customPadding,
+  greyBackround,
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(data?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -40,21 +48,26 @@ function Table({ data, columns, footer, itemsPerPage, rowColor }) {
   return (
     <div>
       <div className="w-100 table-wrapper">
-        <table className="w-100 white-bg" style={{ borderRadius: "10px" }}>
-          <thead className="border-bottom">
+        <table
+          className={`w-100 ${greyBackround ? greyBackround : "white-bg"}`}
+          style={{ borderRadius: "10px" }}
+        >
+          <thead className={`${greyBackround ? greyBackround : "white-bg"}`}>
             <tr className="border-bottom">
               {columns?.map((column, index) => (
                 <th
                   key={index}
                   style={{ width: column?.width }}
-                  className="border-bottom small-font black-text px-3 py-2"
+                  className={`border-bottom small-font fw-600 black-text ${
+                    customPadding ? customPadding : "px-3 py-2"
+                  }`}
                 >
                   {column?.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="white-bg">
             {hasData && currentData?.length > 0 ? (
               currentData.map((row, rowIndex) => (
                 <tr key={rowIndex} className="border-top">
@@ -64,7 +77,9 @@ function Table({ data, columns, footer, itemsPerPage, rowColor }) {
                       style={{ width: column?.width }}
                       className={`${
                         rowColor ? rowColor(row) : "black-text"
-                      } align-top small-font px-3 py-2`}
+                      } align-top small-font ${
+                        customPadding ? customPadding : "px-3 py-2"
+                      } `}
                     >
                       {row[column?.field]}
                     </td>
@@ -83,13 +98,13 @@ function Table({ data, columns, footer, itemsPerPage, rowColor }) {
             )}
           </tbody>
           {footer && footer?.length > 0 && (
-            <tfoot className="border-top">
+            <tfoot className="border-top footer-bg">
               <tr>
                 {footer.map((column, footerIndex) => (
                   <th
                     key={footerIndex}
                     style={{ width: column?.width }}
-                    className="text-center small-font black-text p-2"
+                    className="small-font fw-600 black-text px-3 py-3"
                   >
                     {column.header}
                   </th>
