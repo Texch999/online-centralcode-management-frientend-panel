@@ -37,6 +37,7 @@ import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
 import SettledHistory from "./pages/wallet/SettledHistory";
 import Offer from "./pages/promotions/Offer";
+import MyStatement from "./pages/reports/MyStatement";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -99,6 +100,7 @@ function App() {
               />
               <Route path="/settled-history" element={<SettledHistory />} />
               <Route path="/offer" element={<Offer />} />
+              <Route path="/my-statement" element={<MyStatement />} />
             </Routes>
           </div>
         </div>
