@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
@@ -24,7 +23,7 @@ const PromotionType = () => {
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster,setEditPoster]=useState(false)
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
-  const datePickerRef = useRef(null);
+
   const navigation = useNavigate();
  
  

@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
@@ -27,12 +25,9 @@ const CasinoPromotions = () => {
   const [editPoster, setEditPoster] = useState(false);
   const [casinoPromotion, setCasinoPromotion] = useState(false);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
-  const datePickerRef = useRef(null);
   const navigation = useNavigate();
 
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
+
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);

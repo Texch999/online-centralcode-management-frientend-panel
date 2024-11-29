@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
@@ -8,22 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 const Result = () => {
   const [activeBtn, setActiveBtn] = useState("Sports");
-  const [startDate, setStartDate] = useState(new Date());
   const ACTIVE_BTNS = ["Sports", "Casino"];
-  const datePickerRef = useRef(null);
-  const datePickerRef2 = useRef(null);
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     // Navigate to the individual match component
     navigation(`/match/${encodeURIComponent(matchName)}`); // Encode special characters
   };
 
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
-  const handleIconClick2 = () => {
-    datePickerRef2?.current?.setFocus();
-  };
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
