@@ -18,6 +18,11 @@ body {
   overflow-x: hidden;
   position: relative;
 }
+.overflow {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+}
 .fixed-table thead {
   position: sticky;
   top: 0;

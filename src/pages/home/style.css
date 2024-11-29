@@ -130,3 +130,49 @@
 .radius-50 {
   border-radius: 50px;
 }
+.dot-line-black {
+  border: 1.2px dotted #00000033;
+}
+.font-25 {
+  font-size: 25px;
+}
+.w-60 {
+  width: 60%;
+}
+.back-box {
+  background-color: #6bc0ff;
+  color: #001d58;
+  padding-top: 1px;
+  border-radius: 4px;
+}
+.lay-box {
+  background-color: #ff8282;
+  color: #001d58;
+  padding-top: 1px;
+  border-radius: 4px;
+}
+.back-btn-cricket {
+  background: #e8ebf5;
+  color: #18b962;
+  border-radius: 3px;
+  text-align: center;
+}
+.lay-btn-cricket {
+  background: #e8ebf5;
+  color: #d0431c;
+  border-radius: 3px;
+  text-align: center;
+}
+.inplay-btn{
+  background-color: #18B962;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.match-img{
+  width: 55%;
+  height: 17vh;
+}
+.h-58vh{
+  height: 58vh;
+}

@@ -2,18 +2,15 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import "../casino/style.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { GiClick } from "react-icons/gi";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
 
 function Casino() {
   const navigate = useNavigate();
-  const params = useParams();
-
-  const [isActive, setIsACtive]=useState(false);
-  const handleActiveModal=()=>{
-    setIsACtive(!isActive)
-  }
+  const [isActive, setIsACtive] = useState(false);
+  const handleActiveModal = () => {
+    setIsACtive(!isActive);
+  };
 
   const handleProviderClick = (vendor, provider) => {
     navigate("/casino-vendor", { state: { vendor, provider } });
@@ -668,7 +665,7 @@ function Casino() {
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
 
-      <ActionPopup show={isActive} setShow={setIsACtive}/>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 }
