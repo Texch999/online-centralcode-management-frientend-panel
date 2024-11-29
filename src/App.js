@@ -41,6 +41,7 @@ import MyStatement from "./pages/reports/MyStatement";
 import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
 import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
 import Tickets from "./pages/wallet/Tickets";
+import GatewayTransactions from "./pages/wallet/GatewayTransactions";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -115,6 +116,10 @@ function App() {
                 element={<OfflineDepositWithdraw />}
               />
               <Route path="/tickets" element={<Tickets />} />
+              <Route
+                path="/gateway-transactions"
+                element={<GatewayTransactions />}
+              />
             </Routes>
           </div>
         </div>

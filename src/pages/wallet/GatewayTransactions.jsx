@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import DepositWithdrawPopup from "./DepositWithdrawPopup";
+import { FaSearch } from "react-icons/fa";
 
-function Tickets() {
+function GatewayTransactions() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
     useState(false);
   const handleDepositWithdrawPopupOpen = () => {
     setDepositWithdrawPopupOpen(true);
   };
   const TICKETS_COLUMNS = [
-    { header: "SNo", field: "serialNo" },
     { header: "Date & Time", field: "dateTime" },
     { header: "Name & Role", field: "nameRole" },
     { header: "Trn ID", field: "transactionId" },
@@ -27,7 +26,6 @@ function Tickets() {
 
   const TICKETS_DATA = [
     {
-      serialNo: 1,
       dateTime: "07-10-2024, 17:17:00",
       nameRole: (
         <div>
@@ -47,7 +45,7 @@ function Tickets() {
       currency: <div>-</div>,
       currencyAmount: <div>-</div>,
       amountInRs: <div>-</div>,
-      depositType: <div>-</div>,
+      depositType: <div>Payment Gateway</div>,
       status: <div className="edit-btn">New</div>,
       view: (
         <div className="w-100 flex-center">
@@ -60,7 +58,6 @@ function Tickets() {
       ),
     },
     {
-      serialNo: 1,
       dateTime: "07-10-2024, 17:17:00",
       nameRole: (
         <div>
@@ -81,7 +78,7 @@ function Tickets() {
       currency: <div>USD</div>,
       currencyAmount: <div>4000</div>,
       amountInRs: <div>400000</div>,
-      depositType: <div>Phone Pe</div>,
+      depositType: <div>Payment Gateway</div>,
       status: <div className="red-btn">Rejected</div>,
       view: (
         <div className="w-100 flex-center">
@@ -94,7 +91,6 @@ function Tickets() {
       ),
     },
     {
-      serialNo: 1,
       dateTime: "07-10-2024, 17:17:00",
       nameRole: (
         <div>
@@ -115,7 +111,7 @@ function Tickets() {
       currency: <div>USD</div>,
       currencyAmount: <div>4000</div>,
       amountInRs: <div>400000</div>,
-      depositType: <div>NEFT/RTGS</div>,
+      depositType: <div>Payment Gateway</div>,
       status: <div className="green-btn">Approved</div>,
       view: (
         <div className="w-100 flex-center">
@@ -128,7 +124,6 @@ function Tickets() {
       ),
     },
   ];
-
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -138,40 +133,83 @@ function Tickets() {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="grey-bg2 d-flex w-100 py-3 rounded">
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Total Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">1000000</span>
+
+      <div className="row">
+        <div className="col-4">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              Total Deposit
+            </div>
+            <div className="white-bg p-2 text-center green-font rounded-bottom">
+              10000000
+            </div>
           </div>
         </div>
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Total Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">1000000</span>
+        <div className="col-4">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              Total Withdraw
+            </div>
+            <div className="white-bg p-2 text-center red-font rounded-bottom">
+              10000000
+            </div>
           </div>
-        </div>{" "}
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Approved Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">9000</span>
-          </div>
-        </div>{" "}
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Rejected Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">100</span>
+        </div>
+        <div className="col-4">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              Net Balance
+            </div>
+            <div className="white-bg p-2 text-center green-font rounded-bottom">
+              10000000
+            </div>
           </div>
         </div>
       </div>
+
+      <div className="row mt-2">
+        <div className="col-3">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              Total Tickets
+            </div>
+            <div className="white-bg p-2 text-center black-text4 fw-600 rounded-bottom">
+              10000000
+            </div>
+          </div>
+        </div>
+        <div className="col-3">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              New Tickets
+            </div>
+            <div className="white-bg p-2 text-center black-text4 fw-600 rounded-bottom">
+              10000000
+            </div>
+          </div>
+        </div>
+        <div className="col-3">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              Approved Tickets
+            </div>
+            <div className="white-bg p-2 text-center black-text4 fw-600 rounded-bottom">
+              10000000
+            </div>
+          </div>
+        </div>
+        <div className="col-3">
+          <div className="white-bg border rounded small-font">
+            <div className="yellow-bg p-2 text-center white-text rounded-top">
+              Rejected Tickets
+            </div>
+            <div className="white-bg p-2 text-center black-text4 fw-600 rounded-bottom">
+              10000000
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="w-50 row my-3">
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">From</label>
@@ -194,4 +232,4 @@ function Tickets() {
   );
 }
 
-export default Tickets;
+export default GatewayTransactions;
