@@ -39,6 +39,7 @@ import SettledHistory from "./pages/wallet/SettledHistory";
 import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
 import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
 import Tickets from "./pages/wallet/Tickets";
+import DownlineList from "./pages/add-team/DownlineList";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -61,7 +62,7 @@ function App() {
               <Route path="/match/:matchName" element={<IndividualMatch />} />
               <Route path="/reference-data" element={<ReferenceData />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/downline-list" element={<UserProfileDashboard />} />
+              <Route path="/user-profile-dashboard" element={<UserProfileDashboard />} />
               <Route
                 path="/dashboard-view-all"
                 element={<DashboardViewAll />}
@@ -111,6 +112,7 @@ function App() {
                 element={<OfflineDepositWithdraw />}
               />
               <Route path="/tickets" element={<Tickets />} />
+              <Route path="/downline-list" element={<DownlineList />} />
             </Routes>
           </div>
         </div>

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 import { GrEdit } from "react-icons/gr";
 import { MdLockReset, MdBlockFlipped } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { IoEyeOutline } from "react-icons/io5";
-import AddDirectorAdminPopup from "./AddDirectorAdminPopup"; // Import the modal component
+import AddDirectorAdminPopup from "./AddDirectorAdminPopup";
 import "../add-team/style.css";
 import "../../App.css";
 
@@ -21,6 +22,13 @@ const AddDirectorAdmin = () => {
   // Function to handle modal close
   const handleModalClose = () => {
     setShowModal(false);
+  };
+
+  
+  const navigate = useNavigate();
+  
+  const handleNavigateUserDashboard = () => {
+    navigate("/user-profile-dashboard");
   };
 
   const tableData = [
@@ -40,7 +48,10 @@ const AddDirectorAdmin = () => {
           <GrEdit className="add-management-icon mx-1" />
           <MdLockReset className="add-management-icon mx-1" />
           <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+          <IoEyeOutline
+            className="add-management-icon mx-1"
+            onClick={handleNavigateUserDashboard}
+          />
         </div>
       ),
     },
