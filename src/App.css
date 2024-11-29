@@ -261,6 +261,9 @@
 .br-10 {
   border-radius: 10px;
 }
+.w-45 {
+  width: 49%;
+}
 .w-50 {
   width: 50%;
 }

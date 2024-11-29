@@ -24,7 +24,6 @@ const SandCBanner = () => {
     setActiveBtn2(activeBtn2 === item ? null : item);
   };
 
-
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
@@ -55,26 +54,26 @@ const SandCBanner = () => {
 
       Poster: (
         <div className="d-flex ">
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="relative poster-img ms-2">
-          <div>
-            <img src={Images.Cricket1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
         </div>
       ),
       icons: (
@@ -109,26 +108,26 @@ const SandCBanner = () => {
 
       Poster: (
         <div className="d-flex ">
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="relative poster-img ms-2">
-          <div>
-            <img src={Images.Cricket1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
         </div>
       ),
       icons: (
@@ -163,26 +162,26 @@ const SandCBanner = () => {
 
       Poster: (
         <div className="d-flex ">
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="relative poster-img ms-2">
-          <div>
-            <img src={Images.Cricket1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
         </div>
       ),
       icons: (
@@ -217,26 +216,26 @@ const SandCBanner = () => {
 
       Poster: (
         <div className="d-flex ">
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="relative poster-img ms-2">
-          <div>
-            <img src={Images.Cricket1} alt="Poster" />
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
-        </div>
         </div>
       ),
       icons: (
@@ -324,9 +323,8 @@ const SandCBanner = () => {
           </div>
         </>
 
-        <div className="col-3">
-
-        <div className="col-3 flex-column mx-2">
+       
+          <div className="col-3 flex-column mx-2">
             <label className="black-text4 small-font mb-1">Live Date</label>
             <input className="input-css2 small-font" type="date" />
           </div>
@@ -334,12 +332,6 @@ const SandCBanner = () => {
             <label className="black-text4 small-font mb-1">Live Time</label>
             <input className="input-css2 small-font" type="date" />
           </div>
-
-
-
-         
-        </div>
-
        
       </div>
 
