@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
   ];
   const REJECTION_DATA = [
     {
-      country: <div>India</div>,
+      country: <div >India</div>,
 
       policyDetails: (
         <div
@@ -43,7 +43,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -131,7 +131,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -175,7 +175,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -219,7 +219,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -263,7 +263,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>

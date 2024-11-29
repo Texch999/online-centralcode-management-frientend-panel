@@ -16,6 +16,7 @@ import FullPosterPopUp from "./FullPosterPopUp";
 import { MdOutlineFileUpload } from "react-icons/md";
 import EditPosterPopUp from "./EditPosterPopUp";
 
+
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
   const [startDate, setStartDate] = useState(new Date());
@@ -48,7 +49,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -69,7 +70,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -90,7 +91,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -111,7 +112,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -132,7 +133,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -153,7 +154,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>

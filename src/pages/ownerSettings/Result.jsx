@@ -570,34 +570,15 @@ const Result = () => {
         ))}
       </div>
       <div className="d-flex w-40 flex-between mt-2">
-        <div className="col-3">
-          <span className="small-font">From</span>
-          <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            <DatePicker
-              ref={datePickerRef}
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              className="all-none w-70 small-font"
-            />
-            <FaRegCalendarMinus onClick={handleIconClick} className="pointer" />
+      <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">From</label>
+            <input className="input-css2 small-font" type="date" />
           </div>
-        </div>
+          <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">To</label>
+            <input className="input-css2 small-font" type="date" />
+          </div>
 
-        <div className="col-3">
-          <span className="small-font">To</span>
-          <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            <DatePicker
-              ref={datePickerRef2}
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              className="all-none w-90 small-font p-1"
-            />
-            <FaRegCalendarMinus
-              onClick={handleIconClick2}
-              className="pointer  me-1"
-            />
-          </div>
-        </div>
 
         {activeBtn !== "Casino" && (
           <div className="col-3 flex-column me-3">

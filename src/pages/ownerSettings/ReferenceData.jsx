@@ -28,7 +28,7 @@ const ReferenceData = () => {
       status: <div className="green-btn w-50">Active</div>,
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -52,7 +52,7 @@ const ReferenceData = () => {
       status: <div className="green-btn w-50">Active</div>,
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -76,7 +76,7 @@ const ReferenceData = () => {
       status: <div className="green-btn w-50">Active</div>,
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -100,7 +100,7 @@ const ReferenceData = () => {
       status: <div className="green-btn w-50">Active</div>,
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -146,7 +146,7 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -183,45 +183,7 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font">
-          <span>
-            <LiaPenSolid size={18}/>
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18}/>
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-   
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div >
-          <div className="w-50  green-btn">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -259,7 +221,7 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
@@ -297,7 +259,45 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
+          <span>
+            <LiaPenSolid size={18}/>
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18}/>
+          </span>
+        </div>
+      ),
+      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+   
+    {
+      reason: <div>Insufficient Balance</div>,
+
+      discriptions: (
+        <div>
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
+          tries to <br />
+          withdraw cash from an ATM
+        </div>
+      ),
+
+      status: (
+        <div >
+          <div className="w-50  green-btn">Active</div>
+        </div>
+      ),
+
+      action: (
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18}/>
           </span>
