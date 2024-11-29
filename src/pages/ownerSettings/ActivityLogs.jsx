@@ -8,19 +8,9 @@ import { IoTv } from "react-icons/io5";
 import { FaCircleQuestion, FaMobileButton } from "react-icons/fa6";
 
 const ActivityLogs = () => {
-  const datePickerRef = useRef(null);
-  const datePickerRef2 = useRef(null);
+ 
   const navigation = useNavigate();
-  const [startDate, setStartDate] = useState(new Date());
-  const [startDate2, setStartDate2] = useState(new Date());
-
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
-  const handleIconClick2 = () => {
-    datePickerRef2?.current?.setFocus();
-  };
-
+ 
   const handleMatchClick = (userActivity) => {
     navigation(`/userActivity/${encodeURIComponent(userActivity)}`);
   };

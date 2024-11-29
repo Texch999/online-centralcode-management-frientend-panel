@@ -24,13 +24,9 @@ const SportsPromotions = () => {
   const [editPoster, setEditPoster] = useState(false);
   const [userPromotion, setUserPromotion] = useState(false);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
-  const datePickerRef = useRef(null);
   const navigation = useNavigate();
 
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
-
+ 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };

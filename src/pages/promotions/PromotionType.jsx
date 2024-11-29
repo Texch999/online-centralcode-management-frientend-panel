@@ -22,7 +22,7 @@ const PromotionType = () => {
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster,setEditPoster]=useState(false)
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
-  const datePickerRef = useRef(null);
+
   const navigation = useNavigate();
  
  

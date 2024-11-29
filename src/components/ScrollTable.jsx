@@ -9,6 +9,7 @@ function ScrollTable({
   customPadding = "py-2 px-3",
   greyBackground = "white-bg",
 }) {
+  
   return (
     <div className={`w-100 table-wrapper ${tableHeight}`}>
       <table className="w-100 fixed-table white-bg">

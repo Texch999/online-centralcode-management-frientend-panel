@@ -25,12 +25,9 @@ const CasinoPromotions = () => {
   const [editPoster, setEditPoster] = useState(false);
   const [casinoPromotion, setCasinoPromotion] = useState(false);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
-  const datePickerRef = useRef(null);
   const navigation = useNavigate();
 
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
+
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);

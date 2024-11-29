@@ -13,7 +13,6 @@ const SandCBanner = () => {
   const [activeBtn2, setActiveBtn2] = useState("Live");
   const ACTIVE_BTNS = ["User Posters", "Admin Posters"];
   const ACTIVE_BTNS2 = ["Live", "Schedule"];
-  const datePickerRef = useRef(null);
   const [startDate, setStartDate] = useState(new Date());
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
@@ -23,10 +22,6 @@ const SandCBanner = () => {
   };
   const handleSportClick2 = (item) => {
     setActiveBtn2(activeBtn2 === item ? null : item);
-  };
-
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
   };
 
   const CRICKET_COLUMNS = [
@@ -328,37 +323,16 @@ const SandCBanner = () => {
           </div>
         </>
 
-        <div className="col-3">
-          <span className="small-font">Live Date</span>
-          <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            {/* <DatePicker
-              ref={datePickerRef}
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              className="all-none w-90 small-font p-1"
-            /> */}
-            <FaRegCalendarMinus
-              onClick={handleIconClick}
-              className="pointer me-2"
-            />
+       
+          <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">Live Date</label>
+            <input className="input-css2 small-font" type="date" />
           </div>
-        </div>
-
-        <div className="col-3">
-          <span className="small-font">Live Time</span>
-          <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            {/* <DatePicker
-              ref={datePickerRef}
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              className="all-none w-90 small-font p-1"
-            /> */}
-            <FaRegCalendarMinus
-              onClick={handleIconClick}
-              className="pointer me-2"
-            />
+          <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">Live Time</label>
+            <input className="input-css2 small-font" type="date" />
           </div>
-        </div>
+       
       </div>
 
       <div className=" d-flex flex-between w-50">
