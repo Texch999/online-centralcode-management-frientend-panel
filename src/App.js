@@ -50,6 +50,7 @@ import GatewayTransactions from "./pages/wallet/GatewayTransactions";
 import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
 import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
+import Result from "./pages/ownerSettings/Result";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -155,6 +156,7 @@ function App() {
                 path="/my-vendors-account"
                 element={<MyVendorsAccount />}
               />
+              <Route path="/results" element={<Result />} />
             </Routes>
           </div>
         </div>
