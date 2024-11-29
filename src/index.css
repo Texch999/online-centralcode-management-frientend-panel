@@ -9,7 +9,7 @@ body {
   background: #f5f7ff !important;
   font-family: "Inter", sans-serif !important;
 }
-.bg-check{
+.bg-check {
   background-color: yellow;
 }
 .table-body-height {
@@ -21,7 +21,11 @@ body {
 .fixed-table thead {
   position: sticky;
   top: 0;
-  background: #ffffff;
+  z-index: 1;
+}
+.fixed-table tfoot {
+  position: sticky;
+  bottom: 0;
   z-index: 1;
 }
 .fixed-table tbody {
