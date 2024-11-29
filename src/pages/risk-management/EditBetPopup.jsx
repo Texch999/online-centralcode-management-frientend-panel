@@ -6,7 +6,7 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
     setEditBetPopupOpen(false);
   };
   return (
-    <Modal show={editBetPopupOpen} centered size="sm">
+    <Modal show={editBetPopupOpen} centered size="lg">
       <Modal.Body>
         <div className="flex-between black-text4">
           <h6 className="fw-600 mb-0">Edit Bet</h6>

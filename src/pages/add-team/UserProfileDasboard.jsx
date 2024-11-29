@@ -470,6 +470,7 @@ const UserProfileDashboard = () => {
         {activeTab === "paymentGateway" && <PaymentGateway />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
+        {/* {activeTab === "betHistory" && <CustomModal />} */}
       </div>
     </div>
   );

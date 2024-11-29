@@ -194,13 +194,11 @@
   background-color: #B3FFD6;
   border: solid 2px rgba(24, 185, 98, 0.4);
   color: rgba(24, 185, 98, 1);
-
 }
 
 .director-admin-profile-toggle-btn .form-check-input:checked {
   background-color: #B3FFD6;
   border-color: rgba(24, 185, 98, 0.4);
-
 }
 
 /* reset password custom styling  */
