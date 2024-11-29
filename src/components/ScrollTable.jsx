@@ -16,11 +16,12 @@ function ScrollTable({
       }`}
     >
       <table
-        className={`w-100 fixed-table ${
-          greyBackround ? greyBackround : "white-bg"
-        }`}
+        className="w-100 fixed-table white-bg"
+        // className={`w-100 fixed-table white-bg ${
+        //   greyBackround ? greyBackround : "white-bg"
+        // }`}
       >
-        <thead className="border-bottom">
+        <thead className="white-bg">
           <tr className="border-bottom">
             {columns?.map((column, index) => (
               <th
@@ -64,7 +65,11 @@ function ScrollTable({
           )}
         </tbody>
         {footer?.length > 0 && (
-          <tfoot className="border-top">
+          <tfoot
+            className={`border-top ${
+              greyBackround ? greyBackround : "white-bg"
+            }`}
+          >
             <tr>
               {footer.map((column, footerIndex) => (
                 <th

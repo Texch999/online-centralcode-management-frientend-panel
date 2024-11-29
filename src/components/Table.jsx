@@ -48,8 +48,11 @@ function Table({
   return (
     <div>
       <div className="w-100 table-wrapper">
-        <table className="w-100" style={{ borderRadius: "10px" }}>
-          <thead className="white-bg">
+        <table
+          className={`w-100 ${greyBackround ? greyBackround : "white-bg"}`}
+          style={{ borderRadius: "10px" }}
+        >
+          <thead className={`${greyBackround ? greyBackround : "white-bg"}`}>
             <tr className="border-bottom">
               {columns?.map((column, index) => (
                 <th
@@ -95,11 +98,7 @@ function Table({
             )}
           </tbody>
           {footer && footer?.length > 0 && (
-            <tfoot
-              className={`border-top  ${
-                greyBackround ? greyBackround : "white-bg"
-              }`}
-            >
+            <tfoot className="border-top footer-bg">
               <tr>
                 {footer.map((column, footerIndex) => (
                   <th
