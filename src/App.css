@@ -56,7 +56,7 @@
 }
 .saffron-btn2 {
   background: #ffa310 !important;
-  border: none !important;
+  border: 2px solid #ffa310 !important;
   outline: none !important;
   color: #ffffff !important;
   font-weight: 500 !important;
@@ -433,6 +433,9 @@
 }
 .border-right {
   border-right: 1px solid #dee2e6 !important;
+}
+.border-left2 {
+  border-right: 2px solid #aeaeae;
 }
 .mb-1rem {
   margin-bottom: -1rem;

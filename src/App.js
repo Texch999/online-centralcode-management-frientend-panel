@@ -37,6 +37,8 @@ import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
 import SettledHistory from "./pages/wallet/SettledHistory";
 import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
+import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
+import Tickets from "./pages/wallet/Tickets";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -104,6 +106,11 @@ function App() {
               />
               <Route path="/settled-history" element={<SettledHistory />} />
               <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
+              <Route
+                path="/offline-deposit-withdraw"
+                element={<OfflineDepositWithdraw />}
+              />
+              <Route path="/tickets" element={<Tickets />} />
             </Routes>
           </div>
         </div>
