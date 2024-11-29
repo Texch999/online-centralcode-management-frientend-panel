@@ -26,4 +26,14 @@ export const Images = {
   adminProfileDownlinePlChips:
     "/assets/director_admin_profile_downline-available-chips.png",
   qnmark: "/assets/question-mark 1.png",
+  promotion2: "/assets/promotion2.jpg",
+  promotion3: "/assets/promotion3.png",
+  promotion4: "/assets/promotion4.png",
+  promotion5: "/assets/promotion5.png",
+  promotion6: "/assets/promotion6.png",
+  promotion7: "/assets/promotion7.png",
+  promotion8: "/assets/promotion8.png",
+  promotion9: "/assets/promotion9.png",
+  promotion10: "/assets/promotion10.png",
+  promotion11: "/assets/promotion11.png",
 };

@@ -353,6 +353,9 @@
 .w-90 {
   width: 90%;
 }
+.w-95 {
+  width: 98%;
+}
 .w-15 {
   width: 15%;
 }
@@ -452,3 +455,8 @@
   align-items: end;
   justify-content: center;
 }
+.promotion-posters{
+  top: 0.5rem;
+ 
+}
+

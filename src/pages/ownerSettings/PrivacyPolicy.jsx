@@ -300,7 +300,7 @@ const PrivacyPolicy = () => {
             className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded flex-center "
             onClick={() => setAddPrivacyModal(true)}
           >
-            <IoAddOutline className="large-font" /> Add new
+            <IoAddOutline className="large-font" size={18}/>  <span className="ms-2">Add new</span>
           </div>
         </div>
       </div>
