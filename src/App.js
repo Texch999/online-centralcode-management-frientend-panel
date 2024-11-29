@@ -47,6 +47,9 @@ import CasinoPromotions from "./pages/promotions/CasinoPromotions";
 import Broadcasting from "./pages/promotions/Broadcasting";
 import SandCBanner from "./pages/promotions/SandCBanner";
 import GatewayTransactions from "./pages/wallet/GatewayTransactions";
+import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
+import ReferenceData from "./pages/ownerSettings/ReferenceData";
+import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -73,7 +76,6 @@ function App() {
                 path="/user-profile-dashboard"
                 element={<UserProfileDashboard />}
               />
-              <Route path="/downline-list" element={<UserProfileDashboard />} />
               <Route
                 path="/dashboard-view-all"
                 element={<DashboardViewAll />}
@@ -148,6 +150,10 @@ function App() {
               <Route
                 path="/gateway-transactions"
                 element={<GatewayTransactions />}
+              />
+              <Route
+                path="/my-vendors-account"
+                element={<MyVendorsAccount />}
               />
             </Routes>
           </div>
