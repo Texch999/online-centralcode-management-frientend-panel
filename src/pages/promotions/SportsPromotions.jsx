@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
@@ -26,13 +24,9 @@ const SportsPromotions = () => {
   const [editPoster, setEditPoster] = useState(false);
   const [userPromotion, setUserPromotion] = useState(false);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
-  const datePickerRef = useRef(null);
   const navigation = useNavigate();
 
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
-
+ 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
@@ -93,7 +87,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -138,7 +132,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -184,7 +178,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -229,7 +223,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -274,7 +268,7 @@ const SportsPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -314,39 +308,17 @@ const SportsPromotions = () => {
 
       <div className="d-flex w-100 flex-between">
         <div className="d-flex w-60 flex-between mt-2">
-          <div className="col-3">
-            <span className="small-font">From</span>
-            <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-              <DatePicker
-                ref={datePickerRef}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                className="all-none w-90 small-font p-1"
-              />
-              <FaRegCalendarMinus
-                onClick={handleIconClick}
-                className="pointer me-2"
-              />
-            </div>
+        <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">From</label>
+            <input className="input-css2 small-font" type="date" />
+          </div>
+          <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">To</label>
+            <input className="input-css2 small-font" type="date" />
           </div>
 
-          <div className="col-3">
-            <span className="small-font">To</span>
-            <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-              <DatePicker
-                ref={datePickerRef}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                className="all-none w-90 small-font p-1"
-              />
-              <FaRegCalendarMinus
-                onClick={handleIconClick}
-                className="pointer me-2"
-              />
-            </div>
-          </div>
 
-          <>
+       
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Website</label>
               <select className="input-css2 small-font">
@@ -360,7 +332,7 @@ const SportsPromotions = () => {
                 <option>All</option>
               </select>
             </div>
-          </>
+        
 
           <div className="saffron-btn2 small-font pointer mt-4  col-2">
             Submit

@@ -45,6 +45,9 @@
 .h-5vh {
   height: 4vh;
 }
+.h-10vh {
+  height: 10vh;
+}
 .voilet-bg-box {
   background: #4747a1;
 
@@ -121,7 +124,9 @@
 .w-fit {
   width: fit-content;
 }
+.h-fit {
+  height: fit-content;
+}
 .radius-50 {
   border-radius: 50px;
 }
-

@@ -2,20 +2,20 @@ import { useState } from "react";
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from "react-icons/md";
 
 function Table({
-  data,
-  columns,
-  footer,
-  itemsPerPage,
+  data = [],
+  columns = [],
+  footer = [],
+  itemsPerPage = 10,
   rowColor,
-  customPadding,
-  greyBackround,
+  customPadding = "px-3 py-2",
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(data?.length / itemsPerPage);
+
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const hasData = data.length > 0;
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, data?.length);
-  const currentData = data?.slice(startIndex, endIndex);
-  const hasData = data?.length > 0;
+  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+  const currentData = data.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     if (hasData) setCurrentPage(page);
@@ -47,41 +47,38 @@ function Table({
 
   return (
     <div>
+      {/* Table */}
       <div className="w-100 table-wrapper">
         <table
-          className={`w-100 ${greyBackround ? greyBackround : "white-bg"}`}
+          className="w-100 fixed-table white-bg"
           style={{ borderRadius: "10px" }}
         >
           <thead>
             <tr className="border-bottom">
-              {columns?.map((column, index) => (
+              {columns.map((column, index) => (
                 <th
                   key={index}
-                  style={{ width: column?.width }}
-                  className={`border-bottom small-font fw-600 black-text ${
-                    customPadding ? customPadding : "px-3 py-2"
-                  }`}
+                  style={{ width: column.width }}
+                  className={`border-bottom small-font fw-600 black-text ${customPadding}`}
                 >
-                  {column?.header}
+                  {column.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="white-bg">
-            {hasData && currentData?.length > 0 ? (
+          <tbody>
+            {hasData ? (
               currentData.map((row, rowIndex) => (
                 <tr key={rowIndex} className="border-top">
-                  {columns?.map((column) => (
+                  {columns.map((column, colIndex) => (
                     <td
-                      key={column?.field}
-                      style={{ width: column?.width }}
+                      key={colIndex}
+                      style={{ width: column.width }}
                       className={`${
                         rowColor ? rowColor(row) : "black-text"
-                      } align-top small-font ${
-                        customPadding ? customPadding : "px-3 py-2"
-                      } `}
+                      } align-top small-font ${customPadding}`}
                     >
-                      {row[column?.field]}
+                      {row[column.field]}
                     </td>
                   ))}
                 </tr>
@@ -89,7 +86,7 @@ function Table({
             ) : (
               <tr className="border-top">
                 <td
-                  colSpan={columns?.length}
+                  colSpan={columns.length}
                   className="text-center black-text p-2"
                 >
                   <h6 className="mb-0">No Data Available</h6>
@@ -97,13 +94,13 @@ function Table({
               </tr>
             )}
           </tbody>
-          {footer && footer?.length > 0 && (
+          {footer.length > 0 && (
             <tfoot className="border-top footer-bg">
               <tr>
-                {footer.map((column, footerIndex) => (
+                {footer.map((column, index) => (
                   <th
-                    key={footerIndex}
-                    style={{ width: column?.width }}
+                    key={index}
+                    style={{ width: column.width }}
                     className="small-font fw-600 black-text px-3 py-3"
                   >
                     {column.header}
@@ -114,6 +111,8 @@ function Table({
           )}
         </table>
       </div>
+
+      {/* Pagination */}
       {renderPagination && (
         <div className="d-flex align-items-center justify-content-end mt-3 me-3">
           <div className="d-flex">

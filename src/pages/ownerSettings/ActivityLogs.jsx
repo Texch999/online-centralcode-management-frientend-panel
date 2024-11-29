@@ -5,22 +5,12 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
-import DatePicker from "react-datepicker";
+import { FaCircleQuestion, FaMobileButton } from "react-icons/fa6";
 
 const ActivityLogs = () => {
-  const datePickerRef = useRef(null);
-  const datePickerRef2 = useRef(null);
+ 
   const navigation = useNavigate();
-  const [startDate, setStartDate] = useState(new Date());
-  const [startDate2, setStartDate2] = useState(new Date());
-
-  const handleIconClick = () => {
-    datePickerRef?.current?.setFocus();
-  };
-  const handleIconClick2 = () => {
-    datePickerRef2?.current?.setFocus();
-  };
-
+ 
   const handleMatchClick = (userActivity) => {
     navigation(`/userActivity/${encodeURIComponent(userActivity)}`);
   };
@@ -133,12 +123,12 @@ const ActivityLogs = () => {
     {
       prod: (
         <div>
-          <FaCheckCircle className="green-font" size={24} />
+          <FaCircleQuestion className="grey-clr2" size={24} />
         </div>
       ),
       device: (
         <div>
-          <IoTv size={24} />
+          <FaMobileButton size={24} />
         </div>
       ),
       dateTime: (
@@ -280,36 +270,13 @@ const ActivityLogs = () => {
       </div>
 
       <div className="d-flex w-30 flex-between mt-2">
-        <div className="col-4">
-          <span className="small-font">From</span>
-          <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            <DatePicker
-              ref={datePickerRef}
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              className="all-none w-90 small-font p-1"
-            />
-            <FaRegCalendarMinus
-              onClick={handleIconClick}
-              className="pointer me-1"
-            />
-          </div>
+        <div className="col flex-column mx-2">
+          <label className="black-text4 small-font mb-1">From</label>
+          <input className="input-css2 small-font" type="date" />
         </div>
-
-        <div className="col-4">
-          <span className="small-font">To</span>
-          <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            <DatePicker
-              ref={datePickerRef2}
-              selected={startDate2}
-              onChange={(date) => setStartDate2(date)}
-              className="all-none w-90 small-font p-1"
-            />
-            <FaRegCalendarMinus
-              onClick={handleIconClick2}
-              className="pointer me-1"
-            />
-          </div>
+        <div className="col flex-column mx-2">
+          <label className="black-text4 small-font mb-1">To</label>
+          <input className="input-css2 small-font" type="date" />
         </div>
 
         <div className="saffron-btn2 small-font pointer mt-4 col-4">Submit</div>

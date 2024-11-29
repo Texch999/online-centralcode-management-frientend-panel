@@ -5,49 +5,41 @@ function ScrollTable({
   data = [],
   columns = [],
   footer = [],
-  tableHeight = "",
-  customPadding = "",
-  greyBackround = "",
+  tableHeight = "table-body-height",
+  customPadding = "py-2 px-3",
+  greyBackground = "white-bg",
 }) {
+  
   return (
-    <div
-      className={`w-100 table-wrapper ${
-        tableHeight ? tableHeight : "table-body-height"
-      }`}
-    >
-      <table
-        className={`w-100  fixed-table ${
-          greyBackround ? greyBackround : "white-bg"
-        }`}
-      >
-        <thead className="border-bottom">
+    <div className={`w-100 table-wrapper ${tableHeight}`}>
+      <table className="w-100 fixed-table white-bg">
+        {/* Table Header */}
+        <thead className="white-bg">
           <tr className="border-bottom">
-            {columns?.map((column, index) => (
+            {columns.map(({ header, width }, index) => (
               <th
                 key={index}
-                className={`border-bottom small-font fw-600 black-text ${
-                  customPadding ? customPadding : "py-2 px-3"
-                }`}
-                style={{ width: column?.width || "auto" }}
+                className={`border-bottom small-font fw-600 black-text ${customPadding}`}
+                style={{ width: width || "auto" }}
               >
-                {typeof column?.header === "string"
-                  ? column.header
-                  : column?.header}
+                {header}
               </th>
             ))}
           </tr>
         </thead>
+
+        {/* Table Body */}
         <tbody className="white-bg">
-          {data?.length > 0 ? (
+          {data.length > 0 ? (
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-top">
-                {columns?.map((column, colIndex) => (
+                {columns.map(({ field, width }, colIndex) => (
                   <td
                     key={colIndex}
-                    className="align-top small-font black-text px-3 py-2"
-                    style={{ width: column?.width || "auto" }}
+                    className={`align-top small-font black-text px-3 py-2`}
+                    style={{ width: width || "auto" }}
                   >
-                    {row[column?.field]}
+                    {row[field]}
                   </td>
                 ))}
               </tr>
@@ -55,7 +47,7 @@ function ScrollTable({
           ) : (
             <tr className="border-top">
               <td
-                colSpan={columns?.length}
+                colSpan={columns.length}
                 className="text-center black-text p-2"
               >
                 <h6 className="mb-0">No Data Available</h6>
@@ -63,16 +55,18 @@ function ScrollTable({
             </tr>
           )}
         </tbody>
-        {footer?.length > 0 && (
-          <tfoot className="border-top">
+
+        {/* Table Footer */}
+        {footer.length > 0 && (
+          <tfoot className={`border-top ${greyBackground}`}>
             <tr>
-              {footer.map((column, footerIndex) => (
+              {footer.map(({ header, width }, footerIndex) => (
                 <th
                   key={footerIndex}
-                  className="small-font fw-600 black-text p-2"
-                  style={{ width: column?.width || "auto" }}
+                  className={`small-font fw-600 black-text ${customPadding}`}
+                  style={{ width: width || "auto" }}
                 >
-                  {column.header}
+                  {header}
                 </th>
               ))}
             </tr>
@@ -82,24 +76,5 @@ function ScrollTable({
     </div>
   );
 }
-
-ScrollTable.propTypes = {
-  data: PropTypes.array,
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({
-      header: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
-        .isRequired,
-      field: PropTypes.string.isRequired,
-      width: PropTypes.string,
-    })
-  ),
-  footer: PropTypes.arrayOf(
-    PropTypes.shape({
-      header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    })
-  ),
-  tableHeight: PropTypes.string,
-  customPadding: PropTypes.string,
-};
 
 export default ScrollTable;

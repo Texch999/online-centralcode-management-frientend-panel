@@ -36,11 +36,14 @@ import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
 import SettledHistory from "./pages/wallet/SettledHistory";
+import Offer from "./pages/promotions/Offer";
+import MyStatement from "./pages/reports/MyStatement";
 import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
 import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
 import Tickets from "./pages/wallet/Tickets";
 import DownlineList from "./pages/add-team/DownlineList";
 import DownlineTrasactionHistory from "./pages/add-team/DownlineTrasactionHistory";
+import GatewayTransactions from "./pages/wallet/GatewayTransactions";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -63,7 +66,10 @@ function App() {
               <Route path="/match/:matchName" element={<IndividualMatch />} />
               <Route path="/reference-data" element={<ReferenceData />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/user-profile-dashboard" element={<UserProfileDashboard />} />
+              <Route
+                path="/user-profile-dashboard"
+                element={<UserProfileDashboard />}
+              />
               <Route
                 path="/dashboard-view-all"
                 element={<DashboardViewAll />}
@@ -107,6 +113,8 @@ function App() {
                 element={<MyVendorsAccount />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />
+              <Route path="/offer" element={<Offer />} />
+              <Route path="/my-statement" element={<MyStatement />} />
               <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
               <Route
                 path="/offline-deposit-withdraw"
@@ -114,7 +122,14 @@ function App() {
               />
               <Route path="/tickets" element={<Tickets />} />
               <Route path="/downline-list" element={<DownlineList />} />
-              <Route path="//transaction-history" element={<DownlineTrasactionHistory />} />
+              <Route
+                path="/transaction-history"
+                element={<DownlineTrasactionHistory />}
+              />
+              <Route
+                path="/gateway-transactions"
+                element={<GatewayTransactions />}
+              />
             </Routes>
           </div>
         </div>
