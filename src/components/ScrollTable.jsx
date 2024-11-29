@@ -16,7 +16,7 @@ function ScrollTable({
       }`}
     >
       <table
-        className={`w-100  fixed-table ${
+        className={`w-100 fixed-table ${
           greyBackround ? greyBackround : "white-bg"
         }`}
       >
