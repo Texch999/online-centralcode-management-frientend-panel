@@ -122,6 +122,32 @@ function Homepage() {
       sc: <div>100000</div>,
       pay: <div>209888</div>,
     },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
   ];
 
   const cols = [
@@ -471,6 +497,48 @@ function Homepage() {
       ),
       pl: <div className="green-clr">500000</div>,
     },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
   ];
 
   const barData = {
@@ -644,12 +712,12 @@ function Homepage() {
               </div>
             </div>
             <div className="d-flex flex-between small-font mt-4">
-              <div className="d-flex pointer medium-font">
+              <div className="d-flex pointer medium-font white-box rounded-pill">
                 {buttons.map((btn, index) => {
                   return (
                     <div
                       key={index}
-                      className={`px-2 py-1 me-1 white-box ${
+                      className={`px-2 py-1 me-1 ${
                         activeBtn === index ? "active-saffron-btn " : ""
                       }`}
                       onClick={() => handleClick(index)}
@@ -672,7 +740,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteWinnerData}
-                  tableHeight="h-50vh"
+                  tableHeight="h-58vh"
                 />
               )}
 
@@ -680,7 +748,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteLooseData}
-                  tableHeight="h-50vh"
+                  tableHeight="h-58vh"
                 />
               )}
             </div>

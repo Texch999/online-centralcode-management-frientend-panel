@@ -21,6 +21,10 @@ const SportProviders = () => {
       navigate("/cricket-livestreaming", {
         state: { vendor, provider, match },
       });
+    } else if (provider === "Scoreboard") {
+      navigate("/cricket-scoreboard", {
+        state: { vendor, provider, match },
+      });
     }
   };
   const [isActive, setIsACtive] = useState(false);

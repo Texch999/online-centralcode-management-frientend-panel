@@ -13,7 +13,6 @@ import DashboardViewAll from "./pages/home/DashboardViewAll";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
 import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
-import VendorRegistration from "./pages/vendor-registration/VendorRegistration";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import RiskCasino from "./pages/risk-management/RiskCasino";
 import Sports from "./pages/sports/Sports";
@@ -28,6 +27,9 @@ import FancyCricket from "./pages/cricket/FancyCricket";
 import FancyIndividualCricketMatch from "./pages/cricket/FancyIndividualCricketMatch";
 import CricketBookmaker from "./pages/cricket/CricketBookmaker";
 import CricketLiveStreaming from "./pages/cricket/CricketLiveStreaming";
+import VendorRegistration from "./pages/vendor-registration/casino/casino/VendorRegistration";
+import SportsVendorRegistration from "./pages/vendor-registration/casino/sports/SportsVendorRegistration";
+import CricketScoreboard from "./pages/cricket/CricketScoreboard";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -74,10 +76,18 @@ function App() {
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
               <Route path="/cricket" element={<Cricket />} />
-              <Route path="/fancy-cricket" element={<FancyCricket/>}/>
-              <Route path="/fancy-individual-match" element={<FancyIndividualCricketMatch/>}/>
-              <Route path="/cricket-bookmaker" element={<CricketBookmaker/>}/>
-              <Route path="/cricket-livestreaming" element={<CricketLiveStreaming/>}/>
+              <Route path="/fancy-cricket" element={<FancyCricket />} />
+              <Route
+                path="/fancy-individual-match"
+                element={<FancyIndividualCricketMatch />}
+              />
+              <Route path="/cricket-bookmaker" element={<CricketBookmaker />} />
+              <Route
+                path="/cricket-livestreaming"
+                element={<CricketLiveStreaming />}
+              />
+              <Route path="/sports-vendor-registration" element={<SportsVendorRegistration/>}/>
+              <Route path="/cricket-scoreboard" element={<CricketScoreboard/>}/>
             </Routes>
           </div>
         </div>

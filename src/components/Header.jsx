@@ -22,7 +22,9 @@ function Header() {
 
   const handleRegisterBtn = () => {
     setIsActiveBtn(true);
-    navigate("/vendor-registartion");
+    window?.location?.pathname === "/casino"
+      ? navigate("/vendor-registartion")
+      : navigate("/sports-vendor-registration");
   };
   const handleLogout = () => {
     localStorage.clear();

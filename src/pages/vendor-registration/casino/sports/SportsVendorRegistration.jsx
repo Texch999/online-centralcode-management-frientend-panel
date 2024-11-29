@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Table from "../../components/Table";
-import { MdOutlineEdit } from "react-icons/md";
+import SportsNewVendor from "./SportsNewVendor";
+import AddNewSportsProvider from "./AddNewSportsProvider";
 import { IoMdAdd } from "react-icons/io";
-import AddNewProvider from "./AddNewProvider";
-import RegisterNewVendor from "./RegisterNewVendor";
+import { MdOutlineEdit } from "react-icons/md";
+import Table from './../../../../components/Table';
 
-const VendorRegistration = () => {
+const SportsVendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
   const [activeBtn, setActiveBtn] = useState(0);
   const [addNewProvider, setAddNewProvider] = useState(false);
@@ -28,7 +28,7 @@ const VendorRegistration = () => {
   const cols = [
     { header: "S No", field: "sno" },
     { header: "Vendor Name", field: "vendor" },
-    { header: "vendor Percentage", field: "vendorper" },
+    { header: "vendor Percentage/Monthly", field: "vendorper" },
     { header: "Vendor Country", field: "country" },
     { header: "Providers", field: "providers" },
     { header: "Profit & Loss", field: "pl" },
@@ -40,14 +40,13 @@ const VendorRegistration = () => {
       sno: <div>1</div>,
       vendor: <div className="orange-clr">Jitendra</div>,
       vendorper: <div>15%</div>,
-      country: <div>UK</div>,
+      country: <div>India</div>,
       providers: (
         <div className="d-flex flex-column">
-          <div className="py-2">Ezugi</div>
-          <div className="py-2">Evolution</div>
-          <div className="py-2">Asian Games</div>
-          <div className="py-2">Pragmatic Play</div>
-          <div className="py-2">Sexy Gaming</div>
+          <div className="py-2">Odds</div>
+          <div className="py-2">Bookmaker</div>
+          <div className="py-2">Fancy</div>
+          <div className="py-2">Live Streaming</div>
         </div>
       ),
       pl: (
@@ -72,11 +71,10 @@ const VendorRegistration = () => {
       country: <div>UK</div>,
       providers: (
         <div className="d-flex flex-column">
-          <div className="py-2">Ezugi</div>
-          <div className="py-2">Evolution</div>
-          <div className="py-2">Asian Games</div>
-          <div className="py-2">Pragmatic Play</div>
-          <div className="py-2">Sexy Gaming</div>
+          <div className="py-2">Odds</div>
+          <div className="py-2">Bookmaker</div>
+          <div className="py-2">Fancy</div>
+          <div className="py-2">Live Streaming</div>
         </div>
       ),
       pl: (
@@ -95,7 +93,6 @@ const VendorRegistration = () => {
       ),
     },
   ];
-
   return (
     <div className="">
       <h4 className="black-text my-3">Register Vendor</h4>
@@ -137,7 +134,10 @@ const VendorRegistration = () => {
           <div>
             {isEditVendor ? (
               <div>
-                <RegisterNewVendor isEdit={isEditVendor} setIsEdit={setISEditVendor} />
+                <SportsNewVendor
+                  isEdit={isEditVendor}
+                  setIsEdit={setISEditVendor}
+                />
               </div>
             ) : (
               <div className="radius box-shadow">
@@ -148,14 +148,14 @@ const VendorRegistration = () => {
         )}
         {activeBtn === 1 && (
           <div>
-            <RegisterNewVendor />
+           <SportsNewVendor/>
           </div>
         )}
       </div>
 
-      <AddNewProvider show={addNewProvider} setShow={setAddNewProvider} />
+      <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider} />
     </div>
   );
 };
 
-export default VendorRegistration;
+export default SportsVendorRegistration;

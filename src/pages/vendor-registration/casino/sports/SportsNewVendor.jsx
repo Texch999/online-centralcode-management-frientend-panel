@@ -1,15 +1,16 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
-const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
-  const navigate = useNavigate();
+const SportsNewVendor = ({ isEdit, setIsEdit }) => {
   return (
     <div className="dashboard-white-bg box-shadow radius p-3">
       {isEdit === true && (
         <div className="d-flex flex-column">
           <div className="flex-start mb-1">
-            <div className="rounded-pill px-3 white-btn2 small-font fw-800 text-black pointer" onClick={()=>setIsEdit(false)}>
+            <div
+              className="rounded-pill px-3 white-btn2 small-font fw-800 text-black pointer"
+              onClick={() => setIsEdit(false)}
+            >
               <span className="orange-clr">
                 <FaArrowLeft className="me-2" />
               </span>
@@ -24,10 +25,9 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
           <label className="small-font mb-1">Vendor Type</label>
           <div className="input-css small-font text-black">
             <select className="all-none w-100">
-              <option>casino</option>
-              <option>casino</option>
               <option>sports</option>
-              <option>casino</option>
+              <option>sports</option>
+              <option>sports</option>
               <option>sports</option>
             </select>
           </div>
@@ -47,10 +47,10 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
           <label className="small-font mb-1">Vendor Company</label>
           <div className="input-css small-font text-black">
             <select className="all-none w-100">
-              <option>company1</option>
-              <option>company1</option>
-              <option>company1</option>
-              <option>company1</option>
+              <option>TExchange</option>
+              <option>TExchange</option>
+              <option>TExchange</option>
+              <option>TExchange</option>
             </select>
           </div>
         </div>
@@ -64,19 +64,19 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="ezugi" className="pointer">
                 <input type="checkbox" id="ezugi" className="mx-2" />
-                Ezugi
+                TExchange
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="evolution" className="pointer">
                 <input type="checkbox" className="mx-2" id="evolution" />
-                Evolution
+                TExchange
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="asian games" className="pointer">
                 <input type="checkbox" id="asian games" className="mx-2" />
-                Asian Games
+                TExchange
               </label>
             </div>
           </div>
@@ -84,19 +84,19 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="gammastack" className="pointer">
                 <input type="checkbox" className="mx-2" id="gammastack" />
-                GammaStack
+                TExchange
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="playtech" className="pointer">
                 <input type="checkbox" className="mx-2" id="playtech" />
-                Playtech
+                TExchange
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="real gming" className="pointer">
                 <input type="checkbox" className="mx-2" id="real gaming" />
-                Real Gaming
+                TExchange
               </label>
             </div>
           </div>
@@ -104,19 +104,19 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="netent" className="pointer">
                 <input type="checkbox" className="mx-2" id="netent" />
-                NetEnt
+                TExchange
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2 checkbox">
               <label htmlFor="pragmatic play" className="pointer">
                 <input type="checkbox" className="mx-2" id="pragmatic play" />
-                Pragmatic Play
+                TExchange
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="real gaming" className="pointer">
                 <input type="checkbox" className="mx-2" id="real gaming" />
-                Real Gaming
+                TExchange
               </label>
             </div>
           </div>
@@ -193,19 +193,19 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="baccarat" className="pointer">
                 <input type="checkbox" id="baccarat" className="mx-2" />
-                Baccarat
+                Cricket
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="roulette" className="pointer">
                 <input type="checkbox" className="mx-2" id="roulette" />
-                Roulette
+                Cricket
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="poker" className="pointer">
                 <input type="checkbox" className="mx-2" id="poker" />
-                Poker
+              Football
               </label>
             </div>
           </div>
@@ -213,19 +213,19 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="blackjack" className="pointer">
                 <input type="checkbox" id="blackjack" className="mx-2" />
-                Black Jack
+                Tennis
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="playtech" className="pointer">
                 <input type="checkbox" className="mx-2" id="playtech" />
-                Playtech
+                Horse Racing
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="table games" className="pointer">
                 <input type="checkbox" className="mx-2" id="table games" />
-                Table Games
+                Kabaddi
               </label>
             </div>
           </div>
@@ -233,19 +233,19 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="teenpati" className="pointer">
                 <input type="checkbox" className="mx-2" id="teenpati" />
-                Teenpati
+                Cricket
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2 checkbox">
               <label htmlFor="spanish 21" className="pointer">
                 <input type="checkbox" className="mx-2" id="spanish 21" />
-                Spanish 21
+                Cricket
               </label>
             </div>
             <div className="input-css d-flex flex-between small-font mx-2">
               <label htmlFor="rummy online" className="pointer">
                 <input type="checkbox" className="mx-2" id="rummy online" />
-                Rummy Online
+                Football
               </label>
             </div>
           </div>
@@ -267,4 +267,4 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
   );
 };
 
-export default RegisterNewVendor;
+export default SportsNewVendor;
