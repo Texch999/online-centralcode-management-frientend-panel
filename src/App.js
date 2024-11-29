@@ -36,6 +36,9 @@ import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
 import SettledHistory from "./pages/wallet/SettledHistory";
+import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
+import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
+import Tickets from "./pages/wallet/Tickets";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -75,8 +78,14 @@ function App() {
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
               <Route path="/activity-logs" element={<ActivityLogs />} />
-              <Route path="/userActivity/:userActivity" element={<RecentAccessIp />} />
-              <Route path="/create-promotion-type" element={<PromotionType />} />
+              <Route
+                path="/userActivity/:userActivity"
+                element={<RecentAccessIp />}
+              />
+              <Route
+                path="/create-promotion-type"
+                element={<PromotionType />}
+              />
               <Route path="/live-bet-list" element={<LiveBetList />} />
               <Route path="/sports-promotions" element={<SportsPromotions />} />
               <Route path="/casino-promotions" element={<CasinoPromotions />} />
@@ -85,7 +94,6 @@ function App() {
               <Route path="/sports" element={<Sports />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
-              <Route path="/live-bet-list" element={<LiveBetList />} />
               <Route path="/sports-providers" element={<SportProviders />} />
               <Route
                 path="/deleted-bet-history"
@@ -97,6 +105,12 @@ function App() {
                 element={<MyVendorsAccount />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />
+              <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
+              <Route
+                path="/offline-deposit-withdraw"
+                element={<OfflineDepositWithdraw />}
+              />
+              <Route path="/tickets" element={<Tickets />} />
             </Routes>
           </div>
         </div>
