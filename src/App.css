@@ -451,3 +451,6 @@
   align-items: end;
   justify-content: center;
 }
+.footer-bg {
+  background: #dedede;
+}

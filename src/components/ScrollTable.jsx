@@ -6,7 +6,8 @@ function ScrollTable({
   columns = [],
   footer = [],
   tableHeight = "",
-  headerPadding = "",
+  customPadding = "",
+  greyBackround = "",
 }) {
   return (
     <div
@@ -14,14 +15,18 @@ function ScrollTable({
         tableHeight ? tableHeight : "table-body-height"
       }`}
     >
-      <table className="w-100 white-bg fixed-table">
+      <table
+        className={`w-100  fixed-table ${
+          greyBackround ? greyBackround : "white-bg"
+        }`}
+      >
         <thead className="border-bottom">
           <tr className="border-bottom">
             {columns?.map((column, index) => (
               <th
                 key={index}
-                className={`border-bottom small-font black-text px-3 ${
-                  headerPadding ? headerPadding : "py-2"
+                className={`border-bottom small-font fw-600 black-text ${
+                  customPadding ? customPadding : "py-2 px-3"
                 }`}
                 style={{ width: column?.width || "auto" }}
               >
@@ -32,7 +37,7 @@ function ScrollTable({
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="white-bg">
           {data?.length > 0 ? (
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-top">
@@ -64,7 +69,7 @@ function ScrollTable({
               {footer.map((column, footerIndex) => (
                 <th
                   key={footerIndex}
-                  className="text-center small-font black-text p-2"
+                  className="small-font fw-600 black-text p-2"
                   style={{ width: column?.width || "auto" }}
                 >
                   {column.header}
@@ -94,7 +99,7 @@ ScrollTable.propTypes = {
     })
   ),
   tableHeight: PropTypes.string,
-  headerPadding: PropTypes.string,
+  customPadding: PropTypes.string,
 };
 
 export default ScrollTable;

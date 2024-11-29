@@ -355,7 +355,7 @@ function RiskCasino() {
         <ScrollTable
           columns={WEBSITE_WISE_COLUMNS}
           data={WEBSITE_WISE_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
       <>
@@ -365,7 +365,7 @@ function RiskCasino() {
         <ScrollTable
           columns={PROVIDER_WISE_COLUMNS}
           data={PROVIDER_WISE_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
       <>
@@ -375,7 +375,7 @@ function RiskCasino() {
         <ScrollTable
           columns={GAME_WISE_COLUMNS}
           data={GAME_WISE_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
       <>
@@ -385,7 +385,7 @@ function RiskCasino() {
         <ScrollTable
           columns={TABLE_WISE_COLUMNS}
           data={TABLE_WISE_DATA}
-          headerPadding="py-0"
+          customPadding="py-0 px-3"
         />
       </>
     </div>
