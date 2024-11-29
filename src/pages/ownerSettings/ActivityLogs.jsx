@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
 import { FaRegCalendarMinus } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
