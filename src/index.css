@@ -9,6 +9,9 @@ body {
   background: #f5f7ff !important;
   font-family: "Inter", sans-serif !important;
 }
+.bg-check{
+  background-color: yellow;
+}
 .table-body-height {
   max-height: 30vh;
   overflow-y: scroll;
