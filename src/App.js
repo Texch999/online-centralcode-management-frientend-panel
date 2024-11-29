@@ -40,6 +40,7 @@ import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
 import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
 import Tickets from "./pages/wallet/Tickets";
 import DownlineList from "./pages/add-team/DownlineList";
+import DownlineTrasactionHistory from "./pages/add-team/DownlineTrasactionHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -113,6 +114,7 @@ function App() {
               />
               <Route path="/tickets" element={<Tickets />} />
               <Route path="/downline-list" element={<DownlineList />} />
+              <Route path="//transaction-history" element={<DownlineTrasactionHistory />} />
             </Routes>
           </div>
         </div>
