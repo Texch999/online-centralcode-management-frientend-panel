@@ -32,6 +32,8 @@ import SportsVendorRegistration from "./pages/vendor-registration/casino/sports/
 import CricketScoreboard from "./pages/cricket/CricketScoreboard";
 import MyVendorsAccount from "./pages/wallet/MyVendorsAccount";
 import SettledHistory from "./pages/wallet/SettledHistory";
+import Offer from "./pages/promotions/Offer";
+import MyStatement from "./pages/reports/MyStatement";
 import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
 import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
 import Tickets from "./pages/wallet/Tickets";
@@ -114,6 +116,8 @@ function App() {
               <Route path="/sports-vendor-registration" element={<SportsVendorRegistration/>}/>
               <Route path="/cricket-scoreboard" element={<CricketScoreboard/>}/>
               <Route path="/settled-history" element={<SettledHistory />} />
+              <Route path="/offer" element={<Offer />} />
+              <Route path="/my-statement" element={<MyStatement />} />
               <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
               <Route
                 path="/offline-deposit-withdraw"

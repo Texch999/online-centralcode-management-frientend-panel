@@ -178,6 +178,10 @@
 .grey-clr {
   color: #999999;
 }
+.grey-clr2{
+  color: #A4A4A4;
+
+}
 .all-none {
   background: none;
   border: none;
@@ -353,6 +357,9 @@
 .w-90 {
   width: 90%;
 }
+.w-95 {
+  width: 98%;
+}
 .w-15 {
   width: 15%;
 }
@@ -454,6 +461,11 @@
   align-items: end;
   justify-content: center;
 }
+.promotion-posters{
+  top: 0.5rem;
+ 
+}
+
 .footer-bg {
   background: #dedede;
 }

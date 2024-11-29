@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
   ];
   const REJECTION_DATA = [
     {
-      country: <div>India</div>,
+      country: <div >India</div>,
 
       policyDetails: (
         <div
@@ -43,7 +43,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -131,7 +131,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -175,7 +175,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -219,7 +219,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -263,7 +263,7 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font">
+        <div className="large-font d-flex w-50 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -300,7 +300,7 @@ const PrivacyPolicy = () => {
             className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded flex-center "
             onClick={() => setAddPrivacyModal(true)}
           >
-            <IoAddOutline className="large-font" /> Add new
+            <IoAddOutline className="large-font" size={18}/>  <span className="ms-2">Add new</span>
           </div>
         </div>
       </div>

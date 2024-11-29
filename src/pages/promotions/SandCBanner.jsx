@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
@@ -59,23 +58,26 @@ const SandCBanner = () => {
       posterLocation: <div>Home Page</div>,
 
       Poster: (
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
-
-            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out1 white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+        <div className="d-flex ">
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
+          </div>
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
         </div>
       ),
@@ -110,23 +112,26 @@ const SandCBanner = () => {
       posterLocation: <div>Home Page</div>,
 
       Poster: (
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
-
-            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out1 white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+        <div className="d-flex ">
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
+          </div>
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
         </div>
       ),
@@ -161,23 +166,26 @@ const SandCBanner = () => {
       posterLocation: <div>Home Page</div>,
 
       Poster: (
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
-
-            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out1 white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+        <div className="d-flex ">
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
+          </div>
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
         </div>
       ),
@@ -212,23 +220,26 @@ const SandCBanner = () => {
       posterLocation: <div>Home Page</div>,
 
       Poster: (
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
-
-            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out1 white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
+        <div className="d-flex ">
+          <div className="relative poster-img">
+            <div>
+              <img src={Images.Poster1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
+          </div>
+          <div className="relative poster-img ms-2">
+            <div>
+              <img src={Images.Cricket1} alt="Poster" />
+              <TbArrowsDiagonal
+                className="absolute zoom-out white-bg pointer"
+                size={18}
+                onClick={() => setFullPoster(!fullPoster)}
+              />
+            </div>
           </div>
         </div>
       ),
@@ -244,60 +255,6 @@ const SandCBanner = () => {
         </div>
       ),
     },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      websites: (
-        <div>
-          www.texchange.com <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-      posterLocation: <div>Home Page</div>,
-
-      Poster: (
-        <div className="relative poster-img">
-          <div>
-            <img src={Images.Poster1} alt="Poster" />
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
-
-            <img src={Images.Cricket1 } alt="Poster"  className="ms-2"/>
-
-            <TbArrowsDiagonal
-              className="absolute zoom-out1 white-bg pointer"
-              size={18}
-              onClick={() => setFullPoster(!fullPoster)}
-            />
-          </div>
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-
-   
-    
   ];
 
   return (
@@ -374,12 +331,12 @@ const SandCBanner = () => {
         <div className="col-3">
           <span className="small-font">Live Date</span>
           <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            <DatePicker
+            {/* <DatePicker
               ref={datePickerRef}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               className="all-none w-90 small-font p-1"
-            />
+            /> */}
             <FaRegCalendarMinus
               onClick={handleIconClick}
               className="pointer me-2"
@@ -390,12 +347,12 @@ const SandCBanner = () => {
         <div className="col-3">
           <span className="small-font">Live Time</span>
           <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-            <DatePicker
+            {/* <DatePicker
               ref={datePickerRef}
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               className="all-none w-90 small-font p-1"
-            />
+            /> */}
             <FaRegCalendarMinus
               onClick={handleIconClick}
               className="pointer me-2"
@@ -424,7 +381,7 @@ const SandCBanner = () => {
       <div className="mt-4">
         <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
       </div>
-      <FullPosterPopUp fullPoster={fullPoster} setFullPoster={setFullPoster}/>
+      <FullPosterPopUp fullPoster={fullPoster} setFullPoster={setFullPoster} />
     </div>
   );
 };

@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
@@ -15,6 +13,7 @@ import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
 import { MdOutlineFileUpload } from "react-icons/md";
 import EditPosterPopUp from "./EditPosterPopUp";
+
 
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
@@ -48,7 +47,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -69,7 +68,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -90,7 +89,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -111,7 +110,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -132,7 +131,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>
@@ -153,7 +152,7 @@ const PromotionType = () => {
       promotionid: <div>1234568774432</div>,
 
       icons: (
-        <div className="d-flex w-50 flex-between">
+        <div className="d-flex w-80 flex-between">
           <span>
             <LiaPenSolid size={18} />
           </span>

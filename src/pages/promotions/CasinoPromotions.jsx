@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
@@ -37,8 +35,6 @@ const CasinoPromotions = () => {
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
-
- 
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -84,7 +80,7 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -129,7 +125,7 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -175,7 +171,7 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -220,7 +216,7 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -265,7 +261,7 @@ const CasinoPromotions = () => {
         </div>
       ),
       icons: (
-        <div className="d-flex w-30 flex-between">
+        <div className="d-flex w-50 flex-between">
           <span onClick={() => setEditPoster(!editPoster)}>
             <LiaPenSolid size={18} className="pointer" />
           </span>
@@ -305,48 +301,21 @@ const CasinoPromotions = () => {
 
       <div className="d-flex w-100 flex-between">
         <div className="d-flex w-50 flex-between mt-2">
-          <div className="col-3">
-            <span className="small-font">From</span>
-            <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-              <DatePicker
-                ref={datePickerRef}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                className="all-none w-70 small-font"
-              />
-              <FaRegCalendarMinus
-                onClick={handleIconClick}
-                className="pointer"
-              />
-            </div>
+          <div className="col flex-column mx-2">
+            <label className="black-text4 small-font mb-1">From</label>
+            <input className="input-css2 small-font" type="date" />
+          </div>
+          <div className="col flex-column mx-2">
+            <label className="black-text4 small-font mb-1">To</label>
+            <input className="input-css2 small-font" type="date" />
           </div>
 
-          <div className="col-3">
-            <span className="small-font">To</span>
-            <div className="w-90 grey-border p-1 d-flex flex-between input-css2">
-              <DatePicker
-                ref={datePickerRef}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                className="all-none w-70 small-font"
-              />
-              <FaRegCalendarMinus
-                onClick={handleIconClick}
-                className="pointer"
-              />
-            </div>
+          <div className="col flex-column me-3">
+            <label className="black-text4 small-font mb-1">Website</label>
+            <select className="input-css2 small-font">
+              <option>All</option>
+            </select>
           </div>
-
-          <>
-            <div className="col-3 flex-column me-3">
-              <label className="black-text4 small-font mb-1">Website</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
-            </div>
-
-            
-          </>
 
           <div className="saffron-btn2 small-font pointer mt-4  col-2">
             Submit
@@ -379,14 +348,11 @@ const CasinoPromotions = () => {
       <CasinoPromotionsPopUp
         setCasinoPromotion={setCasinoPromotion}
         casinoPromotion={casinoPromotion}
-        
       />
 
-      
-<FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
+      <FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
     </div>
   );
 };
 
 export default CasinoPromotions;
-
