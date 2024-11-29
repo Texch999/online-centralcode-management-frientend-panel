@@ -157,3 +157,13 @@
   border-radius: 3px;
   text-align: center;
 }
+.inplay-btn{
+  background-color: #18B962;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.match-img{
+  width: 55%;
+  height: 17vh;
+}

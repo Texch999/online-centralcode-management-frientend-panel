@@ -81,7 +81,7 @@ const Sports = () => {
       eye: (
         <div className="d-flex flex-column pointer">
           <span
-            className=" font-20"
+            className=" font-20 pointer"
             onClick={() => handleSportNextPage("Jitendra", "Odds")}
           >
             <IoEyeOutline className="orange-clr" />
@@ -510,9 +510,9 @@ const Sports = () => {
     },
   ];
   return (
-    <div className="p-2">
+    <div className="">
       <div className="d-flex flex-between align-items-center">
-        <h4 className="my-3">Sports</h4>
+        <h4 className="my-2">Sports</h4>
         <div className="small-font">
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>

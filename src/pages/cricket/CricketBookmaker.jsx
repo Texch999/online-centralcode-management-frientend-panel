@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Table from "../../components/Table";
+import BlockPopup from "../popups/BlockPopup";
+import DeletePopup from "../popups/DeletePopup";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
-import BlockPopup from "./../popups/BlockPopup";
-import DeletePopup from "./../popups/DeletePopup";
 import { useLocation, useNavigate } from "react-router-dom";
+import Table from "../../components/Table";
 
-const Cricket = () => {
+const CricketBookmaker = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { vendor, provider, match } = location.state || {};
@@ -548,4 +548,4 @@ const Cricket = () => {
   );
 };
 
-export default Cricket;
+export default CricketBookmaker;

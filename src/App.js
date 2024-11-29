@@ -23,9 +23,11 @@ import LiveBetList from "./pages/risk-management/LiveBetList";
 import SportProviders from "./pages/sports/SportProviders";
 import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
-import RegisterNewVendor from "./pages/vendor-registration/RegisterNewVendor";
-import SportsMatches from "./pages/sports/SportsMatches";
-import Cricket from './pages/cricket/Cricket';
+import Cricket from "./pages/cricket/Cricket";
+import FancyCricket from "./pages/cricket/FancyCricket";
+import FancyIndividualCricketMatch from "./pages/cricket/FancyIndividualCricketMatch";
+import CricketBookmaker from "./pages/cricket/CricketBookmaker";
+import CricketLiveStreaming from "./pages/cricket/CricketLiveStreaming";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -71,8 +73,11 @@ function App() {
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
-              <Route path="/sports-matches" element={<SportsMatches/>}/>
-              <Route path="/cricket" element={<Cricket/>}/>
+              <Route path="/cricket" element={<Cricket />} />
+              <Route path="/fancy-cricket" element={<FancyCricket/>}/>
+              <Route path="/fancy-individual-match" element={<FancyIndividualCricketMatch/>}/>
+              <Route path="/cricket-bookmaker" element={<CricketBookmaker/>}/>
+              <Route path="/cricket-livestreaming" element={<CricketLiveStreaming/>}/>
             </Routes>
           </div>
         </div>

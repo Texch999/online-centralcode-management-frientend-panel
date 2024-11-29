@@ -248,7 +248,7 @@ const CasinoVendor = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive}/>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 };

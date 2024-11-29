@@ -26,4 +26,6 @@ export const Images = {
   adminProfileDownlinePlChips:
     "/assets/director_admin_profile_downline-available-chips.png",
   qnmark: "/assets/question-mark 1.png",
+  cricket:"/assets/match.png",
+  match:"/assets/match2.png",
 };

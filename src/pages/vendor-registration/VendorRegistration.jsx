@@ -60,7 +60,7 @@ const VendorRegistration = () => {
         </div>
       ),
       action: (
-        <div onClick={showEditModal}>
+        <div onClick={showEditModal} className="pointer">
           <MdOutlineEdit className="orange-clr font-20" />
         </div>
       ),
@@ -89,7 +89,7 @@ const VendorRegistration = () => {
         </div>
       ),
       action: (
-        <div onClick={showEditModal}>
+        <div className="pointer" onClick={showEditModal}>
           <MdOutlineEdit className="orange-clr font-20" />
         </div>
       ),

@@ -9,8 +9,19 @@ const SportProviders = () => {
   const location = useLocation();
   const { vendor, provider } = location.state || {};
   const handleGameMatches = (match) => {
-    // navigate("/sports-matches", { state: { vendor, provider, match } });
-    navigate("/cricket", { state: { vendor, provider, match } });
+    if (provider === "Odds") {
+      navigate("/cricket", { state: { vendor, provider, match } });
+    } else if (provider === "fancy") {
+      navigate("/fancy-cricket", { state: { vendor, provider, match } });
+    } else if (provider === "Bookmaker 1") {
+      navigate("/cricket-bookmaker", { state: { vendor, provider, match } });
+    } else if (provider === "Bookmaker 2") {
+      navigate("/cricket-bookmaker", { state: { vendor, provider, match } });
+    } else if (provider === "Live Streaming") {
+      navigate("/cricket-livestreaming", {
+        state: { vendor, provider, match },
+      });
+    }
   };
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {
@@ -241,20 +252,28 @@ const SportProviders = () => {
   ];
   return (
     <div>
-      <div className="pointer large-font" onClick={() => navigate(-1)}>
-        <span className="grey-clr">
-          Sports <span className="mx-1 font-20">{">"}</span>
-        </span>
-        <span className="text-black">{vendor}</span>
-        <span>
-          <span className="mx-1 font-20">{">"}</span>
-          {provider}
-        </span>
+      <div className="d-flex flex-between">
+        <div className="pointer large-font" onClick={() => navigate(-1)}>
+          <span className="grey-clr">
+            Sports <span className="mx-1 font-20">{">"}</span>
+          </span>
+          <span className="grey-clr">{vendor}</span>
+          <span>
+            <span className="mx-1 font-20">{">"}</span>
+
+            <span className="fw-800"> {provider}</span>
+          </span>
+        </div>
+
+        <div className="small-font">
+          Total P/L : <span className="green-clr mx-1">20000</span>
+        </div>
       </div>
+
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive}/>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 };

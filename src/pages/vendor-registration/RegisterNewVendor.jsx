@@ -9,7 +9,7 @@ const RegisterNewVendor = ({ isEdit,setIsEdit }) => {
       {isEdit === true && (
         <div className="d-flex flex-column">
           <div className="flex-start mb-1">
-            <div className="rounded-pill px-3 white-btn2 small-font fw-800 text-black" onClick={()=>setIsEdit(false)}>
+            <div className="rounded-pill px-3 white-btn2 small-font fw-800 text-black pointer" onClick={()=>setIsEdit(false)}>
               <span className="orange-clr">
                 <FaArrowLeft className="me-2" />
               </span>
