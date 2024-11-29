@@ -1,9 +1,10 @@
 import { FaSearch } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { FaAngleRight } from "react-icons/fa6";
-import Table from "./../../components/Table";
-import { MdOutlineDelete, MdOutlineModeEditOutline } from "react-icons/md";
 import { useState } from "react";
+import { FiChevronRight } from "react-icons/fi";
+import { SlPencil } from "react-icons/sl";
+import { IoTrashOutline } from "react-icons/io5";
+import Table from "./../../components/Table";
 import EditBetPopup from "./EditBetPopup";
 
 function RiskBetHistory() {
@@ -70,11 +71,12 @@ function RiskBetHistory() {
         <div>
           <div className="green-btn">Expo</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
+            <SlPencil
               size={18}
+              className="black-text"
               onClick={handleEditBetPopupOpen}
             />
-            <MdOutlineDelete size={18} />
+            <IoTrashOutline size={18} className="black-text" />
           </div>
         </div>
       ),
@@ -125,11 +127,12 @@ function RiskBetHistory() {
         <div>
           <div className="green-btn">Expo</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
+            <SlPencil
               size={18}
+              className="black-text"
               onClick={handleEditBetPopupOpen}
             />
-            <MdOutlineDelete size={18} />
+            <IoTrashOutline size={18} className="black-text" />
           </div>
         </div>
       ),
@@ -180,11 +183,12 @@ function RiskBetHistory() {
         <div>
           <div className="green-btn">Expo</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
+            <SlPencil
               size={18}
+              className="black-text"
               onClick={handleEditBetPopupOpen}
             />
-            <MdOutlineDelete size={18} />
+            <IoTrashOutline size={18} className="black-text" />
           </div>
         </div>
       ),
@@ -235,11 +239,12 @@ function RiskBetHistory() {
         <div>
           <div className="green-btn">Settled</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
+            <SlPencil
               size={18}
+              className="black-text"
               onClick={handleEditBetPopupOpen}
             />
-            <MdOutlineDelete size={18} />
+            <IoTrashOutline size={18} className="black-text" />
           </div>
         </div>
       ),
@@ -252,7 +257,7 @@ function RiskBetHistory() {
         <div className="d-flex align-items-center">
           <h5 className="black-font mb-0">Risk Management - Sports</h5>
           <h6 className="ms-3 d-flex align-items-center yellow-font mb-0">
-            <FaAngleRight /> Risk Bet History({matchName})
+            <FiChevronRight /> Risk Bet History({matchName})
           </h6>
         </div>
         <div className="d-flex align-items-center">
@@ -278,7 +283,7 @@ function RiskBetHistory() {
             <option>Select</option>
           </select>
         </div>
-        <div className="col-2  flex-column d-flex align-items-end justify-content-end">
+        <div className="col-2 d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>

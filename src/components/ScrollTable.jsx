@@ -20,7 +20,7 @@ function ScrollTable({
             {columns?.map((column, index) => (
               <th
                 key={index}
-                className={`border-bottom small-font black-text px-2 ${
+                className={`border-bottom small-font black-text px-3 ${
                   headerPadding ? headerPadding : "py-2"
                 }`}
                 style={{ width: column?.width || "auto" }}
@@ -39,7 +39,7 @@ function ScrollTable({
                 {columns?.map((column, colIndex) => (
                   <td
                     key={colIndex}
-                    className="align-top small-font black-text p-2"
+                    className="align-top small-font black-text px-3 py-2"
                     style={{ width: column?.width || "auto" }}
                   >
                     {row[column?.field]}

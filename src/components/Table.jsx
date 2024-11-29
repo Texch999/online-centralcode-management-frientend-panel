@@ -47,7 +47,7 @@ function Table({ data, columns, footer, itemsPerPage, rowColor }) {
                 <th
                   key={index}
                   style={{ width: column?.width }}
-                  className="border-bottom small-font black-text p-2"
+                  className="border-bottom small-font black-text px-3 py-2"
                 >
                   {column?.header}
                 </th>
@@ -64,7 +64,7 @@ function Table({ data, columns, footer, itemsPerPage, rowColor }) {
                       style={{ width: column?.width }}
                       className={`${
                         rowColor ? rowColor(row) : "black-text"
-                      } align-top small-font p-2`}
+                      } align-top small-font px-3 py-2`}
                     >
                       {row[column?.field]}
                     </td>

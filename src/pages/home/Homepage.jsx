@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import "../home/style.css";
 import { IoMdTrendingUp } from "react-icons/io";
 import { Bar } from "react-chartjs-2";
+import ScrollTable from "../../components/ScrollTable";
+import { useNavigate } from "react-router-dom";
+import { PiHandCoinsFill } from "react-icons/pi";
+import { FaCoins } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi";
 import {
   Chart as ChartJS,
   BarElement,
@@ -11,32 +16,27 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import ScrollTable from "../../components/ScrollTable";
-import { useNavigate } from "react-router-dom";
-import { PiHandCoinsFill } from "react-icons/pi";
-import { FaCoins } from "react-icons/fa";
-import { HiUserGroup } from "react-icons/hi";
-
-ChartJS.register(
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend
-);
-
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 function Homepage() {
+  ChartJS.register(
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Title,
+    Tooltip,
+    Legend
+  );
+
+const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
-
   const buttons = ["Casino Winners", "Casino Looser"];
-
   const handleClick = (index) => {
     setActiveBtn(index);
   };
+
   const customerCols = [
     { header: "Customer Name", field: "customer" },
     { header: "Role", field: "role" },
@@ -680,6 +680,7 @@ function Homepage() {
       <div>
         <h1>Homepage</h1>
         {/* <Table /> */}
+      </div>
       </div>
     </div>
   );
