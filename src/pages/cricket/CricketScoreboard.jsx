@@ -38,7 +38,7 @@ const CricketScoreboard = () => {
     {
       watch: <div className="inplay-btn w-fit py-1 px-2 mx-2">In Play</div>,
       date: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column small-font">
           <div>21-09-2024</div>
           <div>08:00:00</div>
         </div>
@@ -107,7 +107,7 @@ const CricketScoreboard = () => {
                     <div className="col-2">0</div>
                   </div>
                 </div>
-                <div className="grey-box flex-column flex-center py-3 w-60 px-2">
+                <div className="grey-box-table flex-column flex-center py-3 w-60 px-2">
                   <div className="d-flex">
                     <div className="yellow-round text-black px-2 py-1 mx-1">
                       6
@@ -126,7 +126,7 @@ const CricketScoreboard = () => {
                     </div>
                     <div className="red-round text-white px-2 py-1 mx-1">w</div>
                   </div>
-                  <div className="medium-font fw-600 pt-3">CRR.6.50</div>
+                  <div className="medium-font fw-600 pt-3 text-white">CRR.6.50</div>
                 </div>
                 <div className="flex-column w-100">
                   <div className="row ps-2">
@@ -256,7 +256,7 @@ const CricketScoreboard = () => {
                     <div className="col-2">0</div>
                   </div>
                 </div>
-                <div className="grey-box flex-column flex-center py-3 w-60 px-2">
+                <div className="grey-box-table flex-column flex-center py-3 w-60 px-2">
                   <div className="d-flex">
                     <div className="yellow-round text-black px-2 py-1 mx-1">
                       6
@@ -275,7 +275,7 @@ const CricketScoreboard = () => {
                     </div>
                     <div className="red-round text-white px-2 py-1 mx-1">w</div>
                   </div>
-                  <div className="medium-font fw-600 pt-3">CRR.6.50</div>
+                  <div className="medium-font fw-600 pt-3 text-white">CRR.6.50</div>
                 </div>
                 <div className="flex-column w-100">
                   <div className="row ps-2">

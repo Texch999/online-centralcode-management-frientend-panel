@@ -53,7 +53,7 @@ function Header() {
             onClick={handleRegisterBtn}
           >
             <ImUserPlus size={19} />
-            <span className="ps-2  small-font">
+            <span className="ps-2  small-font white-space">
               Vendor Registration and List
             </span>
           </div>

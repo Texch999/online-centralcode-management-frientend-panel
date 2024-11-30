@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "../casino/ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 const SportProviders = () => {
   const navigate = useNavigate();
@@ -264,7 +265,9 @@ const SportProviders = () => {
           </span>
         </div>
 
-        <div className="small-font">
+        <div className="medium-font">
+        <span className="white-bg rounded-pill me-4 px-3 py-1 pointer" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="orange-clr me-1"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

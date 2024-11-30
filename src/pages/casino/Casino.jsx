@@ -4,6 +4,7 @@ import "../casino/style.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 function Casino() {
   const navigate = useNavigate();
@@ -657,7 +658,7 @@ function Casino() {
     <div>
       <div className="d-flex flex-between align-items-center">
         <h4 className="my-3">Casino</h4>
-        <div className="small-font">
+        <div className="medium-font ">
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

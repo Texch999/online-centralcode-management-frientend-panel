@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import { Images } from "../../images";
+import { FaArrowLeft } from "react-icons/fa";
 
 const CricketLiveStreaming = () => {
   const navigate = useNavigate();
@@ -202,7 +203,9 @@ const CricketLiveStreaming = () => {
           </span>
         </div>
 
-        <div className="small-font">
+        <div className="medium-font">
+        <span className="white-bg rounded-pill me-4 px-3 py-1 pointer" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="orange-clr me-1"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
