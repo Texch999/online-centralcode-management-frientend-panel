@@ -4,7 +4,6 @@ import BlockPopup from "../popups/BlockPopup";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
-import { Images } from "../../images";
 
 const CricketLiveStreaming = () => {
   const navigate = useNavigate();
@@ -20,6 +19,11 @@ const CricketLiveStreaming = () => {
     ) : match === "Tennis" ? (
       <>
         <div>Guangzhou Challenger 2023</div>
+        <div>67890123456789012</div>
+      </>
+    ) : match === "HorseRacing" ? (
+      <>
+        <div>BathRust</div>
         <div>67890123456789012</div>
       </>
     ) : (
@@ -59,7 +63,8 @@ const CricketLiveStreaming = () => {
           allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
           allowfullscreen
-F        ></iframe>
+          F
+        ></iframe>
       </>
     ) : match === "Tennis" ? (
       <>
@@ -67,6 +72,19 @@ F        ></iframe>
           width="300"
           height="200"
           src="https://www.youtube.com/embed/CGRzfUccmNE?si=6xSZtz34KLFbHSie"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </>
+    ) : match === "HorseRacing" ? (
+      <>
+        <iframe
+          width="300"
+          height="200"
+          src="https://www.youtube.com/embed/aUDgaN6iHFc?si=CVADDxsX_h1hkEhe"
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -102,8 +120,10 @@ F        ></iframe>
     { header: "", field: "watch" },
     { header: "Date & Time", field: "date" },
     { header: "Matches/ID", field: "match" },
-    { header: "Series Name/ID", field: "series" },
-
+    // { header: "Series Name/ID", field: "series" },
+    ...(match !== "HorseRacing"
+      ? [{ header: "Series Name/ID", field: "series" }]
+      : []),
     { header: <div className="flex-center">Live</div>, field: "live" },
     { header: <div className="flex-start">Action</div>, field: "action" },
   ];

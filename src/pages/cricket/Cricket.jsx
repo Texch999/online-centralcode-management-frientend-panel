@@ -16,6 +16,11 @@ const Cricket = () => {
         <div>Santos vs Cruzeiro MG</div>
         <div>12345678912343455</div>
       </>
+    ) : match === "HorseRacing" ? (
+      <>
+        <div>BathRust</div>
+        <div>67890123456789012</div>
+      </>
     ) : match === "Tennis" ? (
       <>
         <div>Guangzhou Challenger 2023</div>
@@ -39,7 +44,7 @@ const Cricket = () => {
         <div>Evgeny Donskoy vs Omar Jasika</div>
         <div>67890123456789012</div>
       </>
-    ) : (
+    ) : match === "HorseRacing" ? null : (
       <>
         <div>ICC Women T20 World Cup</div>
         <div>56789012345678900</div>
@@ -60,7 +65,11 @@ const Cricket = () => {
     { header: "", field: "watch" },
     { header: "Date & Time", field: "date" },
     { header: "Matches/ID", field: "match" },
-    { header: "Series Name/ID", field: "series" },
+    ...(match !== "HorseRacing"
+      ? [{ header: "Series Name/ID", field: "series" }]
+      : []),
+
+    // { header: "Series Name/ID", field: "series" },
     {
       header: (
         <div className="row">

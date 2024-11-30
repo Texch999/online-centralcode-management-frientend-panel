@@ -8,6 +8,7 @@ import { IoTennisballOutline } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 import FootballScoreboard from "./FootballScoreboard";
 import TennisScoreBoard from "./TennisScoreBoard";
+import HorseRacingScoreBoard from "./HorseRacingScoreBoard";
 
 const CricketScoreboard = () => {
   const navigate = useNavigate();
@@ -19,6 +20,11 @@ const CricketScoreboard = () => {
       <>
         <div>Santos vs Cruzeiro MG</div>
         <div>12345678912343455</div>
+      </>
+    ) : match === "HorseRacing" ? (
+      <>
+        <div>BathRust</div>
+        <div>67890123456789012</div>
       </>
     ) : match === "Tennis" ? (
       <>
@@ -57,6 +63,10 @@ const CricketScoreboard = () => {
     ) : match === "Tennis" ? (
       <>
         <TennisScoreBoard />
+      </>
+    ) : match === "HorseRacing" ? (
+      <>
+        <HorseRacingScoreBoard />
       </>
     ) : (
       <>
@@ -191,8 +201,9 @@ const CricketScoreboard = () => {
     { header: "", field: "watch" },
     { header: "Date & Time", field: "date" },
     { header: "Matches/ID", field: "match" },
-    { header: "Series Name/ID", field: "series" },
-
+    ...(match !== "HorseRacing"
+      ? [{ header: "Series Name/ID", field: "series" }]
+      : []),
     {
       header: <div className="flex-center">Live Scoreboard</div>,
       field: "live",

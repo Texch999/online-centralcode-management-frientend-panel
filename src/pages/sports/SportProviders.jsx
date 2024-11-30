@@ -143,15 +143,15 @@ const SportProviders = () => {
     {
       sno: <div className="flex-center">4</div>,
       games: (
-        <div className="pointer" onClick={() => handleGameMatches("Sic Bo")}>
-          Sic bo
+        <div className="pointer" onClick={() => handleGameMatches("Kabbadi")}>
+          Kabbadi
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Sic Bo")}
+            onClick={() => handleGameMatches("Kabbadi")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -179,16 +179,16 @@ const SportProviders = () => {
       games: (
         <div
           className="pointer"
-          onClick={() => handleGameMatches("Table Game")}
+          onClick={() => handleGameMatches("HorseRacing")}
         >
-          Tables Game
+          Horse Racing
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Table Game")}
+            onClick={() => handleGameMatches("HorseRacing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -216,16 +216,16 @@ const SportProviders = () => {
       games: (
         <div
           className="pointer"
-          onClick={() => handleGameMatches("Black Jack")}
+          onClick={() => handleGameMatches("Greyhound Racing")}
         >
-          Black Jack
+          GreyHound Racing
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Black Jack")}
+            onClick={() => handleGameMatches("Greyhound Racing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -270,7 +270,7 @@ const SportProviders = () => {
       </div>
 
       <div className="radius mt-3">
-        <Table columns={cols} data={data} itemsPerPage={3} />
+        <Table columns={cols} data={data} itemsPerPage={10} />
       </div>
       <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
