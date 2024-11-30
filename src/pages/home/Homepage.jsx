@@ -571,7 +571,7 @@ function Homepage() {
 
   return (
     <div className="p-2">
-      <h5 className="blck-text">Welcome sri</h5>
+      <h4 className="blck-text">Welcome sri</h4>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
@@ -582,9 +582,9 @@ function Homepage() {
             <div className="dashboard-white-bg pb-2 box-shadow">
               <div className="d-flex flex-column p-2">
                 <div className="d-flex flex-between align-items-center">
-                  <div className="medium-font black-text">Sales Report</div>
+                  <div className="large-font black-text">Sales Report</div>
                   <div
-                    className="viewall-btn orange-clr small-font px-2 py-1 pointer fw-800"
+                    className="viewall-btn orange-clr small-font px-3 py-1 pointer fw-800"
                     onClick={() => navigate("/dashboard-view-all")}
                   >
                     View All
@@ -595,7 +595,7 @@ function Homepage() {
                 </div>
               </div>
               <div className="hor-grey-line"></div>
-              <div className="px-3 py-2">
+              <div className="px-3 py-2 table-50vh">
                 <Bar data={barData} />
               </div>
             </div>
@@ -741,7 +741,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteWinnerData}
-                  tableHeight="h-50vh"
+                  tableHeight="table-50vh"
                 />
               )}
 
@@ -749,7 +749,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteLooseData}
-                  tableHeight="h-50vh"
+                  tableHeight="table-50vh"
                 />
               )}
             </div>

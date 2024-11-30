@@ -283,7 +283,7 @@ const FancyResult = () => {
       </div>
 
       <div className="">
-        <ScrollTable columns={cols} data={data} itemsPerPage={3} />
+        <ScrollTable columns={cols} data={data}  tableHeight={"table-50vh"} />
       </div>
 
       <div className="row mt-3 w-100 text-black small-font">
@@ -308,15 +308,6 @@ const FancyResult = () => {
           <div className="w-100 saffron-btn br-5 small-font">Submit</div>
         </div>
         <div className="col-2"></div>
-        {/* <div className="col-2 flex-end">
-          <div className="white-input d-flex rounded-pill align-items-center w-100 px-2">
-            <FaSearch className="grey-clr font-15" />
-            <input
-              className="all-none small-font ms-2"
-              placeholder="Search Match..."
-            />
-          </div>
-        </div> */}
         <div className="col-2 flex-end">
           <div className="white-input rounded-pill w-100 white-space">
             <FaSearch size={15} className="grey-clr me-2" />
@@ -329,7 +320,7 @@ const FancyResult = () => {
       </div>
 
       <div className="my-3">
-        <ScrollTable columns={sportcols} data={sportData} itemsPerPage={3} />
+        <ScrollTable columns={sportcols} data={sportData}  tableHeight={"table-50vh"} />
       </div>
     </div>
   );
