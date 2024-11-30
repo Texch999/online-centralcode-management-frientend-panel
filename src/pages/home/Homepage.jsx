@@ -756,7 +756,6 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
         </div>
       </div>
       <div>
-        <h1>Homepage</h1>
         {/* <Table /> */}
       </div>
       </div>
