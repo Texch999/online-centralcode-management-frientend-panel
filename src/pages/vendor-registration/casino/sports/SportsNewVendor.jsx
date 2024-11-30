@@ -56,24 +56,24 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
         </div>
       </div>
 
-      <div className="my-3 row w-100 d-flex align-items-center">
-        <div className="col-4 felx-column text-black ">
-          <div className="small-font ps-2">Select Compnay</div>
+      <div className="my-2 row w-100 d-flex align-items-center">
+        <div className="col-4 felx-column text-black pe-1">
+          <div className="small-font ">Select Compnay</div>
 
-          <div className="d-flex my-3">
-            <div className="input-css d-flex flex-between small-font mx-2">
+          <div className="d-flex my-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="ezugi" className="pointer">
                 <input type="checkbox" id="ezugi" className="mx-2" />
                 TExchange
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="evolution" className="pointer">
                 <input type="checkbox" className="mx-2" id="evolution" />
                 TExchange
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font">
               <label htmlFor="asian games" className="pointer">
                 <input type="checkbox" id="asian games" className="mx-2" />
                 TExchange
@@ -81,19 +81,19 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
             </div>
           </div>
           <div className="d-flex my-3">
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="gammastack" className="pointer">
                 <input type="checkbox" className="mx-2" id="gammastack" />
                 TExchange
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="playtech" className="pointer">
                 <input type="checkbox" className="mx-2" id="playtech" />
                 TExchange
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font ">
               <label htmlFor="real gming" className="pointer">
                 <input type="checkbox" className="mx-2" id="real gaming" />
                 TExchange
@@ -101,19 +101,19 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
             </div>
           </div>
           <div className="d-flex my-3">
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="netent" className="pointer">
                 <input type="checkbox" className="mx-2" id="netent" />
                 TExchange
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2 checkbox">
+            <div className="input-css d-flex flex-between small-font me-2 checkbox">
               <label htmlFor="pragmatic play" className="pointer">
                 <input type="checkbox" className="mx-2" id="pragmatic play" />
                 TExchange
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font ">
               <label htmlFor="real gaming" className="pointer">
                 <input type="checkbox" className="mx-2" id="real gaming" />
                 TExchange
@@ -122,7 +122,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
           </div>
         </div>
 
-        <div className="col-4 felx-column text-black ">
+        <div className="col-4 felx-column text-black">
           <div className="d-flex flex-column">
             <div className="my-2">
               <label className="small-font mb-1">Vendor Country</label>
@@ -186,23 +186,23 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
         </div>
       </div>
 
-      <div className="my-3 row w-100 d-flex">
-        <div className="col-4 felx-column text-black ">
+      <div className="my-2 row w-100 d-flex">
+        <div className="col-4 felx-column text-black pe-1">
           <div className="small-font ps-2">Select Game</div>
           <div className="d-flex my-2">
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="baccarat" className="pointer">
                 <input type="checkbox" id="baccarat" className="mx-2" />
                 Cricket
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="roulette" className="pointer">
                 <input type="checkbox" className="mx-2" id="roulette" />
                 Cricket
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font ">
               <label htmlFor="poker" className="pointer">
                 <input type="checkbox" className="mx-2" id="poker" />
               Football
@@ -210,19 +210,19 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
             </div>
           </div>
           <div className="d-flex my-2">
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="blackjack" className="pointer">
                 <input type="checkbox" id="blackjack" className="mx-2" />
                 Tennis
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="playtech" className="pointer">
                 <input type="checkbox" className="mx-2" id="playtech" />
                 Horse Racing
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font">
               <label htmlFor="table games" className="pointer">
                 <input type="checkbox" className="mx-2" id="table games" />
                 Kabaddi
@@ -230,19 +230,19 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
             </div>
           </div>
           <div className="d-flex my-2">
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font me-2">
               <label htmlFor="teenpati" className="pointer">
                 <input type="checkbox" className="mx-2" id="teenpati" />
                 Cricket
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2 checkbox">
+            <div className="input-css d-flex flex-between small-font me-2 checkbox">
               <label htmlFor="spanish 21" className="pointer">
                 <input type="checkbox" className="mx-2" id="spanish 21" />
                 Cricket
               </label>
             </div>
-            <div className="input-css d-flex flex-between small-font mx-2">
+            <div className="input-css d-flex flex-between small-font">
               <label htmlFor="rummy online" className="pointer">
                 <input type="checkbox" className="mx-2" id="rummy online" />
                 Football
@@ -255,7 +255,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
         {isEdit === true ? (
           <div className="col-4 felx-column align-items-center text-black ">
             <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Update</div>
-            <div className="white-btn br-5 mx-2 my-3 pointer">Edit</div>
+            <div className="white-btn br-5 mx-2 my-3 pointer text-center">Edit</div>
           </div>
         ) : (
           <div className="col-4 felx-column text-black ">

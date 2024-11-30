@@ -3,7 +3,7 @@ import SportsNewVendor from "./SportsNewVendor";
 import AddNewSportsProvider from "./AddNewSportsProvider";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineEdit } from "react-icons/md";
-import Table from './../../../../components/Table';
+import Table from "./../../../../components/Table";
 
 const SportsVendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
@@ -121,7 +121,6 @@ const SportsVendorRegistration = () => {
           }`}
           onClick={() => {
             addNewProviderModal();
-            handleClick(null);
           }}
         >
           <IoMdAdd size={19} />
@@ -148,7 +147,7 @@ const SportsVendorRegistration = () => {
         )}
         {activeBtn === 1 && (
           <div>
-           <SportsNewVendor/>
+            <SportsNewVendor />
           </div>
         )}
       </div>

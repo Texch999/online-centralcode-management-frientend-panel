@@ -605,34 +605,35 @@ function Homepage() {
                 <div className="col-3 pe-1">
                   <div className="d-flex flex-column text-white px-2 blue-bg-box">
                     <div className="small-font py-2">Casino Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3 pe-1">
                   <div className=" voilet-bg-box d-flex flex-column text-white px-2">
                     <div className="small-font py-2">Sports Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3 pe-1">
                   <div className="box-3 d-flex flex-column text-white px-2">
                     <div className="small-font py-2">S+C Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3 ">
                   <div className="pink-bg-box d-flex flex-column text-white px-2">
                     <div className="small-font py-2">Total Profit</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
               </div>
-
+              <div className="">
               <ScrollTable
                 columns={customerCols}
                 data={customerData}
-                tableHeight="h-50vh"
+                tableHeight="table-50vh"
               />
+              </div>
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@ function Header() {
       <div className="w-100 flex-between px-2 py-1">
         <div className="d-flex align-items-center">
           <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" />
-          <div className="d-flex align-items-center input-css">
+          <div className="d-flex align-items-center input-css ms-2">
             <FaSearch size={18} className="grey-clr me-2" />
             <input
               className="all-none small-font"
@@ -57,11 +57,11 @@ function Header() {
               Vendor Registration and List
             </span>
           </div>
-          <IoMdNotificationsOutline size={22} className="grey-clr me-2" />
-          <img className="me-2" src={Images?.ProfileImage} alt="Profile" />
+          <IoMdNotificationsOutline size={22} className="grey-clr me-2 mx-3" />
+          <img className="mx-3" src={Images?.ProfileImage} alt="Profile"/>
           <PiDotsNineBold
             size={24}
-            className="grey-clr"
+            className="grey-clr mx-2"
             onClick={handleLogout}
           />
         </div>

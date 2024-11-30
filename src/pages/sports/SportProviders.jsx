@@ -144,52 +144,18 @@ const SportProviders = () => {
     {
       sno: <div className="flex-center">4</div>,
       games: (
-        <div className="pointer" onClick={() => handleGameMatches("Sic Bo")}>
-          Sic bo
-        </div>
-      ),
-      eye: (
-        <div className="d-flex flex-column">
-          <span
-            className=" font-20"
-            onClick={() => handleGameMatches("Sic Bo")}
-          >
-            <IoEyeOutline className="orange-clr" />
-          </span>
-        </div>
-      ),
-      status: (
-        <div className="dark-orange-clr">
-          <span className="round-red-dot mx-1"></span>OFF
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">500000</div>,
-      action: (
-        <div class="form-check form-switch">
-          <input
-            class="form-check-input w-40"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-          />
-        </div>
-      ),
-    },
-    {
-      sno: <div className="flex-center">5</div>,
-      games: (
         <div
           className="pointer"
-          onClick={() => handleGameMatches("Table Game")}
+          onClick={() => handleGameMatches("Horse Racing")}
         >
-          Tables Game
+          Horse Racing
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Table Game")}
+            onClick={() => handleGameMatches("Horse Racing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -215,18 +181,15 @@ const SportProviders = () => {
     {
       sno: <div className="flex-center">6</div>,
       games: (
-        <div
-          className="pointer"
-          onClick={() => handleGameMatches("Black Jack")}
-        >
-          Black Jack
+        <div className="pointer" onClick={() => handleGameMatches("Kabaddi")}>
+          Kabaddi
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Black Jack")}
+            onClick={() => handleGameMatches("Kabaddi")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -266,8 +229,13 @@ const SportProviders = () => {
         </div>
 
         <div className="medium-font">
-        <span className="white-bg rounded-pill me-4 px-3 py-1 pointer" onClick={() => navigate(-1)}>
-        <FaArrowLeft className="orange-clr me-1"/>Back</span>
+          <span
+            className="white-bg rounded-pill me-4 px-3 py-1 pointer"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="orange-clr me-1" />
+            Back
+          </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
