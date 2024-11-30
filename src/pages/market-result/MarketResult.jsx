@@ -30,7 +30,7 @@ const MarketResult = () => {
       winner: <div>India</div>,
       ip: <div className="flex-center">23.434.56.239</div>,
       action: (
-        <div className="d-flex flex-center">
+        <div className="d-flex flex-center pointer">
           <div className="flex-center me-2">
             <div className="red-btn">Rollback</div>
           </div>
@@ -53,7 +53,7 @@ const MarketResult = () => {
       winner: <div>India</div>,
       ip: <div className="flex-center">23.434.56.239</div>,
       action: (
-        <div className="d-flex flex-center">
+        <div className="d-flex flex-center  pointer">
           <div className="flex-center me-2">
             <div className="red-btn">Rollback</div>
           </div>
@@ -180,8 +180,8 @@ const MarketResult = () => {
     },
   ];
   return (
-    <div className="p-2">
-      <h4 className="my-3">Market Result</h4>
+    <div className="p-1">
+      <h4 className="my-2">Market Result</h4>
 
       <div className="row w-100 text-black small-font">
         <div className="col-2 d-flex flex-column">
@@ -251,7 +251,7 @@ const MarketResult = () => {
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end">
-          <div className="white-input rounded-pill w-100">
+          <div className="white-input rounded-pill w-100 white-space">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"

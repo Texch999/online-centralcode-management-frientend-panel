@@ -36,7 +36,7 @@ const CricketScoreboard = () => {
 
   const data = [
     {
-      watch: <div className="inplay-btn w-fit py-1 px-2 mx-2">In Play</div>,
+      watch: <div className="inplay-btn w-fit py-1 px-2 mx-2 ">In Play</div>,
       date: (
         <div className="d-flex flex-column small-font">
           <div>21-09-2024</div>
@@ -57,7 +57,7 @@ const CricketScoreboard = () => {
       ),
       live: (
         <div className="d-flex flex-center flex-column w-100">
-          <div className="rounded-grey-box my-2 px-1 py-1 w-100">
+          <div className="rounded-grey-box my-2 px-1 py-1 w-100 small-font">
             <div className="d-flex flex-between">
               <span className="rounded-white-box">
                 <MdSportsCricket className="orange-clr fw-800 icon" />
@@ -76,10 +76,10 @@ const CricketScoreboard = () => {
               </span>
             </div>
           </div>
-          <div className="black-score-box w-100 text-white">
+          <div className="black-score-box w-100 text-white small-font">
             <div className="d-flex flex-column w-100">
               <div className="d-flex flex-between px-2">
-                <div className="flex-column w-100">
+                <div className="flex-column w-100 small-font">
                   <div className="row">
                     <div className="col-2">Batsmen</div>
                     <div className="col-2">R</div>
@@ -107,7 +107,7 @@ const CricketScoreboard = () => {
                     <div className="col-2">0</div>
                   </div>
                 </div>
-                <div className="grey-box-table flex-column flex-center py-3 w-60 px-2">
+                <div className="grey-box-table flex-column flex-center py-3 w-50 px-2 small-font">
                   <div className="d-flex">
                     <div className="yellow-round text-black px-2 py-1 mx-1">
                       6
@@ -126,9 +126,11 @@ const CricketScoreboard = () => {
                     </div>
                     <div className="red-round text-white px-2 py-1 mx-1">w</div>
                   </div>
-                  <div className="medium-font fw-600 pt-3 text-white">CRR.6.50</div>
+                  <div className="medium-font fw-600 pt-3 text-white">
+                    CRR.6.50
+                  </div>
                 </div>
-                <div className="flex-column w-100">
+                <div className="flex-column w-100 small-font">
                   <div className="row ps-2">
                     <div className="col-2">Bowler</div>
                     <div className="col-2">O</div>
@@ -275,7 +277,9 @@ const CricketScoreboard = () => {
                     </div>
                     <div className="red-round text-white px-2 py-1 mx-1">w</div>
                   </div>
-                  <div className="medium-font fw-600 pt-3 text-white">CRR.6.50</div>
+                  <div className="medium-font fw-600 pt-3 text-white">
+                    CRR.6.50
+                  </div>
                 </div>
                 <div className="flex-column w-100">
                   <div className="row ps-2">
@@ -420,6 +424,13 @@ const CricketScoreboard = () => {
         </div>
 
         <div className="medium-font">
+          <span
+            className="white-bg rounded-pill me-4 px-3 py-1 pointer"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="orange-clr me-1" />
+            Back
+          </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
