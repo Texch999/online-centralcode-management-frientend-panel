@@ -4,7 +4,7 @@ import ScrollTable from "../../components/ScrollTable";
 
 const MarketResult = () => {
   const sportcols = [
-    { header: "Sport", field: "sport" },
+    { header: <div className="flex-center">Sport</div>, field: "sport" },
     { header: "Date & Time", field: "date" },
     { header: "MatchName/Id", field: "match" },
     { header: "Market", field: "mar" },
@@ -18,7 +18,53 @@ const MarketResult = () => {
 
   const data = [
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
+      date: <div className="">14-10-2024 13:33:00</div>,
+      match: (
+        <div className="mb-1 flex-column">
+          India vs Sri Lanka
+          <div>M ID: 1234567366</div>
+        </div>
+      ),
+      mar: <div>Book Maker 1</div>,
+      winner: <div>India</div>,
+      ip: <div className="flex-center">23.434.56.239</div>,
+      action: (
+        <div className="d-flex flex-center pointer">
+          <div className="flex-center me-2">
+            <div className="red-btn">Rollback</div>
+          </div>
+          <div className="flex-center">
+            <div className="green-btn">Active</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      sport: <div className="mb-1 flex-center">Cricket</div>,
+      date: <div className="">14-10-2024 13:33:00</div>,
+      match: (
+        <div className="mb-1 flex-column">
+          India vs Sri Lanka
+          <div>M ID: 1234567366</div>
+        </div>
+      ),
+      mar: <div>Book Maker 1</div>,
+      winner: <div>India</div>,
+      ip: <div className="flex-center">23.434.56.239</div>,
+      action: (
+        <div className="d-flex flex-center  pointer">
+          <div className="flex-center me-2">
+            <div className="red-btn">Rollback</div>
+          </div>
+          <div className="flex-center">
+            <div className="green-btn">Active</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -41,7 +87,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -64,7 +110,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -87,7 +133,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -110,53 +156,7 @@ const MarketResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
-      match: (
-        <div className="mb-1 flex-column">
-          India vs Sri Lanka
-          <div>M ID: 1234567366</div>
-        </div>
-      ),
-      mar: <div>Book Maker 1</div>,
-      winner: <div>India</div>,
-      ip: <div className="flex-center">23.434.56.239</div>,
-      action: (
-        <div className="d-flex flex-center">
-          <div className="flex-center me-2">
-            <div className="red-btn">Rollback</div>
-          </div>
-          <div className="flex-center">
-            <div className="green-btn">Active</div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      sport: <div className="mb-1">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
-      match: (
-        <div className="mb-1 flex-column">
-          India vs Sri Lanka
-          <div>M ID: 1234567366</div>
-        </div>
-      ),
-      mar: <div>Book Maker 1</div>,
-      winner: <div>India</div>,
-      ip: <div className="flex-center">23.434.56.239</div>,
-      action: (
-        <div className="d-flex flex-center">
-          <div className="flex-center me-2">
-            <div className="red-btn">Rollback</div>
-          </div>
-          <div className="flex-center">
-            <div className="green-btn">Active</div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: (
         <div className="mb-1 flex-column">
@@ -180,8 +180,8 @@ const MarketResult = () => {
     },
   ];
   return (
-    <div>
-      <h4 className="my-3">Market Result</h4>
+    <div className="p-1">
+      <h4 className="my-2">Market Result</h4>
 
       <div className="row w-100 text-black small-font">
         <div className="col-2 d-flex flex-column">
@@ -251,7 +251,7 @@ const MarketResult = () => {
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end">
-          <div className="white-input rounded-pill w-100">
+          <div className="white-input rounded-pill w-100 white-space">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"

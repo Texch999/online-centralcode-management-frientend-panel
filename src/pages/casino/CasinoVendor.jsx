@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "../casino/style.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
+import { IoEyeOutline } from "react-icons/io5";
+import ActionPopup from "./ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 const CasinoVendor = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { vendor, provider } = location.state || {};
+  const { vendor, provider } = useParams();
+  const [isActive, setIsACtive] = useState(false);
+  const handleActiveModal = () => {
+    setIsACtive(!isActive);
+  };
 
   const handleGamesPage = (game) => {
-    navigate("/casino-games", { state: { vendor, provider, game } });
+    navigate(`/casino-games/${vendor}/${provider}/${game}`);
   };
 
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
     { header: "Games", field: "games" },
+    { header: "", field: "eye" },
     { header: "Status", field: "status" },
     { header: "Profit & Loss", field: "pl" },
     { header: "Action", field: "action" },
@@ -28,6 +36,13 @@ const CasinoVendor = () => {
           Poker
         </div>
       ),
+      eye: (
+        <div className="d-flex flex-column pointer">
+          <span className=" font-20" onClick={() => handleGamesPage("Poker")}>
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="green-clr">
           <span className="round-green-dot mx-1"></span>ON
@@ -35,7 +50,7 @@ const CasinoVendor = () => {
       ),
       pl: <div className="dark-orange-clr">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch" onClick={handleActiveModal}>
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -50,6 +65,16 @@ const CasinoVendor = () => {
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Teenpati")}>
           Teenpati
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Teenpati")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
         </div>
       ),
       status: (
@@ -76,6 +101,16 @@ const CasinoVendor = () => {
           Roulette
         </div>
       ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Roulette")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="green-clr">
           <span className="round-green-dot mx-1"></span>ON
@@ -98,6 +133,13 @@ const CasinoVendor = () => {
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Sic bo")}>
           Sic bo
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span className=" font-20" onClick={() => handleGamesPage("Sic Bo")}>
+            <IoEyeOutline className="orange-clr" />
+          </span>
         </div>
       ),
       status: (
@@ -124,6 +166,16 @@ const CasinoVendor = () => {
           Tables Game
         </div>
       ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Table Game")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
       status: (
         <div className="dark-orange-clr">
           <span className="round-red-dot mx-1"></span>OFF
@@ -146,6 +198,16 @@ const CasinoVendor = () => {
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Black Jack")}>
           Black Jack
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGamesPage("Black Jack")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
         </div>
       ),
       status: (
@@ -180,13 +242,16 @@ const CasinoVendor = () => {
             {provider}
           </span>
         </div>
-        <div className="small-font">
+        <div className="medium-font">
+        <span className="white-bg rounded-pill me-4 px-3 py-1 pointer" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="orange-clr me-1"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 };

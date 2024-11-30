@@ -2,21 +2,19 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import "../casino/style.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { GiClick } from "react-icons/gi";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 function Casino() {
   const navigate = useNavigate();
-  const params = useParams();
-
-  const [isActive, setIsACtive]=useState(false);
-  const handleActiveModal=()=>{
-    setIsACtive(!isActive)
-  }
+  const [isActive, setIsACtive] = useState(false);
+  const handleActiveModal = () => {
+    setIsACtive(!isActive);
+  };
 
   const handleProviderClick = (vendor, provider) => {
-    navigate("/casino-vendor", { state: { vendor, provider } });
+    navigate(`/casino-vendor/${vendor}/${provider}`);
   };
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
@@ -80,25 +78,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -236,25 +234,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -392,25 +390,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -548,25 +546,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -660,7 +658,7 @@ function Casino() {
     <div>
       <div className="d-flex flex-between align-items-center">
         <h4 className="my-3">Casino</h4>
-        <div className="small-font">
+        <div className="medium-font ">
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
@@ -668,7 +666,7 @@ function Casino() {
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
 
-      <ActionPopup show={isActive} setShow={setIsACtive}/>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 }

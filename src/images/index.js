@@ -1,8 +1,8 @@
 export const Images = {
   LoginImageOne: "assets/login_image_one.png",
   LoginImageTwo: "assets/login_image_two.png",
-  loginUserImages: "assets/loginPassword.png",
-  loginUserLock: "assets/loginUser.png",
+  loginUserImages: "assets/loginUser.png",
+  loginUserLock: "assets/loginPassword.png",
   S7Logo: "/assets/S7_Logo.png",
   ProfileImage: "/assets/Profile_Image.png",
   addManagementPopup: "assets/popup_image.png",
@@ -26,6 +26,8 @@ export const Images = {
   adminProfileDownlinePlChips:
     "/assets/director_admin_profile_downline-available-chips.png",
   qnmark: "/assets/question-mark 1.png",
+  cricket: "/assets/match.png",
+  match: "/assets/match2.png",
   promotion2: "/assets/promotion2.jpg",
   promotion3: "/assets/promotion3.png",
   promotion4: "/assets/promotion4.png",

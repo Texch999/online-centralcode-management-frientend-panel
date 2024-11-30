@@ -354,6 +354,9 @@
 .red-font {
   color: #d0431c !important;
 }
+.sky-blu-font{
+  color: #6BC0FF;
+}
 .orange-bg {
   background: #fffadd;
 }
@@ -396,6 +399,11 @@
 .fw-600 {
   font-weight: 600;
 }
+
+.fw-700{
+  font-weight: 700;
+}
+
 .green-bg {
   background: #4bae4f;
 }
@@ -488,4 +496,9 @@
 
 .footer-bg {
   background: #dedede;
+}
+.netpl-btn{
+  display: flex;
+  align-items: end;
+  justify-content: start;
 }

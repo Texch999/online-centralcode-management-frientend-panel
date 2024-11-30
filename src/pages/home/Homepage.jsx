@@ -17,6 +17,17 @@ import {
   Legend,
 } from "chart.js";
 
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+
 function Homepage() {
   ChartJS.register(
     BarElement,
@@ -46,6 +57,32 @@ function Homepage() {
   ];
 
   const customerData = [
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div>Direcor</div>,
+      casino: <div>-</div>,
+      sports: <div>-</div>,
+      sc: <div>100000</div>,
+      pay: <div>209888</div>,
+    },
     {
       customer: (
         <div className="d-flex flex-column">
@@ -460,6 +497,48 @@ function Homepage() {
       ),
       pl: <div className="green-clr">500000</div>,
     },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column">
+          <div>Srinivas</div>
+          <div>Hyderabad</div>
+        </div>
+      ),
+      admin: (
+        <div className="d-flex flex-column">
+          <div>Lokesh</div>
+          <div>Sub Admin</div>
+        </div>
+      ),
+      site: (
+        <div className="d-flex flex-column">
+          <div>T-Exchange</div>
+          <div>Casino Park</div>
+        </div>
+      ),
+      pl: <div className="green-clr">500000</div>,
+    },
   ];
 
   const barData = {
@@ -470,7 +549,7 @@ function Homepage() {
         backgroundColor: "#98BDFF",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 60],
+        data: [15, 20, 25, 30, 35, 40, 52],
       },
 
       {
@@ -478,14 +557,14 @@ function Homepage() {
         backgroundColor: "#4B49AC",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 70],
+        data: [15, 20, 25, 30, 35, 40, 49],
       },
       {
         label: "casino & Sports Sales",
         backgroundColor: "#F3797E",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 80],
+        data: [15, 20, 25, 30, 35, 40, 55],
       },
     ],
   };
@@ -516,7 +595,7 @@ function Homepage() {
                 </div>
               </div>
               <div className="hor-grey-line"></div>
-              <div>
+              <div className="px-3 py-2">
                 <Bar data={barData} />
               </div>
             </div>
@@ -633,12 +712,12 @@ function Homepage() {
               </div>
             </div>
             <div className="d-flex flex-between small-font mt-4">
-              <div className="d-flex pointer medium-font">
+              <div className="d-flex pointer medium-font white-box rounded-pill">
                 {buttons.map((btn, index) => {
                   return (
                     <div
                       key={index}
-                      className={`px-2 py-1 me-1 white-box ${
+                      className={`px-2 py-1 me-1 ${
                         activeBtn === index ? "active-saffron-btn " : ""
                       }`}
                       onClick={() => handleClick(index)}

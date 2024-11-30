@@ -5,7 +5,7 @@ import { BsEye } from "react-icons/bs";
 
 const FancyResult = () => {
   const cols = [
-    { header: "Sport", field: "sport" },
+    { header: <div className="ms-2">Sport</div>, field: "sport" },
     { header: "Fancy Id", field: "fid" },
     { header: "Fancy Name", field: "fname" },
     { header: "MatchName", field: "match" },
@@ -13,7 +13,34 @@ const FancyResult = () => {
   const data = [
     {
       sport: (
+        <div className="d-flex flex-column small-font ms-2">
+          <div className="mb-1">Cricket</div>
+          <input
+            type="text"
+            placeholder="Enter Result"
+            className="white-input w-fit"
+          />
+        </div>
+      ),
+      fid: (
         <div className="d-flex flex-column small-font">
+          <div className="mb-1">2345632345-13FY</div>
+          <div className="saffron-btn br-5 w-fit">Set</div>
+        </div>
+      ),
+      fname: (
+        <div className="d-flex flex-column small-font">
+          <div className="mb-1">
+            T20 Women’s World Cup (New Zealand vs South Africa) adv
+          </div>
+          <div className="rust-red-btn w-fit">Suspended</div>
+        </div>
+      ),
+      match: <div>New Zealand vs South Africa</div>,
+    },
+    {
+      sport: (
+        <div className="d-flex flex-column small-font ms-2">
           <div className="mb-1">Cricket</div>
           <input
             type="text"
@@ -67,7 +94,7 @@ const FancyResult = () => {
     },
     {
       sport: (
-        <div className="d-flex flex-column small-font">
+        <div className="d-flex flex-column small-font ms-2">
           <div className="mb-1">Cricket</div>
           <input
             type="text"
@@ -94,34 +121,7 @@ const FancyResult = () => {
     },
     {
       sport: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">Cricket</div>
-          <input
-            type="text"
-            placeholder="Enter Result"
-            className="white-input w-fit"
-          />
-        </div>
-      ),
-      fid: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">2345632345-13FY</div>
-          <div className="saffron-btn br-5 w-fit">Set</div>
-        </div>
-      ),
-      fname: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">
-            T20 Women’s World Cup (New Zealand vs South Africa) adv
-          </div>
-          <div className="rust-red-btn w-fit">Suspended</div>
-        </div>
-      ),
-      match: <div>New Zealand vs South Africa</div>,
-    },
-    {
-      sport: (
-        <div className="d-flex flex-column small-font">
+        <div className="d-flex flex-column small-font ms-2">
           <div className="mb-1">Cricket</div>
           <input
             type="text"
@@ -149,7 +149,7 @@ const FancyResult = () => {
   ];
 
   const sportcols = [
-    { header: "Sport", field: "sport" },
+    { header: <div className="flex-center">Sport</div>, field: "sport" },
     { header: "Date & Time", field: "date" },
     { header: "MatchName", field: "match" },
     { header: "Event Id", field: "eid" },
@@ -163,7 +163,7 @@ const FancyResult = () => {
 
   const sportData = [
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -180,7 +180,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -197,7 +197,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -214,7 +214,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -231,7 +231,7 @@ const FancyResult = () => {
       ),
     },
     {
-      sport: <div className="mb-1">Cricket</div>,
+      sport: <div className="mb-1 flex-center">Cricket</div>,
       date: <div className="">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div>12345673</div>,
@@ -250,8 +250,8 @@ const FancyResult = () => {
   ];
 
   return (
-    <div className="p-2">
-      <h4 className="my-3">Fancy Result</h4>
+    <div className="p-1">
+      <h4 className="my-2">Fancy Result</h4>
       <div className="mb-3 row w-100 text-black small-font ">
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">Select Sport</label>
@@ -272,7 +272,13 @@ const FancyResult = () => {
           </select>
         </div>
         <div className="col-2 flex-end">
-          <div className="w-100 saffron-btn br-5 small-font">Search</div>
+          <div className="white-input rounded-pill w-100 white-space">
+            <FaSearch size={15} className="grey-clr me-2" />
+            <input
+              className="all-none small-font"
+              placeholder="Search Match..."
+            />
+          </div>
         </div>
       </div>
 
@@ -302,8 +308,17 @@ const FancyResult = () => {
           <div className="w-100 saffron-btn br-5 small-font">Submit</div>
         </div>
         <div className="col-2"></div>
+        {/* <div className="col-2 flex-end">
+          <div className="white-input d-flex rounded-pill align-items-center w-100 px-2">
+            <FaSearch className="grey-clr font-15" />
+            <input
+              className="all-none small-font ms-2"
+              placeholder="Search Match..."
+            />
+          </div>
+        </div> */}
         <div className="col-2 flex-end">
-          <div className="white-input flex-between rounded-pill w-100">
+          <div className="white-input rounded-pill w-100 white-space">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"
