@@ -10,6 +10,84 @@ const CricketLiveStreaming = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { vendor, provider, match } = useParams();
+
+  const matchContent =
+    match === "Football" ? (
+      <>
+        <div>Santos vs Cruzeiro MG</div>
+        <div>12345678912343455</div>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <div>Guangzhou Challenger 2023</div>
+        <div>67890123456789012</div>
+      </>
+    ) : (
+      <>
+        <div>ICC Women T20 World Cup</div>
+        <div>09876543211234567</div>
+      </>
+    );
+
+  const seriesContent =
+    match === "Football" ? (
+      <>
+        <div>Brazilian Series A</div>
+        <div>12345678912343455</div>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <div>Evgeny Donskoy vs Omar Jasika</div>
+        <div>67890123456789012</div>
+      </>
+    ) : (
+      <>
+        <div>ICC Women T20 World Cup</div>
+        <div>56789012345678900</div>
+      </>
+    );
+
+  const liveStreamContent =
+    match === "Football" ? (
+      <>
+        <iframe
+          width="300"
+          height="200"
+          src="https://www.youtube.com/embed/-eaLutjqXu0?si=PdWBHVKXvC4nkNeI"
+          title="YouTube video player"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+F        ></iframe>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <iframe
+          width="300"
+          height="200"
+          src="https://www.youtube.com/embed/CGRzfUccmNE?si=6xSZtz34KLFbHSie"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </>
+    ) : (
+      <>
+        <iframe
+          width="300"
+          height="200"
+          src="https://www.youtube.com/embed/F0_aypvtW8Y?si=E_8oO598HmxNP80O"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </>
+    );
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -39,31 +117,10 @@ const CricketLiveStreaming = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      live: (
-        <div className="d-flex flex-center">
-          <iframe
-            width="300"
-            height="150"
-            src="https://www.youtube.com/watch?v=S9IkhcLDUPo"
-            title="YouTube video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
+      live: [liveStreamContent],
+
       action: (
         <div class="d-flex mt-1">
           <div onClick={handleBlockModal} className="pointer">
@@ -83,23 +140,9 @@ const CricketLiveStreaming = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      live: (
-        <div className="d-flex flex-center">
-          <img src={Images.cricket} alt="cricket" className="match-img" />
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
+      live: [liveStreamContent],
       action: (
         <div class="d-flex mt-1">
           <div onClick={handleBlockModal} className="pointer">
@@ -119,23 +162,10 @@ const CricketLiveStreaming = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      live: (
-        <div className="d-flex flex-center">
-          <img src={Images.match} alt="cricket" className="match-img" />
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
+      live: [liveStreamContent],
+
       action: (
         <div class="d-flex mt-1">
           <div onClick={handleBlockModal} className="pointer">
@@ -155,23 +185,10 @@ const CricketLiveStreaming = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      live: (
-        <div className="d-flex flex-center">
-          {/* <img src={Images.cricket} alt="cricket" className="match-img"/> */}
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
+      live: [liveStreamContent],
+
       action: (
         <div class="d-flex mt-1">
           <div onClick={handleBlockModal} className="pointer">

@@ -354,8 +354,8 @@
 .red-font {
   color: #d0431c !important;
 }
-.sky-blu-font{
-  color: #6BC0FF;
+.sky-blu-font {
+  color: #6bc0ff;
 }
 .orange-bg {
   background: #fffadd;
@@ -400,7 +400,7 @@
   font-weight: 600;
 }
 
-.fw-700{
+.fw-700 {
   font-weight: 700;
 }
 
@@ -496,4 +496,10 @@
 
 .footer-bg {
   background: #dedede;
+}
+.green-bg {
+  background: #48e448;
+}
+.clr-red {
+  color: #e9083d;
 }

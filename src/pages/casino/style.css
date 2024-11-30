@@ -35,7 +35,7 @@
   display: inline-block;
 }
 .form-check-input:checked {
-  background-color: #18B962 !important;
+  background-color: #18b962 !important;
   border-color: 1.2px solid #0000001a !important;
 }
 .w-40 {
@@ -56,61 +56,60 @@ input[type="checkbox"] {
 .form-check-input {
   height: 1.5em !important;
 }
-.rounded-grey-box{
-  background-color: #7C7C7C;
+.rounded-grey-box {
+  background-color: #7c7c7c;
   border-radius: 20px;
 }
-.rounded-white-box{
-  background-color: #FFFFFF;
+.rounded-white-box {
+  background-color: #ffffff;
   border-radius: 50px;
   padding: 5px;
 }
-.rounded-black-box{
-  background-color: #1C1C1C;
+.rounded-black-box {
+  background-color: #1c1c1c;
   border-radius: 20px;
-
 }
-.icon{
+.icon {
   height: 3vh;
   width: 100%;
 }
-.black-score-box{
-  background-color: #1C1C1C;
+.black-score-box {
+  background-color: #1c1c1c;
   border-radius: 5px;
 }
-.hor-white-top{
-  border-top: 1.4px solid #7C7C7C;
+.hor-white-top {
+  border-top: 1.4px solid #7c7c7c;
 }
-.line-bar{
-  background-color: #0FC000;
+.line-bar {
+  background-color: #0fc000;
   border-radius: 30px;
 }
-.grey-box{
-  background-color: #7C7C7C;
+.grey-box {
+  background-color: #7c7c7c;
   border-radius: 5px;
 }
-.yellow-round{
-  background-color: #F3BA15;
+.yellow-round {
+  background-color: #f3ba15;
   border-radius: 50px;
   text-align: center;
 }
-.dark-blue-round{
-  background-color: #001D58;
+.dark-blue-round {
+  background-color: #001d58;
   border-radius: 50px;
   text-align: center;
 }
-.green-round{
-  background-color: #0FC000;
+.green-round {
+  background-color: #0fc000;
   border-radius: 50px;
   text-align: center;
 }
-.light-blue-round{
-  background-color: #3171F3;
+.light-blue-round {
+  background-color: #3171f3;
   border-radius: 50px;
   text-align: center;
 }
-.red-round{
-  background-color: #CD1616;
+.red-round {
+  background-color: #cd1616;
   border-radius: 50px;
   text-align: center;
 }
@@ -120,16 +119,26 @@ progress {
   appearance: none;
   -webkit-appearance: none;
   border: none;
-  background-color: #CD1616;
+  background-color: #cd1616;
   border-radius: 5px;
   overflow: hidden;
 }
 progress::-webkit-progress-value {
-  background-color: #0FC000;
+  background-color: #0fc000;
   border-radius: 5px;
 }
 
 progress::-webkit-progress-bar {
-  background-color: #CD1616; 
+  background-color: #cd1616;
   border-radius: 5px;
+}
+.football-scoreboard-bg {
+  border-radius: 20px;
+  background-image: url("../../../public/assets/football-bg.png");
+
+  background-size: cover;
+
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
 }
