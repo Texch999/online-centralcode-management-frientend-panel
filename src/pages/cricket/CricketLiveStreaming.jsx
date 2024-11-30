@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DeletePopup from "../popups/DeletePopup";
 import BlockPopup from "../popups/BlockPopup";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import { Images } from "../../images";
@@ -9,7 +9,7 @@ import { Images } from "../../images";
 const CricketLiveStreaming = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { vendor, provider, match } = location.state || {};
+  const { vendor, provider, match } = useParams();
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 

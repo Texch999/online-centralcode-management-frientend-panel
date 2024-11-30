@@ -1,30 +1,25 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "../casino/ActionPopup";
 
 const SportProviders = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { vendor, provider } = location.state || {};
+  const { vendor, provider } = useParams();
   const handleGameMatches = (match) => {
     if (provider === "Odds") {
-      navigate("/cricket", { state: { vendor, provider, match } });
+      navigate(`/cricket/${vendor}/${provider}/${match}`);
     } else if (provider === "fancy") {
-      navigate("/fancy-cricket", { state: { vendor, provider, match } });
+      navigate(`/fancy-cricket/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 1") {
-      navigate("/cricket-bookmaker", { state: { vendor, provider, match } });
+      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 2") {
-      navigate("/cricket-bookmaker", { state: { vendor, provider, match } });
+      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
     } else if (provider === "Live Streaming") {
-      navigate("/cricket-livestreaming", {
-        state: { vendor, provider, match },
-      });
+      navigate(`/cricket-livestreaming/${vendor}/${provider}/${match}`);
     } else if (provider === "Scoreboard") {
-      navigate("/cricket-scoreboard", {
-        state: { vendor, provider, match },
-      });
+      navigate(`/cricket-scoreboard/${vendor}/${provider}/${match}`);
     }
   };
   const [isActive, setIsACtive] = useState(false);

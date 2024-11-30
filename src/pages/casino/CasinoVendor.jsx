@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../casino/style.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
@@ -8,14 +8,14 @@ import ActionPopup from "./ActionPopup";
 const CasinoVendor = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { vendor, provider } = location.state || {};
+  const { vendor, provider } = useParams();
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {
     setIsACtive(!isActive);
   };
 
   const handleGamesPage = (game) => {
-    navigate("/casino-games", { state: { vendor, provider, game } });
+    navigate(`/casino-games/${vendor}/${provider}/${game}`);
   };
 
   const cols = [
@@ -36,7 +36,7 @@ const CasinoVendor = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <span className=" font-20" onClick={() => handleGamesPage("Poker")}>
             <IoEyeOutline className="orange-clr" />
           </span>
