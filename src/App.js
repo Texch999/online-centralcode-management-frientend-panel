@@ -42,6 +42,7 @@ import MyDepositWithdraw from "./pages/wallet/MyDepositWithdraw";
 import OfflineDepositWithdraw from "./pages/wallet/OfflineDepositWithdraw";
 import Tickets from "./pages/wallet/Tickets";
 import GatewayTransactions from "./pages/wallet/GatewayTransactions";
+import DownLineAdmins from "./pages/reports/DownLineAdmins";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -120,6 +121,7 @@ function App() {
                 path="/gateway-transactions"
                 element={<GatewayTransactions />}
               />
+              <Route path="/pl-report-downline" element={<DownLineAdmins />} />
             </Routes>
           </div>
         </div>
