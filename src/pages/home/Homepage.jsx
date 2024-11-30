@@ -38,7 +38,7 @@ function Homepage() {
     Legend
   );
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
@@ -755,11 +755,7 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
           </div>
         </div>
       </div>
-      <div>
-        <h1>Homepage</h1>
-        {/* <Table /> */}
-      </div>
-      </div>
+    </div>
   );
 }
 
