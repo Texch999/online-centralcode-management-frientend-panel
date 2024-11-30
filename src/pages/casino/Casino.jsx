@@ -13,7 +13,7 @@ function Casino() {
   };
 
   const handleProviderClick = (vendor, provider) => {
-    navigate("/casino-vendor", { state: { vendor, provider } });
+    navigate(`/casino-vendor/${vendor}/${provider}`);
   };
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },
@@ -77,25 +77,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -233,25 +233,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -389,25 +389,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
@@ -545,25 +545,25 @@ function Casino() {
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Evolution")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>
           <span
             className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
           >
             <IoEyeOutline className="orange-clr font-20" />
           </span>

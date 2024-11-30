@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
 import { MdBlock } from "react-icons/md";
 import Table from "./../../components/Table";
@@ -8,11 +8,11 @@ import BlockPopup from "../popups/BlockPopup";
 const FancyCricket = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { vendor, provider, match } = location.state || {};
+  const { vendor, provider, match } = useParams();
   const handleFancyMatch = (individualMatch) => {
-    navigate("/fancy-individual-match", {
-      state: { vendor, provider, match, individualMatch },
-    });
+    navigate(
+      `/fancy-individual-match/${vendor}/${provider}/${match}/${individualMatch}`
+    );
   };
   const [showBlockModal, setShowBlockModal] = useState(false);
 
@@ -30,6 +30,47 @@ const FancyCricket = () => {
   ];
 
   const data = [
+    {
+      watch: (
+        <div className="inplay-btn w-fit py-1 px-2 my-1 mx-2">In Play</div>
+      ),
+      date: (
+        <div className="d-flex flex-column">
+          <div>21-09-2024</div>
+          <div>08:00:00</div>
+        </div>
+      ),
+      match: (
+        <div className="d-flex flex-column">
+          <div>New Zealand vs India</div>
+          <div>12345678912343455</div>
+        </div>
+      ),
+      series: (
+        <div className="d-flex flex-column">
+          <div>ICC Women T20 world cup</div>
+          <div>12345678912343455</div>
+        </div>
+      ),
+      pl: <div className="flex-center green-clr">10000</div>,
+      action: (
+        <div class="d-flex mt-1">
+          <div className="pointer" onClick={handleBlockModal}>
+            <MdBlock className="font-20 grey-clr" />
+          </div>
+          <div
+            className="pointer"
+            onClick={() =>
+              handleFancyMatch(
+                "New Zealand vs India(ICC Women T20 WC) 21-09-2024 08:00:00"
+              )
+            }
+          >
+            <IoEyeOutline className="font-20 ms-2 orange-clr" />
+          </div>
+        </div>
+      ),
+    },
     {
       watch: (
         <div className="inplay-btn w-fit py-1 px-2 my-1 mx-2">In Play</div>

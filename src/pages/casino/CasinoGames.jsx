@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
-import ActionPopup from './ActionPopup';
+import ActionPopup from "./ActionPopup";
 
 const CasinoGames = () => {
   const naviagte = useNavigate();
   const location = useLocation();
-  const { vendor, provider, game } = location.state || {};
+  const { vendor, provider, game } = useParams();
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {
     setIsACtive(!isActive);
@@ -154,7 +154,7 @@ const CasinoGames = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive}/>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 };

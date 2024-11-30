@@ -1,11 +1,11 @@
 import React from "react";
 import Table from "../../components/Table";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const FancyIndividualCricketMatch = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { vendor, provider, match, individualMatch } = location.state || {};
+  const { vendor, provider, match, individualMatch } = useParams();
   const cols = [
     { header: <div className="ms-3">Fancy Odds</div>, field: "fancyodds" },
     { header: <div className="flex-center">No</div>, field: "no" },

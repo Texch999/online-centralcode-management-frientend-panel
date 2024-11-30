@@ -85,8 +85,14 @@ function App() {
                 path="/risk-bet-history/:matchName"
                 element={<RiskBetHistory />}
               />
-              <Route path="/casino-vendor" element={<CasinoVendor />} />
-              <Route path="/casino-games" element={<CasinoGames />} />
+              <Route
+                path="/casino-vendor/:vendor/:provider"
+                element={<CasinoVendor />}
+              />
+              <Route
+                path="/casino-games/:vendor/:provider/:game"
+                element={<CasinoGames />}
+              />
               <Route
                 path="/vendor-registartion"
                 element={<VendorRegistration />}
@@ -109,21 +115,33 @@ function App() {
               <Route path="/sports" element={<Sports />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
-              <Route path="/sports-providers" element={<SportProviders />} />
+              <Route
+                path="/sports-providers/:vendor/:provider"
+                element={<SportProviders />}
+              />
               <Route
                 path="/deleted-bet-history"
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
-              <Route path="/cricket" element={<Cricket />} />
-              <Route path="/fancy-cricket" element={<FancyCricket />} />
               <Route
-                path="/fancy-individual-match"
+                path="/cricket/:vendor/:provider/:match"
+                element={<Cricket />}
+              />
+              <Route
+                path="/fancy-cricket/:vendor/:provider/:match"
+                element={<FancyCricket />}
+              />
+              <Route
+                path="/fancy-individual-match/:vendor/:provider/:match/:individualMatch"
                 element={<FancyIndividualCricketMatch />}
               />
-              <Route path="/cricket-bookmaker" element={<CricketBookmaker />} />
               <Route
-                path="/cricket-livestreaming"
+                path="/cricket-bookmaker/:vendor/:provider/:match"
+                element={<CricketBookmaker />}
+              />
+              <Route
+                path="/cricket-livestreaming/:vendor/:provider/:match"
                 element={<CricketLiveStreaming />}
               />
               <Route
@@ -131,7 +149,7 @@ function App() {
                 element={<SportsVendorRegistration />}
               />
               <Route
-                path="/cricket-scoreboard"
+                path="/cricket-scoreboard/:vendor/:provider/:match"
                 element={<CricketScoreboard />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />
