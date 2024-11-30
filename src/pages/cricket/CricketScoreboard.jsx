@@ -2,17 +2,15 @@ import React, { useState } from "react";
 import BlockPopup from "./../popups/BlockPopup";
 import DeletePopup from "./../popups/DeletePopup";
 import Table from "../../components/Table";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MdBlock, MdDeleteOutline, MdSportsCricket } from "react-icons/md";
 import { IoTennisballOutline } from "react-icons/io5";
-import { FaArrowLeft } from "react-icons/fa";
 import FootballScoreboard from "./FootballScoreboard";
 import TennisScoreBoard from "./TennisScoreBoard";
 import HorseRacingScoreBoard from "./HorseRacingScoreBoard";
 
 const CricketScoreboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, match } = useParams();
 
   const matchContent =

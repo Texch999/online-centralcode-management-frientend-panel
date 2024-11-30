@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import DeletePopup from "../popups/DeletePopup";
 import BlockPopup from "../popups/BlockPopup";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 
 const CricketLiveStreaming = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, match } = useParams();
 
   const matchContent =
@@ -120,7 +119,6 @@ const CricketLiveStreaming = () => {
     { header: "", field: "watch" },
     { header: "Date & Time", field: "date" },
     { header: "Matches/ID", field: "match" },
-    // { header: "Series Name/ID", field: "series" },
     ...(match !== "HorseRacing"
       ? [{ header: "Series Name/ID", field: "series" }]
       : []),

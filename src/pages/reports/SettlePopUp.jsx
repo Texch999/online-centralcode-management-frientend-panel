@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { IoClose } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 
 const SettlePopUp = ({ settleBalance, setSettleBalance }) => {
-  const [selectWebsite, setSelectWebsite] = useState(false);
   return (
     <>
       <Modal

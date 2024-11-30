@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -23,11 +23,9 @@ const AddManagementPopup = ({
 
   const [isOpen, setIsOpen] = useState(false);
 
-  // Event handlers for managing focus state
   const handleFocus = () => setIsOpen(true);
   const handleBlur = () => setIsOpen(false);
 
-  // Handle form value changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -36,7 +34,6 @@ const AddManagementPopup = ({
     });
   };
 
-  // Toggle password visibility
   const togglePasswordVisibility = (field) => {
     setShowPassword((prevState) => ({
       ...prevState,
@@ -44,12 +41,10 @@ const AddManagementPopup = ({
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
   };
-
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>

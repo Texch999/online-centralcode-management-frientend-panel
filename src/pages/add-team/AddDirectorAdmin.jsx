@@ -11,22 +11,18 @@ import "../add-team/style.css";
 import "../../App.css";
 
 const AddDirectorAdmin = () => {
-  // State to manage modal visibility
   const [showModal, setShowModal] = useState(false);
 
-  // Function to handle modal open
   const handleModalOpen = () => {
     setShowModal(true);
   };
 
-  // Function to handle modal close
   const handleModalClose = () => {
     setShowModal(false);
   };
 
-  
   const navigate = useNavigate();
-  
+
   const handleNavigateUserDashboard = () => {
     navigate("/user-profile-dashboard");
   };
@@ -292,7 +288,7 @@ const AddDirectorAdmin = () => {
           </div>
           <button
             className="small-font blue-font border px-3 py-1 rounded-pill"
-            onClick={handleModalOpen} // Open modal on click
+            onClick={handleModalOpen}
           >
             <FaPlus className="me-2" />
             Add New
@@ -306,16 +302,6 @@ const AddDirectorAdmin = () => {
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
     </div>
   );
-
-  // const ActionButtons = () => (
-  //   <div className="d-flex align-items-center">
-  //     <button className="btn dw-active-btn mx-1">D/W</button>
-  //     <GrEdit className="add-management-icon mx-1" />
-  //     <MdLockReset className="add-management-icon mx-1" />
-  //     <MdBlockFlipped className="add-management-icon mx-1" />
-  //     <IoEyeOutline className="add-management-icon mx-1" />
-  //   </div>
-  // )
 };
 
 export default AddDirectorAdmin;

@@ -3,11 +3,10 @@ import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import BlockPopup from "./../popups/BlockPopup";
 import DeletePopup from "./../popups/DeletePopup";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Cricket = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, match } = useParams();
 
   const matchContent =
@@ -69,7 +68,6 @@ const Cricket = () => {
       ? [{ header: "Series Name/ID", field: "series" }]
       : []),
 
-    // { header: "Series Name/ID", field: "series" },
     {
       header: (
         <div className="row">

@@ -9,8 +9,6 @@ import Table from "../../components/Table";
 import "../../App.css";
 import "./style.css";
 
-// card data
-
 const cardData = [
   {
     title: "Share Revenue",
@@ -143,7 +141,11 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2" />
             <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" onClick={handleNavigateUserDashboard}/>
+            <MdSwapVert
+              size={20}
+              className="icon-action"
+              onClick={handleNavigateUserDashboard}
+            />
           </div>
         </div>
       ),

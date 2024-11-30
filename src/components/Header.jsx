@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
   FaSearch,
-  FaUserClock,
   FaUserCog,
   FaChevronDown,
   FaChevronUp,

@@ -1,38 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
-import { MdBlockFlipped } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
-import NewPromotionPopUp from "./NewPromotionPopUp";
 import { Images } from "../../images";
-import { TbArrowsDiagonal } from "react-icons/tb";
-import FullPosterPopUp from "./FullPosterPopUp";
-import { MdOutlineFileUpload } from "react-icons/md";
-import EditPosterPopUp from "./EditPosterPopUp";
-import AddNewPromotionPopUp from "./AddNewPromotionPopUp";
 import EditOfferPopUp from "./EditOfferPopUp";
 import DeleteOfferPopUp from "./DeleteOfferPopUp";
 import UploadPosterPopUp from "./UploadPosterPopUp";
 
 const Offer = () => {
   const [activeBtn, setActiveBtn] = useState("1st Deposit Bonus");
-  const [editOffer,setEditOffer]=useState(false)
-  const [deleteOffer,setDeleteOffer]=useState(false)
-  const [uploadPoster,setUploadPoster]=useState(false)
+  const [editOffer, setEditOffer] = useState(false);
+  const [deleteOffer, setDeleteOffer] = useState(false);
+  const [uploadPoster, setUploadPoster] = useState(false);
   const ACTIVE_BTNS = [
     "1st Deposit Bonus",
     "Cashback",
     "Promotions",
     "All Bonus",
   ];
-
-  const navigation = useNavigate();
-
-
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
@@ -42,40 +29,37 @@ const Offer = () => {
 
   const PosterImages = [
     {
-      image:Images.promotion3,
-      content:" 100% Welcome bonus up to 33000 INR"
+      image: Images.promotion3,
+      content: " 100% Welcome bonus up to 33000 INR",
     },
     {
-      image:Images.promotion4,
-      content:" 120% first deposit bonus up to 33000 INR"
+      image: Images.promotion4,
+      content: " 120% first deposit bonus up to 33000 INR",
     },
     {
-      image:Images.promotion5,
-      content:"120% first deposit bonus up to 33000 INR"
+      image: Images.promotion5,
+      content: "120% first deposit bonus up to 33000 INR",
     },
     {
-      image:Images.promotion6,
-      content:" 30% cashback bonus"
+      image: Images.promotion6,
+      content: " 30% cashback bonus",
     },
     {
-      image:Images.promotion7,
-      content:"5% cashback"
+      image: Images.promotion7,
+      content: "5% cashback",
     },
     {
-      image:Images.promotion8,
-      content:"30% Cashback Bonus"
+      image: Images.promotion8,
+      content: "30% Cashback Bonus",
     },
     {
-      image:Images.promotion9,
-      content:"Big Bash Wins"
+      image: Images.promotion9,
+      content: "Big Bash Wins",
     },
     {
-      image:Images.promotion10,
-      content:"BECOME A LEGEND"
+      image: Images.promotion10,
+      content: "BECOME A LEGEND",
     },
-   
-    
-    
   ];
 
   const CRICKET_DATA = [
@@ -84,100 +68,116 @@ const Offer = () => {
         <div className="row poster-img d-flex ">
           {PosterImages?.map((item, index) => (
             <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster"  className="w-100"/>
+              <img src={item.image} alt="Poster" className="w-100" />
               <div className="balck-btn small-font me-1 w-100">
                 {item.content}
               </div>
               <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
                 <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid size={20} className="pointer"  onClick={()=>setEditOffer(!editOffer)}/>
+                  <LiaPenSolid
+                    size={20}
+                    className="pointer"
+                    onClick={() => setEditOffer(!editOffer)}
+                  />
                 </span>
                 <span className="white-bg rounded-pill p-1  pointer">
-                  <FaRegTrashCan size={20}  onClick={()=>setDeleteOffer(!deleteOffer)}/>
+                  <FaRegTrashCan
+                    size={20}
+                    onClick={() => setDeleteOffer(!deleteOffer)}
+                  />
                 </span>
               </div>
-
-             
             </div>
           ))}
         </div>
       ),
-     
     },
     {
       posters: (
         <div className="row poster-img d-flex ">
           {PosterImages?.map((item, index) => (
             <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster"  className="w-100"/>
+              <img src={item.image} alt="Poster" className="w-100" />
               <div className="balck-btn small-font me-1 w-100">
                 {item.content}
               </div>
               <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
                 <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid size={20} className="pointer" onClick={()=>setEditOffer(!editOffer)} />
+                  <LiaPenSolid
+                    size={20}
+                    className="pointer"
+                    onClick={() => setEditOffer(!editOffer)}
+                  />
                 </span>
                 <span className="white-bg rounded-pill p-1 pointer ">
-                  <FaRegTrashCan size={20} onClick={()=>setDeleteOffer(!deleteOffer)} />
+                  <FaRegTrashCan
+                    size={20}
+                    onClick={() => setDeleteOffer(!deleteOffer)}
+                  />
                 </span>
               </div>
-
-             
             </div>
           ))}
         </div>
       ),
-     
     },
     {
       posters: (
         <div className="row poster-img d-flex ">
           {PosterImages?.map((item, index) => (
             <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster"  className="w-100"/>
+              <img src={item.image} alt="Poster" className="w-100" />
               <div className="balck-btn small-font me-1 w-100">
                 {item.content}
               </div>
               <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
                 <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid size={20} className="pointer"  onClick={()=>setEditOffer(!editOffer)}/>
+                  <LiaPenSolid
+                    size={20}
+                    className="pointer"
+                    onClick={() => setEditOffer(!editOffer)}
+                  />
                 </span>
                 <span className="white-bg rounded-pill p-1 pointer ">
-                  <FaRegTrashCan size={20} onClick={()=>setDeleteOffer(!deleteOffer)}/>
+                  <FaRegTrashCan
+                    size={20}
+                    onClick={() => setDeleteOffer(!deleteOffer)}
+                  />
                 </span>
               </div>
-
-             
             </div>
           ))}
         </div>
       ),
-     
     },
     {
       posters: (
         <div className="row poster-img d-flex ">
           {PosterImages?.map((item, index) => (
             <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster"  className="w-100"/>
+              <img src={item.image} alt="Poster" className="w-100" />
               <div className="balck-btn small-font me-1 w-100">
                 {item.content}
               </div>
               <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
                 <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid size={20} className="pointer"  onClick={()=>setEditOffer(!editOffer)}/>
+                  <LiaPenSolid
+                    size={20}
+                    className="pointer"
+                    onClick={() => setEditOffer(!editOffer)}
+                  />
                 </span>
                 <span className="white-bg rounded-pill p-1 pointer ">
-                  <FaRegTrashCan size={20} onClick={()=>setDeleteOffer(!deleteOffer)}/>
+                  <FaRegTrashCan
+                    size={20}
+                    onClick={() => setDeleteOffer(!deleteOffer)}
+                  />
                 </span>
               </div>
-
-             
             </div>
           ))}
         </div>
       ),
-     
     },
   ];
 
@@ -207,16 +207,26 @@ const Offer = () => {
           ))}
         </div>
 
-        <div className="saffron-btn2 small-font pointer mt-4 col-1" onClick={()=>setUploadPoster(!uploadPoster)}>
-          <IoAddOutline className="large-font" size={18}/> <span className="ms-2">Add New</span> 
+        <div
+          className="saffron-btn2 small-font pointer mt-4 col-1"
+          onClick={() => setUploadPoster(!uploadPoster)}
+        >
+          <IoAddOutline className="large-font" size={18} />{" "}
+          <span className="ms-2">Add New</span>
         </div>
       </div>
       <div className="mt-4">
         <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={1} />
       </div>
-      <EditOfferPopUp setEditOffer={setEditOffer} editOffer={editOffer}/>
-      <DeleteOfferPopUp setDeleteOffer={setDeleteOffer} deleteOffer={deleteOffer}/>
-      <UploadPosterPopUp setUploadPoster={setUploadPoster} uploadPoster={uploadPoster}/>
+      <EditOfferPopUp setEditOffer={setEditOffer} editOffer={editOffer} />
+      <DeleteOfferPopUp
+        setDeleteOffer={setDeleteOffer}
+        deleteOffer={deleteOffer}
+      />
+      <UploadPosterPopUp
+        setUploadPoster={setUploadPoster}
+        uploadPoster={uploadPoster}
+      />
     </div>
   );
 };

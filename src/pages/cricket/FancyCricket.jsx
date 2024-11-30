@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
 import { MdBlock } from "react-icons/md";
 import Table from "./../../components/Table";
@@ -7,7 +7,6 @@ import BlockPopup from "../popups/BlockPopup";
 
 const FancyCricket = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, match } = useParams();
 
   const matchContent =

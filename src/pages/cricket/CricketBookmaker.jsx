@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import BlockPopup from "../popups/BlockPopup";
 import DeletePopup from "../popups/DeletePopup";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 
 const CricketBookmaker = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, match } = useParams();
 
   const matchContent =

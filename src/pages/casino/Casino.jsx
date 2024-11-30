@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
 import "../casino/style.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
 

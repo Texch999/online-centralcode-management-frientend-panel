@@ -1,9 +1,7 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
-  const navigate = useNavigate();
   return (
     <div className="dashboard-white-bg box-shadow radius p-3">
       {isEdit === true && (

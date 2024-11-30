@@ -22,7 +22,7 @@ const columns = [
 const Transaction = () => {
   const [isModalShareOpen, setIsModalShareOpen] = useState(false);
   const [isModalRentalOpen, setIsModalRentalOpen] = useState(false);
-  
+
   const data = [
     {
       nameRole: (
@@ -261,7 +261,6 @@ const Transaction = () => {
         <SlipShareDirector
           show={isModalShareOpen}
           onHide={() => setIsModalShareOpen(false)}
-          // data={selectedRowData} // Pass row data to modal if needed
         />
       )}
 
@@ -269,7 +268,6 @@ const Transaction = () => {
         <SlipRentalDirector
           show={isModalRentalOpen}
           onHide={() => setIsModalRentalOpen(false)}
-          // data={selectedRowData} // Pass row data to modal if needed
         />
       )}
     </div>

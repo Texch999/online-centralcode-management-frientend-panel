@@ -54,7 +54,6 @@ import Result from "./pages/ownerSettings/Result";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
-  const role = localStorage?.getItem("role");
   return (
     <div>
       {!isLoggedIn ? (
