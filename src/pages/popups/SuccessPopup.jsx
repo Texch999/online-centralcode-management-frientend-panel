@@ -22,7 +22,7 @@ const SuccessPopup = ({ show, setShow, title }) => {
           </div>
           <div className="flex-center my-2">
             <div
-              className="input-css2 br-5 w-50 text-center mx-2 text-black pointer"
+              className="input-css2 br-5 box-shadow w-50 text-center mx-2 text-black pointer"
               onClick={() => setShow(false)}
             >
               Ok
