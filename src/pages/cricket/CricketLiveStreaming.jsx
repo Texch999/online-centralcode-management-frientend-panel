@@ -204,8 +204,8 @@ const CricketLiveStreaming = () => {
         </div>
 
         <div className="medium-font">
-        <span className="white-bg rounded-pill me-4 px-3 py-1 pointer" onClick={() => navigate(-1)}>
-        <FaArrowLeft className="orange-clr me-1"/>Back</span>
+        <span className="white-bg rounded-pill me-4 px-3 py-1 grey-border hover-orange-clr pointer" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="me-2"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

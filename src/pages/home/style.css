@@ -182,3 +182,7 @@
   overflow-x: hidden;
   position: relative;
 }
+.hover-orange-clr:hover{
+   background-color: #FFA310;
+   color: white;
+}
