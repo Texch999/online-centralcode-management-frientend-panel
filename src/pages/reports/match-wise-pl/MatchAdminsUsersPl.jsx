@@ -14,6 +14,10 @@ const MatchAdminsUsersPl = () => {
     setActiveBtn(index);
   };
 
+  const handleMatchusersPl=(userdetails)=>{
+    navigate(`/users-match-pl/${matchName}/${role}/${userdetails}`)
+  }
+
   const cols = [
     { header: "Date & Time", field: "date" },
     { header: "Name & Role", field: "name" },
@@ -294,7 +298,87 @@ const MatchAdminsUsersPl = () => {
       ),
       name: (
         <div className="d-flex flex-column">
-          <div>Srinivas</div>
+          <div>Lokesh</div>
+          <div>User</div>
+        </div>
+      ),
+      series: (
+        <div className="d-flex flex-column">
+          <div>T20 Women's World Cup 2024 </div>
+          <div>M ID: 1.11045677544</div>
+        </div>
+      ),
+      match: (
+        <div className="d-flex flex-column">
+          <div>Match: Santos vs Cruzeiro MG</div>
+          <div>Match ID: 11023843754898</div>
+        </div>
+      ),
+      game: <div>Football</div>,
+      result: (
+        <div className="d-flex flex-column">
+          <div>South Africa Women's</div>
+          <div>Result ID: 11023843754858</div>
+        </div>
+      ),
+      pl: <div className="green-clr">10000000</div>,
+      status: (
+        <div className="d-flex flex-between flex-center ">
+          <IoEye className="text-black font-20 me-4 pointer" onClick={()=>handleMatchusersPl("User-Lokesh")}/>
+          <div className="green-btn">Settled</div>
+        </div>
+      ),
+    },
+    {
+      date: (
+        <div className="d-flex flex-column">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+        </div>
+      ),
+      name: (
+        <div className="d-flex flex-column">
+          <div>Jayanta</div>
+          <div>User</div>
+        </div>
+      ),
+      series: (
+        <div className="d-flex flex-column">
+          <div>T20 Women's World Cup 2024 </div>
+          <div>M ID: 1.11045677544</div>
+        </div>
+      ),
+      match: (
+        <div className="d-flex flex-column">
+          <div>Match: Santos vs Cruzeiro MG</div>
+          <div>Match ID: 11023843754898</div>
+        </div>
+      ),
+      game: <div>Football</div>,
+      result: (
+        <div className="d-flex flex-column">
+          <div>South Africa Women's</div>
+          <div>Result ID: 11023843754858</div>
+        </div>
+      ),
+      pl: <div className="green-clr">10000000</div>,
+      status: (
+        <div className="d-flex flex-between flex-center ">
+          <IoEye className="text-black font-20 me-4 pointer" />
+          <div className="green-btn">Settled</div>
+        </div>
+      ),
+    },
+    {
+      date: (
+        <div className="d-flex flex-column">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+        </div>
+      ),
+      name: (
+        <div className="d-flex flex-column">
+          <div>Sudheer</div>
           <div>User</div>
         </div>
       ),
@@ -374,14 +458,25 @@ const MatchAdminsUsersPl = () => {
             );
           })}
         </div>
-        <div className="flex-column pe-2 small-font col-2">
-          <label className="mb-1">Admin</label>
-          <select className="input-css2">
-            <option>select</option>
-            <option>select</option>
-            <option>select</option>
-          </select>
-        </div>
+        {activeBtn === 0 ? (
+          <div className="flex-column pe-2 small-font col-2">
+            <label className="mb-1">Admin</label>
+            <select className="input-css2">
+              <option>select</option>
+              <option>select</option>
+              <option>select</option>
+            </select>
+          </div>
+        ) : (
+          <div className="flex-column pe-2 small-font col-2">
+            <label className="mb-1">User</label>
+            <select className="input-css2">
+              <option>select</option>
+              <option>select</option>
+              <option>select</option>
+            </select>
+          </div>
+        )}
       </div>
 
       {activeBtn === 0 && (

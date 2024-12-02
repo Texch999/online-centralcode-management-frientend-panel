@@ -45,7 +45,7 @@ const MatchWisePl = () => {
           <div>Result ID: 11023843754858</div>
         </div>
       ),
-      Pl: <div className="green-clr">10000000</div>,
+      pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
           <IoEye
@@ -83,7 +83,7 @@ const MatchWisePl = () => {
           <div>Result ID: 11023843754858</div>
         </div>
       ),
-      Pl: <div className="green-clr">10000000</div>,
+      pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
           <IoEye
@@ -120,7 +120,7 @@ const MatchWisePl = () => {
           <div>Result ID: 11023843754858</div>
         </div>
       ),
-      Pl: <div className="green-clr">10000000</div>,
+      pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
           <IoEye className="text-black font-20 me-3 pointer" />
@@ -188,7 +188,7 @@ const MatchWisePl = () => {
           <div>Result ID: 11023843754858</div>
         </div>
       ),
-      Pl: <div className="green-clr">10000000</div>,
+      pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
           <IoEye className="text-black font-20 me-3 pointer" />

@@ -54,6 +54,7 @@ import Result from "./pages/ownerSettings/Result";
 import MatchWisePl from './pages/reports/match-wise-pl/MatchWisePl';
 import IndividualMatchPl from "./pages/reports/match-wise-pl/IndividualMatchPl";
 import MatchAdminsUsersPl from "./pages/reports/match-wise-pl/MatchAdminsUsersPl";
+import UsersMatchPl from "./pages/reports/match-wise-pl/UsersMatchPl";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -181,6 +182,7 @@ function App() {
               <Route path="/match-wise-pl" element={<MatchWisePl/>}/>
               <Route path="/individual-match-pl/:matchName" element={<IndividualMatchPl/>}/>
               <Route path="/match-admins-users-pl/:matchName/:role" element={<MatchAdminsUsersPl/>}/>
+              <Route path="/users-match-pl/:matchName/:role/:userDetails" element={<UsersMatchPl/>}/>
             </Routes>
           </div>
         </div>
