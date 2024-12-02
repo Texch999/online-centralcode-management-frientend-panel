@@ -3,10 +3,16 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import ScrollTable from "../../components/ScrollTable";
 import SettlePopUp from "./SettlePopUp";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import AdminDownLineReport from "./AdminDownLineReport";
+import CasinoBetPl from "./CasinoBetPl";
 
 function CasinoReports() {
   const [activeSport, setActiveSport] = useState("Vendor Report");
-  const [settleBalance, setSettleBalance] = useState(false);
+  const [openGameData, setOpenGameData] = useState(false);
+  const [openProviderName, setOpenProviderName] = useState(false);
+  const [openTableId, setOpenTableId] = useState(false);
+
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
@@ -15,386 +21,6 @@ function CasinoReports() {
     "Downline Admins Report",
     "Casino Bet P/L",
   ];
-  const MY_TRANSACTIONS_COLUMNS = [
-    { header: "S No", field: "serialNo" },
-    { header: "Vendor Name", field: "vendorName" },
-    { header: "Vendor", field: "vendor" },
-    { header: "Supply", field: "supply" },
-    { header: "Loading Chips", field: "loadingChips" },
-    { header: "Rent", field: "rent" },
-    { header: "Share/Royalty", field: "shareRoyalty" },
-    { header: "Paid Rent", field: "paidRent" },
-    { header: "Paid Share/Royalty", field: "paidShareRoyalty" },
-    { header: "Balance", field: "balance" },
-    { header: "Due Date", field: "dueDate" },
-  ];
-
-  const MY_TRANSACTIONS_DATA = [
-    {
-      serialNo: 1,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 2,
-      vendorName: "Lokesh",
-      vendor: "Casino Vend",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 3,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 4,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 5,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 6,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 7,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 8,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 9,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 10,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 11,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 12,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 13,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 14,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 15,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-    {
-      serialNo: 16,
-      vendorName: "Lokesh",
-      vendor: "Sports Vend ",
-      supply: <div>Odds</div>,
-      loadingChips: <div>-</div>,
-      rent: <div>100000</div>,
-      shareRoyalty: "-",
-      paidRent: <div className="red-font">100000</div>,
-      paidShareRoyalty: <div>-</div>,
-      balance: <div className="red-font">0</div>,
-      dueDate: "10-12-2024",
-    },
-  ];
-
-  const MY_TRANSACTIONS_FOOTER = [
-    { header: "Total" },
-    { header: "" },
-    { header: "" },
-    { header: "" },
-    { header: <div>20000000</div> },
-    { header: <div>40000000</div> },
-    { header: <div>75000000</div> },
-    { header: <div className="red-font">4000000</div> },
-    { header: <div className="red-font">75000000</div> },
-    { header: <div className="red-font">0</div> },
-    {
-      header: (
-        <div>
-          Net pay : <span className="red-font">100000</span>
-        </div>
-      ),
-    },
-  ];
-
-  const OWNER_ACCOUNT_COLUMNS = [
-    { header: "D/W Type", field: "dwType" },
-    { header: "Deposit", field: "deposit" },
-    { header: "Withdraw", field: "withdraw" },
-    { header: "D-W P/L", field: "dwPL" },
-  ];
-
-  const OWNER_ACCOUNT_DATA = [
-    {
-      dwType: "Sports",
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      dwPL: <div className="green-font">500000</div>,
-    },
-
-    {
-      dwType: "Sports",
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      dwPL: <div className="green-font">500000</div>,
-    },
-    {
-      dwType: "Sports",
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      dwPL: <div className="green-font">500000</div>,
-    },
-    {
-      dwType: "Sports",
-      deposit: <div className="green-font">500000</div>,
-      withdraw: <div className="red-font">500000</div>,
-      dwPL: <div className="green-font">500000</div>,
-    },
-    {
-      dwType: "Sports",
-      deposit: <div className="green-font">500000</div>,
-      withdraw: <div className="red-font">500000</div>,
-      dwPL: <div className="green-font">500000</div>,
-    },
-    {
-      dwType: "Sports",
-      deposit: <div className="green-font">500000</div>,
-      withdraw: <div className="red-font">500000</div>,
-      dwPL: <div className="green-font">500000</div>,
-    },
-  ];
-
-  const OWNER_ACCOUNT_FOOTER = [
-    { header: "Total" },
-    { header: <div className="green-font">200000</div> },
-    { header: <div className="red-font">500000</div> },
-    { header: <div className="green-font">7500000</div> },
-  ];
-
-  const PAYMENT_GATEWAY_COLUMNS = [
-    { header: "Gateway Name", field: "gatewayName" },
-    { header: "Deposit", field: "deposit" },
-    { header: "Withdraw", field: "withdraw" },
-    { header: "Gway Bal", field: "gwayBal" },
-    { header: "Gway to Owner", field: "gwaytoOwner" },
-    { header: "Gway Net Bal", field: "gwayNetBal" },
-  ];
-
-  const PAYMENT_GATEWAY_DATA = [
-    {
-      gatewayName: (
-        <div>
-          T Exchange <br /> ICICI Gateway
-        </div>
-      ),
-      deposit: <div className="green-font">500000</div>,
-      withdraw: <div className="red-font">500000</div>,
-      gwayBal: <div className="green-font">500000</div>,
-      gwaytoOwner: <div className="green-font">500000</div>,
-      gwayNetBal: <div className="green-font">500000</div>,
-    },
-
-    {
-      gatewayName: (
-        <div>
-          T Exchange <br /> ICICI Gateway
-        </div>
-      ),
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      gwayBal: <div className="green-font">500000</div>,
-      gwaytoOwner: <div className="green-font">500000</div>,
-      gwayNetBal: <div className="green-font">500000</div>,
-    },
-    {
-      gatewayName: (
-        <div>
-          T Exchange <br /> ICICI Gateway
-        </div>
-      ),
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      gwayBal: <div className="green-font">500000</div>,
-      gwaytoOwner: <div className="green-font">500000</div>,
-      gwayNetBal: <div className="green-font">500000</div>,
-    },
-    {
-      gatewayName: (
-        <div>
-          T Exchange <br /> ICICI Gateway
-        </div>
-      ),
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      gwayBal: <div className="green-font">500000</div>,
-      gwaytoOwner: <div className="green-font">500000</div>,
-      gwayNetBal: <div className="green-font">500000</div>,
-    },
-    {
-      gatewayName: (
-        <div>
-          T Exchange <br /> ICICI Gateway
-        </div>
-      ),
-      deposit: <div className="green-font">500000</div>,
-      withdraw: "-",
-      gwayBal: <div className="green-font">500000</div>,
-      gwaytoOwner: <div className="green-font">500000</div>,
-      gwayNetBal: <div className="green-font">500000</div>,
-    },
-  ];
-
-  const PAYMENT_GATEWAY_FOOTER = [
-    { header: "Total" },
-    { header: <div className="green-font">200000</div> },
-    { header: <div className="red-font">500000</div> },
-    { header: <div className="green-font">7500000</div> },
-    { header: <div className="green-font">500000</div> },
-    { header: <div className="green-font">7500000</div> },
-  ];
 
   const GATEWAY_COLUMNS = [
     { header: "Vendor Name", field: "vendorName" },
@@ -402,117 +28,174 @@ function CasinoReports() {
     { header: "Casino Profit/Loss", field: "casinoProfitLoss" },
     { header: "Net Payment", field: "netPayment" },
     { header: "", field: "icons" },
-  
   ];
 
-  const GATEWAY_DATA = [
-    {
-        vendorName: "Jayanta",
-        shareRoyalty: <div>5%</div>,
-        casinoProfitLoss: <div className="green-font">1000000</div>,
-        netPayment: <div className="red-font">1000000000</div>,
-        icons: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
+  const GATEWAY_DATA = Array(8)
+    .fill(null)
+    .map((_, index) => ({
+      vendorName: "Jayanta",
+      shareRoyalty: <div>5%</div>,
+      casinoProfitLoss: <div className="green-font">1000000</div>,
+      netPayment: <div className="red-font">1000000000</div>,
+      icons: (
+        <div
+          className={`flex-center large-font pointer`}
+          onClick={() => setOpenGameData(true)}
+        >
+          <MdOutlineRemoveRedEye />
+        </div>
+      ),
+    }));
 
-    {
-      SNo: 2,
-      dateTime: <div>08-10-2024, 15:43:00</div>,
-      from: <div>Rozer Pay</div>,
-      to: <div>Owner</div>,
-      gatewayBalance: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
-    {
-      SNo: 3,
-      dateTime: <div>08-10-2024, 15:43:00</div>,
-      from: <div>Rozer Pay</div>,
-      to: <div>Owner</div>,
-      gatewayBalance: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
-    {
-      SNo: 4,
-      dateTime: <div>08-10-2024, 15:43:00</div>,
-      from: <div>Rozer Pay</div>,
-      to: <div>Owner</div>,
-      gatewayBalance: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
-    {
-      SNo: 5,
-      dateTime: <div>08-10-2024, 15:43:00</div>,
-      from: <div>Rozer Pay</div>,
-      to: <div>Owner</div>,
-      gatewayBalance: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
-    {
-      SNo: 6,
-      dateTime: <div>08-10-2024, 15:43:00</div>,
-      from: <div>Rozer Pay</div>,
-      to: <div>Owner</div>,
-      gatewayBalance: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
-    {
-      SNo: 7,
-      dateTime: <div>08-10-2024, 15:43:00</div>,
-      from: <div>Rozer Pay</div>,
-      to: <div>Owner</div>,
-      gatewayBalance: <div>500000</div>,
-      ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div>500000</div>,
-    },
+  const VENDOR_COLUMNS = [
+    { header: "Provider Name", field: "vendorName" },
+    { header: "Share/Royalty", field: "shareRoyalty" },
+    { header: "Casino Profit/Loss", field: "casinoProfitLoss" },
+    { header: "Net Payment", field: "netPayment" },
+    { header: "", field: "icons" },
   ];
 
-  const GATEWAY_FOOTER = [
-    { header: "Total" },
-    { header: "" },
-    { header: "" },
-    { header: "" },
-    { header: "" },
-    { header: <div className="red-font">7500000</div> },
-    { header: "" },
+  const VENDOR_DATA = Array(7)
+    .fill(null)
+    .map((_, index) => ({
+      vendorName: "Ezugi",
+      shareRoyalty: <div>5%</div>,
+      casinoProfitLoss: <div className="green-font">1000000</div>,
+      netPayment: <div className="red-font">1000000000</div>,
+      icons: (
+        <div
+          className={`flex-center large-font pointer`}
+          onClick={() => setOpenProviderName(true)}
+        >
+          <MdOutlineRemoveRedEye />
+        </div>
+      ),
+    }));
+
+  const GAME_VENDOR_COLUMNS = [
+    { header: "Games", field: "vendorName" },
+    { header: "Share/Royalty", field: "shareRoyalty" },
+    { header: "Casino Profit/Loss", field: "casinoProfitLoss" },
+    { header: "Net Payment", field: "netPayment" },
+    { header: "", field: "icons" },
   ];
+
+  const GAME_VENDOR_DATA = Array(6)
+    .fill(null)
+    .map((_, index) => ({
+      vendorName: "Roulette",
+      shareRoyalty: <div>5%</div>,
+      casinoProfitLoss: <div className="green-font">1000000</div>,
+      netPayment: <div className="red-font">1000000000</div>,
+      icons: (
+        <div
+          className={`flex-center large-font pointer`}
+          onClick={() => setOpenTableId(true)}
+        >
+          <MdOutlineRemoveRedEye />
+        </div>
+      ),
+    }));
+
+  const GAME_TABLE_COLUMNS = [
+    { header: "Table ID", field: "vendorName" },
+    { header: "Share/Royalty", field: "shareRoyalty" },
+    { header: "Casino Profit/Loss", field: "casinoProfitLoss" },
+    { header: "Net Payment", field: "netPayment" },
+  ];
+
+  const GAME_TABLE_DATA = Array(6)
+    .fill(null)
+    .map(() => ({
+      vendorName: "1234567891234",
+      shareRoyalty: <div>5%</div>,
+      casinoProfitLoss: <div className="green-font">1000000</div>,
+      netPayment: <div className="red-font">1000000000</div>,
+    }));
 
   return (
-    <div>
-      <div className="flex-between mb-3 mt-4">
-        <h6 className="d-flex yellow-font mb-0">P/L Casino Reports</h6>
-      </div>
-      <div className="d-flex small-font">
-        {SPORTS_BUTTONS?.map((sport, index) => (
-          <div
-            key={index}
-            className={`me-3 px-3 ${
-              activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-            }`}
-            onClick={() => handleSportClick(sport)}
-          >
-            {sport}
-          </div>
-        ))}
-      </div>
+    <>
       <div>
-          <h6 className="fw-600">Vendor Wise P/L</h6>
-          <div>
-            <ScrollTable
-              columns={GATEWAY_COLUMNS}
-              data={GATEWAY_DATA}
-              footer={GATEWAY_FOOTER}
-              itemsPerPage={1}
-              greyBackground="footer-bg"
-            />
-          </div>
+        <div className="flex-between mb-3 mt-4">
+          <h6 className="d-flex yellow-font mb-0">P/L Casino Reports</h6>
         </div>
-    </div>
+        <div className="d-flex small-font">
+          {SPORTS_BUTTONS?.map((sport, index) => (
+            <div
+              key={index}
+              className={`me-3 px-3 ${
+                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
+              }`}
+              onClick={() => handleSportClick(sport)}
+            >
+              {sport}
+            </div>
+          ))}
+        </div>
+        {activeSport === "Vendor Report" && (
+          <>
+            <div className="w-100 d-flex flex-between ">
+              <div className="w-50 mt-4 px-2">
+                <h6 className="fw-600">Vendor Wise P/L</h6>
+                <div>
+                  <ScrollTable
+                    columns={GATEWAY_COLUMNS}
+                    data={GATEWAY_DATA}
+                    itemsPerPage={1}
+                  />
+                </div>
+              </div>
+
+              {openGameData === true && (
+                <div className="w-50 mt-4 px-2">
+                  <h6 className="fw-600">Vendor - Jayanta</h6>
+                  <div>
+                    <ScrollTable
+                      columns={VENDOR_COLUMNS}
+                      data={VENDOR_DATA}
+                      itemsPerPage={1}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="w-100 d-flex flex-between ">
+              {openProviderName === true && (
+                <div className="w-50 mt-4 px-2">
+                  <h6 className="fw-600">Vendor - Jayanta - Ezugi</h6>
+                  <div>
+                    <ScrollTable
+                      columns={GAME_VENDOR_COLUMNS}
+                      data={GAME_VENDOR_DATA}
+                      itemsPerPage={1}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {openTableId === true && (
+                <div className="w-50 mt-4 px-2">
+                  <h6 className="fw-600">
+                    Vendor - Jayanta - Ezugi - Roulette
+                  </h6>
+                  <div>
+                    <ScrollTable
+                      columns={GAME_TABLE_COLUMNS}
+                      data={GAME_TABLE_DATA}
+                      itemsPerPage={1}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {activeSport === "Downline Admins Report" && <AdminDownLineReport />}
+
+        {activeSport === "Casino Bet P/L" && <CasinoBetPl />}
+      </div>
+    </>
   );
 }
 

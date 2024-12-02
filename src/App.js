@@ -55,6 +55,9 @@ import Result from "./pages/ownerSettings/Result";
 import Userslist from "./pages/reports/Userslist";
 import SuperAdminDL from "./pages/reports/SuperAdminDL";
 import CasinoReports from "./pages/reports/CasinoReports";
+import UserBetsList from "./pages/reports/UserBetsList";
+import SportsReport from "./pages/reports/SportsReport";
+import UserReports from "./pages/reports/UserReports";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -183,6 +186,9 @@ function App() {
               <Route path="/downline/:superadmin" element={<SuperAdminDL />} />
               <Route path="/superadmin/:user" element={<Userslist />} />
               <Route path="/pl-casino-report" element={<CasinoReports />} />
+              <Route path="/userbets/:username" element={<UserBetsList />} />
+              <Route path="/pl-report-sports" element={<SportsReport />} />
+              <Route path="/pl-report-users" element={<UserReports />} />
             </Routes>
           </div>
         </div>
