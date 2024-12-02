@@ -15,8 +15,19 @@ function Login() {
       setError("Username is required");
       return;
     }
-    const role =
-      username.toLowerCase() === "management" ? "Management" : "Central Panel";
+    // const role =
+    //   username.toLowerCase() === "management" ?
+    //   "Management" :"" ||  username.toLowerCase() === "director" ? "Director" :"" ||  username.toLowerCase()==="central_panel" ? "Central Panel" :"";
+    // const role = username.toLowerCase();
+    let role = "";
+    if (username.toLowerCase() === "management") {
+      role = "Management";
+    } else if (username.toLowerCase() === "director") {
+      role = "Director";
+    } else if (username.toLowerCase() === "central_panel") {
+      role = "Central Panel";
+    }
+
     localStorage.setItem("role", role);
     localStorage.setItem("isLoggedIn", true);
     navigate("/dashboard");
@@ -25,7 +36,6 @@ function Login() {
   const handlePasswordVisibility = () => {
     setpswdVisibility(!pswdVisiblity);
   };
-
 
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center w-100">

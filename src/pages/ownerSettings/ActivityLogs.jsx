@@ -12,7 +12,7 @@ const ActivityLogs = () => {
   const navigation = useNavigate();
  
   const handleMatchClick = (userActivity) => {
-    navigation(`/userActivity/${encodeURIComponent(userActivity)}`);
+    navigation(`/userActivity/${(userActivity)}`);
   };
 
   const ACTIVITY_COLUMNS = [

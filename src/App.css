@@ -497,3 +497,7 @@
 .footer-bg {
   background: #dedede;
 }
+.border-grey{
+  border: 15px solid #E9E9E9;
+  border-radius: 5px;
+}

@@ -55,7 +55,7 @@ const RecentAccessIp = () => {
   return (
     <div>
       <div className="mt-2">
-        <div className="d-flex justify-content-between w-100">
+        <div className="d-flex justify-content-between align-items-center w-100">
           <div className="d-flex ">
             <h6>Activity Logs</h6>
             <FiChevronRight className="medium-font m-1" size={18} />
