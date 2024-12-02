@@ -718,7 +718,7 @@ function Homepage() {
                   return (
                     <div
                       key={index}
-                      className={`px-2 py-1 me-1 ${
+                      className={`px-2 py-1  ${
                         activeBtn === index ? "active-saffron-btn " : ""
                       }`}
                       onClick={() => handleClick(index)}
