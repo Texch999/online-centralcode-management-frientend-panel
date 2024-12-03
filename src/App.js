@@ -62,7 +62,6 @@ import ClientRental from "./pages/reports/ClientRental";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
-  const role = localStorage?.getItem("role");
   return (
     <div>
       {!isLoggedIn ? (
