@@ -5,33 +5,27 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import PropTypes from "prop-types";
 
 const AddPaymentGatewayPopup = ({ show, onHide }) => {
-  // State for input values
   const [paymentMethod, setPaymentMethod] = useState("1");
-  const [provider, setProvider] = useState(""); // For UPI provider like Google Pay, etc.
-  const [upiID, setUpiID] = useState(""); // For UPI ID
-  const [accountNumber, setAccountNumber] = useState(""); // For NEFT/RTGS
-  const [bankIFSC, setBankIFSC] = useState(""); // For NEFT/RTGS
-  const [bankName, setBankName] = useState(""); // For Bank Name for NEFT/RTGS or QR Code
-  const [country, setCountry] = useState(""); // For Country
-  const [qrCode, setQrCode] = useState(null); // For QR Code upload
+  const [provider, setProvider] = useState("");
+  const [upiID, setUpiID] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [bankIFSC, setBankIFSC] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [country, setCountry] = useState("");
+  const [qrCode, setQrCode] = useState(null);
 
-  // Handle Submit
   const handleSubmit = () => {
-    // Validation based on payment method
     if (paymentMethod === "2") {
-      // UPI
       if (provider === "" || upiID === "" || country === "") {
         alert("Please fill in all fields before submitting.");
         return;
       }
     } else if (paymentMethod === "3") {
-      // QR Code
       if (bankName === "" || qrCode === null) {
         alert("Please fill in all fields before submitting.");
         return;
       }
     } else {
-      // NEFT/RTGS
       if (
         accountNumber === "" ||
         bankIFSC === "" ||
@@ -43,7 +37,6 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
       }
     }
 
-    // You could add your submission logic here, e.g., sending the data to an API
     console.log({
       paymentMethod,
       provider,
@@ -55,7 +48,6 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
       qrCode,
     });
 
-    // Reset the state after submission
     setPaymentMethod("1");
     setProvider("");
     setUpiID("");
@@ -65,11 +57,9 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
     setCountry("");
     setQrCode(null);
 
-    // Close the popup after successful submission
     onHide();
   };
 
-  // Handle QR Code File Change
   const handleQrCodeChange = (e) => {
     setQrCode(e.target.files[0]);
   };
@@ -77,7 +67,6 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
   return (
     <Modal centered show={show} onHide={onHide} size="md">
       <Modal.Body className="p-3">
-        
         <div className="d-flex justify-content-between align-items-center mb-2">
           <h5 className="medium-font fw-600">Add Payment Gateway</h5>
           <MdOutlineClose size={22} onClick={onHide} className="pointer" />
@@ -165,14 +154,14 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
                     type="file"
                     className="form-control"
                     onChange={handleQrCodeChange}
-                    style={{ display: "none" }} // Hide the actual file input
+                    style={{ display: "none" }}
                   />
                   <label
                     htmlFor="qrCode"
                     className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                   >
                     <span className="small-font">Upload</span>
-                    <AiOutlineCloudUpload size={20}/>
+                    <AiOutlineCloudUpload size={20} />
                   </label>
                 </div>
               </div>
@@ -183,10 +172,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             <>
               {/* NEFT/RTGS Fields */}
               <div className="col-4">
-                <label
-                  htmlFor="accountNumber"
-                  className="small-font mb-1"
-                >
+                <label htmlFor="accountNumber" className="small-font mb-1">
                   Bank Account Number
                 </label>
                 <input
@@ -283,11 +269,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             )}
 
             {/* Submit Button */}
-            <div
-              className={`col-4 ${
-                paymentMethod === "3" ? "offset-8" : ""
-              }`}
-            >
+            <div className={`col-4 ${paymentMethod === "3" ? "offset-8" : ""}`}>
               <button
                 type="button"
                 className="saffron-btn w-100 rounded"
@@ -303,7 +285,6 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
   );
 };
 
-// PropTypes for better type-checking
 AddPaymentGatewayPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,

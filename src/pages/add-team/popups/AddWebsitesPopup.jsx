@@ -3,24 +3,22 @@ import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 
 const AddWebsitesPopup = ({ show, onHide }) => {
-  // State for input values
   const [websiteType, setWebsiteType] = useState("1");
   const [websiteName, setWebsiteName] = useState("");
   const [websiteURL, setWebsiteURL] = useState("");
 
-  // Handle Submit
   const handleSubmit = () => {
     if (websiteName === "" || websiteURL === "") {
       alert("Please fill in all fields before submitting.");
       return;
     }
-    // You could add your submission logic here, e.g., sending the data to an API
+
     console.log({ websiteType, websiteName, websiteURL });
-    // Reset the state after submission (optional)
+
     setWebsiteType("1");
     setWebsiteName("");
     setWebsiteURL("");
-    // Close the popup after successful submission
+
     onHide();
   };
 
@@ -87,7 +85,6 @@ const AddWebsitesPopup = ({ show, onHide }) => {
             />
           </div>
         </div>
-
 
         <div className="row d-flex justify-content-between align-items-center">
           <div className="col-4">

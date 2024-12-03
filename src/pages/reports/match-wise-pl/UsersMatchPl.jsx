@@ -1,9 +1,8 @@
 import React from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdEdit, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { IoEye } from "react-icons/io5";
 import { FaRotate } from "react-icons/fa6";
 import "../../home/style.css";
 

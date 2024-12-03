@@ -11,11 +11,8 @@ function SuperAdminDL() {
   const [activeBtn, setActiveBtn] = useState("Admins");
   const ACTIVE_BTNS = ["Admins", "Users"];
 
-
-  
   const handleMatchClick = (matchName) => {
     navigate(`/superadmin/${matchName}`);
-    
   };
 
   const handleSportClick = (item) => {
@@ -186,7 +183,6 @@ function SuperAdminDL() {
                 </div>
               ))}
             </div>
-            
           </>
         )}
       </div>

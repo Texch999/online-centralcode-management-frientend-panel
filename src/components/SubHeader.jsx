@@ -16,7 +16,6 @@ function SubHeader() {
   };
 
   const menuConfig = {
-    // Management Menu Items
     management: [
       {
         label: "Adding",
@@ -162,9 +161,9 @@ function SubHeader() {
           { label: "Sports Promotions", path: "/sports-promotions" },
           { label: "Casino Promotions", path: "/casino-promotions" },
         ],
-      }
+      },
     ],
-    // Designing Team
+
     designing_team: [
       {
         label: "Settings",
@@ -186,7 +185,6 @@ function SubHeader() {
       },
     ],
 
-    // Risk Team
     risk_team: [
       {
         label: "Live/Block",
@@ -230,7 +228,6 @@ function SubHeader() {
       },
     ],
 
-    // accounts_team
     accounts_team: [
       {
         label: "Wallet",

@@ -1,25 +1,10 @@
-import React, { useState } from "react";
-import ScrollTable from "../../components/ScrollTable";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 
 function Userslist() {
-
- 
   const { matchName } = useParams();
-  
-
- 
-
-  console.log(matchName,"==>userDetails");
-  
-  
-
-
-
- 
-
+  console.log(matchName, "==>userDetails");
   return (
     <div>
       <div className="flex-between mb-3 mt-4">
@@ -31,22 +16,14 @@ function Userslist() {
               Owner - Jayanta (Director)
             </span>
             <span className="yellow-font">
-              
               <FiChevronRight />
               {matchName}
             </span>
           </div>
         </h6>
       </div>
-
-      
-
-     
-
     </div>
   );
 }
 
 export default Userslist;
-
-
