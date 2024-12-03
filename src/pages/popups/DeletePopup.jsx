@@ -5,7 +5,7 @@ import { Images } from '../../images'
 
 const DeletePopup = ({show, setShow, title}) => {
   return (
-    <Modal show={show} setShow={()=>setShow(false)} centered>
+    <Modal show={show} setShow={()=>setShow(false)} centered size='md'>
     <div className='p-2 white-bg radius-20 text-black'>
         <div className='flex-end px-1 py-1 pointer' onClick={()=>setShow(false)}>
         <IoClose className='font-25 text-black'/>

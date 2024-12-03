@@ -262,7 +262,7 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         {isEdit === true ? (
           <div className="col-4 felx-column align-items-center text-black ">
             <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Update</div>
-            <div className="white-btn br-5 mx-2 my-3 pointer">Edit</div>
+            <div className="white-btn br-5 mx-2 my-3 pointer text-center">Edit</div>
           </div>
         ) : (
           <div className="col-4 felx-column text-black ">

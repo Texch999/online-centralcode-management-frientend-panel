@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "../../../components/Table";
-import { IoEye } from "react-icons/io5";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import "../../home/style.css";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const MatchWisePl = () => {
     navigate(`/match-wise-pl/${matchName}`);
   };
   const cols = [
-    { header: "Date & Time", field: "date" },
+    { header: "Date & Time", field: "date"},
     { header: "Series Name", field: "series" },
     { header: "Match Name", field: "match" },
     { header: "Game Name", field: "game" },
@@ -48,7 +48,7 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye
+          <MdOutlineRemoveRedEye
             className="text-black font-20 me-3 pointer"
             onClick={()=>handleMatchPlPage(
               "South Africa Women's vs New Zealand Women's")}
@@ -86,7 +86,7 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye
+          <MdOutlineRemoveRedEye
             className="text-black font-20 me-3 pointer"
             onClick={()=>handleMatchPlPage("Santos vs Cruzeiro MG")}
           />
@@ -123,7 +123,7 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -157,7 +157,7 @@ const MatchWisePl = () => {
       Pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -191,7 +191,7 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -225,7 +225,7 @@ const MatchWisePl = () => {
       Pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -233,7 +233,7 @@ const MatchWisePl = () => {
   ];
   return (
     <div className="d-flex flex-column p-1">
-      <h6>Match Wise P/L</h6>
+      <h6 className="mb-3">Match Wise P/L</h6>
 
       <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
         Total Admins Sports P/L

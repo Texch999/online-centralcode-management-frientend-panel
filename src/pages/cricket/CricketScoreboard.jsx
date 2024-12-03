@@ -207,7 +207,7 @@ const CricketScoreboard = () => {
       : []),
     {
       header: <div className="flex-center">Live Scoreboard</div>,
-      field: "live",
+      field: "live",width:"80%"
     },
     { header: <div className="flex-end">Action</div>, field: "action" },
   ];

@@ -16,16 +16,26 @@ function SubHeader() {
     setShowResetPswdModal(false);
   };
   const menuItems = [
-    {
-      label: "Adding",
-      options: [
-        { label: "Management Team", path: "/management-team" },
-        { label: "Director & Super Admin", path: "/director-admin" },
-        { label: "View Downline List", path: "/downline-list" },
-        { label: "Payment Details", path: "/payment-details" },
-        { label: "Websites", path: "/websites" },
-      ],
-    },
+    role === "Director"
+      ? {
+          label: "Adding",
+          options: [
+            { label: "Add Super Admin", path: "/director-admin" },
+            { label: "View Downline List", path: "/downline-list" },
+            { label: "Payment Details", path: "/payment-details" },
+            { label: "Available Websites", path: "/websites" },
+          ],
+        }
+      : {
+          label: "Adding",
+          options: [
+            { label: "Management Team", path: "/management-team" },
+            { label: "Director & Super Admin", path: "/director-admin" },
+            { label: "View Downline List", path: "/downline-list" },
+            { label: "Payment Details", path: "/payment-details" },
+            { label: "Websites", path: "/websites" },
+          ],
+        },
     {
       label: "Live/Block",
       options: [

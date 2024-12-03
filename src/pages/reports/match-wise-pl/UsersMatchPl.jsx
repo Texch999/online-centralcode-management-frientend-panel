@@ -3,7 +3,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdEdit, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { IoEye } from "react-icons/io5";
 import { FaRotate } from "react-icons/fa6";
 import "../../home/style.css";
 
@@ -12,7 +11,7 @@ const UsersMatchPl = () => {
   const { matchName, role, userDetails } = useParams();
 
   const cols = [
-    { header: "Date & Time", field: "date" },
+    { header: "Date & Time", field: "date" , width:"15%"},
     { header: "User/Market Name", field: "user" },
     { header: "Game Name-M/match ID", field: "matchid" },
     { header: "Bet Placed", field: "bet" },
@@ -254,26 +253,26 @@ const UsersMatchPl = () => {
   return (
     <div className="d-flex flex-column p-1">
       <div
-        className="d-flex medium-font mt-2 mb-3 align-items-center pointer"
+        className="d-flex medium-font mb-3 align-items-center pointer"
         onClick={() => navigate(-1)}
       >
         <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
         <div>Match Wise P/L</div>
         <div className="">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {matchName}
         </div>
         <div className="">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {role}
         </div>
         <div className="orange-clr">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {userDetails}
         </div>

@@ -231,15 +231,15 @@ const Sports = () => {
         <div className="d-flex flex-column pointer">
           <div
             className="py-2 "
-            onClick={() => handleSportNextPage("Jitendra", "Odds")}
+            onClick={() => handleSportNextPage("Lokesh", "Odds")}
           >
             ODDS
           </div>
-          <div className="py-2 ">Bookmaker 1 </div>
-          <div className="py-2 ">Bookmaker 2 </div>
-          <div className="py-2 ">Fancy </div>
-          <div className="py-2">Live Streaming </div>
-          <div className="py-3">Scoreboard </div>
+          <div className="py-2 " onClick={() => handleSportNextPage("Lokesh", "bookmaker 1")}>Bookmaker 1 </div>
+          <div className="py-2 " onClick={() => handleSportNextPage("Lokesh", "Bookmaker 2")}>Bookmaker 2 </div>
+          <div className="py-2 " onClick={() => handleSportNextPage("Lokesh", "Fancy")}>Fancy </div>
+          <div className="py-2" onClick={() => handleSportNextPage("Lokesh", "Live Streaming")}>Live Streaming </div>
+          <div className="py-3" onClick={() => handleSportNextPage("Lokesh", "Scoreboard")}>Scoreboard </div>
         </div>
       ),
       eye: (
