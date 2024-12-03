@@ -8,7 +8,6 @@
   background: #ffffff;
 }
 .login-box-shadow {
-  /* box-shadow: 0px 25px 65px 0px #00000029; */
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
@@ -98,11 +97,12 @@
 }
 .white-btn2 {
   background: #ffffff !important;
-  outline: 2px solid #e0e0e0 !important;
-  border: none !important;
+  border: 2px solid #e0e0e0 !important;
+  outline: none !important;
   color: #000000 !important;
   font-weight: 500 !important;
   padding: 0.5rem !important;
+  text-align: center !important;
   border-radius: 0.35rem;
 }
 .white-btn3 {
@@ -506,7 +506,7 @@
 .dashed-grey-bg {
   background: #ffffff33;
 }
-.netpl-btn{
+.netpl-btn {
   display: flex;
   align-items: end;
   justify-content: start;
