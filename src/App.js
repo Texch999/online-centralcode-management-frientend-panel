@@ -67,6 +67,7 @@ import SportsReport from "./pages/reports/SportsReport";
 import UserReports from "./pages/reports/UserReports";
 import ClientRental from "./pages/reports/ClientRental";
 import Sports from "./pages/sports/Sports";
+import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -218,6 +219,10 @@ function App() {
               <Route path="/pl-report-sports" element={<SportsReport />} />
               <Route path="/pl-report-users" element={<UserReports />} />
               <Route path="/client-rental-sheet" element={<ClientRental />} />
+              <Route
+                path="/white-label-setting"
+                element={<WhiteLabelSetting />}
+              />
             </Routes>
           </div>
         </div>
