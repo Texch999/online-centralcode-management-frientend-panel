@@ -19,7 +19,7 @@ const MatchAdminsUsersPl = () => {
   };
 
   const cols = [
-    { header: "Date & Time", field: "date", width:"15%" },
+    { header: "Date & Time", field: "date", width: "15%" },
     { header: "Name & Role", field: "name" },
     { header: "Series Name", field: "series" },
     { header: "Match Name", field: "match" },
@@ -414,6 +414,28 @@ const MatchAdminsUsersPl = () => {
     },
   ];
 
+  const ADMIN_FOOTER = [
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
+  ];
+
+  const USER_FOOTER = [
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
+  ];
+
   return (
     <div className="d-flex flex-column p-1">
       <div
@@ -435,17 +457,18 @@ const MatchAdminsUsersPl = () => {
           {role}
         </div>
       </div>
-
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
-        Admins P/L
-        <span className="green-clr">500000</span>
+      <div className="w-40 flex-column flex-wrap py-2 grey-bg2 rounded px-3">
+        <div className="white-bg radius-10 px-2 py-2 flex-between small-font my-1">
+          Admins P/L
+          <span className="green-clr">500000</span>
+        </div>
+        <div className="white-bg radius-10 py-2 px-2 flex-between small-font my-1">
+          Users P/L
+          <span className="green-clr">500000</span>
+        </div>
       </div>
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
-        Users P/L
-        <span className="green-clr">500000</span>
-      </div>
 
-      <div className="d-flex w-100 my-3 align-items-center flex-between">
+      <div className="d-flex w-100 my-2 align-items-center flex-between">
         <div className="d-flex pe-2 small-font col-4">
           {roles.map((btn, index) => {
             return (
@@ -484,13 +507,23 @@ const MatchAdminsUsersPl = () => {
 
       {activeBtn === 0 && (
         <div>
-          <Table columns={cols} data={data} itemsPerPage={5} />
+          <Table
+            columns={cols}
+            data={data}
+            itemsPerPage={5}
+            footer={ADMIN_FOOTER}
+          />
         </div>
       )}
 
       {activeBtn === 1 && (
         <div>
-          <Table columns={usersCols} data={usersData} itemsPerPage={5} />
+          <Table
+            columns={usersCols}
+            data={usersData}
+            itemsPerPage={5}
+            footer={USER_FOOTER}
+          />
         </div>
       )}
     </div>

@@ -231,6 +231,16 @@ const MatchWisePl = () => {
       ),
     },
   ];
+
+  const MATCHWISE_FOOTER = [
+    { header: "Total", },
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: <div className="clr-green">1500000</div>},
+    { header: ""},
+  ];
   return (
     <div className="d-flex flex-column p-1">
       <h6 className="mb-3">Match Wise P/L</h6>
@@ -280,7 +290,7 @@ const MatchWisePl = () => {
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
+        <Table columns={cols} data={data} itemsPerPage={5} footer={MATCHWISE_FOOTER}/>
       </div>
     </div>
   );

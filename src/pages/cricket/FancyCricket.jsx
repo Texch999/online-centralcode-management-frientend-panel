@@ -4,7 +4,6 @@ import { IoEyeOutline } from "react-icons/io5";
 import { MdBlock } from "react-icons/md";
 import Table from "./../../components/Table";
 import BlockPopup from "../popups/BlockPopup";
-import { FaArrowLeft } from "react-icons/fa";
 
 const FancyCricket = () => {
   const navigate = useNavigate();
@@ -130,33 +129,6 @@ const FancyCricket = () => {
   ];
   return (
     <div className="">
-      {/* <div className="d-flex flex-between mb-3">
-        <div className="pointer large-font" onClick={() => navigate(-1)}>
-          <span className="grey-clr">
-            Sports <span className="mx-1 font-20">{">"}</span>
-          </span>
-          <span className="grey-clr">{vendor}</span>
-          <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
-            {provider}
-          </span>
-          <span>
-            <span className="mx-1 font-20">{">"}</span>
-            <span className="fw-600">{match}</span>
-          </span>
-        </div>
-        <div className="medium-font">
-          <span
-            className="white-bg rounded-pill me-4 px-3 py-1 grey-border hover-orange-clr pointer"
-            onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft className="me-2" />
-            Back
-          </span>
-          Total P/L : <span className="green-clr mx-1">20000</span>
-        </div>
-      </div> */}
-
       <div>
         <Table columns={cols} data={data} itemsPerPage={4} />
       </div>

@@ -274,6 +274,18 @@ const IndividualMatchPl = () => {
       ),
     },
   ];
+
+  
+  const MATCH_FOOTER = [
+    { header: "Total", },
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: <div className="clr-green">1500000</div>},
+    { header: ""},
+  ];
   return (
     <div className="d-flex flex-column p-1">
       <div
@@ -290,13 +302,15 @@ const IndividualMatchPl = () => {
         </div>
       </div>
 
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
+      <div className="w-40 flex-column flex-wrap py-2 grey-bg2 rounded px-3">
+      <div className="white-bg radius-10 px-2 py-2 flex-between small-font my-1">
         Admins P/L
         <span className="green-clr">500000</span>
       </div>
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
+      <div className="white-bg radius-10 py-2 px-2 flex-between small-font my-1">
         Users P/L
         <span className="green-clr">500000</span>
+      </div>
       </div>
 
       <div className="d-flex w-100 my-2 align-items-center">
@@ -323,7 +337,7 @@ const IndividualMatchPl = () => {
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
+        <Table columns={cols} data={data} itemsPerPage={5} footer={MATCH_FOOTER}/>
       </div>
     </div>
   );

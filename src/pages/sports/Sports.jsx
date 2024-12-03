@@ -20,6 +20,13 @@ const Sports = () => {
     { header: "vendor Percentage", field: "vendorper" },
     { header: "vendor Monthly", field: "vendormon" },
     { header: "Vendor Country", field: "country" },
+    // { header: <div className="d-flex flex-between">
+    //   <div>providers</div>
+    //   <div></div>
+    //   <div>action</div>
+    //   <div>pl</div>
+    //   <div>status</div>
+    // </div>, field: "normal" , width:"40%"},
     { header: "Providers", field: "providers" },
     { header: "", field: "eye" },
     { header: <div className="flex-center">Action</div>, field: "action" },
@@ -235,11 +242,36 @@ const Sports = () => {
           >
             ODDS
           </div>
-          <div className="py-2 " onClick={() => handleSportNextPage("Lokesh", "bookmaker 1")}>Bookmaker 1 </div>
-          <div className="py-2 " onClick={() => handleSportNextPage("Lokesh", "Bookmaker 2")}>Bookmaker 2 </div>
-          <div className="py-2 " onClick={() => handleSportNextPage("Lokesh", "Fancy")}>Fancy </div>
-          <div className="py-2" onClick={() => handleSportNextPage("Lokesh", "Live Streaming")}>Live Streaming </div>
-          <div className="py-3" onClick={() => handleSportNextPage("Lokesh", "Scoreboard")}>Scoreboard </div>
+          <div
+            className="py-2 "
+            onClick={() => handleSportNextPage("Lokesh", "bookmaker 1")}
+          >
+            Bookmaker 1{" "}
+          </div>
+          <div
+            className="py-2 "
+            onClick={() => handleSportNextPage("Lokesh", "Bookmaker 2")}
+          >
+            Bookmaker 2{" "}
+          </div>
+          <div
+            className="py-2 "
+            onClick={() => handleSportNextPage("Lokesh", "Fancy")}
+          >
+            Fancy{" "}
+          </div>
+          <div
+            className="py-2"
+            onClick={() => handleSportNextPage("Lokesh", "Live Streaming")}
+          >
+            Live Streaming{" "}
+          </div>
+          <div
+            className="py-3"
+            onClick={() => handleSportNextPage("Lokesh", "Scoreboard")}
+          >
+            Scoreboard{" "}
+          </div>
         </div>
       ),
       eye: (

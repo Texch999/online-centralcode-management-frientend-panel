@@ -3,6 +3,7 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import ManagementResetPasswordPopup from "../pages/add-team/ManagementResetPasswordPopup";
+import EditProfilePopup from "../pages/add-team/popups/EditProfilePopup";
 
 function SubHeader() {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ function SubHeader() {
   const onRequestClose = () => {
     setShowResetPswdModal(false);
   };
+  const onHide=()=>{
+    setShowEditModal(false);
+  }
 
   const menuConfig = {
     // Management Menu Items
@@ -196,7 +200,6 @@ function SubHeader() {
       {
         label: "Adding",
         options: [
-         
           { label: "Add Super Admin", path: "/director-admin" },
           { label: "View Downline List", path: "/downline-list" },
           { label: "Payment Details", path: "/payment-details" },
@@ -246,8 +249,11 @@ function SubHeader() {
       {
         label: "Director Settings",
         options: [
-          { label: "Edit Profile", path: "" },
-          { label: "Reset Password", path: "" },
+          { label: "Edit Profile", onClick: () => setShowEditModal(true) },
+          {
+            label: "Reset Password",
+            onClick: () => setShowResetPswdModal(true),
+          },
           { label: "Activity Logs", path: "/activity-logs" },
         ],
       },
@@ -301,7 +307,13 @@ function SubHeader() {
                 <Dropdown.Item
                   key={optIndex}
                   className="white-btn yellow-hover small-font"
-                  onClick={() => navigate(option.path)}
+                  onClick={() => {
+                    if (option.onClick) {
+                      option.onClick();
+                    } else {
+                      navigate(option.path);
+                    }
+                  }}
                 >
                   {option.label}
                 </Dropdown.Item>
@@ -315,6 +327,7 @@ function SubHeader() {
         isOpen={showResetPswdModal}
         onRequestClose={onRequestClose}
       />
+      <EditProfilePopup show={showEditModal} onHide={onHide} />
     </div>
   );
 }

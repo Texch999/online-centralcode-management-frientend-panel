@@ -7,6 +7,7 @@ import { FiChevronDown } from "react-icons/fi";
 import "../../App.css";
 
 const AddDirectorAdminModal = ({ show, handleClose }) => {
+  const role = localStorage.getItem("role_code");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
@@ -24,7 +25,11 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
       <Modal.Body className="p-1 director-admin-popupbody">
         {/* Row 1: Title and Close Icon */}
         <div className="d-flex justify-content-between align-items-center mb-2 px-3">
+          {role === "management" ? (
           <h5 className="mb-0">Add Director & Super Admin</h5>
+          ):(
+            <h5 className="mb-0">Add Super Admin</h5>
+        )}
           <Button
             variant="link"
             onClick={handleClose}

@@ -207,7 +207,8 @@ const CricketScoreboard = () => {
       : []),
     {
       header: <div className="flex-center">Live Scoreboard</div>,
-      field: "live",width:"80%"
+      field: "live",
+      width: "80%",
     },
     { header: <div className="flex-end">Action</div>, field: "action" },
   ];
@@ -311,34 +312,6 @@ const CricketScoreboard = () => {
   ];
   return (
     <div className="p-1">
-      {/* <div className="d-flex flex-between">
-        <div className="mb-2 pointer large-font" onClick={() => navigate(-1)}>
-          <span className="grey-clr">
-            Sports <span className="mx-1 font-20">{">"}</span>
-          </span>
-          <span className="grey-clr">{vendor}</span>
-          <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
-            {provider}
-          </span>
-          <span>
-            <span className="mx-1 font-20">{">"}</span>
-            <span className="fw-800">{match}</span>
-          </span>
-        </div>
-
-        <div className="medium-font">
-          <span
-            className="white-bg rounded-pill me-4 px-3 grey-border hover-orange-clr py-1 pointer"
-            onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft className="me-2" />
-            Back
-          </span>
-          Total P/L : <span className="green-clr mx-1">20000</span>
-        </div>
-      </div> */}
-
       <div>
         <Table columns={cols} data={data} itemsPerPage={5} />
       </div>

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import ActionPopup from "./ActionPopup";
 import { FaArrowLeft } from "react-icons/fa";
 
 const CasinoGames = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, game } = useParams();
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {

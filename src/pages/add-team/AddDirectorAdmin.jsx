@@ -11,6 +11,7 @@ import "../add-team/style.css";
 import "../../App.css";
 
 const AddDirectorAdmin = () => {
+  const role = localStorage.getItem("role_code");
   const [showModal, setShowModal] = useState(false);
 
   const handleModalOpen = () => {
@@ -280,7 +281,11 @@ const AddDirectorAdmin = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
+        {role === "management" ? ( 
         <h6 className="yellow-font mb-0">Add Director & Super Admin</h6>
+        ):(
+          <h6 className="yellow-font mb-0">Add Super Admin</h6>
+      )}
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
