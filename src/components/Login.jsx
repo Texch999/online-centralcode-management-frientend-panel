@@ -15,10 +15,6 @@ function Login() {
       setError("Username is required");
       return;
     }
-    // const role =
-    //   username.toLowerCase() === "management" ?
-    //   "Management" :"" ||  username.toLowerCase() === "director" ? "Director" :"" ||  username.toLowerCase()==="central_panel" ? "Central Panel" :"";
-    // const role = username.toLowerCase();
     let role = "";
     if (username.toLowerCase() === "management") {
       role = "Management";
