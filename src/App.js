@@ -64,7 +64,7 @@ function App() {
           {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
-              <Route path="/dashboard" element={<Homepage />} />
+              <Route path="/" element={<Homepage />} />
               <Route path="/casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/management-team" element={<ManagementTeam />} />

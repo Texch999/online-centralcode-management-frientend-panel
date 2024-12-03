@@ -30,7 +30,7 @@ function Header() {
     localStorage.clear();
     window.location.reload();
   };
-  const isDashboard = window?.location?.pathname === "/dashboard";
+  const isDashboard = window?.location?.pathname === "/";
 
   return (
     <div className="header">
@@ -70,16 +70,13 @@ function Header() {
         <div className="d-flex">
           <div
             className={`${isDashboard ? "saffron-btn" : "white-btn"}`}
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/")}
           >
             <PiSquaresFourFill size={24} className="me-2" />
             <span className="medium-font pointer">Dashboard</span>
           </div>
           {role === "Management" ? (
-            <div
-              className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
-              onClick={() => navigate("/management")}
-            >
+            <div className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}>
               <FaUserCog size={24} className="me-2" />
               <span className="medium-font">{role}</span>
             </div>
