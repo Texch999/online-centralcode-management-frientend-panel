@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineClose } from "react-icons/ai";
+import React, { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineClose,
+} from "react-icons/ai";
 import "../../index.css";
 import "../../App.css";
 
@@ -21,7 +25,7 @@ const ManagementResetPasswordPopup = ({ isOpen, onRequestClose }) => {
           <AiOutlineClose
             onClick={onRequestClose}
             size={20}
-            style={{ cursor: 'pointer', position: 'absolute', right: 0 }}
+            style={{ cursor: "pointer", position: "absolute", right: 0 }}
           />
         </div>
 
@@ -36,7 +40,7 @@ const ManagementResetPasswordPopup = ({ isOpen, onRequestClose }) => {
             />
             <span
               className="ms-2"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => setShowNewPassword(!showNewPassword)}
             >
               {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
@@ -55,10 +59,14 @@ const ManagementResetPasswordPopup = ({ isOpen, onRequestClose }) => {
             />
             <span
               className="ms-2"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
-              {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              {showConfirmPassword ? (
+                <AiOutlineEyeInvisible />
+              ) : (
+                <AiOutlineEye />
+              )}
             </span>
           </div>
         </div>
@@ -66,7 +74,7 @@ const ManagementResetPasswordPopup = ({ isOpen, onRequestClose }) => {
         <Button
           variant="warning"
           className="w-100 text-white mt-3"
-          style={{ backgroundColor: '#FFA726', border: 'none' }}
+          style={{ backgroundColor: "#FFA726", border: "none" }}
           onClick={onRequestClose}
         >
           Submit
