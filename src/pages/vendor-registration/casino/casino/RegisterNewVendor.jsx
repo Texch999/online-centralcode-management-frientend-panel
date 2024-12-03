@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import SuccessPopup from "../../../popups/SuccessPopup";
 
 const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
+  const [successModal, setSuccessModal]=useState(false);
+  const handleSubmit=()=>{
+    setSuccessModal(!successModal);
+  }
+  const navigate = useNavigate();
   return (
     <div className="dashboard-white-bg box-shadow radius p-3">
       {isEdit === true && (
@@ -259,10 +266,12 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
           </div>
         ) : (
           <div className="col-4 felx-column text-black ">
-            <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Submit</div>
+            <div className="saffron-btn2 br-5 mx-2 my-2 pointer" onClick={handleSubmit}>Submit</div>
           </div>
         )}
       </div>
+
+      <SuccessPopup show={successModal} setShow={setSuccessModal} title={"Casino New Vendor Added"}/>
     </div>
   );
 };

@@ -157,6 +157,16 @@
   padding: 0.5rem;
   text-align: center;
 }
+.orange-btn2 {
+  border: 2px solid #ffa310;
+  background: #ffe2b3;
+  border-radius: 0.35rem;
+  outline: none;
+  color: #fc9b4e;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
+}
 .edit-btn {
   border: 2px solid #ffa310;
   background: #ffe2b3;
@@ -496,6 +506,10 @@
 
 .footer-bg {
   background: #dedede;
+}
+.border-grey {
+  border: 15px solid #e9e9e9;
+  border-radius: 5px;
 }
 .green-bg {
   background: #48e448;

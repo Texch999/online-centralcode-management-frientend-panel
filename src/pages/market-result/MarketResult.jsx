@@ -262,7 +262,7 @@ const MarketResult = () => {
       </div>
 
       <div className="my-4">
-        <ScrollTable columns={sportcols} data={data} itemsPerPage={3} />
+        <ScrollTable columns={sportcols} data={data} tableHeight={"table-50vh"} />
       </div>
     </div>
   );

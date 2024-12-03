@@ -25,7 +25,7 @@ const DashboardViewAll = () => {
         backgroundColor: "#98BDFF",
         borderColor: "",
         borderRadius: 5,
-        data: [5, 6, 7, 5, 6, 7,5, 6, 8, 7,4,5],
+        data: [3, 4, 5, 5, 6, 7,7, 2, 3, 4,5,6],
       },
 
       {
@@ -33,14 +33,14 @@ const DashboardViewAll = () => {
         backgroundColor: "#4B49AC",
         borderColor: "",
         borderRadius: 5,
-        data: [5, 6, 7, 5, 6, 7,5, 6, 8, 7,4,5],
+        data: [3, 4, 5, 5, 6, 7,7, 2, 3, 4,5,6],
       },
       {
         label: "casino & Sports Sales",
         backgroundColor: "#F3797E",
         borderColor: "",
         borderRadius: 5,
-        data: [5, 6, 7, 5, 6, 7,5, 6, 8, 7,4,5],
+        data: [5, 6, 7, 5, 6, 7,5, 6, 7, 7,4,5],
       },
     ],
   };
@@ -120,20 +120,45 @@ const DashboardViewAll = () => {
       sc: <div className="flex-center">100000</div>,
       pay: <div className="flex-center">209888</div>,
     },
+    {
+      customer: (
+        <div className="d-flex flex-column flex-center">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div className="flex-center">Direcor</div>,
+      casino: <div className="flex-center">-</div>,
+      sports: <div className="flex-center">70000</div>,
+      sc: <div className="flex-center">100000</div>,
+      pay: <div className="flex-center">209888</div>,
+    },
+    {
+      customer: (
+        <div className="d-flex flex-column flex-center">
+          <div>Srinivas</div>
+          <div>S&C-5%</div>
+        </div>
+      ),
+      role: <div className="flex-center">Direcor</div>,
+      casino: <div className="flex-center">-</div>,
+      sports: <div className="flex-center">70000</div>,
+      sc: <div className="flex-center">100000</div>,
+      pay: <div className="flex-center">209888</div>,
+    },
   ];
   return (
     <div className="p-2">
-      <h5 className="blck-text">Welcome sri</h5>
+      <h4 className="blck-text">Welcome sri</h4>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
 
-      <div className="d-flex w-100 mt-2">
-        <div className="col-12 pe-2">
+      <div className="mt-2">
           <div className="d-flex flex-column">
             <div className="dashboard-white-bg box-shadow pb-2">
               <div className="d-flex flex-column p-2">
-                <div className="medium-font black-text">Sales Report</div>
+                <div className="large-font black-text">Sales Report</div>
 
                 <div className="small-font grey-clr">
                   In facilisis vitae metus molestie vestibulum. Nulla molestie..
@@ -150,25 +175,25 @@ const DashboardViewAll = () => {
               <div className="d-flex w-100 align-items-center">
                 <div className="w-60 d-flex">
                 <div className="col-3 ">
-                  <div className="d-flex flex-column text-white p-1 blue-bg-box">
+                  <div className="d-flex flex-column text-white blue-bg-box px-1">
                     <div className="small-font py-1">Casino Sales</div>
                     <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
                 <div className="col-3 px-2">
-                  <div className=" voilet-bg-box d-flex flex-column text-white p-1">
+                  <div className=" voilet-bg-box d-flex flex-column text-white px-1">
                     <div className="small-font py-1">Sports Sales</div>
                     <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
                 <div className="col-3 px-2">
-                  <div className="box-3 d-flex flex-column text-white p-1">
+                  <div className="box-3 d-flex flex-column text-white px-1">
                     <div className="small-font py-1">S+C Sales</div>
                     <h6 className="py-1">500000000</h6>
                   </div>
                 </div>
                 <div className="col-3">
-                  <div className="pink-bg-box d-flex flex-column text-white p-1">
+                  <div className="pink-bg-box d-flex flex-column text-white px-1">
                     <div className="small-font py-1">Total Profit</div>
                     <h6 className="py-1">500000000</h6>
                   </div>
@@ -198,7 +223,7 @@ const DashboardViewAll = () => {
                   />
                 </div>
 
-                <div className="col-4 flex-column">
+                <div className="col-4 flex-column pe-2">
                   <lable className="small-font mb-1">Sales Type</lable>
                   <select className="input-css2 small-font text-black">
                     <option>All</option>
@@ -214,12 +239,11 @@ const DashboardViewAll = () => {
                 <ScrollTable
                   columns={customerCols}
                   data={customerData}
-                  tableHeight={"h-fill"}
+                  tableHeight={"table-50vh"}
                 />
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   );

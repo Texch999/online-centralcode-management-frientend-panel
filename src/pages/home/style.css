@@ -175,3 +175,13 @@
 .h-58vh {
   height: 58vh;
 }
+.table-50vh{
+  max-height: 50vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+}
+.hover-orange-clr:hover{
+   background-color: #FFA310;
+   color: white;
+}
