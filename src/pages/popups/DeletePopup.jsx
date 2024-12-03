@@ -16,7 +16,7 @@ const DeletePopup = ({show, setShow, title}) => {
             </div>
             <div className='flex-center my-2 medium-font'>Are You Sure to Delete this {title}?</div>
             <div className='d-flex flex-center my-2 medium-font pointer'>
-            <div className='input-css2 br-5 w-50 text-center mx-2' onClick={()=>setShow(false)}>Cancle</div>
+            <div className='input-css2 br-5 w-50 text-center mx-2' onClick={()=>setShow(false)}>Cancel</div>
             <div className='saffron-btn br-5 text-center w-50'>Delete</div>
             </div>
         </div>

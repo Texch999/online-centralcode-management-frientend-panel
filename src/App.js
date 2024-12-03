@@ -68,6 +68,8 @@ import UserReports from "./pages/reports/UserReports";
 import ClientRental from "./pages/reports/ClientRental";
 import Sports from "./pages/sports/Sports";
 import BonusChips from "./pages/bonuschips/BonusChips";
+import BetBlockUsers from "./pages/live-block/BetBlockUsers";
+import InActiveUsers from "./pages/live-block/InActiveUsers";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -220,6 +222,8 @@ function App() {
               <Route path="/pl-report-users" element={<UserReports />} />
               <Route path="/client-rental-sheet" element={<ClientRental />} />
               <Route path="/bonus-chips" element={<BonusChips />} />
+              <Route path="/bet-block-users" element={<BetBlockUsers />} />
+              <Route path="/inactive-users" element={<InActiveUsers />} />
             </Routes>
           </div>
         </div>

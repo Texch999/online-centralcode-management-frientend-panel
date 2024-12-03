@@ -4,12 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 
 function BonusChips() {
-  const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
-    useState(false);
-  const handleDepositWithdrawPopupOpen = () => {
-    setDepositWithdrawPopupOpen(true);
-  };
-  const TICKETS_COLUMNS = [
+  const BONUS_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
     { header: "Trn ID", field: "trnid" },
     { header: "Type", field: "type" },
@@ -19,7 +14,7 @@ function BonusChips() {
     { header: "Bonus Chips Amt", field: "bonuschipsamnt" },
   ];
 
-  const TICKETS_DATA = [
+  const BONUS_DATA = [
     {
       dateTime: "07-10-2024, 17:17:00",
       trnid: <div>123456781234</div>,
@@ -76,7 +71,7 @@ function BonusChips() {
     },
   ];
   const buttons = ["All Bonus", "1st Deposit Bonus", "Cashback", "Promotions"];
-  const [activeIndex, setActiveIndex] = useState();
+  const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndex = (index) => {
     setActiveIndex(index);
   };
@@ -151,11 +146,7 @@ function BonusChips() {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <Table columns={TICKETS_COLUMNS} data={TICKETS_DATA} itemsPerPage={2} />
-      {/* <DepositWithdrawPopup
-    depositWithdrawPopupOpen={depositWithdrawPopupOpen}
-    setDepositWithdrawPopupOpen={setDepositWithdrawPopupOpen}
-  /> */}
+      <Table columns={BONUS_COLUMNS} data={BONUS_DATA} itemsPerPage={2} />
     </div>
   );
 }

@@ -16,7 +16,7 @@ const ActionPopup = ({show, setShow}) => {
                 </div>
                 <div className='flex-center my-2 medium-font'>Are you sure to active this provider?</div>
                 <div className='d-flex flex-center my-2 medium-font pointer'>
-                <div className='input-css2 br-5 w-50 text-center mx-2' onClick={()=>setShow(false)}>Cancle</div>
+                <div className='input-css2 br-5 w-50 text-center mx-2' onClick={()=>setShow(false)}>Cancel</div>
                 <div className='saffron-btn br-5 text-center w-50'>Active</div>
                 </div>
             </div>
