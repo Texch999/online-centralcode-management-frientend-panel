@@ -10,95 +10,96 @@ import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
 
-const cardData = [
-  {
-    title: "Share Revenue",
-    backgroundColor: "#7DA0FA",
-    value: "500000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileShareRevenue}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
-  },
-  {
-    title: "Rental Revenue",
-    backgroundColor: "#7DA0FA",
-    value: "500000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileShareRevenue}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
-  },
-  {
-    title: "Total Paid",
-    backgroundColor: "#7DA0FA",
-    value: "0.00",
-    valueClass: "",
-    icon: (
-      <img
-        src={Images.adminProfileTotalPaid}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
-  },
-  {
-    title: "Another Revenue",
-    backgroundColor: "#7DA0FA",
-    value: "300000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileTotalPaid}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
-  },
-];
 
-const Card = ({
-  title,
-  backgroundColor,
-  value,
-  valueClass,
-  icon,
-  bootstrapClassesTop,
-  bootstrapClassesBottom,
-}) => {
-  return (
-    <div className="mini-container bg-white">
-      <div
-        className={`top-section rounded-top d-flex justify-content-between align-items-center ${bootstrapClassesTop}`}
-        style={{ backgroundColor: backgroundColor }}
-      >
-        <h6 className="mb-0 text-white">{title}</h6>
-        {icon}
-      </div>
-      <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
-    </div>
-  );
-};
 
 const DownlineList = () => {
+  const role = localStorage.getItem("role")
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
-
+  const cardData = [
+    {
+      title: role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
+      backgroundColor: "#7DA0FA",
+      value: "500000000",
+      valueClass: "text-dark",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "p-3",
+      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+    },
+    {
+      title: role === "Super Admin" ? "Share/Royalty Amount" : "Rental Revenue",
+      backgroundColor: "#7DA0FA",
+      value: "500000000",
+      valueClass: "text-dark",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "p-3",
+      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+    },
+    {
+      title: role === "Super Admin" ? "Total Withdraw" : "Total Paid",
+      backgroundColor: "#7DA0FA",
+      value: "0.00",
+      valueClass: "",
+      icon: (
+        <img
+          src={Images.adminProfileTotalPaid}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "p-3",
+      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+    },
+    {
+      title: role === "Super Admin" ? "Net P/L" : "Another Revenue",
+      backgroundColor: "#7DA0FA",
+      value: "300000000",
+      valueClass: "text-dark",
+      icon: (
+        <img
+          src={Images.adminProfileTotalPaid}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "p-3",
+      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+    },
+  ];
+  
+  const Card = ({
+    title,
+    backgroundColor,
+    value,
+    valueClass,
+    icon,
+    bootstrapClassesTop,
+    bootstrapClassesBottom,
+  }) => {
+    return (
+      <div className="mini-container bg-white">
+        <div
+          className={`top-section rounded-top d-flex justify-content-between align-items-center ${bootstrapClassesTop}`}
+          style={{ backgroundColor: backgroundColor }}
+        >
+          <h6 className="mb-0 text-white">{title}</h6>
+          {icon}
+        </div>
+        <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+      </div>
+    );
+  };
   const navigate = useNavigate();
 
   const handleNavigateUserDashboard = () => {

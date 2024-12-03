@@ -81,12 +81,12 @@ function Header() {
             <PiSquaresFourFill size={24} className="me-2" />
             <span className="medium-font pointer">Dashboard</span>
           </div>
-          {role === "Management" || role === "Director" ? (
+          {role === "Management" || role === "Director" || role ==="Super Admin" ? (
             <div
               className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
               onClick={() => navigate("/management")}
             >
-              {role === "Director" ? (
+              {role === "Director" || role ==="Super Admin" ? (
                 <FaUserTie size={23} className="me-2" />
               ) : (
                 <FaUserCog size={24} className="me-2" />
@@ -146,7 +146,7 @@ function Header() {
           <span className="ms-2 black-text3 medium-font">Chat</span>
         </div>
       </div>
-      {(role === "Management" || role === "Director") && <SubHeader />}
+      {(role === "Management" || role === "Director" || role ==="Super Admin") && <SubHeader />}
     </div>
   );
 }

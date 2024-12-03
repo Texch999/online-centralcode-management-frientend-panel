@@ -16,37 +16,70 @@ function SubHeader() {
     setShowResetPswdModal(false);
   };
   const menuItems = [
-    {
-      label: "Adding",
-      options: [
-        { label: "Management Team", path: "/management-team" },
-        { label: "Director & Super Admin", path: "/director-admin" },
-        { label: "View Downline List", path: "/downline-list" },
-        { label: "Payment Details", path: "/payment-details" },
-        { label: "Websites", path: "/websites" },
-      ],
-    },
-    {
-      label: "Live/Block",
-      options: [
-        { label: "Sports", path: "/live-block-sports" },
-        { label: "Casino", path: "/casino" },
-        { label: "Set Limits", path: "/set-limits" },
-        { label: "In-active Users", path: "/inactive-users" },
-        { label: "Bet Block Users", path: "/bet-block-users" },
-      ],
-    },
-    {
-      label: "Risk Management",
-      options: [
-        { label: "Sports & Casino Risk Limit Set", path: "/risk-limit-set" },
-        { label: "Sports", path: "/risk-sports" },
-        { label: "Casino", path: "/risk-casino" },
-        { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
-        { label: "Deleted Bet History", path: "/deleted-bet-history" },
-        { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
-      ],
-    },
+    role === "Super Admin"
+      ? {
+          label: "Adding",
+          options: [
+            { label: "Add Admin", path: "/director-admin" },
+            { label: "View Downline List", path: "/downline-list" },
+            { label: "Payment Details", path: "/payment-details" },
+            { label: "Available Websites", path: "/websites" },
+          ],
+        }
+      : {
+          label: "Adding",
+          options: [
+            { label: "Management Team", path: "/management-team" },
+            { label: "Director & Super Admin", path: "/director-admin" },
+            { label: "View Downline List", path: "/downline-list" },
+            { label: "Payment Details", path: "/payment-details" },
+            { label: "Websites", path: "/websites" },
+          ],
+        },
+    role === "Super Admin"
+      ? {
+          label: "Live/Block",
+          options: [
+            { label: "In-active Users", path: "/inactive-users" },
+            { label: "Bet Block Users", path: "/bet-block-users" },
+          ],
+        }
+      : {
+          label: "Live/Block",
+          options: [
+            { label: "Sports", path: "/live-block-sports" },
+            { label: "Casino", path: "/casino" },
+            { label: "Set Limits", path: "/set-limits" },
+            { label: "In-active Users", path: "/inactive-users" },
+            { label: "Bet Block Users", path: "/bet-block-users" },
+          ],
+        },
+
+    role === "Super Admin"
+      ? {
+          label: "Risk Management",
+          options: [
+            { label: "Sports", path: "/risk-sports" },
+            { label: "Casino", path: "/risk-casino" },
+            { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
+            { label: "Deleted Bet History", path: "/deleted-bet-history" },
+            { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
+          ],
+        }
+      : {
+          label: "Risk Management",
+          options: [
+            {
+              label: "Sports & Casino Risk Limit Set",
+              path: "/risk-limit-set",
+            },
+            { label: "Sports", path: "/risk-sports" },
+            { label: "Casino", path: "/risk-casino" },
+            { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
+            { label: "Deleted Bet History", path: "/deleted-bet-history" },
+            { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
+          ],
+        },
 
     role === "Director"
       ? {
@@ -54,6 +87,16 @@ function SubHeader() {
           options: [
             { label: "Tickets", path: "/tickets" },
             { label: "Gateway Transactions", path: "/gateway-transactions" },
+          ],
+        }
+      : role === "Super Admin"
+      ? {
+          label: "Wallet",
+          options: [
+            { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+            { label: "Tickets", path: "/tickets" },
+            { label: "Gateway Transactions", path: "/gateway-transactions" },
+            { label: "Bonus Chips", path: "/bonus-chips" },
           ],
         }
       : {
@@ -69,18 +112,37 @@ function SubHeader() {
             { label: "Gateway Transactions", path: "/gateway-transactions" },
           ],
         },
-    {
-      label: "Reports",
-      options: [
-        { label: "My Statement", path: "/my-statement" },
-        { label: "P/L Report Downline Admins", path: "/pl-report-downline" },
-        { label: "P/L Casino Report", path: "/pl-casino-report" },
-        { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
-        { label: "P/L Report by Users", path: "/pl-report-users" },
-        { label: "Match Wise P/L", path: "/match-wise-pl" },
-        { label: "Client Rental Sheet", path: "/client-rental-sheet" },
-      ],
-    },
+
+    role === "Super Admin"
+      ? {
+          label: "Reports",
+          options: [
+            { label: "My Statement", path: "/my-statement" },
+            {
+              label: "P/L Report Downline Admins",
+              path: "/pl-report-downline",
+            },
+            { label: "P/L Casino Report", path: "/pl-casino-report" },
+            { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
+            { label: "P/L Report by Users", path: "/pl-report-users" },
+            { label: "Match Wise P/L", path: "/match-wise-pl" },
+          ],
+        }
+      : {
+          label: "Reports",
+          options: [
+            { label: "My Statement", path: "/my-statement" },
+            {
+              label: "P/L Report Downline Admins",
+              path: "/pl-report-downline",
+            },
+            { label: "P/L Casino Report", path: "/pl-casino-report" },
+            { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
+            { label: "P/L Report by Users", path: "/pl-report-users" },
+            { label: "Match Wise P/L", path: "/match-wise-pl" },
+            { label: "Client Rental Sheet", path: "/client-rental-sheet" },
+          ],
+        },
 
     role === "Director"
       ? {
@@ -91,6 +153,15 @@ function SubHeader() {
               label: "Reset Password",
               onClick: () => setShowResetPswdModal(true),
             },
+            { label: "Activity Logs", path: "/activity-logs" },
+          ],
+        }
+      : role === "Super Admin"
+      ? {
+          label: "SA Settings",
+          options: [
+            { label: "Edit Profile", path: "/edit-profile" },
+            { label: "Reset Password", path: "/reset-password" },
             { label: "Activity Logs", path: "/activity-logs" },
           ],
         }
@@ -105,6 +176,14 @@ function SubHeader() {
         },
 
     role === "Director"
+      ? {
+          label: "Promotions",
+          options: [
+            { label: "Sports Promotions", path: "/sports-promotions" },
+            { label: "Casino Promotions", path: "/casino-promotions" },
+          ],
+        }
+      : role === "Super Admin"
       ? {
           label: "Promotions",
           options: [

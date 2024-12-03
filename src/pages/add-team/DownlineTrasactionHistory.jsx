@@ -201,8 +201,8 @@ const DownlineTrasactionHistory = () => {
         </div>
 
         <div className="col-6 d-flex justify-content-end gap-3 small-font">
-          <input type="date" className="input-css" />
-          <input type="date" className="input-css" />
+          <input type="date" className="input-css2 clr-white" />
+          <input type="date" className="input-css2 clr-white" />
           <button className="saffron-btn w-100 rounded">Submit</button>
         </div>
       </div>

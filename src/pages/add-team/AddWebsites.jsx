@@ -7,175 +7,243 @@ import { FaPlus } from "react-icons/fa6";
 import AddWebsitesPopup from "./popups/AddWebsitesPopup";
 
 const AddWibsites = () => {
-  
-  const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false)
+  const role = localStorage.getItem("role");
+  const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
 
   const columns = [
     { header: "Type", field: "type", width: "15%" },
     { header: "Website Name", field: "websiteName", width: "25%" },
     { header: "Location", field: "location", width: "20%" },
     { header: "URL", field: "url", width: "20%" },
-    { header: <div className="ps-1">Action</div>, field: "action"},
+    {
+      ...(role === "Super Admin"
+        ? null
+        : [{ header: <div className="ps-1">Action</div>, field: "action" }]),
+    },
   ];
 
-  // Data extracted from the image
   const data = [
     {
       type: "Company",
       websiteName: "T Exchange",
       location: "Hyderabad, India",
       url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer " onClick={() => setOnAddwebsitePopup(true)}/>
-          <MdBlockFlipped size={17} className="pointer" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
       type: "White Label",
       websiteName: "T Casino Park",
       location: "Delhi, India",
       url: "www.tcasinopark.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
       type: "Company",
       websiteName: "Spark Book",
       location: "Hyderabad, India",
       url: "www.sparkbook.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
       type: "White Label",
       websiteName: "Fun77",
       location: "Kolkata, India",
       url: "www.fun77.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer"/>
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
       type: "Company",
       websiteName: "Diamond Exchange",
       location: "Kochi, India",
       url: "www.diamondexchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer red-font" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer red-font" />
+          </div>
+        ),
     },
     {
       type: "Company",
       websiteName: "T Exchange",
       location: "Hyderabad, India",
       url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer"/>
-          <MdBlockFlipped size={17} className="pointer"/>
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer"/>
-            <MdBlockFlipped size={17} className="pointer font-red"/>
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
           </div>
         ),
-      },
-      {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+    },
+    {
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer"/>
-            <MdBlockFlipped size={17} className="pointer"/>
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
           </div>
         ),
-      },
-      {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+    },
+    {
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer"/>
-            <MdBlockFlipped size={17} className="pointer"/>
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
           </div>
         ),
-      },
-      {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+    },
+    {
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer" />
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
             <MdBlockFlipped size={17} className="pointer red-font" />
           </div>
         ),
-      },
-      {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+    },
+    {
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer" />
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
             <MdBlockFlipped size={17} className="pointer" />
           </div>
         ),
-      },
-      {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+    },
+    {
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer" />
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
             <MdBlockFlipped size={17} className="pointer" />
           </div>
         ),
-      },
-      {
-        type: "Company",
-        websiteName: "T Exchange",
-        location: "Hyderabad, India",
-        url: "www.texchange.com",
-        action: (
+    },
+    {
+      type: "Company",
+      websiteName: "T Exchange",
+      location: "Hyderabad, India",
+      url: "www.texchange.com",
+      action:
+        role === "Super Admin" ? null : (
           <div className="d-flex gap-3">
-            <GrEdit size={17} className="pointer" />
-            <MdBlockFlipped size={17} className="pointer"/>
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
           </div>
         ),
-      },
+    },
   ];
 
   return (
@@ -188,8 +256,14 @@ const AddWibsites = () => {
             <FaSearch size={16} className="grey-clr me-2" />
             <input className="small-font all-none" placeholder="Search..." />
           </div>
-          
-           <button className="rounded-pill input-pill blue-font small-font px-2" onClick={() => setOnAddwebsitePopup(true)}> <FaPlus/> Add New Website </button> 
+
+          <button
+            className="rounded-pill input-pill blue-font small-font px-2"
+            onClick={() => setOnAddwebsitePopup(true)}
+          >
+            {" "}
+            <FaPlus /> Add New Website{" "}
+          </button>
         </div>
       </div>
 
@@ -197,8 +271,10 @@ const AddWibsites = () => {
         <Table data={data} columns={columns} itemsPerPage={12} />
       </div>
 
-    <AddWebsitesPopup show={onAddwebsitePopup} onHide={() => setOnAddwebsitePopup(false)}/>
-
+      <AddWebsitesPopup
+        show={onAddwebsitePopup}
+        onHide={() => setOnAddwebsitePopup(false)}
+      />
     </div>
   );
 };

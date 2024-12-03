@@ -23,6 +23,9 @@ function Login() {
     } else if (username.toLowerCase() === "central_panel") {
       role = "Central Panel";
     }
+    else if (username.toLowerCase() === "super_admin") {
+      role = "Super Admin";
+    }
 
     localStorage.setItem("role", role);
     localStorage.setItem("isLoggedIn", true);
