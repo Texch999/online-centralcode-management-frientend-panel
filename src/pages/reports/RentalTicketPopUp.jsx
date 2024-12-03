@@ -2,27 +2,22 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "./../../images/index";
 
-function DepositWithdrawPopup({
-  depositWithdrawPopupOpen,
-  setDepositWithdrawPopupOpen,
-  userDetails,
-  userDetails2
-}) {
+function RentalTicketPopUp({ activeRole, setActiveRole }) {
   const handleCancel = () => {
-    setDepositWithdrawPopupOpen(false);
+    setActiveRole(false);
   };
   return (
-    <Modal show={depositWithdrawPopupOpen} centered>
+    <Modal show={activeRole} centered>
       <div className="d-flex justify-content-between black-text4 p-3">
         <div className="flex-column">
           <h6 className="fw-600 mb-0">
-            {userDetails ? userDetails : "Srinivas - (Share/Royalty: 10%)"}
+            Srinivas - (Sp Rental: 100000) (Ca : 10%)
           </h6>
           <div className="d-flex ">
             <div className="yellow-bg py-1 px-2 rounded small-font white-text w-fit">
               Director
             </div>
-            <h6 className="ms-2 mb-0">{userDetails2}</h6>
+            <h6 className="ms-2 mb-0">Exp Rental - 31-01-2025</h6>
           </div>
         </div>
         <div className="green-btn small-font h-fit">Deposit</div>
@@ -125,4 +120,4 @@ function DepositWithdrawPopup({
   );
 }
 
-export default DepositWithdrawPopup;
+export default RentalTicketPopUp;
