@@ -70,6 +70,12 @@ option:hover {
   overflow-y: hidden;
   overflow-x: scroll;
 }
+.border-left {
+  border-left: 1px solid #dee2e6 !important;
+}
+.border-right {
+  border-right: 1px solid #dee2e6 !important;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {
