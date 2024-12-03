@@ -189,15 +189,15 @@ function App() {
               <Route path="/results" element={<Result />} />
               <Route path="/match-wise-pl" element={<MatchWisePl />} />
               <Route
-                path="/individual-match-pl/:matchName"
+                path="/match-wise-pl/:matchName"
                 element={<IndividualMatchPl />}
               />
               <Route
-                path="/match-admins-users-pl/:matchName/:role"
+                path="/match-wise-pl/:matchName/:role"
                 element={<MatchAdminsUsersPl />}
               />
               <Route
-                path="/users-match-pl/:matchName/:role/:userDetails"
+                path="/match-wise-pl/:matchName/:role/:userDetails"
                 element={<UsersMatchPl />}
               />
               <Route path="/downline/:superadmin" element={<SuperAdminDL />} />

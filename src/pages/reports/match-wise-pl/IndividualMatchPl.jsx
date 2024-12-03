@@ -8,7 +8,7 @@ const IndividualMatchPl = () => {
   const navigate = useNavigate();
   const { matchName } = useParams();
   const handleMatchAdminsUsersPlPage = (role) => {
-    navigate(`/match-admins-users-pl/${matchName}/${role}`);
+    navigate(`/match-wise-pl/${matchName}/${role}`);
   };
   const cols = [
     { header: "Date & Time", field: "date" },

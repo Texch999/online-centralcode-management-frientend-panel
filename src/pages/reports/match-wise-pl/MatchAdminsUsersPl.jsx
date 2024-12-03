@@ -14,9 +14,9 @@ const MatchAdminsUsersPl = () => {
     setActiveBtn(index);
   };
 
-  const handleMatchusersPl=(userdetails)=>{
-    navigate(`/users-match-pl/${matchName}/${role}/${userdetails}`)
-  }
+  const handleMatchusersPl = (userdetails) => {
+    navigate(`/match-wise-pl/${matchName}/${role}/${userdetails}`);
+  };
 
   const cols = [
     { header: "Date & Time", field: "date" },
@@ -324,7 +324,10 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" onClick={()=>handleMatchusersPl("User-Lokesh")}/>
+          <IoEye
+            className="text-black font-20 me-4 pointer"
+            onClick={() => handleMatchusersPl("User-Lokesh")}
+          />
           <div className="green-btn">Settled</div>
         </div>
       ),

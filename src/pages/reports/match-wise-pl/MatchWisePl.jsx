@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const MatchWisePl = () => {
   const navigate = useNavigate();
   const handleMatchPlPage = (matchName) => {
-    navigate(`/individual-match-pl/${matchName}`);
+    navigate(`/match-wise-pl/${matchName}`);
   };
   const cols = [
     { header: "Date & Time", field: "date" },
