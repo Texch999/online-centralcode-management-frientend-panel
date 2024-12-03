@@ -64,6 +64,11 @@ option:hover {
   color: #ffffff;
   border: none;
 }
+.scroll-x {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scrollbar-width: thin;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {

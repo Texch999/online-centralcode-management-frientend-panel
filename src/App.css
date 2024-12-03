@@ -347,6 +347,9 @@
 .grey-bg2 {
   background: #e9e9e9;
 }
+.grey-bg3 {
+  background:#3D3D3D;
+}
 .black-border {
   border: 1px solid #1d1d1d;
 }
@@ -524,4 +527,7 @@
   display: flex;
   align-items: end;
   justify-content: start;
+}
+.dropdown-menu {
+  z-index: 1050 !important; /* Ensure it is above other elements */
 }
