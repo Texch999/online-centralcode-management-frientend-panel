@@ -739,7 +739,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteWinnerData}
-                  tableHeight="h-58vh"
+                  tableHeight="h-50vh"
                 />
               )}
 
@@ -747,7 +747,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteLooseData}
-                  tableHeight="h-58vh"
+                  tableHeight="h-50vh"
                 />
               )}
             </div>

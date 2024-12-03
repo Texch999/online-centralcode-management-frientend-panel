@@ -47,10 +47,18 @@ import CasinoPromotions from "./pages/promotions/CasinoPromotions";
 import Broadcasting from "./pages/promotions/Broadcasting";
 import SandCBanner from "./pages/promotions/SandCBanner";
 import GatewayTransactions from "./pages/wallet/GatewayTransactions";
+import DownLineAdmins from "./pages/reports/DownLineAdmins";
 import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
 import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 import Result from "./pages/ownerSettings/Result";
+import Userslist from "./pages/reports/Userslist";
+import SuperAdminDL from "./pages/reports/SuperAdminDL";
+import CasinoReports from "./pages/reports/CasinoReports";
+import UserBetsList from "./pages/reports/UserBetsList";
+import SportsReport from "./pages/reports/SportsReport";
+import UserReports from "./pages/reports/UserReports";
+import ClientRental from "./pages/reports/ClientRental";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -63,7 +71,7 @@ function App() {
           {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
-              <Route path="/dashboard" element={<Homepage />} />
+              <Route path="/" element={<Homepage />} />
               <Route path="/casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/management-team" element={<ManagementTeam />} />
@@ -169,11 +177,19 @@ function App() {
                 path="/gateway-transactions"
                 element={<GatewayTransactions />}
               />
+              <Route path="/pl-report-downline" element={<DownLineAdmins />} />
               <Route
                 path="/my-vendors-account"
                 element={<MyVendorsAccount />}
               />
               <Route path="/results" element={<Result />} />
+              <Route path="/downline/:superadmin" element={<SuperAdminDL />} />
+              <Route path="/superadmin/:user" element={<Userslist />} />
+              <Route path="/pl-casino-report" element={<CasinoReports />} />
+              <Route path="/userbets/:username" element={<UserBetsList />} />
+              <Route path="/pl-report-sports" element={<SportsReport />} />
+              <Route path="/pl-report-users" element={<UserReports />} />
+              <Route path="/client-rental-sheet" element={<ClientRental />} />
             </Routes>
           </div>
         </div>

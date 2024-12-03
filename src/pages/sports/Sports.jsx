@@ -39,7 +39,7 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       providers: (
-        <div className="d-flex flex-column pointer">
+        <div className="d-flex flex-column pointer small-font">
           <div
             className="py-2 "
             onClick={() => handleSportNextPage("Jitendra", "Odds")}

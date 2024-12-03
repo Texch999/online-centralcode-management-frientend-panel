@@ -85,7 +85,9 @@ input[type="checkbox"] {
   border-radius: 30px;
 }
 .grey-box {
-  background-color: #7c7c7c;
+  background-color: #7c7c7c;}
+.grey-box-table{
+  background-color: #7C7C7C;
   border-radius: 5px;
 }
 .yellow-round {
@@ -135,10 +137,7 @@ progress::-webkit-progress-bar {
 .football-scoreboard-bg {
   border-radius: 20px;
   background-image: url("../../../public/assets/football-bg.png");
-
   background-size: cover;
-
   background-repeat: no-repeat;
-
   background-attachment: fixed;
 }
