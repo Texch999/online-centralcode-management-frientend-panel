@@ -91,6 +91,8 @@ const Cricket = () => {
     { header: <div className="flex-start">Back/Lay</div>, field: "bl" },
     { header: <div className="flex-start">Action</div>, field: "action" },
   ];
+
+  
   const data = [
     {
       watch: (

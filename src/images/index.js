@@ -38,7 +38,8 @@ export const Images = {
   promotion9: "/assets/promotion9.png",
   promotion10: "/assets/promotion10.png",
   promotion11: "/assets/promotion11.png",
-  check:"/assets/check.png",
+  QrImg: "/assets/qr_image.png",
+  check: "/assets/check.png",
   TourBlueFlag: "/assets/tour_blue_flag.png",
   TourGreenFlag: "/assets/tour_green_flag.png",
   TourMarket: "/assets/tour_market.png",
@@ -46,5 +47,4 @@ export const Images = {
   TourSportsSoccer: "/assets/tour_sports_soccer.png",
   TourYellowCard: "/assets/tour_yellow_card.png",
   TourScheduleClock: "/assets/tour_schedule.png",
-
 };

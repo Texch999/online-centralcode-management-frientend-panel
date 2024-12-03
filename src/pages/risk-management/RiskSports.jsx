@@ -93,7 +93,7 @@ function RiskSports() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            onClick={() => navigate("/risk-bet-history/matchName")}
+            onClick={() => navigate("/risk-sports/matchName")}
             className="black-text"
           />
         </div>
@@ -119,7 +119,7 @@ function RiskSports() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            onClick={() => navigate("/risk-bet-history/matchName")}
+            onClick={() => navigate("/risk-sports/matchName")}
             className="black-text"
           />
         </div>
@@ -145,7 +145,7 @@ function RiskSports() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            onClick={() => navigate("/risk-bet-history/matchName")}
+            onClick={() => navigate("/risk-sports/matchName")}
             className="black-text"
           />
         </div>
@@ -183,7 +183,7 @@ function RiskSports() {
       dateTime: "01-10-2024  16:11:00",
       sports: "Cricket",
       matchName: (
-        <div onClick={() => navigate("/risk-bet-history/matchName")}>
+        <div onClick={() => navigate("/risk-sports/matchName")}>
           New Zealand Wo vs South Africa Wo - Match ODDS <br />
           M. ID: 12345678934567
         </div>
@@ -204,7 +204,7 @@ function RiskSports() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            onClick={() => navigate("/risk-bet-history/matchName")}
+            onClick={() => navigate("/risk-sports/matchName")}
             className="black-text"
           />
         </div>
@@ -235,7 +235,7 @@ function RiskSports() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            onClick={() => navigate("/risk-bet-history/matchName")}
+            onClick={() => navigate("/risk-sports/matchName")}
             className="black-text"
           />
         </div>
@@ -245,7 +245,7 @@ function RiskSports() {
       dateTime: "01-10-2024  16:11:00",
       sports: "Cricket",
       matchName: (
-        <div onClick={() => navigate("/risk-bet-history/matchName")}>
+        <div onClick={() => navigate("/risk-sports/matchName")}>
           New Zealand Wo vs South Africa Wo - Match ODDS <br />
           M. ID: 12345678934567
         </div>
@@ -266,7 +266,7 @@ function RiskSports() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            onClick={() => navigate("/risk-bet-history/matchName")}
+            onClick={() => navigate("/risk-sports/matchName")}
             className="black-text"
           />
         </div>
