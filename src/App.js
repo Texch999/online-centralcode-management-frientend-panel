@@ -93,7 +93,7 @@ function App() {
                 element={<DashboardViewAll />}
               />
               <Route
-                path="/risk-bet-history/:matchName"
+                path="/risk-sports/:matchName"
                 element={<RiskBetHistory />}
               />
               <Route
