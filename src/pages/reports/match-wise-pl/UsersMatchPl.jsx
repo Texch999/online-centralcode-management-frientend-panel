@@ -1,6 +1,6 @@
 import React from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdEdit, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { MdEdit, MdLoop, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
 import { FaRotate } from "react-icons/fa6";
@@ -49,7 +49,8 @@ const UsersMatchPl = () => {
       bet: <div>Odds</div>,
       selection: (
         <div className="d-flex flex-column">
-          <div>Selection: South Africa Wo.. Side: Back</div>
+          <div>Selection: South Africa Wo..</div>
+          <divc className="back-clr"> Side: Back</divc>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -99,7 +100,8 @@ const UsersMatchPl = () => {
       bet: <div className="dark-orange-clr">Odds</div>,
       selection: (
         <div className="d-flex flex-column dark-orange-clr">
-          <div>Selection: South Africa Wo.. Side: Back</div>
+          <div>Selection: South Africa Wo..</div>
+          <divc className="lay-clr"> Side: Lay</divc>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -110,7 +112,7 @@ const UsersMatchPl = () => {
         <div className="d-flex flex-column flex-center ">
           <div className="red-btn">Deleted</div>
           <div className="flex-between my-2 ">
-            <FaRotate className="dark-orange-clr font-20 pointer" />
+            <MdLoop className="dark-orange-clr font-20 pointer" />
           </div>
         </div>
       ),
@@ -144,7 +146,8 @@ const UsersMatchPl = () => {
       bet: <div className="orange-clr">Odds</div>,
       selection: (
         <div className="d-flex flex-column orange-clr">
-          <div>Selection: South Africa Wo.. Side: Back</div>
+          <div>Selection: South Africa Wo..</div>
+          <divc className="lay-clr"> Side: Lay</divc>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>

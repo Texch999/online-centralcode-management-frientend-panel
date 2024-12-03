@@ -210,7 +210,7 @@ function SubHeader() {
         label: "Live/Block",
         options: [
           { label: "Sports", path: "/live-block-sports" },
-          { label: "Casino", path: "/casino" },
+          { label: "Casino", path: "" },
           { label: "Set Limits", path: "/set-limits" },
           { label: "In-active Users", path: "/inactive-users" },
           { label: "Bet Block Users", path: "/bet-block-users" },
