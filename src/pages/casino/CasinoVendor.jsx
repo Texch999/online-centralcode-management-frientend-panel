@@ -15,7 +15,7 @@ const CasinoVendor = () => {
   };
 
   const handleGamesPage = (game) => {
-    navigate(`/casino-games/${vendor}/${provider}/${game}`);
+    navigate(`/casino/${vendor}/${provider}/${game}`);
   };
 
   const cols = [

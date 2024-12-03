@@ -10,17 +10,17 @@ const SportProviders = () => {
   const { vendor, provider } = useParams();
   const handleGameMatches = (match) => {
     if (provider === "Odds") {
-      navigate(`/cricket/${vendor}/${provider}/${match}`);
-    } else if (provider === "fancy") {
-      navigate(`/fancy-cricket/${vendor}/${provider}/${match}`);
+      navigate(`/sports/${vendor}/${provider}/${match}`);
+    } else if (provider === "Fancy") {
+      navigate(`/sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 1") {
-      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
+      navigate(`/sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 2") {
-      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
+      navigate(`/sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Live Streaming") {
-      navigate(`/cricket-livestreaming/${vendor}/${provider}/${match}`);
+      navigate(`/sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Scoreboard") {
-      navigate(`/cricket-scoreboard/${vendor}/${provider}/${match}`);
+      navigate(`/sports/${vendor}/${provider}/${match}`);
     }
   };
   const [isActive, setIsACtive] = useState(false);
@@ -267,7 +267,7 @@ const SportProviders = () => {
 
         <div className="medium-font">
           <span
-            className="white-bg rounded-pill me-4 px-3 py-1 pointer hover-orange-clr"
+            className="input-css2 text-black rounded-pill me-4 px-3 py-1 pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
             <FaArrowLeft className="me-1" />

@@ -14,7 +14,7 @@ function Casino() {
   };
 
   const handleProviderClick = (vendor, provider) => {
-    navigate(`/casino-vendor/${vendor}/${provider}`);
+    navigate(`/casino/${vendor}/${provider}`);
   };
   const cols = [
     { header: <div className="flex-center">S No</div>, field: "sno" },

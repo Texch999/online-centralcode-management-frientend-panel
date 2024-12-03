@@ -311,7 +311,7 @@ const CricketScoreboard = () => {
   ];
   return (
     <div className="p-1">
-      <div className="d-flex flex-between">
+      {/* <div className="d-flex flex-between">
         <div className="mb-2 pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Sports <span className="mx-1 font-20">{">"}</span>
@@ -337,7 +337,7 @@ const CricketScoreboard = () => {
           </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
-      </div>
+      </div> */}
 
       <div>
         <Table columns={cols} data={data} itemsPerPage={5} />

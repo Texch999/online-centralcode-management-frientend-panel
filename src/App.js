@@ -97,11 +97,11 @@ function App() {
                 element={<RiskBetHistory />}
               />
               <Route
-                path="/casino-vendor/:vendor/:provider"
+                path="/casino/:vendor/:provider"
                 element={<CasinoVendor />}
               />
               <Route
-                path="/casino-games/:vendor/:provider/:game"
+                path="/casino/:vendor/:provider/:game"
                 element={<CasinoGames />}
               />
               <Route
@@ -127,7 +127,7 @@ function App() {
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route
-                path="/sports-providers/:vendor/:provider"
+                path="/sports/:vendor/:provider"
                 element={<SportProviders />}
               />
               <Route
@@ -136,23 +136,23 @@ function App() {
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
               <Route
-                path="/cricket/:vendor/:provider/:match"
+                path="/sports/:vendor/:provider/:match"
                 element={<Cricket />}
               />
               <Route
-                path="/fancy-cricket/:vendor/:provider/:match"
+                path="/sports/:vendor/:provider/:match"
                 element={<FancyCricket />}
               />
               <Route
-                path="/fancy-individual-match/:vendor/:provider/:match/:individualMatch"
+                path="/sports/:vendor/:provider/:match/:individualMatch"
                 element={<FancyIndividualCricketMatch />}
               />
               <Route
-                path="/cricket-bookmaker/:vendor/:provider/:match"
+                path="/sports/:vendor/:provider/:match"
                 element={<CricketBookmaker />}
               />
               <Route
-                path="/cricket-livestreaming/:vendor/:provider/:match"
+                path="/sports/:vendor/:provider/:match"
                 element={<CricketLiveStreaming />}
               />
               <Route
@@ -160,7 +160,7 @@ function App() {
                 element={<SportsVendorRegistration />}
               />
               <Route
-                path="/cricket-scoreboard/:vendor/:provider/:match"
+                path="/sports/:vendor/:provider/:match"
                 element={<CricketScoreboard />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />

@@ -5,10 +5,16 @@ import BlockPopup from "./../popups/BlockPopup";
 import DeletePopup from "./../popups/DeletePopup";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import FancyCricket from "./FancyCricket";
+import CricketBookmaker from "./CricketBookmaker";
+import CricketLiveStreaming from "./CricketLiveStreaming";
+import CricketScoreboard from "./CricketScoreboard";
 
 const Cricket = () => {
   const navigate = useNavigate();
   const { vendor, provider, match } = useParams();
+
+  console.log({ vendor, provider, match });
 
   const matchContent =
     match === "Football" ? (
@@ -522,10 +528,16 @@ const Cricket = () => {
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
-
-      <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
-      </div>
+      {provider === "Odds" && (
+        <div>
+          <Table columns={cols} data={data} itemsPerPage={5} />
+        </div>
+      )}
+      {provider === "Fancy" && <FancyCricket />}
+      {provider === "Bookmaker 1" && <CricketBookmaker />}
+      {provider === "Bookmaker 2" && <CricketBookmaker />}
+      {provider === "Live Streaming" && <CricketLiveStreaming />}
+      {provider === "Scoreboard" && <CricketScoreboard />}
 
       <BlockPopup
         show={showBlockModal}

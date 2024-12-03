@@ -7,7 +7,7 @@ import ActionPopup from "../casino/ActionPopup";
 const Sports = () => {
   const navigate = useNavigate();
   const handleSportNextPage = (vendor, provider) => {
-    navigate(`/sports-providers/${vendor}/${provider}`);
+    navigate(`/sports/${vendor}/${provider}`);
   };
 
   const [isActive, setIsACtive] = useState(false);
@@ -60,7 +60,7 @@ const Sports = () => {
           </div>
           <div
             className="py-2 "
-            onClick={() => handleSportNextPage("Jitendra", "fancy")}
+            onClick={() => handleSportNextPage("Jitendra", "Fancy")}
           >
             Fancy{" "}
           </div>
@@ -100,7 +100,7 @@ const Sports = () => {
           </span>
           <span
             className="py-1 font-20"
-            onClick={() => handleSportNextPage("Jitendra", "fancy")}
+            onClick={() => handleSportNextPage("Jitendra", "Fancy")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>

@@ -47,9 +47,7 @@ const FancyCricket = () => {
     );
 
   const handleFancyMatch = (individualMatch) => {
-    navigate(
-      `/fancy-individual-match/${vendor}/${provider}/${match}/${individualMatch}`
-    );
+    navigate(`/sports/${vendor}/${provider}/${match}/${individualMatch}`);
   };
   const [showBlockModal, setShowBlockModal] = useState(false);
 
@@ -131,8 +129,8 @@ const FancyCricket = () => {
     },
   ];
   return (
-    <div>
-      <div className="d-flex flex-between mb-3">
+    <div className="">
+      {/* <div className="d-flex flex-between mb-3">
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Sports <span className="mx-1 font-20">{">"}</span>
@@ -148,11 +146,16 @@ const FancyCricket = () => {
           </span>
         </div>
         <div className="medium-font">
-        <span className="white-bg rounded-pill me-4 px-3 py-1 grey-border hover-orange-clr pointer" onClick={() => navigate(-1)}>
-        <FaArrowLeft className="me-2"/>Back</span>
+          <span
+            className="white-bg rounded-pill me-4 px-3 py-1 grey-border hover-orange-clr pointer"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="me-2" />
+            Back
+          </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
-      </div>
+      </div> */}
 
       <div>
         <Table columns={cols} data={data} itemsPerPage={4} />
