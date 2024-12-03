@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import {
-  MdOutlineDelete,
-  MdOutlineModeEditOutline,
-  MdLoop,
-} from "react-icons/md";
-import EditBetPopup from "./EditBetPopup";
+import { MdLoop } from "react-icons/md";
 
 function DeletedBetHistory() {
   const [activeSport, setActiveSport] = useState("All");

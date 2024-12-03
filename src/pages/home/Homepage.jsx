@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 function Homepage() {
   ChartJS.register(

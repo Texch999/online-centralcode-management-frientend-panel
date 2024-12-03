@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "../casino/ActionPopup";
@@ -144,9 +144,43 @@ const SportProviders = () => {
     {
       sno: <div className="flex-center">4</div>,
       games: (
+        <div className="pointer" onClick={() => handleGameMatches("Kabbadi")}>
+          Kabbadi
+        </div>
+      ),
+      eye: (
+        <div className="d-flex flex-column">
+          <span
+            className=" font-20"
+            onClick={() => handleGameMatches("Kabbadi")}
+          >
+            <IoEyeOutline className="orange-clr" />
+          </span>
+        </div>
+      ),
+      status: (
+        <div className="dark-orange-clr">
+          <span className="round-red-dot mx-1"></span>OFF
+        </div>
+      ),
+      pl: <div className="dark-orange-clr">500000</div>,
+      action: (
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input w-40"
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefault"
+          />
+        </div>
+      ),
+    },
+    {
+      sno: <div className="flex-center">5</div>,
+      games: (
         <div
           className="pointer"
-          onClick={() => handleGameMatches("Horse Racing")}
+          onClick={() => handleGameMatches("HorseRacing")}
         >
           Horse Racing
         </div>
@@ -155,7 +189,7 @@ const SportProviders = () => {
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Horse Racing")}
+            onClick={() => handleGameMatches("HorseRacing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -181,15 +215,18 @@ const SportProviders = () => {
     {
       sno: <div className="flex-center">6</div>,
       games: (
-        <div className="pointer" onClick={() => handleGameMatches("Kabaddi")}>
-          Kabaddi
+        <div
+          className="pointer"
+          onClick={() => handleGameMatches("Greyhound Racing")}
+        >
+          GreyHound Racing
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Kabaddi")}
+            onClick={() => handleGameMatches("Greyhound Racing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -241,7 +278,7 @@ const SportProviders = () => {
       </div>
 
       <div className="radius mt-3">
-        <Table columns={cols} data={data} itemsPerPage={3} />
+        <Table columns={cols} data={data} itemsPerPage={10} />
       </div>
       <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>

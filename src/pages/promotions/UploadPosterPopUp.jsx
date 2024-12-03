@@ -2,8 +2,6 @@ import React from "react";
 import { IoClose } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { MdOutlineFileUpload } from "react-icons/md";
-import { LiaPenSolid } from "react-icons/lia";
-import { FaRegTrashCan } from "react-icons/fa6";
 import { Images } from "../../images";
 
 const UploadPosterPopUp = ({ uploadPoster, setUploadPoster }) => {

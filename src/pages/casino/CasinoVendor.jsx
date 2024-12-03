@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../casino/style.css";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
@@ -8,7 +8,6 @@ import { FaArrowLeft } from "react-icons/fa";
 
 const CasinoVendor = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider } = useParams();
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {

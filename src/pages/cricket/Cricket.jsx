@@ -3,13 +3,55 @@ import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import BlockPopup from "./../popups/BlockPopup";
 import DeletePopup from "./../popups/DeletePopup";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const Cricket = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { vendor, provider, match } = useParams();
+
+  const matchContent =
+    match === "Football" ? (
+      <>
+        <div>Santos vs Cruzeiro MG</div>
+        <div>12345678912343455</div>
+      </>
+    ) : match === "HorseRacing" ? (
+      <>
+        <div>BathRust</div>
+        <div>67890123456789012</div>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <div>Guangzhou Challenger 2023</div>
+        <div>67890123456789012</div>
+      </>
+    ) : (
+      <>
+        <div>ICC Women T20 World Cup</div>
+        <div>09876543211234567</div>
+      </>
+    );
+
+  const seriesContent =
+    match === "Football" ? (
+      <>
+        <div>Brazilian Series A</div>
+        <div>12345678912343455</div>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <div>Evgeny Donskoy vs Omar Jasika</div>
+        <div>67890123456789012</div>
+      </>
+    ) : match === "HorseRacing" ? null : (
+      <>
+        <div>ICC Women T20 World Cup</div>
+        <div>56789012345678900</div>
+      </>
+    );
+
+  console.log(vendor, provider, match, "Vendor-provider-match");
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -23,7 +65,10 @@ const Cricket = () => {
     { header: "", field: "watch" },
     { header: "Date & Time", field: "date" },
     { header: "Matches/ID", field: "match" },
-    { header: "Series Name/ID", field: "series" },
+    ...(match !== "HorseRacing"
+      ? [{ header: "Series Name/ID", field: "series" }]
+      : []),
+
     {
       header: (
         <div className="row">
@@ -51,18 +96,8 @@ const Cricket = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -130,18 +165,8 @@ const Cricket = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -207,18 +232,8 @@ const Cricket = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -284,18 +299,8 @@ const Cricket = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -361,18 +366,8 @@ const Cricket = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -438,18 +433,8 @@ const Cricket = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -527,8 +512,13 @@ const Cricket = () => {
         </div>
 
         <div className="medium-font">
-        <span className="white-bg rounded-pill grey-border me-4 px-3 hover-orange-clr py-1 pointer" onClick={() => navigate(-1)}>
-        <FaArrowLeft className="me-2"/>Back</span>
+          <span
+            className="white-bg rounded-pill grey-border me-4 px-3 hover-orange-clr py-1 pointer"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="me-2" />
+            Back
+          </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

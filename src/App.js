@@ -58,7 +58,6 @@ import UsersMatchPl from "./pages/reports/match-wise-pl/UsersMatchPl";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
-  const role = localStorage?.getItem("role");
   return (
     <div>
       {!isLoggedIn ? (

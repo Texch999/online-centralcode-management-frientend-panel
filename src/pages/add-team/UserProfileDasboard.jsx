@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { MdLockReset, MdRemoveRedEye } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
@@ -12,7 +12,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PaymentGateway from "./components/PaymentGateway";
 import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
-
 
 const cardData = [
   {
@@ -251,10 +250,7 @@ const DefaultBottomShow = () => {
         </div>
       </div>
 
-      <hr
-        className="dashed-line mb-4"
-        style={{ color: "black" }}
-      />
+      <hr className="dashed-line mb-4" style={{ color: "black" }} />
 
       {/* Main Content Container */}
 
@@ -314,13 +310,9 @@ const DefaultBottomShow = () => {
   );
 };
 
-
-
 const UserProfileDashboard = () => {
-  // State for managing which component is active
   const [activeTab, setActiveTab] = useState("websitesLimit");
 
-  // Handler function to change the active tab
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
@@ -362,7 +354,10 @@ const UserProfileDashboard = () => {
                 alt="UserDashboard"
                 className="super-admin-profile-img-con"
               />
-              <div className="d-flex gap-2 super-admin-img-down-content" style={{ marginTop: "20px" }}>
+              <div
+                className="d-flex gap-2 super-admin-img-down-content"
+                style={{ marginTop: "20px" }}
+              >
                 <h6>Jayanta Pal</h6>
                 <FaPen className="yellow-font" size={13} />
               </div>

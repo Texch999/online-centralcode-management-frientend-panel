@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
 import { Images } from "../../images";
@@ -13,7 +13,6 @@ const SandCBanner = () => {
   const [activeBtn2, setActiveBtn2] = useState("Live");
   const ACTIVE_BTNS = ["User Posters", "Admin Posters"];
   const ACTIVE_BTNS2 = ["Live", "Schedule"];
-  const [startDate, setStartDate] = useState(new Date());
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
 
@@ -323,16 +322,14 @@ const SandCBanner = () => {
           </div>
         </>
 
-       
-          <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">Live Date</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-          <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">Live Time</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-       
+        <div className="col-3 flex-column mx-2">
+          <label className="black-text4 small-font mb-1">Live Date</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col-3 flex-column mx-2">
+          <label className="black-text4 small-font mb-1">Live Time</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
       </div>
 
       <div className=" d-flex flex-between w-50">

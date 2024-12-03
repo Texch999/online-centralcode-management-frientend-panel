@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
 
 const Broadcasting = () => {
   const [activeBtn, setActiveBtn] = useState("User Broadcasting");
-  const [startDate, setStartDate] = useState(new Date());
   const ACTIVE_BTNS = ["User Broadcasting", "Admin Broadcasting"];
 
   const handleSportClick = (item) => {
@@ -285,23 +283,23 @@ const Broadcasting = () => {
         </div>
 
         <div className="col-6 flex-column  ">
-        <label className="black-text4 mb-1 small-font">
-          Type Broadcasting Message
-        </label>
-        <textarea
-          placeholder="Enter"
-          className="all-none input-css2 small-font p-2 rounded"
-          rows="4"
-          style={{ resize: "none" }}
-        ></textarea>
-      </div>
-<div className="col-2 flex-end"><div className="saffron-btn2 small-font pointer ms-2 w-100">
-          Submit
-        </div></div>
-        
+          <label className="black-text4 mb-1 small-font">
+            Type Broadcasting Message
+          </label>
+          <textarea
+            placeholder="Enter"
+            className="all-none input-css2 small-font p-2 rounded"
+            rows="4"
+            style={{ resize: "none" }}
+          ></textarea>
+        </div>
+        <div className="col-2 flex-end">
+          <div className="saffron-btn2 small-font pointer ms-2 w-100">
+            Submit
+          </div>
+        </div>
       </div>
 
-     
       <div className="mt-4">
         <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={3} />
       </div>

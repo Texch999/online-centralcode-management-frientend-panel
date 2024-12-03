@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 function ScrollTable({
   data = [],
@@ -13,7 +12,6 @@ function ScrollTable({
   return (
     <div className={`w-100 table-wrapper ${tableHeight}`}>
       <table className="w-100 fixed-table white-bg">
-        {/* Table Header */}
         <thead className="white-bg">
           <tr className="border-bottom">
             {columns.map(({ header, width }, index) => (

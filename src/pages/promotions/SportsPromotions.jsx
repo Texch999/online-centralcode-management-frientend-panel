@@ -1,43 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
-import { MdBlockFlipped } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
-import NewPromotionPopUp from "./NewPromotionPopUp";
 import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
-import { MdOutlineFileUpload } from "react-icons/md";
-import EditPosterPopUp from "./EditPosterPopUp";
+
 import AddNewPromotionPopUp from "./AddNewPromotionPopUp";
 
 const SportsPromotions = () => {
   const [activeBtn, setActiveBtn] = useState("Admin Promotion");
-  const [startDate, setStartDate] = useState(new Date());
-
   const [addPromotionsModal, setAddPromotionsModal] = useState(false);
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
   const [userPromotion, setUserPromotion] = useState(false);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
-  const navigation = useNavigate();
 
- 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
 
-  console.log(userPromotion,"==>userPromotion");
-  
+  console.log(userPromotion, "==>userPromotion");
+
   useEffect(() => {
     if (activeBtn === "User Promotion") {
       setUserPromotion(true);
-    }
-    else{
+    } else {
       setUserPromotion(false);
     }
   }, [activeBtn]);
@@ -308,7 +298,7 @@ const SportsPromotions = () => {
 
       <div className="d-flex w-100 flex-between">
         <div className="d-flex w-60 flex-between mt-2">
-        <div className="col-3 flex-column mx-2">
+          <div className="col-3 flex-column mx-2">
             <label className="black-text4 small-font mb-1">From</label>
             <input className="input-css2 small-font" type="date" />
           </div>
@@ -317,22 +307,19 @@ const SportsPromotions = () => {
             <input className="input-css2 small-font" type="date" />
           </div>
 
+          <div className="col-3 flex-column me-3">
+            <label className="black-text4 small-font mb-1">Website</label>
+            <select className="input-css2 small-font">
+              <option>T Exchange</option>
+            </select>
+          </div>
 
-       
-            <div className="col-3 flex-column me-3">
-              <label className="black-text4 small-font mb-1">Website</label>
-              <select className="input-css2 small-font">
-                <option>T Exchange</option>
-              </select>
-            </div>
-
-            <div className="col-3 flex-column me-3">
-              <label className="black-text4 small-font mb-1">Sports</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
-            </div>
-        
+          <div className="col-3 flex-column me-3">
+            <label className="black-text4 small-font mb-1">Sports</label>
+            <select className="input-css2 small-font">
+              <option>All</option>
+            </select>
+          </div>
 
           <div className="saffron-btn2 small-font pointer mt-4  col-2">
             Submit
@@ -368,9 +355,8 @@ const SportsPromotions = () => {
         userPromotion={userPromotion}
       />
 
-<FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
+      <FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
     </div>
-
   );
 };
 

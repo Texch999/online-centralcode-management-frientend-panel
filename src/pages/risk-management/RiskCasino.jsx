@@ -36,7 +36,6 @@ function RiskCasino() {
     },
   ];
 
-  //WEBSITE_WISE
   const WEBSITE_WISE_COLUMNS = [
     { header: "Market Date & Time", field: "dateTime", width: "15%" },
     { header: "Website", field: "website", width: "50%" },
@@ -107,7 +106,6 @@ function RiskCasino() {
     },
   ];
 
-  // PROVIDER_WISE
   const PROVIDER_WISE_COLUMNS = [
     { header: "Market Date & Time", field: "dateTime", width: "15%" },
     { header: "Provider Name", field: "providerName", width: "15%" },
@@ -182,7 +180,6 @@ function RiskCasino() {
     },
   ];
 
-  //GAME_WISE
   const GAME_WISE_COLUMNS = [
     { header: "Market Date & Time", field: "dateTime", width: "15%" },
     { header: "Game Name", field: "gameName", width: "50%" },
@@ -253,7 +250,6 @@ function RiskCasino() {
     },
   ];
 
-  //TABLE_WISE
   const TABLE_WISE_COLUMNS = [
     { header: "Market Date & Time", field: "dateTime", width: "15%" },
     { header: "Table ID", field: "tableId", width: "15%" },

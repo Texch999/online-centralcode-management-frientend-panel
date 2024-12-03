@@ -2,7 +2,6 @@ import React from "react";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { FaSearch } from "react-icons/fa";
-import { FaGreaterThan } from "react-icons/fa6";
 import { FiChevronRight } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 

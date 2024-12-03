@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { FaChevronDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import SuccessPopup from "../../../popups/SuccessPopup";

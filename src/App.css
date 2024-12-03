@@ -511,3 +511,12 @@
   border: 15px solid #e9e9e9;
   border-radius: 5px;
 }
+.green-bg {
+  background: #48e448;
+}
+.clr-red {
+  color: #e9083d;
+}
+.dashed-grey-bg {
+  background: #ffffff33;
+}
