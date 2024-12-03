@@ -84,13 +84,13 @@ input[type="checkbox"] {
   background-color: #0fc000;
   border-radius: 30px;
 }
-.grey-box-table{
-  background-color: #7C7C7C;
+.grey-box-table {
+  background-color: #7c7c7c;
 }
-.grey-box {
+/* .grey-box {
   background-color: #7c7c7c;
   border-radius: 5px;
-}
+} */
 .yellow-round {
   background-color: #f3ba15;
   border-radius: 50px;
@@ -138,10 +138,7 @@ progress::-webkit-progress-bar {
 .football-scoreboard-bg {
   border-radius: 20px;
   background-image: url("../../../public/assets/football-bg.png");
-
   background-size: cover;
-
   background-repeat: no-repeat;
-
   background-attachment: fixed;
 }

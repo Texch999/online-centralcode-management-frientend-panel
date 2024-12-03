@@ -15,7 +15,6 @@ import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import RiskCasino from "./pages/risk-management/RiskCasino";
-// import Sports from "./pages/sports/Sports";
 import FancyResult from "./pages/fancy-result/FancyResult";
 import MarketResult from "./pages/market-result/MarketResult";
 import LiveBetList from "./pages/risk-management/LiveBetList";
@@ -67,6 +66,7 @@ import UserBetsList from "./pages/reports/UserBetsList";
 import SportsReport from "./pages/reports/SportsReport";
 import UserReports from "./pages/reports/UserReports";
 import ClientRental from "./pages/reports/ClientRental";
+import Sports from "./pages/sports/Sports";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -127,7 +127,7 @@ function App() {
               <Route path="/casino-promotions" element={<CasinoPromotions />} />
               <Route path="/broadcasting" element={<Broadcasting />} />
               <Route path="/banners" element={<SandCBanner />} />
-              {/* <Route path="/sports" element={<Sports />} /> */}
+              <Route path="/sports" element={<Sports />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route
