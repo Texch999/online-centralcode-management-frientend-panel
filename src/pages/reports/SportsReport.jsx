@@ -6,6 +6,7 @@ import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 
 function SportsReport() {
   const navigate = useNavigate();
@@ -154,6 +155,10 @@ function SportsReport() {
         <h6 className="d-flex yellow-font mb-0">
         P/L Reports Sports Wise
         </h6>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
+          <input className="small-font all-none" placeholder="Search..." />
+        </div>
       </div>
      
 
