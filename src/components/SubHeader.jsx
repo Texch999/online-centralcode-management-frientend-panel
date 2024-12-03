@@ -14,6 +14,7 @@ function SubHeader() {
   const onRequestClose = () => {
     setShowResetPswdModal(false);
   };
+
   const menuConfig = {
     // Management Menu Items
     management: [
@@ -263,9 +264,16 @@ function SubHeader() {
   };
 
   return (
-    <div className="w-100 d-flex grey-bg3 scroll-x">
+    <div className="w-100 d-flex grey-bg3">
       {menuItems.map((menu, index) => (
-        <div className="col-2" key={index}>
+        <div
+          className={
+            ["management", "director", "super_admin"].includes(role_code)
+              ? "col"
+              : "col-2"
+          }
+          key={index}
+        >
           <Dropdown
             onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
             className="w-100"
@@ -284,18 +292,12 @@ function SubHeader() {
                 <FaChevronDown size={16} className="ms-2" />
               )}
             </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 br-0px p-0  text-ellipsis">
-              {menu.options.map((option, optIndex) => (
+            <Dropdown.Menu className="w-100 br-0px p-0 text-ellipsis">
+              {menu?.options?.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
                   className="white-btn yellow-hover small-font"
-                  onClick={() => option.path && navigate(option.path)}
-
-                  // onClick={
-                  //   option.onClick
-                  //     ? option.onClick
-                  //     : () => navigate(option.path)
-                  // }
+                  onClick={() => navigate(option.path)}
                 >
                   {option.label}
                 </Dropdown.Item>

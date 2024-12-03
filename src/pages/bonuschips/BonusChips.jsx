@@ -84,7 +84,7 @@ function BonusChips() {
     <div>
       <div className="flex-column mb-3 mt-2">
         <h6 className="d-flex yellow-font my-2">Bonus Chips</h6>
-        <div className="d-flex">
+        <div className="d-flex small-font">
           {buttons.map((btn, index) => (
             <div
               key={index}
