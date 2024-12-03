@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,8 @@ const Result = () => {
   const ACTIVE_BTNS = ["Sports", "Casino"];
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
-    // Navigate to the individual match component
-    navigation(`/match/${encodeURIComponent(matchName)}`); // Encode special characters
+    navigation(`/match/${encodeURIComponent(matchName)}`);
   };
-
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
@@ -38,7 +36,7 @@ const Result = () => {
       sports: <div>Cricket</div>,
       provider: (
         <div>
-          Ezugi 
+          Ezugi
           <br />
           P. ID: 1.11045677544
         </div>
@@ -49,7 +47,7 @@ const Result = () => {
           onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
           className="pointer"
         >
-          Andar Bahar 
+          Andar Bahar
           <br />M ID: 11023843754858
         </div>
       ),
@@ -80,7 +78,7 @@ const Result = () => {
       sports: <div>Cricket</div>,
       provider: (
         <div>
-          Ezugi 
+          Ezugi
           <br />
           P. ID: 1.11045677544
         </div>
@@ -91,7 +89,7 @@ const Result = () => {
           onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
           className="pointer"
         >
-          Andar Bahar 
+          Andar Bahar
           <br />M ID: 11023843754858
         </div>
       ),
@@ -122,7 +120,7 @@ const Result = () => {
       sports: <div>Cricket</div>,
       provider: (
         <div>
-          Ezugi 
+          Ezugi
           <br />
           P. ID: 1.11045677544
         </div>
@@ -133,7 +131,7 @@ const Result = () => {
           onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
           className="pointer"
         >
-          Andar Bahar 
+          Andar Bahar
           <br />M ID: 11023843754858
         </div>
       ),
@@ -165,7 +163,7 @@ const Result = () => {
       sports: <div>Cricket</div>,
       provider: (
         <div>
-          Ezugi 
+          Ezugi
           <br />
           P. ID: 1.11045677544
         </div>
@@ -176,7 +174,7 @@ const Result = () => {
           onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
           className="pointer"
         >
-          Andar Bahar 
+          Andar Bahar
           <br />M ID: 11023843754858
         </div>
       ),
@@ -207,7 +205,7 @@ const Result = () => {
       sports: <div>Cricket</div>,
       provider: (
         <div>
-          Ezugi 
+          Ezugi
           <br />
           P. ID: 1.11045677544
         </div>
@@ -218,7 +216,7 @@ const Result = () => {
           onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
           className="pointer"
         >
-          Andar Bahar 
+          Andar Bahar
           <br />M ID: 11023843754858
         </div>
       ),
@@ -238,7 +236,6 @@ const Result = () => {
         </div>
       ),
     },
-    
   ];
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -559,15 +556,14 @@ const Result = () => {
         ))}
       </div>
       <div className="d-flex w-40 flex-between mt-2">
-      <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">From</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-          <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">To</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-
+        <div className="col-3 flex-column mx-2">
+          <label className="black-text4 small-font mb-1">From</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col-3 flex-column mx-2">
+          <label className="black-text4 small-font mb-1">To</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
 
         {activeBtn !== "Casino" && (
           <div className="col-3 flex-column me-3">

@@ -1,8 +1,6 @@
-import React, { useRef, useState } from "react";
-import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import React, {  useState } from "react";
+import {  FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
 import { MdBlockFlipped } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
@@ -17,15 +15,10 @@ import EditPosterPopUp from "./EditPosterPopUp";
 
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
-  const [startDate, setStartDate] = useState(new Date());
   const [addNewModal, setAddNewModal] = useState(false);
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster,setEditPoster]=useState(false)
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
-
-  const navigation = useNavigate();
- 
- 
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);

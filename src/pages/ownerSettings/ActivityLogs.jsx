@@ -1,18 +1,15 @@
-import React, { useRef, useState } from "react";
-import { FaRegCalendarMinus } from "react-icons/fa";
+import React from "react";
 import Table from "../../components/Table";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
 import { FaCircleQuestion, FaMobileButton } from "react-icons/fa6";
 
 const ActivityLogs = () => {
- 
   const navigation = useNavigate();
- 
+
   const handleMatchClick = (userActivity) => {
-    navigation(`/userActivity/${encodeURIComponent(userActivity)}`);
+    navigation(`/userActivity/${(userActivity)}`);
   };
 
   const ACTIVITY_COLUMNS = [

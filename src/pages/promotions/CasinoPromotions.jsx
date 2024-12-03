@@ -1,33 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaRegCalendarMinus, FaSearch } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+
 import Table from "../../components/Table";
-import { useNavigate } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
-import { MdBlockFlipped } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
-import NewPromotionPopUp from "./NewPromotionPopUp";
 import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
-import { MdOutlineFileUpload } from "react-icons/md";
-import EditPosterPopUp from "./EditPosterPopUp";
-import AddNewPromotionPopUp from "./AddNewPromotionPopUp";
 import CasinoPromotionsPopUp from "./CasinoPromotionsPopUp";
 
 const CasinoPromotions = () => {
   const [activeBtn, setActiveBtn] = useState("Admin Promotion");
-  const [startDate, setStartDate] = useState(new Date());
 
-  const [addPromotionsModal, setAddPromotionsModal] = useState(false);
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
   const [casinoPromotion, setCasinoPromotion] = useState(false);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
-  const navigation = useNavigate();
-
-
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
-import ActionPopup from './ActionPopup';
+import ActionPopup from "./ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 const CasinoGames = () => {
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-  const { vendor, provider, game } = location.state || {};
+  const { vendor, provider, game } = useParams();
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {
     setIsACtive(!isActive);
@@ -131,7 +132,7 @@ const CasinoGames = () => {
   return (
     <div>
       <div className="d-flex flex-between">
-        <div className="pointer my-2 large-font" onClick={() => naviagte(-1)}>
+        <div className="pointer my-2 large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Casino<span className="mx-1">{">"}</span>
           </span>{" "}
@@ -146,7 +147,9 @@ const CasinoGames = () => {
           </span>
         </div>
 
-        <div className="small-font">
+        <div className="medium-font">
+        <span className="white-bg grey-border rounded-pill me-4 px-3 py-1 pointer hover-orange-clr" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="me-2"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
@@ -154,7 +157,7 @@ const CasinoGames = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive}/>
+      <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>
   );
 };

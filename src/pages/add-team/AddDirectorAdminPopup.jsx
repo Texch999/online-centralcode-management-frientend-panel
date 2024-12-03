@@ -7,17 +7,14 @@ import { FiChevronDown } from "react-icons/fi";
 import "../../App.css";
 
 const AddDirectorAdminModal = ({ show, handleClose }) => {
-  // State to manage password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Event handlers for managing focus state
   const handleFocus = () => setIsOpen(true);
   const handleBlur = () => setIsOpen(false);
 
-  // Function to toggle password visibility
   const togglePasswordVisibility = (setVisibility) => {
     setVisibility((prev) => !prev);
   };
@@ -39,7 +36,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
 
         <form className="add-management-popup-form px-3">
           <div className="row mb-3">
-            
             <div className="col-md-4 position-relative">
               <label>Role</label>
               <div className="custom-select-wrapper">
@@ -76,7 +72,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
 
           {/* Row 3: Website, Share, Rent */}
           <div className="row mb-3">
-
             <div className="col-md-4">
               <label>Website</label>
               <select className="form-control">

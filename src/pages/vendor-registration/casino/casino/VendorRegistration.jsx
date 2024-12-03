@@ -124,7 +124,6 @@ const VendorRegistration = () => {
           }`}
           onClick={() => {
             addNewProviderModal();
-            handleClick(null);
           }}
         >
           <IoMdAdd size={19} />
@@ -137,7 +136,10 @@ const VendorRegistration = () => {
           <div>
             {isEditVendor ? (
               <div>
-                <RegisterNewVendor isEdit={isEditVendor} setIsEdit={setISEditVendor} />
+                <RegisterNewVendor
+                  isEdit={isEditVendor}
+                  setIsEdit={setISEditVendor}
+                />
               </div>
             ) : (
               <div className="radius box-shadow">

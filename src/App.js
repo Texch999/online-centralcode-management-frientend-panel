@@ -47,6 +47,7 @@ import CasinoPromotions from "./pages/promotions/CasinoPromotions";
 import Broadcasting from "./pages/promotions/Broadcasting";
 import SandCBanner from "./pages/promotions/SandCBanner";
 import GatewayTransactions from "./pages/wallet/GatewayTransactions";
+import DownLineAdmins from "./pages/reports/DownLineAdmins";
 import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
 import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
@@ -55,10 +56,20 @@ import PaymentGateway from "./pages/add-team/PaymentGateway";
 import AddWibsites from "./pages/add-team/AddWebsites";
 import LiveBlockSports from "./pages/live-block/LiveBlockSports";
 import SportsLiveCricket from "./pages/live-block/components/SportsLiveCricket";
+import MatchWisePl from "./pages/reports/match-wise-pl/MatchWisePl";
+import IndividualMatchPl from "./pages/reports/match-wise-pl/IndividualMatchPl";
+import MatchAdminsUsersPl from "./pages/reports/match-wise-pl/MatchAdminsUsersPl";
+import UsersMatchPl from "./pages/reports/match-wise-pl/UsersMatchPl";
+import Userslist from "./pages/reports/Userslist";
+import SuperAdminDL from "./pages/reports/SuperAdminDL";
+import CasinoReports from "./pages/reports/CasinoReports";
+import UserBetsList from "./pages/reports/UserBetsList";
+import SportsReport from "./pages/reports/SportsReport";
+import UserReports from "./pages/reports/UserReports";
+import ClientRental from "./pages/reports/ClientRental";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
-  const role = localStorage?.getItem("role");
   return (
     <div>
       {!isLoggedIn ? (
@@ -68,7 +79,7 @@ function App() {
           {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
-              <Route path="/dashboard" element={<Homepage />} />
+              <Route path="/" element={<Homepage />} />
               <Route path="/casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/management-team" element={<ManagementTeam />} />
@@ -86,11 +97,17 @@ function App() {
                 element={<DashboardViewAll />}
               />
               <Route
-                path="/risk-bet-history/:matchName"
+                path="/risk-sports/:matchName"
                 element={<RiskBetHistory />}
               />
-              <Route path="/casino-vendor" element={<CasinoVendor />} />
-              <Route path="/casino-games" element={<CasinoGames />} />
+              <Route
+                path="/casino-vendor/:vendor/:provider"
+                element={<CasinoVendor />}
+              />
+              <Route
+                path="/casino-games/:vendor/:provider/:game"
+                element={<CasinoGames />}
+              />
               <Route
                 path="/vendor-registartion"
                 element={<VendorRegistration />}
@@ -113,21 +130,33 @@ function App() {
               {/* <Route path="/sports" element={<Sports />} /> */}
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
-              <Route path="/sports-providers" element={<SportProviders />} />
+              <Route
+                path="/sports-providers/:vendor/:provider"
+                element={<SportProviders />}
+              />
               <Route
                 path="/deleted-bet-history"
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
-              <Route path="/cricket" element={<Cricket />} />
-              <Route path="/fancy-cricket" element={<FancyCricket />} />
               <Route
-                path="/fancy-individual-match"
+                path="/cricket/:vendor/:provider/:match"
+                element={<Cricket />}
+              />
+              <Route
+                path="/fancy-cricket/:vendor/:provider/:match"
+                element={<FancyCricket />}
+              />
+              <Route
+                path="/fancy-individual-match/:vendor/:provider/:match/:individualMatch"
                 element={<FancyIndividualCricketMatch />}
               />
-              <Route path="/cricket-bookmaker" element={<CricketBookmaker />} />
               <Route
-                path="/cricket-livestreaming"
+                path="/cricket-bookmaker/:vendor/:provider/:match"
+                element={<CricketBookmaker />}
+              />
+              <Route
+                path="/cricket-livestreaming/:vendor/:provider/:match"
                 element={<CricketLiveStreaming />}
               />
               <Route
@@ -135,7 +164,7 @@ function App() {
                 element={<SportsVendorRegistration />}
               />
               <Route
-                path="/cricket-scoreboard"
+                path="/cricket-scoreboard/:vendor/:provider/:match"
                 element={<CricketScoreboard />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />
@@ -156,6 +185,7 @@ function App() {
                 path="/gateway-transactions"
                 element={<GatewayTransactions />}
               />
+              <Route path="/pl-report-downline" element={<DownLineAdmins />} />
               <Route
                 path="/my-vendors-account"
                 element={<MyVendorsAccount />}
@@ -164,7 +194,30 @@ function App() {
               <Route path="/payment-details" element={<PaymentGateway />} />
               <Route path="/websites" element={<AddWibsites />} />
               <Route path="/live-block-sports" element={<LiveBlockSports />} />
-              <Route path="/sports-live-cricket/:sport" element={<SportsLiveCricket />} />
+              <Route
+                path="/sports-live-cricket/:sport"
+                element={<SportsLiveCricket />}
+              />
+              <Route path="/match-wise-pl" element={<MatchWisePl />} />
+              <Route
+                path="/individual-match-pl/:matchName"
+                element={<IndividualMatchPl />}
+              />
+              <Route
+                path="/match-admins-users-pl/:matchName/:role"
+                element={<MatchAdminsUsersPl />}
+              />
+              <Route
+                path="/users-match-pl/:matchName/:role/:userDetails"
+                element={<UsersMatchPl />}
+              />
+              <Route path="/downline/:superadmin" element={<SuperAdminDL />} />
+              <Route path="/superadmin/:user" element={<Userslist />} />
+              <Route path="/pl-casino-report" element={<CasinoReports />} />
+              <Route path="/userbets/:username" element={<UserBetsList />} />
+              <Route path="/pl-report-sports" element={<SportsReport />} />
+              <Route path="/pl-report-users" element={<UserReports />} />
+              <Route path="/client-rental-sheet" element={<ClientRental />} />
             </Routes>
           </div>
         </div>

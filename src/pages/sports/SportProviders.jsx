@@ -1,30 +1,26 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "../casino/ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 const SportProviders = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { vendor, provider } = location.state || {};
+  const { vendor, provider } = useParams();
   const handleGameMatches = (match) => {
     if (provider === "Odds") {
-      navigate("/cricket", { state: { vendor, provider, match } });
+      navigate(`/cricket/${vendor}/${provider}/${match}`);
     } else if (provider === "fancy") {
-      navigate("/fancy-cricket", { state: { vendor, provider, match } });
+      navigate(`/fancy-cricket/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 1") {
-      navigate("/cricket-bookmaker", { state: { vendor, provider, match } });
+      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 2") {
-      navigate("/cricket-bookmaker", { state: { vendor, provider, match } });
+      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
     } else if (provider === "Live Streaming") {
-      navigate("/cricket-livestreaming", {
-        state: { vendor, provider, match },
-      });
+      navigate(`/cricket-livestreaming/${vendor}/${provider}/${match}`);
     } else if (provider === "Scoreboard") {
-      navigate("/cricket-scoreboard", {
-        state: { vendor, provider, match },
-      });
+      navigate(`/cricket-scoreboard/${vendor}/${provider}/${match}`);
     }
   };
   const [isActive, setIsACtive] = useState(false);
@@ -148,15 +144,15 @@ const SportProviders = () => {
     {
       sno: <div className="flex-center">4</div>,
       games: (
-        <div className="pointer" onClick={() => handleGameMatches("Sic Bo")}>
-          Sic bo
+        <div className="pointer" onClick={() => handleGameMatches("Kabbadi")}>
+          Kabbadi
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Sic Bo")}
+            onClick={() => handleGameMatches("Kabbadi")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -184,16 +180,16 @@ const SportProviders = () => {
       games: (
         <div
           className="pointer"
-          onClick={() => handleGameMatches("Table Game")}
+          onClick={() => handleGameMatches("HorseRacing")}
         >
-          Tables Game
+          Horse Racing
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Table Game")}
+            onClick={() => handleGameMatches("HorseRacing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -221,16 +217,16 @@ const SportProviders = () => {
       games: (
         <div
           className="pointer"
-          onClick={() => handleGameMatches("Black Jack")}
+          onClick={() => handleGameMatches("Greyhound Racing")}
         >
-          Black Jack
+          GreyHound Racing
         </div>
       ),
       eye: (
         <div className="d-flex flex-column">
           <span
             className=" font-20"
-            onClick={() => handleGameMatches("Black Jack")}
+            onClick={() => handleGameMatches("Greyhound Racing")}
           >
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -269,13 +265,20 @@ const SportProviders = () => {
           </span>
         </div>
 
-        <div className="small-font">
+        <div className="medium-font">
+          <span
+            className="white-bg rounded-pill me-4 px-3 py-1 pointer hover-orange-clr"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="me-1" />
+            Back
+          </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
 
       <div className="radius mt-3">
-        <Table columns={cols} data={data} itemsPerPage={3} />
+        <Table columns={cols} data={data} itemsPerPage={10} />
       </div>
       <ActionPopup show={isActive} setShow={setIsACtive} />
     </div>

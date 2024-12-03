@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 function Homepage() {
   ChartJS.register(
@@ -38,7 +37,7 @@ function Homepage() {
     Legend
   );
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
@@ -571,7 +570,7 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
   return (
     <div className="p-2">
-      <h5 className="blck-text">Welcome sri</h5>
+      <h4 className="blck-text">Welcome sri</h4>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
@@ -582,9 +581,9 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
             <div className="dashboard-white-bg pb-2 box-shadow">
               <div className="d-flex flex-column p-2">
                 <div className="d-flex flex-between align-items-center">
-                  <div className="medium-font black-text">Sales Report</div>
+                  <div className="large-font black-text">Sales Report</div>
                   <div
-                    className="viewall-btn orange-clr small-font px-2 py-1 pointer fw-800"
+                    className="viewall-btn orange-clr small-font px-3 py-1 pointer fw-800"
                     onClick={() => navigate("/dashboard-view-all")}
                   >
                     View All
@@ -595,7 +594,7 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
                 </div>
               </div>
               <div className="hor-grey-line"></div>
-              <div className="px-3 py-2">
+              <div className="px-3 py-2 table-50vh">
                 <Bar data={barData} />
               </div>
             </div>
@@ -605,34 +604,35 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
                 <div className="col-3 pe-1">
                   <div className="d-flex flex-column text-white px-2 blue-bg-box">
                     <div className="small-font py-2">Casino Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3 pe-1">
                   <div className=" voilet-bg-box d-flex flex-column text-white px-2">
                     <div className="small-font py-2">Sports Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3 pe-1">
                   <div className="box-3 d-flex flex-column text-white px-2">
                     <div className="small-font py-2">S+C Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3 ">
                   <div className="pink-bg-box d-flex flex-column text-white px-2">
                     <div className="small-font py-2">Total Profit</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
               </div>
-
+              <div className="">
               <ScrollTable
                 columns={customerCols}
                 data={customerData}
-                tableHeight="h-50vh"
+                tableHeight="table-50vh"
               />
+              </div>
             </div>
           </div>
         </div>
@@ -717,7 +717,7 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
                   return (
                     <div
                       key={index}
-                      className={`px-2 py-1 me-1 ${
+                      className={`px-2 py-1  ${
                         activeBtn === index ? "active-saffron-btn " : ""
                       }`}
                       onClick={() => handleClick(index)}
@@ -740,7 +740,7 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
                 <ScrollTable
                   columns={cols}
                   data={siteWinnerData}
-                  tableHeight="h-58vh"
+                  tableHeight="table-50vh"
                 />
               )}
 
@@ -748,18 +748,14 @@ const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
                 <ScrollTable
                   columns={cols}
                   data={siteLooseData}
-                  tableHeight="h-58vh"
+                  tableHeight="table-50vh"
                 />
               )}
             </div>
           </div>
         </div>
       </div>
-      <div>
-        <h1>Homepage</h1>
-        {/* <Table /> */}
-      </div>
-      </div>
+    </div>
   );
 }
 

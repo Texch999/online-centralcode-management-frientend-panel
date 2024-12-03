@@ -1,11 +1,12 @@
 import React from "react";
 import Table from "../../components/Table";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 const FancyIndividualCricketMatch = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { vendor, provider, match, individualMatch } = location.state || {};
+  const { vendor, provider, match, individualMatch } = useParams();
   const cols = [
     { header: <div className="ms-3">Fancy Odds</div>, field: "fancyodds" },
     { header: <div className="flex-center">No</div>, field: "no" },
@@ -133,7 +134,9 @@ const FancyIndividualCricketMatch = () => {
             <span className="fw-600">{individualMatch}</span>
           </span>
         </div>
-        <div className="small-font">
+        <div className="medium-font">
+        <span className="white-bg rounded-pill me-4 px-3 grey-border py-1 hover-orange-clr pointer" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="me-2"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

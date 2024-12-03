@@ -10,8 +10,6 @@ import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
 
-// card data
-
 const cardData = [
   {
     title: "Share Revenue",
@@ -99,7 +97,7 @@ const Card = ({
 };
 
 const DownlineList = () => {
-  const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false)
+  const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
 
   const navigate = useNavigate();
 
@@ -129,7 +127,12 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2 pointer" size={15} onClick={() => setShowCreditAmountPopup(true)}/>
+          0{" "}
+          <GrEdit
+            className="icon-edit ms-2 pointer"
+            size={15}
+            onClick={() => setShowCreditAmountPopup(true)}
+          />
         </>
       ),
       totalCusD: 10000,
@@ -146,7 +149,11 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2 pointer" />
             <MdBlockFlipped size={20} className="icon-action me-2 pointer" />
-            <MdSwapVert size={20} className="icon-action pointer" onClick={handleNavigateUserDashboard}/>
+            <MdSwapVert
+              size={20}
+              className="icon-action pointer"
+              onClick={handleNavigateUserDashboard}
+            />
           </div>
         </div>
       ),
@@ -368,7 +375,10 @@ const DownlineList = () => {
         />
       </div>
 
-      <CreditReferencePopup show={showCreditAmountPopup} onHide={() => setShowCreditAmountPopup(false)}/>
+      <CreditReferencePopup
+        show={showCreditAmountPopup}
+        onHide={() => setShowCreditAmountPopup(false)}
+      />
     </div>
   );
 };

@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import "../casino/style.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import ActionPopup from "./ActionPopup";
+import { FaArrowLeft } from "react-icons/fa";
 
 const CasinoVendor = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { vendor, provider } = location.state || {};
+  const { vendor, provider } = useParams();
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {
     setIsACtive(!isActive);
   };
 
   const handleGamesPage = (game) => {
-    navigate("/casino-games", { state: { vendor, provider, game } });
+    navigate(`/casino-games/${vendor}/${provider}/${game}`);
   };
 
   const cols = [
@@ -36,7 +36,7 @@ const CasinoVendor = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column pointer">
           <span className=" font-20" onClick={() => handleGamesPage("Poker")}>
             <IoEyeOutline className="orange-clr" />
           </span>
@@ -241,7 +241,9 @@ const CasinoVendor = () => {
             {provider}
           </span>
         </div>
-        <div className="small-font">
+        <div className="medium-font">
+        <span className="white-bg rounded-pill grey-border me-4 px-3 py-1 pointer hover-orange-clr" onClick={() => navigate(-1)}>
+        <FaArrowLeft className="me-2"/>Back</span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

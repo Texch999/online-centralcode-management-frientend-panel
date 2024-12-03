@@ -7,7 +7,7 @@ import ActionPopup from "../casino/ActionPopup";
 const Sports = () => {
   const navigate = useNavigate();
   const handleSportNextPage = (vendor, provider) => {
-    navigate("/sports-providers", { state: { vendor, provider } });
+    navigate(`/sports-providers/${vendor}/${provider}`);
   };
 
   const [isActive, setIsACtive] = useState(false);
@@ -39,7 +39,7 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       providers: (
-        <div className="d-flex flex-column pointer">
+        <div className="d-flex flex-column pointer small-font">
           <div
             className="py-2 "
             onClick={() => handleSportNextPage("Jitendra", "Odds")}

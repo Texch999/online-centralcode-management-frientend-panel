@@ -2,11 +2,19 @@ import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import ManagementResetPasswordPopup from "../pages/add-team/ManagementResetPasswordPopup";
 
 function SubHeader() {
+  const role = localStorage.getItem("role");
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
   const navigate = useNavigate();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showResetPswdModal, setShowResetPswdModal] = useState(false);
+
+  const onRequestClose = () => {
+    setShowResetPswdModal(false);
+  };
   const menuItems = [
     {
       label: "Adding",
@@ -39,19 +47,28 @@ function SubHeader() {
         { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
       ],
     },
-    {
-      label: "Wallet",
-      options: [
-        { label: "My Vendors Account", path: "/my-vendors-account" },
-        { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-        {
-          label: "Offline Deposit/Withdraw",
-          path: "/offline-deposit-withdraw",
+
+    role === "Director"
+      ? {
+          label: "Wallet",
+          options: [
+            { label: "Tickets", path: "/tickets" },
+            { label: "Gateway Transactions", path: "/gateway-transactions" },
+          ],
+        }
+      : {
+          label: "Wallet",
+          options: [
+            { label: "My Vendors Account", path: "/my-vendors-account" },
+            { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+            {
+              label: "Offline Deposit/Withdraw",
+              path: "/offline-deposit-withdraw",
+            },
+            { label: "Tickets", path: "/tickets" },
+            { label: "Gateway Transactions", path: "/gateway-transactions" },
+          ],
         },
-        { label: "Tickets", path: "/tickets" },
-        { label: "Gateway Transactions", path: "/gateway-transactions" },
-      ],
-    },
     {
       label: "Reports",
       options: [
@@ -64,26 +81,48 @@ function SubHeader() {
         { label: "Client Rental Sheet", path: "/client-rental-sheet" },
       ],
     },
-    {
-      label: "Owner Settings",
-      options: [
-        { label: "Results", path: "/results" },
-        { label: "Reference Data", path: "/reference-data" },
-        { label: "Privacy Policy", path: "/privacy-policy" },
-        { label: "Activity Logs", path: "/activity-logs" },
-      ],
-    },
-    {
-      label: "Promotions",
-      options: [
-        { label: "Create Promotions Type", path: "/create-promotion-type" },
-        { label: "Sports Promotions", path: "/sports-promotions" },
-        { label: "Casino Promotions", path: "/casino-promotions" },
-        { label: "Offer", path: "/offer" },
-        { label: "Banners (Casino/Sports)", path: "/banners" },
-        { label: "Broadcasting", path: "/broadcasting" },
-      ],
-    },
+
+    role === "Director"
+      ? {
+          label: "Director Settings",
+          options: [
+            { label: "Edit Profile", onClick: () => setShowEditModal(true) },
+            {
+              label: "Reset Password",
+              onClick: () => setShowResetPswdModal(true),
+            },
+            { label: "Activity Logs", path: "/activity-logs" },
+          ],
+        }
+      : {
+          label: "Owner Settings",
+          options: [
+            { label: "Results", path: "/results" },
+            { label: "Reference Data", path: "/reference-data" },
+            { label: "Privacy Policy", path: "/privacy-policy" },
+            { label: "Activity Logs", path: "/activity-logs" },
+          ],
+        },
+
+    role === "Director"
+      ? {
+          label: "Promotions",
+          options: [
+            { label: "Sports Promotions", path: "/sports-promotions" },
+            { label: "Casino Promotions", path: "/casino-promotions" },
+          ],
+        }
+      : {
+          label: "Promotions",
+          options: [
+            { label: "Create Promotions Type", path: "/create-promotion-type" },
+            { label: "Sports Promotions", path: "/sports-promotions" },
+            { label: "Casino Promotions", path: "/casino-promotions" },
+            { label: "Offer", path: "/offer" },
+            { label: "Banners (Casino/Sports)", path: "/banners" },
+            { label: "Broadcasting", path: "/broadcasting" },
+          ],
+        },
   ];
 
   const handleDropdownToggle = (index, isOpen) => {
@@ -118,7 +157,11 @@ function SubHeader() {
                 <Dropdown.Item
                   key={optIndex}
                   className="white-btn yellow-hover small-font"
-                  onClick={() => navigate(option.path)}
+                  onClick={
+                    option.onClick
+                      ? option.onClick
+                      : () => navigate(option.path)
+                  }
                 >
                   {option.label}
                 </Dropdown.Item>
@@ -127,6 +170,11 @@ function SubHeader() {
           </Dropdown>
         </div>
       ))}
+
+      <ManagementResetPasswordPopup
+        isOpen={showResetPswdModal}
+        onRequestClose={onRequestClose}
+      />
     </div>
   );
 }

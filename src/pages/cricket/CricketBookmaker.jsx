@@ -2,13 +2,49 @@ import React, { useState } from "react";
 import BlockPopup from "../popups/BlockPopup";
 import DeletePopup from "../popups/DeletePopup";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
+import { FaArrowLeft } from "react-icons/fa";
 
 const CricketBookmaker = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { vendor, provider, match } = location.state || {};
+  const { vendor, provider, match } = useParams();
+
+  const matchContent =
+    match === "Football" ? (
+      <>
+        <div>Santos vs Cruzeiro MG</div>
+        <div>12345678912343455</div>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <div>Guangzhou Challenger 2023</div>
+        <div>67890123456789012</div>
+      </>
+    ) : (
+      <>
+        <div>ICC Women T20 World Cup</div>
+        <div>09876543211234567</div>
+      </>
+    );
+
+  const seriesContent =
+    match === "Football" ? (
+      <>
+        <div>Brazilian Series A</div>
+        <div>12345678912343455</div>
+      </>
+    ) : match === "Tennis" ? (
+      <>
+        <div>Evgeny Donskoy vs Omar Jasika</div>
+        <div>67890123456789012</div>
+      </>
+    ) : (
+      <>
+        <div>ICC Women T20 World Cup</div>
+        <div>56789012345678900</div>
+      </>
+    );
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -50,18 +86,8 @@ const CricketBookmaker = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -129,18 +155,8 @@ const CricketBookmaker = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -206,18 +222,8 @@ const CricketBookmaker = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -283,18 +289,8 @@ const CricketBookmaker = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -360,18 +356,8 @@ const CricketBookmaker = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -437,18 +423,8 @@ const CricketBookmaker = () => {
           <div>08:00:00</div>
         </div>
       ),
-      match: (
-        <div className="d-flex flex-column">
-          <div>New Zealand vs India</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
-      series: (
-        <div className="d-flex flex-column">
-          <div>ICC Women T20 world cup</div>
-          <div>12345678912343455</div>
-        </div>
-      ),
+      match: [matchContent],
+      series: [seriesContent],
 
       back_lay: (
         <div className="d-flex w-100">
@@ -525,7 +501,14 @@ const CricketBookmaker = () => {
           </span>
         </div>
 
-        <div className="small-font">
+        <div className="medium-font">
+          <span
+            className="white-bg rounded-pill me-4 grey-border hover-orange-clr px-3 py-1 pointer"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="me-2" />
+            Back
+          </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>

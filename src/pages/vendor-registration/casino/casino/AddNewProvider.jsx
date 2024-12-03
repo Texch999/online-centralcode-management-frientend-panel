@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { FaChevronDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
+import SuccessPopup from "../../../popups/SuccessPopup";
 
 const AddNewProvider = ({ show, setShow }) => {
+  const[success, setSuccess]=useState(false);
   const [addnewGame, setAddNewGame] = useState(false);
+  const handleSubmit=()=>{
+    setSuccess(!success)
+  }
 
   const handleGameBtn = () => {
     setAddNewGame((prevState)=>!prevState);
@@ -16,7 +20,7 @@ const AddNewProvider = ({ show, setShow }) => {
       <div className="p-2">
         <div className="d-flex flex-between text-black px-2">
           <div className="medium-font">Select New Provider</div>
-          <div onClick={() => setShow(false)} className="font-20">
+          <div onClick={() => setShow(false)} className="font-20 pointer">
             <IoClose />
           </div>
         </div>
@@ -69,9 +73,10 @@ const AddNewProvider = ({ show, setShow }) => {
             </div>
           )}
 
-          <div className="my-2 saffron-btn2 br-5 mx-2 pointer">Submit</div>
+          <div className="my-2 saffron-btn2 br-5 mx-2 pointer" onClick={handleSubmit}>Submit</div>
         </div>
       </div>
+      <SuccessPopup show={success} setShow={setSuccess} title={"New Provider Added"}/>
     </Modal>
   );
 };

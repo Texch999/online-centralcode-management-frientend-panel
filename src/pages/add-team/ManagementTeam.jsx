@@ -12,7 +12,6 @@ import "../../App.css";
 import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 
 const ManagementTeam = () => {
-  // State for managing table data, modals, and form data
   const [tableData, setTableData] = useState(
     Array.from({ length: 15 }, (_, index) => ({
       id: index + 1,
@@ -45,12 +44,10 @@ const ManagementTeam = () => {
     managementPassword: "",
   });
 
-  // Helper functions for modal management
   const toggleModal = (modalName, value) => {
     setModalState((prev) => ({ ...prev, [modalName]: value }));
   };
 
-  // Functions to handle showing and hiding the Add Management modal
   const handleAddModal = (isOpen) => {
     setFormData({
       role: "",
@@ -66,7 +63,6 @@ const ManagementTeam = () => {
     toggleModal("showAddModal", isOpen);
   };
 
-  // Handles opening the modal for editing an existing entry
   const handleEdit = (rowId) => {
     const rowData = tableData.find((row) => row.id === rowId);
     if (rowData) {
@@ -86,7 +82,6 @@ const ManagementTeam = () => {
     }
   };
 
-  // Handles form submission to either add or edit data
   const handleFormSubmit = (newData) => {
     setTableData((prevData) => {
       if (isEditing) {
@@ -99,18 +94,21 @@ const ManagementTeam = () => {
     toggleModal("showAddModal", false);
   };
 
-  // Handles opening the block account confirmation pop-up
   const handleBlockPopup = (rowId) => {
-    setModalState({ ...modalState, isBlockPopupVisible: true, blockAccountId: rowId });
+    setModalState({
+      ...modalState,
+      isBlockPopupVisible: true,
+      blockAccountId: rowId,
+    });
   };
 
-  // Handles blocking account confirmation
   const handleBlockAccount = () => {
-    setTableData((prevData) => prevData.filter((row) => row.id !== modalState.blockAccountId));
+    setTableData((prevData) =>
+      prevData.filter((row) => row.id !== modalState.blockAccountId)
+    );
     toggleModal("isBlockPopupVisible", false);
   };
 
-  // New handler for Reset Password Popup
   const handleResetPasswordPopup = (isOpen) => {
     toggleModal("isResetPasswordVisible", isOpen);
   };
@@ -142,7 +140,6 @@ const ManagementTeam = () => {
     },
   ];
 
-  // Adding action buttons to each row of data
   const tableDataWithActions = tableData.map((row) => ({
     ...row,
     action: (
@@ -208,7 +205,6 @@ const ManagementTeam = () => {
   );
 };
 
-// Separate ActionButtons component for cleaner code
 const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword }) => (
   <div className="text-center">
     <GrEdit className="add-management-icon" onClick={() => onEdit(rowId)} />
@@ -216,7 +212,10 @@ const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword }) => (
       className="add-management-icon"
       onClick={() => onResetPassword(true)}
     />
-    <MdBlockFlipped className="add-management-icon" onClick={() => onBlock(rowId)} />
+    <MdBlockFlipped
+      className="add-management-icon"
+      onClick={() => onBlock(rowId)}
+    />
     <RiDeleteBinLine className="add-management-icon" />
   </div>
 );

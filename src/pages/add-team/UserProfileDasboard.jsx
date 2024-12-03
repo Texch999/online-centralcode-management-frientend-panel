@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { MdLockReset, MdRemoveRedEye } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
@@ -13,7 +13,6 @@ import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
 import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
-
 
 const cardData = [
   {
@@ -252,10 +251,7 @@ const DefaultBottomShow = () => {
         </div>
       </div>
 
-      <hr
-        className="dashed-line mb-4"
-        style={{ color: "black" }}
-      />
+      <hr className="dashed-line mb-4" style={{ color: "black" }} />
 
       {/* Main Content Container */}
 
@@ -315,15 +311,12 @@ const DefaultBottomShow = () => {
   );
 };
 
-
-
 const UserProfileDashboard = () => {
   const [activeTab, setActiveTab] = useState("websitesLimit");
   const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false)
   const [showEditProfilePopup,setShowEditProfilePopup] = useState(false)
 
 
-  // Handler function to change the active tab
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
@@ -365,7 +358,10 @@ const UserProfileDashboard = () => {
                 alt="UserDashboard"
                 className="super-admin-profile-img-con"
               />
-              <div className="d-flex gap-2 super-admin-img-down-content" style={{ marginTop: "20px" }}>
+              <div
+                className="d-flex gap-2 super-admin-img-down-content"
+                style={{ marginTop: "20px" }}
+              >
                 <h6>Jayanta Pal</h6>
                 <FaPen className="yellow-font pointer" size={13} onClick={() => setShowEditProfilePopup(true)}/>
               </div>

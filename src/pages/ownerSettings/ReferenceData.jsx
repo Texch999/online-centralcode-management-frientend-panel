@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
 import AddNewPopUp from "./AddNewPopUp";
