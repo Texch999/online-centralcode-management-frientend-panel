@@ -45,10 +45,10 @@ const AddDirectorAdmin = () => {
       dw: <button className="btn dw-active-btn mx-1">D/W</button>,
       action: (
         <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline
+          <GrEdit size={11} className="add-management-icon mx-1" />
+          <MdLockReset size={16} className="add-management-icon mx-1" />
+          <MdBlockFlipped size={16} className="add-management-icon mx-1" />
+          <IoEyeOutline size={16}
             className="add-management-icon mx-1"
             onClick={handleNavigateUserDashboard}
           />

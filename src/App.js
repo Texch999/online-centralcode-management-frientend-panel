@@ -15,7 +15,7 @@ import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import RiskCasino from "./pages/risk-management/RiskCasino";
-import Sports from "./pages/sports/Sports";
+// import Sports from "./pages/sports/Sports";
 import FancyResult from "./pages/fancy-result/FancyResult";
 import MarketResult from "./pages/market-result/MarketResult";
 import LiveBetList from "./pages/risk-management/LiveBetList";
@@ -51,6 +51,10 @@ import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
 import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 import Result from "./pages/ownerSettings/Result";
+import PaymentGateway from "./pages/add-team/PaymentGateway";
+import AddWibsites from "./pages/add-team/AddWebsites";
+import LiveBlockSports from "./pages/live-block/LiveBlockSports";
+import SportsLiveCricket from "./pages/live-block/components/SportsLiveCricket";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -106,7 +110,7 @@ function App() {
               <Route path="/casino-promotions" element={<CasinoPromotions />} />
               <Route path="/broadcasting" element={<Broadcasting />} />
               <Route path="/banners" element={<SandCBanner />} />
-              <Route path="/sports" element={<Sports />} />
+              {/* <Route path="/sports" element={<Sports />} /> */}
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route path="/sports-providers" element={<SportProviders />} />
@@ -145,7 +149,7 @@ function App() {
               <Route path="/tickets" element={<Tickets />} />
               <Route path="/downline-list" element={<DownlineList />} />
               <Route
-                path="/transaction-history"
+                path="/transactions-history"
                 element={<DownlineTrasactionHistory />}
               />
               <Route
@@ -157,6 +161,10 @@ function App() {
                 element={<MyVendorsAccount />}
               />
               <Route path="/results" element={<Result />} />
+              <Route path="/payment-details" element={<PaymentGateway />} />
+              <Route path="/websites" element={<AddWibsites />} />
+              <Route path="/live-block-sports" element={<LiveBlockSports />} />
+              <Route path="/sports-live-cricket/:sport" element={<SportsLiveCricket />} />
             </Routes>
           </div>
         </div>

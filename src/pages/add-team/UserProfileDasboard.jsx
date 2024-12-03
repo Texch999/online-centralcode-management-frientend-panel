@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import Form from "react-bootstrap/Form";
 import { MdLockReset, MdRemoveRedEye } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
-import { FiChevronDown } from "react-icons/fi";
 import { FaPen } from "react-icons/fa6";
 import { Images } from "../../images";
 import "../add-team/style.css";
@@ -12,6 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PaymentGateway from "./components/PaymentGateway";
 import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
+import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
+import EditProfilePopup from "./popups/EditProfilePopup";
 
 
 const cardData = [
@@ -317,8 +318,10 @@ const DefaultBottomShow = () => {
 
 
 const UserProfileDashboard = () => {
-  // State for managing which component is active
   const [activeTab, setActiveTab] = useState("websitesLimit");
+  const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false)
+  const [showEditProfilePopup,setShowEditProfilePopup] = useState(false)
+
 
   // Handler function to change the active tab
   const handleTabClick = (tabName) => {
@@ -330,23 +333,23 @@ const UserProfileDashboard = () => {
       <div className="gap-3 director-admin-profile-top-con rounded">
         {/* User Information Section */}
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
-          <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-4 p-2 px-3 text-white rounded-pill">
-            <span className="fw-600 medium-font">User Name</span>
-            <span className="fw-600 medium-font">Jayanta</span>
+          <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-4 px-3 text-white rounded-pill">
+            <span className="fw-600 small-font">User Name</span>
+            <span className="fw-600 small-font">Jayanta</span>
           </div>
 
-          <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 p-2 text-white rounded-pill px-3">
+          <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 text-white rounded-pill px-3">
             <div className="d-flex align-items-center gap-4 px-2">
-              <span className="fw-600 medium-font">Password</span>
-              <span className="fw-600 medium-font">1234567823</span>
+              <span className="fw-600 small-font">Password</span>
+              <span className="fw-600 small-font">1234567823</span>
             </div>
 
-            <div className="d-flex align-items-center gap-1">
-              <div className="director-top-bg-icon">
-                <MdRemoveRedEye size={22} className="text-warning" />
+            <div className="d-flex align-items-center gap-1 my-1">
+              <div className="director-top-bg-icon px-2 py-1">
+                <MdRemoveRedEye size={18} className="text-warning pointer" />
               </div>
-              <div className="director-top-bg-icon">
-                <MdLockReset size={22} className="text-warning" />
+              <div className="director-top-bg-icon px-2 py-1">
+                <MdLockReset size={18} className="text-warning pointer" onClick={() => setShowResetPasswordPopup(true)}/>
               </div>
             </div>
           </div>
@@ -364,7 +367,7 @@ const UserProfileDashboard = () => {
               />
               <div className="d-flex gap-2 super-admin-img-down-content" style={{ marginTop: "20px" }}>
                 <h6>Jayanta Pal</h6>
-                <FaPen className="yellow-font" size={13} />
+                <FaPen className="yellow-font pointer" size={13} onClick={() => setShowEditProfilePopup(true)}/>
               </div>
             </div>
             <div className="col-10">
@@ -404,6 +407,10 @@ const UserProfileDashboard = () => {
         </div>
       </div>
 
+      <ManagementResetPasswordPopup isOpen={showResetPasswordPopup} onRequestClose={() => setShowResetPasswordPopup(false)}/>
+      <EditProfilePopup show={showEditProfilePopup} onHide={() => setShowEditProfilePopup(false)}/>
+
+
       {/* Tabs Section */}
       <div className="row py-3 px-3">
         <div className="col-8 p-0">
@@ -411,11 +418,10 @@ const UserProfileDashboard = () => {
             <button
               className={`rounded p-2 w-25 ${
                 activeTab === "websitesLimit" && "saffron-btn"
-              } d-flex justify-content-between px-5`}
+              }`}
               onClick={() => handleTabClick("websitesLimit")}
             >
               Websites/Limit
-              <FiChevronDown size={25} />
             </button>
             <button
               className={`rounded p-2 text-center w-25 ${

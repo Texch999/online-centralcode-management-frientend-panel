@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import Table from "../../../components/Table";
 import { GrEdit } from "react-icons/gr";
 import Form from "react-bootstrap/Form";
 import "../style.css"
+import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
 // import { AiOutlineDown } from "react-icons/ai";
 
 
@@ -20,60 +21,62 @@ const columns = [
   { header: "Action", field: "action", width: "10%" },
 ];
 
-const data = [
-  {
-    gatewayName: "Google Pay",
-    paymentDetails: "7551078156",
-    lastUpdated: "26/09/2024",
-    country: "India",
-    currency: "INR ₹",
-    status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
-    action: <GrEdit size={17} style={{ cursor: "pointer" }} />,
-  },
-  {
-    gatewayName: "UPI",
-    paymentDetails: "srilCICI@ibl",
-    lastUpdated: "26/09/2024",
-    country: "India",
-    currency: "INR ₹",
-    status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
-    action: <GrEdit size={17} style={{ cursor: "pointer" }} />,
-  },
-  {
-    gatewayName: "NEFT/RTGS",
-    paymentDetails: (
-      <div>
-        Srikumar Sunkara <br />
-        A/C No: 34311236216 <br />
-        IFSC Code: ICIC0040 <br />
-        Bank: ICICI Bank
-      </div>
-    ),
-    lastUpdated: "26/09/2024",
-    country: "India",
-    currency: "INR ₹",
-    status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
-    action: <GrEdit size={17} style={{ cursor: "pointer" }} />,
-  },
-  {
-    gatewayName: "QR Code",
-    paymentDetails: (
-      <div>
-        <img src="qr_code.png" alt="QR Code" style={{ width: "50px" }} /> <br />
-        ICICI Bank
-      </div>
-    ),
-    lastUpdated: "26/09/2024",
-    country: "India",
-    currency: "INR ₹",
-    status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
-    action: <GrEdit style={{ cursor: "pointer" }} />,
-  },
-];
-
 
 
 const PaymentGateway = () => {
+  const [showPaymentGatewayPopup, setShowPaymentGatewayPopup] = useState(false);
+
+  const data = [
+    {
+      gatewayName: "Google Pay",
+      paymentDetails: "7551078156",
+      lastUpdated: "26/09/2024",
+      country: "India",
+      currency: "INR ₹",
+      status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
+      action: <GrEdit size={17} className="pointer" onClick={() => setShowPaymentGatewayPopup(true)}/>,
+    },
+    {
+      gatewayName: "UPI",
+      paymentDetails: "srilCICI@ibl",
+      lastUpdated: "26/09/2024",
+      country: "India",
+      currency: "INR ₹",
+      status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
+      action: <GrEdit size={17} />,
+    },
+    {
+      gatewayName: "NEFT/RTGS",
+      paymentDetails: (
+        <div>
+          Srikumar Sunkara <br />
+          A/C No: 34311236216 <br />
+          IFSC Code: ICIC0040 <br />
+          Bank: ICICI Bank
+        </div>
+      ),
+      lastUpdated: "26/09/2024",
+      country: "India",
+      currency: "INR ₹",
+      status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
+      action: <GrEdit size={17}/>,
+    },
+    {
+      gatewayName: "QR Code",
+      paymentDetails: (
+        <div>
+          <img src="qr_code.png" alt="QR Code" style={{ width: "50px" }} /> <br />
+          ICICI Bank
+        </div>
+      ),
+      lastUpdated: "26/09/2024",
+      country: "India",
+      currency: "INR ₹",
+      status: <span className="payment-gateway-status-badge badge py-2 px-3">Active</span>,
+      action: <GrEdit size={17} />,
+    },
+  ];
+
     return (
       <div className="py-4 bg-white shadow rounded">
         <div className="px-4 d-flex justify-content-between align-items-center mb-3">
@@ -169,6 +172,8 @@ const PaymentGateway = () => {
         <div className="table-parent-container mt-2">
           <Table data={data} columns={columns} itemsPerPage={3} />
         </div>
+
+        <AddPaymentGatewayPopup show={showPaymentGatewayPopup} onHide={() => setShowPaymentGatewayPopup(false)}/>
       </div>
     );
   };

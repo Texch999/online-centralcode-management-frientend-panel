@@ -38,4 +38,5 @@ export const Images = {
   promotion9: "/assets/promotion9.png",
   promotion10: "/assets/promotion10.png",
   promotion11: "/assets/promotion11.png",
+  QrImg:"/assets/qr_image.png",
 };

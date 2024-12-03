@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdBlockFlipped, MdSwapVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
@@ -8,6 +8,7 @@ import { Images } from "../../images/index";
 import Table from "../../components/Table";
 import "../../App.css";
 import "./style.css";
+import CreditReferencePopup from "./popups/CreditReferencePopup";
 
 // card data
 
@@ -98,6 +99,8 @@ const Card = ({
 };
 
 const DownlineList = () => {
+  const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false)
+
   const navigate = useNavigate();
 
   const handleNavigateUserDashboard = () => {
@@ -126,7 +129,7 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <GrEdit className="icon-edit ms-2 pointer" size={15} onClick={() => setShowCreditAmountPopup(true)}/>
         </>
       ),
       totalCusD: 10000,
@@ -141,9 +144,9 @@ const DownlineList = () => {
             Active
           </button>
           <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2" />
-            <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" onClick={handleNavigateUserDashboard}/>
+            <BsPerson size={20} className="icon-action me-2 pointer" />
+            <MdBlockFlipped size={20} className="icon-action me-2 pointer" />
+            <MdSwapVert size={20} className="icon-action pointer" onClick={handleNavigateUserDashboard}/>
           </div>
         </div>
       ),
@@ -364,6 +367,8 @@ const DownlineList = () => {
           }
         />
       </div>
+
+      <CreditReferencePopup show={showCreditAmountPopup} onHide={() => setShowCreditAmountPopup(false)}/>
     </div>
   );
 };
