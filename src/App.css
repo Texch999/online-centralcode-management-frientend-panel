@@ -205,6 +205,10 @@
   border: none;
   outline: none;
 }
+.all-none2 {
+  border: none;
+  outline: none;
+}
 .black-text2 {
   color: #1d1d1d;
   font-weight: 500;
@@ -355,6 +359,9 @@
 }
 .br-3px {
   border-radius: 2px;
+}
+.br-4px {
+  border-radius: 4px;
 }
 .text-ellipsis {
   white-space: nowrap;

@@ -145,9 +145,9 @@ function Header() {
           <span className="ms-2 black-text3 medium-font">Chat</span>
         </div>
       </div>
-      {role_name !== "Central Panel" &&
-        role_name !== "White Label Setting" &&
-        role_name === "Super Admin" && <SubHeader />}
+      {role_name !== "Central Panel" && role_name !== "White Label Setting" && (
+        <SubHeader />
+      )}
     </div>
   );
 }

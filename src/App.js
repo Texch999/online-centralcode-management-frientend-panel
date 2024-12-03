@@ -70,6 +70,7 @@ import Sports from "./pages/sports/Sports";
 import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
+import SetLimits from "./pages/live-block/SetLimits";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -224,6 +225,7 @@ function App() {
               <Route path="/bonus-chips" element={<BonusChips />} />
               <Route path="/bet-block-users" element={<BetBlockUsers />} />
               <Route path="/inactive-users" element={<InActiveUsers />} />
+              <Route path="/set-limits" element={<SetLimits />} />
             </Routes>
           </div>
         </div>
