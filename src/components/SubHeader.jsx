@@ -52,12 +52,6 @@ function SubHeader() {
       ? {
           label: "Wallet",
           options: [
-            { label: "My Vendors Account", path: "/my-vendors-account" },
-            { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-            {
-              label: "Offline Deposit/Withdraw",
-              path: "/offline-deposit-withdraw",
-            },
             { label: "Tickets", path: "/tickets" },
             { label: "Gateway Transactions", path: "/gateway-transactions" },
           ],
@@ -65,6 +59,12 @@ function SubHeader() {
       : {
           label: "Wallet",
           options: [
+            { label: "My Vendors Account", path: "/my-vendors-account" },
+            { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+            {
+              label: "Offline Deposit/Withdraw",
+              path: "/offline-deposit-withdraw",
+            },
             { label: "Tickets", path: "/tickets" },
             { label: "Gateway Transactions", path: "/gateway-transactions" },
           ],
