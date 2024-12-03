@@ -47,19 +47,28 @@ function SubHeader() {
         { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
       ],
     },
-    {
-      label: "Wallet",
-      options: [
-        { label: "My Vendors Account", path: "/my-vendors-account" },
-        { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-        {
-          label: "Offline Deposit/Withdraw",
-          path: "/offline-deposit-withdraw",
+
+    role === "Director"
+      ? {
+          label: "Wallet",
+          options: [
+            { label: "My Vendors Account", path: "/my-vendors-account" },
+            { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+            {
+              label: "Offline Deposit/Withdraw",
+              path: "/offline-deposit-withdraw",
+            },
+            { label: "Tickets", path: "/tickets" },
+            { label: "Gateway Transactions", path: "/gateway-transactions" },
+          ],
+        }
+      : {
+          label: "Wallet",
+          options: [
+            { label: "Tickets", path: "/tickets" },
+            { label: "Gateway Transactions", path: "/gateway-transactions" },
+          ],
         },
-        { label: "Tickets", path: "/tickets" },
-        { label: "Gateway Transactions", path: "/gateway-transactions" },
-      ],
-    },
     {
       label: "Reports",
       options: [
