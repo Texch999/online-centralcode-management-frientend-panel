@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
-import ActionPopup from "../casino/ActionPopup";
 import { FaArrowLeft } from "react-icons/fa";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const SportProviders = () => {
   const navigate = useNavigate();
@@ -252,7 +252,7 @@ const SportProviders = () => {
   ];
   return (
     <div>
-      <div className="d-flex flex-between">
+      <div className="d-flex flex-between mt-3 mb-2">
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Sports <span className="mx-1 font-20">{">"}</span>
@@ -267,7 +267,7 @@ const SportProviders = () => {
 
         <div className="medium-font">
           <span
-            className="input-css2 text-black rounded-pill me-4 px-3 py-1 pointer hover-orange-clr"
+            className="input-css2 rounded-pill me-4 px-2 py-1 pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
             <FaArrowLeft className="me-1" />
@@ -280,7 +280,12 @@ const SportProviders = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={10} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive} />
+      <ConfirmationPopup
+        confirmationPopupOpen={isActive}
+        setConfirmationPopupOpen={setIsACtive}
+        discription={"Are You Sure to Active this Match"}
+        submitButton={"Active"}
+      />
     </div>
   );
 };

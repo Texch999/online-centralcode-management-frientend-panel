@@ -3,8 +3,7 @@ import Table from "../../components/Table";
 import "../casino/style.css";
 import { useNavigate } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
-import ActionPopup from "./ActionPopup";
-import { FaArrowLeft } from "react-icons/fa";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 function Casino() {
   const navigate = useNavigate();
@@ -130,7 +129,7 @@ function Casino() {
               </div>
             </div>
             <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2">In-Active</div>
+            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -160,7 +159,7 @@ function Casino() {
               </div>
             </div>
             <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2">In-Active</div>
+            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -190,7 +189,7 @@ function Casino() {
               </div>
             </div>
             <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2">In-Active</div>
+            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
         </div>
       ),
@@ -289,7 +288,7 @@ function Casino() {
               </div>
             </div>
             <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2">In-Active</div>
+            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -319,7 +318,7 @@ function Casino() {
               </div>
             </div>
             <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2">In-Active</div>
+            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -349,7 +348,7 @@ function Casino() {
               </div>
             </div>
             <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2">In-Active</div>
+            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
         </div>
       ),
@@ -357,8 +356,8 @@ function Casino() {
   ];
   return (
     <div>
-      <div className="d-flex flex-between align-items-center">
-        <h4 className="my-3">Casino</h4>
+      <div className="d-flex flex-between align-items-center mt-3 mb-2">
+        <h6 className="">Casino</h6>
         <div className="medium-font ">
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
@@ -367,7 +366,12 @@ function Casino() {
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
 
-      <ActionPopup show={isActive} setShow={setIsACtive} />
+      <ConfirmationPopup
+        confirmationPopupOpen={isActive}
+        setConfirmationPopupOpen={setIsACtive}
+        discription={"Are You Sure to Active this Match"}
+        submitButton={"Active"}
+      />
     </div>
   );
 }

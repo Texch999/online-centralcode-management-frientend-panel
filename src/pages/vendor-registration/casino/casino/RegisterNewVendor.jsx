@@ -15,11 +15,11 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         <div className="d-flex flex-column">
           <div className="flex-start mb-1">
             <div
-              className="rounded-pill px-3 white-btn2 small-font fw-800 text-black pointer"
+              className="rounded-pill px-3 white-btn2 small-font fw-800 d-flex flex-center align-items text-black pointer"
               onClick={() => setIsEdit(false)}
             >
               <span className="orange-clr">
-                <FaArrowLeft className="me-2" />
+                <FaArrowLeft className="me-2 d-flex" />
               </span>
               Back
             </div>

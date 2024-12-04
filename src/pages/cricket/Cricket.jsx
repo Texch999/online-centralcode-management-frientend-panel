@@ -499,9 +499,9 @@ const Cricket = () => {
     },
   ];
   return (
-    <div className="p-1">
-      <div className="d-flex flex-between">
-        <div className="mb-2 pointer large-font" onClick={() => navigate(-1)}>
+    <div className="">
+      <div className="d-flex flex-between mt-3 mb-2">
+        <div className=" pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Sports <span className="mx-1 font-20">{">"}</span>
           </span>
@@ -518,7 +518,7 @@ const Cricket = () => {
 
         <div className="medium-font">
           <span
-            className="white-bg rounded-pill grey-border me-4 px-3 hover-orange-clr py-1 pointer"
+            className="white-bg2 rounded-pill grey-border me-4 px-3 hover-orange-clr py-1 pointer"
             onClick={() => navigate(-1)}
           >
             <FaArrowLeft className="me-2" />

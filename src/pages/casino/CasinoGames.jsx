@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
-import ActionPopup from "./ActionPopup";
 import { FaArrowLeft } from "react-icons/fa";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const CasinoGames = () => {
   const navigate = useNavigate();
@@ -130,8 +130,8 @@ const CasinoGames = () => {
   ];
   return (
     <div>
-      <div className="d-flex flex-between">
-        <div className="pointer my-2 large-font" onClick={() => navigate(-1)}>
+      <div className="d-flex flex-between mt-3 mb-2">
+        <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Casino<span className="mx-1">{">"}</span>
           </span>{" "}
@@ -156,7 +156,12 @@ const CasinoGames = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={3} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive} />
+      <ConfirmationPopup
+        confirmationPopupOpen={isActive}
+        setConfirmationPopupOpen={setIsACtive}
+        discription={"Are You Sure to Active this Match"}
+        submitButton={"Active"}
+      />
     </div>
   );
 };
