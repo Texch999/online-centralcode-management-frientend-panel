@@ -16,7 +16,7 @@ function ResetPasswordPopup({ resetPasswordPopup, setResetPasswordPopup }) {
       <Modal.Body>
         <div className="flex-between black-text4">
           <h6 className="fw-600 mb-0">Reset Password</h6>
-          <IoCloseSharp size={20} onClick={handleCancel} />
+          <IoCloseSharp size={20} onClick={handleCancel} className="pointer" />
         </div>
         <div className="row small-font mb-3">
           <div className="col-12 flex-column mt-3">

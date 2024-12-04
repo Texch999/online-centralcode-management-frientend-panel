@@ -11,11 +11,12 @@ function ConfirmationPopup({
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
+  
   return (
     <Modal show={confirmationPopupOpen} centered className="confirm-popup">
       <Modal.Body>
-        <div className="flex-end black-text4">
-          <IoCloseSharp size={20} onClick={handleCancel} />
+        <div className="flex-end black-text4 ">
+          <IoCloseSharp size={20} onClick={handleCancel} className="pointer"/>
         </div>
         <center>
           <img src={Images?.qnmark} alt="Q_Mark" />

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import BlockPopup from "../popups/BlockPopup";
-import DeletePopup from "../popups/DeletePopup";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
-import { FaArrowLeft } from "react-icons/fa";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const CricketBookmaker = () => {
   const navigate = useNavigate();
@@ -489,15 +487,19 @@ const CricketBookmaker = () => {
         <Table columns={cols} data={data} itemsPerPage={5} />
       </div>
 
-      <BlockPopup
-        show={showBlockModal}
-        setShow={setShowBlockModal}
-        title={"Match"}
+      
+      <ConfirmationPopup
+        confirmationPopupOpen={showBlockModal}
+        setConfirmationPopupOpen={setShowBlockModal}
+        discription={"Are You Sure to Block this Match"}
+        submitButton={"Block"}
       />
-      <DeletePopup
-        show={showDeleteModal}
-        setShow={setShowDeleteModal}
-        title={"Match"}
+
+      <ConfirmationPopup
+        confirmationPopupOpen={showDeleteModal}
+        setConfirmationPopupOpen={setShowDeleteModal}
+        discription={"Are You Sure to Delete this Match"}
+        submitButton={"Delete"}
       />
     </div>
   );
