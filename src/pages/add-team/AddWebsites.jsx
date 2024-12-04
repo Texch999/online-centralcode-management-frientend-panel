@@ -8,7 +8,6 @@ import AddWebsitesPopup from "./popups/AddWebsitesPopup";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
-
   const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
 
   const columns = [
@@ -19,7 +18,6 @@ const AddWibsites = () => {
     { header: <div className="ps-1">Action</div>, field: "action" },
   ];
 
-  // Data extracted from the image
   const data = [
     {
       type: "Company",
@@ -42,24 +40,34 @@ const AddWibsites = () => {
       websiteName: "T Casino Park",
       location: "Delhi, India",
       url: "www.tcasinopark.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
       type: "Company",
       websiteName: "Spark Book",
       location: "Hyderabad, India",
       url: "www.sparkbook.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer" />
+          </div>
+        ),
     },
     {
       type: "White Label",
@@ -78,12 +86,17 @@ const AddWibsites = () => {
       websiteName: "Diamond Exchange",
       location: "Kochi, India",
       url: "www.diamondexchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer red-font" />
-        </div>
-      ),
+      action:
+        role === "Super Admin" ? null : (
+          <div className="d-flex gap-3">
+            <GrEdit
+              size={17}
+              className="pointer "
+              onClick={() => setOnAddwebsitePopup(true)}
+            />
+            <MdBlockFlipped size={17} className="pointer red-font" />
+          </div>
+        ),
     },
     {
       type: "Company",
@@ -355,15 +368,13 @@ const AddWibsites = () => {
           </div>
 
           {role === "management" ? (
-
-          <button
-            className="rounded-pill input-pill blue-font small-font px-2"
-            onClick={() => setOnAddwebsitePopup(true)}
-          >
-           
-            <FaPlus /> Add New Website{" "}
-          </button>
-          ):(
+            <button
+              className="rounded-pill input-pill blue-font small-font px-2"
+              onClick={() => setOnAddwebsitePopup(true)}
+            >
+              <FaPlus /> Add New Website{" "}
+            </button>
+          ) : (
             ""
           )}
         </div>

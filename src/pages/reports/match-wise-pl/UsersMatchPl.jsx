@@ -3,7 +3,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdEdit, MdLoop, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { FaRotate } from "react-icons/fa6";
 import "../../home/style.css";
 
 const UsersMatchPl = () => {

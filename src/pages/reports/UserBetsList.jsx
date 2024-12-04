@@ -119,12 +119,12 @@ function UserBetsList() {
       </div>
     ),
     status: (
-        <div className="large-font d-flex w-50 flex-between">
+      <div className="large-font d-flex w-50 flex-between">
         <span>
-          <LiaPenSolid size={18}/>
+          <LiaPenSolid size={18} />
         </span>
         <span className="ms-2">
-          <FaRegTrashCan size={18}/>
+          <FaRegTrashCan size={18} />
         </span>
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
@@ -203,13 +203,7 @@ function UserBetsList() {
         </div>
       </div>
 
-      <Table
-        columns={DIRECTOR_COLUMNS}
-        data={DIRECTOR_DATA}
-       
-        itemsPerPage={5}
-       
-      />
+      <Table columns={DIRECTOR_COLUMNS} data={DIRECTOR_DATA} itemsPerPage={5} />
     </div>
   );
 }

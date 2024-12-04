@@ -539,3 +539,6 @@
   align-items: end;
   justify-content: start;
 }
+.cursor-pointer {
+  cursor: pointer;
+}

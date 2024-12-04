@@ -20,7 +20,6 @@ function SubHeader() {
   }
 
   const menuConfig = {
-    // Management Menu Items
     management: [
       {
         label: "Adding",
@@ -102,8 +101,73 @@ function SubHeader() {
         ],
       },
     ],
+    super_admin: [
+      {
+        label: "Adding",
+        options: [
+          { label: "Add Admin", path: "/director-admin" },
+          { label: "View Downline List", path: "/downline-list" },
+          { label: "Payment Details", path: "/payment-details" },
+          { label: "Available Websites", path: "/websites" },
+        ],
+      },
+      {
+        label: "Live/Block",
+        options: [
+          { label: "In-active Users", path: "/inactive-users" },
+          { label: "Bet Block Users", path: "/bet-block-users" },
+        ],
+      },
+      {
+        label: "Risk Management",
+        options: [
+          { label: "Sports", path: "/risk-sports" },
+          { label: "Casino", path: "/risk-casino" },
+          { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
+          { label: "Deleted Bet History", path: "/deleted-bet-history" },
+          { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
+        ],
+      },
+      {
+        label: "Wallet",
+        options: [
+          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+          { label: "Tickets", path: "/tickets" },
+          { label: "Gateway Transactions", path: "/gateway-transactions" },
+          { label: "Bonus Chips", path: "/bonus-chips" },
+        ],
+      },
+      {
+        label: "Reports",
+        options: [
+          { label: "My Statement", path: "/my-statement" },
+          {
+            label: "P/L Report Downline Admins",
+            path: "/pl-report-downline",
+          },
+          { label: "P/L Casino Report", path: "/pl-casino-report" },
+          { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
+          { label: "P/L Report by Users", path: "/pl-report-users" },
+          { label: "Match Wise P/L", path: "/match-wise-pl" },
+        ],
+      },
+      {
+        label: "SA Settings",
+        options: [
+          { label: "Edit Profile", path: "/edit-profile" },
+          { label: "Reset Password", path: "/reset-password" },
+          { label: "Activity Logs", path: "/activity-logs" },
+        ],
+      },
+      {
+        label: "Promotions",
+        options: [
+          { label: "Sports Promotions", path: "/sports-promotions" },
+          { label: "Casino Promotions", path: "/casino-promotions" },
+        ],
+      },
+    ],
 
-    // Designing Team
     designing_team: [
       {
         label: "Settings",
@@ -118,14 +182,12 @@ function SubHeader() {
           },
           { label: "Sports Promotions", path: "/sports-promotions" },
           { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Offer", path: "/offer" },
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
       },
     ],
 
-    // Risk Team
     risk_team: [
       {
         label: "Live/Block",
@@ -169,7 +231,6 @@ function SubHeader() {
       },
     ],
 
-    // accounts_team
     accounts_team: [
       {
         label: "Wallet",
