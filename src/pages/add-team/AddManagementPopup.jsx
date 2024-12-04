@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { IoIosArrowUp } from "react-icons/io";
-import { FiChevronDown } from "react-icons/fi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../add-team/style.css";
 import "../../App.css";
@@ -22,9 +20,6 @@ const AddManagementPopup = ({
   });
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleFocus = () => setIsOpen(true);
-  const handleBlur = () => setIsOpen(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +44,7 @@ const AddManagementPopup = ({
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <div className="d-flex justify-content-between align-items-center pt-4 px-4">
-        <h6 className="mb-0 add-management-popup-header">
+        <h6 className="mb-0 medium-font black-font">
           {formData.name ? "Edit Management Team" : "Add Management Team"}
         </h6>
         <MdOutlineClose
@@ -65,51 +60,39 @@ const AddManagementPopup = ({
           onSubmit={handleSubmit}
         >
           <div className="row mb-3">
-            <div className="col-md-4 position-relative">
-              <label>Role</label>
-              <div className="custom-select-wrapper">
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  className="form-control custom-select"
-                >
-                  <option value="">Select</option>
-                  <option value="Accounts">Accounts</option>
-                  <option value="Designer">Designer</option>
-                  <option value="Company Team">Company Team</option>
-                </select>
-                <div className="select-icon">
-                  {isOpen ? (
-                    <IoIosArrowUp className="up-icon" />
-                  ) : (
-                    <FiChevronDown className="down-icon" />
-                  )}
-                </div>
-              </div>
+            <div className="col">
+              <label className="small-font">Role</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-100 small-font rounded all-none input-css"
+              >
+                <option value="">Select</option>
+                <option value="Accounts">Accounts</option>
+                <option value="Designer">Designer</option>
+                <option value="Company Team">Company Team</option>
+              </select>
             </div>
-
-            <div className="col-md-4">
-              <label>Name</label>
+            <div className="col">
+              <label className="small-font">Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
             </div>
-            <div className="col-md-4">
-              <label>Login Name</label>
+            <div className="col">
+              <label className="small-font">Login Name</label>
               <input
                 type="text"
                 name="loginName"
                 value={formData.loginName}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
             </div>
@@ -118,24 +101,24 @@ const AddManagementPopup = ({
           {/* Row 2: Phone Number, Password, Confirm Password */}
           <div className="row mb-3">
             <div className="col-md-4">
-              <label>Phone Number</label>
+              <label className="small-font">Phone Number</label>
               <input
                 type="text"
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
             </div>
             <div className="col-md-4 position-relative">
-              <label>Password</label>
+              <label className="small-font">Password</label>
               <input
                 type={showPassword.password ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
               />
               <span
@@ -143,7 +126,7 @@ const AddManagementPopup = ({
                 onClick={() => togglePasswordVisibility("password")}
                 style={{
                   position: "absolute",
-                  right: "25px",
+                  right: "10%",
                   top: "55%",
                   cursor: "pointer",
                 }}
@@ -152,13 +135,13 @@ const AddManagementPopup = ({
               </span>
             </div>
             <div className="col-md-4 position-relative">
-              <label>Confirm Password</label>
+              <label className="small-font">Confirm Password</label>
               <input
                 type={showPassword.confirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Re-enter Password"
               />
               <span
@@ -166,7 +149,7 @@ const AddManagementPopup = ({
                 onClick={() => togglePasswordVisibility("confirmPassword")}
                 style={{
                   position: "absolute",
-                  right: "25px",
+                  right: "10%",
                   top: "55%",
                   cursor: "pointer",
                 }}
@@ -179,24 +162,24 @@ const AddManagementPopup = ({
           {/* Row 3: Email, Management Password, Submit Button */}
           <div className="row mb-3 align-items-end">
             <div className="col-md-4">
-              <label>Email:</label>
+              <label className="small-font">Email:</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
             </div>
             <div className="col-md-4 position-relative">
-              <label>Management Password</label>
+              <label className="small-font">Management Password</label>
               <input
                 type={showPassword.managementPassword ? "text" : "password"}
                 name="managementPassword"
                 value={formData.managementPassword}
                 onChange={handleChange}
-                className="form-control"
+                className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
               />
               <span
@@ -204,7 +187,7 @@ const AddManagementPopup = ({
                 onClick={() => togglePasswordVisibility("managementPassword")}
                 style={{
                   position: "absolute",
-                  right: "25px",
+                  right: "10%",
                   top: "55%",
                   cursor: "pointer",
                 }}
@@ -213,10 +196,7 @@ const AddManagementPopup = ({
               </span>
             </div>
             <div className="col-md-4 d-flex justify-content-center">
-              <Button
-                className="saffron-btn2 add-mng-pop-btn w-100"
-                onClick={handleSubmit}
-              >
+              <Button className="saffron-btn w-100" onClick={handleSubmit}>
                 Submit
               </Button>
             </div>

@@ -34,7 +34,7 @@ const CreditReferencePopup = ({show,onHide}) => {
                 <input
                   id="name"
                   type="text"
-                  className="all-none rounded input-css w-100"
+                  className="all-none small-font rounded input-css w-100"
                   placeholder="Enter"
                   value={credit}
                   onChange={(e) => setCredit(e.target.value)}

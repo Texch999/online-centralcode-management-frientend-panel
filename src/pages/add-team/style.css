@@ -3,14 +3,6 @@
   margin: auto;
 }
 
-.add-management-icon {
-  height: 22px;
-  width: 22px;
-  margin: 0 0.4rem 0 0.4rem;
-  color: #454242;
-  cursor: pointer;
-}
-
 .management-team-wrapper {
   margin: auto;
 }
@@ -29,20 +21,6 @@
   cursor: pointer;
 }
 
-/* .management-team-wrapper table td {
-  border-bottom: 1px solid #e0e0e0;
-  border: none;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-} */
-
-/* popup additional Styling */
-.add-management-popup-header {
-  color: #1b1b1b;
-  font-weight: 600;
-  font-size: 18px;
-}
-
 /* Input fields styling */
 
 .add-management-popup-form label {
@@ -50,28 +28,6 @@
   color: #1b1b1b;
   font-size: 14px;
   margin-bottom: 0.3rem;
-}
-
-.add-management-popup-form input::placeholder {
-  color: #727272;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.add-management-popup-form input {
-  padding: 8px 10px 5px 8px;
-  background-color: #f2f2f2;
-}
-
-.add-management-popup-form select {
-  padding: 8px 10px 5px 8px;
-  color: #333;
-  background-color: #f5f5f5;
-  font-size: 14px;
-}
-
-.select-input{
-  padding: 0.7rem;
 }
 
 .upload-input-popup{
@@ -88,31 +44,9 @@
   width: 100%;
 }
 
-.custom-select:focus {
-  outline: none;
-  border-color: #FFA310; 
-  box-shadow: 0 0 5px #FFA310; 
-}
-
-.select-icon {
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
-  pointer-events: none; 
-  display: flex;
-  align-items: center;
-}
-/* ----------- */
-
-.add-mng-pop-btn {
-  padding: 8px 20px 8px 20px !important;
-}
-
 .dw-active-btn{
   background-color: #18B962;
   color: white;
-  font-size: 14px;
 }
 
 .mini-container{
@@ -237,14 +171,12 @@
 .table-parent-container .table-wrapper tbody tr td {
   padding-left: 15px !important;
   vertical-align: middle !important;
-
 }
 
 .table-parent-container .table-wrapper thead th {
   padding-left: 15px !important;
   
 }
-
 
 .dashed-line{
   border: 1px dashed rgba(0, 0, 0, 0.2);

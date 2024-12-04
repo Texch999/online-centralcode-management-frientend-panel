@@ -50,13 +50,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                   <option value="Designer">Designer</option>
                   <option value="Company Team">Company Team</option>
                 </select>
-                <div className="select-icon">
-                  {isOpen ? (
-                    <IoIosArrowUp className="up-icon" />
-                  ) : (
-                    <FiChevronDown className="down-icon" />
-                  )}
-                </div>
               </div>
             </div>
 

@@ -38,16 +38,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit size={11} className="add-management-icon mx-1" />
-          <MdLockReset size={16} className="add-management-icon mx-1" />
-          <MdBlockFlipped size={16} className="add-management-icon mx-1" />
-          <IoEyeOutline size={16}
-            className="add-management-icon mx-1"
-            onClick={handleNavigateUserDashboard}
-          />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text pointer" />
+          <MdLockReset size={18} className="black-text pointer" />
+          <MdBlockFlipped size={18} className="black-text pointer" />
+          <IoEyeOutline size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -61,13 +58,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "10000000",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -81,13 +78,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -106,13 +103,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%", "500000", "5%", "200000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -126,13 +123,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%"],
       billing: "0",
       pl: <div className="green-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -146,13 +143,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="green-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -166,13 +163,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -191,13 +188,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%", "2000000", "2000000", "2000000"],
       billing: "0",
       pl: <div className="green-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -211,13 +208,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -231,13 +228,13 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%"],
       billing: "0",
       pl: <div className="green-font">2000000</div>,
-      dw: <button className="btn dw-active-btn mx-1">D/W</button>,
+      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
       action: (
-        <div className="d-flex align-items-center">
-          <GrEdit className="add-management-icon mx-1" />
-          <MdLockReset className="add-management-icon mx-1" />
-          <MdBlockFlipped className="add-management-icon mx-1" />
-          <IoEyeOutline className="add-management-icon mx-1" />
+        <div className="d-flex flex-center gap-3">
+          <GrEdit size={18} className="black-text" />
+          <MdLockReset size={18} className="black-text" />
+          <MdBlockFlipped size={18} className="black-text" />
+          <IoEyeOutline size={18} className="black-text" />
         </div>
       ),
     },
@@ -252,10 +249,11 @@ const AddDirectorAdmin = () => {
     { header: "Share/Rent", field: "shareRent" },
     { header: "Billing", field: "billing" },
     { header: "P/L", field: "pl" },
-    { header: "", field: "dw" },
+    { header: "", field: "dw", width:"1%" },
     {
-      header: <div className="w-100">Action</div>,
+      header: <div className="text-center">Action</div>,
       field: "action",
+      width:"8%"
     },
   ];
 

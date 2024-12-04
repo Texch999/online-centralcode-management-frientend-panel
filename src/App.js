@@ -6,7 +6,7 @@ import Homepage from "./pages/home/Homepage";
 import Header from "./components/Header";
 import Casino from "./pages/casino/Casino";
 import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
-import ManagementTeam from "./pages/add-team/ManagementTeam";
+import AddManagementTeam from "./pages/add-team/AddManagementTeam";
 import RiskSports from "./pages/risk-management/RiskSports";
 import AddDirectorAdmin from "./pages/add-team/AddDirectorAdmin";
 import DashboardViewAll from "./pages/home/DashboardViewAll";
@@ -67,6 +67,8 @@ import UserBetsList from "./pages/reports/UserBetsList";
 import SportsReport from "./pages/reports/SportsReport";
 import UserReports from "./pages/reports/UserReports";
 import ClientRental from "./pages/reports/ClientRental";
+import ViewFancyBets from "./pages/live-block/components/ViewFancyBets";
+import LiveScoreBoard from "./pages/live-block/components/LiveScoreboard";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -82,7 +84,7 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
-              <Route path="/management-team" element={<ManagementTeam />} />
+              <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route path="/risk-sports" element={<RiskSports />} />
               <Route path="/match/:matchName" element={<IndividualMatch />} />
@@ -195,8 +197,12 @@ function App() {
               <Route path="/websites" element={<AddWibsites />} />
               <Route path="/live-block-sports" element={<LiveBlockSports />} />
               <Route
-                path="/sports-live-cricket/:sport"
+                path="/live-block-sports/:sport"
                 element={<SportsLiveCricket />}
+              />
+              <Route
+                path="/sports-live-cricket/:sport/:fancyType"
+                element={<ViewFancyBets />}
               />
               <Route path="/match-wise-pl" element={<MatchWisePl />} />
               <Route
@@ -218,6 +224,7 @@ function App() {
               <Route path="/pl-report-sports" element={<SportsReport />} />
               <Route path="/pl-report-users" element={<UserReports />} />
               <Route path="/client-rental-sheet" element={<ClientRental />} />
+              <Route path="/pdfdfg" element={<LiveScoreBoard />} />
             </Routes>
           </div>
         </div>
