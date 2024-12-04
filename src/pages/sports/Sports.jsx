@@ -38,8 +38,8 @@ const Sports = () => {
       sno: <div className="flex-center">1</div>,
       vendorname: (
         <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Fun77</div>
+          <div>Jitendra</div>
+          <div>TExchange</div>
         </div>
       ),
       vendorper: <div>15%</div>,
