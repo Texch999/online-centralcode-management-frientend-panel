@@ -2,8 +2,8 @@ import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import EditProfilePopup from "../popups/EditProfilePopup";
-import ResetPasswordPopup from "../popups/ResetPasswordPopup";
+import EditProfilePopup from "../pages/popups/EditProfilePopup";
+import ResetPasswordPopup from "../pages/popups/ResetPasswordPopup";
 
 function SubHeader() {
   const navigate = useNavigate();
