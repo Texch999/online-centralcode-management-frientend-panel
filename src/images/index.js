@@ -47,4 +47,5 @@ export const Images = {
   TourSportsSoccer: "/assets/tour_sports_soccer.png",
   TourYellowCard: "/assets/tour_yellow_card.png",
   TourScheduleClock: "/assets/tour_schedule.png",
+  LiveImagePoster:"/assets/liveblock-live-image-poster.png"
 };
