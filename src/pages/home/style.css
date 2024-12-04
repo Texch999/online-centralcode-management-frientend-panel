@@ -133,7 +133,7 @@
   border-radius: 50px;
 }
 .dot-line-black {
-  border: 1.2px dotted #00000033;
+  border: 1.2px dashed #00000033;
 }
 .font-25 {
   font-size: 25px;
