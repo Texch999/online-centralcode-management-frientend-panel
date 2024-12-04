@@ -184,3 +184,9 @@
   overflow-x: hidden;
   position: relative;
 }
+.table-50vh2 {
+  max-height: 62vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+}

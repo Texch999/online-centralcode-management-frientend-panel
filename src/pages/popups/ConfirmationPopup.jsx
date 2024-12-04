@@ -20,7 +20,10 @@ function ConfirmationPopup({
         </div>
         <center>
           <img src={Images?.qnmark} alt="Q_Mark" />
-          <h5 className="black-text4 fw-600  mt-2 mb-3">{discription}</h5>
+          <h5 className="black-text4 fw-600  mt-2 mb-3">{discription}</h5>{" "}
+          <div className="small-font black-text4">
+            Lorem Ipsum is simply dummy text of the printing...
+          </div>
           <div className="w-95 flex-between mt-4 mb-3 medium-font">
             <button
               className="w-50 black-text2 border p-2 rounded white-bg me-2"

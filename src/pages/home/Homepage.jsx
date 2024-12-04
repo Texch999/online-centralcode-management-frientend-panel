@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-
 function Homepage() {
   ChartJS.register(
     BarElement,
@@ -626,13 +625,11 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-              <div className="">
               <ScrollTable
                 columns={customerCols}
                 data={customerData}
                 tableHeight="table-50vh"
               />
-              </div>
             </div>
           </div>
         </div>
@@ -740,7 +737,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteWinnerData}
-                  tableHeight="table-50vh"
+                  tableHeight="table-50vh2"
                 />
               )}
 
@@ -748,7 +745,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteLooseData}
-                  tableHeight="table-50vh"
+                  tableHeight="table-50vh2"
                 />
               )}
             </div>
