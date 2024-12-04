@@ -37,7 +37,7 @@ function Casino() {
 
   const data = [
     {
-      sno: <div className="flex-center">2</div>,
+      sno: <div className="flex-center">1</div>,
       vendor: <div className="orange-clr">Ram</div>,
       vendorper: <div>10%</div>,
       country: <div>India</div>,

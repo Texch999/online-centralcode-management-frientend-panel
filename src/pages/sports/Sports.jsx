@@ -35,7 +35,7 @@ const Sports = () => {
   ];
   const data = [
     {
-      sno: <div className="flex-center">2</div>,
+      sno: <div className="flex-center">1</div>,
       vendorname: (
         <div className="d-flex flex-column">
           <div>Lokesh</div>
