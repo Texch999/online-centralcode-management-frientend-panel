@@ -7,7 +7,7 @@ import ActionPopup from "../casino/ActionPopup";
 const Sports = () => {
   const navigate = useNavigate();
   const handleSportNextPage = (vendor, provider) => {
-    navigate(`/sports/${vendor}/${provider}`);
+    navigate(`/central-sports/${vendor}/${provider}`);
   };
 
   const [isActive, setIsACtive] = useState(false);

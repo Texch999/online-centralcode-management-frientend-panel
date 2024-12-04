@@ -10,17 +10,17 @@ const SportProviders = () => {
   const { vendor, provider } = useParams();
   const handleGameMatches = (match) => {
     if (provider === "Odds") {
-      navigate(`/sports/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Fancy") {
-      navigate(`/sports/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 1") {
-      navigate(`/sports/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 2") {
-      navigate(`/sports/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Live Streaming") {
-      navigate(`/sports/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Scoreboard") {
-      navigate(`/sports/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     }
   };
   const [isActive, setIsACtive] = useState(false);

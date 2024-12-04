@@ -255,7 +255,6 @@ function SubHeader() {
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
       },
     ],
-
     // director team
     director: [
       {

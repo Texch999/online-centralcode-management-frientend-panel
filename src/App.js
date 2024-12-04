@@ -85,7 +85,7 @@ function App() {
           <div className="home">
             <Routes>
               <Route path="/" element={<Homepage />} />
-              <Route path="/casino" element={<Casino />} />
+              <Route path="/central-casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/management-team" element={<ManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
@@ -106,15 +106,15 @@ function App() {
                 element={<RiskBetHistory />}
               />
               <Route
-                path="/casino/:vendor/:provider"
+                path="/central-casino/:vendor/:provider"
                 element={<CasinoVendor />}
               />
               <Route
-                path="/casino/:vendor/:provider/:game"
+                path="/central-casino/:vendor/:provider/:game"
                 element={<CasinoGames />}
               />
               <Route
-                path="/vendor-registartion"
+                path="/vendor-registration"
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
@@ -132,11 +132,11 @@ function App() {
               <Route path="/casino-promotions" element={<CasinoPromotions />} />
               <Route path="/broadcasting" element={<Broadcasting />} />
               <Route path="/banners" element={<SandCBanner />} />
-              <Route path="/sports" element={<Sports />} />
+              <Route path="/central-sports" element={<Sports />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route
-                path="/sports/:vendor/:provider"
+                path="/central-sports/:vendor/:provider"
                 element={<SportProviders />}
               />
               <Route
@@ -145,23 +145,23 @@ function App() {
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
               <Route
-                path="/sports/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<Cricket />}
               />
               <Route
-                path="/sports/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<FancyCricket />}
               />
               <Route
-                path="/sports/:vendor/:provider/:match/:individualMatch"
+                path="/central-sports/:vendor/:provider/:match/:individualMatch"
                 element={<FancyIndividualCricketMatch />}
               />
               <Route
-                path="/sports/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<CricketBookmaker />}
               />
               <Route
-                path="/sports/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<CricketLiveStreaming />}
               />
               <Route
@@ -169,7 +169,7 @@ function App() {
                 element={<SportsVendorRegistration />}
               />
               <Route
-                path="/sports/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<CricketScoreboard />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />

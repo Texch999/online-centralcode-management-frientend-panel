@@ -46,7 +46,9 @@ const FancyCricket = () => {
     );
 
   const handleFancyMatch = (individualMatch) => {
-    navigate(`/sports/${vendor}/${provider}/${match}/${individualMatch}`);
+    navigate(
+      `/central-sports/${vendor}/${provider}/${match}/${individualMatch}`
+    );
   };
   const [showBlockModal, setShowBlockModal] = useState(false);
 
