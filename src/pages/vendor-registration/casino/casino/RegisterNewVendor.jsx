@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import SuccessPopup from "../../../popups/SuccessPopup";
 
 const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
-  const [successModal, setSuccessModal]=useState(false);
-  const handleSubmit=()=>{
+  const [successModal, setSuccessModal] = useState(false);
+  const handleSubmit = () => {
     setSuccessModal(!successModal);
-  }
+  };
   const navigate = useNavigate();
   return (
     <div className="dashboard-white-bg box-shadow radius p-3">
@@ -262,16 +262,27 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         {isEdit === true ? (
           <div className="col-4 felx-column align-items-center text-black ">
             <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Update</div>
-            <div className="white-btn br-5 mx-2 my-3 pointer text-center">Edit</div>
+            <div className="white-btn br-5 mx-2 my-3 pointer text-center">
+              Edit
+            </div>
           </div>
         ) : (
           <div className="col-4 felx-column text-black ">
-            <div className="saffron-btn2 br-5 mx-2 my-2 pointer" onClick={handleSubmit}>Submit</div>
+            <div
+              className="saffron-btn2 br-5 mx-2 my-2 pointer"
+              onClick={handleSubmit}
+            >
+              Submit
+            </div>
           </div>
         )}
       </div>
 
-      <SuccessPopup show={successModal} setShow={setSuccessModal} title={"Casino New Vendor Added"}/>
+      <SuccessPopup
+        successPopupOpen={successModal}
+        setSuccessPopupOpen={setSuccessModal}
+        discription={"Casino New Vendor Added"}
+      />
     </div>
   );
 };

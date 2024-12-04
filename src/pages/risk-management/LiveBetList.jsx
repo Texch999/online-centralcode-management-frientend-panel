@@ -7,16 +7,27 @@ import {
   MdLoop,
 } from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+import SuccessPopup from "../popups/SuccessPopup";
 
 function LiveBetList() {
   const [activeSport, setActiveSport] = useState("All");
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+  const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
   };
+  const handleConfirmPopupOpen = () => {
+    setConfirmationPopupOpen(true);
+  };
+  const handleSuccessPopupOpen = () => {
+    setSuccessPopupOpen(true);
+  };
+
   const SPORTS_BUTTONS = [
     "All",
     "Toss",
@@ -91,7 +102,7 @@ function LiveBetList() {
               size={18}
               onClick={handleEditBetPopupOpen}
             />
-            <MdOutlineDelete size={18} />
+            <MdOutlineDelete size={18} onClick={handleConfirmPopupOpen} />
           </div>
         </div>
       ),
@@ -253,7 +264,12 @@ function LiveBetList() {
           </select>
         </div>
         <div className="col  flex-column d-flex align-items-end justify-content-end">
-          <button className="w-100 saffron-btn2 small-font">Submit</button>
+          <button
+            className="w-100 saffron-btn2 small-font"
+            onClick={handleSuccessPopupOpen}
+          >
+            Submit
+          </button>
         </div>
       </div>
       <Table
@@ -265,6 +281,17 @@ function LiveBetList() {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+      <ConfirmationPopup
+        confirmationPopupOpen={confirmationPopupOpen}
+        setConfirmationPopupOpen={setConfirmationPopupOpen}
+        discription={"Are You Sure to Block this Account"}
+        submitButton={"Block"}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={"Your Request is Successfully Done"}
       />
     </div>
   );
