@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
-import BlockPopup from "./../popups/BlockPopup";
-import DeletePopup from "./../popups/DeletePopup";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import FancyCricket from "./FancyCricket";
 import CricketBookmaker from "./CricketBookmaker";
 import CricketLiveStreaming from "./CricketLiveStreaming";
 import CricketScoreboard from "./CricketScoreboard";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const Cricket = () => {
   const navigate = useNavigate();
@@ -57,7 +56,6 @@ const Cricket = () => {
       </>
     );
 
-  console.log(vendor, provider, match, "Vendor-provider-match");
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -92,7 +90,6 @@ const Cricket = () => {
     { header: <div className="flex-start">Action</div>, field: "action" },
   ];
 
-  
   const data = [
     {
       watch: (
@@ -541,15 +538,18 @@ const Cricket = () => {
       {provider === "Live Streaming" && <CricketLiveStreaming />}
       {provider === "Scoreboard" && <CricketScoreboard />}
 
-      <BlockPopup
-        show={showBlockModal}
-        setShow={setShowBlockModal}
-        title={"Match"}
+      <ConfirmationPopup
+        confirmationPopupOpen={showBlockModal}
+        setConfirmationPopupOpen={setShowBlockModal}
+        discription={"Are You Sure to Block this Match"}
+        submitButton={"Block"}
       />
-      <DeletePopup
-        show={showDeleteModal}
-        setShow={setShowDeleteModal}
-        title={"Match"}
+
+      <ConfirmationPopup
+        confirmationPopupOpen={showDeleteModal}
+        setConfirmationPopupOpen={setShowDeleteModal}
+        discription={"Are You Sure to Delete this Match"}
+        submitButton={"Delete"}
       />
     </div>
   );

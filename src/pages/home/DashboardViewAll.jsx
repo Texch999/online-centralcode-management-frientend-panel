@@ -149,7 +149,7 @@ const DashboardViewAll = () => {
   ];
   return (
     <div className="p-2">
-      <h4 className="blck-text">Welcome sri</h4>
+      <h4 className="blck-text">Welcome Sri</h4>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>

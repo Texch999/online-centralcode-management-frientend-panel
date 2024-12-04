@@ -38,8 +38,8 @@ const MatchAdminsUsersPl = () => {
       ),
       name: (
         <div className="d-flex flex-column">
-          <div>Jayanta</div>
-          <div>Director</div>
+          <div>Sri</div>
+          <div>Agnet</div>
           <div>Share - 10%</div>
         </div>
       ),
@@ -65,7 +65,10 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye
+            className="text-black font-20 me-4 pointer"
+            onClick={() => handleMatchusersPl("Agent-Sri")}
+          />
           <div className="green-btn">Settled</div>
         </div>
       ),

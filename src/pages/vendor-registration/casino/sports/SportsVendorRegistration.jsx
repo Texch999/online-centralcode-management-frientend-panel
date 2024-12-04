@@ -47,6 +47,7 @@ const SportsVendorRegistration = () => {
           <div className="py-2">Bookmaker</div>
           <div className="py-2">Fancy</div>
           <div className="py-2">Live Streaming</div>
+          <div className="py-2">Scoreboard</div>
         </div>
       ),
       pl: (
@@ -83,7 +84,6 @@ const SportsVendorRegistration = () => {
           <div className="dark-orange-clr py-2">60000</div>
           <div className="green-clr py-2">20000</div>
           <div className="green-clr py-2">40000</div>
-          <div className="dark-orange-clr py-2">65000</div>
         </div>
       ),
       action: (

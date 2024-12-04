@@ -9,9 +9,9 @@ function EditProfilePopup({ editProfilePopup, setEditProfilePopup }) {
   return (
     <Modal show={editProfilePopup} centered size="lg">
       <Modal.Body>
-        <div className="flex-between black-text4">
+        <div className="flex-between black-text4 ">
           <h6 className="fw-600 mb-0">Edit Profile</h6>
-          <IoCloseSharp size={20} onClick={handleCancel} />
+          <IoCloseSharp size={20} onClick={handleCancel} className="pointer"/>
         </div>
         <div className="row small-font mt-3">
           <div className="col-4 flex-column">

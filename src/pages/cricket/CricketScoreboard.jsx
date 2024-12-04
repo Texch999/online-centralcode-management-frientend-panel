@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import BlockPopup from "./../popups/BlockPopup";
-import DeletePopup from "./../popups/DeletePopup";
 import Table from "../../components/Table";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdBlock, MdDeleteOutline, MdSportsCricket } from "react-icons/md";
@@ -8,7 +6,7 @@ import { IoTennisballOutline } from "react-icons/io5";
 import FootballScoreboard from "./FootballScoreboard";
 import TennisScoreBoard from "./TennisScoreBoard";
 import HorseRacingScoreBoard from "./HorseRacingScoreBoard";
-import { FaArrowLeft } from "react-icons/fa";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const CricketScoreboard = () => {
   const navigate = useNavigate();
@@ -316,15 +314,19 @@ const CricketScoreboard = () => {
         <Table columns={cols} data={data} itemsPerPage={5} />
       </div>
 
-      <BlockPopup
-        show={showBlockModal}
-        setShow={setShowBlockModal}
-        title={"Match"}
+      
+      <ConfirmationPopup
+        confirmationPopupOpen={showBlockModal}
+        setConfirmationPopupOpen={setShowBlockModal}
+        discription={"Are You Sure to Block this Match"}
+        submitButton={"Block"}
       />
-      <DeletePopup
-        show={showDeleteModal}
-        setShow={setShowDeleteModal}
-        title={"Match"}
+
+      <ConfirmationPopup
+        confirmationPopupOpen={showDeleteModal}
+        setConfirmationPopupOpen={setShowDeleteModal}
+        discription={"Are You Sure to Delete this Match"}
+        submitButton={"Delete"}
       />
     </div>
   );

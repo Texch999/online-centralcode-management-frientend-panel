@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import { FaSearch } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import DeletePopup from "../popups/DeletePopup";
+import ConfirmationPopup from './../popups/ConfirmationPopup';
 
 function InActiveUsers() {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -287,10 +287,13 @@ function InActiveUsers() {
         data={INACTIVE_USER_DATA}
         itemsPerPage={4}
       />
-      <DeletePopup
-        show={showDeletePopup}
-        setShow={setShowDeletePopup}
-        title="Transaction"
+    
+
+      <ConfirmationPopup
+        confirmationPopupOpen={showDeletePopup}
+        setConfirmationPopupOpen={setShowDeletePopup}
+        discription={"Are You Sure to Delete this Match"}
+        submitButton={"Delete"}
       />
     </div>
   );
