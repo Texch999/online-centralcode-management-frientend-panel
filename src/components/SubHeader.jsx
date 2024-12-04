@@ -2,18 +2,16 @@ import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import ManagementResetPasswordPopup from "../pages/add-team/ManagementResetPasswordPopup";
+import EditProfilePopup from "../popups/EditProfilePopup";
+import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 
 function SubHeader() {
   const navigate = useNavigate();
   const role_code = localStorage.getItem("role_code");
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showResetPswdModal, setShowResetPswdModal] = useState(false);
-  const onRequestClose = () => {
-    setShowResetPswdModal(false);
-  };
+  const [editProfilePopup, setEditProfilePopup] = useState(false);
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
 
   const menuConfig = {
     // Management Menu Items
@@ -198,6 +196,16 @@ function SubHeader() {
     setActiveDropdown(isOpen ? index : null);
   };
 
+  const handleMenuItemClick = (option) => {
+    if (option.label === "Edit Profile") {
+      setEditProfilePopup(true);
+    } else if (option.label === "Reset Password") {
+      setResetPasswordPopup(true);
+    } else if (option.path) {
+      navigate(option.path);
+    }
+  };
+
   return (
     <div className="w-100 d-flex grey-bg3">
       {menuItems.map((menu, index) => (
@@ -232,7 +240,7 @@ function SubHeader() {
                 <Dropdown.Item
                   key={optIndex}
                   className="white-btn yellow-hover small-font"
-                  onClick={() => navigate(option.path)}
+                  onClick={() => handleMenuItemClick(option)}
                 >
                   {option.label}
                 </Dropdown.Item>
@@ -241,10 +249,13 @@ function SubHeader() {
           </Dropdown>
         </div>
       ))}
-
-      <ManagementResetPasswordPopup
-        isOpen={showResetPswdModal}
-        onRequestClose={onRequestClose}
+      <EditProfilePopup
+        editProfilePopup={editProfilePopup}
+        setEditProfilePopup={setEditProfilePopup}
+      />
+      <ResetPasswordPopup
+        resetPasswordPopup={resetPasswordPopup}
+        setResetPasswordPopup={setResetPasswordPopup}
       />
     </div>
   );

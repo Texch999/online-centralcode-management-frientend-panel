@@ -107,8 +107,8 @@
 }
 .white-btn3 {
   background: #ffffff !important;
-  outline: 2px solid #e0e0e0 !important;
-  border: none !important;
+  border: 2px solid #e0e0e0 !important;
+  outline: none !important;
   color: #1c1c1c !important;
   font-weight: 500 !important;
   padding: 0.5rem !important;
@@ -331,11 +331,12 @@
 }
 .grey-box {
   background: #f2f2f2;
+  border: 2px solid #f2f2f2;
+  outline: none !important;
   padding: 0.5rem;
   border-radius: 0.35rem;
   color: #1b1b1b;
   font-weight: 500;
-  border: 1px solid #f2f2f2;
 }
 .flex-start {
   display: flex;
@@ -494,7 +495,7 @@
 .border-left2 {
   border-right: 2px solid #aeaeae;
 }
-.grey-bg3 {
+.grey-bg4 {
   background: #aeaeae !important;
 }
 .mb-1rem {
