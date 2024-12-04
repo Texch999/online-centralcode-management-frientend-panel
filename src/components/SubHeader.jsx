@@ -376,7 +376,7 @@ function SubHeader() {
               {menu?.options?.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn yellow-hover small-font"
+                  className="w-100 white-btn yellow-hover small-font"
                   onClick={() => handleMenuItemClick(option)}
                 >
                   {option.label}
