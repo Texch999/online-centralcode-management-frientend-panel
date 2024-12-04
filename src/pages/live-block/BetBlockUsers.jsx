@@ -216,12 +216,20 @@ function BetBlockUsers() {
       <div className="w-100 d-flex align-items-center justify-content-between my-3">
         <div className="w-50 row">
           <div className="col flex-column">
-            <label className="black-text4 small-font mb-1">From</label>
-            <input className="input-css2 small-font" type="date" />
+            <label className="black-text4 small-font mb-1">Admin</label>
+            <select className="input-css2 small-font">
+              <option>admin1</option>
+              <option>admin1</option>
+              <option>admin1</option>
+            </select>
           </div>
           <div className="col flex-column">
             <label className="black-text4 small-font mb-1">To</label>
-            <input className="input-css2 small-font" type="date" />
+            <select className="input-css2 small-font">
+              <option>user1</option>
+              <option>user1</option>
+              <option>user1</option>
+            </select>
           </div>
           <div className="col flex-column d-flex align-items-end justify-content-end">
             <button className="w-100 saffron-btn2 small-font">Submit</button>
