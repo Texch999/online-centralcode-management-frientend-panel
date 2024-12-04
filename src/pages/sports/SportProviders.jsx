@@ -265,14 +265,15 @@ const SportProviders = () => {
           </span>
         </div>
 
-        <div className="medium-font">
+        <div className="medium-font flex-between">
           <span
-            className="input-css2 rounded-pill me-4 px-2 py-1 pointer hover-orange-clr"
+            className="input-css2 rounded-pill me-4 px-3 text-black py-1 flex-center pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="me-1" />
+            <FaArrowLeft className="me-1 d-flex" />
             Back
           </span>
+
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
