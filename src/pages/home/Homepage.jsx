@@ -570,7 +570,7 @@ function Homepage() {
 
   return (
     <div className="p-2">
-      <h4 className="blck-text">Welcome sri</h4>
+      <h4 className="blck-text">Welcome Sri</h4>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
@@ -727,8 +727,8 @@ function Homepage() {
                   );
                 })}
               </div>
-              <div className=" pointer">
-                <select className="all-none w-100 input-css2 px-2 py-2 radius-20 text-black">
+              <div className="pointer">
+                <select className="all-none w-100 input-css2 px-2 py-1 radius-20 text-black">
                   <option>Today</option>
                   <option>Tomorrow</option>
                   <option>yesterday</option>

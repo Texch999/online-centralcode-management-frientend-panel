@@ -21,634 +21,335 @@ function Casino() {
     { header: "Vendor Name", field: "vendor" },
     { header: "vendor Percentage", field: "vendorper" },
     { header: "Vendor Country", field: "country" },
-    { header: "Providers", field: "providers" },
-    { header: "", field: "eye" },
-    { header: <div className="flex-center">Action</div>, field: "action" },
-    { header: "Profit & Loss", field: "pl" },
-    { header: "Status", field: "status" },
+    {
+      header: (
+        <div className="d-flex flex-between row">
+          <div className="col-4">Providers</div>
+          <div className="col-2"></div>
+          <div className="col-2">Action</div>
+          <div className="col-2">PL</div>
+          <div className="col-2">Status</div>
+        </div>
+      ),
+      field: "all",
+    },
   ];
 
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
-      vendor: <div className="orange-clr">Lokesh</div>,
+      sno: <div className="flex-center">2</div>,
+      vendor: <div className="orange-clr">Ram</div>,
       vendorper: <div>10%</div>,
       country: <div>India</div>,
-      providers: (
-        <div className="d-flex flex-column pointer">
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            Ezugi{" "}
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            Evolution
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            Asian Games
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            Pragmatic Play
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            Sexy Gaming
-          </div>
-        </div>
-      ),
-      eye: (
-        <div className="d-flex flex-column pointer">
-          <span
-            className="py-1 "
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-        </div>
-      ),
-      action: (
-        <div className="d-flex flex-column flex-center pointer">
-          <div className="py-1" onClick={handleActiveModal}>
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      pl: (
+      all: (
         <div className="d-flex flex-column">
-          <div className="green-clr py-2">50000</div>
-          <div className="dark-orange-clr py-2">60000</div>
-          <div className="green-clr py-2">20000</div>
-          <div className="green-clr py-2">40000</div>
-          <div className="dark-orange-clr py-2">300000</div>
-        </div>
-      ),
-      status: (
-        <div className="d-flex flex-column pointer">
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Ram", "Ezugi")}
+            >
+              Ezugi
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 green-clr">10000</div>
+            <div className="active-btn-table col-2">Active</div>
           </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Ram", "Evolution")}
+            >
+              Evolution
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Ram", "Evolution")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 green-clr">10000</div>
+            <div className="active-btn-table col-2">Active</div>
           </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Ram", "Asian Games")}
+            >
+              Asian Games
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Ram", "Asian Games")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 dark-orange-clr">10000</div>
+            <div className="inactive-btn-table col-2">In-Active</div>
           </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Ram", "Praggmatic Play")}
+            >
+              Praggmatic Play
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Ram", "Praggmatic Play")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 dark-orange-clr">10000</div>
+            <div className="inactive-btn-table col-2">In-Active</div>
           </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Ram", "Sexy Gaming")}
+            >
+              Sexy Gaming
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Ram", "Sexy Gaming")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 dark-orange-clr">10000</div>
+            <div className="inactive-btn-table col-2">In-Active</div>
           </div>
         </div>
       ),
     },
     {
       sno: <div className="flex-center">2</div>,
-      vendor: <div className="orange-clr">Ram</div>,
-      vendorper: <div>10%</div>,
-      country: <div>India</div>,
-      providers: (
-        <div className="d-flex flex-column pointer">
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            Ezugi{" "}
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            Evolution
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            Asian Games
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            Pragmatic Play
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            Sexy Gaming
-          </div>
-        </div>
-      ),
-      eye: (
-        <div className="d-flex flex-column pointer">
-          <span
-            className="py-1 "
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-        </div>
-      ),
-      action: (
-        <div className="d-flex flex-column flex-center pointer">
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      pl: (
-        <div className="d-flex flex-column">
-          <div className="green-clr py-2">50000</div>
-          <div className="dark-orange-clr py-2">60000</div>
-          <div className="green-clr py-2">20000</div>
-          <div className="green-clr py-2">40000</div>
-          <div className="dark-orange-clr py-2">300000</div>
-        </div>
-      ),
-      status: (
-        <div className="d-flex flex-column pointer">
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
-          </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="flex-center">3</div>,
       vendor: <div className="orange-clr">Lokesh</div>,
       vendorper: <div>10%</div>,
       country: <div>India</div>,
-      providers: (
-        <div className="d-flex flex-column pointer">
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            Ezugi{" "}
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            Evolution
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            Asian Games
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            Pragmatic Play
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            Sexy Gaming
-          </div>
-        </div>
-      ),
-      eye: (
-        <div className="d-flex flex-column pointer">
-          <span
-            className="py-1 "
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-        </div>
-      ),
-      action: (
-        <div className="d-flex flex-column flex-center pointer">
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      pl: (
+      all: (
         <div className="d-flex flex-column">
-          <div className="green-clr py-2">50000</div>
-          <div className="dark-orange-clr py-2">60000</div>
-          <div className="green-clr py-2">20000</div>
-          <div className="green-clr py-2">40000</div>
-          <div className="dark-orange-clr py-2">300000</div>
-        </div>
-      ),
-      status: (
-        <div className="d-flex flex-column pointer">
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
-          </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="flex-center">4</div>,
-      vendor: <div className="orange-clr">Rakesh</div>,
-      vendorper: <div>10%</div>,
-      country: <div>India</div>,
-      providers: (
-        <div className="d-flex flex-column pointer">
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            Ezugi{" "}
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            Evolution
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            Asian Games
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            Pragmatic Play
-          </div>
-          <div
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            Sexy Gaming
-          </div>
-        </div>
-      ),
-      eye: (
-        <div className="d-flex flex-column pointer">
-          <span
-            className="py-1 "
-            onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Evolution")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-          <span
-            className="py-2"
-            onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-          >
-            <IoEyeOutline className="orange-clr font-20" />
-          </span>
-        </div>
-      ),
-      action: (
-        <div className="d-flex flex-column flex-center pointer">
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+            >
+              Ezugi
             </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Lokesh", "Ezugi")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
             </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
             </div>
+            <div className="col-2 green-clr">10000</div>
+            <div className="active-btn-table col-2">Active</div>
           </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Lokesh", "Evolution")}
+            >
+              Evolution
             </div>
-          </div>
-          <div className="py-1">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input w-40"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Lokesh", "Evolution")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
             </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 green-clr">10000</div>
+            <div className="active-btn-table col-2">Active</div>
           </div>
-        </div>
-      ),
-      pl: (
-        <div className="d-flex flex-column">
-          <div className="green-clr py-2">50000</div>
-          <div className="dark-orange-clr py-2">60000</div>
-          <div className="green-clr py-2">20000</div>
-          <div className="green-clr py-2">40000</div>
-          <div className="dark-orange-clr py-2">300000</div>
-        </div>
-      ),
-      status: (
-        <div className="d-flex flex-column pointer">
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Lokesh", "Asian Games")}
+            >
+              Asian Games
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Lokesh", "Asian Games")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 dark-orange-clr">10000</div>
+            <div className="inactive-btn-table col-2">In-Active</div>
           </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
+            >
+              Praggmatic Play
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 dark-orange-clr">10000</div>
+            <div className="inactive-btn-table col-2">In-Active</div>
           </div>
-          <div className="py-1">
-            <div className="active-btn-table">active</div>
-          </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
-          </div>
-          <div className="py-1">
-            <div className="inactive-btn-table ">in-active</div>
+
+          <div className="d-flex flex-between pointer">
+            <div
+              className="py-2 col-4"
+              onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
+            >
+              Sexy Gaming
+            </div>
+
+            <div className="col-2">
+              <span
+                className=" font-20"
+                onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
+              >
+                <IoEyeOutline className="orange-clr" />
+              </span>
+            </div>
+            <div className="col-2">
+              <div class="form-check form-switch" onClick={handleActiveModal}>
+                <input
+                  class="form-check-input w-40"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                />
+              </div>
+            </div>
+            <div className="col-2 dark-orange-clr">10000</div>
+            <div className="inactive-btn-table col-2">In-Active</div>
           </div>
         </div>
       ),
