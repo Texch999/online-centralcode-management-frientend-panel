@@ -37,7 +37,7 @@
   border-radius: 10px;
 }
 .white-text {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 .grey-dot-line {
   border: 1px dotted #ffffff66;
@@ -47,6 +47,9 @@
 }
 .h-10vh {
   height: 10vh;
+}
+.h-12vh {
+  height: 12vh;
 }
 .voilet-bg-box {
   background: #4747a1;
@@ -130,7 +133,7 @@
   border-radius: 50px;
 }
 .dot-line-black {
-  border: 1.2px dotted #00000033;
+  border: 1.2px dashed #00000033;
 }
 .font-25 {
   font-size: 25px;
@@ -175,13 +178,15 @@
 .h-58vh {
   height: 58vh;
 }
-.table-50vh{
+.table-50vh {
   max-height: 50vh;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
 }
-.hover-orange-clr:hover{
-   background-color: #FFA310;
-   color: white;
+.table-50vh2 {
+  max-height: 62vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
 }

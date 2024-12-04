@@ -1,13 +1,12 @@
 import { Images } from "../images";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { IoEyeOffOutline } from "react-icons/io5";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Login() {
   const [username, setUsername] = useState("");
-  const [error, setError] = useState();
-  const [pswdVisiblity, setpswdVisibility] = useState(false);
+  const [error, setError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -15,87 +14,126 @@ function Login() {
       setError("Username is required");
       return;
     }
-    let role = "";
-    if (username.toLowerCase() === "management") {
-      role = "Management";
-    } else if (username.toLowerCase() === "director") {
-      role = "Director";
-    } else if (username.toLowerCase() === "central_panel") {
-      role = "Central Panel";
-    }
 
-    localStorage.setItem("role", role);
-    localStorage.setItem("isLoggedIn", true);
-    navigate("/dashboard");
+    let role_name = "";
+    let role_code = "";
+    switch (username.toLowerCase()) {
+      case "central_panel":
+        role_name = "Central Panel";
+        role_code = "central_panel";
+        break;
+      case "management":
+        role_name = "Management";
+        role_code = "management";
+        break;
+      case "director":
+        role_name = "Director";
+        role_code = "director";
+        break;
+      case "super_admin":
+        role_name = "Super Admin";
+        role_code = "super_admin";
+        break;
+      case "accounts_team":
+        role_name = "Accounts Team";
+        role_code = "accounts_team";
+        break;
+      case "risk_team":
+        role_name = "Risk Team";
+        role_code = "risk_team";
+        break;
+      case "designing_team":
+        role_name = "Designing Team";
+        role_code = "designing_team";
+        break;
+      case "white_label":
+        role_name = "White Label Setting";
+        role_code = "white_label";
+        break;
+      default:
+        setError("Invalid username");
+        return;
+    }
+    localStorage.setItem("role_name", role_name);
+    localStorage.setItem("role_code", role_code);
+    localStorage.setItem("isLoggedIn", "true");
+    navigate("/");
     window.location.reload();
   };
+
   const handlePasswordVisibility = () => {
-    setpswdVisibility(!pswdVisiblity);
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
-    <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center w-100">
+    <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center">
       <div
-        className="white-bg w-100 h-fill login-box-shadow rounded-4 flex-between"
+        className="white-bg w-100 h-fill login-box-shadow rounded-4 d-flex"
         style={{ maxWidth: "1000px" }}
       >
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
           <div className="ps-4 pe-5 flex-column px-5 w-75">
             <div className="welcome-font">WELCOME</div>
             <div className="black-text white-space">
-              We are Glad to see you back with us
+              We are glad to see you back with us
             </div>
-            <div className="py-4">
+            <div className="py-4 medium-font">
               <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
                 <img
                   className="icon-img"
-                  alt="iconimg"
+                  alt="username-icon"
                   src={Images.loginUserImages}
                 />
                 <input
                   className="input-css"
                   placeholder="Username"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setError("");
+                  }}
+                  aria-label="Username"
                 />
               </div>
-              {error && (
-                <div className="small-font text-danger mt-1">{error}</div>
-              )}
-              <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
+              {error && <div className="small-font red-font mt-1">{error}</div>}
+              <div className="d-flex align-items-center input-bg loginbox-radius mt-3 px-2">
                 <img
                   className="icon-img"
-                  alt="iconimg"
+                  alt="password-icon"
                   src={Images.loginUserLock}
-                ></img>
+                />
                 <input
                   className="input-css"
-                  type={pswdVisiblity ? "text" : "password"}
+                  type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
+                  aria-label="Password"
                 />
-                <span onClick={handlePasswordVisibility}>
-                  {pswdVisiblity ? (
-                    <IoEyeOffOutline />
+                <span
+                  onClick={handlePasswordVisibility}
+                  style={{ cursor: "pointer" }}
+                >
+                  {passwordVisible ? (
+                    <FiEyeOff size={24} />
                   ) : (
-                    <MdOutlineRemoveRedEye />
+                    <FiEye size={24} />
                   )}
                 </span>
               </div>
-              <button className="orange-btn mt-3 w-100" onClick={handleLogin}>
+              <button className="orange-btn mt-4 w-100" onClick={handleLogin}>
                 Submit
               </button>
             </div>
           </div>
           <img
             src={Images.LoginImageOne}
-            alt="loginone"
+            alt="login-one"
             className="loginimg w-100"
           />
         </div>
         <div className="w-50 pe-3 py-3 h-fill">
           <img
             src={Images.LoginImageTwo}
-            alt="sportslogin"
+            alt="sports-login"
             className="w-100 h-fill"
           />
         </div>

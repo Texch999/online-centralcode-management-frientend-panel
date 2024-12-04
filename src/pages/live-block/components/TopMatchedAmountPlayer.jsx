@@ -1,9 +1,9 @@
-import React from 'react'
-
+import React from "react";
 import Table from "../../../components/Table";
 
-
-const HIGH_PROFIT_PLAYERS_COLUMNS = [
+const TopMatchedAmountPlayer = () => {
+  
+  const HIGH_PROFIT_PLAYERS_COLUMNS = [
     { header: "S.NO", field: "s_no" },
     { header: "U.ID", field: "name" },
     { header: "Exposure", field: "exposure" },
@@ -76,11 +76,8 @@ const HIGH_PROFIT_PLAYERS_COLUMNS = [
     },
   ];
 
-
-const TopMatchedAmountPlayer = () => {
   return (
-    <div>
-      <div className="top-ten-playes-list">
+    <div className="top-ten-playes-list">
       <div className="d-flex table-parent-container">
         <div className="table-wrapper me-3 w-50 table-special-effect border-start">
           <Table
@@ -95,9 +92,8 @@ const TopMatchedAmountPlayer = () => {
           />
         </div>
       </div>
-      </div>
     </div>
-  )
-}
+  );
+};
 
-export default TopMatchedAmountPlayer
+export default TopMatchedAmountPlayer;

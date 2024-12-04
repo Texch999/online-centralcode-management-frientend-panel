@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
-import BlockPopup from "./../popups/BlockPopup";
-import DeletePopup from "./../popups/DeletePopup";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import FancyCricket from "./FancyCricket";
+import CricketBookmaker from "./CricketBookmaker";
+import CricketLiveStreaming from "./CricketLiveStreaming";
+import CricketScoreboard from "./CricketScoreboard";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const Cricket = () => {
   const navigate = useNavigate();
   const { vendor, provider, match } = useParams();
+
+  console.log({ vendor, provider, match });
 
   const matchContent =
     match === "Football" ? (
@@ -51,7 +56,6 @@ const Cricket = () => {
       </>
     );
 
-  console.log(vendor, provider, match, "Vendor-provider-match");
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -86,11 +90,12 @@ const Cricket = () => {
     { header: <div className="flex-start">Action</div>, field: "action" },
   ];
 
-  
   const data = [
     {
       watch: (
-        <div className="inplay-btn w-fit py-1 px-2 my-1 mx-2">In Play</div>
+        <div className="inplay-btn w-fit py-1 px-2 my-1 mx-2 text-center">
+          In Play
+        </div>
       ),
       date: (
         <div className="d-flex flex-column">
@@ -141,8 +146,10 @@ const Cricket = () => {
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 ms-1">10000</div>
-            <div className="lay-btn-cricket px-2 ms-1">30000</div>
+            <div className="back-btn-cricket px-2 text-center mb-1 ms-1">
+              10000
+            </div>
+            <div className="lay-btn-cricket px-2 ms-1 text-center">30000</div>
           </div>
         </div>
       ),
@@ -159,7 +166,9 @@ const Cricket = () => {
     },
     {
       watch: (
-        <div className="inplay-btn w-fit py-1 px-2 my-1 mx-2">In Play</div>
+        <div className="inplay-btn w-fit py-1 px-2 my-1 text-center mx-2">
+          In Play
+        </div>
       ),
       date: (
         <div className="d-flex flex-column">
@@ -210,8 +219,8 @@ const Cricket = () => {
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 ms-1">10000</div>
-            <div className="lay-btn-cricket px-2 ms-1">30000</div>
+            <div className="back-btn-cricket px-2 mb-1 v ms-1">10000</div>
+            <div className="lay-btn-cricket px-2 ms-1 text-center">30000</div>
           </div>
         </div>
       ),
@@ -277,8 +286,10 @@ const Cricket = () => {
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 ms-1">10000</div>
-            <div className="lay-btn-cricket px-2 ms-1">30000</div>
+            <div className="back-btn-cricket text-center px-2 mb-1 ms-1">
+              10000
+            </div>
+            <div className="lay-btn-cricket text-center px-2 ms-1">30000</div>
           </div>
         </div>
       ),
@@ -344,8 +355,10 @@ const Cricket = () => {
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 ms-1">10000</div>
-            <div className="lay-btn-cricket px-2 ms-1">30000</div>
+            <div className="back-btn-cricket px-2 mb-1 text-center ms-1">
+              10000
+            </div>
+            <div className="lay-btn-cricket px-2 ms-1 text-center">30000</div>
           </div>
         </div>
       ),
@@ -411,8 +424,10 @@ const Cricket = () => {
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 ms-1">10000</div>
-            <div className="lay-btn-cricket px-2 ms-1">30000</div>
+            <div className="back-btn-cricket px-2 text-center mb-1 ms-1">
+              10000
+            </div>
+            <div className="lay-btn-cricket px-2 text-center ms-1">30000</div>
           </div>
         </div>
       ),
@@ -428,7 +443,7 @@ const Cricket = () => {
       ),
     },
     {
-      watch: <div className="my-1 mx-2">Upcoming</div>,
+      watch: <div className="my-1 mx-2">Today</div>,
       date: (
         <div className="d-flex flex-column">
           <div>21-09-2024</div>
@@ -441,29 +456,29 @@ const Cricket = () => {
       back_lay: (
         <div className="d-flex w-100">
           <div className="col-6 flex-between">
-            <div className="d-flex flex-column back-box py-1 px-2 mx-1 text-center">
+            <div className="col d-flex flex-column back-box py-1 px-2 mx-1 text-center">
               <span>5.05</span>
               <span>97k</span>
             </div>
-            <div className="d-flex flex-column back-box py-1 px-2 mx-1 text-center">
+            <div className="col d-flex flex-column back-box py-1 px-2 mx-1 text-center">
               <span>6.05</span>
               <span>2k</span>
             </div>
-            <div className="d-flex flex-column back-box py-1 px-2 mx-1 text-center">
+            <div className="col d-flex flex-column back-box py-1 px-2 mx-1 text-center">
               <span>8.05</span>
               <span>7k</span>
             </div>
           </div>
           <div className="col-6 flex-between">
-            <div className="d-flex flex-column lay-box py-1 px-2 mx-1 text-center">
+            <div className="col d-flex flex-column lay-box py-1 px-2 mx-1 text-center">
               <span>1.75</span>
               <span>8k</span>
             </div>
-            <div className="d-flex flex-column lay-box py-1 px-2 mx-1 text-center">
+            <div className="col d-flex flex-column lay-box py-1 px-2 mx-1 text-center">
               <span>2.85</span>
               <span>9k</span>
             </div>
-            <div className="d-flex flex-column lay-box py-1 px-2 mx-1 text-center">
+            <div className="col d-flex flex-column lay-box py-1 px-2 mx-1 text-center">
               <span>3.05</span>
               <span>2k</span>
             </div>
@@ -478,8 +493,10 @@ const Cricket = () => {
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 ms-1">10000</div>
-            <div className="lay-btn-cricket px-2 ms-1">30000</div>
+            <div className="back-btn-cricket px-2 mb-1 text-center ms-1">
+              10000
+            </div>
+            <div className="lay-btn-cricket px-2 ms-1 text-center">30000</div>
           </div>
         </div>
       ),
@@ -496,9 +513,9 @@ const Cricket = () => {
     },
   ];
   return (
-    <div className="p-1">
-      <div className="d-flex flex-between">
-        <div className="mb-2 pointer large-font" onClick={() => navigate(-1)}>
+    <div className="">
+      <div className="d-flex flex-between mt-3 mb-2">
+        <div className=" pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Sports <span className="mx-1 font-20">{">"}</span>
           </span>
@@ -513,31 +530,40 @@ const Cricket = () => {
           </span>
         </div>
 
-        <div className="medium-font">
+        <div className="medium-font flex-between">
           <span
-            className="white-bg rounded-pill grey-border me-4 px-3 hover-orange-clr py-1 pointer"
+            className="white-bg2 rounded-pill text-black flex-center grey-border me-4 px-3 hover-orange-clr py-1 pointer"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="me-2" />
+            <FaArrowLeft className="me-2 d-flex" />
             Back
           </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
+      {provider === "Odds" && (
+        <div>
+          <Table columns={cols} data={data} itemsPerPage={5} />
+        </div>
+      )}
+      {provider === "Fancy" && <FancyCricket />}
+      {provider === "Bookmaker 1" && <CricketBookmaker />}
+      {provider === "Bookmaker 2" && <CricketBookmaker />}
+      {provider === "Live Streaming" && <CricketLiveStreaming />}
+      {provider === "Scoreboard" && <CricketScoreboard />}
 
-      <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
-      </div>
-
-      <BlockPopup
-        show={showBlockModal}
-        setShow={setShowBlockModal}
-        title={"Match"}
+      <ConfirmationPopup
+        confirmationPopupOpen={showBlockModal}
+        setConfirmationPopupOpen={setShowBlockModal}
+        discription={"Are You Sure to Block this Match"}
+        submitButton={"Block"}
       />
-      <DeletePopup
-        show={showDeleteModal}
-        setShow={setShowDeleteModal}
-        title={"Match"}
+
+      <ConfirmationPopup
+        confirmationPopupOpen={showDeleteModal}
+        setConfirmationPopupOpen={setShowDeleteModal}
+        discription={"Are You Sure to Delete this Match"}
+        submitButton={"Delete"}
       />
     </div>
   );

@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 import { BsEye } from "react-icons/bs";
 import Table from "../../../components/Table";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-
-const HIGH_PROFIT_PLAYERS_COLUMNS = [
+function TopExposurePlayer() {
+  const HIGH_PROFIT_PLAYERS_COLUMNS = [
     { header: "S.NO", field: "s_no" },
     { header: "U.ID", field: "name" },
     { header: "Exposure", field: "exposure" },
@@ -77,17 +77,8 @@ const HIGH_PROFIT_PLAYERS_COLUMNS = [
     },
   ];
 
-  // Bottom table data details
-
-
-const TopExposurePlayer = () => {
-  const navigate = useNavigate();
-
-
-
   return (
-    <div>
-      <div className="top-ten-playes-list">
+    <div className="top-ten-playes-list">
       <div className="d-flex table-parent-container">
         <div className="table-wrapper me-3 w-50 table-special-effect border-start">
           <Table
@@ -102,9 +93,8 @@ const TopExposurePlayer = () => {
           />
         </div>
       </div>
-      </div>
     </div>
-  )
+  );
 }
 
-export default TopExposurePlayer
+export default TopExposurePlayer;

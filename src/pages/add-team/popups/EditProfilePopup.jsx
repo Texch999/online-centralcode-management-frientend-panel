@@ -4,32 +4,27 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdOutlineClose } from "react-icons/md";
 
 const EditProfilePopup = ({ show, onHide }) => {
-  // Define state variables for each input
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
 
-  // Handle file input change
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePhoto(file); // Save the selected file in state
+      setProfilePhoto(file);
     }
   };
 
   const handleSubmit = () => {
-    // Call API to update user profile
     if (name === "" || phoneNumber === "" || profilePhoto === "") {
       alert("Please fill in all fields before submitting.");
       return;
     }
 
-    // Reset the state after submission
     setName("");
     setPhoneNumber("");
     setProfilePhoto(null);
 
-    //Hide the popup after submition.
     onHide();
   };
 
@@ -83,7 +78,7 @@ const EditProfilePopup = ({ show, onHide }) => {
                 type="file"
                 className="form-control all-none"
                 onChange={handleProfilePhotoChange}
-                style={{ display: "none" }} // Hide the actual file input
+                style={{ display: "none" }}
                 value={profilePhoto}
               />
               <label

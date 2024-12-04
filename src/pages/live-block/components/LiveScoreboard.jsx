@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import BlockPopup from "./../../popups/BlockPopup";
-import DeletePopup from "./../../popups/DeletePopup";
 import Table from "../../../components/Table";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdBlock, MdDeleteOutline, MdSportsCricket } from "react-icons/md";
@@ -8,15 +6,14 @@ import { IoTennisballOutline } from "react-icons/io5";
 import TennisScoreBoard from "../../cricket/TennisScoreBoard";
 import HorseRacingScoreBoard from "../../cricket/HorseRacingScoreBoard";
 import FootballScoreboard from "../../cricket/FootballScoreboard";
-import {Images} from "../../../images"
+import { Images } from "../../../images";
 import "../../add-team/style.css";
 import "../style.css";
 
-const LiveScoreBoard = ({sport}) => {
+const LiveScoreBoard = ({ sport }) => {
   const navigate = useNavigate();
   // const { vendor, provider, match } = useParams();
-  
- 
+
   const matchContent =
     sport === "Football" ? (
       <>
@@ -30,8 +27,7 @@ const LiveScoreBoard = ({sport}) => {
       </>
     ) : sport === "Tennis" ? (
       <>
-        <div>Evgeny Donskoy vs
-        Omar Jasika</div>
+        <div>Evgeny Donskoy vs Omar Jasika</div>
         <div>11023843754858</div>
       </>
     ) : (
@@ -266,7 +262,13 @@ const LiveScoreBoard = ({sport}) => {
       series: [seriesContent],
       live: (
         <div class="video-container">
-          <video controls width="300" height="150" className="rounded" poster={Images.LiveImagePoster}>
+          <video
+            controls
+            width="300"
+            height="150"
+            className="rounded"
+            poster={Images.LiveImagePoster}
+          >
             <source src="video-file.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
@@ -287,7 +289,6 @@ const LiveScoreBoard = ({sport}) => {
   ];
 
   return (
-
     <div className="p-1">
       <div className="mt-3 table-items-centerd">
         <Table columns={cols} data={data} itemsPerPage={5} />
@@ -296,17 +297,6 @@ const LiveScoreBoard = ({sport}) => {
       <div className="mt-3 table-items-centerd">
         <Table columns={cols2} data={data2} itemsPerPage={5} />
       </div>
-
-      <BlockPopup
-        show={showBlockModal}
-        setShow={setShowBlockModal}
-        title={"Match"}
-      />
-      <DeletePopup
-        show={showDeleteModal}
-        setShow={setShowDeleteModal}
-        title={"Match"}
-      />
     </div>
   );
 };

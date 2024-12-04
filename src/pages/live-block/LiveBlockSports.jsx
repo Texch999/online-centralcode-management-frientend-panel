@@ -3,7 +3,6 @@ import { FaSearch } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 import TopExposurePlayer from "./components/TopExposurePlayer";
 import TopMatchedAmountPlayer from "./components/TopMatchedAmountPlayer";
-
 import "../add-team/style.css";
 import "./style.css";
 import Table from "../../components/Table";
@@ -22,17 +21,16 @@ const live_data_details_columns = [
 ];
 
 function LiveBlockSports() {
-
   const [activeSport, setActiveSport] = useState("Cricket");
   const [tabTopTenPlayer, setTabTopTenPlayer] = useState(
     "matched-amount-player"
   );
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleClickCricketPage = (sport) => {
-    navigate(`/live-block-sports/${sport}`)
-  }
+    navigate(`/live-block-sports/${sport}`);
+  };
 
   const SPORTS_BUTTONS = [
     "Cricket",
@@ -45,13 +43,11 @@ function LiveBlockSports() {
 
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
-    
   };
 
   const handleTabTopPlayer = (activeTab) => {
     setTabTopTenPlayer(activeTab);
   };
-
 
   const cricketData = [
     {
@@ -80,7 +76,13 @@ function LiveBlockSports() {
       lay: <span className="red-font">0</span>,
       exposure: <span className="red-font">471.19</span>,
       declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" onClick={() => handleClickCricketPage("Cricket")}/>,
+      action: (
+        <BsEye
+          size={18}
+          className="pointer ms-2"
+          onClick={() => handleClickCricketPage("Cricket")}
+        />
+      ),
     },
     {
       live: "Live",
@@ -272,7 +274,13 @@ function LiveBlockSports() {
       lay: <span className="red-font">0</span>,
       exposure: <span className="red-font">471.19</span>,
       declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" onClick={() => handleClickCricketPage("Football")}/>,
+      action: (
+        <BsEye
+          size={18}
+          className="pointer ms-2"
+          onClick={() => handleClickCricketPage("Football")}
+        />
+      ),
     },
     {
       live: "Live",
@@ -435,9 +443,8 @@ function LiveBlockSports() {
       declareBets: <span className="green-font">5000000</span>,
       action: <BsEye size={18} className="pointer ms-2" />,
     },
-  ]; 
+  ];
 
-  
   const tennisData = [
     {
       live: "Football",
@@ -465,7 +472,13 @@ function LiveBlockSports() {
       lay: <span className="red-font">0</span>,
       exposure: <span className="red-font">471.19</span>,
       declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" onClick={() => handleClickCricketPage("Tennis")}/>,
+      action: (
+        <BsEye
+          size={18}
+          className="pointer ms-2"
+          onClick={() => handleClickCricketPage("Tennis")}
+        />
+      ),
     },
     {
       live: "Live",
@@ -628,7 +641,7 @@ function LiveBlockSports() {
       declareBets: <span className="green-font">5000000</span>,
       action: <BsEye size={18} className="pointer ms-2" />,
     },
-  ]; 
+  ];
 
   const horseRacingData = [
     {
@@ -657,7 +670,13 @@ function LiveBlockSports() {
       lay: <span className="red-font">0</span>,
       exposure: <span className="red-font">471.19</span>,
       declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" onClick={() => handleClickCricketPage("Horse Racing")}/>,
+      action: (
+        <BsEye
+          size={18}
+          className="pointer ms-2"
+          onClick={() => handleClickCricketPage("Horse Racing")}
+        />
+      ),
     },
     {
       live: "Live",
@@ -820,24 +839,22 @@ function LiveBlockSports() {
       declareBets: <span className="green-font">5000000</span>,
       action: <BsEye size={18} className="pointer ms-2" />,
     },
-  ]; 
-
+  ];
 
   const getSportData = (sport) => {
     switch (sport) {
-      case 'Cricket':
+      case "Cricket":
         return cricketData;
-      case 'Football':
+      case "Football":
         return footballData;
-        case 'Tennis':
+      case "Tennis":
         return tennisData;
-      case 'Horse Racing':
+      case "Horse Racing":
         return horseRacingData;
       default:
         return cricketData;
     }
   };
-
 
   return (
     <div>

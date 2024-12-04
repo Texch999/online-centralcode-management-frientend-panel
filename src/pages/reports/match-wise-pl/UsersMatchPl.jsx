@@ -1,10 +1,8 @@
 import React from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdEdit, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { MdEdit, MdLoop, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { IoEye } from "react-icons/io5";
-import { FaRotate } from "react-icons/fa6";
 import "../../home/style.css";
 
 const UsersMatchPl = () => {
@@ -12,7 +10,7 @@ const UsersMatchPl = () => {
   const { matchName, role, userDetails } = useParams();
 
   const cols = [
-    { header: "Date & Time", field: "date" },
+    { header: "Date & Time", field: "date" , width:"15%"},
     { header: "User/Market Name", field: "user" },
     { header: "Game Name-M/match ID", field: "matchid" },
     { header: "Bet Placed", field: "bet" },
@@ -50,7 +48,8 @@ const UsersMatchPl = () => {
       bet: <div>Odds</div>,
       selection: (
         <div className="d-flex flex-column">
-          <div>Selection: South Africa Wo.. Side: Back</div>
+          <div>Selection: South Africa Wo..</div>
+          <divc className="back-clr"> Side: Back</divc>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -100,7 +99,8 @@ const UsersMatchPl = () => {
       bet: <div className="dark-orange-clr">Odds</div>,
       selection: (
         <div className="d-flex flex-column dark-orange-clr">
-          <div>Selection: South Africa Wo.. Side: Back</div>
+          <div>Selection: South Africa Wo..</div>
+          <divc className="lay-clr"> Side: Lay</divc>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -111,7 +111,7 @@ const UsersMatchPl = () => {
         <div className="d-flex flex-column flex-center ">
           <div className="red-btn">Deleted</div>
           <div className="flex-between my-2 ">
-            <FaRotate className="dark-orange-clr font-20 pointer" />
+            <MdLoop className="dark-orange-clr font-20 pointer" />
           </div>
         </div>
       ),
@@ -145,7 +145,8 @@ const UsersMatchPl = () => {
       bet: <div className="orange-clr">Odds</div>,
       selection: (
         <div className="d-flex flex-column orange-clr">
-          <div>Selection: South Africa Wo.. Side: Back</div>
+          <div>Selection: South Africa Wo..</div>
+          <divc className="lay-clr"> Side: Lay</divc>
           <div>Odds Rate: 1.50</div>
           <div>B. Amount: 100000</div>
           <div>B. ID: 11023843754858</div>
@@ -251,29 +252,40 @@ const UsersMatchPl = () => {
       ),
     },
   ];
+
+  
+  const MATCHWISE_FOOTER = [
+    { header: "Total", },
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: <div className="clr-green">1500000</div>},
+    { header: ""},
+  ];
   return (
     <div className="d-flex flex-column p-1">
       <div
-        className="d-flex medium-font mt-2 mb-3 align-items-center pointer"
+        className="d-flex medium-font mb-3 align-items-center pointer"
         onClick={() => navigate(-1)}
       >
         <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
         <div>Match Wise P/L</div>
         <div className="">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {matchName}
         </div>
         <div className="">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {role}
         </div>
         <div className="orange-clr">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {userDetails}
         </div>
@@ -300,7 +312,7 @@ const UsersMatchPl = () => {
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={3} />
+        <Table columns={cols} data={data} itemsPerPage={3} footer={MATCHWISE_FOOTER}/>
       </div>
     </div>
   );

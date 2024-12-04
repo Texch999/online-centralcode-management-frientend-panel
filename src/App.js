@@ -15,7 +15,6 @@ import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import RiskCasino from "./pages/risk-management/RiskCasino";
-// import Sports from "./pages/sports/Sports";
 import FancyResult from "./pages/fancy-result/FancyResult";
 import MarketResult from "./pages/market-result/MarketResult";
 import LiveBetList from "./pages/risk-management/LiveBetList";
@@ -69,6 +68,12 @@ import UserReports from "./pages/reports/UserReports";
 import ClientRental from "./pages/reports/ClientRental";
 import ViewFancyBets from "./pages/live-block/components/ViewFancyBets";
 import LiveScoreBoard from "./pages/live-block/components/LiveScoreboard";
+import Sports from "./pages/sports/Sports";
+import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
+import BonusChips from "./pages/bonuschips/BonusChips";
+import BetBlockUsers from "./pages/live-block/BetBlockUsers";
+import InActiveUsers from "./pages/live-block/InActiveUsers";
+import SetLimits from "./pages/live-block/SetLimits";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -82,7 +87,7 @@ function App() {
           <div className="home">
             <Routes>
               <Route path="/" element={<Homepage />} />
-              <Route path="/casino" element={<Casino />} />
+              <Route path="/central-casino" element={<Casino />} />
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
@@ -103,15 +108,15 @@ function App() {
                 element={<RiskBetHistory />}
               />
               <Route
-                path="/casino-vendor/:vendor/:provider"
+                path="/central-casino/:vendor/:provider"
                 element={<CasinoVendor />}
               />
               <Route
-                path="/casino-games/:vendor/:provider/:game"
+                path="/central-casino/:vendor/:provider/:game"
                 element={<CasinoGames />}
               />
               <Route
-                path="/vendor-registartion"
+                path="/vendor-registration"
                 element={<VendorRegistration />}
               />
               <Route path="/risk-casino" element={<RiskCasino />} />
@@ -129,11 +134,11 @@ function App() {
               <Route path="/casino-promotions" element={<CasinoPromotions />} />
               <Route path="/broadcasting" element={<Broadcasting />} />
               <Route path="/banners" element={<SandCBanner />} />
-              {/* <Route path="/sports" element={<Sports />} /> */}
+              <Route path="/central-sports" element={<Sports />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route
-                path="/sports-providers/:vendor/:provider"
+                path="/central-sports/:vendor/:provider"
                 element={<SportProviders />}
               />
               <Route
@@ -142,23 +147,23 @@ function App() {
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
               <Route
-                path="/cricket/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<Cricket />}
               />
               <Route
-                path="/fancy-cricket/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<FancyCricket />}
               />
               <Route
-                path="/fancy-individual-match/:vendor/:provider/:match/:individualMatch"
+                path="/central-sports/:vendor/:provider/:match/:individualMatch"
                 element={<FancyIndividualCricketMatch />}
               />
               <Route
-                path="/cricket-bookmaker/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<CricketBookmaker />}
               />
               <Route
-                path="/cricket-livestreaming/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<CricketLiveStreaming />}
               />
               <Route
@@ -166,7 +171,7 @@ function App() {
                 element={<SportsVendorRegistration />}
               />
               <Route
-                path="/cricket-scoreboard/:vendor/:provider/:match"
+                path="/central-sports/:vendor/:provider/:match"
                 element={<CricketScoreboard />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />
@@ -206,15 +211,15 @@ function App() {
               />
               <Route path="/match-wise-pl" element={<MatchWisePl />} />
               <Route
-                path="/individual-match-pl/:matchName"
+                path="/match-wise-pl/:matchName"
                 element={<IndividualMatchPl />}
               />
               <Route
-                path="/match-admins-users-pl/:matchName/:role"
+                path="/match-wise-pl/:matchName/:role"
                 element={<MatchAdminsUsersPl />}
               />
               <Route
-                path="/users-match-pl/:matchName/:role/:userDetails"
+                path="/match-wise-pl/:matchName/:role/:userDetails"
                 element={<UsersMatchPl />}
               />
               <Route path="/downline/:superadmin" element={<SuperAdminDL />} />
@@ -225,6 +230,14 @@ function App() {
               <Route path="/pl-report-users" element={<UserReports />} />
               <Route path="/client-rental-sheet" element={<ClientRental />} />
               <Route path="/pdfdfg" element={<LiveScoreBoard />} />
+              <Route
+                path="/white-label-setting"
+                element={<WhiteLabelSetting />}
+              />
+              <Route path="/bonus-chips" element={<BonusChips />} />
+              <Route path="/bet-block-users" element={<BetBlockUsers />} />
+              <Route path="/inactive-users" element={<InActiveUsers />} />
+              <Route path="/set-limits" element={<SetLimits />} />
             </Routes>
           </div>
         </div>
