@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import ScrollTable from "../../components/ScrollTable";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
-import RentalTicketPopUp from "./RentalTicketPopUp";
 import DepositWithdrawPopup from "../wallet/DepositWithdrawPopup";
+import { BsEye } from "react-icons/bs";
 
 function SuperAdminDL() {
   const navigate = useNavigate();
@@ -52,11 +51,7 @@ function SuperAdminDL() {
     netPL: <div className="green-font">500000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
-          size={18}
-          onClick={handleOpenUserDetails}
-          className="pointer"
-        />
+        <BsEye size={18} onClick={handleOpenUserDetails} className="pointer" />
       </div>
     ),
   });
@@ -91,7 +86,7 @@ function SuperAdminDL() {
     totalPL: <div className="green-font">5000000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => handleMatchClick("User - Rabin")}
           className="pointer"

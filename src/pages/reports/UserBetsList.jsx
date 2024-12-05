@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import ScrollTable from "../../components/ScrollTable";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { BsEye } from "react-icons/bs";
 
 function UserBetsList() {
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ function UserBetsList() {
     netPL: <div className="green-font">500000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => setActiveRole(true)}
           className="pointer"

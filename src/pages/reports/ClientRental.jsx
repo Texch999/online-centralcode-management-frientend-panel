@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { FiChevronRight } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
 
 function ClientRental() {
   const [rentalTickets, setRentalTickets] = useState(false);
@@ -42,7 +42,7 @@ function ClientRental() {
         className="flex-center large-font pointer"
         onClick={() => setRentalTickets(true)}
       >
-        <MdOutlineRemoveRedEye size={18} />
+        <BsEye size={18} />
       </div>
     ),
   });
@@ -104,12 +104,11 @@ function ClientRental() {
     netBal: <div className="green-font">24000000</div>,
     icons: (
       <div className="flex-center large-font pointer">
-        <MdOutlineRemoveRedEye size={18} />  <span className="active-btn-table small-font ms-2">Approved</span>
+        <BsEye size={18} />{" "}
+        <span className="active-btn-table small-font ms-2">Approved</span>
       </div>
     ),
   });
-
-
 
   const summaryData = [
     { label: "Total Rental Amount", value: "1000000000", color: "green-font" },

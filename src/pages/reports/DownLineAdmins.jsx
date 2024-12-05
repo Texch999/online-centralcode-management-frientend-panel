@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import ScrollTable from "../../components/ScrollTable";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
 
 function DownLineAdmins() {
   const navigate = useNavigate();
   const [activeRole, setActiveRole] = useState(false);
-
- 
 
   const handleMatchClick = (matchName) => {
     navigate(`/downline/${encodeURIComponent(matchName)}`);
@@ -39,7 +37,7 @@ function DownLineAdmins() {
     netPL: <div className="green-font">500000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => setActiveRole(true)}
           className="pointer"
@@ -86,7 +84,7 @@ function DownLineAdmins() {
     netPL: <div className="green-font">500000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => handleMatchClick("Super Admin - Rajesh")}
           className="pointer"
@@ -165,7 +163,9 @@ function DownLineAdmins() {
           ))}
         </div>
         <div className="netpl-btn mb-3 ms-3  col-2   pointer">
-          <div className="white-btn2 d-flex small-font w-80 flex-between ">Net P/L  <span className="green-font">1000000</span></div>
+          <div className="white-btn2 d-flex small-font w-80 flex-between ">
+            Net P/L <span className="green-font">1000000</span>
+          </div>
         </div>
       </div>
 

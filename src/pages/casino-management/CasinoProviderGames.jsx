@@ -2,18 +2,19 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdBlockFlipped, MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdBlockFlipped } from "react-icons/md";
 import { FiChevronRight } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
 
 const CasinoProviderGames = () => {
-  const { provider,gamename } = useParams();
+  const { provider, gamename } = useParams();
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(
-        `/management-casino-provider/${encodeURIComponent(provider)}/${encodeURIComponent(
-            gamename
-        )}/${encodeURIComponent(matchName)}`
-      );
+      `/management-casino-provider/${encodeURIComponent(
+        provider
+      )}/${encodeURIComponent(gamename)}/${encodeURIComponent(matchName)}`
+    );
   };
 
   const CASINO_COLUMNS = [
@@ -28,10 +29,7 @@ const CasinoProviderGames = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("Bet History")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("Bet History")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -46,11 +44,18 @@ const CasinoProviderGames = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className=" mb-0">
-          Casino Live Settings 
-          <span ><FiChevronRight /> Casino Providers</span>
-          
-          <span ><FiChevronRight />{provider}</span>
-          <span className="yellow-font"><FiChevronRight />{gamename}</span>
+          Casino Live Settings
+          <span>
+            <FiChevronRight /> Casino Providers
+          </span>
+          <span>
+            <FiChevronRight />
+            {provider}
+          </span>
+          <span className="yellow-font">
+            <FiChevronRight />
+            {gamename}
+          </span>
         </h6>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
@@ -62,7 +67,6 @@ const CasinoProviderGames = () => {
           </div>
         </div>
       </div>
-     
 
       <div className="mt-4 ">
         <Table

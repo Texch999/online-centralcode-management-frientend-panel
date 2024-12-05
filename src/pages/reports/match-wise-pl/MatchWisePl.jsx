@@ -1,8 +1,8 @@
 import React from "react";
 import Table from "../../../components/Table";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import "../../home/style.css";
 import { useNavigate } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
 
 const MatchWisePl = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const MatchWisePl = () => {
     navigate(`/match-wise-pl/${matchName}`);
   };
   const cols = [
-    { header: "Date & Time", field: "date"},
+    { header: "Date & Time", field: "date" },
     { header: "Series Name", field: "series" },
     { header: "Match Name", field: "match" },
     { header: "Game Name", field: "game" },
@@ -48,10 +48,11 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-3 pointer"
-            onClick={()=>handleMatchPlPage(
-              "South Africa Women's vs New Zealand Women's")}
+            onClick={() =>
+              handleMatchPlPage("South Africa Women's vs New Zealand Women's")
+            }
           />
           <div className="green-btn">Settled</div>
         </div>
@@ -86,9 +87,9 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-3 pointer"
-            onClick={()=>handleMatchPlPage("Santos vs Cruzeiro MG")}
+            onClick={() => handleMatchPlPage("Santos vs Cruzeiro MG")}
           />
           <div className="green-btn">Settled</div>
         </div>
@@ -123,7 +124,7 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -157,7 +158,7 @@ const MatchWisePl = () => {
       Pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -191,7 +192,7 @@ const MatchWisePl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -225,7 +226,7 @@ const MatchWisePl = () => {
       Pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -233,13 +234,13 @@ const MatchWisePl = () => {
   ];
 
   const MATCHWISE_FOOTER = [
-    { header: "Total", },
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: <div className="clr-green">1500000</div>},
-    { header: ""},
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
   ];
   return (
     <div className="d-flex flex-column p-1">
@@ -290,7 +291,12 @@ const MatchWisePl = () => {
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={5} footer={MATCHWISE_FOOTER}/>
+        <Table
+          columns={cols}
+          data={data}
+          itemsPerPage={5}
+          footer={MATCHWISE_FOOTER}
+        />
       </div>
     </div>
   );
