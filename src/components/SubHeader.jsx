@@ -90,7 +90,7 @@ function SubHeader() {
           },
           { label: "Sports Promotions", path: "/sports-promotions" },
           { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Offer", path: "/offer" },
+          { label: "Offers", path: "/offers" },
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
