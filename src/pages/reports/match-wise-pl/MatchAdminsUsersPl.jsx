@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import "../../home/style.css";
+import { BsEye } from "react-icons/bs";
 
 const MatchAdminsUsersPl = () => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-4 pointer"
             onClick={() => handleMatchusersPl("Agent-Sri")}
           />
@@ -109,7 +109,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -150,7 +150,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -191,7 +191,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -232,7 +232,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -273,7 +273,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -327,7 +327,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-4 pointer"
             onClick={() => handleMatchusersPl("User-Lokesh")}
           />
@@ -370,7 +370,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -410,7 +410,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
 
 const Result = () => {
   const [activeBtn, setActiveBtn] = useState("Sports");
@@ -286,7 +286,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -330,54 +330,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() =>
-              handleMatchClick("New Zealand Wo vs South Africa Wo")
-            }
-            className="pointer"
-          />
-        </div>
-      ),
-    },
-    {
-      dateTime: <div>1-10-2024 16:11:00</div>,
-      sports: <div>Cricket</div>,
-      seriesName: (
-        <div>
-          ICICI T20 Women World Cup 2024
-          <br />
-          M. ID: 1.11045677544
-        </div>
-      ),
-
-      matchName: (
-        <div
-          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
-          className="pointer"
-        >
-          New Zealand Wo vs South Africa Wo
-          <br />M ID: 11023843754858
-        </div>
-      ),
-
-      result: (
-        <div>
-          <span className="green-font"> New Zealand Wo</span>
-          <br />R ID: 12345678943323
-        </div>
-      ),
-      runs: (
-        <div className="green-font">
-          Balls: 17.2
-          <br />
-          Runs: 220
-        </div>
-      ),
-      resultDateTime: <div>02-10-2024 10:34:00</div>,
-      viewFancy: (
-        <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -424,7 +377,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -471,7 +424,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -518,7 +471,54 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
+            size={18}
+            onClick={() =>
+              handleMatchClick("New Zealand Wo vs South Africa Wo")
+            }
+            className="pointer"
+          />
+        </div>
+      ),
+    },
+    {
+      dateTime: <div>1-10-2024 16:11:00</div>,
+      sports: <div>Cricket</div>,
+      seriesName: (
+        <div>
+          ICICI T20 Women World Cup 2024
+          <br />
+          M. ID: 1.11045677544
+        </div>
+      ),
+
+      matchName: (
+        <div
+          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
+          className="pointer"
+        >
+          New Zealand Wo vs South Africa Wo
+          <br />M ID: 11023843754858
+        </div>
+      ),
+
+      result: (
+        <div>
+          <span className="green-font"> New Zealand Wo</span>
+          <br />R ID: 12345678943323
+        </div>
+      ),
+      runs: (
+        <div className="green-font">
+          Balls: 17.2
+          <br />
+          Runs: 220
+        </div>
+      ),
+      resultDateTime: <div>02-10-2024 10:34:00</div>,
+      viewFancy: (
+        <div className="  w-60  flex-center">
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
