@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { IoAddOutline } from "react-icons/io5";
 import { MdBlockFlipped } from "react-icons/md";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import NewPromotionPopUp from "./NewPromotionPopUp";
 import { Images } from "../../images";
@@ -39,7 +39,7 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <LiaPenSolid size={18} />
+          <SlPencil size={18} />
           <MdBlockFlipped size={18} className="mx-3" />
           <FaRegTrashCan size={18} />
         </div>
@@ -53,7 +53,7 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <LiaPenSolid size={18} />
+          <SlPencil size={18} />
           <MdBlockFlipped size={18} className="mx-3" />
           <FaRegTrashCan size={18} />
         </div>
@@ -67,7 +67,7 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <LiaPenSolid size={18} />
+          <SlPencil size={18} />
           <MdBlockFlipped size={18} className="mx-3" />
           <FaRegTrashCan size={18} />
         </div>
@@ -109,7 +109,7 @@ const PromotionType = () => {
       ),
       action: (
         <div className="flex-center">
-          <LiaPenSolid
+          <SlPencil
             size={18}
             className="pointer me-2"
             onClick={() => setEditPoster(!editPoster)}

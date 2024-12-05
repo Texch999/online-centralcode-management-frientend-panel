@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { IoAddOutline } from "react-icons/io5";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Images } from "../../images";
 import UploadPosterPopUp from "./UploadPosterPopUp";
@@ -68,7 +68,7 @@ const Offer = () => {
               </div>
               <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
                 <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid
+                  <SlPencil
                     size={20}
                     className="pointer"
                     onClick={() => setUploadPoster(!uploadPoster)}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import AddPrivacyPolicyPopUp from "./AddPrivacyPolicyPopUp";
 import PrivacyPopUp from "./PrivacyPopUp";
 
@@ -45,7 +45,7 @@ const PrivacyPolicy = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18} />
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />
@@ -89,7 +89,7 @@ const PrivacyPolicy = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18} />
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />
@@ -133,7 +133,7 @@ const PrivacyPolicy = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18} />
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />
@@ -177,7 +177,7 @@ const PrivacyPolicy = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18} />
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />
@@ -221,7 +221,7 @@ const PrivacyPolicy = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18} />
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />
@@ -265,7 +265,7 @@ const PrivacyPolicy = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18} />
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />

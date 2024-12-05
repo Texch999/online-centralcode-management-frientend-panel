@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { IoAddOutline } from "react-icons/io5";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
@@ -80,7 +80,7 @@ const SportsPromotions = () => {
       ),
       action: (
         <div className="flex-center">
-          <LiaPenSolid
+          <SlPencil
             size={18}
             className="me-2 pointer"
             onClick={() => setEditPoster(!editPoster)}
