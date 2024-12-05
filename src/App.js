@@ -177,7 +177,7 @@ function App() {
                 element={<CricketScoreboard />}
               />
               <Route path="/settled-history" element={<SettledHistory />} />
-              <Route path="/offer" element={<Offer />} />
+              <Route path="/offers" element={<Offer />} />
               <Route path="/my-statement" element={<MyStatement />} />
               <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
               <Route
