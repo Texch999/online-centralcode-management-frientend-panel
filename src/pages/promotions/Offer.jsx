@@ -190,8 +190,8 @@ const Offer = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex w-100  flex-between small-font">
-        <div className=" d-flex col-5">
+      <div className="d-flex   flex-between small-font">
+        <div className=" d-flex ">
           {ACTIVE_BTNS?.map((item, index) => (
             <div
               key={index}
@@ -208,7 +208,7 @@ const Offer = () => {
         </div>
 
         <div
-          className="saffron-btn2 small-font pointer mt-4 col-1"
+          className="saffron-btn2 small-font pointer mt-4 w-10"
           onClick={() => setUploadPoster(!uploadPoster)}
         >
           <IoAddOutline className="large-font" size={18} />{" "}

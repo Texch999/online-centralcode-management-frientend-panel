@@ -222,9 +222,10 @@
   font-weight: 500;
 }
 .black-text4 {
-  color: #1b1b1b;
+  color: #1b1b1b !important;
   font-weight: 500;
 }
+
 .input-bg {
   background: #f2f2f2;
   color: #1b1b1b;
@@ -492,6 +493,9 @@
 }
 .border-left2 {
   border-right: 2px solid #aeaeae;
+}
+.grey-bg3 {
+  background: #aeaeae !important;
 }
 .mb-1rem {
   margin-bottom: -1rem;

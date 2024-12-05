@@ -17,8 +17,13 @@ import SubHeader from "./SubHeader";
 function Header() {
   const navigate = useNavigate();
   const role_name = localStorage?.getItem("role_name");
+  const role_code = localStorage?.getItem("role_code");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
+
+  const handleNavigate = () => {
+    role_code === "white_label" && navigate("/white-label-setting");
+  };
 
   const handleRegisterBtn = () => {
     setIsActiveBtn(true);
@@ -86,7 +91,10 @@ function Header() {
             <span className="medium-font pointer">Dashboard</span>
           </div>
           {role_name !== "Central Panel" ? (
-            <div className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}>
+            <div
+              className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
+              onClick={handleNavigate}
+            >
               {role_name !== "Central Panel" ? (
                 <FaUserTie size={22} className="me-2" />
               ) : (

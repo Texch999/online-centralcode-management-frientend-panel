@@ -344,7 +344,7 @@ const PromotionType = () => {
         </div>
       </div>
      
-      <div className="d-flex col-3 flex-between small-font">
+      <div className="d-flex  small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}

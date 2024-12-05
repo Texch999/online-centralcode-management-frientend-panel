@@ -260,7 +260,7 @@ const SandCBanner = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex col-2 flex-between small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
@@ -342,7 +342,7 @@ const SandCBanner = () => {
             </div>
           </label>
         </div>
-        <div className="white-bg small-font pointer mt-4 yellow-font p-2 rounded dashed-border flex-center col-2">
+        <div className="white-bg small-font pointer mt-4 yellow-font p-2 rounded dashed-border flex-center col mx-2">
           Upload More
         </div>
         <div className="saffron-btn2 small-font pointer mt-4  col-3">

@@ -280,7 +280,7 @@ const SportsPromotions = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex col-3 flex-between small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
@@ -327,7 +327,7 @@ const SportsPromotions = () => {
         </div>
 
         <div
-          className="white-bg p-2 grey-border flex-center blue-font br-10 small-font pointer mt-4 col-1"
+          className="white-bg p-2 grey-border flex-center blue-font br-10 small-font pointer mt-4 w-10"
           onClick={() => setAddPromotionsModal(!addPromotionsModal)}
         >
           <IoAddOutline className="large-font" /> Add New
