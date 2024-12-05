@@ -360,23 +360,24 @@ const ReferenceData = () => {
           </div>
         ) : (
           <div className="col-5 d-flex flex-between">
-            <div className="col-5 ">
-              <select className="input-css2 col-12 mt-4 small-font">
-                <option>All</option>
-              </select>
-            </div>
-            <div className="saffron-btn2 small-font pointer mt-4 col-3">
-              Submit
-            </div>
-            <div
-              className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center"
-              onClick={() => setAddNewModalSecurity(true)}
-            >
-              <IoAddOutline className="large-font" /> Add new
-            </div>
+          <div className="col-5 ">
+            <select className="input-css2 col-12  small-font">
+              <option>All</option>
+            </select>
           </div>
+          <div className="saffron-btn2 small-font pointer  col-3 mx-2">
+            Submit
+          </div>
+          <div
+            className="bg-white small-font pointer  col-3 p-2 blue-font grey-border rounded flex-center "
+            onClick={() => setAddNewModalSecurity(true)}
+          >
+            <IoAddOutline className="large-font" /> Add new
+          </div>
+        </div>
         )}
       </div>
+      
       <div className="mt-3">
         {activeBtn === "Rejection Reasons" ? (
           <Table
