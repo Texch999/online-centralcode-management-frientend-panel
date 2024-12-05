@@ -15,7 +15,7 @@ const CasinoWebsite = () => {
   const [editPoster, setEditPoster] = useState(false);
   const ACTIVE_BTNS = ["Websites", "Casino Providers"];
   const handleMatchClick = (matchName) => {
-    navigation(`/casinogame/${encodeURIComponent(matchName)}`);
+    navigation(`/management-casino/${encodeURIComponent(matchName)}`);
   };
 
   const handleSportClick = (item) => {
@@ -36,7 +36,10 @@ const CasinoWebsite = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye size={18}  onClick={()=>handleMatchClick("T Casino Park")}/>
+          <MdOutlineRemoveRedEye
+            size={18}
+            onClick={() => handleMatchClick("T Casino Park")}
+          />
           <span>
             <MdBlockFlipped size={18} />
           </span>

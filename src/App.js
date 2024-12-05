@@ -237,7 +237,10 @@ function App() {
                 element={<WhiteLabelSetting />}
               />
               <Route path="/management-casino" element={<CasinoWebsite />} />
-              <Route path="/casinogame/:gamename" element={<MCasinoGames />} />
+              <Route
+                path="/management-casino/:gamename"
+                element={<MCasinoGames />}
+              />
               <Route path="/bonus-chips" element={<BonusChips />} />
               <Route path="/bet-block-users" element={<BetBlockUsers />} />
               <Route path="/inactive-users" element={<InActiveUsers />} />
