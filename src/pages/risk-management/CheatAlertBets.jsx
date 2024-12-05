@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import {
-  MdOutlineDelete,
-  MdOutlineModeEditOutline,
-  MdLoop,
-} from "react-icons/md";
+import { MdLoop } from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
 
 function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
@@ -93,11 +91,8 @@ function CheatAlertBets() {
         <div>
           <div className="green-btn">Settled</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
-              size={18}
-              onClick={handleEditBetPopupOpen}
-            />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} onClick={handleEditBetPopupOpen} />
+            <FaRegTrashCan size={18} />
           </div>
         </div>
       ),
@@ -258,11 +253,8 @@ function CheatAlertBets() {
         <div>
           <div className="green-btn">Settled</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
-              size={18}
-              onClick={handleEditBetPopupOpen}
-            />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} onClick={handleEditBetPopupOpen} />
+            <FaRegTrashCan size={18} />
           </div>
         </div>
       ),

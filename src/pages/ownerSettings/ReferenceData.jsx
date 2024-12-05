@@ -24,7 +24,7 @@ const ReferenceData = () => {
     {
       questions: <div>What is your name?</div>,
 
-      status: <div className="green-btn w-50">Active</div>,
+      status: <div className="green-btn w-fill">Active</div>,
 
       action: (
         <div className="large-font d-flex w-50 flex-between">
@@ -48,7 +48,7 @@ const ReferenceData = () => {
     {
       questions: <div>What is your name?</div>,
 
-      status: <div className="green-btn w-50">Active</div>,
+      status: <div className="green-btn w-fill">Active</div>,
 
       action: (
         <div className="large-font d-flex w-50 flex-between">
@@ -72,7 +72,7 @@ const ReferenceData = () => {
     {
       questions: <div>What is your name?</div>,
 
-      status: <div className="green-btn w-50">Active</div>,
+      status: <div className="green-btn w-fill">Active</div>,
 
       action: (
         <div className="large-font d-flex w-50 flex-between">
@@ -96,7 +96,7 @@ const ReferenceData = () => {
     {
       questions: <div>What is your name?</div>,
 
-      status: <div className="green-btn w-50">Active</div>,
+      status: <div className="green-btn w-fill">Active</div>,
 
       action: (
         <div className="large-font d-flex w-50 flex-between">
@@ -140,7 +140,7 @@ const ReferenceData = () => {
 
       status: (
         <div >
-          <div className="w-50  green-btn">Active</div>
+         <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -177,45 +177,7 @@ const ReferenceData = () => {
 
       status: (
         <div >
-          <div className="w-50  green-btn">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <LiaPenSolid size={18}/>
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18}/>
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-   
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div >
-          <div className="w-50  green-btn">Active</div>
+         <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -253,7 +215,45 @@ const ReferenceData = () => {
 
       status: (
         <div >
-          <div className="w-50  green-btn">Active</div>
+          <div className="green-btn w-fill">Active</div>
+        </div>
+      ),
+
+      action: (
+        <div className="large-font d-flex w-50 flex-between">
+          <span>
+            <LiaPenSolid size={18}/>
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18}/>
+          </span>
+        </div>
+      ),
+      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+   
+    {
+      reason: <div>Insufficient Balance</div>,
+
+      discriptions: (
+        <div>
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone
+          tries to <br />
+          withdraw cash from an ATM
+        </div>
+      ),
+
+      status: (
+        <div >
+         <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -325,7 +325,7 @@ const ReferenceData = () => {
         <h6 className="yellow-font mb-0">Reference Data</h6>
         
       </div>
-      <div className="d-flex col-3 flex-between small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}

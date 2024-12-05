@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
 
 const Broadcasting = () => {
   const [activeBtn, setActiveBtn] = useState("User Broadcasting");
   const ACTIVE_BTNS = ["User Broadcasting", "Admin Broadcasting"];
-
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
@@ -15,16 +14,16 @@ const Broadcasting = () => {
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
-    { header: "Website", field: "website", width: "10%" },
+    { header: "Website", field: "website", width: "15%" },
     {
       header: "Broadcasting Location",
       field: "broadcastingLocation",
-      width: "10%",
+      width: "15%",
     },
     {
       header: "Broadcasting Message",
       field: "broadcastingMessage",
-      width: "30%",
+      width: "40%",
     },
     { header: "", field: "icons", width: "10%" },
   ];
@@ -46,9 +45,7 @@ const Broadcasting = () => {
           www.fun77.com
         </div>
       ),
-
       broadcastingLocation: <div>Home Page</div>,
-
       broadcastingMessage: (
         <div>
           Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -59,176 +56,9 @@ const Broadcasting = () => {
       ),
 
       icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
+        <div className="flex-center">
+          <SlPencil size={18} className="pointer me-1" />
+          <FaRegTrashCan size={18} className="ms-1" />
         </div>
       ),
     },
@@ -243,7 +73,7 @@ const Broadcasting = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex w-25 flex-between small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}

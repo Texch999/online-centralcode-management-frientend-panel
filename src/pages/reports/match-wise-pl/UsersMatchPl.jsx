@@ -1,16 +1,18 @@
 import React from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdEdit, MdLoop, MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { MdLoop } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
 import "../../home/style.css";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
 
 const UsersMatchPl = () => {
   const navigate = useNavigate();
   const { matchName, role, userDetails } = useParams();
 
   const cols = [
-    { header: "Date & Time", field: "date" , width:"15%"},
+    { header: "Date & Time", field: "date", width: "15%" },
     { header: "User/Market Name", field: "user" },
     { header: "Game Name-M/match ID", field: "matchid" },
     { header: "Bet Placed", field: "bet" },
@@ -65,8 +67,8 @@ const UsersMatchPl = () => {
         <div className="d-flex flex-column flex-center ">
           <div className="green-btn">settled</div>
           <div className="flex-between my-2 ">
-            <MdOutlineEdit className="text-black font-20 pointer" />
-            <MdOutlineDelete className="text-black font-20 ms-3 pointer" />
+            <SlPencil className="text-black font-20 pointer" />
+            <FaRegTrashCan className="text-black font-20 ms-3 pointer" />
           </div>
         </div>
       ),
@@ -203,8 +205,8 @@ const UsersMatchPl = () => {
         <div className="d-flex flex-column flex-center ">
           <div className="green-btn">settled</div>
           <div className="flex-between my-2 ">
-            <MdOutlineEdit className="text-black font-20 pointer" />
-            <MdOutlineDelete className="text-black font-20 ms-3 pointer" />
+            <SlPencil className="text-black font-20 pointer" />
+            <FaRegTrashCan className="text-black font-20 ms-3 pointer" />
           </div>
         </div>
       ),
@@ -253,15 +255,14 @@ const UsersMatchPl = () => {
     },
   ];
 
-  
   const MATCHWISE_FOOTER = [
-    { header: "Total", },
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: <div className="clr-green">1500000</div>},
-    { header: ""},
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
   ];
   return (
     <div className="d-flex flex-column p-1">
@@ -312,7 +313,12 @@ const UsersMatchPl = () => {
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={3} footer={MATCHWISE_FOOTER}/>
+        <Table
+          columns={cols}
+          data={data}
+          itemsPerPage={3}
+          footer={MATCHWISE_FOOTER}
+        />
       </div>
     </div>
   );

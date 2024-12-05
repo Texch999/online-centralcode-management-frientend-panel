@@ -3,13 +3,21 @@ import ScrollTable from "../../components/ScrollTable";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
+import RentalTicketPopUp from "./RentalTicketPopUp";
+import DepositWithdrawPopup from "../wallet/DepositWithdrawPopup";
 
 function SuperAdminDL() {
   const navigate = useNavigate();
   const [activeRole, setActiveRole] = useState(false);
+  const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
+    useState(false);
   const { superadmin } = useParams();
   const [activeBtn, setActiveBtn] = useState("Admins");
   const ACTIVE_BTNS = ["Admins", "Users"];
+  const handleOpenUserDetails = () => {
+    setActiveRole(true);
+    setDepositWithdrawPopupOpen(true);
+  };
 
   const handleMatchClick = (matchName) => {
     navigate(`/superadmin/${matchName}`);
@@ -46,7 +54,7 @@ function SuperAdminDL() {
       <div className="w-60 flex-center">
         <MdOutlineRemoveRedEye
           size={18}
-          onClick={() => setActiveRole(true)}
+          onClick={handleOpenUserDetails}
           className="pointer"
         />
       </div>
@@ -155,7 +163,7 @@ function SuperAdminDL() {
           <>
             <div className="w-100  flex-between flex-wrap mb-3 py-3 grey-bg2 rounded">
               {summaryData.map(({ label, value, color }) => (
-                <div key={label} className="col-6 px-3 mt-2">
+                <div key={label} className="col-6 px-3 ">
                   <div className="white-btn2 flex-between">
                     <span className="small-font">{label}</span>
                     <span className={`medium-font ${color}`}>{value}</span>
@@ -164,7 +172,7 @@ function SuperAdminDL() {
               ))}
             </div>
             <div className="netpl-btn mb-3 ms-3  col-2   pointer">
-              <div className="white-btn2 d-flex small-font ">
+              <div className="white-btn2 d-flex small-font w-80 flex-between ">
                 Net P/L <span className="green-font">1000000</span>
               </div>
             </div>
@@ -175,7 +183,7 @@ function SuperAdminDL() {
           <>
             <div className="w-40   flex-wrap mb-3 py-3 grey-bg2 rounded">
               {userData.map(({ label, value, color }) => (
-                <div key={label} className="col-112 px-3 mt-2">
+                <div key={label} className="col-112 px-3 ">
                   <div className="white-btn2 flex-between">
                     <span className="small-font">{label}</span>
                     <span className={`medium-font ${color}`}>{value}</span>
@@ -217,6 +225,12 @@ function SuperAdminDL() {
           greyBackground="footer-bg"
         />
       )}
+      <DepositWithdrawPopup
+        depositWithdrawPopupOpen={depositWithdrawPopupOpen}
+        setDepositWithdrawPopupOpen={setDepositWithdrawPopupOpen}
+        userDetails="Srinivas - (Sp Rental: 100000) (Ca : 10%)"
+        userDetails2="Exp Rental - 31-01-2025"
+      />
     </div>
   );
 }

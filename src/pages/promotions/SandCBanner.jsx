@@ -4,9 +4,9 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
 import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
-import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
 import FullPosterPopUp from "./FullPosterPopUp";
+import { SlPencil } from "react-icons/sl";
 
 const SandCBanner = () => {
   const [activeBtn, setActiveBtn] = useState("User Posters");
@@ -26,10 +26,17 @@ const SandCBanner = () => {
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
-    { header: "Websites", field: "websites", width: "10%" },
-    { header: "Poster Location", field: "posterLocation", width: "10%" },
-    { header: "Poster", field: "Poster", width: "40%" },
-    { header: "", field: "icons", width: "10%" },
+    { header: "Websites", field: "websites", width: "15%" },
+    { header: "Poster Location", field: "posterLocation", width: "15%" },
+    {
+      header: <div className="flex-center">Poster</div>,
+      field: "Poster",
+    },
+    {
+      header: <div className="flex-center">Action</div>,
+      field: "action",
+      width: "10%",
+    },
   ];
 
   const CRICKET_DATA = [
@@ -50,9 +57,8 @@ const SandCBanner = () => {
         </div>
       ),
       posterLocation: <div>Home Page</div>,
-
       Poster: (
-        <div className="d-flex ">
+        <div className="flex-center">
           <div className="relative poster-img">
             <div>
               <img src={Images.Poster1} alt="Poster" />
@@ -75,177 +81,14 @@ const SandCBanner = () => {
           </div>
         </div>
       ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      websites: (
-        <div>
-          www.texchange.com <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-      posterLocation: <div>Home Page</div>,
-
-      Poster: (
-        <div className="d-flex ">
-          <div className="relative poster-img">
-            <div>
-              <img src={Images.Poster1} alt="Poster" />
-              <TbArrowsDiagonal
-                className="absolute zoom-out white-bg pointer"
-                size={18}
-                onClick={() => setFullPoster(!fullPoster)}
-              />
-            </div>
-          </div>
-          <div className="relative poster-img ms-2">
-            <div>
-              <img src={Images.Cricket1} alt="Poster" />
-              <TbArrowsDiagonal
-                className="absolute zoom-out white-bg pointer"
-                size={18}
-                onClick={() => setFullPoster(!fullPoster)}
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      websites: (
-        <div>
-          www.texchange.com <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-      posterLocation: <div>Home Page</div>,
-
-      Poster: (
-        <div className="d-flex ">
-          <div className="relative poster-img">
-            <div>
-              <img src={Images.Poster1} alt="Poster" />
-              <TbArrowsDiagonal
-                className="absolute zoom-out white-bg pointer"
-                size={18}
-                onClick={() => setFullPoster(!fullPoster)}
-              />
-            </div>
-          </div>
-          <div className="relative poster-img ms-2">
-            <div>
-              <img src={Images.Cricket1} alt="Poster" />
-              <TbArrowsDiagonal
-                className="absolute zoom-out white-bg pointer"
-                size={18}
-                onClick={() => setFullPoster(!fullPoster)}
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      websites: (
-        <div>
-          www.texchange.com <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-      posterLocation: <div>Home Page</div>,
-
-      Poster: (
-        <div className="d-flex ">
-          <div className="relative poster-img">
-            <div>
-              <img src={Images.Poster1} alt="Poster" />
-              <TbArrowsDiagonal
-                className="absolute zoom-out white-bg pointer"
-                size={18}
-                onClick={() => setFullPoster(!fullPoster)}
-              />
-            </div>
-          </div>
-          <div className="relative poster-img ms-2">
-            <div>
-              <img src={Images.Cricket1} alt="Poster" />
-              <TbArrowsDiagonal
-                className="absolute zoom-out white-bg pointer"
-                size={18}
-                onClick={() => setFullPoster(!fullPoster)}
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+      action: (
+        <div className="flex-center">
+          <SlPencil
+            size={18}
+            className="pointer me-1"
+            onClick={() => setEditPoster(!editPoster)}
+          />
+          <FaRegTrashCan size={18} className="ms-1" />
         </div>
       ),
     },
@@ -260,14 +103,14 @@ const SandCBanner = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex col-2 flex-between small-font">
+      <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2  px-3"
-                : "white-btn2 pointer px-2"
+                ? "saffron-btn2 px-3"
+                : "white-btn2 pointer px-3"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -275,83 +118,73 @@ const SandCBanner = () => {
           </div>
         ))}
       </div>
-
       <hr />
-
-      <div>
-        <div className="d-flex col-2 flex-between mt-4 small-font">
-          {ACTIVE_BTNS2?.map((item, index) => (
-            <div
-              key={index}
-              className={`me-3 ${
-                activeBtn2 === item
-                  ? "saffron-btn2  px-4"
-                  : "white-btn2 pointer px-4"
-              }`}
-              onClick={() => handleSportClick2(item)}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
+      <div className="d-flex my-3 small-font">
+        {ACTIVE_BTNS2?.map((item, index) => (
+          <div
+            key={index}
+            className={`me-3 ${
+              activeBtn2 === item
+                ? "saffron-btn2 px-3"
+                : "white-btn2 pointer px-3"
+            }`}
+            onClick={() => handleSportClick2(item)}
+          >
+            {item}
+          </div>
+        ))}
       </div>
 
-      <div className="d-flex w-60 flex-between mt-2">
-        <div className="col-3 flex-column me-3">
-          <label className="black-text4 small-font mb-1">Sports/Casino</label>
-          <select className="input-css2 small-font">
+      <div className="w-80 d-flex small-font">
+        <div className="col flex-column me-3">
+          <label className="black-text4 mb-1">Sports/Casino</label>
+          <select className="input-css2">
             <option>Sports</option>
           </select>
         </div>
-
-        <>
-          <div className="col-3 flex-column me-3">
-            <label className="black-text4 small-font mb-1">Websites</label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
-          </div>
-
-          <div className="col-3 flex-column me-3">
-            <label className="black-text4 small-font mb-1">
-              Poster Location
-            </label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
-          </div>
-        </>
-
-        <div className="col-3 flex-column mx-2">
-          <label className="black-text4 small-font mb-1">Live Date</label>
-          <input className="input-css2 small-font" type="date" />
+        <div className="col flex-column me-3">
+          <label className="black-text4 mb-1">Websites</label>
+          <select className="input-css2">
+            <option>All</option>
+          </select>
         </div>
-        <div className="col-3 flex-column mx-2">
-          <label className="black-text4 small-font mb-1">Live Time</label>
-          <input className="input-css2 small-font" type="date" />
+        <div className="col flex-column me-3">
+          <label className="black-text4 mb-1">Poster Location</label>
+          <select className="input-css2">
+            <option>All</option>
+          </select>
+        </div>
+        <div className="col flex-column me-3">
+          <label className="black-text4 mb-1">Live Date</label>
+          <input className="input-css2" type="date" />
+        </div>
+        <div className="col flex-column">
+          <label className="black-text4 mb-1">Live Time</label>
+          <input className="input-css2" type="date" />
         </div>
       </div>
 
-      <div className=" d-flex flex-between w-50">
-        <div className={` col-6 flex-column mt-2`}>
-          <label className="black-text4 small-font " htmlFor="poster">
-            Upload Poster
+      <div className="w-50 d-flex small-font my-3">
+        <div className="col-5 flex-column me-3">
+          <label className="black-text4 mb-1">Upload Poster</label>
+          <label htmlFor="poster">
             <input type="file" style={{ display: "none" }} id="poster" />
-            <div className="white-bg small-font grey-border d-flex flex-between p-2 rounded mt-2">
-              Select File <MdOutlineFileUpload />
+            <div className="input-css2 flex-between">
+              <span>Select File</span> <MdOutlineFileUpload size={16} />
             </div>
           </label>
         </div>
-        <div className="white-bg small-font pointer mt-4 yellow-font p-2 rounded dashed-border flex-center col-2">
-          Upload More
+        <div className="col-3 flex-end me-3">
+          <div className="w-100 white-bg pointer yellow-font p-2 rounded dashed-border text-center">
+            Upload More
+          </div>
         </div>
-        <div className="saffron-btn2 small-font pointer mt-4  col-3">
-          Submit
+        <div className="col-4 flex-end me-3">
+          <div className="w-100 saffron-btn2">Submit</div>
         </div>
       </div>
-      <div className="mt-4">
-        <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
-      </div>
+
+      <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
       <FullPosterPopUp fullPoster={fullPoster} setFullPoster={setFullPoster} />
     </div>
   );
