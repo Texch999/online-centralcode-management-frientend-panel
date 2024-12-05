@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import { MdBlock, MdDeleteOutline, MdKeyboardArrowLeft } from "react-icons/md";
+import { MdBlock, MdDeleteOutline, MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import FancyCricket from "./FancyCricket";
@@ -520,19 +520,19 @@ const Cricket = () => {
           <span className="grey-clr">
             Sports{" "}
             <span className="font-25">
-              <MdKeyboardArrowLeft />
+              <MdKeyboardArrowRight />
             </span>
           </span>
           <span className="grey-clr">{vendor}</span>
           <span className="grey-clr">
             <span className="font-25">
-              <MdKeyboardArrowLeft />
+              <MdKeyboardArrowRight />
             </span>
             {provider}
           </span>
           <span>
             <span className="font-25">
-              <MdKeyboardArrowLeft />
+              <MdKeyboardArrowRight />
             </span>
             <span className="fw-800">{match}</span>
           </span>

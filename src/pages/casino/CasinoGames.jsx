@@ -3,7 +3,7 @@ import {useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { MdKeyboardArrowLeft } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const CasinoGames = () => {
   const navigate = useNavigate();
@@ -135,16 +135,16 @@ const CasinoGames = () => {
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Casino<span className="font-25">
-              <MdKeyboardArrowLeft />
+              <MdKeyboardArrowRight/>
             </span>
           </span>{" "}
           <span className="grey-clr">
             {vendor}
-            <span className="font-25"><MdKeyboardArrowLeft /></span>
+            <span className="font-25"><MdKeyboardArrowRight /></span>
           </span>{" "}
           <span className="grey-clr">{provider}</span>
           <span>
-            <span className="font-25"><MdKeyboardArrowLeft /></span>
+            <span className="font-25"><MdKeyboardArrowRight /></span>
             {game}
           </span>
         </div>
