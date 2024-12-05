@@ -135,25 +135,25 @@ function SetLimits() {
           ))}
         </div>
       </div>
-      <div className="white-bg py-2 w-100 flex-column  table-wrapper">
-        <div className="d-flex w-100 align-items-end p-2 mb-3">
-          {bets.map((bet) => (
-            <div className="col mx-2" key={bet.id}>
-              <div className="w-100 d-flex flex-column">
-                <div className="small-font">{bet.label}</div>
-                <input
-                  className="input-css2 small-font"
-                  type="number"
-                  placeholder={bet.placeholder}
-                />
-              </div>
+      <div className="d-flex w-100 white-bg p-3 table-wrapper">
+        {bets.map((bet) => (
+          <div className="col mx-2" key={bet.id}>
+            <div className="w-100 d-flex flex-column">
+              <div className="small-font mb-1">{bet.label}</div>
+              <input
+                className="input-css2 small-font"
+                type="number"
+                placeholder={bet.placeholder}
+              />
             </div>
-          ))}
-          <div className="col saffron-btn2">Submit</div>
+          </div>
+        ))}
+        <div className="col flex-end">
+          <div className="w-100 saffron-btn2">Submit</div>
         </div>
-
-        <Table columns={BONUS_COLUMNS} data={BONUS_DATA} itemsPerPage={4} />
       </div>
+      <hr className="m-0 border" />
+      <Table columns={BONUS_COLUMNS} data={BONUS_DATA} itemsPerPage={4} />
     </div>
   );
 }
