@@ -272,7 +272,7 @@ const FancyResult = () => {
           </select>
         </div>
         <div className="col-2 flex-end">
-          <div className="white-input rounded-pill w-100 white-space">
+          <div className="white-input rounded-pill w-100 white-space px-3">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"
@@ -309,7 +309,7 @@ const FancyResult = () => {
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end flex-center">
-          <div className="white-bg2 border px-2 py-1 rounded-pill w-100 white-space">
+          <div className="white-bg2 border px-2 py-1 rounded-pill w-100 white-space px-3">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"

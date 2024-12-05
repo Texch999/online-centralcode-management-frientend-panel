@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const CricketLiveStreaming = () => {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ const CricketLiveStreaming = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -166,7 +167,7 @@ const CricketLiveStreaming = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -189,7 +190,7 @@ const CricketLiveStreaming = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -212,7 +213,7 @@ const CricketLiveStreaming = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),

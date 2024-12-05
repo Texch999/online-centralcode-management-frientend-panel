@@ -2,6 +2,7 @@ import React from "react";
 import Table from "../../components/Table";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 const FancyIndividualCricketMatch = () => {
   const location = useLocation();
@@ -118,15 +119,22 @@ const FancyIndividualCricketMatch = () => {
       <div className="d-flex flex-between mb-3">
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
-            Sports <span className="mx-1 font-20">{">"}</span>
+            Sports{" "}
+            <span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
           </span>
           <span className="grey-clr">{vendor}</span>
           <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
+            <span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
             {provider}
           </span>
           <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
+            <span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
             {match}
           </span>
           <span>

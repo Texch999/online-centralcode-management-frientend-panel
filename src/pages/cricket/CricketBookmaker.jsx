@@ -3,6 +3,7 @@ import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const CricketBookmaker = () => {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ const CricketBookmaker = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -207,7 +208,7 @@ const CricketBookmaker = () => {
             <MdBlock className="font-20 dark-orange-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -274,7 +275,7 @@ const CricketBookmaker = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -341,7 +342,7 @@ const CricketBookmaker = () => {
             <MdBlock className="font-20 dark-orange-clr" />
           </div>
           <div>
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -408,7 +409,7 @@ const CricketBookmaker = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div>
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -475,7 +476,7 @@ const CricketBookmaker = () => {
             <MdBlock className="font-20 dark-orange-clr" />
           </div>
           <div>
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -487,7 +488,6 @@ const CricketBookmaker = () => {
         <Table columns={cols} data={data} itemsPerPage={5} />
       </div>
 
-      
       <ConfirmationPopup
         confirmationPopupOpen={showBlockModal}
         setConfirmationPopupOpen={setShowBlockModal}

@@ -4,6 +4,7 @@ import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 const SportProviders = () => {
   const navigate = useNavigate();
@@ -255,11 +256,11 @@ const SportProviders = () => {
       <div className="d-flex flex-between mt-3 mb-2">
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
-            Sports <span className="mx-1 font-20">{">"}</span>
+            Sports <span className="font-25"><MdKeyboardArrowLeft /></span>
           </span>
           <span className="grey-clr">{vendor}</span>
           <span>
-            <span className="mx-1 font-20">{">"}</span>
+          <span className="font-25"><MdKeyboardArrowLeft /></span>
 
             <span className="fw-800"> {provider}</span>
           </span>

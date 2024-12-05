@@ -8,6 +8,7 @@ import TennisScoreBoard from "./TennisScoreBoard";
 import HorseRacingScoreBoard from "./HorseRacingScoreBoard";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import ScoreboardCricket from "./ScoreboardCricket";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const CricketScoreboard = () => {
   const navigate = useNavigate();
@@ -115,7 +116,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-3" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -139,7 +140,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-3" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -161,7 +162,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-3" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -187,7 +188,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-3" />
+          <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),

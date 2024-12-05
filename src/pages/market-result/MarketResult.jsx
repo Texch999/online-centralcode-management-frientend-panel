@@ -250,7 +250,7 @@ const MarketResult = () => {
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end flex-center">
-          <div className="white-bg px-2 border py-1 rounded-pill w-100 white-space">
+          <div className="white-bg px-2 border py-1 rounded-pill w-100 white-space px-3">
             <FaSearch size={15} className="grey-clr me-2" />
             <input
               className="all-none small-font"

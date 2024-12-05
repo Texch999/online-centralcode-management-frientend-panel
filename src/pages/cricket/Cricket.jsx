@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import { MdBlock, MdDeleteOutline } from "react-icons/md";
+import { MdBlock, MdDeleteOutline, MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import FancyCricket from "./FancyCricket";
@@ -8,6 +8,7 @@ import CricketBookmaker from "./CricketBookmaker";
 import CricketLiveStreaming from "./CricketLiveStreaming";
 import CricketScoreboard from "./CricketScoreboard";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const Cricket = () => {
   const navigate = useNavigate();
@@ -154,12 +155,12 @@ const Cricket = () => {
         </div>
       ),
       action: (
-        <div class="d-flex mt-1">
+        <div class="d-flex mt-1 ">
           <div onClick={handleBlockModal} className="pointer">
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -230,7 +231,7 @@ const Cricket = () => {
             <MdBlock className="font-20 dark-orange-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -299,7 +300,7 @@ const Cricket = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -368,7 +369,7 @@ const Cricket = () => {
             <MdBlock className="font-20 dark-orange-clr" />
           </div>
           <div>
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -437,7 +438,7 @@ const Cricket = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div>
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -506,7 +507,7 @@ const Cricket = () => {
             <MdBlock className="font-20 dark-orange-clr" />
           </div>
           <div>
-            <MdDeleteOutline className="font-20  ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -517,15 +518,22 @@ const Cricket = () => {
       <div className="d-flex flex-between mt-3 mb-2">
         <div className=" pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
-            Sports <span className="mx-1 font-20">{">"}</span>
+            Sports{" "}
+            <span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
           </span>
           <span className="grey-clr">{vendor}</span>
           <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
+            <span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
             {provider}
           </span>
           <span>
-            <span className="mx-1 font-20">{">"}</span>
+            <span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
             <span className="fw-800">{match}</span>
           </span>
         </div>

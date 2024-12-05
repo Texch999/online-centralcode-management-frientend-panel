@@ -4,6 +4,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import AddNewProvider from "./AddNewProvider";
 import RegisterNewVendor from "./RegisterNewVendor";
+import { SlPencil } from "react-icons/sl";
 
 const VendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
@@ -61,7 +62,7 @@ const VendorRegistration = () => {
       ),
       action: (
         <div onClick={showEditModal} className="pointer">
-          <MdOutlineEdit className="orange-clr font-20" />
+          <SlPencil size={18} className="pointer me-1 orange-clr" />
         </div>
       ),
     },
@@ -90,7 +91,7 @@ const VendorRegistration = () => {
       ),
       action: (
         <div className="pointer" onClick={showEditModal}>
-          <MdOutlineEdit className="orange-clr font-20" />
+          <SlPencil size={18} className="pointer me-1 orange-clr" />
         </div>
       ),
     },

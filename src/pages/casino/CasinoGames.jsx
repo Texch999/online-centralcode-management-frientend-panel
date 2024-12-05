@@ -3,6 +3,7 @@ import {useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 const CasinoGames = () => {
   const navigate = useNavigate();
@@ -133,15 +134,17 @@ const CasinoGames = () => {
       <div className="d-flex flex-between mt-3 mb-2">
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
-            Casino<span className="mx-1">{">"}</span>
+            Casino<span className="font-25">
+              <MdKeyboardArrowLeft />
+            </span>
           </span>{" "}
           <span className="grey-clr">
             {vendor}
-            <span className="mx-1">{">"}</span>
+            <span className="font-25"><MdKeyboardArrowLeft /></span>
           </span>{" "}
           <span className="grey-clr">{provider}</span>
           <span>
-            <span className="mx-1">{">"}</span>
+            <span className="font-25"><MdKeyboardArrowLeft /></span>
             {game}
           </span>
         </div>
