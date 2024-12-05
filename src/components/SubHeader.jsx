@@ -30,7 +30,7 @@ function SubHeader() {
         label: "Live/Block",
         options: [
           { label: "Sports", path: "/live-block-sports" },
-          { label: "Casino", path: "/casino" },
+          { label: "Casino", path: "/management-casino" },
           { label: "Set Limits", path: "/set-limits" },
           { label: "In-active Users", path: "/inactive-users" },
           { label: "Bet Block Users", path: "/bet-block-users" },
@@ -376,7 +376,7 @@ function SubHeader() {
               {menu?.options?.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn yellow-hover small-font"
+                  className="w-100 white-btn yellow-hover small-font"
                   onClick={() => handleMenuItemClick(option)}
                 >
                   {option.label}

@@ -123,7 +123,7 @@ function DownLineAdmins() {
         <h6 className="d-flex  mb-0">
           {" "}
           {activeRole === false ? (
-            <div>P/L Reports Downline Admins</div>
+            <div className="yellow-font">P/L Reports Downline Admins</div>
           ) : (
             <div>
               P/L Reports Downline Admins{" "}
@@ -156,7 +156,7 @@ function DownLineAdmins() {
       <div className="d-flex w-90 ">
         <div className="w-100  flex-between flex-wrap mb-3 py-3 grey-bg2 rounded">
           {summaryData.map(({ label, value, color }) => (
-            <div key={label} className="col-6 px-3 mt-2">
+            <div key={label} className="col-6 px-3 ">
               <div className="white-btn2 flex-between">
                 <span className="small-font">{label}</span>
                 <span className={`medium-font ${color}`}>{value}</span>
@@ -165,7 +165,7 @@ function DownLineAdmins() {
           ))}
         </div>
         <div className="netpl-btn mb-3 ms-3  col-2   pointer">
-          <div className="white-btn2 d-flex small-font ">Net P/L  <span className="green-font">1000000</span></div>
+          <div className="white-btn2 d-flex small-font w-80 flex-between ">Net P/L  <span className="green-font">1000000</span></div>
         </div>
       </div>
 

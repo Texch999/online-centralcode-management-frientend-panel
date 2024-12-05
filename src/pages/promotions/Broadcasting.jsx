@@ -243,7 +243,7 @@ const Broadcasting = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex w-25 flex-between small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}

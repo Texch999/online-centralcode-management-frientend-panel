@@ -140,7 +140,7 @@ const ReferenceData = () => {
 
       status: (
         <div >
-          <div className="w-50  green-btn">Active</div>
+          <div className="w-50  green-btn px-2">Active</div>
         </div>
       ),
 
@@ -325,7 +325,7 @@ const ReferenceData = () => {
         <h6 className="yellow-font mb-0">Reference Data</h6>
         
       </div>
-      <div className="d-flex col-3 flex-between small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}

@@ -70,6 +70,8 @@ import ViewFancyBets from "./pages/live-block/components/ViewFancyBets";
 import LiveScoreBoard from "./pages/live-block/components/LiveScoreboard";
 import Sports from "./pages/sports/Sports";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
+import CasinoWebsite from "./pages/casino-management/CasinoWebsite";
+import MCasinoGames from "./pages/casino-management/MCasinoGames";
 import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
@@ -233,6 +235,11 @@ function App() {
               <Route
                 path="/white-label-setting"
                 element={<WhiteLabelSetting />}
+              />
+              <Route path="/management-casino" element={<CasinoWebsite />} />
+              <Route
+                path="/management-casino/:gamename"
+                element={<MCasinoGames />}
               />
               <Route path="/bonus-chips" element={<BonusChips />} />
               <Route path="/bet-block-users" element={<BetBlockUsers />} />
