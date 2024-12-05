@@ -14,7 +14,7 @@ const AddNewSportsProvider = ({show,setShow}) => {
     <div className="p-2">
       <div className="d-flex flex-between text-black px-2">
         <div className="medium-font">Select New Provider</div>
-        <div onClick={() => setShow(false)} className="font-20">
+        <div onClick={() => setShow(false)} className="font-20 pointer">
           <IoClose/>
         </div>
       </div>

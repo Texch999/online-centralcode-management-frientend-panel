@@ -11,7 +11,7 @@ import "../add-team/style.css";
 import "../../App.css";
 import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 
-const ManagementTeam = () => {
+const AddManagementTeam = () => {
   const [tableData, setTableData] = useState(
     Array.from({ length: 15 }, (_, index) => ({
       id: index + 1,
@@ -133,10 +133,12 @@ const ManagementTeam = () => {
     {
       header: "Email",
       field: "email",
+      width:"20%",
     },
     {
       header: <div className="text-center">Action</div>,
       field: "action",
+      width:"12%",
     },
   ];
 
@@ -162,7 +164,7 @@ const ManagementTeam = () => {
             <input className="small-font all-none" placeholder="Search..." />
           </div>
           <button
-            className="small-font blue-font border px-3 py-1 rounded-pill"
+            className="small-font rounded-pill input-pill blue-font px-3 py-1 "
             onClick={() => handleAddModal(true)}
           >
             <FaPlus className="me-2" />
@@ -206,18 +208,20 @@ const ManagementTeam = () => {
 };
 
 const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword }) => (
-  <div className="text-center">
-    <GrEdit className="add-management-icon" onClick={() => onEdit(rowId)} />
+  <div className="d-flex gap-3 flex-center">
+    <GrEdit size={18} className="pointer black-text" onClick={() => onEdit(rowId)} />
     <MdLockReset
-      className="add-management-icon"
+    size={18}
+      className="pointer black-text"
       onClick={() => onResetPassword(true)}
     />
     <MdBlockFlipped
-      className="add-management-icon"
+      size={18}
+      className="pointer black-text"
       onClick={() => onBlock(rowId)}
     />
-    <RiDeleteBinLine className="add-management-icon" />
+    <RiDeleteBinLine size={18} className="pointer black-text" />
   </div>
 );
 
-export default ManagementTeam;
+export default AddManagementTeam;

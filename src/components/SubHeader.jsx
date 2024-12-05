@@ -2,21 +2,19 @@ import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import ManagementResetPasswordPopup from "../pages/add-team/ManagementResetPasswordPopup";
+import EditProfilePopup from "../pages/popups/EditProfilePopup";
+import ResetPasswordPopup from "../pages/popups/ResetPasswordPopup";
 
 function SubHeader() {
   const navigate = useNavigate();
   const role_code = localStorage.getItem("role_code");
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showResetPswdModal, setShowResetPswdModal] = useState(false);
-  const onRequestClose = () => {
-    setShowResetPswdModal(false);
-  };
+  const [editProfilePopup, setEditProfilePopup] = useState(false);
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
 
   const menuConfig = {
-    // Management Menu Items
+    // Management
     management: [
       {
         label: "Adding",
@@ -99,6 +97,144 @@ function SubHeader() {
       },
     ],
 
+    // Director
+    director: [
+      {
+        label: "Adding",
+        options: [
+          { label: "Add Super Admin", path: "/director-admin" },
+          { label: "View Downline List", path: "/downline-list" },
+          { label: "Payment Details", path: "/payment-details" },
+          { label: "Available Websites", path: "/websites" },
+        ],
+      },
+      {
+        label: "Live/Block",
+        options: [
+          { label: "Sports", path: "/live-block-sports" },
+          { label: "Casino", path: "/casino" },
+          { label: "Set Limits", path: "/set-limits" },
+          { label: "In-active Users", path: "/inactive-users" },
+          { label: "Bet Block Users", path: "/bet-block-users" },
+        ],
+      },
+      {
+        label: "Risk Management",
+        options: [
+          { label: "Sports & Casino Risk Limit Set", path: "/risk-limit-set" },
+          { label: "Sports", path: "/risk-sports" },
+          { label: "Casino", path: "/risk-casino" },
+          { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
+          { label: "Deleted Bet History", path: "/deleted-bet-history" },
+          { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
+        ],
+      },
+      {
+        label: "Wallet",
+        options: [
+          { label: "Tickets", path: "/tickets" },
+          { label: "Gateway Transactions", path: "/gateway-transactions" },
+        ],
+      },
+      {
+        label: "Reports",
+        options: [
+          { label: "My Statement", path: "/my-statement" },
+          { label: "P/L Report Downline Admins", path: "/pl-report-downline" },
+          { label: "P/L Casino Report", path: "/pl-casino-report" },
+          { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
+          { label: "P/L Report by Users", path: "/pl-report-users" },
+          { label: "Match Wise P/L", path: "/match-wise-pl" },
+          { label: "Client Rental Sheet", path: "/client-rental-sheet" },
+        ],
+      },
+      {
+        label: "Director Settings",
+        options: [
+          { label: "Edit Profile" },
+          {
+            label: "Reset Password",
+          },
+          { label: "Activity Logs", path: "/activity-logs" },
+        ],
+      },
+      {
+        label: "Promotions",
+        options: [
+          { label: "Sports Promotions", path: "/sports-promotions" },
+          { label: "Casino Promotions", path: "/casino-promotions" },
+        ],
+      },
+    ],
+
+    // Super Admin
+    super_admin: [
+      {
+        label: "Adding",
+        options: [
+          { label: "Add Admin", path: "/director-admin" },
+          { label: "View Downline List", path: "/downline-list" },
+          { label: "Payment Details", path: "/payment-details" },
+          { label: "Available Websites", path: "/websites" },
+        ],
+      },
+      {
+        label: "Live/Block",
+        options: [
+          { label: "In-active Users", path: "/inactive-users" },
+          { label: "Bet Block Users", path: "/bet-block-users" },
+        ],
+      },
+      {
+        label: "Risk Management",
+        options: [
+          { label: "Sports", path: "/risk-sports" },
+          { label: "Casino", path: "/risk-casino" },
+          { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
+          { label: "Deleted Bet History", path: "/deleted-bet-history" },
+          { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
+        ],
+      },
+      {
+        label: "Wallet",
+        options: [
+          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+          { label: "Tickets", path: "/tickets" },
+          { label: "Gateway Transactions", path: "/gateway-transactions" },
+          { label: "Bonus Chips", path: "/bonus-chips" },
+        ],
+      },
+      {
+        label: "Reports",
+        options: [
+          { label: "My Statement", path: "/my-statement" },
+          {
+            label: "P/L Report Downline Admins",
+            path: "/pl-report-downline",
+          },
+          { label: "P/L Casino Report", path: "/pl-casino-report" },
+          { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
+          { label: "P/L Report by Users", path: "/pl-report-users" },
+          { label: "Match Wise P/L", path: "/match-wise-pl" },
+        ],
+      },
+      {
+        label: "SA Settings",
+        options: [
+          { label: "Edit Profile", path: "/edit-profile" },
+          { label: "Reset Password", path: "/reset-password" },
+          { label: "Activity Logs", path: "/activity-logs" },
+        ],
+      },
+      {
+        label: "Promotions",
+        options: [
+          { label: "Sports Promotions", path: "/sports-promotions" },
+          { label: "Casino Promotions", path: "/casino-promotions" },
+        ],
+      },
+    ],
+
     // Designing Team
     designing_team: [
       {
@@ -114,7 +250,6 @@ function SubHeader() {
           },
           { label: "Sports Promotions", path: "/sports-promotions" },
           { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Offer", path: "/offer" },
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
@@ -165,7 +300,7 @@ function SubHeader() {
       },
     ],
 
-    // accounts_team
+    // Accounts Team
     accounts_team: [
       {
         label: "Wallet",
@@ -196,6 +331,16 @@ function SubHeader() {
   const handleDropdownToggle = (index, isOpen) => {
     setActiveIndex(index);
     setActiveDropdown(isOpen ? index : null);
+  };
+
+  const handleMenuItemClick = (option) => {
+    if (option.label === "Edit Profile") {
+      setEditProfilePopup(true);
+    } else if (option.label === "Reset Password") {
+      setResetPasswordPopup(true);
+    } else if (option.path) {
+      navigate(option.path);
+    }
   };
 
   return (
@@ -231,8 +376,8 @@ function SubHeader() {
               {menu?.options?.map((option, optIndex) => (
                 <Dropdown.Item
                   key={optIndex}
-                  className="white-btn yellow-hover small-font"
-                  onClick={() => navigate(option.path)}
+                  className="w-100 white-btn yellow-hover small-font"
+                  onClick={() => handleMenuItemClick(option)}
                 >
                   {option.label}
                 </Dropdown.Item>
@@ -241,10 +386,13 @@ function SubHeader() {
           </Dropdown>
         </div>
       ))}
-
-      <ManagementResetPasswordPopup
-        isOpen={showResetPswdModal}
-        onRequestClose={onRequestClose}
+      <EditProfilePopup
+        editProfilePopup={editProfilePopup}
+        setEditProfilePopup={setEditProfilePopup}
+      />
+      <ResetPasswordPopup
+        resetPasswordPopup={resetPasswordPopup}
+        setResetPasswordPopup={setResetPasswordPopup}
       />
     </div>
   );

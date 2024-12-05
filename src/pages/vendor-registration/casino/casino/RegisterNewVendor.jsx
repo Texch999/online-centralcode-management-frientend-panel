@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import SuccessPopup from "../../../popups/SuccessPopup";
 
 const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
-  const [successModal, setSuccessModal]=useState(false);
-  const handleSubmit=()=>{
+  const [successModal, setSuccessModal] = useState(false);
+  const handleSubmit = () => {
     setSuccessModal(!successModal);
-  }
+  };
   const navigate = useNavigate();
   return (
     <div className="dashboard-white-bg box-shadow radius p-3">
@@ -15,11 +15,11 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         <div className="d-flex flex-column">
           <div className="flex-start mb-1">
             <div
-              className="rounded-pill px-3 white-btn2 small-font fw-800 text-black pointer"
+              className="rounded-pill px-3 white-btn2 small-font fw-800 d-flex flex-center align-items text-black pointer"
               onClick={() => setIsEdit(false)}
             >
               <span className="orange-clr">
-                <FaArrowLeft className="me-2" />
+                <FaArrowLeft className="me-2 d-flex" />
               </span>
               Back
             </div>
@@ -262,16 +262,27 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         {isEdit === true ? (
           <div className="col-4 felx-column align-items-center text-black ">
             <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Update</div>
-            <div className="white-btn br-5 mx-2 my-3 pointer">Edit</div>
+            <div className="white-btn br-5 mx-2 my-3 pointer text-center">
+              Edit
+            </div>
           </div>
         ) : (
           <div className="col-4 felx-column text-black ">
-            <div className="saffron-btn2 br-5 mx-2 my-2 pointer" onClick={handleSubmit}>Submit</div>
+            <div
+              className="saffron-btn2 br-5 mx-2 my-2 pointer"
+              onClick={handleSubmit}
+            >
+              Submit
+            </div>
           </div>
         )}
       </div>
 
-      <SuccessPopup show={successModal} setShow={setSuccessModal} title={"Casino New Vendor Added"}/>
+      <SuccessPopup
+        successPopupOpen={successModal}
+        setSuccessPopupOpen={setSuccessModal}
+        discription={"Casino New Vendor Added"}
+      />
     </div>
   );
 };

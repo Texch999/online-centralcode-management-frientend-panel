@@ -1,8 +1,7 @@
 import { Images } from "../images";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { IoEyeOffOutline } from "react-icons/io5";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -78,7 +77,7 @@ function Login() {
             <div className="black-text white-space">
               We are glad to see you back with us
             </div>
-            <div className="py-4">
+            <div className="py-4 medium-font">
               <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
                 <img
                   className="icon-img"
@@ -96,10 +95,8 @@ function Login() {
                   aria-label="Username"
                 />
               </div>
-              {error && (
-                <div className="small-font text-danger mt-1">{error}</div>
-              )}
-              <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
+              {error && <div className="small-font red-font mt-1">{error}</div>}
+              <div className="d-flex align-items-center input-bg loginbox-radius mt-3 px-2">
                 <img
                   className="icon-img"
                   alt="password-icon"
@@ -116,13 +113,13 @@ function Login() {
                   style={{ cursor: "pointer" }}
                 >
                   {passwordVisible ? (
-                    <IoEyeOffOutline size={20} />
+                    <FiEyeOff size={24} />
                   ) : (
-                    <MdOutlineRemoveRedEye size={20} />
+                    <FiEye size={24} />
                   )}
                 </span>
               </div>
-              <button className="orange-btn mt-3 w-100" onClick={handleLogin}>
+              <button className="orange-btn mt-4 w-100" onClick={handleLogin}>
                 Submit
               </button>
             </div>

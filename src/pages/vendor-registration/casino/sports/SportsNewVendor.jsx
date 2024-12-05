@@ -3,21 +3,21 @@ import { FaArrowLeft } from "react-icons/fa";
 import SuccessPopup from "../../../popups/SuccessPopup";
 
 const SportsNewVendor = ({ isEdit, setIsEdit }) => {
-  const [successModal, setSuccessModal]=useState(false);
-  const handleSubmit=()=>{
+  const [successModal, setSuccessModal] = useState(false);
+  const handleSubmit = () => {
     setSuccessModal(!successModal);
-  }
+  };
   return (
     <div className="dashboard-white-bg box-shadow radius p-3">
       {isEdit === true && (
         <div className="d-flex flex-column">
           <div className="flex-start mb-1">
             <div
-              className="rounded-pill px-3 white-btn2 small-font fw-800 text-black pointer"
+              className="rounded-pill px-3 white-btn2 small-font flex-center d-flex align-items-center fw-800 text-black pointer"
               onClick={() => setIsEdit(false)}
             >
               <span className="orange-clr">
-                <FaArrowLeft className="me-2" />
+                <FaArrowLeft className="me-2 d-flex" />
               </span>
               Back
             </div>
@@ -210,7 +210,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
             <div className="input-css d-flex flex-between small-font ">
               <label htmlFor="poker" className="pointer">
                 <input type="checkbox" className="mx-2" id="poker" />
-              Football
+                Football
               </label>
             </div>
           </div>
@@ -260,16 +260,27 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
         {isEdit === true ? (
           <div className="col-4 felx-column align-items-center text-black ">
             <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Update</div>
-            <div className="white-btn br-5 mx-2 my-3 pointer text-center">Edit</div>
+            <div className="white-btn br-5 mx-2 my-3 pointer text-center">
+              Edit
+            </div>
           </div>
         ) : (
           <div className="col-4 felx-column text-black ">
-            <div className="saffron-btn2 br-5 mx-2 my-2 pointer" onClick={handleSubmit}>Submit</div>
+            <div
+              className="saffron-btn2 br-5 mx-2 my-2 pointer"
+              onClick={handleSubmit}
+            >
+              Submit
+            </div>
           </div>
         )}
       </div>
 
-      <SuccessPopup show={successModal} setShow={setSuccessModal} title={"Sports New Vendor Added"}/>
+      <SuccessPopup
+        successPopupOpen={successModal}
+        setSuccessPopupOpen={setSuccessModal}
+        discription={"Sports New Vendor Added"}
+      />
     </div>
   );
 };

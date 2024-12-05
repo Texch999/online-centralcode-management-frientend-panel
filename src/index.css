@@ -76,6 +76,10 @@ option:hover {
 .border-right {
   border-right: 1px solid #dee2e6 !important;
 }
+.confirm-popup .modal-content {
+  width: 90%;
+  margin-left: 5%;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {

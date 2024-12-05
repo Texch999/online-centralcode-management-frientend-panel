@@ -1,35 +1,35 @@
-import React from "react";
 import { Modal } from "react-bootstrap";
+import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
-import { IoClose } from "react-icons/io5";
 
-const SuccessPopup = ({ show, setShow, title }) => {
+const SuccessPopup = ({
+  successPopupOpen,
+  setSuccessPopupOpen,
+  discription,
+}) => {
+  const handleCancel = () => {
+    setSuccessPopupOpen(false);
+  };
   return (
-    <Modal show={show} setShow={() => setShow(false)} centered>
-      <div className="p-2 white-bg radius-20 text-black">
-        <div
-          className="flex-end px-1 py-1 pointer"
-          onClick={() => setShow(false)}
-        >
-          <IoClose className="font-25 text-black" />
+    <Modal show={successPopupOpen} centered className="confirm-popup">
+      <Modal.Body>
+        <div className="flex-end black-text4">
+          <IoCloseSharp size={20} onClick={handleCancel} className="pointer"/>
         </div>
-        <div className="d-flex flex-column">
-          <div className="flex-center">
-            <img src={Images?.check} alt="" />
+        <center>
+          <img src={Images?.check} alt="Check_Mark" />
+          <h5 className="black-text4 fw-600 mt-2 mb-3">{discription}</h5>
+          <div className="small-font black-text4">
+            Lorem Ipsum is simply dummy text of the printing...
           </div>
-          <div className="flex-center my-2 medium-font">
-            {`${title} Successfully!`}
-          </div>
-          <div className="flex-center my-2">
-            <div
-              className="input-css2 br-5 box-shadow w-50 text-center mx-2 text-black pointer"
-              onClick={() => setShow(false)}
-            >
-              Ok
-            </div>
-          </div>
-        </div>
-      </div>
+          <button
+            className="w-50 black-text2 border p-2 rounded white-bg mt-4 mb-3 medium-font"
+            onClick={handleCancel}
+          >
+            OK
+          </button>
+        </center>
+      </Modal.Body>
     </Modal>
   );
 };

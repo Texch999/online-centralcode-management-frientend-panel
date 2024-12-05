@@ -28,7 +28,7 @@ function Header() {
   const handleRegisterBtn = () => {
     setIsActiveBtn(true);
     const path =
-      window?.location?.pathname === "/casino"
+      window?.location?.pathname === "/central-casino"
         ? "/vendor-registration"
         : "/sports-vendor-registration";
     navigate(path);
@@ -122,13 +122,13 @@ function Header() {
               <Dropdown.Menu className="w-100 br-0px p-0">
                 <Dropdown.Item
                   className="white-btn white-hover small-font"
-                  onClick={() => navigate("/casino")}
+                  onClick={() => navigate("/central-casino")}
                 >
                   Casino
                 </Dropdown.Item>
                 <Dropdown.Item
                   className="white-btn white-hover small-font"
-                  onClick={() => navigate("/sports")}
+                  onClick={() => navigate("/central-sports")}
                 >
                   Sports
                 </Dropdown.Item>

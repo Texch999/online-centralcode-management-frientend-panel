@@ -26,7 +26,6 @@ ChartJS.register(
   Legend
 );
 
-
 function Homepage() {
   ChartJS.register(
     BarElement,
@@ -570,7 +569,7 @@ function Homepage() {
 
   return (
     <div className="p-2">
-      <h4 className="blck-text">Welcome sri</h4>
+      <h4 className="blck-text">Welcome Sri</h4>
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
@@ -626,13 +625,11 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-              <div className="">
               <ScrollTable
                 columns={customerCols}
                 data={customerData}
                 tableHeight="table-50vh"
               />
-              </div>
             </div>
           </div>
         </div>
@@ -727,8 +724,8 @@ function Homepage() {
                   );
                 })}
               </div>
-              <div className=" pointer">
-                <select className="all-none w-100 input-css2 px-2 py-2 radius-20 text-black">
+              <div className="pointer">
+                <select className="all-none w-100 input-css2 px-2 py-1 radius-20 text-black">
                   <option>Today</option>
                   <option>Tomorrow</option>
                   <option>yesterday</option>
@@ -740,7 +737,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteWinnerData}
-                  tableHeight="table-50vh"
+                  tableHeight="table-50vh2"
                 />
               )}
 
@@ -748,7 +745,7 @@ function Homepage() {
                 <ScrollTable
                   columns={cols}
                   data={siteLooseData}
-                  tableHeight="table-50vh"
+                  tableHeight="table-50vh2"
                 />
               )}
             </div>

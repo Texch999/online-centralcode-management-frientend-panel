@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { IoEyeOutline } from "react-icons/io5";
-import ActionPopup from "../casino/ActionPopup";
 import { FaArrowLeft } from "react-icons/fa";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const SportProviders = () => {
   const navigate = useNavigate();
   const { vendor, provider } = useParams();
   const handleGameMatches = (match) => {
     if (provider === "Odds") {
-      navigate(`/cricket/${vendor}/${provider}/${match}`);
-    } else if (provider === "fancy") {
-      navigate(`/fancy-cricket/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
+    } else if (provider === "Fancy") {
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 1") {
-      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Bookmaker 2") {
-      navigate(`/cricket-bookmaker/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Live Streaming") {
-      navigate(`/cricket-livestreaming/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     } else if (provider === "Scoreboard") {
-      navigate(`/cricket-scoreboard/${vendor}/${provider}/${match}`);
+      navigate(`/central-sports/${vendor}/${provider}/${match}`);
     }
   };
   const [isActive, setIsACtive] = useState(false);
@@ -252,7 +252,7 @@ const SportProviders = () => {
   ];
   return (
     <div>
-      <div className="d-flex flex-between">
+      <div className="d-flex flex-between mt-3 mb-2">
         <div className="pointer large-font" onClick={() => navigate(-1)}>
           <span className="grey-clr">
             Sports <span className="mx-1 font-20">{">"}</span>
@@ -265,14 +265,15 @@ const SportProviders = () => {
           </span>
         </div>
 
-        <div className="medium-font">
+        <div className="medium-font flex-between">
           <span
-            className="white-bg rounded-pill me-4 px-3 py-1 pointer hover-orange-clr"
+            className="input-css2 rounded-pill me-4 px-3 text-black py-1 flex-center pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="me-1" />
+            <FaArrowLeft className="me-1 d-flex" />
             Back
           </span>
+
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
@@ -280,7 +281,12 @@ const SportProviders = () => {
       <div className="radius mt-3">
         <Table columns={cols} data={data} itemsPerPage={10} />
       </div>
-      <ActionPopup show={isActive} setShow={setIsACtive} />
+      <ConfirmationPopup
+        confirmationPopupOpen={isActive}
+        setConfirmationPopupOpen={setIsACtive}
+        discription={"Are You Sure to Active this Match"}
+        submitButton={"Active"}
+      />
     </div>
   );
 };

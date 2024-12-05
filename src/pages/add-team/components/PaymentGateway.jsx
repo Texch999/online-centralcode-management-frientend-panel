@@ -4,7 +4,6 @@ import { GrEdit } from "react-icons/gr";
 import Form from "react-bootstrap/Form";
 import "../style.css";
 import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
-// import { AiOutlineDown } from "react-icons/ai";
 
 const countryOptions = ["India", "USA", "Canada"];
 const gatewayOptions = ["NEFT", "SWIFT", "RTGS"];

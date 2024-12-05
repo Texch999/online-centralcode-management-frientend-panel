@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { IoEye } from "react-icons/io5";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import "../../home/style.css";
 
 const MatchAdminsUsersPl = () => {
@@ -14,12 +14,12 @@ const MatchAdminsUsersPl = () => {
     setActiveBtn(index);
   };
 
-  const handleMatchusersPl=(userdetails)=>{
-    navigate(`/users-match-pl/${matchName}/${role}/${userdetails}`)
-  }
+  const handleMatchusersPl = (userdetails) => {
+    navigate(`/match-wise-pl/${matchName}/${role}/${userdetails}`);
+  };
 
   const cols = [
-    { header: "Date & Time", field: "date" },
+    { header: "Date & Time", field: "date", width: "15%" },
     { header: "Name & Role", field: "name" },
     { header: "Series Name", field: "series" },
     { header: "Match Name", field: "match" },
@@ -38,8 +38,8 @@ const MatchAdminsUsersPl = () => {
       ),
       name: (
         <div className="d-flex flex-column">
-          <div>Jayanta</div>
-          <div>Director</div>
+          <div>Sri</div>
+          <div>Agnet</div>
           <div>Share - 10%</div>
         </div>
       ),
@@ -65,7 +65,10 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye
+            className="text-black font-20 me-4 pointer"
+            onClick={() => handleMatchusersPl("Agent-Sri")}
+          />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -106,7 +109,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -147,7 +150,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -188,7 +191,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -229,7 +232,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -270,7 +273,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -324,7 +327,10 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" onClick={()=>handleMatchusersPl("User-Lokesh")}/>
+          <MdOutlineRemoveRedEye
+            className="text-black font-20 me-4 pointer"
+            onClick={() => handleMatchusersPl("User-Lokesh")}
+          />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -364,7 +370,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -404,45 +410,68 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-4 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
     },
   ];
 
+  const ADMIN_FOOTER = [
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
+  ];
+
+  const USER_FOOTER = [
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
+  ];
+
   return (
     <div className="d-flex flex-column p-1">
       <div
-        className="d-flex medium-font mt-2 mb-3 align-items-center"
+        className="d-flex medium-font mt-2 mb-3 align-items-center pointer"
         onClick={() => navigate(-1)}
       >
-        <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
+        <IoIosArrowBack className="orange-clr fw-800  me-1" />
         <div>Match Wise P/L</div>
         <div className="">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {matchName}
         </div>
         <div className="orange-clr">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {role}
         </div>
       </div>
-
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
-        Admins P/L
-        <span className="green-clr">500000</span>
+      <div className="w-40 flex-column flex-wrap py-2 grey-bg2 rounded px-3">
+        <div className="white-bg radius-10 px-2 py-2 flex-between small-font my-1">
+          Admins P/L
+          <span className="green-clr">500000</span>
+        </div>
+        <div className="white-bg radius-10 py-2 px-2 flex-between small-font my-1">
+          Users P/L
+          <span className="green-clr">500000</span>
+        </div>
       </div>
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
-        Users P/L
-        <span className="green-clr">500000</span>
-      </div>
 
-      <div className="d-flex w-100 my-3 align-items-center flex-between">
+      <div className="d-flex w-100 my-2 align-items-center flex-between">
         <div className="d-flex pe-2 small-font col-4">
           {roles.map((btn, index) => {
             return (
@@ -481,13 +510,23 @@ const MatchAdminsUsersPl = () => {
 
       {activeBtn === 0 && (
         <div>
-          <Table columns={cols} data={data} itemsPerPage={5} />
+          <Table
+            columns={cols}
+            data={data}
+            itemsPerPage={5}
+            footer={ADMIN_FOOTER}
+          />
         </div>
       )}
 
       {activeBtn === 1 && (
         <div>
-          <Table columns={usersCols} data={usersData} itemsPerPage={5} />
+          <Table
+            columns={usersCols}
+            data={usersData}
+            itemsPerPage={5}
+            footer={USER_FOOTER}
+          />
         </div>
       )}
     </div>

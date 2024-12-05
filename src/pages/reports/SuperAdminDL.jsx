@@ -18,6 +18,7 @@ function SuperAdminDL() {
     setActiveRole(true);
     setDepositWithdrawPopupOpen(true);
   };
+
   const handleMatchClick = (matchName) => {
     navigate(`/superadmin/${matchName}`);
   };

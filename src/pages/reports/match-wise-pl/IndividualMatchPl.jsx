@@ -1,17 +1,17 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { IoEye } from "react-icons/io5";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 const IndividualMatchPl = () => {
   const navigate = useNavigate();
   const { matchName } = useParams();
   const handleMatchAdminsUsersPlPage = (role) => {
-    navigate(`/match-admins-users-pl/${matchName}/${role}`);
+    navigate(`/match-wise-pl/${matchName}/${role}`);
   };
   const cols = [
-    { header: "Date & Time", field: "date" },
+    { header: <div className="">Date & Time</div>, field: "date", width:"15%" },
     { header: "Name & Role", field: "name" },
     { header: "Series Name", field: "series" },
     { header: "Match Name", field: "match" },
@@ -57,7 +57,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye
+          <MdOutlineRemoveRedEye
             className="text-black font-20 me-3 pointer"
             onClick={() => handleMatchAdminsUsersPlPage("Director - Jayanta")}
           />
@@ -101,7 +101,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye
+          <MdOutlineRemoveRedEye
             className="text-black font-20 me-3 pointer"
             onClick={() => handleMatchAdminsUsersPlPage("Super Admin-Lokesh")}
           />
@@ -145,7 +145,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -186,7 +186,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -227,7 +227,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -268,35 +268,49 @@ const IndividualMatchPl = () => {
       pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <IoEye className="text-black font-20 me-3 pointer" />
+          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
     },
   ];
+
+  
+  const MATCH_FOOTER = [
+    { header: "Total", },
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: ""},
+    { header: <div className="clr-green">1500000</div>},
+    { header: ""},
+  ];
   return (
     <div className="d-flex flex-column p-1">
       <div
-        className="d-flex medium-font my-2 align-items-center"
+        className="d-flex medium-font mb-3 align-items-center pointer"
         onClick={() => navigate(-1)}
       >
-        <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
+        <IoIosArrowBack className="orange-clr fw-800 me-1" />
         <div>Match Wise P/L</div>
         <div className="orange-clr ">
           <span>
-            <IoIosArrowForward className="font-20" />
+            <IoIosArrowForward className="mx-1" />
           </span>
           {matchName}
         </div>
       </div>
 
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
+      <div className="w-40 flex-column flex-wrap py-2 grey-bg2 rounded px-3">
+      <div className="white-bg radius-10 px-2 py-2 flex-between small-font my-1">
         Admins P/L
         <span className="green-clr">500000</span>
       </div>
-      <div className="white-bg col-4 radius-10 py-2 px-2 border-grey flex-between small-font">
+      <div className="white-bg radius-10 py-2 px-2 flex-between small-font my-1">
         Users P/L
         <span className="green-clr">500000</span>
+      </div>
       </div>
 
       <div className="d-flex w-100 my-2 align-items-center">
@@ -323,7 +337,7 @@ const IndividualMatchPl = () => {
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
+        <Table columns={cols} data={data} itemsPerPage={5} footer={MATCH_FOOTER}/>
       </div>
     </div>
   );
