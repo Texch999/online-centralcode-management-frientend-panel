@@ -15,7 +15,11 @@ const CasinoWebsite = () => {
   const [editPoster, setEditPoster] = useState(false);
   const ACTIVE_BTNS = ["Websites", "Casino Providers"];
   const handleMatchClick = (matchName) => {
-    navigation(`/casinogame/${encodeURIComponent(matchName)}`);
+    navigation(`/management-casino/${encodeURIComponent(matchName)}`);
+  };
+
+  const handleCasinoProvider = (matchName) => {
+    navigation(`/management-casino-provider/${encodeURIComponent(matchName)}`);
   };
 
   const handleSportClick = (item) => {
@@ -36,7 +40,10 @@ const CasinoWebsite = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye size={18}  onClick={()=>handleMatchClick("T Casino Park")}/>
+          <MdOutlineRemoveRedEye
+            size={18}
+            onClick={() => handleMatchClick("T Casino Park")}
+          />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -47,158 +54,112 @@ const CasinoWebsite = () => {
   ];
   const CASINO_DATA_DUPLICATES = Array(10).fill(CASINO_DATA[0]);
   const CRICKET_COLUMNS = [
-    { header: "Date & Time", field: "dateTime", width: "10%" },
-    { header: "Poster Type", field: "posterType", width: "30%" },
-    { header: "Poster", field: "Poster", width: "50%" },
-    { header: "", field: "icons", width: "10%" },
+    { header: "Providers Name", field: "providersName", width: "60%" },
+    { header: "P/L", field: "posterType", width: "30%" },
+    { header: "Status", field: "status", width: "10%" },
+    
   ];
 
   const CRICKET_DATA = [
     {
-      dateTime: <div>Diamond Exchange</div>,
-      posterType: <div>www.diamondexchange.com</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font">5000000</div>,
+      status: (
+        <div className="w-100 flex-between  pointer">
+          <MdOutlineRemoveRedEye
             size={18}
-            onClick={() => setFullPoster(!fullPoster)}
+            onClick={() => handleCasinoProvider("Pragmatic Play")}
           />
+          <span>
+            <MdBlockFlipped size={18} />
+          </span>
+          <span className="active-btn-table">Live</span>
         </div>
       ),
     },
     {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      posterType: <div>Cricket</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font">5000000</div>,
+      status: (
+        <div className="w-100 flex-between  pointer">
+          <MdOutlineRemoveRedEye
             size={18}
-            onClick={() => setFullPoster(!fullPoster)}
+            onClick={() => handleMatchClick("T Casino Park")}
           />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
+          <span>
+            <MdBlockFlipped size={18} />
           </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+          <span className="active-btn-table">Live</span>
         </div>
       ),
     },
-
     {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      posterType: <div>Cricket</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font">5000000</div>,
+      status: (
+        <div className="w-100 flex-between  pointer">
+          <MdOutlineRemoveRedEye
             size={18}
-            onClick={() => setFullPoster(!fullPoster)}
+            onClick={() => handleMatchClick("T Casino Park")}
           />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
+          <span>
+            <MdBlockFlipped size={18} />
           </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+          <span className="active-btn-table">Live</span>
         </div>
       ),
     },
-
     {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      posterType: <div>Cricket</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font">5000000</div>,
+      status: (
+        <div className="w-100 flex-between  pointer">
+          <MdOutlineRemoveRedEye
             size={18}
-            onClick={() => setFullPoster(!fullPoster)}
+            onClick={() => handleMatchClick("T Casino Park")}
           />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
+          <span>
+            <MdBlockFlipped size={18} />
           </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+          <span className="active-btn-table">Live</span>
         </div>
       ),
     },
-
     {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      posterType: <div>Cricket</div>,
-      Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font">5000000</div>,
+      status: (
+        <div className="w-100 flex-between  pointer">
+          <MdOutlineRemoveRedEye
             size={18}
-            onClick={() => setFullPoster(!fullPoster)}
+            onClick={() => handleMatchClick("T Casino Park")}
           />
-        </div>
-      ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
+          <span>
+            <MdBlockFlipped size={18} />
           </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+          <span className="active-btn-table">Live</span>
         </div>
       ),
     },
+    {
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font">5000000</div>,
+      status: (
+        <div className="w-100 flex-between  pointer">
+          <MdOutlineRemoveRedEye
+            size={18}
+            onClick={() => handleMatchClick("T Casino Park")}
+          />
+          <span>
+            <MdBlockFlipped size={18} />
+          </span>
+          <span className="active-btn-table">Live</span>
+        </div>
+      ),
+    },
+   
+
+  
   ];
 
   return (
@@ -211,21 +172,25 @@ const CasinoWebsite = () => {
         </div>
       </div>
 
-      <div className="d-flex  small-font">
-        {ACTIVE_BTNS?.map((item, index) => (
-          <div
-            key={index}
-            className={`me-4 ${
-              activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
-            }`}
-            onClick={() => handleSportClick(item)}
-          >
-            {item}
-          </div>
-        ))}
+      <div className="flex-between border-bottom small-font pb-3">
+        <div className="d-flex">
+          {ACTIVE_BTNS?.map((sport, index) => (
+            <div
+              key={index}
+              className={`me-3 px-3 ${
+                activeBtn === sport ? "saffron-btn2" : "white-btn2"
+              }`}
+              onClick={() => handleSportClick(sport)}
+            >
+              {sport}
+            </div>
+          ))}
+        </div>
+        <div>
+          P/L : <span className="white-btn2 green-font">10000000</span>
+        </div>
       </div>
+      
 
       <div className="mt-4 ">
         {activeBtn === "Websites" ? (
@@ -238,7 +203,7 @@ const CasinoWebsite = () => {
           <Table
             columns={CRICKET_COLUMNS}
             data={CRICKET_DATA}
-            itemsPerPage={2}
+            itemsPerPage={5}
           />
         )}
       </div>
