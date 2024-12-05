@@ -171,8 +171,8 @@ const fancyTableData = [
       </div>
     ),
     status: (
-      <div className="yellow-font d-flex flex-column justify-content-center">
-        <button className="my-3">Live</button>
+      <div className="d-flex flex-column justify-content-center">
+        <button className="edit-btn my-3">Edited</button>
       </div>
     ),
   },

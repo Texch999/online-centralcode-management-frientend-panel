@@ -1,11 +1,13 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { SlPencil } from "react-icons/sl";
+
 const MCasinoBetHistory = () => {
+  const navigate = useNavigate();
   const { gamename, usergame, bethistory } = useParams();
   const BET_HISTORY_COLUMNS = [
     { header: "S. No", field: "sno" },
@@ -232,12 +234,20 @@ const MCasinoBetHistory = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className=" mb-0">
-          Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
-          <span>{gamename}</span>
+        <div className="d-flex align-items-center">
+          <h6 className=" mb-0 pointer" onClick={() => navigate(-3)}>
+            <FiChevronLeft size={18} className="yellow-font mb-1" />
+            Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
+          </h6>
+          <span className="pointer" onClick={() => navigate(-2)}>
+            {gamename}
+          </span>
           <FiChevronRight />
-          <span className="yellow-font">{usergame}</span>
-        </h6>
+          <span className="yellow-font pointer" onClick={() => navigate(-1)}>
+            {usergame}
+          </span>
+        </div>
+
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
             <FaSearch size={16} className="grey-clr me-2" />

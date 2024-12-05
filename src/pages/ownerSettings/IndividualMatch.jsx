@@ -286,7 +286,7 @@ const IndividualMatch = () => {
       <div className="mt-2">
         <div className="d-flex justify-content-between w-100">
           <div className="d-flex ">
-            <FiChevronRight className=" mx-2" size={18} />
+          
             <h6>Result</h6>
             <FiChevronRight className=" mx-2" size={18} />
             <h6>Cricket</h6>

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
 
 const CasinoProvider = () => {
@@ -43,16 +43,19 @@ const CasinoProvider = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className=" mb-0">
-          Casino Live Settings
-          <span className="yellow-font">
-            <FiChevronRight /> Casino Providers
-          </span>
+        <div className="d-flex align-items-center">
+          <h6 className="mb-0 pointer" onClick={() => navigation(-1)}>
+            <FiChevronLeft size={18} className="yellow-font mb-1" />
+            Casino Live Settings
+            <span className="yellow-font">
+              <FiChevronRight /> Casino Providers
+            </span>
+          </h6>
           <span className="yellow-font">
             <FiChevronRight />
             {provider}
           </span>
-        </h6>
+        </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
             <FaSearch size={16} className="grey-clr me-2" />

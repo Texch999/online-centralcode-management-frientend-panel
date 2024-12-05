@@ -262,12 +262,10 @@ const ActivityLogs = () => {
 
   return (
     <div>
-      <div className="d-flex justify-content-between w-100">
-        <h6 className="saffron-clr">Activity Logs</h6>
-      </div>
+      <h6 className="saffron-clr mt-2 mb-3">Activity Logs</h6>
 
       <div className="d-flex w-30 flex-between mt-2">
-        <div className="col flex-column mx-2">
+        <div className="col flex-column ">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>

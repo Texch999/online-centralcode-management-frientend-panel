@@ -15,6 +15,7 @@ import CreditReferencePopup from "./popups/CreditReferencePopup";
 const DownlineList = () => {
   const role = localStorage.getItem("role")
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
+
   const cardData = [
     {
       title: role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
@@ -93,7 +94,7 @@ const DownlineList = () => {
           className={`top-section rounded-top d-flex justify-content-between align-items-center ${bootstrapClassesTop}`}
           style={{ backgroundColor: backgroundColor }}
         >
-          <h6 className="mb-0 text-white">{title}</h6>
+          <h6 className="mb-0 text-white small-font">{title}</h6>
           {icon}
         </div>
         <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>

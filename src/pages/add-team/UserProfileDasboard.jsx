@@ -4,15 +4,16 @@ import { MdLockReset, MdRemoveRedEye } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Images } from "../../images";
-import "../add-team/style.css";
-import "../../App.css";
-import "../../index.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import PaymentGateway from "./components/PaymentGateway";
 import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
 import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../add-team/style.css";
+import "../../App.css";
+import "../../index.css";
+
 
 const cardData = [
   {
@@ -24,11 +25,11 @@ const cardData = [
       <img
         src={Images.adminProfileShareRevenue}
         alt="ShareRevenue"
-        className="chat-img"
+        className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "px-3 py-2",
+    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
   },
   {
     title: "Rental Revenue",
@@ -39,11 +40,11 @@ const cardData = [
       <img
         src={Images.adminProfileShareRevenue}
         alt="ShareRevenue"
-        className="chat-img"
+        className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "px-3 py-2",
+    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
   },
   {
     title: "Total Paid",
@@ -54,14 +55,14 @@ const cardData = [
       <img
         src={Images.adminProfileTotalPaid}
         alt="ShareRevenue"
-        className="chat-img"
+        className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "px-3 py-2",
+    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
   },
   {
-    title: "Another Revenue",
+    title: "Net Profit/Loss",
     backgroundColor: "#7DA0FA",
     value: "300000000",
     valueClass: "text-dark",
@@ -69,11 +70,11 @@ const cardData = [
       <img
         src={Images.adminProfileTotalPaid}
         alt="ShareRevenue"
-        className="chat-img"
+        className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "px-3 py-2",
+    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
   },
 ];
 
@@ -91,7 +92,7 @@ const addDirectorTabsRowCardsData = [
       />
     ),
     bootstrapClassesTop: "p-2",
-    bootstrapClassesBottom: "mb-0 fw-bold p-2 px-2",
+    bootstrapClassesBottom: "mb-0 p-2 fw-600 px-2",
   },
   {
     title: "Total Users",
@@ -102,11 +103,11 @@ const addDirectorTabsRowCardsData = [
       <img
         src={Images.adminProfileTotalUsers}
         alt="TotalAdmins"
-        className="chat-img"
+        className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "p-2",
-    bootstrapClassesBottom: "mb-0 fw-bold p-2 px-2",
+    bootstrapClassesTop: "py-1 px-2",
+    bootstrapClassesBottom: "mb-0 fw-600 py-1 px-2",
   },
 ];
 
@@ -218,7 +219,7 @@ const Card = ({
         className={`top-section rounded-top d-flex justify-content-between align-items-center ${bootstrapClassesTop}`}
         style={{ backgroundColor: backgroundColor }}
       >
-        <h6 className="mb-0 text-white">{title}</h6>
+        <h6 className="mb-0 text-white small-font">{title}</h6>
         {icon}
       </div>
       <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
@@ -230,14 +231,14 @@ const DefaultBottomShow = () => {
   return (
     <div className="py-4 bg-white shadow rounded">
       <div className="px-4 d-flex justify-content-between align-items-center mb-3">
-        <h6 className="medium-font">
+        <h6 className="small-font">
           Texchange I{" "}
           <span className="yellow-font">
             texch.com - Share 10% - Rental 0.00
           </span>
         </h6>
         <div className="d-flex align-items-center">
-          <span className="me-2 black-text medium-font">Active</span>
+          <span className="me-3 black-text small-font black-font">Active</span>
 
           <Form>
             <Form.Check
@@ -247,7 +248,7 @@ const DefaultBottomShow = () => {
             />
           </Form>
 
-          <span className="me-2 black-text medium-font">In-active</span>
+          <span className="ms-2 black-text small-font black-font">In-active</span>
         </div>
       </div>
 
@@ -258,7 +259,7 @@ const DefaultBottomShow = () => {
       <div className="row px-4">
         <div className="col-8">
           <div className="row d-flex gap-3 ">
-            <h6>Sports/Casino</h6>
+            <h6 className="small-font">Sports/Casino</h6>
             {bottomCardsData.map((card, index) => (
               <div
                 className="col-4 card border border-grey p-0 direct-admin-profile-bottom-card"
@@ -281,27 +282,27 @@ const DefaultBottomShow = () => {
         {/* Right Side Container */}
         <div className="col-4 h-100">
           <div className="bg-white director-admin-profile-bottom-section-right p-4">
-            <h5 className="yellow-font medium-font">Total Amount</h5>
+            <h5 className="yellow-font small-font">Total Amount</h5>
             <input
               type="text"
               value="500000"
-              className="form-control mb-3"
+              className="form-control mb-3 small-sont"
               readOnly
             />
 
-            <h5 className="yellow-font medium-font">Paid Amount</h5>
+            <h5 className="yellow-font small-font">Paid Amount</h5>
             <input
               type="text"
               value="500000"
-              className="form-control mb-3"
+              className="form-control small-font mb-3"
               readOnly
             />
 
-            <h5 className="yellow-font medium-font">Net P/L</h5>
+            <h5 className="yellow-font small-font">Net P/L</h5>
             <input
               type="text"
               value="500000"
-              className="form-control mb-3"
+              className="form-control small-font mb-3"
               readOnly
             />
           </div>
@@ -362,8 +363,8 @@ const UserProfileDashboard = () => {
                 className="d-flex gap-2 super-admin-img-down-content"
                 style={{ marginTop: "20px" }}
               >
-                <h6>Jayanta Pal</h6>
-                <FaPen className="yellow-font pointer" size={13} onClick={() => setShowEditProfilePopup(true)}/>
+                <h6 className="small-font">Jayanta Pal</h6>
+                <FaPen className="yellow-font pointer mt-1" size={13} onClick={() => setShowEditProfilePopup(true)}/>
               </div>
             </div>
             <div className="col-10">
@@ -371,11 +372,11 @@ const UserProfileDashboard = () => {
                 <div className="d-flex gap-4 align-items-center">
                   <div className="d-flex gap-2 align-items-center">
                     <FaUserTie />
-                    <span>Director</span>
+                    <span className="small-font">Director</span>
                   </div>
                   <div className="d-flex gap-2 align-items-center">
                     <FaMapMarkerAlt />
-                    <span>India</span>
+                    <span className="small-font">India</span>
                   </div>
                 </div>
                 <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1">
@@ -409,10 +410,10 @@ const UserProfileDashboard = () => {
 
       {/* Tabs Section */}
       <div className="row py-3 px-3">
-        <div className="col-8 p-0">
+        <div className="col-7 p-0">
           <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3">
             <button
-              className={`rounded p-2 w-25 ${
+              className={`small-font rounded p-2 w-25 ${
                 activeTab === "websitesLimit" && "saffron-btn"
               }`}
               onClick={() => handleTabClick("websitesLimit")}
@@ -420,7 +421,7 @@ const UserProfileDashboard = () => {
               Websites/Limit
             </button>
             <button
-              className={`rounded p-2 text-center w-25 ${
+              className={`small-font rounded p-2 text-center w-25 ${
                 activeTab === "paymentGateway" && "saffron-btn"
               }`}
               onClick={() => handleTabClick("paymentGateway")}
@@ -428,7 +429,7 @@ const UserProfileDashboard = () => {
               Payment Gateway
             </button>
             <button
-              className={`rounded p-2 text-center w-25 ${
+              className={`small-font rounded p-2 text-center w-25 ${
                 activeTab === "transaction" && "saffron-btn"
               }`}
               onClick={() => handleTabClick("transaction")}
@@ -436,7 +437,7 @@ const UserProfileDashboard = () => {
               Transaction
             </button>
             <button
-              className={`rounded p-2 text-center w-25 ${
+              className={`small-font rounded p-2 text-center w-25 ${
                 activeTab === "betHistory" && "saffron-btn"
               }`}
               onClick={() => handleTabClick("betHistory")}
@@ -447,7 +448,7 @@ const UserProfileDashboard = () => {
         </div>
 
         {/* Right Section Cards */}
-        <div className="col-4">
+        <div className="col-5">
           <div className="row gap-3 d-flex justify-content-end">
             {addDirectorTabsRowCardsData.map((card, index) => (
               <div className="col-5 card border border-grey p-0" key={index}>
@@ -472,7 +473,6 @@ const UserProfileDashboard = () => {
         {activeTab === "paymentGateway" && <PaymentGateway />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
-        {/* {activeTab === "betHistory" && <CustomModal />} */}
       </div>
     </div>
   );

@@ -5,10 +5,12 @@ import { MdBlockFlipped } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import AddWebsitesPopup from "./popups/AddWebsitesPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
   const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
+  const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
 
   const columns = [
     { header: "Type", field: "type", width: "15%" },
@@ -26,12 +28,12 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit
+          <GrEdit size={17} className="pointer" onClick={() => setOnAddwebsitePopup(true)}/>
+          <MdBlockFlipped
             size={17}
-            className="pointer "
-            onClick={() => setOnAddwebsitePopup(true)}
+            className="pointer"
+            onClick={() => setConfirmationPopupOpen(true)}
           />
-          <MdBlockFlipped size={17} className="pointer" />
         </div>
       ),
     },
@@ -48,7 +50,11 @@ const AddWibsites = () => {
               className="pointer "
               onClick={() => setOnAddwebsitePopup(true)}
             />
-            <MdBlockFlipped size={17} className="pointer" />
+            <MdBlockFlipped
+              size={17}
+              className="pointer"
+              onClick={() => setConfirmationPopupOpen(true)}
+            />
           </div>
         ),
     },
@@ -209,6 +215,16 @@ const AddWibsites = () => {
       websiteName: "T Exchange",
       location: "Hyderabad, India",
       url: "www.texchange.com",
+      action: (
+        <div className="d-flex gap-3">
+          <GrEdit size={17} className="pointer" />
+          <MdBlockFlipped
+            size={17}
+            className="pointer"
+            onClick={() => setConfirmationPopupOpen(true)}
+          />
+        </div>
+      ),
     },
     {
       type: "White Label",
@@ -218,7 +234,11 @@ const AddWibsites = () => {
       action: (
         <div className="d-flex gap-3">
           <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <MdBlockFlipped
+            size={17}
+            className="pointer"
+            onClick={() => setConfirmationPopupOpen(true)}
+          />
         </div>
       ),
     },
@@ -397,6 +417,13 @@ const AddWibsites = () => {
       <AddWebsitesPopup
         show={onAddwebsitePopup}
         onHide={() => setOnAddwebsitePopup(false)}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={confirmationPopupOpen}
+        setConfirmationPopupOpen={setConfirmationPopupOpen}
+        discription="Are you sure you want to block this website?"
+        submitButton="Block"
       />
     </div>
   );

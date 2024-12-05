@@ -1,7 +1,7 @@
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router";
 import { BsEye } from "react-icons/bs";
 
@@ -30,9 +30,7 @@ const MCasinoGames = () => {
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
-          <span>
-            <MdBlockFlipped size={18} />
-          </span>
+          <MdBlockFlipped size={18} />
           <span className="active-btn-table">Live</span>
         </div>
       ),
@@ -43,10 +41,16 @@ const MCasinoGames = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className=" mb-0">
-          Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
-          <span className="yellow-font">T Casino Park</span>
-        </h6>
+        <div className="d-flex align-items-center">
+          <h6
+            className="mb-0 text-center pointer"
+            onClick={() => navigation(-1)}
+          >
+            <FiChevronLeft size={18} className="yellow-font mb-1" />
+            Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
+          </h6>
+          <span className="yellow-font">{gamename}</span>
+        </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
             <FaSearch size={16} className="grey-clr me-2" />

@@ -10,6 +10,7 @@ const CasinoWebsite = () => {
   const [activeBtn, setActiveBtn] = useState("Websites");
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
+
   const ACTIVE_BTNS = ["Websites", "Casino Providers"];
   const handleMatchClick = (matchName) => {
     navigation(`/management-casino/${encodeURIComponent(matchName)}`);

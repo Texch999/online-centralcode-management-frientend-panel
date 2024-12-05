@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
 
 const CasinoProviderGames = () => {
@@ -18,13 +18,25 @@ const CasinoProviderGames = () => {
   };
 
   const CASINO_COLUMNS = [
-    { header: "Games", field: "games", width: "25%" },
-    { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "Provider ID/Name", field: "provider", width: "15%" },
+    { header: "Game Name", field: "game_name", width: "10%" },
+    { header: "Market Id", field: "market_id", width: "10%" },
+    { header: "Table Number", field: "table_number", width: "10%" },
+    { header: "P/L", field: "pl", width: "10%" },
+    { header: "Status", field: "status", width: "4%" },
   ];
+
   const CASINO_DATA = [
     {
-      games: <div>Roulette</div>,
+      provider: (
+        <div>
+          <div>Ezugi</div>
+          <div>1234567891234567</div>
+        </div>
+      ),
+      game_name: <div>Roulette</div>,
+      market_id: <div>1234567891234567</div>,
+      table_number: <div>Table No 1</div>,
       pl: <div className="green-font">5000000</div>,
 
       status: (
@@ -33,7 +45,7 @@ const CasinoProviderGames = () => {
           <span>
             <MdBlockFlipped size={18} />
           </span>
-          <span className="active-btn-table">Live</span>
+          <span className="active-btn-table px-1">Live</span>
         </div>
       ),
     },
@@ -43,12 +55,15 @@ const CasinoProviderGames = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className=" mb-0">
-          Casino Live Settings
-          <span>
-            <FiChevronRight /> Casino Providers
-          </span>
-          <span>
+        <div className="d-flex align-items-center">
+          <h6 className=" mb-0 pointer" onClick={() => navigation(-2)}>
+            <FiChevronLeft size={18} className="yellow-font mb-1" />
+            Casino Live Settings
+            <span>
+              <FiChevronRight /> Casino Providers
+            </span>
+          </h6>
+          <span className="pointer" onClick={() => navigation(-1)}>
             <FiChevronRight />
             {provider}
           </span>
@@ -56,7 +71,7 @@ const CasinoProviderGames = () => {
             <FiChevronRight />
             {gamename}
           </span>
-        </h6>
+        </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
             <FaSearch size={16} className="grey-clr me-2" />

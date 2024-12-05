@@ -10,27 +10,9 @@
   color: #1912c8;
 }
 
-.add-new-btn {
-  font-size: 14px;
-  background-color: #ffffff;
-
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 25px;
-  padding: 10px 20px 10px 20px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 /* Input fields styling */
 
-.add-management-popup-form label {
-  font-weight: 500;
-  color: #1b1b1b;
-  font-size: 14px;
-  margin-bottom: 0.3rem;
-}
-
-.upload-input-popup{
+.upload-input-popup {
   padding: 0.7rem;
   background-color: #f2f2f2 !important;
   color: #727272;
@@ -44,12 +26,12 @@
   width: 100%;
 }
 
-.dw-active-btn{
-  background-color: #18B962;
+.dw-active-btn {
+  background-color: #18b962;
   color: white;
 }
 
-.mini-container{
+.mini-container {
   border-radius: 10px !important;
   padding: 10px;
 }
@@ -59,7 +41,7 @@
   padding-left: 3.5rem;
 }
 
-.super-admin-top-container img{
+.super-admin-top-container img {
   width: 160px;
   height: 170px;
 }
@@ -71,84 +53,136 @@
   z-index: 10;
 }
 
-.super-admin-img-down-content{
+.super-admin-img-down-content {
   margin-top: 120px !important;
 }
 
-.mini-container{
+@media only screen and (min-width: 1600px) and (max-width: 2560px) {
+  .super-admin-top-container img {
+    width: 190px;
+    height: 180px;
+  }
+
+  .super-admin-profile-img-con {
+    transform: translateY(-35%);
+    left: 20% !important;
+  }
+
+  .super-admin-img-down-content {
+    margin-left: 50px;
+  }
+}
+
+@media only screen and (min-width: 950px) and (max-width: 1200px) {
+  .super-admin-top-container img {
+    width: 130px;
+    height: 160px;
+  }
+
+  .super-admin-profile-img-con {
+    position: absolute;
+    transform: translateY(-40%);
+    left: 15% !important;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 950px) {
+  .super-admin-top-container {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .super-admin-profile-img-con {
+    position: absolute;
+    transform: translateY(-30%);
+    left: 10% !important;
+  }
+
+  .super-admin-top-container img {
+    width: 100px;
+    height: 120px;
+  }
+
+  .super-admin-img-down-content {
+    margin-top: 90px !important;
+  }
+}
+
+.mini-container {
   padding: 0px 0px;
 }
 
-.top-container{
+.top-container {
   padding: 0px 0px;
 }
 
-.director-admin-profile-top-con{
+.director-admin-profile-top-con {
   background-image: url("../../../public/assets/admin_profile_bg.png");
   background-size: cover;
   background-position: center;
   padding-top: 20px;
 }
 
-.director-admin-profile-top-bg-dark{
-  background-color: #2B2C40;
+.director-admin-profile-top-bg-dark {
+  background-color: #2b2c40;
 }
 
-.director-top-bg-icon{
+.director-top-bg-icon {
   background-color: #484964;
   /* padding: 5px; */
   border-radius: 50%;
   margin: 3px;
 }
 
-.director-admin-profile-active-btn{
-  background-color: #56CA00;
+.director-admin-profile-active-btn {
+  background-color: #56ca00;
 }
 
-.director-profile-tab-btn button{
+.director-profile-tab-btn button {
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.director-admin-profile-bottom-section-right{
-  border: solid 2px #FFA310;
+.director-admin-profile-bottom-section-right {
+  border: solid 2px #ffa310;
   border-radius: 1rem;
-  background-color: #F5F7FF !important;
+  background-color: #f5f7ff !important;
   margin-right: 1rem;
 }
 
-.director-admin-profile-bottom-section-right input{
+.director-admin-profile-bottom-section-right input {
   background-color: #ffffff;
 }
 
-.direct-admin-profile-bottom-card{
+.direct-admin-profile-bottom-card {
   width: 30%;
 }
 
-
 .director-admin-profile-toggle-btn .form-check-input {
-  background-color: #B3FFD6; 
-  border-color: rgba(24, 185, 98, 0.4); 
-  height: 25px;
-  width: 60px;
+  background-color: #b3ffd6;
+  border-color: rgba(24, 185, 98, 0.4);
+  height: 20px;
+  width: 40px;
   margin-right: 8px;
 }
 
-.payment-gateway-status-badge{
-  background-color: #B3FFD6;
+.payment-gateway-status-badge {
+  background-color: #b3ffd6;
   border: solid 2px rgba(24, 185, 98, 0.4);
   color: rgba(24, 185, 98, 1);
 }
 
 .director-admin-profile-toggle-btn .form-check-input:checked {
-  background-color: #B3FFD6;
+  background-color: #b3ffd6;
   border-color: rgba(24, 185, 98, 0.4);
+  height: 20px;
+  width: 40px;
 }
 
 /* reset password custom styling  */
 
 .custom-modal-width .modal-dialog {
-  max-width: 350px !important; 
+  max-width: 350px !important;
   width: 90% !important;
   margin: auto !important;
 }
@@ -175,9 +209,8 @@
 
 .table-parent-container .table-wrapper thead th {
   padding-left: 15px !important;
-  
 }
 
-.dashed-line{
+.dashed-line {
   border: 1px dashed rgba(0, 0, 0, 0.2);
 }

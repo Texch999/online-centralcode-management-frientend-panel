@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import AddNewPopUp from "./AddNewPopUp";
 
@@ -29,55 +29,7 @@ const ReferenceData = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18}/>
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18}/>
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      questions: <div>What is your name?</div>,
-
-      status: <div className="green-btn w-fill">Active</div>,
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <LiaPenSolid size={18}/>
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18}/>
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      questions: <div>What is your name?</div>,
-
-      status: <div className="green-btn w-fill">Active</div>,
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <LiaPenSolid size={18}/>
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
             <FaRegTrashCan size={18} />
@@ -101,10 +53,58 @@ const ReferenceData = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18}/>
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan size={18}/>
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+    {
+      questions: <div>What is your name?</div>,
+
+      status: <div className="green-btn w-fill">Active</div>,
+
+      action: (
+        <div className="large-font d-flex w-50 flex-between">
+          <span>
+            <SlPencil size={18} />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+    {
+      questions: <div>What is your name?</div>,
+
+      status: <div className="green-btn w-fill">Active</div>,
+
+      action: (
+        <div className="large-font d-flex w-50 flex-between">
+          <span>
+            <SlPencil size={18} />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -132,89 +132,14 @@ const ReferenceData = () => {
       discriptions: (
         <div>
           It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div >
-         <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <LiaPenSolid size={18}/>
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18}/>
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
+          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
           <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
           withdraw cash from an ATM
         </div>
       ),
 
       status: (
-        <div >
-         <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <LiaPenSolid size={18}/>
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18}/>
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
         <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-   
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div >
           <div className="green-btn w-fill">Active</div>
         </div>
       ),
@@ -222,10 +147,10 @@ const ReferenceData = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18}/>
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan size={18}/>
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -238,32 +163,31 @@ const ReferenceData = () => {
         </div>
       ),
     },
-   
     {
       reason: <div>Insufficient Balance</div>,
 
       discriptions: (
         <div>
           It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
+          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
+          <br />
           withdraw cash from an ATM
         </div>
       ),
 
       status: (
-        <div >
-         <div className="green-btn w-fill">Active</div>
+        <div>
+          <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18}/>
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan size={18}/>
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -276,21 +200,97 @@ const ReferenceData = () => {
         </div>
       ),
     },
-   
+
     {
       reason: <div>Insufficient Balance</div>,
 
       discriptions: (
         <div>
           It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone
-          tries to <br />
+          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
+          <br />
           withdraw cash from an ATM
         </div>
       ),
 
       status: (
-        <div >
+        <div>
+          <div className="green-btn w-fill">Active</div>
+        </div>
+      ),
+
+      action: (
+        <div className="large-font d-flex w-50 flex-between">
+          <span>
+            <SlPencil size={18} />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+
+    {
+      reason: <div>Insufficient Balance</div>,
+
+      discriptions: (
+        <div>
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
+          <br />
+          withdraw cash from an ATM
+        </div>
+      ),
+
+      status: (
+        <div>
+          <div className="green-btn w-fill">Active</div>
+        </div>
+      ),
+
+      action: (
+        <div className="large-font d-flex w-50 flex-between">
+          <span>
+            <SlPencil size={18} />
+          </span>
+          <span className="ms-2">
+            <FaRegTrashCan size={18} />
+          </span>
+        </div>
+      ),
+      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+
+    {
+      reason: <div>Insufficient Balance</div>,
+
+      discriptions: (
+        <div>
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
+          <br />
+          withdraw cash from an ATM
+        </div>
+      ),
+
+      status: (
+        <div>
           <div className="w-50  green-btn">Active</div>
         </div>
       ),
@@ -298,10 +298,10 @@ const ReferenceData = () => {
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
-            <LiaPenSolid size={18}/>
+            <SlPencil size={18} />
           </span>
           <span className="ms-2">
-            <FaRegTrashCan size={18}/>
+            <FaRegTrashCan size={18} />
           </span>
         </div>
       ),
@@ -314,17 +314,11 @@ const ReferenceData = () => {
         </div>
       ),
     },
-   
-
-   
   ];
 
   return (
     <div>
-      <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Reference Data</h6>
-        
-      </div>
+      <h6 className="yellow-font mt-2 mb-3">Reference Data</h6>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
@@ -340,26 +334,25 @@ const ReferenceData = () => {
           </div>
         ))}
       </div>
-      <hr />
+      <hr className="my-3" />
       <div className="d-flex w-100 flex-between">
-        <div className="col-7 fw-600">
+        <div className="col-7 fw-600 ">
           {activeBtn === "Rejection Reasons"
             ? "Rejection Reasons"
             : "Security Questions"}
         </div>
         {activeBtn === "Rejection Reasons" ? (
           <div className="col-5 d-flex flex-between">
-            {" "}
             <div className="col-5 ">
-              <select className="input-css2 col-12 mt-4 small-font">
+              <select className="input-css2 col-12  small-font">
                 <option>All</option>
               </select>
             </div>
-            <div className="saffron-btn2 small-font pointer mt-4 col-3 mx-2">
+            <div className="saffron-btn2 small-font pointer  col-3 mx-2">
               Submit
             </div>
             <div
-              className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center "
+              className="bg-white small-font pointer  col-3 p-2 blue-font grey-border rounded flex-center "
               onClick={() => setAddNewModalRejection(true)}
             >
               <IoAddOutline className="large-font" /> Add new
@@ -367,7 +360,6 @@ const ReferenceData = () => {
           </div>
         ) : (
           <div className="col-5 d-flex flex-between">
-           
             <div className="col-5 ">
               <select className="input-css2 col-12 mt-4 small-font">
                 <option>All</option>
@@ -385,7 +377,7 @@ const ReferenceData = () => {
           </div>
         )}
       </div>
-      <div className=" mt-4 ">
+      <div className="mt-3">
         {activeBtn === "Rejection Reasons" ? (
           <Table
             columns={REJECTION_COLUMNS}

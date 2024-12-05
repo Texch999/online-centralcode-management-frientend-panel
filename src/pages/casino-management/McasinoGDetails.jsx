@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { MdBlockFlipped } from "react-icons/md";
-import { FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
 
 const McasinoGDetails = () => {
@@ -18,13 +18,25 @@ const McasinoGDetails = () => {
   };
 
   const CASINO_COLUMNS = [
-    { header: "Games", field: "games", width: "25%" },
-    { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "Provider ID/Name", field: "provider", width: "15%" },
+    { header: "Game Name", field: "game_name", width: "10%" },
+    { header: "Market Id", field: "market_id", width: "10%" },
+    { header: "Table Number", field: "table_number", width: "10%" },
+    { header: "P/L", field: "pl", width: "10%" },
+    { header: "Status", field: "status", width: "4%" },
   ];
+
   const CASINO_DATA = [
     {
-      games: <div>Roulette</div>,
+      provider: (
+        <div>
+          <div>Ezugi</div>
+          <div>1234567891234567</div>
+        </div>
+      ),
+      game_name: <div>Roulette</div>,
+      market_id: <div>1234567891234567</div>,
+      table_number: <div>Table No 1</div>,
       pl: <div className="green-font">5000000</div>,
 
       status: (
@@ -33,7 +45,7 @@ const McasinoGDetails = () => {
           <span>
             <MdBlockFlipped size={18} />
           </span>
-          <span className="active-btn-table">Live</span>
+          <span className="active-btn-table px-1">Live</span>
         </div>
       ),
     },
@@ -43,12 +55,17 @@ const McasinoGDetails = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className=" mb-0">
-          Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
-          <span>{gamename}</span>
+        <div className="d-flex align-items-center">
+          <h6 className=" mb-0 pointer" onClick={() => navigation(-2)}>
+            <FiChevronLeft size={18} className="yellow-font mb-1" />
+            Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
+          </h6>
+          <span className="pointer" onClick={() => navigation(-1)}>
+            {gamename}
+          </span>
           <FiChevronRight />
           <span className="yellow-font">{usergame}</span>
-        </h6>
+        </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
             <FaSearch size={16} className="grey-clr me-2" />
@@ -59,14 +76,16 @@ const McasinoGDetails = () => {
           </div>
         </div>
       </div>
-      <div className="d-flex col">
+      <div className="d-flex align-items-end">
         <div className=" flex-column me-3 col-2">
           <label className="black-text4 small-font mb-1">Providers</label>
           <select className="input-css2 small-font ">
             <option>Select</option>
           </select>
         </div>
-        <div className="saffron-btn2 small-font pointer mt-3 col-1">Submit</div>
+        <div>
+          <button className="saffron-btn rounded">Submit</button>
+        </div>
       </div>
 
       <div className="mt-4 ">
