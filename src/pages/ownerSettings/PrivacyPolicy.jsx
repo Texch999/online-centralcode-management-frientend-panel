@@ -38,7 +38,7 @@ const PrivacyPolicy = () => {
       ),
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+          <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -82,7 +82,7 @@ const PrivacyPolicy = () => {
       ),
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+         <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -126,7 +126,7 @@ const PrivacyPolicy = () => {
       ),
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+         <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -170,7 +170,7 @@ const PrivacyPolicy = () => {
       ),
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+          <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -214,7 +214,7 @@ const PrivacyPolicy = () => {
       ),
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+       <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
@@ -258,7 +258,7 @@ const PrivacyPolicy = () => {
       ),
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+        <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
