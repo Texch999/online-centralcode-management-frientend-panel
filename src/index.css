@@ -152,3 +152,31 @@ option:hover {
     font-size: 1.3rem;
   }
 }
+
+/* Loading Spinner */
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+.spinner-circle {
+  width: 50px;
+  height: 50px;
+  border: 5px solid transparent;
+  border-top: 5px solid #3498db;
+  border-right: 5px solid #e74c3c;
+  border-bottom: 5px solid #f1c40f;
+  border-left: 5px solid #2ecc71;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
