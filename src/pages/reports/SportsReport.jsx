@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
@@ -131,7 +131,7 @@ function SportsReport() {
     status: (
       <div className="large-font d-flex w-50 flex-between">
         <span>
-          <LiaPenSolid size={18} />
+          <SlPencil size={18} />
         </span>
         <span className="ms-2">
           <FaRegTrashCan size={18} />

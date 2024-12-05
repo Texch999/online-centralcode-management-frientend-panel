@@ -540,14 +540,14 @@ const Result = () => {
         </div>
       </div>
 
-      <div className="d-flex w-10 flex-between small-font">
+      <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2  px-3"
+                : "white-btn2 pointer px-3"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -555,8 +555,8 @@ const Result = () => {
           </div>
         ))}
       </div>
-      <div className="d-flex w-40 flex-between mt-2">
-        <div className="col-3 flex-column mx-2">
+      <div className="d-flex w-40 flex-between my-3">
+        <div className="col-3 flex-column ">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
@@ -597,8 +597,7 @@ const Result = () => {
         </div>
       </div>
 
-      <div className="mt-4">
-        {activeBtn === "Sports" ? (
+      {activeBtn === "Sports" ? (
           <Table
             columns={CRICKET_COLUMNS}
             data={CRICKET_DATA}
@@ -607,7 +606,6 @@ const Result = () => {
         ) : (
           <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
         )}
-      </div>
     </div>
   );
 };
