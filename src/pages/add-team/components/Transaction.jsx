@@ -238,10 +238,10 @@ const Transaction = () => {
 
   return (
     <div className="py-4 bg-white shadow rounded">
-      <div className="px-4 d-flex justify-content-between align-items-center mb-3">
+      <div className="px-3 d-flex justify-content-between align-items-center mb-3">
         <h6 className="medium-font">Trasaction</h6>
         <div className="d-flex align-items-center">
-          <span className="me-2 black-text medium-font">Active</span>
+          <span className="me-2 black-text small-font">Active</span>
           <Form>
             <Form.Check
               type="switch"
@@ -249,7 +249,7 @@ const Transaction = () => {
               className="director-admin-profile-toggle-btn"
             />
           </Form>
-          <span className="me-2 black-text medium-font">In-active</span>
+          <span className="me-2 small-font black-text small-font">In-active</span>
         </div>
       </div>
 

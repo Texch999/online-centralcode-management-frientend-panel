@@ -214,10 +214,10 @@ const BetHistory = () => {
 
   return (
     <div className="py-4 bg-white shadow rounded">
-      <div className="px-4 d-flex justify-content-between align-items-center mb-3">
+      <div className="px-3 d-flex justify-content-between align-items-center mb-3">
         <h6 className="medium-font">Bet History</h6>
         <div className="d-flex align-items-center">
-          <span className="me-2 black-text medium-font">Active</span>
+          <span className="me-2 black-text small-font">Active</span>
           <Form>
             <Form.Check
               type="switch"
@@ -225,81 +225,69 @@ const BetHistory = () => {
               className="director-admin-profile-toggle-btn"
             />
           </Form>
-          <span className="me-2 black-text medium-font">In-active</span>
+          <span className="me-2 black-text small-font">In-active</span>
         </div>
       </div>
 
-      <div className="row gap-1 px-3">
+      <div className="row px-3">
         <div className="col-2">
-          <label htmlFor="date-picker" className="mb-1">
+          <label htmlFor="date-picker small-font" className="mb-1">
             From
           </label>
-          <div className="position-relative">
             <input
               type="date"
               id="date-picker"
-              className="custom-date-input form-control bg-light border rounded pr-5"
+              className="rounded small-font input-css w-100 "
             />
-            {/* <CiCalendarDate className="input-icon" /> */}
-          </div>
         </div>
 
         <div className="col-2">
-          <label htmlFor="date-picker" className="mb-1">
+          <label htmlFor="date-picker small-font" className="mb-1">
             To
           </label>
-          <div className="position-relative">
             <input
               type="date"
               id="date-picker"
-              className="custom-date-input form-control bg-light border rounded pr-5"
+              className="small-font input-css w-100 rounded"
             />
-            {/* <CiCalendarDate className="input-icon" /> */}
-          </div>
         </div>
 
-        <div className="col-2">
-          <label className="medium-font mb-1 d-block">Website</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              <option className="medium-font">texchange.com</option>
-              <option className="medium-font">fun77.com</option>
-              <option className="medium-font">tcasinopark.com</option>
-              <option className="medium-font">diamondexchange.com</option>
+        <div className="col-2 mt-1">
+          <label className="small-font mb-1">Website</label>
+            <select className="small-font input-css rounded px-3 w-100">
+              <option className="small-font">texchange.com</option>
+              <option className="small-font">fun77.com</option>
+              <option className="small-font">tcasinopark.com</option>
+              <option className="small-font">diamondexchange.com</option>
             </select>
-          </div>
         </div>
 
-        <div className="col-2">
-          <label className="medium-font mb-1 d-block">Admin</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              <option className="medium-font">Director - Srinivas</option>
-              <option className="medium-font">Super Admin - Ranjit</option>
-              <option className="medium-font">Admin - Rajesh</option>
-              <option className="medium-font">SA- Jitah</option>
-              <option className="medium-font">Agent - Lokesh</option>
-              <option className="medium-font">Agent - Suresh</option>
+        <div className="col-2 mt-1">
+          <label className="small-font mb-1">Admin</label>
+            <select className="small-font input-css rounded px-3 w-100">
+              <option className="small-font">Director - Srinivas</option>
+              <option className="small-font">Super Admin - Ranjit</option>
+              <option className="small-font">Admin - Rajesh</option>
+              <option className="small-font">SA- Jitah</option>
+              <option className="small-font">Agent - Lokesh</option>
+              <option className="small-font">Agent - Suresh</option>
             </select>
-          </div>
         </div>
 
-        <div className="col-2">
-          <label className="medium-font mb-1 d-block">Admin</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              <option className="medium-font">Jitendra</option>
-              <option className="medium-font">Jayanta</option>
-              <option className="medium-font">Sri</option>
-              <option className="medium-font">Rahul</option>
-              <option className="medium-font">Raj</option>
-              <option className="medium-font">Sri Varma</option>
+        <div className="col-2 mt-1">
+          <label className="small-font mb-1">Admin</label>
+            <select className="small-font input-css rounded px-3 w-100">
+              <option className="small-font">Jitendra</option>
+              <option className="small-font">Jayanta</option>
+              <option className="small-font">Sri</option>
+              <option className="small-font">Rahul</option>
+              <option className="small-font">Raj</option>
+              <option className="small-font">Sri Varma</option>
             </select>
-          </div>
         </div>
 
         <div className="col-1 d-flex align-items-end">
-          <button className="text-white rounded saffron-btn px-4">
+          <button className="rounded small-font saffron-btn px-3">
             Search
           </button>
         </div>

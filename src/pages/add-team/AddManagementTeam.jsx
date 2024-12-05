@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import AddManagementPopup from "./AddManagementPopup";
+import AddManagementPopup from "./popups/AddManagementPopup";
 import BlockAccountPopup from "./BlockAccountPopup";
 import { GrEdit } from "react-icons/gr";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -9,11 +9,12 @@ import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import "../add-team/style.css";
 import "../../App.css";
-import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
+import ResetPasswordPopup from "../popups/ResetPasswordPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const AddManagementTeam = () => {
   const [tableData, setTableData] = useState(
-    Array.from({ length: 15 }, (_, index) => ({
+    Array.from({ length: 17 }, (_, index) => ({
       id: index + 1,
       role: "Designer",
       name: `Jayanta ${index + 1}`,
@@ -26,12 +27,15 @@ const AddManagementTeam = () => {
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
+    isDeletePopupVisible: false,
     isResetPasswordVisible: false,
     blockAccountId: null,
+    deleteAccountId: null,
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingRowId, setEditingRowId] = useState(null);
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     role: "",
@@ -102,16 +106,26 @@ const AddManagementTeam = () => {
     });
   };
 
-  const handleBlockAccount = () => {
-    setTableData((prevData) =>
-      prevData.filter((row) => row.id !== modalState.blockAccountId)
-    );
-    toggleModal("isBlockPopupVisible", false);
+  const handleDeletePopup = (rowId) => {
+    setModalState({
+      ...modalState,
+      isDeletePopupVisible: true,
+      deleteAccountId: rowId, // Store the ID of the account to delete
+    });
   };
 
-  const handleResetPasswordPopup = (isOpen) => {
-    toggleModal("isResetPasswordVisible", isOpen);
+  const handleDeleteAccount = () => {
+    setTableData((prevData) =>
+      prevData.filter((row) => row.id !== modalState.deleteAccountId)
+    );
+    toggleModal("isDeletePopupVisible", false); // Close the delete popup
   };
+
+  
+  const handleResetPasswordPopup = (isOpen) => {
+    setResetPasswordPopup(isOpen);
+  };
+
 
   const columns = [
     {
@@ -133,12 +147,12 @@ const AddManagementTeam = () => {
     {
       header: "Email",
       field: "email",
-      width:"20%",
+      width: "20%",
     },
     {
       header: <div className="text-center">Action</div>,
       field: "action",
-      width:"12%",
+      width: "12%",
     },
   ];
 
@@ -150,6 +164,7 @@ const AddManagementTeam = () => {
         onEdit={handleEdit}
         onBlock={handleBlockPopup}
         onResetPassword={handleResetPasswordPopup}
+      onDelete={handleDeletePopup}
       />
     ),
   }));
@@ -164,7 +179,7 @@ const AddManagementTeam = () => {
             <input className="small-font all-none" placeholder="Search..." />
           </div>
           <button
-            className="small-font rounded-pill input-pill blue-font px-3 py-1 "
+            className="small-font rounded-pill input-pill blue-font px-3 py-1"
             onClick={() => handleAddModal(true)}
           >
             <FaPlus className="me-2" />
@@ -172,16 +187,14 @@ const AddManagementTeam = () => {
           </button>
         </div>
       </div>
-
       <div className="management-team-wrapper rounded-bg">
         <Table
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={10}
+          itemsPerPage={12}
         />
       </div>
-
       {/* AddManagementPopup Modal */}
       <AddManagementPopup
         show={modalState.showAddModal}
@@ -190,28 +203,43 @@ const AddManagementTeam = () => {
         setFormData={setFormData}
         onSubmit={handleFormSubmit}
       />
-
       {/* Block Account Modal */}
-      <BlockAccountPopup
-        isOpen={modalState.isBlockPopupVisible}
-        onRequestClose={() => toggleModal("isBlockPopupVisible", false)}
-        onBlock={handleBlockAccount}
+      <ConfirmationPopup
+        confirmationPopupOpen={modalState.isBlockPopupVisible}
+        setConfirmationPopupOpen={(value) =>
+          toggleModal("isBlockPopupVisible", value)
+        }
+        discription={"Are You Sure to Block this Account?"}
+        submitButton={"Block"}
       />
-
-      {/* Reset Password Modal */}
-      <ManagementResetPasswordPopup
-        isOpen={modalState.isResetPasswordVisible}
-        onRequestClose={() => toggleModal("isResetPasswordVisible", false)}
+      {/* Delete Account Modal */}
+      <ConfirmationPopup
+        confirmationPopupOpen={modalState.isDeletePopupVisible}
+        setConfirmationPopupOpen={(value) =>
+          toggleModal("isDeletePopupVisible", value)
+        }
+        discription={"Are You Sure to Delete this Account?"}
+        submitButton={"Delete"}
+        onSubmit={handleDeleteAccount}
+      />
+      \{/* Reset Password Modal */}
+      <ResetPasswordPopup
+        resetPasswordPopup={resetPasswordPopup}
+        setResetPasswordPopup={setResetPasswordPopup}
       />
     </div>
   );
 };
 
-const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword }) => (
+const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword, onDelete}) => (
   <div className="d-flex gap-3 flex-center">
-    <GrEdit size={18} className="pointer black-text" onClick={() => onEdit(rowId)} />
+    <GrEdit
+      size={18}
+      className="pointer black-text"
+      onClick={() => onEdit(rowId)}
+    />
     <MdLockReset
-    size={18}
+      size={18}
       className="pointer black-text"
       onClick={() => onResetPassword(true)}
     />
@@ -220,7 +248,11 @@ const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword }) => (
       className="pointer black-text"
       onClick={() => onBlock(rowId)}
     />
-    <RiDeleteBinLine size={18} className="pointer black-text" />
+    <RiDeleteBinLine
+      size={18}
+      className="pointer black-text"
+      onClick={() => onDelete(rowId)}
+    />
   </div>
 );
 

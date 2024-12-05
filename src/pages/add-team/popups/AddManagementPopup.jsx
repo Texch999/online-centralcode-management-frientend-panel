@@ -3,8 +3,8 @@ import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../add-team/style.css";
-import "../../App.css";
+import "../style.css"
+import "../../../App.css";
 
 const AddManagementPopup = ({
   formData,
@@ -18,8 +18,6 @@ const AddManagementPopup = ({
     confirmPassword: false,
     managementPassword: false,
   });
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +42,7 @@ const AddManagementPopup = ({
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <div className="d-flex justify-content-between align-items-center pt-4 px-4">
-        <h6 className="mb-0 medium-font black-font">
+        <h6 className="mb-0 ms-2 medium-font black-font">
           {formData.name ? "Edit Management Team" : "Add Management Team"}
         </h6>
         <MdOutlineClose
