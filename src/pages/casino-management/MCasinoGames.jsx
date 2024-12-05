@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdBlockFlipped, MdOutlineRemoveRedEye } from "react-icons/md";
-import { FiChevronRight } from "react-icons/fi";
-import { FiChevronLeft } from "react-icons/fi";
+import { MdBlockFlipped } from "react-icons/md";
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router";
+import { BsEye } from "react-icons/bs";
 
 const MCasinoGames = () => {
   const navigation = useNavigate();
@@ -30,13 +29,8 @@ const MCasinoGames = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("Roulette")}
-          />
-          <span>
-            <MdBlockFlipped size={18} />
-          </span>
+          <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
+          <MdBlockFlipped size={18} />
           <span className="active-btn-table">Live</span>
         </div>
       ),
@@ -48,7 +42,10 @@ const MCasinoGames = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className="mb-0 text-center pointer" onClick={() => navigation(-1)}>
+          <h6
+            className="mb-0 text-center pointer"
+            onClick={() => navigation(-1)}
+          >
             <FiChevronLeft size={18} className="yellow-font mb-1" />
             Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
           </h6>

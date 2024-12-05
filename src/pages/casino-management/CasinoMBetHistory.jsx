@@ -2,17 +2,13 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-
-import {
-  MdOutlineDelete,
-  MdOutlineModeEditOutline,
-} from "react-icons/md";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
+
 const CasinoMBetHistory = () => {
-
-  const navigate = useNavigate()
-
   const { provider, gamename, bethistory } = useParams();
+  const navigate = useNavigate();
   const BET_HISTORY_COLUMNS = [
     { header: "S. No", field: "sno" },
     { header: "Date & Time/IP Add", field: "dateTime" },
@@ -70,164 +66,8 @@ const CasinoMBetHistory = () => {
       status: (
         <div className="d-flex w-100 flex-between">
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
-          </div>
-          <div className="green-btn">Settled</div>
-        </div>
-      ),
-    },
-    {
-      sno: <div>1</div>,
-      dateTime: (
-        <div>
-          01-10-2024
-          <br />
-          16:11:00
-          <br />
-          IP: 157.47.47.187
-        </div>
-      ),
-      users: (
-        <div>
-          M.Name: T Exchange
-          <br />
-          User: Srinivas {">"} Ag: Jayanta {">"} <br />
-          Mas: Lokesh {">"} S M: Sangram {">"}
-          <br />S A: Sudheer {">"} Adm: Nani {">"}
-          <br />
-          Sup A: Harish {">"} Dir: Sri Lakshmi
-        </div>
-      ),
-      matchName: (
-        <div>
-          M ID: 1.11045677544
-          <br />
-          Match: Chennai Super Kings <br /> vs Rajasthan Royals (T20 World Cup)
-          <br />
-          Match ID: 11023843754858
-        </div>
-      ),
-      betPlaced: <div>Odds</div>,
-      selection: (
-        <div>
-          <div>Selection: Chennai Super Kings</div>
-          <div className="back-clr">Side: Back</div>
-          <div>Odds Rate: 1.50</div>
-          <div>B. Amount: 100000</div>
-          <div>B. ID: 11023843754858</div>
-        </div>
-      ),
-      pl: <div className="back-btn">10000000</div>,
-      status: (
-        <div className="d-flex w-100 flex-between">
-          <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
-          </div>
-          <div className="green-btn">Settled</div>
-        </div>
-      ),
-    },
-    {
-      sno: <div>1</div>,
-      dateTime: (
-        <div>
-          01-10-2024
-          <br />
-          16:11:00
-          <br />
-          IP: 157.47.47.187
-        </div>
-      ),
-      users: (
-        <div>
-          M.Name: T Exchange
-          <br />
-          User: Srinivas {">"} Ag: Jayanta {">"} <br />
-          Mas: Lokesh {">"} S M: Sangram {">"}
-          <br />S A: Sudheer {">"} Adm: Nani {">"}
-          <br />
-          Sup A: Harish {">"} Dir: Sri Lakshmi
-        </div>
-      ),
-      matchName: (
-        <div>
-          M ID: 1.11045677544
-          <br />
-          Match: Chennai Super Kings <br /> vs Rajasthan Royals (T20 World Cup)
-          <br />
-          Match ID: 11023843754858
-        </div>
-      ),
-      betPlaced: <div>Odds</div>,
-      selection: (
-        <div>
-          <div>Selection: Chennai Super Kings</div>
-          <div className="back-clr">Side: Back</div>
-          <div>Odds Rate: 1.50</div>
-          <div>B. Amount: 100000</div>
-          <div>B. ID: 11023843754858</div>
-        </div>
-      ),
-      pl: <div className="back-btn">10000000</div>,
-      status: (
-        <div className="d-flex w-100 flex-between">
-          <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
-          </div>
-          <div className="green-btn">Settled</div>
-        </div>
-      ),
-    },
-    {
-      sno: <div>1</div>,
-      dateTime: (
-        <div>
-          01-10-2024
-          <br />
-          16:11:00
-          <br />
-          IP: 157.47.47.187
-        </div>
-      ),
-      users: (
-        <div>
-          M.Name: T Exchange
-          <br />
-          User: Srinivas {">"} Ag: Jayanta {">"} <br />
-          Mas: Lokesh {">"} S M: Sangram {">"}
-          <br />S A: Sudheer {">"} Adm: Nani {">"}
-          <br />
-          Sup A: Harish {">"} Dir: Sri Lakshmi
-        </div>
-      ),
-      matchName: (
-        <div>
-          M ID: 1.11045677544
-          <br />
-          Match: Chennai Super Kings <br /> vs Rajasthan Royals (T20 World Cup)
-          <br />
-          Match ID: 11023843754858
-        </div>
-      ),
-      betPlaced: <div>Odds</div>,
-      selection: (
-        <div>
-          <div>Selection: Chennai Super Kings</div>
-          <div className="back-clr">Side: Back</div>
-          <div>Odds Rate: 1.50</div>
-          <div>B. Amount: 100000</div>
-          <div>B. ID: 11023843754858</div>
-        </div>
-      ),
-      pl: <div className="back-btn">10000000</div>,
-      status: (
-        <div className="d-flex w-100 flex-between">
-          <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} />
+            <FaRegTrashCan size={18} />
           </div>
           <div className="green-btn">Settled</div>
         </div>
@@ -243,13 +83,17 @@ const CasinoMBetHistory = () => {
             <FiChevronLeft size={18} className="yellow-font mb-1" />
             Casino Live Settings <FiChevronRight /> Casino Providers{" "}
             <FiChevronRight />
-            </h6>
-            <span className="pointer" onClick={() => navigate(-2)}>{provider}</span>
-            <FiChevronRight />
-            <span className="pointer" onClick={() => navigate(-1)}>{gamename}</span>
-            <span className="yellow-font">
-              <FiChevronRight /> {bethistory}
-            </span>
+          </h6>
+          <span className="pointer" onClick={() => navigate(-2)}>
+            {provider}
+          </span>
+          <FiChevronRight />
+          <span className="pointer" onClick={() => navigate(-1)}>
+            {gamename}
+          </span>
+          <span className="yellow-font">
+            <FiChevronRight /> {bethistory}
+          </span>
         </div>
 
         <div className="d-flex ">
@@ -291,4 +135,3 @@ const CasinoMBetHistory = () => {
 };
 
 export default CasinoMBetHistory;
-

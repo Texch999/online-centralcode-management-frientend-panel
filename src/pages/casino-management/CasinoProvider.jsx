@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdBlockFlipped, MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdBlockFlipped } from "react-icons/md";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
 
 const CasinoProvider = () => {
   const { provider } = useParams();
@@ -28,10 +29,7 @@ const CasinoProvider = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("Roulette")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>

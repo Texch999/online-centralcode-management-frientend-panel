@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdBlockFlipped, MdOutlineRemoveRedEye } from "react-icons/md";
-import { LiaPenSolid } from "react-icons/lia";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { Images } from "../../images";
+import { MdBlockFlipped } from "react-icons/md";
 import { useNavigate } from "react-router";
-import { TbArrowsDiagonal } from "react-icons/tb";
+import { BsEye } from "react-icons/bs";
 
 const CasinoWebsite = () => {
   const navigation = useNavigate();
@@ -41,10 +38,7 @@ const CasinoWebsite = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("T Casino Park")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -58,7 +52,6 @@ const CasinoWebsite = () => {
     { header: "Providers Name", field: "providersName", width: "60%" },
     { header: "P/L", field: "posterType", width: "30%" },
     { header: "Status", field: "status", width: "10%" },
-    
   ];
 
   const CRICKET_DATA = [
@@ -67,7 +60,7 @@ const CasinoWebsite = () => {
       posterType: <div className="green-font">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() => handleCasinoProvider("Pragmatic Play")}
           />
@@ -83,10 +76,7 @@ const CasinoWebsite = () => {
       posterType: <div className="green-font">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("T Casino Park")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -99,10 +89,7 @@ const CasinoWebsite = () => {
       posterType: <div className="green-font">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("T Casino Park")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -115,10 +102,7 @@ const CasinoWebsite = () => {
       posterType: <div className="green-font">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("T Casino Park")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -131,10 +115,7 @@ const CasinoWebsite = () => {
       posterType: <div className="green-font">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("T Casino Park")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -147,10 +128,7 @@ const CasinoWebsite = () => {
       posterType: <div className="green-font">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("T Casino Park")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>
@@ -158,9 +136,6 @@ const CasinoWebsite = () => {
         </div>
       ),
     },
-   
-
-  
   ];
 
   return (
@@ -191,7 +166,6 @@ const CasinoWebsite = () => {
           P/L : <span className="white-btn2 green-font">10000000</span>
         </div>
       </div>
-      
 
       <div className="mt-4 ">
         {activeBtn === "Websites" ? (

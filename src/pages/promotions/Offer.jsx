@@ -5,14 +5,10 @@ import { IoAddOutline } from "react-icons/io5";
 import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Images } from "../../images";
-import EditOfferPopUp from "./EditOfferPopUp";
-import DeleteOfferPopUp from "./DeleteOfferPopUp";
 import UploadPosterPopUp from "./UploadPosterPopUp";
 
 const Offer = () => {
   const [activeBtn, setActiveBtn] = useState("1st Deposit Bonus");
-  const [editOffer, setEditOffer] = useState(false);
-  const [deleteOffer, setDeleteOffer] = useState(false);
   const [uploadPoster, setUploadPoster] = useState(false);
   const ACTIVE_BTNS = [
     "1st Deposit Bonus",
@@ -20,12 +16,9 @@ const Offer = () => {
     "Promotions",
     "All Bonus",
   ];
-
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
-
-  const CRICKET_COLUMNS = [{ header: "", field: "posters" }];
 
   const PosterImages = [
     {
@@ -62,12 +55,13 @@ const Offer = () => {
     },
   ];
 
+  const CRICKET_COLUMNS = [{ header: "", field: "posters" }];
   const CRICKET_DATA = [
     {
       posters: (
         <div className="row poster-img d-flex ">
           {PosterImages?.map((item, index) => (
-            <div className="relative p-1 col-3">
+            <div className="relative p-1 col-3" key={index}>
               <img src={item.image} alt="Poster" className="w-100" />
               <div className="balck-btn small-font me-1 w-100">
                 {item.content}
@@ -77,101 +71,11 @@ const Offer = () => {
                   <LiaPenSolid
                     size={20}
                     className="pointer"
-                    onClick={() => setEditOffer(!editOffer)}
+                    onClick={() => setUploadPoster(!uploadPoster)}
                   />
                 </span>
                 <span className="white-bg rounded-pill p-1  pointer">
-                  <FaRegTrashCan
-                    size={20}
-                    onClick={() => setDeleteOffer(!deleteOffer)}
-                  />
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      posters: (
-        <div className="row poster-img d-flex ">
-          {PosterImages?.map((item, index) => (
-            <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster" className="w-100" />
-              <div className="balck-btn small-font me-1 w-100">
-                {item.content}
-              </div>
-              <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
-                <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid
-                    size={20}
-                    className="pointer"
-                    onClick={() => setEditOffer(!editOffer)}
-                  />
-                </span>
-                <span className="white-bg rounded-pill p-1 pointer ">
-                  <FaRegTrashCan
-                    size={20}
-                    onClick={() => setDeleteOffer(!deleteOffer)}
-                  />
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      posters: (
-        <div className="row poster-img d-flex ">
-          {PosterImages?.map((item, index) => (
-            <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster" className="w-100" />
-              <div className="balck-btn small-font me-1 w-100">
-                {item.content}
-              </div>
-              <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
-                <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid
-                    size={20}
-                    className="pointer"
-                    onClick={() => setEditOffer(!editOffer)}
-                  />
-                </span>
-                <span className="white-bg rounded-pill p-1 pointer ">
-                  <FaRegTrashCan
-                    size={20}
-                    onClick={() => setDeleteOffer(!deleteOffer)}
-                  />
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      posters: (
-        <div className="row poster-img d-flex ">
-          {PosterImages?.map((item, index) => (
-            <div className="relative p-1 col-3">
-              <img src={item.image} alt="Poster" className="w-100" />
-              <div className="balck-btn small-font me-1 w-100">
-                {item.content}
-              </div>
-              <div className="absolute d-flex w-95 flex-between promotion-posters p-1 ">
-                <span className="white-bg rounded-pill p-1  ">
-                  <LiaPenSolid
-                    size={20}
-                    className="pointer"
-                    onClick={() => setEditOffer(!editOffer)}
-                  />
-                </span>
-                <span className="white-bg rounded-pill p-1 pointer ">
-                  <FaRegTrashCan
-                    size={20}
-                    onClick={() => setDeleteOffer(!deleteOffer)}
-                  />
+                  <FaRegTrashCan size={20} />
                 </span>
               </div>
             </div>
@@ -184,21 +88,21 @@ const Offer = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Offer</h6>
+        <h6 className="yellow-font mb-0">Offers</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className="d-flex   flex-between small-font">
-        <div className=" d-flex ">
+      <div className="flex-between small-font mb-3">
+        <div className="d-flex">
           {ACTIVE_BTNS?.map((item, index) => (
             <div
               key={index}
               className={`me-3 ${
                 activeBtn === item
-                  ? "saffron-btn2  px-4"
-                  : "white-btn2 pointer px-4"
+                  ? "saffron-btn2 px-3"
+                  : "white-btn2 pointer px-3"
               }`}
               onClick={() => handleSportClick(item)}
             >
@@ -206,23 +110,15 @@ const Offer = () => {
             </div>
           ))}
         </div>
-
         <div
-          className="saffron-btn2 small-font pointer mt-4 w-10"
+          className="saffron-btn2 pointer flex-center"
           onClick={() => setUploadPoster(!uploadPoster)}
         >
-          <IoAddOutline className="large-font" size={18} />{" "}
+          <IoAddOutline size={18} />
           <span className="ms-2">Add New</span>
         </div>
       </div>
-      <div className="mt-4">
-        <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={1} />
-      </div>
-      <EditOfferPopUp setEditOffer={setEditOffer} editOffer={editOffer} />
-      <DeleteOfferPopUp
-        setDeleteOffer={setDeleteOffer}
-        deleteOffer={deleteOffer}
-      />
+      <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={1} />
       <UploadPosterPopUp
         setUploadPoster={setUploadPoster}
         uploadPoster={uploadPoster}

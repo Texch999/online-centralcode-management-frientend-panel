@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdBlockFlipped, MdOutlineRemoveRedEye } from "react-icons/md";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { MdBlockFlipped } from "react-icons/md";
+import { BsEye } from "react-icons/bs";
 
 const McasinoGDetails = () => {
   const { gamename, usergame } = useParams();
@@ -40,10 +41,7 @@ const McasinoGDetails = () => {
 
       status: (
         <div className="w-100 flex-between  pointer">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() => handleMatchClick("Bet History")}
-          />
+          <BsEye size={18} onClick={() => handleMatchClick("Bet History")} />
           <span>
             <MdBlockFlipped size={18} />
           </span>

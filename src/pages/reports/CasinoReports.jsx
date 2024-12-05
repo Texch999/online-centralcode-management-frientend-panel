@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
 import ScrollTable from "../../components/ScrollTable";
-import SettlePopUp from "./SettlePopUp";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import AdminDownLineReport from "./AdminDownLineReport";
 import CasinoBetPl from "./CasinoBetPl";
+import { BsEye } from "react-icons/bs";
 
 function CasinoReports() {
   const [activeSport, setActiveSport] = useState("Vendor Report");
@@ -42,7 +39,7 @@ function CasinoReports() {
           className={`flex-center large-font pointer`}
           onClick={() => setOpenGameData(true)}
         >
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     }));
@@ -67,7 +64,7 @@ function CasinoReports() {
           className={`flex-center large-font pointer`}
           onClick={() => setOpenProviderName(true)}
         >
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     }));
@@ -92,7 +89,7 @@ function CasinoReports() {
           className={`flex-center large-font pointer`}
           onClick={() => setOpenTableId(true)}
         >
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     }));

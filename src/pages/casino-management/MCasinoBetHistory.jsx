@@ -2,8 +2,10 @@ import React from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { MdOutlineDelete, MdOutlineModeEditOutline } from "react-icons/md";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
+
 const MCasinoBetHistory = () => {
   const navigate = useNavigate();
   const { gamename, usergame, bethistory } = useParams();
@@ -64,8 +66,8 @@ const MCasinoBetHistory = () => {
       status: (
         <div className="d-flex w-100 flex-between">
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} />
+            <FaRegTrashCan size={18} />
           </div>
           <div className="green-btn">Settled</div>
         </div>
@@ -116,8 +118,8 @@ const MCasinoBetHistory = () => {
       status: (
         <div className="d-flex w-100 flex-between">
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} />
+            <FaRegTrashCan size={18} />
           </div>
           <div className="green-btn">Settled</div>
         </div>
@@ -168,8 +170,8 @@ const MCasinoBetHistory = () => {
       status: (
         <div className="d-flex w-100 flex-between">
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} />
+            <FaRegTrashCan size={18} />
           </div>
           <div className="green-btn">Settled</div>
         </div>
@@ -220,8 +222,8 @@ const MCasinoBetHistory = () => {
       status: (
         <div className="d-flex w-100 flex-between">
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline size={18} />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} />
+            <FaRegTrashCan size={18} />
           </div>
           <div className="green-btn">Settled</div>
         </div>
@@ -237,9 +239,13 @@ const MCasinoBetHistory = () => {
             <FiChevronLeft size={18} className="yellow-font mb-1" />
             Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
           </h6>
-          <span className="pointer" onClick={() => navigate(-2)}>{gamename}</span>
+          <span className="pointer" onClick={() => navigate(-2)}>
+            {gamename}
+          </span>
           <FiChevronRight />
-          <span className="yellow-font pointer" onClick={() => navigate(-1)}>{usergame}</span>
+          <span className="yellow-font pointer" onClick={() => navigate(-1)}>
+            {usergame}
+          </span>
         </div>
 
         <div className="d-flex ">

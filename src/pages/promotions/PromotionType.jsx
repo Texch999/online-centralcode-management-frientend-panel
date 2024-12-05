@@ -76,9 +76,13 @@ const PromotionType = () => {
   ];
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
-    { header: "Poster Type", field: "posterType", width: "30%" },
-    { header: "Poster", field: "Poster", width: "50%" },
-    { header: "", field: "icons", width: "10%" },
+    { header: "Poster Type", field: "posterType", width: "50%" },
+    { header: <div className="flex-center">Poster</div>, field: "Poster" },
+    {
+      header: <div className="flex-center">Action</div>,
+      field: "action",
+      width: "10%",
+    },
   ];
 
   const CRICKET_DATA = [
@@ -92,25 +96,25 @@ const PromotionType = () => {
       ),
       posterType: <div>Cricket</div>,
       Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
+        <div className="flex-center">
+          <div className="relative poster-img">
+            <img src={Images.Poster1} alt="Poster" />
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
         </div>
       ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+      action: (
+        <div className="flex-center">
+          <LiaPenSolid
+            size={18}
+            className="pointer me-2"
+            onClick={() => setEditPoster(!editPoster)}
+          />
+          <FaRegTrashCan size={18} className="pointer ms-2" />
         </div>
       ),
     },
@@ -125,7 +129,6 @@ const PromotionType = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-
       <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
@@ -142,24 +145,27 @@ const PromotionType = () => {
         ))}
       </div>
       {activeBtn === "Promotion Type" ? (
-        <div className="d-flex align-items-end justify-content-between w-100 mt-2 small-font">
-          <div className="flex-column col-3">
-            <label className="black-text4 mb-1">Promotion</label>
-            <select className="w-100 input-css2">
-              <option>All</option>
-            </select>
+        <>
+          <div className="d-flex align-items-end justify-content-between w-100 my-3 small-font">
+            <div className="flex-column col-3">
+              <label className="black-text4 mb-1">Promotion</label>
+              <select className="w-100 input-css2">
+                <option>All</option>
+              </select>
+            </div>
+            <div
+              className="saffron-btn2 pointer"
+              onClick={() => setAddNewModal(!addNewModal)}
+            >
+              <IoAddOutline size={18} className="me-1" />
+              <span>Add New</span>
+            </div>
           </div>
-          <div
-            className="saffron-btn2 pointer"
-            onClick={() => setAddNewModal(!addNewModal)}
-          >
-            <IoAddOutline size={18} className="me-1" />
-            <span>Add New</span>
-          </div>
-        </div>
+          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={2} />
+        </>
       ) : (
-        <div className="d-flex w-100 flex-between mt-2">
-          <div className="d-flex w-50 flex-between mt-2">
+        <>
+          <div className="d-flex w-50 flex-between my-3">
             <div className="col-4 flex-column me-3">
               <label className="black-text4 small-font mb-1">
                 Promotion Type
@@ -169,33 +175,28 @@ const PromotionType = () => {
               </select>
             </div>
             <div className="col-6 flex-column me-3 ">
-              <label className="black-text4 small-font " htmlFor="poster">
-                Upload Poster
+              <label className="black-text4 small-font mb-1">
+                Upload Poster{" "}
+              </label>
+              <label htmlFor="poster">
                 <input type="file" style={{ display: "none" }} id="poster" />
                 <div className="input-css2 small-font d-flex flex-between">
-                  Upload <MdOutlineFileUpload />
+                  Upload <MdOutlineFileUpload size={16} />
                 </div>
               </label>
             </div>
-
             <div className="saffron-btn2 small-font pointer mt-4 col-2 mx-2">
               Submit
             </div>
           </div>
-        </div>
-      )}
-
-      <div className="mt-4 ">
-        {activeBtn === "Promotion Type" ? (
-          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={2} />
-        ) : (
           <Table
             columns={CRICKET_COLUMNS}
             data={CRICKET_DATA}
             itemsPerPage={2}
           />
-        )}
-      </div>
+        </>
+      )}
+
       <NewPromotionPopUp
         addNewModal={addNewModal}
         setAddNewModal={setAddNewModal}

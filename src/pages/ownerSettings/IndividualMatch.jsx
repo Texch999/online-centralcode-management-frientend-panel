@@ -1,9 +1,8 @@
-import React from "react";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { FaSearch } from "react-icons/fa";
 import { FiChevronRight } from "react-icons/fi";
 import { useParams } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
 
 const IndividualMatch = () => {
   const { matchName } = useParams();
@@ -57,7 +56,7 @@ const IndividualMatch = () => {
       ),
       viewFancy: (
         <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     },
@@ -101,7 +100,7 @@ const IndividualMatch = () => {
       ),
       viewFancy: (
         <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     },
@@ -145,7 +144,7 @@ const IndividualMatch = () => {
       ),
       viewFancy: (
         <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     },
@@ -189,7 +188,7 @@ const IndividualMatch = () => {
       ),
       viewFancy: (
         <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     },
@@ -233,7 +232,7 @@ const IndividualMatch = () => {
       ),
       viewFancy: (
         <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     },
@@ -277,7 +276,7 @@ const IndividualMatch = () => {
       ),
       viewFancy: (
         <div className="flex-center large-font">
-          <MdOutlineRemoveRedEye />
+          <BsEye />
         </div>
       ),
     },
