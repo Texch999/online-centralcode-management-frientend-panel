@@ -76,6 +76,11 @@ import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
+import McasinoGDetails from "./pages/casino-management/McasinoGDetails";
+import MCasinoBetHistory from "./pages/casino-management/MCasinoBetHistory";
+import CasinoProvider from "./pages/casino-management/CasinoProvider";
+import CasinoProviderGames from "./pages/casino-management/CasinoProviderGames";
+import CasinoMBetHistory from "./pages/casino-management/CasinoMBetHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -241,10 +246,30 @@ function App() {
                 path="/management-casino/:gamename"
                 element={<MCasinoGames />}
               />
+              <Route
+                path="/management-casino/:gamename/:usergame"
+                element={<McasinoGDetails />}
+              />
+               <Route
+                path="/management-casino/:gamename/:usergame/:bethistory"
+                element={<MCasinoBetHistory />}
+              />
               <Route path="/bonus-chips" element={<BonusChips />} />
               <Route path="/bet-block-users" element={<BetBlockUsers />} />
               <Route path="/inactive-users" element={<InActiveUsers />} />
               <Route path="/set-limits" element={<SetLimits />} />
+              <Route
+                path="/management-casino-provider/:provider"
+                element={<CasinoProvider />}
+              />
+               <Route
+                path="/management-casino-provider/:provider/:gamename"
+                element={<CasinoProviderGames />}
+              />
+              <Route
+                path="/management-casino-provider/:provider/:gamename/:bethistory"
+                element={<CasinoMBetHistory />}
+              />
             </Routes>
           </div>
         </div>
