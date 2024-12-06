@@ -16,18 +16,18 @@ function Casino() {
     navigate(`/central-casino/${vendor}/${provider}`);
   };
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
-    { header: "Vendor Name", field: "vendor" },
-    { header: "vendor Percentage", field: "vendorper" },
-    { header: "Vendor Country", field: "country" },
+    { header: "S No", field: "sno", width: "10%" },
+    { header: "Vendor Name", field: "vendor", width: "15%" },
+    { header: "Vendor Percentage", field: "vendorper", width: "15%" },
+    { header: "Vendor Country", field: "country", width: "15%" },
     {
       header: (
-        <div className="d-flex flex-between row">
+        <div className="w-100 d-flex">
           <div className="col-4">Providers</div>
-          <div className="col-2"></div>
-          <div className="col-2">Action</div>
-          <div className="col-2">PL</div>
-          <div className="col-2">Status</div>
+          <div className="col-1 flex-center"></div>
+          <div className="col-2 flex-center">Action</div>
+          <div className="col-2 flex-center">Profit&Loss</div>
+          <div className="col-3 flex-end">Status</div>
         </div>
       ),
       field: "all",
@@ -36,29 +36,26 @@ function Casino() {
 
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
+      sno: 1,
       vendor: <div className="orange-clr">Ram</div>,
       vendorper: <div>10%</div>,
       country: <div>India</div>,
       all: (
-        <div className="d-flex flex-column">
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Ram", "Ezugi")}
-            >
-              Ezugi
+        <div>
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Ezugi
+              </span>
             </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
                 onClick={() => handleProviderClick("Ram", "Ezugi")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
+              />
             </div>
-            <div className="col-2">
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -68,27 +65,28 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
+            </div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Ram", "Evolution")}
-            >
-              Evolution
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Ram", "Evolution")}
-              >
-                <IoEyeOutline className="orange-clr" />
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Evolution
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -98,27 +96,28 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
+            </div>
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
+            </div>
           </div>
 
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Ram", "Asian Games")}
-            >
-              Asian Games
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Ram", "Asian Games")}
-              >
-                <IoEyeOutline className="orange-clr" />
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Asian Games
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -128,27 +127,28 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
+            </div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Ram", "Praggmatic Play")}
-            >
-              Praggmatic Play
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Ram", "Praggmatic Play")}
-              >
-                <IoEyeOutline className="orange-clr" />
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Pragmatic Play
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -158,66 +158,37 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Ram", "Sexy Gaming")}
-            >
-              Sexy Gaming
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
             </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Ram", "Sexy Gaming")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
             </div>
-            <div className="col-2">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
         </div>
       ),
     },
     {
-      sno: <div className="flex-center">2</div>,
-      vendor: <div className="orange-clr">Lokesh</div>,
+      sno: 2,
+      vendor: <div className="orange-clr">Jitendra</div>,
       vendorper: <div>10%</div>,
       country: <div>India</div>,
       all: (
-        <div className="d-flex flex-column">
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-            >
-              Ezugi
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Lokesh", "Ezugi")}
-              >
-                <IoEyeOutline className="orange-clr" />
+        <div>
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Ezugi
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -227,27 +198,28 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
+            </div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Lokesh", "Evolution")}
-            >
-              Evolution
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Lokesh", "Evolution")}
-              >
-                <IoEyeOutline className="orange-clr" />
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Evolution
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -257,27 +229,28 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
+            </div>
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
+            </div>
           </div>
 
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-            >
-              Asian Games
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Lokesh", "Asian Games")}
-              >
-                <IoEyeOutline className="orange-clr" />
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Asian Games
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -287,27 +260,28 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
+            </div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-            >
-              Praggmatic Play
-            </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Lokesh", "Praggmatic Play")}
-              >
-                <IoEyeOutline className="orange-clr" />
+          <div className="d-flex w-100 pointer mb-2">
+            <div className="col-4">
+              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+                Pragmatic Play
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-1 d-flex justify-content-center">
+              <IoEyeOutline
+                className="orange-clr"
+                size={18}
+                onClick={() => handleProviderClick("Ram", "Ezugi")}
+              />
+            </div>
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -317,38 +291,12 @@ function Casino() {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-            >
-              Sexy Gaming
+            <div className="col-2 d-flex justify-content-center">
+              <span className="green-clr">10000</span>
             </div>
-
-            <div className="col-2">
-              <span
-                className=" font-20"
-                onClick={() => handleProviderClick("Lokesh", "Sexy Gaming")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
             </div>
-            <div className="col-2">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
           </div>
         </div>
       ),
@@ -357,15 +305,12 @@ function Casino() {
   return (
     <div>
       <div className="d-flex flex-between align-items-center mt-3 mb-2">
-        <h6 className="">Casino</h6>
-        <div className="medium-font ">
+        <h6 className="mb-0">Casino</h6>
+        <div className="medium-font">
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
-      <div className="radius-20">
-        <Table columns={cols} data={data} itemsPerPage={3} />
-      </div>
-
+      <Table columns={cols} data={data} itemsPerPage={3} />
       <ConfirmationPopup
         confirmationPopupOpen={isActive}
         setConfirmationPopupOpen={setIsACtive}
