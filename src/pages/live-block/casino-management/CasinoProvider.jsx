@@ -1,26 +1,29 @@
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
-import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
-import { useNavigate, useParams } from "react-router";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
-const MCasinoGames = () => {
+const CasinoProvider = () => {
+  const [onBlockPopup, setOnBlockPopup] = useState(false)
+
+  const { provider } = useParams();
   const navigation = useNavigate();
-  const { gamename } = useParams();
-
   const handleMatchClick = (matchName) => {
     navigation(
-      `/management-casino/${encodeURIComponent(gamename)}/${encodeURIComponent(
-        matchName
-      )}`
+      `/management-casino-provider/${encodeURIComponent(
+        provider
+      )}/${encodeURIComponent(matchName)}`
     );
   };
 
   const CASINO_COLUMNS = [
     { header: "Games", field: "games", width: "25%" },
     { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "Status", field: "status", width: "5%" },
   ];
   const CASINO_DATA = [
     {
@@ -30,7 +33,7 @@ const MCasinoGames = () => {
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
-          <MdBlockFlipped size={18} />
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
           <span className="active-btn-table">Live</span>
         </div>
       ),
@@ -42,14 +45,17 @@ const MCasinoGames = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6
-            className="mb-0 text-center pointer"
-            onClick={() => navigation(-1)}
-          >
+          <h6 className="mb-0 pointer" onClick={() => navigation(-1)}>
             <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
+            Casino Live Settings
+            <span className="yellow-font">
+              <FiChevronRight /> Casino Providers
+            </span>
           </h6>
-          <span className="yellow-font">{gamename}</span>
+          <span className="yellow-font">
+            <FiChevronRight />
+            {provider}
+          </span>
         </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
@@ -66,11 +72,17 @@ const MCasinoGames = () => {
         <Table
           columns={CASINO_COLUMNS}
           data={CASINO_DATA_DUPLICATES}
-          itemsPerPage={5}
+          itemsPerPage={9}
         />
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Website?"}
+        submitButton={"Block"}
+      />
     </div>
   );
 };
 
-export default MCasinoGames;
+export default CasinoProvider;

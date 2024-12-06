@@ -8,17 +8,6 @@ import "./style.css";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router";
 
-const live_data_details_columns = [
-  { header: "Live / Open Date & Time", field: "dateTime", width: "13%" },
-  { header: "Series Name", field: "seriesName", width: "15%" },
-  { header: "Match ID", field: "matchID" },
-  { header: "Match Name", field: "matchName" },
-  { header: "Back", field: "back" },
-  { header: "Lay", field: "lay" },
-  { header: "Exposure", field: "exposure" },
-  { header: "Declare Bets P/L", field: "declareBets" },
-  { header: <div className="">Action</div>, field: "action", width: "10%" },
-];
 
 function LiveBlockSports() {
   const [activeSport, setActiveSport] = useState("Cricket");
@@ -48,6 +37,19 @@ function LiveBlockSports() {
   const handleTabTopPlayer = (activeTab) => {
     setTabTopTenPlayer(activeTab);
   };
+
+
+  const live_data_details_columns = [
+    { header: "Live / Open Date & Time", field: "dateTime", width: "13%" },
+    { header: "Series Name", field: "seriesName", width: "15%" },
+    { header: "Match ID", field: "matchID" },
+    { header: "Match Name", field: "matchName" },
+    { header: "Back", field: "back" },
+    { header: "Lay", field: "lay" },
+    { header: "Exposure", field: "exposure" },
+    { header: "Declare Bets P/L", field: "declareBets" },
+    { header: <div className="">Action</div>, field: "action", width: "10%" },
+  ];
 
   const cricketData = [
     {
@@ -80,7 +82,7 @@ function LiveBlockSports() {
         <BsEye
           size={18}
           className="pointer ms-2"
-          onClick={() => handleClickCricketPage("Cricket")}
+          onClick={() => handleClickCricketPage(activeSport)}
         />
       ),
     },
@@ -249,7 +251,7 @@ function LiveBlockSports() {
 
   const footballData = [
     {
-      live: "Football",
+      live: "live",
       dateTime: (
         <>
           <div className="green-font">Live</div>
@@ -447,7 +449,7 @@ function LiveBlockSports() {
 
   const tennisData = [
     {
-      live: "Football",
+      live: "Live",
       dateTime: (
         <>
           <div className="green-font">Live</div>
@@ -645,7 +647,7 @@ function LiveBlockSports() {
 
   const horseRacingData = [
     {
-      live: "Football",
+      live: "Live",
       dateTime: (
         <>
           <div className="green-font">Live</div>

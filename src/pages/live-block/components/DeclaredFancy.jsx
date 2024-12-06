@@ -1,7 +1,7 @@
 import React from "react";
 import ScrollTable from "../../../components/ScrollTable";
 import { MdBlock} from "react-icons/md";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const columns = [
   { header: "Date & Time", field: "date_time", width: "10%" },
@@ -39,7 +39,7 @@ const tableData = [
     action: (
         <div className="d-flex">
             <MdBlock size={18} className="font-20 me-2" />
-            <RiDeleteBinLine size={18} className="font- ms-2" />
+            <FaRegTrashCan size={18} className="font- ms-2" />
         </div>
     ),
   },
@@ -62,7 +62,7 @@ const tableData = [
     action: (
         <div className="d-flex">
             <MdBlock size={18} className="font-20 me-2" />
-            <RiDeleteBinLine size={18} className="font- ms-2" />
+            <FaRegTrashCan size={18} className="font- ms-2" />
         </div>
     ),
   },
@@ -85,7 +85,7 @@ const tableData = [
     action: (
         <div className="d-flex">
             <MdBlock size={18} className="font-20 me-2" />
-            <RiDeleteBinLine size={18} className="font- ms-2" />
+            <FaRegTrashCan size={18} className="font- ms-2" />
         </div>
     ),
   },
@@ -108,7 +108,7 @@ const tableData = [
     action: (
         <div className="d-flex">
             <MdBlock size={18} className="font-20 me-2" />
-            <RiDeleteBinLine size={18} className="font- ms-2" />
+            <FaRegTrashCan size={18} className="font- ms-2" />
         </div>
     ),
   },
@@ -131,7 +131,7 @@ const tableData = [
     action: (
         <div className="d-flex">
             <MdBlock size={18} className="font-20 me-2" />
-            <RiDeleteBinLine size={18} className="font- ms-2" />
+            <FaRegTrashCan size={18} className="font- ms-2" />
         </div>
     ),
   },
@@ -154,7 +154,7 @@ const tableData = [
     action: (
         <div className="d-flex">
             <MdBlock size={18} className="font-20 me-2" />
-            <RiDeleteBinLine size={18} className="font- ms-2" />
+            <FaRegTrashCan size={18} className="font- ms-2" />
         </div>
     ),
   },

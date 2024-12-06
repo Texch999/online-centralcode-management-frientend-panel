@@ -76,7 +76,7 @@ import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
-import McasinoGDetails from "./pages/casino-management/McasinoGDetails";
+import McasinoGDetails from "./pages/live-block/casino-management/McasinoGDetails";
 import MCasinoBetHistory from "./pages/casino-management/MCasinoBetHistory";
 import CasinoProvider from "./pages/casino-management/CasinoProvider";
 import CasinoProviderGames from "./pages/casino-management/CasinoProviderGames";

@@ -4,12 +4,12 @@ import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { BsEye } from "react-icons/bs";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const CasinoWebsite = () => {
   const navigation = useNavigate();
   const [activeBtn, setActiveBtn] = useState("Websites");
-  const [fullPoster, setFullPoster] = useState(false);
-  const [editPoster, setEditPoster] = useState(false);
+  const [onBlockPopup, setOnBlockPopup] = useState(false)
 
   const ACTIVE_BTNS = ["Websites", "Casino Providers"];
   const handleMatchClick = (matchName) => {
@@ -27,53 +27,108 @@ const CasinoWebsite = () => {
   const CASINO_COLUMNS = [
     { header: "Website Name", field: "websiteName", width: "25%" },
     { header: "Website URL", field: "websiteURL", width: "30%" },
-    { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "10%" },
+    {
+      header: <div className="text-center">P/L</div>,
+      field: "pl",
+      width: "35%",
+    },
+    {
+      header: <div className="text-center">Status</div>,
+      field: "status",
+      width: "9%",
+    },
   ];
   const CASINO_DATA = [
     {
       websiteName: <div> Diamond Exchange</div>,
       websiteURL: <div>www.diamondexchange.com</div>,
-      pl: <div className="green-font">5000000</div>,
+      pl: <div className="green-font text-center">5000000</div>,
 
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
-          <span>
-            <MdBlockFlipped size={18} />
-          </span>
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
           <span className="active-btn-table">Live</span>
         </div>
       ),
     },
   ];
+
   const CASINO_DATA_DUPLICATES = Array(10).fill(CASINO_DATA[0]);
   const CRICKET_COLUMNS = [
-    { header: "Providers Name", field: "providersName", width: "60%" },
-    { header: "P/L", field: "posterType", width: "30%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "Providers Name", field: "providersName", width: "20%" },
+    {
+      header: <div className="text-center">P/L</div>,
+      field: "posterType",
+      width: "30%",
+    },
+    {
+      header: <div className="text-center">Status</div>,
+      field: "status",
+      width: "3%",
+    },
   ];
 
   const CRICKET_DATA = [
     {
       providersName: <div>Ezugi Games</div>,
-      posterType: <div className="green-font">5000000</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
       status: (
-        <div className="w-100 flex-between  pointer">
+        <div className="w-100 flex-between pointer">
           <BsEye
             size={18}
             onClick={() => handleCasinoProvider("Pragmatic Play")}
           />
-          <span>
-            <MdBlockFlipped size={18} />
-          </span>
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
           <span className="active-btn-table">Live</span>
         </div>
       ),
     },
     {
       providersName: <div>Ezugi Games</div>,
-      posterType: <div className="green-font">5000000</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
+      status: (
+        <div className="w-100 flex-between pointer">
+          <BsEye
+            size={18}
+            onClick={() => handleCasinoProvider("Pragmatic Play")}
+          />
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
+          <span className="active-btn-table">Live</span>
+        </div>
+      ),
+    },
+    {
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
+      status: (
+        <div className="w-100 flex-between pointer">
+          <BsEye
+            size={18}
+            onClick={() => handleCasinoProvider("Pragmatic Play")}
+          />
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
+          <span className="active-btn-table">Live</span>
+        </div>
+      ),
+    },
+    {
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
+      status: (
+        <div className="w-100 flex-between pointer">
+          <BsEye
+            size={18}
+            onClick={() => handleCasinoProvider("Pragmatic Play")}
+          />
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
+          <span className="active-btn-table">Live</span>
+        </div>
+      ),
+    },
+    {
+      providersName: <div>Ezugi Games</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
@@ -86,7 +141,7 @@ const CasinoWebsite = () => {
     },
     {
       providersName: <div>Ezugi Games</div>,
-      posterType: <div className="green-font">5000000</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
@@ -99,7 +154,7 @@ const CasinoWebsite = () => {
     },
     {
       providersName: <div>Ezugi Games</div>,
-      posterType: <div className="green-font">5000000</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
@@ -112,7 +167,7 @@ const CasinoWebsite = () => {
     },
     {
       providersName: <div>Ezugi Games</div>,
-      posterType: <div className="green-font">5000000</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
@@ -125,7 +180,7 @@ const CasinoWebsite = () => {
     },
     {
       providersName: <div>Ezugi Games</div>,
-      posterType: <div className="green-font">5000000</div>,
+      posterType: <div className="green-font text-center">5000000</div>,
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("T Casino Park")} />
@@ -172,16 +227,22 @@ const CasinoWebsite = () => {
           <Table
             columns={CASINO_COLUMNS}
             data={CASINO_DATA_DUPLICATES}
-            itemsPerPage={5}
+            itemsPerPage={8}
           />
         ) : (
           <Table
             columns={CRICKET_COLUMNS}
             data={CRICKET_DATA}
-            itemsPerPage={5}
+            itemsPerPage={8}
           />
         )}
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Website?"}
+        submitButton={"Block"}
+      />
     </div>
   );
 };

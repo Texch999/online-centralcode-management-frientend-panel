@@ -25,7 +25,7 @@ const cols1 = [
   },
   { header: <div className="text-center">Back</div>, field: "back" },
   { header: <div className="text-center">Lay</div>, field: "lay" },
-  { header: <div className="text-center">Exposure</div>, field: "exposure" },
+  { header: <div className="text-center">Exposure</div>, field: "exposure"},
   { header: "", field: "live_block", width: "5%" },
   {
     header: <div className="flex-center">Action</div>,
@@ -112,7 +112,9 @@ const tableData1 = [
         <div className="">100k</div>
       </div>
     ),
-    live_block: <div className="red-btn">Blocked</div>,
+    live_block: <div className="" >
+      <button className="red-btn">Blocked</button>
+    </div>,
     action: (
       <div class="flex-center mt-1">
         <div className="pointer">
