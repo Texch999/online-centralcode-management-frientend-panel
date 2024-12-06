@@ -176,12 +176,12 @@
 .table-50vh {
   max-height: 50vh;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: scroll;
   position: relative;
 }
 .table-50vh2 {
   max-height: 64vh;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: scroll;
   position: relative;
 }
