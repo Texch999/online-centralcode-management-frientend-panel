@@ -4,16 +4,25 @@ import ScrollTable from "../../components/ScrollTable";
 
 const MarketResult = () => {
   const sportcols = [
-    { header: <div className="flex-center">Sport</div>, field: "sport" ,width:"10%",},
-    { header: "Date & Time", field: "date", width:"15%",},
-    { header: "MatchName/Id", field: "match" ,width:"35%",},
-    { header: "Market", field: "mar",width:"10%", },
-    { header: "Winner", field: "winner",width:"10%", },
+    {
+      header: <div className="flex-center">Sport</div>,
+      field: "sport",
+      width: "10%",
+    },
+    { header: "Date & Time", field: "date", width: "15%" },
+    { header: "MatchName/Id", field: "match", width: "35%" },
+    { header: "Market", field: "mar", width: "10%" },
+    { header: "Winner", field: "winner", width: "10%" },
     {
       header: <div className="flex-center">IP</div>,
-      field: "ip",width:"10%",
+      field: "ip",
+      width: "10%",
     },
-    { header: <div className="flex-center">Action</div>, field: "action",width:"10%", },
+    {
+      header: <div className="flex-center">Action</div>,
+      field: "action",
+      width: "10%",
+    },
   ];
 
   const data = [
@@ -183,7 +192,7 @@ const MarketResult = () => {
     <div className="p-1">
       <h6 className="mb-2 mt-3">Market Result</h6>
 
-      <div className="row w-100 text-black small-font">
+      <div className="row text-black small-font">
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">Select Sport</label>
           <select className="input-css2 small-font">
@@ -227,7 +236,7 @@ const MarketResult = () => {
       </div>
       <div className="hor-grey-line my-4"></div>
 
-      <div className="row mt-3 w-100 text-black small-font">
+      <div className="row mt-3 text-black small-font">
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">Select Sport</label>
           <select className="input-css2 small-font">
@@ -248,10 +257,9 @@ const MarketResult = () => {
         <div className="col-2 flex-end">
           <div className="w-100 saffron-btn br-5 small-font">Submit</div>
         </div>
-        <div className="col-2"></div>
-        <div className="col-2 flex-end flex-center">
-          <div className="white-bg px-2 border py-1 rounded-pill w-100 white-space px-3">
-            <FaSearch size={15} className="grey-clr me-2" />
+        <div className="col-4 flex-end">
+          <div className="d-flex align-items-center white-bg px-2 border py-1 rounded-pill">
+            <FaSearch size={16} className="grey-clr me-2" />
             <input
               className="all-none small-font"
               placeholder="Search Match..."
@@ -261,7 +269,11 @@ const MarketResult = () => {
       </div>
 
       <div className="my-4">
-        <ScrollTable columns={sportcols} data={data} tableHeight={"table-50vh"} />
+        <ScrollTable
+          columns={sportcols}
+          data={data}
+          tableHeight={"table-50vh"}
+        />
       </div>
     </div>
   );
