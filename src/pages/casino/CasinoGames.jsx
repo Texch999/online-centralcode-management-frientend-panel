@@ -14,7 +14,7 @@ const CasinoGames = () => {
   };
 
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
+    { header: <div className="">S No</div>, field: "sno" },
     { header: "Market ID", field: "mid" },
     { header: "Table Number", field: "tno" },
     { header: "Status", field: "status" },
@@ -24,7 +24,7 @@ const CasinoGames = () => {
 
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
+      sno: <div className="">1</div>,
       mid: <div className="pointer">12345678123456</div>,
       tno: <div>Table No 1</div>,
       status: (
@@ -45,7 +45,7 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">2</div>,
+      sno: <div className="">2</div>,
       mid: <div className="pointer">12345678123456</div>,
       tno: <div>Table No 2</div>,
       status: (
@@ -66,7 +66,7 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">3</div>,
+      sno: <div className="">3</div>,
       mid: <div className="pointer">12345678123456</div>,
       tno: <div>Table No 3</div>,
       status: (
@@ -87,7 +87,7 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">4</div>,
+      sno: <div className="">4</div>,
       mid: <div className="pointer">12345678123456</div>,
       tno: <div>Table No 4</div>,
       status: (
@@ -108,7 +108,7 @@ const CasinoGames = () => {
       ),
     },
     {
-      sno: <div className="flex-center">5</div>,
+      sno: <div className="">5</div>,
       mid: <div className="pointer">12345678123456</div>,
       tno: <div>Table No 5</div>,
       status: (

@@ -29,25 +29,25 @@ const SportProviders = () => {
     setIsACtive(!isActive);
   };
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
-    { header: "Games", field: "games" },
-    { header: "", field: "eye" },
-    { header: "Status", field: "status" },
+    { header: <div className="">S No</div>, field: "sno", width:"10%" },
+    { header: "Games", field: "games", width:"40%" },
+    { header: "", field: "eye",width:"10%" },
+    { header: "Status", field: "status",width:"10%" },
 
-    { header: "Profit & Loss", field: "pl" },
-    { header: "Action", field: "action" },
+    { header: "Profit & Loss", field: "pl",width:"10%" },
+    { header: <div className="">Action</div>, field: "action", width:"10%" },
   ];
 
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
+      sno: <div className="">1</div>,
       games: (
         <div className="pointer" onClick={() => handleGameMatches("Cricket")}>
           Cricket{" "}
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column pointer">
+        <div className="pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Cricket")}
@@ -74,14 +74,14 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div className="flex-center">2</div>,
+      sno: <div className="">2</div>,
       games: (
         <div className="pointer" onClick={() => handleGameMatches("Football")}>
           Football
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column pointer">
+        <div className="pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Football")}
@@ -108,14 +108,14 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div className="flex-center">3</div>,
+      sno: <div className="">3</div>,
       games: (
         <div className="pointer" onClick={() => handleGameMatches("Tennis")}>
           Tennis
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column pointer">
+        <div className="pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Tennis")}
@@ -143,14 +143,14 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div className="flex-center">4</div>,
+      sno: <div className="">4</div>,
       games: (
         <div className="pointer" onClick={() => handleGameMatches("Kabbadi")}>
           Kabbadi
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Kabbadi")}
@@ -177,7 +177,7 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div className="flex-center">5</div>,
+      sno: <div className="">5</div>,
       games: (
         <div
           className="pointer"
@@ -187,7 +187,7 @@ const SportProviders = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("HorseRacing")}
@@ -214,7 +214,7 @@ const SportProviders = () => {
       ),
     },
     {
-      sno: <div className="flex-center">6</div>,
+      sno: <div className="">6</div>,
       games: (
         <div
           className="pointer"
@@ -224,7 +224,7 @@ const SportProviders = () => {
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="pointer">
           <span
             className=" font-20"
             onClick={() => handleGameMatches("Greyhound Racing")}
