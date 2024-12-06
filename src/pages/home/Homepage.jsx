@@ -582,7 +582,7 @@ function Homepage() {
                 <div className="d-flex flex-between align-items-center">
                   <div className="large-font black-text">Sales Report</div>
                   <div
-                    className="viewall-btn orange-clr small-font px-3 py-1 pointer fw-800"
+                    className="border rounded-pill orange-clr small-font px-3 py-1 pointer fw-600"
                     onClick={() => navigate("/dashboard-view-all")}
                   >
                     View All
@@ -709,13 +709,13 @@ function Homepage() {
               </div>
             </div>
             <div className="d-flex flex-between small-font mt-4">
-              <div className="d-flex pointer medium-font white-box rounded-pill">
+              <div className="d-flex pointer small-font white-box rounded-pill">
                 {buttons.map((btn, index) => {
                   return (
                     <div
                       key={index}
-                      className={`px-2 py-1  ${
-                        activeBtn === index ? "active-saffron-btn " : ""
+                      className={`px-3 py-1  ${
+                        activeBtn === index ? "active-saffron-btn" : ""
                       }`}
                       onClick={() => handleClick(index)}
                     >
@@ -725,7 +725,7 @@ function Homepage() {
                 })}
               </div>
               <div className="pointer">
-                <select className="all-none w-100 input-css2 px-2 py-1 radius-20 text-black">
+                <select className="all-none w-100 input-css2 px-2 py-1 rounded-pill black-text">
                   <option>Today</option>
                   <option>Tomorrow</option>
                   <option>yesterday</option>

@@ -30,9 +30,7 @@ const CasinoProvider = () => {
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
-          <span>
-            <MdBlockFlipped size={18} />
-          </span>
+          <MdBlockFlipped size={18} />
           <span className="active-btn-table">Live</span>
         </div>
       ),
