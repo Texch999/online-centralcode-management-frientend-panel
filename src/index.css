@@ -14,8 +14,8 @@ body {
 }
 .table-body-height {
   max-height: 30vh;
-  overflow-y: scroll;
-  overflow-x: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
   position: relative;
 }
 .fixed-table thead {
@@ -40,15 +40,15 @@ body {
 }
 ::-webkit-scrollbar {
   width: 5px;
-  height: 0px;
+  height: 5px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
+  background: grey;
+  border-radius: 25px;
 }
 ::-webkit-scrollbar-track {
-  background: #f0f0f0;
-  border-radius: 10px;
+  background: lightgray;
+  border-radius: 25px;
 }
 option {
   background-color: #ffffff;
@@ -63,7 +63,7 @@ option:hover {
 }
 .scroll-x {
   overflow-y: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .border-left {
   border-left: 1px solid #dee2e6 !important;
