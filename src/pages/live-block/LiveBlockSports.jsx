@@ -6,7 +6,7 @@ import TopMatchedAmountPlayer from "./components/TopMatchedAmountPlayer";
 import "../add-team/style.css";
 import "./style.css";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 
 function LiveBlockSports() {

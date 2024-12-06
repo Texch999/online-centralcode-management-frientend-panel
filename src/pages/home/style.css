@@ -1,11 +1,6 @@
 .orange-clr {
   color: #fc9b4e;
 }
-.viewall-btn {
-  border: 1px solid #0000001a;
-  background: #ffffff;
-  border-radius: 1rem;
-}
 .dashboard-white-bg {
   color: #ffffff;
   background: #ffffff;
@@ -40,7 +35,7 @@
   color: #ffffff !important;
 }
 .grey-dot-line {
-  border: 1px dotted #ffffff66;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
 }
 .h-5vh {
   height: 4vh;
@@ -180,13 +175,13 @@
 }
 .table-50vh {
   max-height: 50vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
   position: relative;
 }
 .table-50vh2 {
   max-height: 64vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
   position: relative;
 }

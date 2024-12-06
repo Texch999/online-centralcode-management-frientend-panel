@@ -8,7 +8,7 @@ import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const CasinoProvider = () => {
-  const [onBlockPopup, setOnBlockPopup] = useState(false)
+  const [onBlockPopup, setOnBlockPopup] = useState(false);
 
   const { provider } = useParams();
   const navigation = useNavigate();
@@ -33,7 +33,7 @@ const CasinoProvider = () => {
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
-            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
+          <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)} />
           <span className="active-btn-table">Live</span>
         </div>
       ),

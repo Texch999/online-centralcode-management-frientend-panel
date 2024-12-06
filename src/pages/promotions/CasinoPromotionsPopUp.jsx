@@ -8,7 +8,7 @@ const CasinoPromotionsPopUp = ({ setCasinoPromotion, casinoPromotion }) => {
     <Modal show={casinoPromotion} size="md" centered>
       <Modal.Body>
         <div className="d-flex w-100 flex-between">
-          <h6 className="fw-600">Add New Promotion</h6>
+          <h6 className="fw-600 mb-0">Add New Promotion</h6>
           <IoCloseSharp
             size={20}
             className="pointer"

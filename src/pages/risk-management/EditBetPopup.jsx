@@ -1,7 +1,16 @@
+import { useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
+import { SlPencil } from "react-icons/sl";
 
 function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
+  const [isEditable, setIsEditable] = useState(false);
+  const [inputValue, setInputValue] = useState("1.00");
+  const inputRef = useRef(null);
+  const handleEditClick = () => {
+    setIsEditable(true);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
   const handleCancel = () => {
     setEditBetPopupOpen(false);
   };
@@ -92,8 +101,30 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
                 <div className="p-2 grey-font border-top">
                   ID: 1234567890233
                 </div>
-                <div className="p-2 grey-font border-top">Type: Back</div>
-                <div className="p-2 grey-font border-top">Odds: 1.09</div>
+                <div className="p-2 grey-font border-top">
+                  Type:
+                  <select className="all-none">
+                    <option>Back</option>
+                    <option>Lay</option>
+                  </select>
+                </div>
+                <div className="p-2 grey-font border-top d-flex">
+                  <span>Odds:</span>
+                  <input
+                    ref={inputRef}
+                    value={inputValue}
+                    readOnly={!isEditable}
+                    maxLength={4}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onBlur={() => setIsEditable(false)}
+                    className="w-50 all-none w-fit"
+                  />
+                  <SlPencil
+                    size={16}
+                    className="cursor-pointer"
+                    onClick={handleEditClick}
+                  />
+                </div>
                 <div className="p-2 grey-font border-top">Stake: 1000000</div>
                 <div className="p-2 grey-font border-top">
                   27-09-2024, 15:11:00
