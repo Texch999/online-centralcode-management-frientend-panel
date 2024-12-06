@@ -23,9 +23,7 @@ const ReferenceData = () => {
   const SECURITY_DATA = [
     {
       questions: <div>What is your name?</div>,
-
       status: <div className="green-btn w-fill">Active</div>,
-
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
@@ -36,7 +34,6 @@ const ReferenceData = () => {
           </span>
         </div>
       ),
-
       resultDateTime: (
         <div>
           02-10-2024

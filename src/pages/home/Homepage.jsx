@@ -547,7 +547,7 @@ function Homepage() {
         backgroundColor: "#98BDFF",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 52],
+        data: [5, 10, 25, 30, 35, 40, 45],
       },
 
       {
@@ -555,14 +555,14 @@ function Homepage() {
         backgroundColor: "#4B49AC",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 49],
+        data: [10, 20, 25, 45, 35, 40, 45],
       },
       {
-        label: "casino & Sports Sales",
+        label: "Casino & Sports Sales",
         backgroundColor: "#F3797E",
         borderColor: "",
         borderRadius: 5,
-        data: [15, 20, 25, 30, 35, 40, 55],
+        data: [15, 40, 50, 75, 70, 80, 90],
       },
     ],
   };
