@@ -15,14 +15,14 @@ const Sports = () => {
     setIsACtive(!isActive);
   };
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
-    { header: "Vendor Name & Company", field: "vendorname" },
-    { header: "vendor Percentage", field: "vendorper" },
-    { header: "vendor Monthly", field: "vendormon" },
-    { header: "Vendor Country", field: "country" },
+    { header: <div className="flex-center">S No</div>, field: "sno",width: "10%" },
+    { header: "Vendor Name & Company", field: "vendorname",width: "10%" },
+    { header: "vendor Percentage", field: "vendorper",width: "10%" },
+    { header: "vendor Monthly", field: "vendormon",width: "10%" },
+    { header: "Vendor Country", field: "country",width: "10%" },
     {
       header: (
-        <div className="d-flex flex-between row">
+        <div className="d-flex w-100">
           <div className="col-4">Providers</div>
           <div className="col-1 flex-center"></div>
           <div className="col-2 flex-center">Action</div>
@@ -31,6 +31,7 @@ const Sports = () => {
         </div>
       ),
       field: "all",
+     
     },
   ];
   const data = [
@@ -49,7 +50,7 @@ const Sports = () => {
         <div className="d-flex flex-column">
           <div className="d-flex flex-between pointer">
             <div
-              className="py-2 col-4"
+              className="mb-2 col-4"
               onClick={() => handleSportNextPage("Jitendra", "Odds")}
             >
               ODDS

@@ -46,12 +46,12 @@ function Homepage() {
   };
 
   const customerCols = [
-    { header: "Customer Name", field: "customer" },
-    { header: "Role", field: "role" },
-    { header: "Casino (%)", field: "casino" },
-    { header: "Sports (R)", field: "sports" },
-    { header: "Sports & Casino (%)", field: "sc" },
-    { header: "Pay", field: "pay" },
+    { header: "Customer Name", field: "customer",},
+    { header: "Role", field: "role", },
+    { header: "Casino (%)", field: "casino", },
+    { header: "Sports (R)", field: "sports", },
+    { header: "Sports & Casino (%)", field: "sc",},
+    { header: <div className="flex-center">Pay</div>, field: "pay", },
   ];
 
   const customerData = [
@@ -66,7 +66,7 @@ function Homepage() {
       casino: <div>-</div>,
       sports: <div>-</div>,
       sc: <div>100000</div>,
-      pay: <div>209888</div>,
+      pay: <div className="flex-center">209888</div>,
     },
     {
       customer: (
@@ -625,6 +625,7 @@ function Homepage() {
                   </div>
                 </div>
               </div>
+
               <ScrollTable
                 columns={customerCols}
                 data={customerData}

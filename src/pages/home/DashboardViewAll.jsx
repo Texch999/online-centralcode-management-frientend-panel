@@ -177,19 +177,19 @@ const DashboardViewAll = () => {
                 <div className="col-3 ">
                   <div className="d-flex flex-column text-white blue-bg-box px-1">
                     <div className="small-font py-1">Casino Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">50000000</h6>
                   </div>
                 </div>
                 <div className="col-3 px-2">
                   <div className=" voilet-bg-box d-flex flex-column text-white px-1">
                     <div className="small-font py-1">Sports Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">50000000</h6>
                   </div>
                 </div>
                 <div className="col-3 px-2">
                   <div className="box-3 d-flex flex-column text-white px-1">
                     <div className="small-font py-1">S+C Sales</div>
-                    <h6 className="py-1">500000000</h6>
+                    <h6 className="py-1">5000000</h6>
                   </div>
                 </div>
                 <div className="col-3">

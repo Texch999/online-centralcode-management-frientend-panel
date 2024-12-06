@@ -63,7 +63,7 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         </div>
       </div>
 
-      <div className="my-3 row w-100 d-flex align-items-center">
+      <div className="my-3 row w-100 d-flex">
         <div className="col-4 felx-column text-black ">
           <div className="small-font ps-2">Select Compnay</div>
 
