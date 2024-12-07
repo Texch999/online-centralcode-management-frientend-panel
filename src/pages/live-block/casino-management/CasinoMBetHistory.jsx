@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { SlPencil } from "react-icons/sl";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
-import EditBetPopup from "../risk-management/EditBetPopup";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
+import EditBetPopup from "../../risk-management/EditBetPopup";
 
 const CasinoMBetHistory = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);

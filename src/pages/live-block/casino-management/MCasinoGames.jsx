@@ -1,10 +1,10 @@
 import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router";
 import { BsEye } from "react-icons/bs";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
 import { useState } from "react";
 
 const MCasinoGames = () => {

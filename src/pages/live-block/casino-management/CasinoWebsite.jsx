@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { BsEye } from "react-icons/bs";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
 
 const CasinoWebsite = () => {
   const navigation = useNavigate();
