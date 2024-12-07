@@ -12,6 +12,7 @@ const MCasinoGames = () => {
   const navigation = useNavigate();
   const { gamename } = useParams();
 
+
   const handleMatchClick = (matchName) => {
     navigation(
       `/management-casino/${encodeURIComponent(gamename)}/${encodeURIComponent(
@@ -46,13 +47,13 @@ const MCasinoGames = () => {
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
           <h6
-            className="mb-0 text-center pointer"
+            className="mb-0 text-center pointer medium-font"
             onClick={() => navigation(-1)}
           >
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings 2 <FiChevronRight /> Website <FiChevronRight />
+            <FiChevronLeft size={18} className="yellow-font mb-1 medium-font" />
+            Casino Live Settings<FiChevronRight /> Website <FiChevronRight />
           </h6>
-          <span className="yellow-font">{gamename}</span>
+          <span className="yellow-font medium-font">{gamename}</span>
         </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">

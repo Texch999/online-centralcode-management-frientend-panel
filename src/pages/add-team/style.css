@@ -13,9 +13,15 @@
 /* Input fields styling */
 
 .upload-input-popup {
-  padding: 0.7rem;
+  padding: 0.5rem;
   background-color: #f2f2f2 !important;
   color: #727272;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1200px) {
+  .upload-input-popup{
+    padding: 0.4rem;
+  }
 }
 
 /* ----------- */
@@ -187,13 +193,13 @@
   margin: auto !important;
 }
 
-.input-no-border {
+/* .input-no-border {
   border: none;
   outline: none;
   background-color: transparent;
   flex: 1;
   padding-left: 8px;
-}
+} */
 
 .table-parent-container .table-wrapper {
   box-shadow: none !important;

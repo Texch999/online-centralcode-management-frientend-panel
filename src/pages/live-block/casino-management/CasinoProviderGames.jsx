@@ -11,6 +11,8 @@ const CasinoProviderGames = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false)
 
   const { provider, gamename } = useParams();
+
+  
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(
@@ -59,18 +61,18 @@ const CasinoProviderGames = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className=" mb-0 pointer" onClick={() => navigation(-2)}>
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
+          <h6 className=" mb-0 pointer medium-font" onClick={() => navigation(-2)}>
+            <FiChevronLeft className="yellow-font mb-1" />
             Casino Live Settings 2
-            <span>
-              <FiChevronRight /> Casino Providers
+            <span className="medium-font">
+              <FiChevronRight/> Casino Providers
             </span>
           </h6>
-          <span className="pointer" onClick={() => navigation(-1)}>
+          <span className="pointer medium-font" onClick={() => navigation(-1)}>
             <FiChevronRight />
             {provider}
           </span>
-          <span className="yellow-font">
+          <span className="yellow-font medium-font">
             <FiChevronRight />
             {gamename}
           </span>

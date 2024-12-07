@@ -76,12 +76,12 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
         <div className="row mb-3">
           {/* Select Method Dropdown */}
           <div className="col-4">
-            <label htmlFor="paymentMethod" className="small-font fw-400 mb-1">
+            <label htmlFor="paymentMethod" className="small-font mb-1">
               Select Method
             </label>
             <select
               id="paymentMethod"
-              className="w-100 small-font rounded input-css select-input"
+              className="w-100 small-font rounded input-css all-none"
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
             >
@@ -96,12 +96,12 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             <>
               {/* UPI Fields */}
               <div className="col-4">
-                <label htmlFor="provider" className="small-font fw-400 mb-1">
+                <label htmlFor="provider" className="small-font mb-1">
                   Select Provider
                 </label>
                 <select
                   id="provider"
-                  className="w-100 small-font rounded input-css select-input"
+                  className="w-100 small-font rounded input-css all-none"
                   value={provider}
                   onChange={(e) => setProvider(e.target.value)}
                 >
@@ -112,13 +112,13 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
               </div>
 
               <div className="col-4">
-                <label htmlFor="upiID" className="small-font fw-400 mb-1">
+                <label htmlFor="upiID" className="small-font mb-1">
                   UPI ID
                 </label>
                 <input
                   id="upiID"
                   type="text"
-                  className="input-css all-none rounded w-100 p-0 py-2 px-2"
+                  className="w-100 small-font rounded input-css all-none"
                   placeholder="Enter"
                   value={upiID}
                   onChange={(e) => setUpiID(e.target.value)}
@@ -131,13 +131,13 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             <>
               {/* QR Code Fields */}
               <div className="col-4">
-                <label htmlFor="bankName" className="small-font fw-400 mb-1">
+                <label htmlFor="bankName" className="small-font mb-1">
                   Bank Name
                 </label>
                 <input
                   id="bankName"
                   type="text"
-                  className="all-none rounded input-css w-100"
+                  className="w-100 small-font rounded input-css all-none"
                   placeholder="Enter"
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
@@ -145,20 +145,20 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
               </div>
 
               <div className="col-4">
-                <label htmlFor="qrCode" className="small-font fw-400 mb-1">
+                <label htmlFor="qrCode" className="small-font mb-1">
                   Upload QR Code
                 </label>
                 <div className="input-group">
                   <input
                     id="qrCode"
                     type="file"
-                    className="form-control"
+                    className="w-100 small-font rounded input-css all-none"
                     onChange={handleQrCodeChange}
                     style={{ display: "none" }}
                   />
                   <label
                     htmlFor="qrCode"
-                    className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
+                    className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer w"
                   >
                     <span className="small-font">Upload</span>
                     <AiOutlineCloudUpload size={20} />
@@ -178,7 +178,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
                 <input
                   id="accountNumber"
                   type="text"
-                  className="input-css all-none rounded w-100 p-0 py-2 px-2"
+                  className="w-100 small-font rounded input-css all-none"
                   placeholder="Enter"
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value)}
@@ -186,13 +186,13 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
               </div>
 
               <div className="col-4">
-                <label htmlFor="bankIFSC" className="small-font fw-400 mb-1">
+                <label htmlFor="bankIFSC" className="small-font mb-1">
                   Bank IFSC
                 </label>
                 <input
                   id="bankIFSC"
                   type="text"
-                  className="all-none rounded input-css w-100"
+                  className="w-100 small-font rounded input-css all-none"
                   placeholder="Enter"
                   value={bankIFSC}
                   onChange={(e) => setBankIFSC(e.target.value)}
@@ -207,13 +207,13 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
           <div className="row d-flex align-items-end">
             {/* Bank Name Input */}
             <div className="col-4">
-              <label htmlFor="bankName" className="small-font fw-400 mb-1">
+              <label htmlFor="bankName" className="small-font mb-1">
                 Bank Name
               </label>
               <input
                 id="bankName"
                 type="text"
-                className="all-none rounded input-css w-100"
+                className="w-100 small-font rounded input-css all-none"
                 placeholder="Enter"
                 value={bankName}
                 onChange={(e) => setBankName(e.target.value)}
@@ -222,13 +222,13 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
 
             {/* Country Input */}
             <div className="col-4">
-              <label htmlFor="country" className="small-font fw-400 mb-1">
+              <label htmlFor="country" className="small-font mb-1">
                 Country
               </label>
               <input
                 id="country"
                 type="text"
-                className="all-none rounded input-css w-100"
+                className="w-100 small-font rounded input-css all-none"
                 placeholder="Enter"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
@@ -239,7 +239,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             <div className="col-4 d-flex justify-content-end align-items-end">
               <button
                 type="button"
-                className="saffron-btn w-100 rounded"
+                className="saffron-btn w-100 small-font rounded"
                 onClick={handleSubmit}
               >
                 Submit
@@ -254,13 +254,13 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             {/* Country Input (for UPI only) */}
             {paymentMethod === "2" && (
               <div className="col-4">
-                <label htmlFor="country" className="small-font fw-400 mb-1">
+                <label htmlFor="country" className="small-font mb-1">
                   Country
                 </label>
                 <input
                   id="country"
                   type="text"
-                  className="all-none rounded input-css w-100"
+                  className="w-100 small-font rounded input-css all-none"
                   placeholder="Enter"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
@@ -272,7 +272,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             <div className={`col-4 ${paymentMethod === "3" ? "offset-8" : ""}`}>
               <button
                 type="button"
-                className="saffron-btn w-100 rounded"
+                className="w-100 saffron-btn rounded small-font"
                 onClick={handleSubmit}
               >
                 Submit

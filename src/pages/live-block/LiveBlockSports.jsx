@@ -280,7 +280,7 @@ function LiveBlockSports() {
         <BsEye
           size={18}
           className="pointer ms-2"
-          onClick={() => handleClickCricketPage("Football")}
+          onClick={() => handleClickCricketPage(activeSport)}
         />
       ),
     },
@@ -478,7 +478,7 @@ function LiveBlockSports() {
         <BsEye
           size={18}
           className="pointer ms-2"
-          onClick={() => handleClickCricketPage("Tennis")}
+          onClick={() => handleClickCricketPage(activeSport)}
         />
       ),
     },

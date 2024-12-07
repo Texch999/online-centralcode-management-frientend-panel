@@ -8,18 +8,17 @@ import EditBetPopup from "../../risk-management/EditBetPopup";
 import SuccessPopup from "../../popups/ConfirmationPopup";
 
 const columns = [
-  { header: "Role/Name", field: "roleName", width: "15%" },
-  { header: "Website", field: "website", width: "10%" },
+  { header: "Role/Name", field: "roleName"},
+  { header: "Website", field: "website"},
   {
     header: "Sports - Series/Company Name",
-    field: "sportsCompanyName",
-    width: "20%",
+    field: "sportsCompanyName"
   },
-  { header: "Date & Time", field: "dateTime", width: "10%" },
-  { header: "Bet Place", field: "betPlace", width: "20%" },
-  { header: "P/L", field: "pl", width: "10%" },
-  { header: "IP Address", field: "ipAddress", width: "8%" },
-  { header: "Action", field: "action", width: "25%" },
+  { header: "Date & Time", field: "dateTime"},
+  { header: "Bet Place", field: "betPlace"},
+  { header: "P/L", field: "pl"},
+  { header: "IP Address", field: "ipAddress" },
+  { header: <div className="text-center">Action</div>, field: "action"},
 ];
 
 const BetHistory = () => {
@@ -70,7 +69,7 @@ const BetHistory = () => {
       pl: <span className="yellow-font">100000000000</span>,
       ipAddress: <span className="yellow-font">127.0.0.1</span>,
       action: (
-        <>
+        <div className="d-flex align-items-center">
           <SlPencil
             size={20}
             className="yellow-font m-2 pointer"
@@ -81,7 +80,7 @@ const BetHistory = () => {
             className="pointer"
             onClick={() => setOnDeleteBetpopup(true)}
           />
-        </>
+        </div>
       ),
     },
     {

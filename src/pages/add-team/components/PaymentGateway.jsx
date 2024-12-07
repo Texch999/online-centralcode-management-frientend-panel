@@ -147,7 +147,7 @@ const PaymentGateway = () => {
           </div>
 
           {/* Select Details Dropdown */}
-          <div className="col-md-7 mb-3 mb-md-0">
+          <div className="col-md-6 col-lg-7 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Select Details</label>
             <div className="position-relative">
               <select className="small-font input-css custom-select bg-light border rounded px-3 w-100">
@@ -161,7 +161,7 @@ const PaymentGateway = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="col-md-1 text-md-end align-self-end">
+          <div className="col-md-2 col-lg-1 text-md-end align-self-end">
             <button className="text-white small-font rounded saffron-btn px-4 w-100 w-md-auto">
               Submit
             </button>

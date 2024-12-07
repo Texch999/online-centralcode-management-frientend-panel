@@ -11,12 +11,16 @@ const McasinoGDetails = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false)
   const { gamename, usergame } = useParams();
 
+  
+
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(
       `/management-casino/${encodeURIComponent(gamename)}/${encodeURIComponent(
+        usergame
+      )}/${encodeURIComponent(
         matchName
-      )}/${encodeURIComponent(matchName)}`
+      )}`
     );
   };
 
@@ -59,15 +63,14 @@ const McasinoGDetails = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className=" mb-0 pointer" onClick={() => navigation(-2)}>
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
+          <h6 className=" mb-0 pointer medium-font" onClick={() => navigation(-2)}>
+            <FiChevronLeft className="yellow-font mb-1" />
             Casino Live Settings<FiChevronRight /> Website <FiChevronRight />
           </h6>
-          <span className="pointer" onClick={() => navigation(-1)}>
+          <span className="pointer medium-font" onClick={() => navigation(-1)}>
             {gamename}
           </span>
-          <FiChevronRight />
-          <span className="yellow-font">{usergame}</span>
+          <span className="yellow-font medium-font"> <FiChevronRight /> {usergame}</span>
         </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">

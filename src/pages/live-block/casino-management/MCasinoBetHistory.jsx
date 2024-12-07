@@ -12,7 +12,8 @@ const MCasinoBetHistory = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const [onEditBetPopup, setOnEditBetPopup] = useState(false);
 
-  const { provider, gamename, bethistory } = useParams();
+  const { gamename, usergame, bethistory } = useParams();
+  console.log(gamename, usergame, bethistory, "==>priya");
   const navigate = useNavigate();
   const BET_HISTORY_COLUMNS = [
     { header: "S. No", field: "sno" },
@@ -74,7 +75,11 @@ const MCasinoBetHistory = () => {
       status: (
         <div className="d-flex gap-3 flex-between">
           <div className="d-flex gap-3">
-            <SlPencil className="pointer" size={18} onClick={() => setOnEditBetPopup(true)}/>
+            <SlPencil
+              className="pointer"
+              size={18}
+              onClick={() => setOnEditBetPopup(true)}
+            />
             <FaRegTrashCan
               className="pointer"
               size={18}
@@ -247,20 +252,21 @@ const MCasinoBetHistory = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className="mb-0 pointer" onClick={() => navigate(-3)}>
+          <h6 className="mb-0 pointer medium-font" onClick={() => navigate(-3)}>
             <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings<FiChevronRight /> Casino Providers
-            {/* <FiChevronRight /> */}
+            Casino Live Settings
+            <FiChevronRight /> website
+            <FiChevronRight />
           </h6>
-          <span className="pointer" onClick={() => navigate(-2)}>
-            {provider}
-          </span>
-          <FiChevronRight />
-          <span className="pointer" onClick={() => navigate(-1)}>
+          <span className="pointer medium-font" onClick={() => navigate(-2)}>
             {gamename}
           </span>
-          <span className="yellow-font">
-            <FiChevronRight /> 
+          <span className="pointer medium-font" onClick={() => navigate(-1)}>
+            <FiChevronRight />
+            {usergame}
+          </span>
+          <span className="yellow-font medium-font">
+            <FiChevronRight />
             {bethistory}
           </span>
         </div>

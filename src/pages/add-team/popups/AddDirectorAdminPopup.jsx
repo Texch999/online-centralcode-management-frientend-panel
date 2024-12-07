@@ -113,7 +113,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
               />
               <span
                 className="position-absolute"
-                style={{ right: "1.5rem", top: "2.2rem", cursor: "pointer" }}
+                style={{ right: "1.5rem", top: "1.8rem", cursor: "pointer" }}
                 onClick={() => togglePasswordVisibility(setShowPassword)}
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -128,7 +128,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
               />
               <span
                 className="position-absolute"
-                style={{ right: "1.5rem", top: "2.2rem", cursor: "pointer" }}
+                style={{ right: "1.5rem", top: "1.8rem", cursor: "pointer" }}
                 onClick={() => togglePasswordVisibility(setShowConfirmPassword)}
               >
                 {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
@@ -147,7 +147,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
               />
               <span
                 className="position-absolute"
-                style={{ right: "1.5rem", top: "2.2rem", cursor: "pointer" }}
+                style={{ right: "1.5rem", top: "1.8rem", cursor: "pointer" }}
                 onClick={() =>
                   togglePasswordVisibility(setShowManagementPassword)
                 }

@@ -3,12 +3,12 @@ import { GrEdit } from "react-icons/gr";
 import { BsEye } from "react-icons/bs";
 import { MdBlock } from "react-icons/md";
 import Table from "../../../components/Table";
-import LiveFancy from "./LiveFancy";
-import DeclaredFancy from "./DeclaredFancy";
+import LiveFancyBets from "./LiveFancy";
+import DeclaredFancyBets from "./DeclaredFancy";
 import { useNavigate, useParams } from "react-router";
 import "../style.css"
 
-const cols1 = [
+const cols = [
   { header: "Odds", field: "odds" },
   {
     header: (
@@ -128,31 +128,6 @@ const tableData1 = [
   },
 ];
 
-const cols2 = [
-  { header: "Odds", field: "odds" },
-  {
-    header: (
-      <div className="row">
-        <div className="col-6 flex-end">
-          <span>Back</span>
-        </div>
-        <div className="col-6 d-flex">
-          <span>Lay</span>
-        </div>
-      </div>
-    ),
-    field: "back_lay",
-  },
-  { header: <div className="text-center">Back</div>, field: "back" },
-  { header: <div className="text-center">Lay</div>, field: "lay" },
-  { header: <div className="text-center">Exposure</div>, field: "exposure" },
-  { header: "", field: "live_block", width: "5%" },
-  {
-    header: <div className="flex-center">Action</div>,
-    field: "action",
-    width: "7%",
-  },
-];
 
 const tableData2 = [
   {
@@ -243,32 +218,6 @@ const tableData2 = [
         </div>
       </div>
     ),
-  },
-];
-
-const cols3 = [
-  { header: "Odds", field: "odds" },
-  {
-    header: (
-      <div className="row">
-        <div className="col-6 flex-end">
-          <span>Back</span>
-        </div>
-        <div className="col-6 d-flex">
-          <span>Lay</span>
-        </div>
-      </div>
-    ),
-    field: "back_lay",
-  },
-  { header: <div className="text-center">Back</div>, field: "back" },
-  { header: <div className="text-center">Lay</div>, field: "lay" },
-  { header: <div className="text-center">Exposure</div>, field: "exposure" },
-  { header: "", field: "live_block", width: "5%" },
-  {
-    header: <div className="flex-center">Action</div>,
-    field: "action",
-    width: "7%",
   },
 ];
 
@@ -364,7 +313,7 @@ const tableData3 = [
   },
 ];
 
-const CricketOdds = () => {
+const Fancy = () => {
   const [clickFancyButton, setClickFancyButton] = useState("live_fancy");
 
 
@@ -382,15 +331,15 @@ const CricketOdds = () => {
   return (
     <div>
       <div className="table-items-centerd mt-3">
-        <Table columns={cols1} data={tableData1} itemsPerPage={5} />
+        <Table columns={cols} data={tableData1} itemsPerPage={5} />
       </div>
 
       <div className="table-items-centerd mt-3">
-        <Table columns={cols2} data={tableData2} itemsPerPage={5} />
+        <Table columns={cols} data={tableData2} itemsPerPage={5} />
       </div>
 
       <div className="table-items-centerd mt-3">
-        <Table columns={cols3} data={tableData3} itemsPerPage={5} />
+        <Table columns={cols} data={tableData3} itemsPerPage={5} />
       </div>
 
       <div className="mt-3 shadow p-3 bg-white rounded">
@@ -440,10 +389,10 @@ const CricketOdds = () => {
             </div>
           </div>
         </div>
-        {clickFancyButton === "live_fancy" ? <LiveFancy /> : <DeclaredFancy />}
+        {clickFancyButton === "live_fancy" ? <LiveFancyBets /> : <DeclaredFancyBets />}
       </div>
     </div>
   );
 };
 
-export default CricketOdds;
+export default Fancy;

@@ -35,12 +35,12 @@ const AddWebsitesPopup = ({ show, onHide }) => {
         <div className="row mb-4">
           {/* Website Type Dropdown */}
           <div className="col-4">
-            <label htmlFor="websiteType" className="small-font fw-400 mb-1">
+            <label htmlFor="websiteType" className="small-font mb-1">
               Website Type
             </label>
             <select
               id="websiteType"
-              className="w-100 small-font rounded input-css select-input"
+              className="w-100 small-font rounded input-css all-none"
               value={websiteType}
               onChange={(e) => setWebsiteType(e.target.value)}
             >
@@ -64,7 +64,7 @@ const AddWebsitesPopup = ({ show, onHide }) => {
             <input
               id="websiteName"
               type="text"
-              className="input-css all-none rounded w-100 p-0 py-2 px-2"
+              className="w-100 small-font rounded input-css all-none"
               placeholder="Enter"
               value={websiteName}
               onChange={(e) => setWebsiteName(e.target.value)}
@@ -78,7 +78,7 @@ const AddWebsitesPopup = ({ show, onHide }) => {
             <input
               id="websiteURL"
               type="text"
-              className="all-none rounded input-css w-100"
+              className="w-100 small-font rounded input-css all-none"
               placeholder="Enter"
               value={websiteURL}
               onChange={(e) => setWebsiteURL(e.target.value)}
@@ -113,7 +113,7 @@ const AddWebsitesPopup = ({ show, onHide }) => {
           <div className="col-4 align-self-end">
             <button
               type="button"
-              className="saffron-btn w-100 rounded"
+              className="saffron-btn small-font w-100 rounded"
               onClick={handleSubmit}
             >
               Submit

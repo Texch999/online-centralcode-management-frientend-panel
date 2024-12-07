@@ -290,11 +290,11 @@ const LiveScoreBoard = ({ sport }) => {
 
   return (
     <div className="p-1">
-      <div className="mt-3 table-items-centerd">
+      <div className="mt-3 table-items-centerd live-score-board-table-item-top">
         <Table columns={cols} data={data} itemsPerPage={5} />
       </div>
 
-      <div className="mt-3 table-items-centerd">
+      <div className="mt-3 table-items-centerd live-score-board-table-item-top">
         <Table columns={cols2} data={data2} itemsPerPage={5} />
       </div>
     </div>

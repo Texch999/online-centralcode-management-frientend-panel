@@ -6,18 +6,20 @@ import { FaPlus } from "react-icons/fa6";
 import Table from "../../components/Table";
 import { Images } from "../../images";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const PaymentGateway = () => {
   const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false)
+  const [onBlockPopup, setOnBlockPopup] = useState(false)
 
   const columns = [
     { header: "Gateway Name", field: "gatewayName", width: "15%" },
     { header: "Payment Details", field: "paymentDetails", width: "25%" },
-    { header: "Last Updated", field: "lastUpdated", width: "10%" },
+    { header: "Last Updated", field: "lastUpdated", width: "15%" },
     { header: "Country", field: "country", width: "10%" },
     { header: "Currency", field: "currency", width: "10%" },
     { header: "Status", field: "status", width: "10%" },
-    { header: "Action", field: "action", width: "20%" }, // Increased width to fit two icons
+    { header: "Action", field: "action", width: "5%" }, // Increased width to fit two icons
   ];
 
   const data = [
@@ -35,7 +37,7 @@ const PaymentGateway = () => {
       action: (
         <div className="d-flex gap-2">
           <GrEdit size={17} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)}/>
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <RiDeleteBinLine size={17} className="pointer ms-1" onClick={() => setOnBlockPopup(true)}/>
         </div>
       ),
     },
@@ -236,6 +238,14 @@ const PaymentGateway = () => {
       </div>
 
       <AddPaymentGatewayPopup show={onAddPaymentGateway} onHide={() => setOnAddPaymentGateway(false)}/>
+
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to delete this Gateway?"}
+        submitButton={"Delete"}
+      />
+
     </div>
   );
 };

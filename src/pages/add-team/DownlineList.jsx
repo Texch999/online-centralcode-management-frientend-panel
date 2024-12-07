@@ -9,16 +9,17 @@ import Table from "../../components/Table";
 import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
-
-
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const DownlineList = () => {
-  const role = localStorage.getItem("role")
+  const [onBlockPopup, setOnBlockPopup] = useState(false);
+  const role = localStorage.getItem("role");
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
 
   const cardData = [
     {
-      title: role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
+      title:
+        role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
       backgroundColor: "#7DA0FA",
       value: "500000000",
       valueClass: "text-dark",
@@ -78,7 +79,7 @@ const DownlineList = () => {
       bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
     },
   ];
-  
+
   const Card = ({
     title,
     backgroundColor,
@@ -150,7 +151,7 @@ const DownlineList = () => {
           </button>
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2 pointer" />
-            <MdBlockFlipped size={20} className="icon-action me-2 pointer" />
+            <MdBlockFlipped size={20} className="icon-action me-2 pointer" onClick={() => setOnBlockPopup(true)}/>
             <MdSwapVert
               size={20}
               className="icon-action pointer"
@@ -331,17 +332,23 @@ const DownlineList = () => {
 
   return (
     <div>
-      <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font medium-font mb-0">Downline List</h6>
-        <div className="d-flex flex-between w-30">
-          <div>
-            <select className="input-pill rounded-pill px-5">
-              <option>All</option>
-            </select>
-          </div>
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 w-60">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
+      <div className="row d-flex justify-content-between align-items-center mb-3">
+        <div className="col-md-3">
+          <h6 className="yellow-font medium-font mb-0">Downline List</h6>
+        </div>
+
+        <div className="col-md-9 d-flex flex-end align-items-center gap-3">
+          <select className="input-pill rounded-pill px-4 small-font">
+            <option value="all">All</option>
+          </select>
+
+          <div className="input-pill d-flex align-items-center rounded-pill px-3">
+            <FaSearch size={18} className="grey-clr me-2" />
+            <input
+              className="small-font all-none w-100"
+              placeholder="Search..."
+              type="text"
+            />
           </div>
         </div>
       </div>
@@ -380,6 +387,13 @@ const DownlineList = () => {
       <CreditReferencePopup
         show={showCreditAmountPopup}
         onHide={() => setShowCreditAmountPopup(false)}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Account?"}
+        submitButton={"Block"}
       />
     </div>
   );

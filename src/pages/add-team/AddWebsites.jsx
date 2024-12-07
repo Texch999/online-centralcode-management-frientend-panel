@@ -17,7 +17,7 @@ const AddWibsites = () => {
     { header: "Website Name", field: "websiteName", width: "25%" },
     { header: "Location", field: "location", width: "20%" },
     { header: "URL", field: "url", width: "20%" },
-    { header: <div className="ps-1">Action</div>, field: "action" },
+    { header: <div className="ps-1 text-center">Action</div>, field: "action", width:"10%" },
   ];
 
   const data = [
@@ -27,7 +27,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" onClick={() => setOnAddwebsitePopup(true)}/>
           <MdBlockFlipped
             size={17}
@@ -44,7 +44,7 @@ const AddWibsites = () => {
       url: "www.tcasinopark.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="d-flex gap-3">
+          <div className="gap-3 flex-center">
             <GrEdit
               size={17}
               className="pointer "
@@ -65,7 +65,7 @@ const AddWibsites = () => {
       url: "www.sparkbook.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="d-flex gap-3">
+          <div className="gap-3 flex-center">
             <GrEdit
               size={17}
               className="pointer "
@@ -81,7 +81,7 @@ const AddWibsites = () => {
       location: "Kolkata, India",
       url: "www.fun77.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>
@@ -94,7 +94,7 @@ const AddWibsites = () => {
       url: "www.diamondexchange.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="d-flex gap-3">
+          <div className="flex-center gap-3">
             <GrEdit
               size={17}
               className="pointer "
@@ -110,7 +110,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>
@@ -122,7 +122,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer font-red" />
         </div>
@@ -134,7 +134,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>
@@ -146,7 +146,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>
@@ -158,7 +158,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer red-font" />
         </div>
@@ -170,7 +170,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>
@@ -182,7 +182,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>
@@ -194,7 +194,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
+        <div className="flex-center gap-3">
           <GrEdit size={17} className="pointer" />
           <MdBlockFlipped size={17} className="pointer" />
         </div>

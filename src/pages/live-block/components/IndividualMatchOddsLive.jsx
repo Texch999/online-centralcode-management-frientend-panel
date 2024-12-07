@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "../../../App.css";
-import CricketOdds from "./OddsView";
-import LiveScoreBoard from "../components/LiveScoreboard";
+import Fancy from "./Fancy";
+import LiveScoreBoard from "./LiveScoreboard";
 
-const SportsLiveCricket = () => {
+const IndividualMatchOddsLive = () => {
   const [oddsLiveButton, setoddsLiveButton] = useState("odds");
   const navigate = useNavigate();
   const { sport } = useParams();
@@ -55,7 +55,7 @@ const SportsLiveCricket = () => {
         <div className="col-6 ps-3 d-flex justify-content-between align-items-center p-0">
           <div className="d-flex gap-3">
             <button
-              className={`${
+              className={`small-font ${
                 oddsLiveButton === "odds" ? "saffron-btn rounded" : "input-css2"
               }`}
               onClick={() => setoddsLiveButton("odds")}
@@ -63,7 +63,7 @@ const SportsLiveCricket = () => {
               Odds
             </button>
             <button
-              className={`${
+              className={`small-font ${
                 oddsLiveButton === "live-score"
                   ? "saffron-btn rounded"
                   : "input-css2"
@@ -79,10 +79,11 @@ const SportsLiveCricket = () => {
           </div>
         </div>
       </div>
-      {oddsLiveButton === "odds" && <CricketOdds />}
+      {oddsLiveButton === "odds" && <Fancy />}
       {oddsLiveButton === "live-score" && <LiveScoreBoard sport={sport}/>}
     </div>
   );
 };
 
-export default SportsLiveCricket;
+export default IndividualMatchOddsLive;
+

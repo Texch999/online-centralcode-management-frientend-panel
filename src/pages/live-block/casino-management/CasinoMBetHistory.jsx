@@ -74,7 +74,11 @@ const CasinoMBetHistory = () => {
       status: (
         <div className="d-flex gap-3 flex-between">
           <div className="d-flex gap-3">
-            <SlPencil className="pointer" size={18} onClick={() => setOnEditBetPopup(true)}/>
+            <SlPencil
+              className="pointer"
+              size={18}
+              onClick={() => setOnEditBetPopup(true)}
+            />
             <FaRegTrashCan
               className="pointer"
               size={18}
@@ -247,19 +251,19 @@ const CasinoMBetHistory = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className="mb-0 pointer" onClick={() => navigate(-3)}>
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings 2<FiChevronRight /> Casino Providers{" "}
-            <FiChevronRight />
+          <h6 className="mb-0 pointer medium-font" onClick={() => navigate(-3)}>
+            <FiChevronLeft className="yellow-font mb-1" />
+            Casino Live Settings<FiChevronRight /> Casino Providers
           </h6>
-          <span className="pointer" onClick={() => navigate(-2)}>
+          <span className="pointer medium-font" onClick={() => navigate(-2)}>
+          <FiChevronRight />
             {provider}
           </span>
-          <FiChevronRight />
-          <span className="pointer" onClick={() => navigate(-1)}>
+          <span className="pointer medium-font" onClick={() => navigate(-1)}>
+            <FiChevronRight />
             {gamename}
           </span>
-          <span className="yellow-font">
+          <span className="yellow-font medium-font">
             <FiChevronRight /> {bethistory}
           </span>
         </div>

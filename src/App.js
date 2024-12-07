@@ -54,7 +54,7 @@ import Result from "./pages/ownerSettings/Result";
 import PaymentGateway from "./pages/add-team/PaymentGateway";
 import AddWibsites from "./pages/add-team/AddWebsites";
 import LiveBlockSports from "./pages/live-block/LiveBlockSports";
-import SportsLiveCricket from "./pages/live-block/components/SportsLiveCricket";
+import IndividualMatchOddsLive from "./pages/live-block/components/IndividualMatchOddsLive";
 import MatchWisePl from "./pages/reports/match-wise-pl/MatchWisePl";
 import IndividualMatchPl from "./pages/reports/match-wise-pl/IndividualMatchPl";
 import MatchAdminsUsersPl from "./pages/reports/match-wise-pl/MatchAdminsUsersPl";
@@ -210,7 +210,7 @@ function App() {
               <Route path="/live-block-sports" element={<LiveBlockSports />} />
               <Route
                 path="/live-block-sports/:sport"
-                element={<SportsLiveCricket />}
+                element={<IndividualMatchOddsLive />}
               />
               <Route
                 path="/sports-live-cricket/:sport/:fancyType"
