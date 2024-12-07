@@ -6,7 +6,7 @@ import TopMatchedAmountPlayer from "./components/TopMatchedAmountPlayer";
 import "../add-team/style.css";
 import "./style.css";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const live_data_details_columns = [
   { header: "Live / Open Date & Time", field: "dateTime", width: "13%" },
