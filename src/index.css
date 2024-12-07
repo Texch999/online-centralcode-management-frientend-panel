@@ -62,7 +62,6 @@ option:hover {
   border: none;
 }
 .scroll-x {
-  overflow-y: hidden;
   overflow-x: auto;
 }
 .border-left {
