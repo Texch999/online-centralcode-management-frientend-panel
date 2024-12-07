@@ -46,12 +46,12 @@ function Homepage() {
   };
 
   const customerCols = [
-    { header: "Customer Name", field: "customer",},
-    { header: "Role", field: "role", },
-    { header: "Casino (%)", field: "casino", },
-    { header: "Sports (R)", field: "sports", },
-    { header: "Sports & Casino (%)", field: "sc",},
-    { header: <div className="flex-center">Pay</div>, field: "pay", },
+    { header: <div className="white-space">Customer Name</div>, field: "customer",},
+    { header: <div className="white-space">Role</div>, field: "role", },
+    { header: <div className="white-space">Casino (%)</div>, field: "casino", },
+    { header:  <div className="white-space">Sports (R)</div>, field: "sports", },
+    { header: <div className="white-space">Sports & Casino (%)</div>, field: "sc",},
+    { header: <div className="flex-center white-space">Pay</div>, field: "pay", },
   ];
 
   const customerData = [
@@ -149,10 +149,10 @@ function Homepage() {
   ];
 
   const cols = [
-    { header: "Customer Name", field: "customer" },
-    { header: "Admin Name", field: "admin" },
-    { header: "Site Name", field: "site" },
-    { header: "Profit & Loss", field: "pl" },
+    { header: <div className="white-space">Customer Name</div>, field: "customer" },
+    { header: <div className="white-space">Admin Name</div>, field: "admin" },
+    { header: <div className="white-space">Site Name</div>, field: "site" },
+    { header: <div className="white-space">Profit & Loss</div>, field: "pl" },
   ];
 
   const siteLooseData = [
