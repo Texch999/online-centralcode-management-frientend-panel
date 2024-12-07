@@ -213,7 +213,7 @@ function App() {
                 element={<IndividualMatchOddsLive />}
               />
               <Route
-                path="/sports-live-cricket/:sport/:fancyType"
+                path="/live-block-sports/:sport/:fancyType"
                 element={<ViewFancyBets />}
               />
               <Route path="/match-wise-pl" element={<MatchWisePl />} />

@@ -15,7 +15,7 @@ import EditBetPopup from "../../risk-management/EditBetPopup";
 const ViewFancyBets = () => {
   const [openEditbetPopup, setOpenEditbetPopup] = useState(false);
 
-  const { fancyType } = useParams();
+  const {sport, fancyType } = useParams();
   const navigate = useNavigate();
 
   const columns = [
@@ -508,18 +508,18 @@ const ViewFancyBets = () => {
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
           <IoIosArrowBack
-            className="yellow-font fw-800 font-20 me-1 cursor-pointer"
+            className="yellow-font me-1 cursor-pointer medium-font"
             onClick={() => navigate(-2)}
           />
-          <h6 className="m-0 pointer" onClick={() => navigate(-2)}>
+          <h6 className="m-0 pointer medium-font" onClick={() => navigate(-2)}>
             Sports Live Settings
           </h6>
-          <IoIosArrowForward className="font-20 mx-2" />
-          <h6 className="m-0 pointer" onClick={() => navigate(-1)}>
-            Cricket
+          <IoIosArrowForward className="mx-2 medium-font" />
+          <h6 className="m-0 pointer medium-font" onClick={() => navigate(-1)}>
+            {sport}
           </h6>
-          <IoIosArrowForward className="font-20 yellow-font mx-2" />
-          <span className="yellow-font">{fancyType}</span>
+          <IoIosArrowForward className="yellow-font mx-2 medium-font" />
+          <span className="yellow-font medium-font">{fancyType}</span>
         </div>
 
         <div className="d-flex gap-3">

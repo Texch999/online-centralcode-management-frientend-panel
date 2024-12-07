@@ -321,11 +321,11 @@ const Fancy = () => {
   const { sport } = useParams();
 
   const handleFancyBets = (fancy) => {
-    navigate(`/sports-live-cricket/${sport}/${fancy}`);
+    navigate(`/live-block-sports/${sport}/${fancy}`);
   };
 
   const handleDeclaredFancyBets = (declaredFancy) => {
-    navigate(`/sports-live-cricket/${sport}/${declaredFancy}`);
+    navigate(`/live-block-sports/${sport}/${declaredFancy}`);
   };
 
   return (

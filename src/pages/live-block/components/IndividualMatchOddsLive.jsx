@@ -16,14 +16,13 @@ const IndividualMatchOddsLive = () => {
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
           <IoIosArrowBack
-            className="yellow-font fw-800 font-20 me-1 cursor-pointer"
-            onClick={() => navigate(-1)}
+            className="yellow-font medium-font me-1 pointer"
           />
-          <h6 className="m-0 cursor-pointer" onClick={() => navigate(-1)}>
+          <h6 className="m-0 cursor-pointer medium-font" onClick={() => navigate(-1)}>
             Sports Live Settings
           </h6>
-          <IoIosArrowForward className="font-20 yellow-font mx-2" />
-          <span className="yellow-font">{sport}</span>
+          <IoIosArrowForward className="medium-font yellow-font mx-2" />
+          <span className="yellow-font medium-font">{sport}</span>
         </div>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
