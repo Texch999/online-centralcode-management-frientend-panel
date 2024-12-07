@@ -15,22 +15,23 @@ const Sports = () => {
     setIsACtive(!isActive);
   };
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
-    { header: "Vendor Name & Company", field: "vendorname" },
-    { header: "vendor Percentage", field: "vendorper" },
-    { header: "vendor Monthly", field: "vendormon" },
-    { header: "Vendor Country", field: "country" },
+    { header: <div className="flex-center">S No</div>, field: "sno",width: "10%" },
+    { header: "Vendor Name & Company", field: "vendorname",width: "10%" },
+    { header: "vendor Percentage", field: "vendorper",width: "10%" },
+    { header: "vendor Monthly", field: "vendormon",width: "10%" },
+    { header: "Vendor Country", field: "country",width: "10%" },
     {
       header: (
-        <div className="d-flex flex-between row">
+        <div className="d-flex w-100">
           <div className="col-4">Providers</div>
-          <div className="col-2"></div>
-          <div className="col-2">Action</div>
-          <div className="col-2">PL</div>
-          <div className="col-2">Status</div>
+          <div className="col-1 flex-center"></div>
+          <div className="col-2 flex-center">Action</div>
+          <div className="col-2 flex-center">Profit&Loss</div>
+          <div className="col-3 flex-end">Status</div>
         </div>
       ),
       field: "all",
+     
     },
   ];
   const data = [
@@ -49,13 +50,13 @@ const Sports = () => {
         <div className="d-flex flex-column">
           <div className="d-flex flex-between pointer">
             <div
-              className="py-2 col-4"
+              className="mb-2 col-4"
               onClick={() => handleSportNextPage("Jitendra", "Odds")}
             >
               ODDS
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Jitendra", "Odds")}
@@ -63,7 +64,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -73,8 +74,10 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 flex-center green-clr">10000</div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -85,7 +88,7 @@ const Sports = () => {
               Bookmaker 1
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Jitendra", "Bookmaker 1")}
@@ -93,7 +96,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -103,8 +106,10 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 green-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -115,7 +120,7 @@ const Sports = () => {
               Bookmaker 2
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Jitendra", "Bookmaker 2")}
@@ -123,7 +128,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -133,8 +138,10 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -145,7 +152,7 @@ const Sports = () => {
               Fancy
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Jitendra", "Fancy")}
@@ -153,7 +160,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -163,8 +170,11 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr ">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -175,7 +185,7 @@ const Sports = () => {
               Live Streaming
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() =>
@@ -185,7 +195,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -195,8 +205,12 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+            <div className="inactive-btn-table white-space">
+              In-Active
+            </div>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -207,7 +221,7 @@ const Sports = () => {
               Scoreboard
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Jitendra", "Scoreboard")}
@@ -215,7 +229,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -225,8 +239,10 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+              <span className="inactive-btn-table">In-Active</span>
+            </div>
           </div>
         </div>
       ),
@@ -252,7 +268,7 @@ const Sports = () => {
               ODDS
             </div>
 
-            <div className="col-2">
+            <div className="col-1  flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Lokesh", "Odds")}
@@ -260,7 +276,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -270,8 +286,10 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 green-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+              <span className="active-btn-table">Active</span>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -282,7 +300,7 @@ const Sports = () => {
               Bookmaker 1
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Lokesh", "Bookmaker 1")}
@@ -290,7 +308,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -300,8 +318,10 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 green-clr">10000</div>
-            <div className="active-btn-table col-2">Active</div>
+            <div className="col-2 green-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+            <div className="active-btn-table">Active</div>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -312,7 +332,7 @@ const Sports = () => {
               Bookmaker 2
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Lokesh", "Bookmaker 2")}
@@ -320,7 +340,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -330,8 +350,12 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+            <div className="inactive-btn-table white-space">
+              In-Active
+            </div>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -342,7 +366,7 @@ const Sports = () => {
               Fancy
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Lokesh", "Fancy")}
@@ -350,7 +374,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center ">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -360,8 +384,12 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+            <div className="inactive-btn-table white-space">
+              In-Active
+            </div>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -372,7 +400,7 @@ const Sports = () => {
               Live Streaming
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Lokesh", "Live Streaming")}
@@ -380,7 +408,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -390,8 +418,12 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+            <div className="inactive-btn-table white-space">
+              In-Active
+            </div>
+            </div>
           </div>
 
           <div className="d-flex flex-between pointer">
@@ -402,7 +434,7 @@ const Sports = () => {
               Scoreboard
             </div>
 
-            <div className="col-2">
+            <div className="col-1 flex-center">
               <span
                 className=" font-20"
                 onClick={() => handleSportNextPage("Lokesh", "Scoreboard")}
@@ -410,7 +442,7 @@ const Sports = () => {
                 <IoEyeOutline className="orange-clr" />
               </span>
             </div>
-            <div className="col-2">
+            <div className="col-2 flex-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -420,8 +452,12 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 dark-orange-clr">10000</div>
-            <div className="inactive-btn-table col-2 white-space">In-Active</div>
+            <div className="col-2 dark-orange-clr flex-center">10000</div>
+            <div className="col-3 flex-end">
+            <div className="inactive-btn-table white-space">
+              In-Active
+            </div>
+            </div>
           </div>
         </div>
       ),

@@ -61,7 +61,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit }) => {
         </div>
       </div>
 
-      <div className="my-2 row w-100 d-flex align-items-center">
+      <div className="my-2 row w-100 d-flex">
         <div className="col-4 felx-column text-black pe-1">
           <div className="small-font ">Select Compnay</div>
 

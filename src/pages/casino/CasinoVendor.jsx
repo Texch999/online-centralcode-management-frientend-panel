@@ -20,37 +20,37 @@ const CasinoVendor = () => {
   };
 
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno" },
-    { header: "Games", field: "games" },
-    { header: "", field: "eye" },
-    { header: "Status", field: "status" },
-    { header: "Profit & Loss", field: "pl" },
-    { header: "Action", field: "action" },
+    { header: <div className="">S No</div>, field: "sno", width:"10%",},
+    { header: "Games", field: "games",width:"40%",},
+    { header: <div className="flex-center"></div>, field: "eye",width:"10%", },
+    { header: <div className="flex-center">Status</div>, field: "status",width:"10%", },
+    { header: <div className="flex-center">Profit & Loss</div>, field: "pl" ,width:"10%",},
+    { header: <div className="flex-center">Action</div>, field: "action",width:"10%", },
   ];
 
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
+      sno: <div className="">1</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Poker")}>
           Poker
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column pointer">
+        <div className="pointer flex-center">
           <span className=" font-20" onClick={() => handleGamesPage("Poker")}>
             <IoEyeOutline className="orange-clr" />
           </span>
         </div>
       ),
       status: (
-        <div className="green-clr">
+        <div className="green-clr flex-center">
           <span className="round-green-dot mx-1"></span>ON
         </div>
       ),
-      pl: <div className="dark-orange-clr">500000</div>,
+      pl: <div className="dark-orange-clr flex-center">500000</div>,
       action: (
-        <div class="form-check form-switch" onClick={handleActiveModal}>
+        <div class="form-check form-switch flex-center" onClick={handleActiveModal}>
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -61,14 +61,14 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div className="flex-center">2</div>,
+      sno: <div className="">2</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Teenpati")}>
           Teenpati
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="flex-center">
           <span
             className=" font-20"
             onClick={() => handleGamesPage("Teenpati")}
@@ -78,13 +78,13 @@ const CasinoVendor = () => {
         </div>
       ),
       status: (
-        <div className="dark-orange-clr align-items-center">
+        <div className="dark-orange-clr align-items-center flex-center">
           <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
-      pl: <div className="dark-orange-clr">500000</div>,
+      pl: <div className="dark-orange-clr flex-center">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch flex-center">
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -95,14 +95,14 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div className="flex-center">3</div>,
+      sno: <div className="">3</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Roulette")}>
           Roulette
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="flex-center">
           <span
             className=" font-20"
             onClick={() => handleGamesPage("Roulette")}
@@ -112,13 +112,13 @@ const CasinoVendor = () => {
         </div>
       ),
       status: (
-        <div className="green-clr">
+        <div className="green-clr flex-center">
           <span className="round-green-dot mx-1"></span>ON
         </div>
       ),
-      pl: <div className="dark-orange-clr">500000</div>,
+      pl: <div className="dark-orange-clr flex-center">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch flex-center">
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -129,27 +129,27 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div className="flex-center">4</div>,
+      sno: <div className="">4</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Sic bo")}>
           Sic bo
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="flex-center">
           <span className=" font-20" onClick={() => handleGamesPage("Sic Bo")}>
             <IoEyeOutline className="orange-clr" />
           </span>
         </div>
       ),
       status: (
-        <div className="dark-orange-clr">
+        <div className="dark-orange-clr flex-center">
           <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
-      pl: <div className="dark-orange-clr">500000</div>,
+      pl: <div className="dark-orange-clr flex-center">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch flex-center">
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -160,14 +160,14 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div className="flex-center">5</div>,
+      sno: <div className="">5</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Tables Game")}>
           Tables Game
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="flex-center">
           <span
             className=" font-20"
             onClick={() => handleGamesPage("Table Game")}
@@ -177,13 +177,13 @@ const CasinoVendor = () => {
         </div>
       ),
       status: (
-        <div className="dark-orange-clr">
+        <div className="dark-orange-clr flex-center">
           <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
-      pl: <div className="dark-orange-clr">500000</div>,
+      pl: <div className="dark-orange-clr flex-center">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch flex-center">
           <input
             class="form-check-input w-40"
             type="checkbox"
@@ -194,14 +194,14 @@ const CasinoVendor = () => {
       ),
     },
     {
-      sno: <div className="flex-center">6</div>,
+      sno: <div className="">6</div>,
       games: (
         <div className="pointer" onClick={() => handleGamesPage("Black Jack")}>
           Black Jack
         </div>
       ),
       eye: (
-        <div className="d-flex flex-column">
+        <div className="flex-center">
           <span
             className=" font-20"
             onClick={() => handleGamesPage("Black Jack")}
@@ -211,13 +211,13 @@ const CasinoVendor = () => {
         </div>
       ),
       status: (
-        <div className="dark-orange-clr">
+        <div className="dark-orange-clr flex-center">
           <span className="round-red-dot mx-1"></span>OFF
         </div>
       ),
-      pl: <div className="dark-orange-clr">500000</div>,
+      pl: <div className="dark-orange-clr flex-center">500000</div>,
       action: (
-        <div class="form-check form-switch">
+        <div class="form-check form-switch flex-center">
           <input
             class="form-check-input w-40"
             type="checkbox"

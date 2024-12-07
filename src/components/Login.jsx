@@ -96,6 +96,7 @@ function Login() {
                 />
               </div>
               {error && <div className="small-font red-font mt-1">{error}</div>}
+
               <div className="d-flex align-items-center input-bg loginbox-radius mt-3 px-2">
                 <img
                   className="icon-img"
@@ -114,11 +115,13 @@ function Login() {
                 >
                   {passwordVisible ? (
                     <FiEyeOff size={24} />
+                    
                   ) : (
                     <FiEye size={24} />
                   )}
                 </span>
               </div>
+
               <button className="orange-btn mt-4 w-100" onClick={handleLogin}>
                 Submit
               </button>

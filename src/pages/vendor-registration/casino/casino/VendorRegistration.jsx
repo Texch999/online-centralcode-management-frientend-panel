@@ -99,7 +99,7 @@ const VendorRegistration = () => {
 
   return (
     <div className="">
-      <h4 className="black-text my-3">Register Vendor</h4>
+      <h4 className="black-text mt-3 mb-2">Register Vendor</h4>
       <div className="d-flex flex-between medium-font">
         <div className="d-flex">
           {buttons.map((btn, index) => {

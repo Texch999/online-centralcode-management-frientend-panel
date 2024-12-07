@@ -4,6 +4,7 @@ import AddNewSportsProvider from "./AddNewSportsProvider";
 import { IoMdAdd } from "react-icons/io";
 import { MdOutlineEdit } from "react-icons/md";
 import Table from "./../../../../components/Table";
+import { SlPencil } from 'react-icons/sl';
 
 const SportsVendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
@@ -61,7 +62,7 @@ const SportsVendorRegistration = () => {
       ),
       action: (
         <div onClick={showEditModal} className="pointer">
-          <MdOutlineEdit className="orange-clr font-20" />
+          <SlPencil size={18} className="pointer me-1 orange-clr" />
         </div>
       ),
     },
@@ -88,14 +89,14 @@ const SportsVendorRegistration = () => {
       ),
       action: (
         <div className="pointer" onClick={showEditModal}>
-          <MdOutlineEdit className="orange-clr font-20" />
+          <SlPencil size={18} className="pointer me-1 orange-clr" />
         </div>
       ),
     },
   ];
   return (
     <div className="">
-      <h4 className="black-text my-3">Register Vendor</h4>
+      <h4 className="black-text mt-3 mb-2">Register Vendor</h4>
       <div className="d-flex flex-between medium-font">
         <div className="d-flex">
           {buttons.map((btn, index) => {
