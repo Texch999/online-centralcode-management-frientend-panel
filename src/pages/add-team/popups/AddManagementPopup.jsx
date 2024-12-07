@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../style.css"
+import "../style.css";
 import "../../../App.css";
 
 const AddManagementPopup = ({
@@ -13,7 +12,7 @@ const AddManagementPopup = ({
   onSubmit,
   show,
 }) => {
-  const [showPassword, setShowPassword] = React.useState({
+  const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
     managementPassword: false,
@@ -41,25 +40,25 @@ const AddManagementPopup = ({
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
-      <div className="d-flex justify-content-between align-items-center pt-4 px-4">
-        <h6 className="mb-0 ms-2 medium-font black-font">
-          {formData.name ? "Edit Management Team" : "Add Management Team"}
-        </h6>
-        <MdOutlineClose
-          size={25}
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-        />
-      </div>
       <Modal.Body>
+        <div className="d-flex justify-content-between align-items-center">
+          <h6 className="mb-0 fw-600 black-font">
+            {formData.name ? "Edit Management Team" : "Add Management Team"}
+          </h6>
+          <MdOutlineClose
+            size={20}
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+          />
+        </div>
         <form
-          className="add-management-popup-form px-3"
+          className="add-management-popup-form mt-2"
           onSubmit={handleSubmit}
         >
           <div className="row mb-3">
             <div className="col">
-              <label className="small-font">Role</label>
+              <label className="small-font mb-1">Role</label>
               <select
                 name="role"
                 value={formData.role}
@@ -73,7 +72,7 @@ const AddManagementPopup = ({
               </select>
             </div>
             <div className="col">
-              <label className="small-font">Name</label>
+              <label className="small-font mb-1">Name</label>
               <input
                 type="text"
                 name="name"
@@ -84,7 +83,7 @@ const AddManagementPopup = ({
               />
             </div>
             <div className="col">
-              <label className="small-font">Login Name</label>
+              <label className="small-font mb-1">Login Name</label>
               <input
                 type="text"
                 name="loginName"
@@ -99,7 +98,7 @@ const AddManagementPopup = ({
           {/* Row 2: Phone Number, Password, Confirm Password */}
           <div className="row mb-3">
             <div className="col-md-4">
-              <label className="small-font">Phone Number</label>
+              <label className="small-font mb-1">Phone Number</label>
               <input
                 type="text"
                 name="phoneNumber"
@@ -110,7 +109,7 @@ const AddManagementPopup = ({
               />
             </div>
             <div className="col-md-4 position-relative">
-              <label className="small-font">Password</label>
+              <label className="small-font mb-1">Password</label>
               <input
                 type={showPassword.password ? "text" : "password"}
                 name="password"
@@ -125,15 +124,15 @@ const AddManagementPopup = ({
                 style={{
                   position: "absolute",
                   right: "10%",
-                  top: "55%",
+                  top: "50%",
                   cursor: "pointer",
                 }}
               >
-                {showPassword.password ? <FaEye /> : <FaEyeSlash />}
+                {showPassword.password ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
             <div className="col-md-4 position-relative">
-              <label className="small-font">Confirm Password</label>
+              <label className="small-font mb-1">Confirm Password</label>
               <input
                 type={showPassword.confirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -148,11 +147,11 @@ const AddManagementPopup = ({
                 style={{
                   position: "absolute",
                   right: "10%",
-                  top: "55%",
+                  top: "50%",
                   cursor: "pointer",
                 }}
               >
-                {showPassword.confirmPassword ? <FaEye /> : <FaEyeSlash />}
+                {showPassword.confirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
@@ -160,7 +159,7 @@ const AddManagementPopup = ({
           {/* Row 3: Email, Management Password, Submit Button */}
           <div className="row mb-3 align-items-end">
             <div className="col-md-4">
-              <label className="small-font">Email:</label>
+              <label className="small-font mb-1">Email:</label>
               <input
                 type="email"
                 name="email"
@@ -171,7 +170,7 @@ const AddManagementPopup = ({
               />
             </div>
             <div className="col-md-4 position-relative">
-              <label className="small-font">Management Password</label>
+              <label className="small-font mb-1">Management Password</label>
               <input
                 type={showPassword.managementPassword ? "text" : "password"}
                 name="managementPassword"
@@ -186,11 +185,11 @@ const AddManagementPopup = ({
                 style={{
                   position: "absolute",
                   right: "10%",
-                  top: "55%",
+                  top: "50%",
                   cursor: "pointer",
                 }}
               >
-                {showPassword.managementPassword ? <FaEye /> : <FaEyeSlash />}
+                {showPassword.managementPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
             <div className="col-md-4 d-flex justify-content-center">
