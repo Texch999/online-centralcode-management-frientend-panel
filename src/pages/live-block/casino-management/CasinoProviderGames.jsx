@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
 
-const McasinoGDetails = () => {
-  const { gamename, usergame } = useParams();
+const CasinoProviderGames = () => {
+  const [onBlockPopup, setOnBlockPopup] = useState(false)
+
+  const { provider, gamename } = useParams();
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(
-      `/management-casino/${encodeURIComponent(gamename)}/${encodeURIComponent(
-        matchName
-      )}/${encodeURIComponent(matchName)}`
+      `/management-casino-provider/${encodeURIComponent(
+        provider
+      )}/${encodeURIComponent(gamename)}/${encodeURIComponent(matchName)}`
     );
   };
 
@@ -23,7 +26,7 @@ const McasinoGDetails = () => {
     { header: "Market Id", field: "market_id", width: "10%" },
     { header: "Table Number", field: "table_number", width: "10%" },
     { header: "P/L", field: "pl", width: "10%" },
-    { header: "Status", field: "status", width: "4%" },
+    { header: <div className="text-center">Status</div>, field: "status", width: "4%" },
   ];
 
   const CASINO_DATA = [
@@ -43,7 +46,7 @@ const McasinoGDetails = () => {
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Bet History")} />
           <span>
-            <MdBlockFlipped size={18} />
+            <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
           </span>
           <span className="active-btn-table px-1">Live</span>
         </div>
@@ -58,13 +61,19 @@ const McasinoGDetails = () => {
         <div className="d-flex align-items-center">
           <h6 className=" mb-0 pointer" onClick={() => navigation(-2)}>
             <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
+            Casino Live Settings 2
+            <span>
+              <FiChevronRight /> Casino Providers
+            </span>
           </h6>
           <span className="pointer" onClick={() => navigation(-1)}>
+            <FiChevronRight />
+            {provider}
+          </span>
+          <span className="yellow-font">
+            <FiChevronRight />
             {gamename}
           </span>
-          <FiChevronRight />
-          <span className="yellow-font">{usergame}</span>
         </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
@@ -76,27 +85,22 @@ const McasinoGDetails = () => {
           </div>
         </div>
       </div>
-      <div className="d-flex align-items-end">
-        <div className=" flex-column me-3 col-2">
-          <label className="black-text4 small-font mb-1">Providers</label>
-          <select className="input-css2 small-font ">
-            <option>Select</option>
-          </select>
-        </div>
-        <div>
-          <button className="saffron-btn rounded">Submit</button>
-        </div>
-      </div>
 
       <div className="mt-4 ">
         <Table
           columns={CASINO_COLUMNS}
           data={CASINO_DATA_DUPLICATES}
-          itemsPerPage={5}
+          itemsPerPage={8}
         />
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Website?"}
+        submitButton={"Block"}
+      />
     </div>
   );
 };
 
-export default McasinoGDetails;
+export default CasinoProviderGames;

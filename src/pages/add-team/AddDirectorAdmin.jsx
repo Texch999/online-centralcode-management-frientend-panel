@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { MdLockReset, MdBlockFlipped } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import { IoEyeOutline } from "react-icons/io5";
+import { BsEye } from "react-icons/bs";
 import AddDirectorAdminPopup from "./popups/AddDirectorAdminPopup";
 import "../add-team/style.css";
 import "../../App.css";
@@ -28,7 +28,7 @@ const AddDirectorAdmin = () => {
   };
 
   const handleResetPasswordOpen = (user) => {
-    setSelectedUser(user); // Store selected user's data
+    setSelectedUser(user); 
     setResetPasswordPopup(true);
   };
 
@@ -78,7 +78,7 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit
+          <SlPencil
             size={18}
             className="black-text pointer"
             onClick={() => setShowModal(true)}
@@ -93,7 +93,7 @@ const AddDirectorAdmin = () => {
             className="black-text pointer"
             onClick={() => handleBlockUserOpen("Jayanta")}
           />
-          <IoEyeOutline
+          <BsEye
             size={18}
             className="black-text pointer"
             onClick={handleNavigateUserDashboard}
@@ -118,14 +118,14 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset
             size={18}
             className="black-text pointer"
             onClick={() => handleResetPasswordOpen("Jayanta")}
           />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -146,10 +146,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -175,10 +175,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -199,10 +199,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -223,10 +223,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -247,10 +247,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -276,10 +276,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -300,10 +300,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -324,10 +324,10 @@ const AddDirectorAdmin = () => {
       ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },

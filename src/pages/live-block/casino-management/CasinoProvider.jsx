@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
 
 const CasinoProvider = () => {
+  const [onBlockPopup, setOnBlockPopup] = useState(false);
+
   const { provider } = useParams();
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
@@ -20,7 +23,7 @@ const CasinoProvider = () => {
   const CASINO_COLUMNS = [
     { header: "Games", field: "games", width: "25%" },
     { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "Status", field: "status", width: "5%" },
   ];
   const CASINO_DATA = [
     {
@@ -30,7 +33,7 @@ const CasinoProvider = () => {
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
-          <MdBlockFlipped size={18} />
+          <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)} />
           <span className="active-btn-table">Live</span>
         </div>
       ),
@@ -69,9 +72,15 @@ const CasinoProvider = () => {
         <Table
           columns={CASINO_COLUMNS}
           data={CASINO_DATA_DUPLICATES}
-          itemsPerPage={5}
+          itemsPerPage={9}
         />
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Website?"}
+        submitButton={"Block"}
+      />
     </div>
   );
 };

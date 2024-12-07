@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FaSync } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { GrEdit } from "react-icons/gr";
-import Table from "../../../components/Table"
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
+import Table from "../../../components/Table";
 import EditBetPopup from "../../risk-management/EditBetPopup";
+import SuccessPopup from "../../popups/ConfirmationPopup";
 
 const columns = [
   { header: "Role/Name", field: "roleName", width: "15%" },
@@ -17,13 +18,13 @@ const columns = [
   { header: "Date & Time", field: "dateTime", width: "10%" },
   { header: "Bet Place", field: "betPlace", width: "20%" },
   { header: "P/L", field: "pl", width: "10%" },
-  { header: "IP Address", field: "ipAddress", width:"8%" },
+  { header: "IP Address", field: "ipAddress", width: "8%" },
   { header: "Action", field: "action", width: "25%" },
 ];
 
-
 const BetHistory = () => {
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+  const [onDeleteBetpopup, setOnDeleteBetpopup] = useState(false);
 
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
@@ -70,8 +71,16 @@ const BetHistory = () => {
       ipAddress: <span className="yellow-font">127.0.0.1</span>,
       action: (
         <>
-          <GrEdit size={20} className="yellow-font m-2 pointer" onClick={handleEditBetPopupOpen}/>
-          <RiDeleteBinLine size={20} className="pointer"/>
+          <SlPencil
+            size={20}
+            className="yellow-font m-2 pointer"
+            onClick={handleEditBetPopupOpen}
+          />
+          <FaRegTrashCan
+            size={20}
+            className="pointer"
+            onClick={() => setOnDeleteBetpopup(true)}
+          />
         </>
       ),
     },
@@ -148,19 +157,23 @@ const BetHistory = () => {
       betPlace: (
         <>
           <div>Bet Place: Chennai Super Kings/</div>
-          <div>Side: <span className="sky-blu-font">Back</span></div>
+          <div>
+            Side: <span className="sky-blu-font">Back</span>
+          </div>
           <div className="yellow-font">Match Odds - 1.50</div>
           <div className="yellow-font">Amount - 1000000</div>
           <div>Bet ID: 298960884003</div>
-          <div>Win/Loss: <span className="green-font">Win</span></div>
+          <div>
+            Win/Loss: <span className="green-font">Win</span>
+          </div>
         </>
       ),
       pl: <span className="green-font">100000000000</span>,
       ipAddress: "127.0.0.1",
       action: (
         <>
-          <GrEdit size={20} className="m-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer"/>
+          <SlPencil size={20} className="m-2 pointer" />
+          <FaRegTrashCan size={20} className="pointer" />
         </>
       ),
     },
@@ -204,13 +217,12 @@ const BetHistory = () => {
       ipAddress: "127.0.0.1",
       action: (
         <>
-          <GrEdit size={20} className="m-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer"/>
+          <SlPencil size={20} className="m-2 pointer" />
+          <FaRegTrashCan size={20} className="pointer" />
         </>
       ),
     },
   ];
-
 
   return (
     <div className="py-4 bg-white shadow rounded">
@@ -234,56 +246,56 @@ const BetHistory = () => {
           <label htmlFor="date-picker small-font" className="mb-1">
             From
           </label>
-            <input
-              type="date"
-              id="date-picker"
-              className="rounded small-font input-css w-100 "
-            />
+          <input
+            type="date"
+            id="date-picker"
+            className="rounded small-font input-css w-100 "
+          />
         </div>
 
         <div className="col-2">
           <label htmlFor="date-picker small-font" className="mb-1">
             To
           </label>
-            <input
-              type="date"
-              id="date-picker"
-              className="small-font input-css w-100 rounded"
-            />
+          <input
+            type="date"
+            id="date-picker"
+            className="small-font input-css w-100 rounded"
+          />
         </div>
 
         <div className="col-2 mt-1">
           <label className="small-font mb-1">Website</label>
-            <select className="small-font input-css rounded px-3 w-100">
-              <option className="small-font">texchange.com</option>
-              <option className="small-font">fun77.com</option>
-              <option className="small-font">tcasinopark.com</option>
-              <option className="small-font">diamondexchange.com</option>
-            </select>
+          <select className="small-font input-css rounded px-3 w-100">
+            <option className="small-font">texchange.com</option>
+            <option className="small-font">fun77.com</option>
+            <option className="small-font">tcasinopark.com</option>
+            <option className="small-font">diamondexchange.com</option>
+          </select>
         </div>
 
         <div className="col-2 mt-1">
           <label className="small-font mb-1">Admin</label>
-            <select className="small-font input-css rounded px-3 w-100">
-              <option className="small-font">Director - Srinivas</option>
-              <option className="small-font">Super Admin - Ranjit</option>
-              <option className="small-font">Admin - Rajesh</option>
-              <option className="small-font">SA- Jitah</option>
-              <option className="small-font">Agent - Lokesh</option>
-              <option className="small-font">Agent - Suresh</option>
-            </select>
+          <select className="small-font input-css rounded px-3 w-100">
+            <option className="small-font">Director - Srinivas</option>
+            <option className="small-font">Super Admin - Ranjit</option>
+            <option className="small-font">Admin - Rajesh</option>
+            <option className="small-font">SA- Jitah</option>
+            <option className="small-font">Agent - Lokesh</option>
+            <option className="small-font">Agent - Suresh</option>
+          </select>
         </div>
 
         <div className="col-2 mt-1">
           <label className="small-font mb-1">Admin</label>
-            <select className="small-font input-css rounded px-3 w-100">
-              <option className="small-font">Jitendra</option>
-              <option className="small-font">Jayanta</option>
-              <option className="small-font">Sri</option>
-              <option className="small-font">Rahul</option>
-              <option className="small-font">Raj</option>
-              <option className="small-font">Sri Varma</option>
-            </select>
+          <select className="small-font input-css rounded px-3 w-100">
+            <option className="small-font">Jitendra</option>
+            <option className="small-font">Jayanta</option>
+            <option className="small-font">Sri</option>
+            <option className="small-font">Rahul</option>
+            <option className="small-font">Raj</option>
+            <option className="small-font">Sri Varma</option>
+          </select>
         </div>
 
         <div className="col-1 d-flex align-items-end">
@@ -299,6 +311,12 @@ const BetHistory = () => {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+      <SuccessPopup
+        confirmationPopupOpen={onDeleteBetpopup}
+        setConfirmationPopupOpen={() => setOnDeleteBetpopup(false)}
+        discription={"Are You Sure to Delete This Bet"}
+        submitButton={"Delete"}
       />
     </div>
   );

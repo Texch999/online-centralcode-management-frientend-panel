@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { GrEdit } from "react-icons/gr";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -9,487 +9,499 @@ import { FaSync } from "react-icons/fa";
 import "../../../App.css";
 import "../../../index.css";
 import "../style.css";
+import EditBetPopup from "../../risk-management/EditBetPopup";
 
-const fancyTableData = [
-  {
-    s_no: <span className="">5/3</span>,
-    date_time: (
-      <div className="">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
-          &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="">Fancy</span>,
-    selection: (
-      <div className="">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="sky-blu-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="fancy-bet-table-td-style text-center">
-        <div className="green-font mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="green-btn my-3">Live</button>
-        <div className="flex-center">
-          <GrEdit size={20} className="me-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer ms-2" />
-        </div>
-      </div>
-    ),
-  },
-
-  {
-    s_no: <span className="red-font">4</span>,
-    date_time: (
-      <div className="red-font">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="red-font">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="">User: Srinivas &gt;</span>Ag: Jayanta &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="red-font">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="red-font">Fancy</span>,
-    selection: (
-      <div className="red-font">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="red-font fancy-bet-table-td-style text-center">
-        <div className="mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="red-font d-flex flex-column justify-content-center">
-        <button className="red-btn my-3">Deleted</button>
-        <div className="flex-center">
-          <FaSync size={18} className="me-2 pointer" />
-        </div>
-      </div>
-    ),
-  },
-  {
-    s_no: <span className="yellow-font">5/3</span>,
-    date_time: (
-      <div className="yellow-font">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="yellow-font">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="">User: Srinivas &gt;</span>Ag: Jayanta &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="yellow-font">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="yellow-font">Fancy</span>,
-    selection: (
-      <div className="yellow-font">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="yellow-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="yellow-font fancy-bet-table-td-style text-center">
-        <div className="mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="edit-btn my-3">Edited</button>
-      </div>
-    ),
-  },
-  {
-    s_no: <span className="">5/3</span>,
-    date_time: (
-      <div className="">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
-          &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="">Fancy</span>,
-    selection: (
-      <div className="">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="sky-blu-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="fancy-bet-table-td-style text-center">
-        <div className="green-font mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="green-btn my-3">Live</button>
-        <div className="flex-center">
-          <GrEdit size={20} className="me-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer ms-2" />
-        </div>
-      </div>
-    ),
-  },
-  {
-    s_no: <span className="">5/3</span>,
-    date_time: (
-      <div className="">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
-          &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="">Fancy</span>,
-    selection: (
-      <div className="">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="sky-blu-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="fancy-bet-table-td-style text-center">
-        <div className="green-font mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="green-btn my-3">Live</button>
-        <div className="flex-center">
-          <GrEdit size={20} className="me-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer ms-2" />
-        </div>
-      </div>
-    ),
-  },
-];
-
-const fancyDeclaredTableData = [
-  {
-    s_no: <span className="">5/3</span>,
-    date_time: (
-      <div className="">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
-          &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="">Fancy</span>,
-    selection: (
-      <div className="">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="sky-blu-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="fancy-bet-table-td-style text-center">
-        <div className="green-font mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="green-btn my-3">Declared</button>
-        <div className="flex-center">
-          <GrEdit size={20} className="me-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer ms-2" />
-        </div>
-      </div>
-    ),
-  },
-
-  {
-    s_no: <span className="">5/3</span>,
-    date_time: (
-      <div className="">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
-          &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="">Fancy</span>,
-    selection: (
-      <div className="">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="sky-blu-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="fancy-bet-table-td-style text-center">
-        <div className="green-font mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="green-btn my-3">Declared</button>
-        <div className="flex-center">
-          <GrEdit size={20} className="me-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer ms-2" />
-        </div>
-      </div>
-    ),
-  },
-
-  {
-    s_no: <span className="">5/3</span>,
-    date_time: (
-      <div className="">
-        <div>01-10-2024</div>
-        <div>16:11:00</div>
-        <div>IP: 157.47.47.187</div>
-      </div>
-    ),
-    user_market_name: (
-      <div className="">
-        <div>M.Name: T Exchange</div>
-        <div>
-          <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
-          &gt;
-        </div>
-        <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
-        <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
-        <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
-      </div>
-    ),
-    game_match_id: (
-      <div className="">
-        <div>Match: Chennai Super</div>
-        <div>Kings vs Rajasthan</div>
-        <div>Royals (T20 World Cup)</div>
-        <div>M ID: 1.11045677544</div>
-        <div>Match ID: 11023843754858</div>
-      </div>
-    ),
-    betplaced: <span className="">Fancy</span>,
-    selection: (
-      <div className="">
-        <div>Selection: Chennai Super Kings</div>
-        <div>10 overs</div>
-        <span className="sky-blu-font">Side: 150 Yes</span>
-        <div>Odds Rate: 110</div>
-        <div className="yellow-font">B. Amount: 100000</div>
-        <div>B. ID: 11023843754858</div>
-      </div>
-    ),
-    pl: (
-      <div className="fancy-bet-table-td-style text-center">
-        <div className="green-font mb-5">10000000</div>
-        <div>Result - CSK/10over/155</div>
-      </div>
-    ),
-    status: (
-      <div className="d-flex flex-column justify-content-center">
-        <button className="green-btn my-3">Declared</button>
-        <div className="flex-center">
-          <GrEdit size={20} className="me-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer ms-2" />
-        </div>
-      </div>
-    ),
-  },
-];
-
-const columns = [
-  { header: "S. No", field: "s_no", width: "5%" },
-  { header: "Date & Time/IP", field: "date_time", width: "10%" },
-  {
-    header: "User / Market Name",
-    field: "user_market_name",
-    width: "15%",
-  },
-  {
-    header: "M. ID- Game Name- Match ID",
-    field: "game_match_id",
-    width: "15%",
-  },
-  { header: "Bet Placed", field: "betplaced", width: "8%" },
-  { header: "Selection", field: "selection", width: "15%" },
-  { header: <div className="text-center">P/L</div>, field: "pl", width: "15%" },
-  { header: "Status", field: "status", width: "7%" },
-];
 
 const ViewFancyBets = () => {
+  const [openEditbetPopup, setOpenEditbetPopup] = useState(false);
+
   const { fancyType } = useParams();
   const navigate = useNavigate();
+
+  const columns = [
+    { header: "S. No", field: "s_no", width: "5%" },
+    { header: "Date & Time/IP", field: "date_time", width: "10%" },
+    {
+      header: "User / Market Name",
+      field: "user_market_name",
+      width: "15%",
+    },
+    {
+      header: "M. ID- Game Name- Match ID",
+      field: "game_match_id",
+      width: "15%",
+    },
+    { header: "Bet Placed", field: "betplaced", width: "8%" },
+    { header: "Selection", field: "selection", width: "15%" },
+    { header: <div className="text-center">P/L</div>, field: "pl", width: "15%" },
+    { header: "Status", field: "status", width: "7%" },
+  ];
+  
+  const fancyTableData = [
+    {
+      s_no: <span className="">5/3</span>,
+      date_time: (
+        <div className="">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
+            &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="">Fancy</span>,
+      selection: (
+        <div className="">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="sky-blu-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="fancy-bet-table-td-style text-center">
+          <div className="green-font mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="green-btn my-3">Live</button>
+          <div className="flex-center">
+            <GrEdit
+              size={20}
+              className="me-2 pointer"
+              onClick={() => setOpenEditbetPopup(true)}
+            />
+            <RiDeleteBinLine size={20} className="pointer ms-2" />
+          </div>
+        </div>
+      ),
+    },
+  
+    {
+      s_no: <span className="red-font">4</span>,
+      date_time: (
+        <div className="red-font">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="red-font">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="">User: Srinivas &gt;</span>Ag: Jayanta &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="red-font">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="red-font">Fancy</span>,
+      selection: (
+        <div className="red-font">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="red-font fancy-bet-table-td-style text-center">
+          <div className="mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="red-font d-flex flex-column justify-content-center">
+          <button className="red-btn my-3">Deleted</button>
+          <div className="flex-center">
+            <FaSync size={18} className="me-2 pointer" />
+          </div>
+        </div>
+      ),
+    },
+    {
+      s_no: <span className="yellow-font">5/3</span>,
+      date_time: (
+        <div className="yellow-font">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="yellow-font">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="">User: Srinivas &gt;</span>Ag: Jayanta &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="yellow-font">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="yellow-font">Fancy</span>,
+      selection: (
+        <div className="yellow-font">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="yellow-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="yellow-font fancy-bet-table-td-style text-center">
+          <div className="mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="edit-btn my-3">Edited</button>
+        </div>
+      ),
+    },
+    {
+      s_no: <span className="">5/3</span>,
+      date_time: (
+        <div className="">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
+            &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="">Fancy</span>,
+      selection: (
+        <div className="">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="sky-blu-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="fancy-bet-table-td-style text-center">
+          <div className="green-font mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="green-btn my-3">Live</button>
+          <div className="flex-center">
+            <GrEdit size={20} className="me-2 pointer" />
+            <RiDeleteBinLine size={20} className="pointer ms-2" />
+          </div>
+        </div>
+      ),
+    },
+    {
+      s_no: <span className="">5/3</span>,
+      date_time: (
+        <div className="">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
+            &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="">Fancy</span>,
+      selection: (
+        <div className="">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="sky-blu-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="fancy-bet-table-td-style text-center">
+          <div className="green-font mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="green-btn my-3">Live</button>
+          <div className="flex-center">
+            <GrEdit size={20} className="me-2 pointer" />
+            <RiDeleteBinLine size={20} className="pointer ms-2" />
+          </div>
+        </div>
+      ),
+    },
+  ];
+  
+  const fancyDeclaredTableData = [
+    {
+      s_no: <span className="">5/3</span>,
+      date_time: (
+        <div className="">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
+            &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="">Fancy</span>,
+      selection: (
+        <div className="">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="sky-blu-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="fancy-bet-table-td-style text-center">
+          <div className="green-font mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="green-btn my-3">Declared</button>
+          <div className="flex-center">
+            <GrEdit
+              size={20}
+              className="me-2 pointer"
+              onClick={() => setOpenEditbetPopup(true)}
+            />
+            <RiDeleteBinLine size={20} className="pointer ms-2" />
+          </div>
+        </div>
+      ),
+    },
+  
+    {
+      s_no: <span className="">5/3</span>,
+      date_time: (
+        <div className="">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
+            &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="">Fancy</span>,
+      selection: (
+        <div className="">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="sky-blu-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="fancy-bet-table-td-style text-center">
+          <div className="green-font mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="green-btn my-3">Declared</button>
+          <div className="flex-center">
+            <GrEdit size={20} className="me-2 pointer" />
+            <RiDeleteBinLine size={20} className="pointer ms-2" />
+          </div>
+        </div>
+      ),
+    },
+  
+    {
+      s_no: <span className="">5/3</span>,
+      date_time: (
+        <div className="">
+          <div>01-10-2024</div>
+          <div>16:11:00</div>
+          <div>IP: 157.47.47.187</div>
+        </div>
+      ),
+      user_market_name: (
+        <div className="">
+          <div>M.Name: T Exchange</div>
+          <div>
+            <span className="sky-blu-font">User: Srinivas &gt;</span>Ag: Jayanta
+            &gt;
+          </div>
+          <div>Mas: Lokesh &gt; S M: Sangram &gt; </div>
+          <div>S A: Sudheer &gt; Adm: Nani &gt;</div>
+          <div>Sup A: Harish &gt; Dir: Sri Lakshmi</div>
+        </div>
+      ),
+      game_match_id: (
+        <div className="">
+          <div>Match: Chennai Super</div>
+          <div>Kings vs Rajasthan</div>
+          <div>Royals (T20 World Cup)</div>
+          <div>M ID: 1.11045677544</div>
+          <div>Match ID: 11023843754858</div>
+        </div>
+      ),
+      betplaced: <span className="">Fancy</span>,
+      selection: (
+        <div className="">
+          <div>Selection: Chennai Super Kings</div>
+          <div>10 overs</div>
+          <span className="sky-blu-font">Side: 150 Yes</span>
+          <div>Odds Rate: 110</div>
+          <div className="yellow-font">B. Amount: 100000</div>
+          <div>B. ID: 11023843754858</div>
+        </div>
+      ),
+      pl: (
+        <div className="fancy-bet-table-td-style text-center">
+          <div className="green-font mb-5">10000000</div>
+          <div>Result - CSK/10over/155</div>
+        </div>
+      ),
+      status: (
+        <div className="d-flex flex-column justify-content-center">
+          <button className="green-btn my-3">Declared</button>
+          <div className="flex-center">
+            <GrEdit size={20} className="me-2 pointer" />
+            <RiDeleteBinLine size={20} className="pointer ms-2" />
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -576,6 +588,8 @@ const ViewFancyBets = () => {
           />
         )}
       </div>
+
+      <EditBetPopup editBetPopupOpen={openEditbetPopup} setEditBetPopupOpen={() => setOpenEditbetPopup(false)}/>
     </div>
   );
 };

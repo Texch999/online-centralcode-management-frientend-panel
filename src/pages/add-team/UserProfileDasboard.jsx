@@ -8,12 +8,12 @@ import PaymentGateway from "./components/PaymentGateway";
 import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
 import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
+import ResetPasswordPopup from "../../pages/popups/ResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../add-team/style.css";
 import "../../App.css";
 import "../../index.css";
-
 
 const cardData = [
   {
@@ -248,7 +248,9 @@ const DefaultBottomShow = () => {
             />
           </Form>
 
-          <span className="ms-2 black-text small-font black-font">In-active</span>
+          <span className="ms-2 black-text small-font black-font">
+            In-active
+          </span>
         </div>
       </div>
 
@@ -314,13 +316,16 @@ const DefaultBottomShow = () => {
 
 const UserProfileDashboard = () => {
   const [activeTab, setActiveTab] = useState("websitesLimit");
-  const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false)
-  const [showEditProfilePopup,setShowEditProfilePopup] = useState(false)
-
+  const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false);
+  const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
+
+  const handleResetPasswordClose = () => {
+    setShowResetPasswordPopup(false)
+  }
 
   return (
     <div>
@@ -343,7 +348,11 @@ const UserProfileDashboard = () => {
                 <MdRemoveRedEye size={18} className="text-warning pointer" />
               </div>
               <div className="director-top-bg-icon px-2 py-1">
-                <MdLockReset size={18} className="text-warning pointer" onClick={() => setShowResetPasswordPopup(true)}/>
+                <MdLockReset
+                  size={18}
+                  className="text-warning pointer"
+                  onClick={() => setShowResetPasswordPopup(true)}
+                />
               </div>
             </div>
           </div>
@@ -364,7 +373,11 @@ const UserProfileDashboard = () => {
                 style={{ marginTop: "20px" }}
               >
                 <h6 className="small-font">Jayanta Pal</h6>
-                <FaPen className="yellow-font pointer mt-1" size={13} onClick={() => setShowEditProfilePopup(true)}/>
+                <FaPen
+                  className="yellow-font pointer mt-1"
+                  size={13}
+                  onClick={() => setShowEditProfilePopup(true)}
+                />
               </div>
             </div>
             <div className="col-10">
@@ -403,10 +416,15 @@ const UserProfileDashboard = () => {
           </div>
         </div>
       </div>
-
-      <ManagementResetPasswordPopup isOpen={showResetPasswordPopup} onRequestClose={() => setShowResetPasswordPopup(false)}/>
-      <EditProfilePopup show={showEditProfilePopup} onHide={() => setShowEditProfilePopup(false)}/>
-
+      
+      <ResetPasswordPopup
+        resetPasswordPopup={showResetPasswordPopup}
+        setResetPasswordPopup={handleResetPasswordClose}
+      />
+      <EditProfilePopup
+        show={showEditProfilePopup}
+        onHide={() => setShowEditProfilePopup(false)}
+      />
 
       {/* Tabs Section */}
       <div className="row py-3 px-3">

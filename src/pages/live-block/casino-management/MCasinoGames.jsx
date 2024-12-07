@@ -1,11 +1,14 @@
 import { FaSearch } from "react-icons/fa";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router";
 import { BsEye } from "react-icons/bs";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
+import { useState } from "react";
 
 const MCasinoGames = () => {
+  const [onBlockPopup, setOnBlockPopup] = useState(false)
   const navigation = useNavigate();
   const { gamename } = useParams();
 
@@ -18,19 +21,19 @@ const MCasinoGames = () => {
   };
 
   const CASINO_COLUMNS = [
-    { header: "Games", field: "games", width: "25%" },
-    { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "Games", field: "games", width: "15%" },
+    { header: <div className="text-center">P/L</div>, field: "pl", width: "40%" },
+    { header: <div className="text-center">Status</div>, field: "status", width: "3%" },
   ];
   const CASINO_DATA = [
     {
       games: <div>Roulette</div>,
-      pl: <div className="green-font">5000000</div>,
+      pl: <div className="green-font text-center">5000000</div>,
 
       status: (
         <div className="w-100 flex-between  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
-          <MdBlockFlipped size={18} />
+          <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)}/>
           <span className="active-btn-table">Live</span>
         </div>
       ),
@@ -47,7 +50,7 @@ const MCasinoGames = () => {
             onClick={() => navigation(-1)}
           >
             <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings <FiChevronRight /> Website <FiChevronRight />
+            Casino Live Settings 2 <FiChevronRight /> Website <FiChevronRight />
           </h6>
           <span className="yellow-font">{gamename}</span>
         </div>
@@ -66,9 +69,15 @@ const MCasinoGames = () => {
         <Table
           columns={CASINO_COLUMNS}
           data={CASINO_DATA_DUPLICATES}
-          itemsPerPage={5}
+          itemsPerPage={9}
         />
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Website?"}
+        submitButton={"Block"}
+      />
     </div>
   );
 };

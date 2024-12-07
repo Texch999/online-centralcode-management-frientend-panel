@@ -48,7 +48,7 @@ function Table({
   return (
     <div>
       {/* Table */}
-      <div className="w-100 table-wrapper">
+      <div className="w-100 table-wrapper scroll-x">
         <table
           className="w-100 fixed-table white-bg"
           style={{ borderRadius: "10px" }}

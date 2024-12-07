@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
 import AddManagementPopup from "./popups/AddManagementPopup";
-import BlockAccountPopup from "./BlockAccountPopup";
-import { GrEdit } from "react-icons/gr";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { SlPencil } from "react-icons/sl";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { MdLockReset, MdBlockFlipped } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -121,11 +120,9 @@ const AddManagementTeam = () => {
     toggleModal("isDeletePopupVisible", false); // Close the delete popup
   };
 
-  
   const handleResetPasswordPopup = (isOpen) => {
     setResetPasswordPopup(isOpen);
   };
-
 
   const columns = [
     {
@@ -164,7 +161,7 @@ const AddManagementTeam = () => {
         onEdit={handleEdit}
         onBlock={handleBlockPopup}
         onResetPassword={handleResetPasswordPopup}
-      onDelete={handleDeletePopup}
+        onDelete={handleDeletePopup}
       />
     ),
   }));
@@ -192,7 +189,7 @@ const AddManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={12}
+          itemsPerPage={11}
         />
       </div>
       {/* AddManagementPopup Modal */}
@@ -231,9 +228,15 @@ const AddManagementTeam = () => {
   );
 };
 
-const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword, onDelete}) => (
+const ActionButtons = ({
+  rowId,
+  onEdit,
+  onBlock,
+  onResetPassword,
+  onDelete,
+}) => (
   <div className="d-flex gap-3 flex-center">
-    <GrEdit
+    <SlPencil
       size={18}
       className="pointer black-text"
       onClick={() => onEdit(rowId)}
@@ -248,7 +251,7 @@ const ActionButtons = ({ rowId, onEdit, onBlock, onResetPassword, onDelete}) => 
       className="pointer black-text"
       onClick={() => onBlock(rowId)}
     />
-    <RiDeleteBinLine
+    <FaRegTrashCan
       size={18}
       className="pointer black-text"
       onClick={() => onDelete(rowId)}

@@ -70,17 +70,17 @@ import ViewFancyBets from "./pages/live-block/components/ViewFancyBets";
 import LiveScoreBoard from "./pages/live-block/components/LiveScoreboard";
 import Sports from "./pages/sports/Sports";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
-import CasinoWebsite from "./pages/casino-management/CasinoWebsite";
-import MCasinoGames from "./pages/casino-management/MCasinoGames";
+import CasinoWebsite from "./pages/live-block/casino-management/CasinoWebsite";
+import MCasinoGames from "./pages/live-block/casino-management/MCasinoGames";
 import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
-import McasinoGDetails from "./pages/casino-management/McasinoGDetails";
-import MCasinoBetHistory from "./pages/casino-management/MCasinoBetHistory";
-import CasinoProvider from "./pages/casino-management/CasinoProvider";
-import CasinoProviderGames from "./pages/casino-management/CasinoProviderGames";
-import CasinoMBetHistory from "./pages/casino-management/CasinoMBetHistory";
+import McasinoGDetails from "./pages/live-block/casino-management/McasinoGDetails";
+import MCasinoBetHistory from "./pages/live-block/casino-management/MCasinoBetHistory";
+import CasinoProvider from "./pages/live-block/casino-management/CasinoProvider";
+import CasinoProviderGames from "./pages/live-block/casino-management/CasinoProviderGames";
+import CasinoMBetHistory from "./pages/live-block/casino-management/CasinoMBetHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");

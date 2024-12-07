@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "../../../App.css";
-import CricketOdds from "./CricketOdds";
+import CricketOdds from "./OddsView";
 import LiveScoreBoard from "../components/LiveScoreboard";
 
 const SportsLiveCricket = () => {
