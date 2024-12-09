@@ -2,10 +2,25 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import { FaSearch } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import ConfirmationPopup from './../popups/ConfirmationPopup';
+import ConfirmationPopup from "./../popups/ConfirmationPopup";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../../pages/add-team/style.css";
 
 function InActiveUsers() {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const userOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const INACTIVE_USER_COLUMNS = [
     { header: "Role/Name", field: "roleName" },
@@ -263,19 +278,27 @@ function InActiveUsers() {
         <div className="w-50 row">
           <div className="col flex-column">
             <label className="black-text4 small-font mb-1">Admin</label>
-            <select className="input-css2 small-font">
-              <option>admin1</option>
-              <option>admin1</option>
-              <option>admin1</option>
-            </select>
+            <Select
+              className="small-font"
+              options={adminOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
           <div className="col flex-column">
             <label className="black-text4 small-font mb-1">User</label>
-            <select className="input-css2 small-font">
-              <option>user1</option>
-              <option>user1</option>
-              <option>user1</option>
-            </select>
+            <Select
+              className="small-font"
+              options={userOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
           <div className="col flex-column d-flex align-items-end justify-content-end">
             <button className="w-100 saffron-btn2 small-font">Submit</button>
@@ -287,7 +310,6 @@ function InActiveUsers() {
         data={INACTIVE_USER_DATA}
         itemsPerPage={4}
       />
-    
 
       <ConfirmationPopup
         confirmationPopupOpen={showDeletePopup}

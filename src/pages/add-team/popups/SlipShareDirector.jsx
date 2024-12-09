@@ -3,8 +3,16 @@ import { Modal } from "react-bootstrap";
 import { Images } from "../../../images";
 import { MdOutlineClose } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const SlipShareDirector = ({ show, onHide }) => {
+  const selectReasonOptions = [
+    { value: "option 1", label: "option 1" },
+    { value: "option 2", label: "option 2" },
+    { value: "option 3", label: "option 3" },
+  ];
+
   return (
     <Modal
       show={show}
@@ -26,7 +34,7 @@ const SlipShareDirector = ({ show, onHide }) => {
             <button className=" px-2 py-1 rounded small-font payment-gateway-status-badge">
               Deposit
             </button>
-            <MdOutlineClose size={22} onClick={onHide} className="pointer"/>
+            <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
         </div>
 
@@ -96,20 +104,14 @@ const SlipShareDirector = ({ show, onHide }) => {
             </div>
           </div>
 
-          <select className="w-100 input-bg p-2 small-font all-none rounded mb-3">
-            <option className="small-font" defaultValue > 
-              Select Rejection Reason
-            </option>
-            <option className="small-font" value="1">
-              Reason 1
-            </option>
-            <option className="small-font" value="2">
-              Reason 2
-            </option>
-            <option className="small-font" value="3">
-              Reason 3
-            </option>
-          </select>
+          <Select
+            className="small-font mb-3 w-100 p-0"
+            options={selectReasonOptions}
+            placeholder="Select Rejection Reason"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
 
           <div className="row p-0 m-0">
             <div className="col-6 p-0 pe-2">

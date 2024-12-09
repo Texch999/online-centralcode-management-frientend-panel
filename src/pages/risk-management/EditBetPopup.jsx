@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { SlPencil } from "react-icons/sl";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
 
 function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
   const [isEditable, setIsEditable] = useState(false);
@@ -14,6 +16,17 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
   const handleCancel = () => {
     setEditBetPopupOpen(false);
   };
+
+  const typeOptions = [
+    { value: "Back", label: "Back" },
+    { value: "Lay", label: "Lay" },
+  ];
+
+  const betStatusOptions = [
+    { value: "Win", label: "Win" },
+    { value: "Loose", label: "Loose" },
+  ];
+
   return (
     <Modal show={editBetPopupOpen} centered size="lg">
       <Modal.Body>
@@ -103,10 +116,14 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
                 </div>
                 <div className="p-2 grey-font border-top">
                   Type:
-                  <select className="all-none">
-                    <option>Back</option>
-                    <option>Lay</option>
-                  </select>
+                  <Select
+                    className="small-font"
+                    options={typeOptions}
+                    placeholder="Select"
+                    styles={customStyles}
+                    maxMenuHeight={120}
+                    menuPlacement="auto"
+                  />
                 </div>
                 <div className="p-2 grey-font border-top d-flex">
                   <span>Odds:</span>
@@ -142,11 +159,14 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
 
             <div className="col-4 flex-column">
               <label className="mb-1 black-text4">Bet Status</label>
-              <select className="input-bg rounded p-2 grey-font all-none">
-                <option>Select</option>
-                <option>Win</option>
-                <option>Loose</option>
-              </select>
+              <Select
+                className="small-font"
+                options={betStatusOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
 
             <div className="col-4 d-flex align-items-end justify-content-end">

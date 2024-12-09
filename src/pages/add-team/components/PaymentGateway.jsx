@@ -4,10 +4,25 @@ import { GrEdit } from "react-icons/gr";
 import Form from "react-bootstrap/Form";
 import "../style.css";
 import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
-const countryOptions = ["India", "USA", "Canada"];
-const gatewayOptions = ["NEFT", "SWIFT", "RTGS"];
-const detailOptions = ["NEFT", "Detail 2", "Detail 3"];
+const countryOptions = [
+  { value: "India", label: "India" },
+  { value: "USA", label: "USA" },
+  { value: "Canada", label: "Canada" },
+];
+
+const gatewayOptions = [
+  { value: "NEFT", label: "NEFT" },
+  { value: "SWIFT", label: "SWIFT" },
+  { value: "RTGS", label: "RTGS" },
+];
+const detailOptions = [
+  { value: "NEFT", label: "NEFT" },
+  { value: "Detail 2", label: "Detail 2" },
+  { value: "Detail 3", label: "Detail 3" },
+];
 
 const columns = [
   { header: "Gateway Name", field: "gatewayName", width: "15%" },
@@ -121,48 +136,47 @@ const PaymentGateway = () => {
           {/* Country Dropdown */}
           <div className="col-md-2 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Country</label>
-            <div className="position-relative">
-              <select className="small-font border input-css custom-select bg-light rounded px-3 w-100">
-                {countryOptions.map((country, index) => (
-                  <option className="small-font" key={index} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              className="small-font"
+              options={countryOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
 
           {/* Gateway Dropdown */}
           <div className="col-md-2 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Gateway</label>
             <div className="position-relative">
-              <select className="input-css small-font custom-select bg-light border rounded px-3 w-100">
-                {gatewayOptions.map((gateway, index) => (
-                  <option className="medium-font" key={index} value={gateway}>
-                    {gateway}
-                  </option>
-                ))}
-              </select>
+              <Select
+                className="small-font"
+                options={gatewayOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
           </div>
 
           {/* Select Details Dropdown */}
           <div className="col-md-6 col-lg-7 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Select Details</label>
-            <div className="position-relative">
-              <select className="small-font input-css custom-select bg-light border rounded px-3 w-100">
-                {detailOptions.map((detail, index) => (
-                  <option className="medium-font" key={index} value={detail}>
-                    {detail}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              className="small-font"
+              options={detailOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
 
           {/* Submit Button */}
-          <div className="col-md-2 col-lg-1 text-md-end align-self-end">
-            <button className="text-white small-font rounded saffron-btn px-4 w-100 w-md-auto">
+          <div className="col-md-2 col-lg-1 align-self-end pb-1">
+            <button className="small-font rounded saffron-btn w-100">
               Submit
             </button>
           </div>
@@ -173,13 +187,14 @@ const PaymentGateway = () => {
 
           <div className="col-2 mb-3 mb-md-0 ">
             <div className="position-relative">
-              <select className="small-font input-css custom-select bg-light border rounded px-3 w-100">
-                {countryOptions.map((country, index) => (
-                  <option className="medium-font" key={index} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
+            <Select
+              className="small-font"
+              options={countryOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
             </div>
           </div>
         </div>

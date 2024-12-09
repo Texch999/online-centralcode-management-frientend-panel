@@ -1,11 +1,25 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const AddWebsitesPopup = ({ show, onHide }) => {
   const [websiteType, setWebsiteType] = useState("1");
   const [websiteName, setWebsiteName] = useState("");
   const [websiteURL, setWebsiteURL] = useState("");
+
+  const websiteOptions = [
+    { value: "Option1", label: "Option 1" },
+    { value: "Option2", label: "Option 2" },
+    { value: "Option3", label: "Option 3" },
+  ];
+
+  const websiteTypeOptions = [
+    { value: "Option1", label: "Option 1" },
+    { value: "Option2", label: "Option 2" },
+    { value: "Option3", label: "Option 3" },
+  ];
 
   const handleSubmit = () => {
     if (websiteName === "" || websiteURL === "") {
@@ -38,22 +52,14 @@ const AddWebsitesPopup = ({ show, onHide }) => {
             <label htmlFor="websiteType" className="small-font mb-1">
               Website Type
             </label>
-            <select
-              id="websiteType"
-              className="w-100 small-font rounded input-css all-none"
-              value={websiteType}
-              onChange={(e) => setWebsiteType(e.target.value)}
-            >
-              <option className="small-font" value="1">
-                Option 1
-              </option>
-              <option className="small-font" value="2">
-                Option 2
-              </option>
-              <option className="small-font" value="3">
-                Option 3
-              </option>
-            </select>
+            <Select
+              className="small-font"
+              options={websiteOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
 
           {/* Website Name Input */}
@@ -91,22 +97,14 @@ const AddWebsitesPopup = ({ show, onHide }) => {
             <label htmlFor="websiteType2" className="small-font fw-400 mb-1">
               Website Type
             </label>
-            <select
-              id="websiteType2"
-              className="w-100 input-css py-2 small-font rounded all-none select-input"
-              value={websiteType}
-              onChange={(e) => setWebsiteType(e.target.value)}
-            >
-              <option className="small-font" value="1">
-                Option 1
-              </option>
-              <option className="small-font" value="2">
-                Option 2
-              </option>
-              <option className="small-font" value="3">
-                Option 3
-              </option>
-            </select>
+            <Select
+              className="small-font"
+              options={websiteTypeOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
 
           {/* Submit Button */}

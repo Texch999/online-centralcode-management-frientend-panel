@@ -2,7 +2,7 @@ export const customStyles = {
   control: (base) => ({
     ...base,
     backgroundColor: "#F2F2F2",
-    padding: "0.3rem 0.3rem 0.3rem 0rem",
+    padding: "0.28rem 0.3rem 0.28em 0.3rem",
     border: "none",
     boxShadow: "none",
     outline: "none",

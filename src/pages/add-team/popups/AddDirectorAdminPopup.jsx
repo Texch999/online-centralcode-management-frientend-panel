@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "../../../App.css"
+import "../../../App.css";
 import { MdOutlineClose } from "react-icons/md";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const AddDirectorAdminModal = ({ show, handleClose }) => {
   const role = localStorage.getItem("role_code");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleFocus = () => setIsOpen(true);
-  const handleBlur = () => setIsOpen(false);
 
   const togglePasswordVisibility = (setVisibility) => {
     setVisibility((prev) => !prev);
   };
+
+  const roleOptions = [
+    { value: "Accounts", label: "Accounts" },
+    { value: "Designer", label: "Designer" },
+    { value: "Company Team", label: "Company Team" },
+  ];
+
+  const WebsiteOptions = [
+    { value: "techx", label: "techx.com" },
+    { value: "sparkbook999", label: "sparkbook999.com" },
+    { value: "casinopark", label: "casinopark.com" },
+  ];
 
   return (
     <Modal show={show} onHide={handleClose} centered size="lg">
@@ -24,10 +34,12 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
         {/* Row 1: Title and Close Icon */}
         <div className="d-flex justify-content-between align-items-center mb-2 px-3">
           {role === "management" ? (
-          <h5 className="mb-0 medium-font black-text">Add Director & Super Admin</h5>
-          ):(
+            <h5 className="mb-0 medium-font black-text">
+              Add Director & Super Admin
+            </h5>
+          ) : (
             <h5 className="mb-0 medium-font black-text">Add Super Admin</h5>
-        )}
+          )}
           <Button
             variant="link"
             onClick={handleClose}
@@ -40,29 +52,34 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
         <form className="add-management-popup-form px-3">
           <div className="row mb-3">
             <div className="col-md-4 position-relative">
-              <label>Role</label>
+              <label className="small-font">Role</label>
               <div className="custom-select-wrapper">
-                <select
-                  name="role"
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  className="w-100 small-font rounded all-none input-css"
-                >
-                  <option value="">Select</option>
-                  <option value="Accounts">Accounts</option>
-                  <option value="Designer">Designer</option>
-                  <option value="Company Team">Company Team</option>
-                </select>
+                <Select
+                  className="small-font"
+                  options={roleOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                />
               </div>
             </div>
 
             <div className="col-md-4">
               <label className="small-font">Name</label>
-              <input type="text" className="small-font rounded all-none input-css w-100" placeholder="Enter" />
+              <input
+                type="text"
+                className="small-font rounded all-none input-css w-100"
+                placeholder="Enter"
+              />
             </div>
             <div className="col-md-4">
               <label className="small-font">Login Name</label>
-              <input type="text" className="small-font rounded all-none input-css w-100" placeholder="Enter" />
+              <input
+                type="text"
+                className="small-font rounded all-none input-css w-100"
+                placeholder="Enter"
+              />
             </div>
           </div>
 
@@ -70,21 +87,31 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="small-font">Website</label>
-              <select className="small-font rounded all-none input-css w-100">
-                <option>Select</option>
-                <option>techx.com</option>
-                <option>sparkbook999.com</option>
-                <option>casinopark.com</option>
-              </select>
+              <Select
+                className="small-font"
+                options={WebsiteOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
 
             <div className="col-md-4">
               <label className="small-font">Share</label>
-              <input type="text" className="small-font rounded all-none input-css w-100" placeholder="Enter" />
+              <input
+                type="text"
+                className="small-font rounded all-none input-css w-100"
+                placeholder="Enter"
+              />
             </div>
             <div className="col-md-4">
               <label className="small-font">Rent</label>
-              <input type="text" className="small-font rounded all-none input-css w-100" placeholder="Enter" />
+              <input
+                type="text"
+                className="small-font rounded all-none input-css w-100"
+                placeholder="Enter"
+              />
             </div>
           </div>
 
@@ -102,7 +129,11 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="small-font">Country</label>
-              <input type="text" className="small-font rounded all-none input-css w-100" placeholder="Enter" />
+              <input
+                type="text"
+                className="small-font rounded all-none input-css w-100"
+                placeholder="Enter"
+              />
             </div>
             <div className="col-md-4 position-relative">
               <label className="small-font">Password</label>

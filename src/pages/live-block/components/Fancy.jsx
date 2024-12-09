@@ -5,8 +5,9 @@ import { MdBlock } from "react-icons/md";
 import Table from "../../../components/Table";
 import LiveFancyBets from "./LiveFancy";
 import DeclaredFancyBets from "./DeclaredFancy";
-import { useNavigate, useParams } from "react-router";
+
 import "../style.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 const cols = [
   { header: "Odds", field: "odds" },

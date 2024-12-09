@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";

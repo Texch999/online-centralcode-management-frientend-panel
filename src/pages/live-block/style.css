@@ -1,23 +1,26 @@
-.table-special-effect{
-    margin: 0px !important;
-    border-top: none !important;
-    border-bottom: none !important;
+.table-special-effect {
+  margin: 0px !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
-.table-items-centerd .table-wrapper tbody tr td{
-    vertical-align: middle !important;
+.table-items-centerd .table-wrapper tbody tr td {
+  vertical-align: middle !important;
 }
 
-
-.fancy-bet-table-td-style{
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    vertical-align: auto !important;
+.fancy-bet-table-td-style {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  vertical-align: auto !important;
 }
 
 .live-score-board-table-item-top .table-wrapper tbody tr td:nth-child(6) {
-    vertical-align: top !important;
+  vertical-align: top !important;
 }
 
-  
+.custom-react-select__control {
+  background-color: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: rgba(114, 114, 114, 1) !important;
+}

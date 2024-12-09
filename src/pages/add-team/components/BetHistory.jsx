@@ -6,19 +6,21 @@ import { SlPencil } from "react-icons/sl";
 import Table from "../../../components/Table";
 import EditBetPopup from "../../risk-management/EditBetPopup";
 import SuccessPopup from "../../popups/ConfirmationPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const columns = [
-  { header: "Role/Name", field: "roleName"},
-  { header: "Website", field: "website"},
+  { header: "Role/Name", field: "roleName" },
+  { header: "Website", field: "website" },
   {
     header: "Sports - Series/Company Name",
-    field: "sportsCompanyName"
+    field: "sportsCompanyName",
   },
-  { header: "Date & Time", field: "dateTime"},
-  { header: "Bet Place", field: "betPlace"},
-  { header: "P/L", field: "pl"},
+  { header: "Date & Time", field: "dateTime" },
+  { header: "Bet Place", field: "betPlace" },
+  { header: "P/L", field: "pl" },
   { header: "IP Address", field: "ipAddress" },
-  { header: <div className="text-center">Action</div>, field: "action"},
+  { header: <div className="text-center">Action</div>, field: "action" },
 ];
 
 const BetHistory = () => {
@@ -28,6 +30,29 @@ const BetHistory = () => {
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
   };
+
+  const websiteOptions = [
+    { value: "texchange", label: "texchange.com" },
+    { value: "fun77", label: "fun77.com" },
+    { value: "tcasinopark", label: "tcasinopark.com" },
+    { value: "diamondexchange", label: "diamondexchange.com" },
+  ];
+  const adminOptions1 = [
+    { value: "Director - Srinivas", label: "Director - Srinivas" },
+    { value: "Super Admin- Ranjit", label: "Super Admin- Ranjit" },
+    { value: "Admin - Rajesh", label: "Admin - Rajesh" },
+    { value: "SA- Jitah", label: "SA- Jitah" },
+    { value: "Agent - Lokesh", label: "Agent - Lokesh" },
+    { value: "Agent - Suresh", label: "Agent - Suresh" },
+  ];
+
+  const adminOptions2 = [
+    { value: "Jithendhra", label: "Jithendhra" },
+    { value: "Sri", label: "Sri" },
+    { value: "Rahul", label: "Rahul" },
+    { value: "Hanu", label: "Hanu" },
+    { value: "Harish", label: "Harish" },
+  ];
 
   const data = [
     {
@@ -265,40 +290,42 @@ const BetHistory = () => {
 
         <div className="col-2 mt-1">
           <label className="small-font mb-1">Website</label>
-          <select className="small-font input-css rounded px-3 w-100">
-            <option className="small-font">texchange.com</option>
-            <option className="small-font">fun77.com</option>
-            <option className="small-font">tcasinopark.com</option>
-            <option className="small-font">diamondexchange.com</option>
-          </select>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
 
         <div className="col-2 mt-1">
           <label className="small-font mb-1">Admin</label>
-          <select className="small-font input-css rounded px-3 w-100">
-            <option className="small-font">Director - Srinivas</option>
-            <option className="small-font">Super Admin - Ranjit</option>
-            <option className="small-font">Admin - Rajesh</option>
-            <option className="small-font">SA- Jitah</option>
-            <option className="small-font">Agent - Lokesh</option>
-            <option className="small-font">Agent - Suresh</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions1}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
 
         <div className="col-2 mt-1">
           <label className="small-font mb-1">Admin</label>
-          <select className="small-font input-css rounded px-3 w-100">
-            <option className="small-font">Jitendra</option>
-            <option className="small-font">Jayanta</option>
-            <option className="small-font">Sri</option>
-            <option className="small-font">Rahul</option>
-            <option className="small-font">Raj</option>
-            <option className="small-font">Sri Varma</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions2}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
 
         <div className="col-1 d-flex align-items-end">
-          <button className="rounded small-font saffron-btn px-3">
+          <button className="w-100 rounded small-font saffron-btn">
             Search
           </button>
         </div>

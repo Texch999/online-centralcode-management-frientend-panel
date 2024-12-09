@@ -3,20 +3,33 @@ import { FaSearch } from "react-icons/fa";
 import { GrEdit } from "react-icons/gr";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
 import { FaSync } from "react-icons/fa";
 import "../../../App.css";
 import "../../../index.css";
 import "../style.css";
 import EditBetPopup from "../../risk-management/EditBetPopup";
-
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const ViewFancyBets = () => {
   const [openEditbetPopup, setOpenEditbetPopup] = useState(false);
 
-  const {sport, fancyType } = useParams();
+  const { sport, fancyType } = useParams();
   const navigate = useNavigate();
+
+  const betPlacedOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const betPositionOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const columns = [
     { header: "S. No", field: "s_no", width: "5%" },
@@ -33,10 +46,14 @@ const ViewFancyBets = () => {
     },
     { header: "Bet Placed", field: "betplaced", width: "8%" },
     { header: "Selection", field: "selection", width: "15%" },
-    { header: <div className="text-center">P/L</div>, field: "pl", width: "15%" },
+    {
+      header: <div className="text-center">P/L</div>,
+      field: "pl",
+      width: "15%",
+    },
     { header: "Status", field: "status", width: "7%" },
   ];
-  
+
   const fancyTableData = [
     {
       s_no: <span className="">5/3</span>,
@@ -99,7 +116,7 @@ const ViewFancyBets = () => {
         </div>
       ),
     },
-  
+
     {
       s_no: <span className="red-font">4</span>,
       date_time: (
@@ -322,7 +339,7 @@ const ViewFancyBets = () => {
       ),
     },
   ];
-  
+
   const fancyDeclaredTableData = [
     {
       s_no: <span className="">5/3</span>,
@@ -385,7 +402,7 @@ const ViewFancyBets = () => {
         </div>
       ),
     },
-  
+
     {
       s_no: <span className="">5/3</span>,
       date_time: (
@@ -443,7 +460,7 @@ const ViewFancyBets = () => {
         </div>
       ),
     },
-  
+
     {
       s_no: <span className="">5/3</span>,
       date_time: (
@@ -543,34 +560,36 @@ const ViewFancyBets = () => {
             <label htmlFor="paymentMethod" className="small-font fw-400 mb-1">
               Bet Placed
             </label>
-            <select
-              id="paymentMethod"
-              className="w-100 small-font rounded input-css2 select-input"
-            >
-              <option value="1">Option-1</option>
-              <option value="2">Option-2</option>
-              <option value="3">Option-3</option>
-            </select>
+            <Select
+              className="small-font"
+              options={betPlacedOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
 
           <div className="col-4">
             <label htmlFor="paymentMethod" className="small-font fw-400 mb-1">
               Bet Position
             </label>
-            <select
-              id="paymentMethod"
-              className="w-100 small-font rounded input-css2 select-input"
-            >
-              <option value="1">Option-1</option>
-              <option value="2">Option-2</option>
-              <option value="3">Option-3</option>
-            </select>
+            <Select
+              className="small-font"
+              options={betPositionOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
 
           <div className="col-2 align-self-end">
             <button
               type="button"
-              className="saffron-btn w-100 rounded small-font mb-1"
+              className="saffron-btn2 w-100 rounded small-font"
             >
               Submit
             </button>
@@ -589,7 +608,10 @@ const ViewFancyBets = () => {
         )}
       </div>
 
-      <EditBetPopup editBetPopupOpen={openEditbetPopup} setEditBetPopupOpen={() => setOpenEditbetPopup(false)}/>
+      <EditBetPopup
+        editBetPopupOpen={openEditbetPopup}
+        setEditBetPopupOpen={() => setOpenEditbetPopup(false)}
+      />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import PropTypes from "prop-types";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const AddPaymentGatewayPopup = ({ show, onHide }) => {
   const [paymentMethod, setPaymentMethod] = useState("1");
@@ -63,6 +65,17 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
   const handleQrCodeChange = (e) => {
     setQrCode(e.target.files[0]);
   };
+  const paymentMethodOptions = [
+    { value: "1", label: "NEFT/RTGS" },
+    { value: "2", label: "UPI" },
+    { value: "3", label: "QR Code" },
+  ];
+
+  const upiProviderOptions = [
+    { value: "GooglePay", label: "Google Pay" },
+    { value: "PhonePe", label: "PhonePe" },
+    { value: "Paytm", label: "Paytm" },
+  ];
 
   return (
     <Modal centered show={show} onHide={onHide} size="md">
@@ -72,23 +85,33 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
           <MdOutlineClose size={22} onClick={onHide} className="pointer" />
         </div>
 
-        {/* Form Section */}
         <div className="row mb-3">
-          {/* Select Method Dropdown */}
           <div className="col-4">
             <label htmlFor="paymentMethod" className="small-font mb-1">
               Select Method
             </label>
-            <select
-              id="paymentMethod"
-              className="w-100 small-font rounded input-css all-none"
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <option value="1">NEFT/RTGS</option>
-              <option value="2">UPI</option>
-              <option value="3">QR Code</option>
-            </select>
+            <Select
+              className="small-font"
+              options={[
+                { value: "1", label: "NEFT/RTGS" },
+                { value: "2", label: "UPI" },
+                { value: "3", label: "QR Code" },
+              ]}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              value={{
+                value: paymentMethod,
+                label:
+                  paymentMethod === "1"
+                    ? "NEFT/RTGS"
+                    : paymentMethod === "2"
+                    ? "UPI"
+                    : "QR Code",
+              }}
+              onChange={(selected) => setPaymentMethod(selected.value)}
+            />
           </div>
 
           {/* Conditional Fields based on Payment Method */}
@@ -99,16 +122,28 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
                 <label htmlFor="provider" className="small-font mb-1">
                   Select Provider
                 </label>
-                <select
-                  id="provider"
-                  className="w-100 small-font rounded input-css all-none"
-                  value={provider}
-                  onChange={(e) => setProvider(e.target.value)}
-                >
-                  <option value="GooglePay">Google Pay</option>
-                  <option value="PhonePe">PhonePe</option>
-                  <option value="Paytm">Paytm</option>
-                </select>
+                <Select
+                  className="small-font"
+                  options={[
+                    { value: "GooglePay", label: "Google Pay" },
+                    { value: "PhonePe", label: "PhonePe" },
+                    { value: "Paytm", label: "Paytm" },
+                  ]}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  value={{
+                    value: provider,
+                    label:
+                      provider === "GooglePay"
+                        ? "Google Pay"
+                        : provider === "PhonePe"
+                        ? "PhonePe"
+                        : "Paytm",
+                  }}
+                  onChange={(selected) => setProvider(selected.value)}
+                />
               </div>
 
               <div className="col-4">

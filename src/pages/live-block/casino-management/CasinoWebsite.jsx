@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../../popups/ConfirmationPopup";
 

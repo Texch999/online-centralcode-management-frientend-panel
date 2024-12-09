@@ -151,7 +151,11 @@ const DownlineList = () => {
           </button>
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2 pointer" />
-            <MdBlockFlipped size={20} className="icon-action me-2 pointer" onClick={() => setOnBlockPopup(true)}/>
+            <MdBlockFlipped
+              size={20}
+              className="icon-action me-2 pointer"
+              onClick={() => setOnBlockPopup(true)}
+            />
             <MdSwapVert
               size={20}
               className="icon-action pointer"

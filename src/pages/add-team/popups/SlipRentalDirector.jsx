@@ -3,8 +3,16 @@ import { Modal } from "react-bootstrap";
 import { Images } from "../../../images";
 import { MdOutlineClose } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const SlipRentalDirector = ({ show, onHide }) => {
+  const selectReasonOptions = [
+    { value: "option 1", label: "option 1" },
+    { value: "option 2", label: "option 2" },
+    { value: "option 3", label: "option 3" },
+  ];
+
   return (
     <Modal
       show={show}
@@ -60,8 +68,9 @@ const SlipRentalDirector = ({ show, onHide }) => {
             <div className="col-12 d-flex justify-content-between col-12 mb-2">
               <div>From</div>
               <div className="text-end">
-                Srinivas- Director- Rental (Sports - Monthly - <span className="yellow-font">Exp 31-09-2024</span>)
-                (Casino - <span className="yellow-font">10%</span>)
+                Srinivas- Director- Rental (Sports - Monthly -{" "}
+                <span className="yellow-font">Exp 31-09-2024</span>) (Casino -{" "}
+                <span className="yellow-font">10%</span>)
               </div>
             </div>
 
@@ -127,20 +136,14 @@ const SlipRentalDirector = ({ show, onHide }) => {
           </div>
 
           <div className="col-6 p-0 m-0 pe-2">
-            <select className="w-100 input-bg p-2 small-font all-none rounded mb-3">
-              <option className="small-font" defaultValue>
-                Select Rejection Reason
-              </option>
-              <option className="small-font" value="1">
-                Reason 1
-              </option>
-              <option className="small-font" value="2">
-                Reason 2
-              </option>
-              <option className="small-font" value="3">
-                Reason 3
-              </option>
-            </select>
+          <Select
+            className="small-font mb-3 w-100 p-0"
+            options={selectReasonOptions}
+            placeholder="Select Rejection Reason"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
           </div>
           <div className="col-6 p-0 m-0 ps-2">
             <div className="flex-between p-2 small-font input-bg rounded">
