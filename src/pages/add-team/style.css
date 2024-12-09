@@ -19,7 +19,7 @@
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1200px) {
-  .upload-input-popup{
+  .upload-input-popup {
     padding: 0.4rem;
   }
 }
@@ -220,3 +220,4 @@
 .dashed-line {
   border: 1px dashed rgba(0, 0, 0, 0.2);
 }
+

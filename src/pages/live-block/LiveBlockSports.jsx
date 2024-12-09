@@ -8,7 +8,6 @@ import "./style.css";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 
-
 function LiveBlockSports() {
   const [activeSport, setActiveSport] = useState("Cricket");
   const [tabTopTenPlayer, setTabTopTenPlayer] = useState(
@@ -37,7 +36,6 @@ function LiveBlockSports() {
   const handleTabTopPlayer = (activeTab) => {
     setTabTopTenPlayer(activeTab);
   };
-
 
   const live_data_details_columns = [
     { header: "Live / Open Date & Time", field: "dateTime", width: "13%" },
@@ -890,37 +888,44 @@ function LiveBlockSports() {
       </div>
 
       {/* Tabs for Top Players */}
-      <div className="small-font py-3 d-flex">
-        <button
-          className={`me-3 px-3 py-2 ${
-            tabTopTenPlayer === "matched-amount-player"
-              ? "saffron-btn2"
-              : "white-btn2"
-          }`}
-          onClick={() => handleTabTopPlayer("matched-amount-player")}
-        >
-          Top 10 Matched Amount Player
-        </button>
-        <button
-          className={`me-3 px-3 py-2 ${
-            tabTopTenPlayer === "exposure-player"
-              ? "saffron-btn2"
-              : "white-btn2"
-          }`}
-          onClick={() => handleTabTopPlayer("exposure-player")}
-        >
-          Top 10 Exposure Player
-        </button>
-      </div>
+      {activeSport === "Cricket" || activeSport === "Football" ? (
+        <div>
+          <div className="small-font py-3 d-flex">
+            <button
+              className={`me-3 px-3 py-2 ${
+                tabTopTenPlayer === "matched-amount-player"
+                  ? "saffron-btn2"
+                  : "white-btn2"
+              }`}
+              onClick={() => handleTabTopPlayer("matched-amount-player")}
+            >
+              Top 10 Matched Amount Player
+            </button>
+            <button
+              className={`me-3 px-3 py-2 ${
+                tabTopTenPlayer === "exposure-player"
+                  ? "saffron-btn2"
+                  : "white-btn2"
+              }`}
+              onClick={() => handleTabTopPlayer("exposure-player")}
+            >
+              Top 10 Exposure Player
+            </button>
+          </div>
 
-      {/* Tab Content */}
-      <div>
-        {tabTopTenPlayer === "matched-amount-player" ? (
-          <TopMatchedAmountPlayer />
-        ) : (
-          <TopExposurePlayer />
-        )}
-      </div>
+          {/* Tab Content */}
+          <div>
+            {tabTopTenPlayer === "matched-amount-player" ? (
+              <TopMatchedAmountPlayer />
+            ) : (
+              <TopExposurePlayer />
+            )}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className="mt-4">
         <Table
           data={getSportData(activeSport)}

@@ -4,6 +4,8 @@ import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../style.css";
 import "../../../App.css";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const AddManagementPopup = ({
   formData,
@@ -18,12 +20,19 @@ const AddManagementPopup = ({
     managementPassword: false,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleChange = (value, action) => {
+    if (action.name === "role") {
+      setFormData({
+        ...formData,
+        [action.name]: value.value, // Update with selected value
+      });
+    } else {
+      const { name, value } = action.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const togglePasswordVisibility = (field) => {
@@ -37,6 +46,13 @@ const AddManagementPopup = ({
     e.preventDefault();
     onSubmit(formData);
   };
+
+  // Options for the dropdown
+  const roleOptions = [
+    { value: "Accounts", label: "Accounts" },
+    { value: "Designer", label: "Designer" },
+    { value: "Company Team", label: "Company Team" },
+  ];
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
@@ -59,18 +75,22 @@ const AddManagementPopup = ({
           <div className="row mb-3">
             <div className="col">
               <label className="small-font mb-1">Role</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-100 small-font rounded all-none input-css"
-              >
-                <option value="">Select</option>
-                <option value="Accounts">Accounts</option>
-                <option value="Designer">Designer</option>
-                <option value="Company Team">Company Team</option>
-              </select>
+              <Select
+                className="small-font"
+                options={roleOptions}
+                value={roleOptions.find(
+                  (option) => option.value === formData.role
+                )}
+                onChange={(selectedOption) =>
+                  handleChange(selectedOption, { name: "role" })
+                }
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
+
             <div className="col">
               <label className="small-font mb-1">Name</label>
               <input
@@ -95,7 +115,6 @@ const AddManagementPopup = ({
             </div>
           </div>
 
-          {/* Row 2: Phone Number, Password, Confirm Password */}
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="small-font mb-1">Phone Number</label>
@@ -156,7 +175,6 @@ const AddManagementPopup = ({
             </div>
           </div>
 
-          {/* Row 3: Email, Management Password, Submit Button */}
           <div className="row mb-3 align-items-end">
             <div className="col-md-4">
               <label className="small-font mb-1">Email:</label>

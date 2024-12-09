@@ -11,6 +11,7 @@ const IndividualMatchOddsLive = () => {
   const navigate = useNavigate();
   const { sport } = useParams();
 
+
   return (
     <div className="">
       <div className="flex-between mb-3 mt-2">
