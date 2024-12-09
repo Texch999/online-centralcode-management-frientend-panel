@@ -152,7 +152,6 @@
   border-radius: 0.35rem;
   outline: none;
   color: #f43a23;
-
   font-weight: 500;
   padding: 0.5rem;
   text-align: center;
@@ -375,6 +374,7 @@
 }
 .red-font {
   color: #d0431c !important;
+  font-weight: 600;
 }
 .sky-blu-font {
   color: #6bc0ff;

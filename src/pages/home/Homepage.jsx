@@ -1,12 +1,4 @@
-import React, { useState } from "react";
-import "../home/style.css";
-import { IoMdTrendingUp } from "react-icons/io";
-import { Bar } from "react-chartjs-2";
-import ScrollTable from "../../components/ScrollTable";
-import { useNavigate } from "react-router-dom";
-import { PiHandCoinsFill } from "react-icons/pi";
-import { FaCoins } from "react-icons/fa";
-import { HiUserGroup } from "react-icons/hi";
+import { useState } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -16,15 +8,16 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
-ChartJS.register(
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend
-);
+import "../home/style.css";
+import { IoMdTrendingUp } from "react-icons/io";
+import { Bar } from "react-chartjs-2";
+import ScrollTable from "../../components/ScrollTable";
+import { useNavigate } from "react-router-dom";
+import { PiHandCoinsFill } from "react-icons/pi";
+import { FaCoins } from "react-icons/fa";
+import Select from "react-select";
+import { HiUserGroup } from "react-icons/hi";
+import { roundedReactSelect } from "../../components/ReactSelectStyles";
 
 function Homepage() {
   ChartJS.register(
@@ -35,23 +28,25 @@ function Homepage() {
     Tooltip,
     Legend
   );
-
-  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
-
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
-  const buttons = ["Casino Winners", "Casino Looser"];
+  const BUTTONS = ["Casino Winners", "Casino Looser"];
+  const FILTER_OPTIONS = [
+    { value: "today", label: "Taday" },
+    { value: "this_week", label: "This Week" },
+    { value: "this_month", label: "This Month" },
+  ];
   const handleClick = (index) => {
     setActiveBtn(index);
   };
 
   const customerCols = [
-    { header: "Customer Name", field: "customer",},
-    { header: "Role", field: "role", },
-    { header: "Casino (%)", field: "casino", },
-    { header: "Sports (R)", field: "sports", },
-    { header: "Sports & Casino (%)", field: "sc",},
-    { header: <div className="flex-center">Pay</div>, field: "pay", },
+    { header: "Customer Name", field: "customer" },
+    { header: "Role", field: "role" },
+    { header: "Casino (%)", field: "casino" },
+    { header: "Sports (R)", field: "sports" },
+    { header: "Sports & Casino (%)", field: "sc" },
+    { header: <div className="flex-center">Pay</div>, field: "pay" },
   ];
 
   const customerData = [
@@ -75,61 +70,9 @@ function Homepage() {
           <div>S&C-5%</div>
         </div>
       ),
-      role: <div>Direcor</div>,
-      casino: <div>-</div>,
-      sports: <div>-</div>,
-      sc: <div>100000</div>,
-      pay: <div>209888</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>S&C-5%</div>
-        </div>
-      ),
-      role: <div>Direcor</div>,
-      casino: <div>-</div>,
-      sports: <div>-</div>,
-      sc: <div>100000</div>,
-      pay: <div>209888</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>S&C-5%</div>
-        </div>
-      ),
-      role: <div>Direcor</div>,
-      casino: <div>-</div>,
-      sports: <div>-</div>,
-      sc: <div>100000</div>,
-      pay: <div>209888</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>S&C-5%</div>
-        </div>
-      ),
-      role: <div>Direcor</div>,
-      casino: <div>-</div>,
-      sports: <div>-</div>,
-      sc: <div>100000</div>,
-      pay: <div>209888</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>S&C-5%</div>
-        </div>
-      ),
-      role: <div>Direcor</div>,
-      casino: <div>-</div>,
-      sports: <div>-</div>,
+      role: <div>Super Admin</div>,
+      casino: <div>10000000</div>,
+      sports: <div>10000000</div>,
       sc: <div>100000</div>,
       pay: <div>209888</div>,
     },
@@ -240,90 +183,6 @@ function Homepage() {
       ),
       pl: <div className="dark-orange-clr">-500000</div>,
     },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">-500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">-500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">-500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">-500000</div>,
-    },
   ];
 
   const siteWinnerData = [
@@ -346,133 +205,7 @@ function Homepage() {
           <div>Casino Park</div>
         </div>
       ),
-      pl: <div className="green-clr">500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="green-clr">500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="green-clr">500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="green-clr">500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="green-clr">500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="green-clr">500000</div>,
-    },
-    {
-      customer: (
-        <div className="d-flex flex-column">
-          <div>Srinivas</div>
-          <div>Hyderabad</div>
-        </div>
-      ),
-      admin: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Sub Admin</div>
-        </div>
-      ),
-      site: (
-        <div className="d-flex flex-column">
-          <div>T-Exchange</div>
-          <div>Casino Park</div>
-        </div>
-      ),
-      pl: <div className="green-clr">500000</div>,
+      pl: <div className="red-font">500000</div>,
     },
     {
       customer: (
@@ -538,33 +271,75 @@ function Homepage() {
       pl: <div className="green-clr">500000</div>,
     },
   ];
-
+  const MONTHS_DATA = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const barData = {
-    labels: labels,
+    labels: MONTHS_DATA,
     datasets: [
       {
         label: "Casino Sales",
         backgroundColor: "#98BDFF",
-        borderColor: "",
         borderRadius: 5,
-        data: [5, 10, 25, 30, 35, 40, 45],
+        data: [
+          10000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000,
+        ],
       },
-
       {
         label: "Sports Sales",
         backgroundColor: "#4B49AC",
-        borderColor: "",
         borderRadius: 5,
-        data: [10, 20, 25, 45, 35, 40, 45],
+        data: [
+          5000000, 10000000, 25000000, 50000000, 75000000, 100000000, 150000000,
+        ],
       },
       {
         label: "Casino & Sports Sales",
         backgroundColor: "#F3797E",
-        borderColor: "",
         borderRadius: 5,
-        data: [15, 40, 50, 75, 70, 80, 90],
+        data: [
+          6000000, 15000000, 30000000, 75000000, 100000000, 200000000,
+          250000000,
+        ],
       },
     ],
+  };
+
+  const barOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+        display: "flex",
+      },
+    },
+    scales: {
+      y: {
+        type: "linear",
+        ticks: {
+          callback: function (value) {
+            if (value >= 10000000) return `${value / 10000000}Cr`;
+            if (value >= 100000) return `${value / 100000}L`;
+            return value;
+          },
+        },
+        beginAtZero: true,
+      },
+      x: {
+        type: "category",
+      },
+    },
   };
 
   return (
@@ -573,7 +348,6 @@ function Homepage() {
       <div className="medium-font grey-clr">
         In facilisis vitae metus molestie vestibulum. Nulla molestie..
       </div>
-
       <div className="d-flex w-100 mt-2">
         <div className="col-6 pe-2">
           <div className="d-flex flex-column">
@@ -593,11 +367,10 @@ function Homepage() {
                 </div>
               </div>
               <div className="hor-grey-line"></div>
-              <div className="px-3 py-2 table-50vh">
-                <Bar data={barData} />
+              <div className="w-100 px-3 py-2 h-auto scroll-x">
+                <Bar data={barData} options={barOptions} />
               </div>
             </div>
-
             <div className="d-flex flex-column mt-3">
               <div className="d-flex mb-3 w-100">
                 <div className="col-3 pe-1">
@@ -625,7 +398,6 @@ function Homepage() {
                   </div>
                 </div>
               </div>
-
               <ScrollTable
                 columns={customerCols}
                 data={customerData}
@@ -634,7 +406,6 @@ function Homepage() {
             </div>
           </div>
         </div>
-
         <div className="col-6 ps-2">
           <div className="d-flex flex-column">
             <div className="d-flex w-100 mb-2">
@@ -709,9 +480,9 @@ function Homepage() {
                 </div>
               </div>
             </div>
-            <div className="d-flex flex-between small-font mt-4">
-              <div className="d-flex pointer small-font white-box rounded-pill">
-                {buttons.map((btn, index) => {
+            <div className="d-flex flex-between small-font mt-3">
+              <div className="d-flex pointer white-box rounded-pill">
+                {BUTTONS.map((btn, index) => {
                   return (
                     <div
                       key={index}
@@ -725,12 +496,15 @@ function Homepage() {
                   );
                 })}
               </div>
-              <div className="pointer">
-                <select className="all-none w-100 input-css2 px-2 py-1 rounded-pill black-text">
-                  <option>Today</option>
-                  <option>Tomorrow</option>
-                  <option>yesterday</option>
-                </select>
+              <div className="col-2 pointer">
+                <Select
+                  className="w-100 small-font"
+                  options={FILTER_OPTIONS}
+                  placeholder="Select"
+                  styles={roundedReactSelect}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                />
               </div>
             </div>
             <div className="mt-3">
