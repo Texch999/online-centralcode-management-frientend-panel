@@ -22,20 +22,7 @@ const DashboardViewAll = () => {
     Tooltip,
     Legend
   );
-  const MONTHS_DATA = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const MONTHS_DATA = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
   const barData = {
     labels: MONTHS_DATA,
     datasets: [
