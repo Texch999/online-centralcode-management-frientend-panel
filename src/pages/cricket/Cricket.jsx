@@ -18,6 +18,15 @@ import { FaRegTrashCan } from "react-icons/fa6";
 const Cricket = () => {
   const navigate = useNavigate();
   const { vendor, provider, match } = useParams();
+  const [showBlockModal, setShowBlockModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const handleBlockModal = () => {
+    setShowBlockModal(!showBlockModal);
+  };
+  const handleDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
+
   const matchContent =
     match === "Football" ? (
       <>
@@ -59,18 +68,9 @@ const Cricket = () => {
       </>
     );
 
-  const [showBlockModal, setShowBlockModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const handleBlockModal = () => {
-    setShowBlockModal(!showBlockModal);
-  };
-  const handleDeleteModal = () => {
-    setShowDeleteModal(!showDeleteModal);
-  };
   const cols = [
-    { header: "", field: "watch" },
-    { header: "Date & Time", field: "date" },
+    { header: "", field: "watch", width: "10%" },
+    { header: "Date&Time", field: "date" },
     { header: "Matches/ID", field: "match" },
     ...(match !== "HorseRacing"
       ? [{ header: "Series Name/ID", field: "series" }]
@@ -79,12 +79,8 @@ const Cricket = () => {
     {
       header: (
         <div className="row">
-          <div className="col-6 flex-end">
-            <span>Back</span>
-          </div>
-          <div className="col-6 d-flex">
-            <span>Lay</span>
-          </div>
+          <div className="col-6 flex-end">Back</div>
+          <div className="col-6 d-flex">Lay</div>
         </div>
       ),
       field: "back_lay",
@@ -96,19 +92,16 @@ const Cricket = () => {
   const data = [
     {
       watch: (
-        <div className="inplay-btn w-fit py-1 px-2 my-1 mx-2 text-center">
-          In Play
-        </div>
+        <div className="inplay-btn w-fit py-1 px-2 white-space">In-Play</div>
       ),
       date: (
         <div className="d-flex flex-column">
-          <div>21-09-2024</div>
+          <div className="white-space">21-09-2024</div>
           <div>08:00:00</div>
         </div>
       ),
       match: [matchContent],
       series: [seriesContent],
-
       back_lay: (
         <div className="d-flex w-100">
           <div className="col-6 flex-between">
@@ -144,28 +137,28 @@ const Cricket = () => {
 
       bl: (
         <div className="d-flex">
-          <div className="">
-            <div className="">Back</div>
+          <div>
+            <div>Back</div>
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 text-center mb-1 ms-1">
-              10000000
-            </div>
-            <div className="lay-btn-cricket px-2 ms-1 text-center">
-              30000000
-            </div>
+            <div className="back-btn-cricket px-2 ms-1">10000000</div>
+            <div className="lay-btn-cricket px-2 ms-1 mt-1">30000000</div>
           </div>
         </div>
       ),
       action: (
-        <div class="d-flex mt-1 ">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="d-flex">
+          <MdBlock
+            onClick={handleBlockModal}
+            size={18}
+            className="pointer grey-clr"
+          />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer grey-clr"
+          />
         </div>
       ),
     },
@@ -212,31 +205,30 @@ const Cricket = () => {
           </div>
         </div>
       ),
-
       bl: (
         <div className="d-flex">
-          <div className="">
-            <div className="">Back</div>
+          <div>
+            <div>Back</div>
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket text-center px-2 mb-1 ms-1">
-              10000000
-            </div>
-            <div className="lay-btn-cricket text-center px-2 ms-1">
-              30000000
-            </div>
+            <div className="back-btn-cricket px-2 ms-1">10000000</div>
+            <div className="lay-btn-cricket px-2 ms-1 mt-1">30000000</div>
           </div>
         </div>
       ),
       action: (
-        <div class="d-flex mt-1">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="d-flex">
+          <MdBlock
+            onClick={handleBlockModal}
+            size={18}
+            className="pointer grey-clr"
+          />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer grey-clr"
+          />
         </div>
       ),
     },
@@ -284,31 +276,30 @@ const Cricket = () => {
           </div>
         </div>
       ),
-
       bl: (
         <div className="d-flex">
-          <div className="">
-            <div className="">Back</div>
+          <div>
+            <div>Back</div>
             <div className="my-1">Lay</div>
           </div>
           <div>
-            <div className="back-btn-cricket px-2 mb-1 text-center ms-1">
-              10000000
-            </div>
-            <div className="lay-btn-cricket px-2 ms-1 text-center">
-              30000000
-            </div>
+            <div className="back-btn-cricket px-2 ms-1">10000000</div>
+            <div className="lay-btn-cricket px-2 ms-1 mt-1">30000000</div>
           </div>
         </div>
       ),
       action: (
-        <div class="d-flex mt-1">
-          <div>
-            <MdBlock className="font-20 dark-orange-clr" />
-          </div>
-          <div>
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="d-flex">
+          <MdBlock
+            onClick={handleBlockModal}
+            size={18}
+            className="pointer grey-clr"
+          />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer grey-clr"
+          />
         </div>
       ),
     },
@@ -316,25 +307,20 @@ const Cricket = () => {
   return (
     <div className="">
       <div className="d-flex flex-between mt-3 mb-2">
-        <div className=" pointer large-font" onClick={() => navigate(-1)}>
+        <div
+          className="large-font pointer flex-center"
+          onClick={() => navigate(-1)}
+        >
           <span className="grey-clr">
-            Sports{" "}
-            <span className="font-25">
-              <MdKeyboardArrowRight />
-            </span>
-          </span>
-          <span className="grey-clr">{vendor}</span>
-          <span className="grey-clr">
-            <span className="font-25">
-              <MdKeyboardArrowRight />
-            </span>
+            Sports
+            <MdKeyboardArrowRight size={18} />
+            {vendor}
+            <MdKeyboardArrowRight size={18} />
             {provider}
           </span>
-          <span>
-            <span className="font-25">
-              <MdKeyboardArrowRight />
-            </span>
-            <span className="fw-800">{match}</span>
+          <span className="black-text4">
+            <MdKeyboardArrowRight size={18} />
+            {match}
           </span>
         </div>
         <div className="small-font flex-between">

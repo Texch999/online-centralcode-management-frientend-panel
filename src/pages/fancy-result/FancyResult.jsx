@@ -4,8 +4,10 @@ import { FaSearch } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 import { whiteReactSelect } from "../../components/ReactSelectStyles";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 const FancyResult = () => {
+  const navigate = useNavigate();
   const selectSports = [
     { value: "cricket", label: "Cricket" },
     { value: "football", label: "Football" },
@@ -119,7 +121,12 @@ const FancyResult = () => {
       ),
       action: (
         <div className="flex-center">
-          <BsEye size={18} />
+          <BsEye
+            size={18}
+            onClick={() =>
+              navigate("/central-sports/Ranjith/Fancy/Cricket/IndiavsAustralia")
+            }
+          />
         </div>
       ),
     },
