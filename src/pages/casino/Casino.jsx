@@ -16,9 +16,9 @@ function Casino() {
     navigate(`/central-casino/${vendor}/${provider}`);
   };
   const cols = [
-    { header: "S No", field: "sno", width: "5%" },
+    { header: "S No", field: "sno", width: "8%" },
     { header: "Vendor Name", field: "vendor", width: "15%" },
-    { header: "Vendor Percentage", field: "vendorper", width: "15%" },
+    { header: "Vendor %", field: "vendorper", width: "15%" },
     { header: "Vendor Country", field: "country", width: "15%" },
     {
       header: (
