@@ -217,6 +217,7 @@ function App() {
               {/* Sports Routes */}
               <Route path="/central-sports" element={<Sports />} />
               <Route path="/sports-promotions" element={<SportsPromotions />} />
+              <Route path="/casino-promotions" element={<CasinoPromotions />} />
               <Route path="/fancy-results" element={<FancyResult />} />
               <Route path="/market-results" element={<MarketResult />} />
               <Route
