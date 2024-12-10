@@ -619,7 +619,7 @@ const Result = () => {
           </>
         )}
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
           Submit
         </div>
       </div>

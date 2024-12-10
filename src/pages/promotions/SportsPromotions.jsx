@@ -158,15 +158,16 @@ const SportsPromotions = () => {
               classNamePrefix="custom-react-select"
             />
           </div>
-          <div className="saffron-btn2 small-font pointer mt-4  col-2">
+          <div className="align-self-end saffron-btn2 small-font pointer col-2">
             Submit
           </div>
         </div>
         <div
-          className="white-bg p-2 grey-border flex-center blue-font br-10 small-font pointer mt-4 w-10"
+          className="white-bg align-self-end p-2 grey-border flex-center blue-font br-10 small-font pointer w-10"
           onClick={() => setAddPromotionsModal(!addPromotionsModal)}
         >
-          <IoAddOutline className="large-font" /> Add New
+          <IoAddOutline className="medium-font" />
+          <span className="small-font">Add New</span>
         </div>
       </div>
       <div className="mt-4 ">

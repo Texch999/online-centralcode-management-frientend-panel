@@ -111,11 +111,11 @@ const Offer = () => {
           ))}
         </div>
         <div
-          className="saffron-btn2 pointer flex-center"
+          className="saffron-btn2 pointer flex-center align-items-center"
           onClick={() => setUploadPoster(!uploadPoster)}
         >
-          <IoAddOutline size={18} />
-          <span className="ms-2">Add New</span>
+          <IoAddOutline className="medium-font" />
+          <span className="ms-2 small-font">Add New</span>
         </div>
       </div>
       <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={1} />

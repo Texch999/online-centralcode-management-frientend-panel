@@ -503,7 +503,7 @@ function MyStatement() {
         ))}
       </div>
       <div className="flex-between mb-3 mt-4">
-        <h6 className="d-flex yellow-font mb-0">
+        <h6 className="d-flex yellow-font medium-font mb-0">
           {activeSport === "My Statements"
             ? "My Statements"
             : "My Gateway Transaction"}
@@ -530,12 +530,13 @@ function MyStatement() {
           </div>
         </div>
       )}
-      <div className="d-flex  w-60">
+
+
+      <div className="col-10 col-lg-9 d-flex">
         <div className="w-100 flex-between flex-wrap mb-3 py-3 grey-bg2 rounded">
           <div className="col-6 px-3">
             <div className="white-btn2 flex-between">
               <span className="small-font">
-                {" "}
                 {activeSport === "My Statements"
                   ? "Own D/W. P&L"
                   : "Total Deposit"}{" "}
@@ -584,9 +585,11 @@ function MyStatement() {
           </div>
         )}
       </div>
+
+
       {activeSport === "My Statements" && (
         <div>
-          <h6 className="fw-600">Vendors Account</h6>
+          <h6 className="medium-font fw-600">Vendors Account</h6>
           <div>
             <ScrollTable
               columns={MY_TRANSACTIONS_COLUMNS}
@@ -596,9 +599,9 @@ function MyStatement() {
               greyBackground="footer-bg"
             />
           </div>
-          <div className="d-flex w-100 flex-between mt-4">
+          <div className="d-flex gap-2 mt-4">
             <div className="w-45 ms-2">
-              <h6 className="fw-600">Owner Accounts D/W</h6>
+              <h6 className="medium-font fw-600">Owner Accounts D/W</h6>
               <ScrollTable
                 columns={OWNER_ACCOUNT_COLUMNS}
                 data={OWNER_ACCOUNT_DATA}
@@ -608,7 +611,7 @@ function MyStatement() {
               />
             </div>
             <div className="w-45 me-2">
-              <h6 className="fw-600">Payment Gateway D/W</h6>
+              <h6 className="medium-font fw-600">Payment Gateway D/W</h6>
               <ScrollTable
                 columns={PAYMENT_GATEWAY_COLUMNS}
                 data={PAYMENT_GATEWAY_DATA}
@@ -623,7 +626,7 @@ function MyStatement() {
 
       {activeSport === "My Gateway Transaction" && (
         <div>
-          <h6 className="fw-600">Gateway Transactions</h6>
+          <h6 className="medium-font fw-600">Gateway Transactions</h6>
           <div>
             <ScrollTable
               columns={GATEWAY_COLUMNS}

@@ -118,7 +118,7 @@ const CasinoPromotions = () => {
         ))}
       </div>
       <div className="d-flex w-100 align-items-end justify-content-between my-3 small-font">
-        <div className="d-flex w-50">
+        <div className="col-8 col-lg-6 d-flex">
           <div className="col flex-column me-3">
             <label className="black-text4 mb-1">From</label>
             <input className="input-css2" type="date" />
@@ -143,11 +143,13 @@ const CasinoPromotions = () => {
             <div className="w-100 saffron-btn2 pointer">Submit</div>
           </div>
         </div>
+
         <div
           className="white-bg px-3 py-2 grey-border flex-center blue-font rounded  pointer"
           onClick={() => setCasinoPromotion(!casinoPromotion)}
         >
-          <IoAddOutline size={18} className="me-2" /> Add New
+          <IoAddOutline className="medium-font me-2" />
+          <span className="small-font">Add New</span>
         </div>
       </div>
       {activeBtn === "Admin Promotion" ? (

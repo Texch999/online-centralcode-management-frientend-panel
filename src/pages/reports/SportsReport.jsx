@@ -193,8 +193,8 @@ function SportsReport() {
         </div>
       </div>
 
-      <div className="d-flex w-40 mt-4">
-        <div className="w-100   mb-3 py-3 grey-bg2 rounded">
+      <div className="col-5 col-lg-4 d-flex mt-4 mb-3">
+        <div className="w-100 mb-3 py-3 grey-bg2 rounded">
           {summaryData.map(({ label, value, color }) => (
             <div key={label} className="col-12 px-3 mt-2">
               <div className="white-btn2 flex-between">
@@ -205,7 +205,8 @@ function SportsReport() {
           ))}
         </div>
       </div>
-      <div className="d-flex w-70 flex-between small-font">
+
+      <div className="col-11 col-lg-8 d-flex flex-between small-font mb-4">
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
@@ -219,7 +220,7 @@ function SportsReport() {
         ))}
       </div>
 
-      <div className="d-flex w-50 flex-between mt-2 mb-2">
+      <div className="d-flex w-50 flex-between mt-2 mb-4">
         <div className="col-3 flex-column mx-2">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
@@ -267,7 +268,7 @@ function SportsReport() {
           />
         </div>
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
           Submit
         </div>
       </div>

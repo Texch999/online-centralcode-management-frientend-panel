@@ -274,7 +274,7 @@ const ActivityLogs = () => {
           <input className="input-css2 small-font" type="date" />
         </div>
 
-        <div className="saffron-btn2 small-font pointer mt-4 col-4">Submit</div>
+        <div className="align-self-end saffron-btn2 small-font pointer col-4">Submit</div>
       </div>
       <div className="mt-4">
         <Table

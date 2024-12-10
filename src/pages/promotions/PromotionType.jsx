@@ -155,11 +155,11 @@ const PromotionType = () => {
       </div>
       {activeBtn === "Promotion Type" ? (
         <>
-          <div className="d-flex align-items-end justify-content-between w-100 my-3 small-font">
-            <div className="flex-column col-3">
+          <div className="d-flex justify-content-between w-100 my-3 small-font">
+            <div className="flex-column w-25">
               <label className="black-text4 mb-1">Promotion</label>
               <Select
-                className="small-font"
+                className="small-font w-75"
                 options={selectOptions}
                 placeholder="Select"
                 styles={customStyles}
@@ -168,25 +168,25 @@ const PromotionType = () => {
                 classNamePrefix="custom-react-select"
               />
             </div>
-            <div
-              className="saffron-btn2 pointer"
+            <button
+              className="align-self-end saffron-btn2 pointer"
               onClick={() => setAddNewModal(!addNewModal)}
             >
-              <IoAddOutline size={18} className="me-1" />
+              <IoAddOutline className="medium-font me-1" />
               <span>Add New</span>
-            </div>
+            </button>
           </div>
           <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={2} />
         </>
       ) : (
         <>
-          <div className="d-flex w-50 flex-between my-3">
-            <div className="col-4 flex-column me-3">
+          <div className="col-6 d-flex gap-3 align-items-center  mb-3 mt-3">
+            <div className="col">
               <label className="black-text4 small-font mb-1">
                 Promotion Type
               </label>
               <Select
-                className="small-font"
+                className="small-font w-100"
                 options={selectOptions}
                 placeholder="Select"
                 styles={customStyles}
@@ -195,20 +195,23 @@ const PromotionType = () => {
                 classNamePrefix="custom-react-select"
               />
             </div>
-            <div className="col-6 flex-column me-3 ">
+
+            <div className="w-50 flex-column mt-2">
               <label className="black-text4 small-font mb-1">
-                Upload Poster{" "}
+                Upload Poster
               </label>
               <label htmlFor="poster">
                 <input type="file" style={{ display: "none" }} id="poster" />
-                <div className="input-css2 small-font d-flex flex-between">
-                  Upload <MdOutlineFileUpload size={16} />
+                <div className="input-css2 small-font flex-between">
+                  Upload <MdOutlineFileUpload size={16} className="grey-color" />
                 </div>
               </label>
             </div>
-            <div className="saffron-btn2 small-font pointer mt-4 col-2 mx-2">
+            
+            <div className="align-self-end saffron-btn2 small-font pointer w-25">
               Submit
             </div>
+
           </div>
           <Table
             columns={CRICKET_COLUMNS}

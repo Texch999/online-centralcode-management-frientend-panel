@@ -188,6 +188,10 @@ function App() {
                 element={<OfflineDepositWithdraw />}
               />
               <Route path="/tickets" element={<Tickets />} />
+              <Route
+                path="/gateway-transactions"
+                element={<GatewayTransactions />}
+              />
               <Route path="/payment-details" element={<PaymentGateway />} />
               <Route path="/websites" element={<AddWibsites />} />
 

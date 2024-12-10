@@ -294,12 +294,12 @@ const PrivacyPolicy = () => {
   ];
   return (
     <div>
-      <div className="d-flex w-100 flex-between mb-3 mt-2">
+      
+      <div className="w-100 d-flex flex-between align-items-center mb-3 mt-2">
         <h6 className="yellow-font mb-0">Privacy Policy</h6>
-        <div className="col-5 d-flex flex-between">
-          <div className="col-5 ">
+        <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
             <Select
-              className="small-font"
+              className="small-font w-100"
               options={selectOptions}
               placeholder="Select"
               styles={customStyles}
@@ -307,17 +307,16 @@ const PrivacyPolicy = () => {
               menuPlacement="auto"
               classNamePrefix="custom-react-select"
             />
-          </div>
-          <div className="saffron-btn2 small-font pointer  col-3 mx-2">
+          <div className="w-50 saffron-btn2 small-font pointer">
             Submit
           </div>
-          <div
-            className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded flex-center "
+          <button
+            className="col-1 flex-center align-items-center small-font pointer blue-font input-pill rounded w-25 py-2"
             onClick={() => setAddPrivacyModal(true)}
           >
-            <IoAddOutline className="large-font" size={18} />{" "}
-            <span className="ms-2">Add new</span>
-          </div>
+            <IoAddOutline className="medium-font"/>
+            <span className="small-font">Add new</span>
+          </button>
         </div>
       </div>
 
