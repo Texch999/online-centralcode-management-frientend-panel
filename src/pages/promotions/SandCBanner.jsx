@@ -7,6 +7,9 @@ import { TbArrowsDiagonal } from "react-icons/tb";
 import { FaRegTrashCan } from "react-icons/fa6";
 import FullPosterPopUp from "./FullPosterPopUp";
 import { SlPencil } from "react-icons/sl";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const SandCBanner = () => {
   const [activeBtn, setActiveBtn] = useState("User Posters");
@@ -22,6 +25,12 @@ const SandCBanner = () => {
   const handleSportClick2 = (item) => {
     setActiveBtn2(activeBtn2 === item ? null : item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -138,21 +147,39 @@ const SandCBanner = () => {
       <div className="w-80 d-flex small-font">
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Sports/Casino</label>
-          <select className="input-css2">
-            <option>Sports</option>
-          </select>
+          <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
         </div>
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Websites</label>
-          <select className="input-css2">
-            <option>All</option>
-          </select>
+          <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
         </div>
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Poster Location</label>
-          <select className="input-css2">
-            <option>All</option>
-          </select>
+          <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
         </div>
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Live Date</label>
@@ -170,7 +197,7 @@ const SandCBanner = () => {
           <label htmlFor="poster">
             <input type="file" style={{ display: "none" }} id="poster" />
             <div className="input-css2 flex-between">
-              <span>Select File</span> <MdOutlineFileUpload size={16} />
+              <span>Select File</span> <MdOutlineFileUpload size={18} />
             </div>
           </label>
         </div>

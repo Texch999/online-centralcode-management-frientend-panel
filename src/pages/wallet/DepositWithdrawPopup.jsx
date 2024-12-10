@@ -1,6 +1,8 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "./../../images/index";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
 
 function DepositWithdrawPopup({
   depositWithdrawPopupOpen,
@@ -11,6 +13,13 @@ function DepositWithdrawPopup({
   const handleCancel = () => {
     setDepositWithdrawPopupOpen(false);
   };
+
+  const reasonOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   return (
     <Modal show={depositWithdrawPopupOpen} centered>
       <div className="d-flex justify-content-between black-text4 p-3">
@@ -108,10 +117,14 @@ function DepositWithdrawPopup({
             </div>
           </div>
           <div className="col-12 mt-2">
-            <select className="w-100 grey-box">
-              <option>Select Reject Reason</option>
-              <option>No Amount</option>
-            </select>
+          <Select
+            className="small-font"
+            options={reasonOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
           </div>
           <div className="col-6 mt-3">
             <button className="w-100 saffron-btn2">Approved</button>

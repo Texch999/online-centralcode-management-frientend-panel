@@ -3,6 +3,9 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const Result = () => {
   const [activeBtn, setActiveBtn] = useState("Sports");
@@ -15,6 +18,12 @@ const Result = () => {
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
@@ -568,9 +577,15 @@ const Result = () => {
         {activeBtn !== "Casino" && (
           <div className="col-3 flex-column me-3">
             <label className="black-text4 small-font mb-1">Sports</label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
         )}
 
@@ -578,16 +593,28 @@ const Result = () => {
           <>
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Provider</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
 
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Game</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
           </>
         )}
@@ -598,14 +625,10 @@ const Result = () => {
       </div>
 
       {activeBtn === "Sports" ? (
-          <Table
-            columns={CRICKET_COLUMNS}
-            data={CRICKET_DATA}
-            itemsPerPage={4}
-          />
-        ) : (
-          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
-        )}
+        <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={4} />
+      ) : (
+        <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
+      )}
     </div>
   );
 };

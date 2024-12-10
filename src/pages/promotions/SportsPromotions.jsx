@@ -8,6 +8,9 @@ import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
 import AddNewPromotionPopUp from "./AddNewPromotionPopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const SportsPromotions = () => {
   const [activeBtn, setActiveBtn] = useState("Admin Promotion");
@@ -28,6 +31,12 @@ const SportsPromotions = () => {
       setUserPromotion(false);
     }
   }, [activeBtn]);
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -127,15 +136,27 @@ const SportsPromotions = () => {
           </div>
           <div className="col-3 flex-column me-3">
             <label className="black-text4 small-font mb-1">Website</label>
-            <select className="input-css2 small-font">
-              <option>T Exchange</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
           <div className="col-3 flex-column me-3">
             <label className="black-text4 small-font mb-1">Sports</label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
           <div className="saffron-btn2 small-font pointer mt-4  col-2">
             Submit

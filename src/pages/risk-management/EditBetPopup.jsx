@@ -170,7 +170,7 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
             </div>
 
             <div className="col-4 d-flex align-items-end justify-content-end">
-              <div className="w-100 saffron-btn rounded">Save Changes</div>
+              <div className="w-100 saffron-btn2 rounded">Save Changes</div>
             </div>
           </div>
         </div>

@@ -5,6 +5,9 @@ import { MdLoop } from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { SlPencil } from "react-icons/sl";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
@@ -19,6 +22,19 @@ function CheatAlertBets() {
   const handleChange = (e) => {
     setSelectedType(e.target.value);
   };
+
+  const userOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const websiteOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const SPORTS_BUTTONS = [
     "All",
     "Toss",
@@ -402,15 +418,27 @@ function CheatAlertBets() {
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">User Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={userOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">Website Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col  flex-column d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>

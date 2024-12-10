@@ -9,6 +9,9 @@ import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
 import CasinoPromotionsPopUp from "./CasinoPromotionsPopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const CasinoPromotions = () => {
   const [activeBtn, setActiveBtn] = useState("Admin Promotion");
@@ -20,6 +23,12 @@ const CasinoPromotions = () => {
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -121,9 +130,15 @@ const CasinoPromotions = () => {
           </div>
           <div className="col flex-column me-3">
             <label className="black-text4 small-font mb-1">Website</label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
           <div className="col flex-end">
             <div className="w-100 saffron-btn2 pointer">Submit</div>

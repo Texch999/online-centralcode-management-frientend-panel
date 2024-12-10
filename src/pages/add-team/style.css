@@ -185,21 +185,11 @@
   width: 40px;
 }
 
-/* reset password custom styling  */
-
 .custom-modal-width .modal-dialog {
   max-width: 350px !important;
   width: 90% !important;
   margin: auto !important;
 }
-
-/* .input-no-border {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  flex: 1;
-  padding-left: 8px;
-} */
 
 .table-parent-container .table-wrapper {
   box-shadow: none !important;

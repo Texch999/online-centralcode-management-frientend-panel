@@ -1,8 +1,23 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function RiskLimitSet() {
+  const roleOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const [formData, setFormData] = useState({
     customerMaxProfitSports: "",
     customerMaxLossSports: "",
@@ -215,15 +230,27 @@ function RiskLimitSet() {
       <div className="row w-75">
         <div className="col-4 flex-column">
           <label className="black-text4 small-font mb-1">Role</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={roleOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col-4 flex-column">
           <label className="black-text4 small-font mb-1">Admin</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col-2  flex-column d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>

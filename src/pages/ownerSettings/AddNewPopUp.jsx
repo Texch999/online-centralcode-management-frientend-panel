@@ -1,6 +1,9 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const AddNewPopUp = ({
   addNewModalRejection,
@@ -8,6 +11,12 @@ const AddNewPopUp = ({
   setAddNewModalSecurity,
   addNewModalSecurity,
 }) => {
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   return (
     <>
       {addNewModalRejection && (
@@ -29,9 +38,14 @@ const AddNewPopUp = ({
             <div className="row mt-3 small-font">
               <div className="col-4 flex-column">
                 <label className="black-text4 mb-1">Status</label>
-                <select className="input-bg all-none p-2 small-font rounded">
-                  <option>Active</option>
-                </select>
+                <Select
+                  className="small-font"
+                  options={selectOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                />
               </div>
               <div className="col-8 flex-column ">
                 <label className="black-text4 mb-1">Reason</label>
@@ -81,9 +95,14 @@ const AddNewPopUp = ({
             <div className="row mt-3 small-font">
               <div className="col-4 flex-column">
                 <label className="black-text4 mb-1">Status</label>
-                <select className="input-bg all-none p-2 small-font rounded">
-                  <option>Active</option>
-                </select>
+                <Select
+                  className="small-font"
+                  options={selectOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                />
               </div>
               <div className="col-8 flex-column ">
                 <label className="black-text4 mb-1">Questions</label>

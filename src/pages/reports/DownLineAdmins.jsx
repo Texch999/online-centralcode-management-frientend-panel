@@ -3,6 +3,9 @@ import ScrollTable from "../../components/ScrollTable";
 import { useNavigate } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function DownLineAdmins() {
   const navigate = useNavigate();
@@ -11,6 +14,12 @@ function DownLineAdmins() {
   const handleMatchClick = (matchName) => {
     navigate(`/downline/${encodeURIComponent(matchName)}`);
   };
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const ADMIN_COLUMNS = [
     { header: "Admin Details", field: "adminDetails" },
@@ -144,11 +153,19 @@ function DownLineAdmins() {
         ))}
         <div className="col-2 flex-column me-3">
           <label className="black-text4 small-font mb-1">Admins</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
-        <div className="saffron-btn2 small-font pointer mt-3 col-1">Submit</div>
+        <div className="d-flex align-items-end w-100 small-font pointer mt-3 col-1">
+          <button className="saffron-btn2">Submit</button>
+        </div>
       </div>
 
       <div className="d-flex w-90 ">

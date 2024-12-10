@@ -11,6 +11,9 @@ import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
 import { MdOutlineFileUpload } from "react-icons/md";
 import EditPosterPopUp from "./EditPosterPopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
@@ -18,6 +21,12 @@ const PromotionType = () => {
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const handleSportClick = (item) => {
     setActiveBtn(activeBtn === item ? null : item);
@@ -149,9 +158,15 @@ const PromotionType = () => {
           <div className="d-flex align-items-end justify-content-between w-100 my-3 small-font">
             <div className="flex-column col-3">
               <label className="black-text4 mb-1">Promotion</label>
-              <select className="w-100 input-css2">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
             <div
               className="saffron-btn2 pointer"
@@ -170,9 +185,15 @@ const PromotionType = () => {
               <label className="black-text4 small-font mb-1">
                 Promotion Type
               </label>
-              <select className="input-css2 small-font">
-                <option>General Poster</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
             <div className="col-6 flex-column me-3 ">
               <label className="black-text4 small-font mb-1">

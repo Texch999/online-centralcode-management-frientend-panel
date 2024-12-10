@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import ScrollTable from "../../components/ScrollTable";
 import SettlePopUp from "./SettlePopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function MyStatement() {
   const [activeSport, setActiveSport] = useState("My Statements");
-  const [settleBalance,setSettleBalance]=useState(false)
+  const [settleBalance, setSettleBalance] = useState(false);
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
+
+  const gameOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const SPORTS_BUTTONS = ["My Statements", "My Gateway Transaction"];
   const MY_TRANSACTIONS_COLUMNS = [
     { header: "S No", field: "serialNo" },
@@ -390,7 +400,6 @@ function MyStatement() {
     { header: <div className="green-font">7500000</div> },
   ];
 
-  
   const GATEWAY_COLUMNS = [
     { header: "S No", field: "SNo" },
     { header: "Date & Time", field: "dateTime" },
@@ -404,80 +413,78 @@ function MyStatement() {
   const GATEWAY_DATA = [
     {
       SNo: 1,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
 
-    
     {
       SNo: 2,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 3,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 4,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 5,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 6,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 7,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
-
   ];
 
   const GATEWAY_FOOTER = [
     { header: "Total" },
     { header: "" },
-    { header: ""},
-    { header:"" },
+    { header: "" },
+    { header: "" },
     { header: "" },
     { header: <div className="red-font">7500000</div> },
-    { header: ""},
+    { header: "" },
   ];
 
   return (
@@ -503,15 +510,23 @@ function MyStatement() {
         </h6>
       </div>
       {activeSport === "My Gateway Transaction" && (
-        <div className="d-flex w-80 mb-3">
+        <div className="d-flex w-90 mb-3">
           <div className="col-2 flex-column me-3">
             <label className="black-text4 small-font mb-1">Game</label>
-            <select className="input-css2 small-font">
-              <option>Select</option>
-            </select>
+            <Select
+              className="small-font"
+              options={gameOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
-          <div className="saffron-btn2 small-font pointer mt-3 col-1">
-            Submit
+          <div className="d-flex align-items-end w-100">
+            <button className="saffron-btn2 small-font pointer col-1 px-2">
+              Submit
+            </button>
           </div>
         </div>
       )}
@@ -561,7 +576,10 @@ function MyStatement() {
         </div>
 
         {activeSport === "My Gateway Transaction" && (
-          <div className="flex-end mb-3 ms-3 pointer" onClick={()=>setSettleBalance(true  )}>
+          <div
+            className="flex-end mb-3 ms-3 pointer"
+            onClick={() => setSettleBalance(true)}
+          >
             <div className="white-btn2 medium-font  ">Settlements</div>
           </div>
         )}
@@ -617,7 +635,10 @@ function MyStatement() {
           </div>
         </div>
       )}
-      <SettlePopUp setSettleBalance={setSettleBalance} settleBalance={settleBalance}/>
+      <SettlePopUp
+        setSettleBalance={setSettleBalance}
+        settleBalance={settleBalance}
+      />
     </div>
   );
 }

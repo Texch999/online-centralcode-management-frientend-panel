@@ -193,7 +193,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
                   />
                   <label
                     htmlFor="qrCode"
-                    className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer w"
+                    className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                   >
                     <span className="small-font">Upload</span>
                     <AiOutlineCloudUpload size={20} />
