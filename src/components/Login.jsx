@@ -54,6 +54,7 @@ function Login() {
         setError("Invalid username");
         return;
     }
+
     localStorage.setItem("role_name", role_name);
     localStorage.setItem("role_code", role_code);
     localStorage.setItem("isLoggedIn", "true");
@@ -63,6 +64,12 @@ function Login() {
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
   };
 
   return (
@@ -92,6 +99,7 @@ function Login() {
                     setUsername(e.target.value);
                     setError("");
                   }}
+                  onKeyPress={handleKeyPress} 
                   aria-label="Username"
                 />
               </div>
@@ -107,6 +115,7 @@ function Login() {
                   className="all-none w-inherit ps-2"
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
+                  onKeyPress={handleKeyPress} 
                   aria-label="Password"
                 />
                 <span
