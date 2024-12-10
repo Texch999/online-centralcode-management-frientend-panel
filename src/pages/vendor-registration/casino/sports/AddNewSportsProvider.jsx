@@ -1,77 +1,85 @@
-import React, { useState } from 'react'
-import { Modal } from 'react-bootstrap';
-import { IoMdAdd } from 'react-icons/io';
-import { IoCloseSharp } from 'react-icons/io5';
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
+import { IoMdAdd } from "react-icons/io";
+import { IoCloseSharp } from "react-icons/io5";
+import { customStyles } from "../../../../components/ReactSelectStyles";
+import Select from "react-select";
 
-const AddNewSportsProvider = ({show,setShow}) => {
-    const [addnewGame, setAddNewGame] = useState(false);
-
-    const handleGameBtn = () => {
-      setAddNewGame((prevState)=>!prevState);
-    };
+const AddNewSportsProvider = ({ show, setShow }) => {
+  const [addnewGame, setAddNewGame] = useState(false);
+  const handleGameBtn = () => {
+    setAddNewGame((prevState) => !prevState);
+  };
+  const selectSports = [
+    { value: "casino", label: "Casino" },
+    { value: "sports", label: "Sports" },
+  ];
   return (
-    <Modal show={show} onHide={() => setShow(false)} centered>
-    <div className="p-2">
-      <div className="d-flex flex-between text-black px-2">
-        <div className="medium-font">Select New Provider</div>
-        <div onClick={() => setShow(false)} className="font-20 pointer">
-          <IoCloseSharp/>
-        </div>
-      </div>
-      <div className="flex-column small-font">
-        <div className="felx-column px-2 text-black  my-2">
-          <label className="small-font mb-1">Providers</label>
-          <select className="input-css small-font w-100 d-flex pointer">
-            <option className="grey-clr">Select</option>
-            <option className="text-black">provider1</option>
-            <option className="text-black">provider1</option>
-            <option className="text-black">provider1</option>
-          </select>
-        </div>
-
-        <div className="flex-column px-2 text-black my-2">
-          <label className="small-font mb-1">Games</label>
-          <select className="input-css small-font w-100">
-            <option className="grey-clr">Select</option>
-            <option className="text-black">game1</option>
-            <option className="text-black">game1</option>
-            <option className="text-black">game1</option>
-          </select>
-        </div>
-
-        <div className="d-flex flex-end align-items-center px-2 my-2">
-          <div
-            className="input-css radius-20 small-font text-black pointer px-2"
-            onClick={handleGameBtn}
-          >
-            {addnewGame ? (
-              <span>
-                <IoCloseSharp className="mx-1" />
-                Close
-              </span>
-            ) : (
-              <span>
-                <IoMdAdd className="mx-1" />
-                Add New Game
-              </span>
-            )}
-          </div>
-        </div>
-        {addnewGame === true && (
-          <div className="px-2 my-2">
-            <input
-              type="text"
-              placeholder="Enter Game"
-              className="input-css small-font text-black w-100 pointer"
+    <Modal show={show} centered>
+      <Modal.Body>
+        <div>
+          <div className="flex-between text-black">
+            <h6 className="mb-0">Select New Provider</h6>
+            <IoCloseSharp
+              className="pointer"
+              size={18}
+              onClick={() => setShow(false)}
             />
           </div>
-        )}
+          <div className="small-font text-black">
+            <div className="felx-column mt-3">
+              <label className="mb-1">Providers</label>
+              <Select
+                className="small-font"
+                options={selectSports}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
+            </div>
+            <div className="flex-column mt-3">
+              <label className="mb-1">Games</label>
+              <Select
+                className="small-font"
+                options={selectSports}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
+            </div>
+            <div className="flex-end mt-3">
+              <div
+                className="input-css rounded-pill pointer"
+                onClick={handleGameBtn}
+              >
+                {addnewGame ? (
+                  <div>
+                    <IoCloseSharp className="me-2" size={16} />
+                    <span>Close</span>
+                  </div>
+                ) : (
+                  <span>
+                    <IoMdAdd className="me-2" size={16} />
+                    <span>Add New Game</span>
+                  </span>
+                )}
+              </div>
+            </div>
+            {addnewGame === true && (
+              <input
+                type="text"
+                placeholder="Enter Game"
+                className="input-css small-font text-black w-100 pointer mt-3"
+              />
+            )}
+            <div className="saffron-btn2 pointer mt-3">Submit</div>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
-        <div className="my-2 saffron-btn2 br-5 mx-2 pointer">Submit</div>
-      </div>
-    </div>
-  </Modal>
-  )
-}
-
-export default AddNewSportsProvider
+export default AddNewSportsProvider;

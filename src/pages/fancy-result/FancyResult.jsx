@@ -2,30 +2,42 @@ import React from "react";
 import ScrollTable from "./../../components/ScrollTable";
 import { FaSearch } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
+import { whiteReactSelect } from "../../components/ReactSelectStyles";
+import Select from "react-select";
 
 const FancyResult = () => {
+  const selectSports = [
+    { value: "cricket", label: "Cricket" },
+    { value: "football", label: "Football" },
+    { value: "tennis", label: "Tennis" },
+  ];
+  const selectMatch = [
+    { value: "match1", label: "Match 1" },
+    { value: "match2", label: "Match 2" },
+    { value: "match3", label: "Match 3" },
+  ];
   const cols = [
-    { header: <div className="ms-2">Sport</div>, field: "sport" },
-    { header: "Fancy Id", field: "fid" },
+    { header: "Sport", field: "sport" },
+    { header: "Fancy ID", field: "fid" },
     { header: "Fancy Name", field: "fname" },
-    { header: "MatchName", field: "match" },
+    { header: "Match Name", field: "match" },
   ];
   const data = [
     {
       sport: (
-        <div className="d-flex flex-column small-font ms-2">
+        <div className="d-flex flex-column small-font">
           <div className="mb-1">Cricket</div>
           <input
             type="text"
             placeholder="Enter Result"
-            className="white-input w-fit"
+            className="white-input w-fit "
           />
         </div>
       ),
       fid: (
         <div className="d-flex flex-column small-font">
           <div className="mb-1">2345632345-13FY</div>
-          <div className="saffron-btn br-5 w-fit px-3">Set</div>
+          <div className="px-4 saffron-btn2 w-fit">Set</div>
         </div>
       ),
       fname: (
@@ -33,34 +45,7 @@ const FancyResult = () => {
           <div className="mb-1">
             T20 Women’s World Cup (New Zealand vs South Africa) adv
           </div>
-          <div className="rust-red-btn w-fit px-3">Suspended</div>
-        </div>
-      ),
-      match: <div>New Zealand vs South Africa</div>,
-    },
-    {
-      sport: (
-        <div className="d-flex flex-column small-font ms-2">
-          <div className="mb-1">Cricket</div>
-          <input
-            type="text"
-            placeholder="Enter Result"
-            className="white-input w-fit"
-          />
-        </div>
-      ),
-      fid: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">2345632345-13FY</div>
-          <div className="saffron-btn br-5 w-fit px-3">Set</div>
-        </div>
-      ),
-      fname: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">
-            T20 Women’s World Cup (New Zealand vs South Africa) adv
-          </div>
-          <div className="rust-red-btn w-fit px-3">Suspended</div>
+          <div className="rust-red-btn w-fit px-4">Suspended</div>
         </div>
       ),
       match: <div>New Zealand vs South Africa</div>,
@@ -79,7 +64,7 @@ const FancyResult = () => {
       fid: (
         <div className="d-flex flex-column small-font">
           <div className="mb-1">2345632345-13FY</div>
-          <div className="saffron-btn br-5 w-fit px-3">Set</div>
+          <div className="px-4 saffron-btn2 w-fit">Set</div>
         </div>
       ),
       fname: (
@@ -87,61 +72,7 @@ const FancyResult = () => {
           <div className="mb-1">
             T20 Women’s World Cup (New Zealand vs South Africa) adv
           </div>
-          <div className="rust-red-btn w-fit px-3">Suspended</div>
-        </div>
-      ),
-      match: <div>New Zealand vs South Africa</div>,
-    },
-    {
-      sport: (
-        <div className="d-flex flex-column small-font ms-2">
-          <div className="mb-1">Cricket</div>
-          <input
-            type="text"
-            placeholder="Enter Result"
-            className="white-input w-fit"
-          />
-        </div>
-      ),
-      fid: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">2345632345-13FY</div>
-          <div className="saffron-btn br-5 w-fit px-3">Set</div>
-        </div>
-      ),
-      fname: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">
-            T20 Women’s World Cup (New Zealand vs South Africa) adv
-          </div>
-          <div className="rust-red-btn w-fit px-3">Suspended</div>
-        </div>
-      ),
-      match: <div>New Zealand vs South Africa</div>,
-    },
-    {
-      sport: (
-        <div className="d-flex flex-column small-font ms-2">
-          <div className="mb-1">Cricket</div>
-          <input
-            type="text"
-            placeholder="Enter Result"
-            className="white-input w-fit"
-          />
-        </div>
-      ),
-      fid: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">2345632345-13FY</div>
-          <div className="saffron-btn br-5 w-fit px-3">Set</div>
-        </div>
-      ),
-      fname: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">
-            T20 Women’s World Cup (New Zealand vs South Africa) adv
-          </div>
-          <div className="rust-red-btn w-fit px-3">Suspended</div>
+          <div className="rust-red-btn w-fit px-4">Suspended</div>
         </div>
       ),
       match: <div>New Zealand vs South Africa</div>,
@@ -149,22 +80,35 @@ const FancyResult = () => {
   ];
 
   const sportcols = [
-    { header: <div className="flex-center">Sport</div>, field: "sport" , width:"10%"},
-    { header: "Date & Time", field: "date",width:"10%" },
-    { header: "MatchName", field: "match", width:"40%" },
-    { header: <div className="flex-center">Event Id</div>, field: "eid" ,width:"10%"},
-    { header: "Market Id", field: "mid" ,width:"10%",},
+    {
+      header: "Sport",
+      field: "sport",
+      width: "10%",
+    },
+    { header: "Date & Time", field: "date", width: "15%" },
+    { header: "MatchName", field: "match", width: "45%" },
+    {
+      header: <div className="flex-center">Event Id</div>,
+      field: "eid",
+      width: "10%",
+    },
+    { header: "Market Id", field: "mid", width: "10%" },
     {
       header: <div className="flex-center">Result Status</div>,
-      field: "resstatus",width:"10%",
+      field: "resstatus",
+      width: "10%",
     },
-    { header: <div className="flex-center">Action</div>, field: "action", width:"10%" },
+    {
+      header: <div className="flex-center">Action</div>,
+      field: "action",
+      width: "10%",
+    },
   ];
 
   const sportData = [
     {
-      sport: <div className="mb-1 flex-center">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
+      sport: "Cricket",
+      date: <div className="white-space">14-10-2024 13:33:00</div>,
       match: <div className="mb-1">India vs Sri Lanka</div>,
       eid: <div className="flex-center">12345673</div>,
       mid: <div>1.234567366</div>,
@@ -175,126 +119,54 @@ const FancyResult = () => {
       ),
       action: (
         <div className="flex-center">
-          <BsEye className="font-15 text-black" />
-        </div>
-      ),
-    },
-    {
-      sport: <div className="mb-1 flex-center">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
-      match: <div className="mb-1">India vs Sri Lanka</div>,
-      eid: <div className="flex-center">12345673</div>,
-      mid: <div>1.234567366</div>,
-      resstatus: (
-        <div className="flex-center">
-          <div className="active-btn-table px-2">Open</div>
-        </div>
-      ),
-      action: (
-        <div className="flex-center">
-          <BsEye className="font-15 text-black" />
-        </div>
-      ),
-    },
-    {
-      sport: <div className="mb-1 flex-center">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
-      match: <div className="mb-1">India vs Sri Lanka</div>,
-      eid: <div className="flex-center">12345673</div>,
-      mid: <div>1.234567366</div>,
-      resstatus: (
-        <div className="flex-center">
-          <div className="active-btn-table px-2">Open</div>
-        </div>
-      ),
-      action: (
-        <div className="flex-center">
-          <BsEye className="font-15 text-black" />
-        </div>
-      ),
-    },
-    {
-      sport: <div className="mb-1 flex-center">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
-      match: <div className="mb-1">India vs Sri Lanka</div>,
-      eid: <div className="flex-center">12345673</div>,
-      mid: <div>1.234567366</div>,
-      resstatus: (
-        <div className="flex-center">
-          <div className="active-btn-table px-2">Open</div>
-        </div>
-      ),
-      action: (
-        <div className="flex-center">
-          <BsEye className="font-15 text-black" />
-        </div>
-      ),
-    },
-    {
-      sport: <div className="mb-1 flex-center">Cricket</div>,
-      date: <div className="">14-10-2024 13:33:00</div>,
-      match: <div className="mb-1">India vs Sri Lanka</div>,
-      eid: <div className="flex-center">12345673</div>,
-      mid: <div>1.234567366</div>,
-      resstatus: (
-        <div className="flex-center">
-          <div className="active-btn-table px-2">Open</div>
-        </div>
-      ),
-      action: (
-        <div className="flex-center">
-          <BsEye className="font-15 text-black" />
+          <BsEye size={18} />
         </div>
       ),
     },
   ];
 
   return (
-    <div className="p-1">
-      <h6 className="mt-3 mb-2">Fancy Result</h6>
-      <div className="mb-3 row w-100 text-black small-font ">
-        <div className="col-2 d-flex flex-column">
+    <div>
+      <h6 className="my-3">Fancy Result</h6>
+      <div className="my-3 row w-50 text-black small-font">
+        <div className="col d-flex flex-column">
           <label className="mb-1">Select Sport</label>
-          <select className="white-input">
-            <option>Select</option>
-            <option>sport1</option>
-            <option>sport1</option>
-            <option>sport1</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectSports}
+            placeholder="Select"
+            styles={whiteReactSelect}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
-        <div className="col-2 d-flex flex-column">
+        <div className="col d-flex flex-column">
           <label className="mb-1">Select Match</label>
-          <select className="white-input">
-            <option>Select</option>
-            <option>match1</option>
-            <option>match1</option>
-            <option>match1</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectMatch}
+            placeholder="Select"
+            styles={whiteReactSelect}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
-        <div className="col-2 flex-end">
-          <div className="white-input rounded-pill w-100 white-space px-3">
-            <FaSearch size={15} className="grey-clr me-2" />
-            <input
-              className="all-none small-font"
-              placeholder="Search Match..."
-            />
-          </div>
+        <div className="col flex-end">
+          <button className="w-100 saffron-btn2">Search</button>
         </div>
       </div>
-
-      <div className="">
-        <ScrollTable columns={cols} data={data}  tableHeight={"table-50vh"} />
-      </div>
-
+      <ScrollTable columns={cols} data={data} tableHeight={"table-50vh"} />
       <div className="row mt-3 w-100 text-black small-font">
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">Select Sport</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-            <option>Cricket</option>
-            <option>sport1</option>
-            <option>sport1</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectSports}
+            placeholder="Select"
+            styles={whiteReactSelect}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
         <div className="col-2 d-flex flex-column">
           <label className="mb-1">From</label>
@@ -320,7 +192,11 @@ const FancyResult = () => {
       </div>
 
       <div className="my-3">
-        <ScrollTable columns={sportcols} data={sportData}  tableHeight={"table-50vh"} />
+        <ScrollTable
+          columns={sportcols}
+          data={sportData}
+          tableHeight={"table-50vh"}
+        />
       </div>
     </div>
   );
