@@ -271,20 +271,7 @@ function Homepage() {
       pl: <div className="green-clr">500000</div>,
     },
   ];
-  const MONTHS_DATA = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const MONTHS_DATA = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
   const barData = {
     labels: MONTHS_DATA,
     datasets: [

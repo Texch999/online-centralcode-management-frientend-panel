@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import SelectWebsitePopUp from "./SelectWebsitePopUp";
 
@@ -16,7 +16,7 @@ const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
         <Modal.Body>
           <div className="d-flex w-100 flex-between">
             <h6>Add Privacy Policy</h6>
-            <IoClose
+            <IoCloseSharp
               className="pointer"
               onClick={() => setAddPrivacyModal(false)}
             />

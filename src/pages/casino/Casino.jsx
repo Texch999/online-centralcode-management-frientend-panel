@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import "../casino/style.css";
 import { useNavigate } from "react-router-dom";
-import { IoEyeOutline } from "react-icons/io5";
+import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 function Casino() {
@@ -16,7 +16,7 @@ function Casino() {
     navigate(`/central-casino/${vendor}/${provider}`);
   };
   const cols = [
-    { header: "S No", field: "sno", width: "10%" },
+    { header: "S No", field: "sno", width: "5%" },
     { header: "Vendor Name", field: "vendor", width: "15%" },
     { header: "Vendor Percentage", field: "vendorper", width: "15%" },
     { header: "Vendor Country", field: "country", width: "15%" },
@@ -49,7 +49,7 @@ function Casino() {
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
                 onClick={() => handleProviderClick("Ram", "Ezugi")}
@@ -75,15 +75,15 @@ function Casino() {
 
           <div className="d-flex w-100 pointer mb-2">
             <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+              <span onClick={() => handleProviderClick("Ram", "Evolution")}>
                 Evolution
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
+                onClick={() => handleProviderClick("Ram", "Evolution")}
               />
             </div>
             <div className="col-2 d-flex justify-content-center">
@@ -106,15 +106,15 @@ function Casino() {
 
           <div className="d-flex w-100 pointer mb-2">
             <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+              <span onClick={() => handleProviderClick("Ram", "Asian Games")}>
                 Asian Games
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
+                onClick={() => handleProviderClick("Ram", "Asian Games")}
               />
             </div>
             <div className="col-2 d-flex justify-content-center">
@@ -137,148 +137,17 @@ function Casino() {
 
           <div className="d-flex w-100 pointer mb-2">
             <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
+              <span
+                onClick={() => handleProviderClick("Ram", "Pragmatic Play")}
+              >
                 Pragmatic Play
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
-              />
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <span className="green-clr">10000</span>
-            </div>
-            <div className="col-3 flex-end">
-              <span className="inactive-btn-table">In-Active</span>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: 2,
-      vendor: <div className="orange-clr">Jitendra</div>,
-      vendorper: <div>10%</div>,
-      country: <div>India</div>,
-      all: (
-        <div>
-          <div className="d-flex w-100 pointer mb-2">
-            <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
-                Ezugi
-              </span>
-            </div>
-            <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
-                className="orange-clr"
-                size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
-              />
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <span className="green-clr">10000</span>
-            </div>
-            <div className="col-3 flex-end">
-              <span className="active-btn-table">Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex w-100 pointer mb-2">
-            <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
-                Evolution
-              </span>
-            </div>
-            <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
-                className="orange-clr"
-                size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
-              />
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <span className="green-clr">10000</span>
-            </div>
-            <div className="col-3 flex-end">
-              <span className="inactive-btn-table">In-Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex w-100 pointer mb-2">
-            <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
-                Asian Games
-              </span>
-            </div>
-            <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
-                className="orange-clr"
-                size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
-              />
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              <span className="green-clr">10000</span>
-            </div>
-            <div className="col-3 flex-end">
-              <span className="active-btn-table">Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex w-100 pointer mb-2">
-            <div className="col-4">
-              <span onClick={() => handleProviderClick("Ram", "Ezugi")}>
-                Pragmatic Play
-              </span>
-            </div>
-            <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
-                className="orange-clr"
-                size={18}
-                onClick={() => handleProviderClick("Ram", "Ezugi")}
+                onClick={() => handleProviderClick("Ram", "Pragmatic Play")}
               />
             </div>
             <div className="col-2 d-flex justify-content-center">
@@ -302,6 +171,7 @@ function Casino() {
       ),
     },
   ];
+
   return (
     <div>
       <div className="d-flex flex-between align-items-center mt-3 mb-2">

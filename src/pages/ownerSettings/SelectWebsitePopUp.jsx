@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { IoClose } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 
 const SelectWebsitePopUp = ({ selectWebsite, setSelectWebsite }) => {
   return (
@@ -9,7 +9,7 @@ const SelectWebsitePopUp = ({ selectWebsite, setSelectWebsite }) => {
         <div className="d-flex flex-between text-black px-2">
           <div className="medium-font">Select Website</div>
           <div onClick={() => setSelectWebsite(false)} className="font-20">
-            <IoClose />
+            <IoCloseSharp />
           </div>
         </div>
         <div className="d-flex w-100 flex-column small-font">

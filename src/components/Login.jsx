@@ -74,18 +74,18 @@ function Login() {
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
           <div className="ps-4 pe-5 flex-column px-5 w-75">
             <div className="welcome-font">WELCOME</div>
-            <div className="black-text white-space">
+            <div className="black-text">
               We are glad to see you back with us
             </div>
             <div className="py-4 medium-font">
-              <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
+              <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-2 p-2">
                 <img
                   className="icon-img"
                   alt="username-icon"
                   src={Images.loginUserImages}
                 />
                 <input
-                  className="input-css"
+                  className="all-none w-inherit ps-2"
                   placeholder="Username"
                   value={username}
                   onChange={(e) => {
@@ -97,14 +97,14 @@ function Login() {
               </div>
               {error && <div className="small-font red-font mt-1">{error}</div>}
 
-              <div className="d-flex align-items-center input-bg loginbox-radius mt-3 px-2">
+              <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-3 p-2">
                 <img
                   className="icon-img"
                   alt="password-icon"
                   src={Images.loginUserLock}
                 />
                 <input
-                  className="input-css"
+                  className="all-none w-inherit ps-2"
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
                   aria-label="Password"
@@ -114,10 +114,9 @@ function Login() {
                   style={{ cursor: "pointer" }}
                 >
                   {passwordVisible ? (
-                    <FiEyeOff size={24} />
-                    
+                    <FiEyeOff size={22} />
                   ) : (
-                    <FiEye size={24} />
+                    <FiEye size={22} />
                   )}
                 </span>
               </div>

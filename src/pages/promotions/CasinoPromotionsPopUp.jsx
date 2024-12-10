@@ -1,5 +1,5 @@
 import React from "react";
-import { IoClose, IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Select from "react-select";
