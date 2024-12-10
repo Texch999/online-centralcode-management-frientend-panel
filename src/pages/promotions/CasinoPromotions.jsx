@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-
 import Table from "../../components/Table";
 import { IoAddOutline } from "react-icons/io5";
 import { SlPencil } from "react-icons/sl";

@@ -1,5 +1,5 @@
 import React from "react";
-import { IoClose } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 
 const SettlePopUp = ({ settleBalance, setSettleBalance }) => {
@@ -14,7 +14,7 @@ const SettlePopUp = ({ settleBalance, setSettleBalance }) => {
         <Modal.Body>
           <div className="d-flex w-100 flex-between">
             <h6 className="fw-600">Settled - Rezor Pay - Owner </h6>
-            <IoClose
+            <IoCloseSharp
               className="pointer"
               onClick={() => setSettleBalance(false)}
             />

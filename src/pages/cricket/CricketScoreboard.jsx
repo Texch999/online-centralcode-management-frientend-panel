@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdBlock, MdDeleteOutline, MdSportsCricket } from "react-icons/md";
-import { IoTennisballOutline } from "react-icons/io5";
+import { MdBlock } from "react-icons/md";
 import FootballScoreboard from "./FootballScoreboard";
 import TennisScoreBoard from "./TennisScoreBoard";
 import HorseRacingScoreBoard from "./HorseRacingScoreBoard";
@@ -116,7 +115,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-          <FaRegTrashCan size={18} className="ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -140,7 +139,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-          <FaRegTrashCan size={18} className="ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -162,7 +161,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-          <FaRegTrashCan size={18} className="ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),
@@ -188,7 +187,7 @@ const CricketScoreboard = () => {
             <MdBlock className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-          <FaRegTrashCan size={18} className="ms-2" />
+            <FaRegTrashCan size={18} className="ms-2" />
           </div>
         </div>
       ),

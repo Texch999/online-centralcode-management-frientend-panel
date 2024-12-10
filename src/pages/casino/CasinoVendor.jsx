@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../casino/style.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
-import { IoEyeOutline } from "react-icons/io5";
+import { BsEye } from "react-icons/bs";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
@@ -53,7 +53,7 @@ const CasinoVendor = () => {
       ),
       eye: (
         <div className=" flex-center">
-          <IoEyeOutline
+          <BsEye
             size={18}
             className="orange-clr pointer"
             onClick={() => handleGamesPage("Poker")}
@@ -89,7 +89,7 @@ const CasinoVendor = () => {
       ),
       eye: (
         <div className=" flex-center">
-          <IoEyeOutline
+          <BsEye
             size={18}
             className="orange-clr pointer"
             onClick={() => handleGamesPage("Baccarat")}

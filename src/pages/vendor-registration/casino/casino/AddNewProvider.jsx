@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoMdAdd } from "react-icons/io";
-import { IoClose } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import SuccessPopup from "../../../popups/SuccessPopup";
 
 const AddNewProvider = ({ show, setShow }) => {
@@ -21,7 +21,7 @@ const AddNewProvider = ({ show, setShow }) => {
         <div className="d-flex flex-between text-black px-2">
           <div className="medium-font">Select New Provider</div>
           <div onClick={() => setShow(false)} className="font-20 pointer">
-            <IoClose />
+            <IoCloseSharp />
           </div>
         </div>
         <div className="flex-column small-font">
@@ -52,7 +52,7 @@ const AddNewProvider = ({ show, setShow }) => {
             >
               {addnewGame ? (
                 <span>
-                  <IoClose className="mx-1" />
+                  <IoCloseSharp className="mx-1" />
                   Close
                 </span>
               ) : (

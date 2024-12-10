@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
-import { IoEyeOutline } from "react-icons/io5";
+import { BsEye } from "react-icons/bs";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
@@ -52,7 +52,7 @@ const SportProviders = () => {
             className=" font-20"
             onClick={() => handleGameMatches("Cricket")}
           >
-            <IoEyeOutline className="orange-clr" />
+            <BsEye className="orange-clr" />
           </span>
         </div>
       ),
@@ -86,7 +86,7 @@ const SportProviders = () => {
             className=" font-20"
             onClick={() => handleGameMatches("Football")}
           >
-            <IoEyeOutline className="orange-clr" />
+            <BsEye className="orange-clr" />
           </span>
         </div>
       ),
@@ -120,7 +120,7 @@ const SportProviders = () => {
             className=" font-20"
             onClick={() => handleGameMatches("Tennis")}
           >
-            <IoEyeOutline className="orange-clr" />
+            <BsEye className="orange-clr" />
           </span>
         </div>
       ),
@@ -155,7 +155,7 @@ const SportProviders = () => {
             className=" font-20"
             onClick={() => handleGameMatches("Kabbadi")}
           >
-            <IoEyeOutline className="orange-clr" />
+            <BsEye className="orange-clr" />
           </span>
         </div>
       ),
@@ -192,7 +192,7 @@ const SportProviders = () => {
             className=" font-20"
             onClick={() => handleGameMatches("HorseRacing")}
           >
-            <IoEyeOutline className="orange-clr" />
+            <BsEye className="orange-clr" />
           </span>
         </div>
       ),
@@ -229,7 +229,7 @@ const SportProviders = () => {
             className=" font-20"
             onClick={() => handleGameMatches("Greyhound Racing")}
           >
-            <IoEyeOutline className="orange-clr" />
+            <BsEye className="orange-clr" />
           </span>
         </div>
       ),

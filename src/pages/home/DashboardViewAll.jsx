@@ -22,7 +22,20 @@ const DashboardViewAll = () => {
     Tooltip,
     Legend
   );
-  const MONTHS_DATA = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+  const MONTHS_DATA = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const barData = {
     labels: MONTHS_DATA,
     datasets: [
@@ -31,7 +44,8 @@ const DashboardViewAll = () => {
         backgroundColor: "#98BDFF",
         borderRadius: 5,
         data: [
-          10000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000,
+          1000, 25000, 500000, 100000, 2500000, 5000000, 10000000, 1000, 25000,
+          500000, 100000, 2500000, 5000000, 10000000,
         ],
       },
       {
@@ -39,7 +53,8 @@ const DashboardViewAll = () => {
         backgroundColor: "#4B49AC",
         borderRadius: 5,
         data: [
-          5000000, 10000000, 25000000, 50000000, 75000000, 100000000, 150000000,
+          1000, 25000, 500000, 100000, 2500000, 5000000, 10000000, 1000, 25000,
+          500000, 100000, 2500000, 5000000, 10000000,
         ],
       },
       {
@@ -47,8 +62,8 @@ const DashboardViewAll = () => {
         backgroundColor: "#F3797E",
         borderRadius: 5,
         data: [
-          6000000, 15000000, 30000000, 75000000, 100000000, 200000000,
-          250000000,
+          1000, 25000, 500000, 100000, 2500000, 5000000, 10000000, 1000, 25000,
+          500000, 100000, 2500000, 5000000, 10000000,
         ],
       },
     ],

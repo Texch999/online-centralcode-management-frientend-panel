@@ -1,42 +1,45 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import { IoEye, IoEyeOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { BsEye } from "react-icons/bs";
 
 const Sports = () => {
   const navigate = useNavigate();
   const handleSportNextPage = (vendor, provider) => {
     navigate(`/central-sports/${vendor}/${provider}`);
   };
-
   const [isActive, setIsACtive] = useState(false);
   const handleActiveModal = () => {
     setIsACtive(!isActive);
   };
   const cols = [
-    { header: <div className="flex-center">S No</div>, field: "sno",width: "10%" },
-    { header: "Vendor Name & Company", field: "vendorname",width: "10%" },
-    { header: "vendor Percentage", field: "vendorper",width: "10%" },
-    { header: "vendor Monthly", field: "vendormon",width: "10%" },
-    { header: "Vendor Country", field: "country",width: "10%" },
+    {
+      header: "S No",
+      field: "sno",
+      width: "8%",
+    },
+    { header: "VendorName & Company", field: "vendorname", width: "22%" },
+    { header: "Vendor %", field: "vendorper", width: "10%" },
+    { header: "Vendor Monthly", field: "vendormon", width: "10%" },
+    { header: "Vendor Country", field: "country", width: "10%" },
     {
       header: (
         <div className="d-flex w-100">
           <div className="col-4">Providers</div>
-          <div className="col-1 flex-center"></div>
+          <div className="col-1"></div>
           <div className="col-2 flex-center">Action</div>
-          <div className="col-2 flex-center">Profit&Loss</div>
+          <div className="col-2">Profit&Loss</div>
           <div className="col-3 flex-end">Status</div>
         </div>
       ),
       field: "all",
-     
+      width: "40%",
     },
   ];
   const data = [
     {
-      sno: <div className="flex-center">1</div>,
+      sno: 1,
       vendorname: (
         <div className="d-flex flex-column">
           <div>Jitendra</div>
@@ -47,24 +50,22 @@ const Sports = () => {
       vendormon: <div>50000</div>,
       country: <div>India</div>,
       all: (
-        <div className="d-flex flex-column">
-          <div className="d-flex flex-between pointer">
+        <div className="flex-column">
+          <div className="d-flex w-100 mb-2">
             <div
-              className="mb-2 col-4"
+              className="col-4"
               onClick={() => handleSportNextPage("Jitendra", "Odds")}
             >
               ODDS
             </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
+            <div className="col-1">
+              <BsEye
+                className="orange-clr"
+                size={18}
                 onClick={() => handleSportNextPage("Jitendra", "Odds")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
+              />
             </div>
-            <div className="col-2 flex-center">
+            <div className="col-2 d-flex justify-content-center">
               <div class="form-check form-switch" onClick={handleActiveModal}>
                 <input
                   class="form-check-input w-40"
@@ -74,389 +75,9 @@ const Sports = () => {
                 />
               </div>
             </div>
-            <div className="col-2 flex-center green-clr">10000</div>
-            <div className="col-3 flex-end">
-              <span className="active-btn-table">Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Jitendra", "Bookmaker 1")}
-            >
-              Bookmaker 1
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Jitendra", "Bookmaker 1")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 green-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-              <span className="active-btn-table">Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Jitendra", "Bookmaker 2")}
-            >
-              Bookmaker 2
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Jitendra", "Bookmaker 2")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-              <span className="inactive-btn-table">In-Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Jitendra", "Fancy")}
-            >
-              Fancy
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Jitendra", "Fancy")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            
-            <div className="col-3 flex-end">
-              <span className="inactive-btn-table">In-Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Jitendra", "Live Streaming")}
-            >
-              Live Streaming
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() =>
-                  handleSportNextPage("Jitendra", "Live Streaming")
-                }
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-            <div className="inactive-btn-table white-space">
-              In-Active
-            </div>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Jitendra", "Scoreboard")}
-            >
-              Scoreboard
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Jitendra", "Scoreboard")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-              <span className="inactive-btn-table">In-Active</span>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="flex-center">2</div>,
-      vendorname: (
-        <div className="d-flex flex-column">
-          <div>Lokesh</div>
-          <div>Fun77</div>
-        </div>
-      ),
-      vendorper: <div>-</div>,
-      vendormon: <div>50000</div>,
-      country: <div>India</div>,
-      all: (
-        <div className="d-flex flex-column">
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Lokesh", "Odds")}
-            >
-              ODDS
-            </div>
-
-            <div className="col-1  flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Lokesh", "Odds")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 green-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-              <span className="active-btn-table">Active</span>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Lokesh", "Bookmaker 1")}
-            >
-              Bookmaker 1
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Lokesh", "Bookmaker 1")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 green-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-            <div className="active-btn-table">Active</div>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Lokesh", "Bookmaker 2")}
-            >
-              Bookmaker 2
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Lokesh", "Bookmaker 2")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-            <div className="inactive-btn-table white-space">
-              In-Active
-            </div>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Lokesh", "Fancy")}
-            >
-              Fancy
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Lokesh", "Fancy")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center ">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-            <div className="inactive-btn-table white-space">
-              In-Active
-            </div>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Lokesh", "Live Streaming")}
-            >
-              Live Streaming
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Lokesh", "Live Streaming")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-            <div className="inactive-btn-table white-space">
-              In-Active
-            </div>
-            </div>
-          </div>
-
-          <div className="d-flex flex-between pointer">
-            <div
-              className="py-2 col-4"
-              onClick={() => handleSportNextPage("Lokesh", "Scoreboard")}
-            >
-              Scoreboard
-            </div>
-
-            <div className="col-1 flex-center">
-              <span
-                className=" font-20"
-                onClick={() => handleSportNextPage("Lokesh", "Scoreboard")}
-              >
-                <IoEyeOutline className="orange-clr" />
-              </span>
-            </div>
-            <div className="col-2 flex-center">
-              <div class="form-check form-switch" onClick={handleActiveModal}>
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-            <div className="col-2 dark-orange-clr flex-center">10000</div>
-            <div className="col-3 flex-end">
-            <div className="inactive-btn-table white-space">
-              In-Active
-            </div>
+            <div className="col-2 green-clr">10000</div>
+            <div className="col-3 d-flex justify-content-end">
+              <span className="active-btn-table d-flex">Active</span>
             </div>
           </div>
         </div>

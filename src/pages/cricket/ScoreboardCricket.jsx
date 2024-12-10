@@ -1,6 +1,5 @@
-import React from "react";
-import { IoTennisballOutline } from "react-icons/io5";
 import { MdSportsCricket } from "react-icons/md";
+import { IoTennisballOutline } from "react-icons/io5";
 
 const ScoreboardCricket = () => {
   return (

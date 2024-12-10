@@ -1,5 +1,5 @@
 import React from "react";
-import { IoClose } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 
 const AddNewPopUp = ({
@@ -20,7 +20,7 @@ const AddNewPopUp = ({
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
               <h6>Add Rejection Reasons</h6>
-              <IoClose
+              <IoCloseSharp
                 className="pointer"
                 onClick={() => setAddNewModalRejection(false)}
               />
@@ -72,7 +72,7 @@ const AddNewPopUp = ({
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
               <h6>Add Security Questions</h6>
-              <IoClose
+              <IoCloseSharp
                 className="pointer"
                 onClick={() => setAddNewModalSecurity(false)}
               />

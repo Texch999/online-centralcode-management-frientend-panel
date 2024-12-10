@@ -1,5 +1,5 @@
 import React from "react";
-import { IoClose, IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { MdOutlineFileUpload } from "react-icons/md";
 
@@ -84,9 +84,7 @@ const AddNewPromotionPopUp = ({
           </div>
           <div className="w-100 flex-end mt-3">
             <div className="col-3">
-              <div className="saffron-btn2 small-font pointer">
-                Create
-              </div>
+              <div className="saffron-btn2 small-font pointer">Create</div>
             </div>
           </div>
         </div>

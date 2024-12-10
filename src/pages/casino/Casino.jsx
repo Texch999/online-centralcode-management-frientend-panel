@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import "../casino/style.css";
 import { useNavigate } from "react-router-dom";
-import { IoEyeOutline } from "react-icons/io5";
+import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 function Casino() {
@@ -49,7 +49,7 @@ function Casino() {
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
                 onClick={() => handleProviderClick("Ram", "Ezugi")}
@@ -80,7 +80,7 @@ function Casino() {
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
                 onClick={() => handleProviderClick("Ram", "Evolution")}
@@ -111,7 +111,7 @@ function Casino() {
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
                 onClick={() => handleProviderClick("Ram", "Asian Games")}
@@ -144,7 +144,7 @@ function Casino() {
               </span>
             </div>
             <div className="col-1 d-flex justify-content-center">
-              <IoEyeOutline
+              <BsEye
                 className="orange-clr"
                 size={18}
                 onClick={() => handleProviderClick("Ram", "Pragmatic Play")}
