@@ -83,16 +83,15 @@ const CasinoGames = () => {
           </span>
           {game}
         </div>
-
-        <div className="medium-font">
+        <div className="medium-font flex-between">
           <span
-            className="white-bg grey-border rounded-pill me-4 px-3 py-1 pointer hover-orange-clr"
+            className="small-font white-bg rounded-pill grey-border me-3 px-2 flex-center py-1 pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="me-2" />
+            <FaArrowLeft size={12} className="me-2 d-flex" />
             Back
           </span>
-          Total P/L : <span className="green-clr">20000</span>
+          Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
       <Table columns={cols} data={data} itemsPerPage={3} />

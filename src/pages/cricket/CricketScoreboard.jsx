@@ -10,9 +10,7 @@ import ScoreboardCricket from "./ScoreboardCricket";
 import { FaRegTrashCan } from "react-icons/fa6";
 
 const CricketScoreboard = () => {
-  const navigate = useNavigate();
   const { vendor, provider, match } = useParams();
-
   const matchContent =
     match === "Football" ? (
       <>
@@ -82,8 +80,8 @@ const CricketScoreboard = () => {
   };
 
   const cols = [
-    { header: "", field: "watch" },
-    { header: "Date & Time", field: "date" },
+    { header: "", field: "watch", width: "10%" },
+    { header: "Date&Time", field: "date" },
     { header: "Matches/ID", field: "match" },
     ...(match !== "HorseRacing"
       ? [{ header: "Series Name/ID", field: "series" }]
@@ -98,9 +96,9 @@ const CricketScoreboard = () => {
 
   const data = [
     {
-      watch: <div className="inplay-btn w-fit py-1 px-2 mx-2">In Play</div>,
+      watch: <div className="inplay-btn w-fit py-1 px-2">In-Play</div>,
       date: (
-        <div className="d-flex flex-column">
+        <div>
           <div>21-09-2024</div>
           <div>08:00:00</div>
         </div>
@@ -122,7 +120,7 @@ const CricketScoreboard = () => {
     },
 
     {
-      watch: <div className="inplay-btn w-fit py-1 px-2 mx-2">In Play</div>,
+      watch: <div className="inplay-btn w-fit py-1 px-2">In-Play</div>,
       date: (
         <div className="d-flex flex-column">
           <div>21-09-2024</div>
@@ -176,11 +174,6 @@ const CricketScoreboard = () => {
       ),
       match: [matchContent],
       series: [seriesContent],
-      live: (
-        <div className="d-flex flex-center">
-          {/* <img src={Images.cricket} alt="cricket" className="match-img"/> */}
-        </div>
-      ),
       action: (
         <div class="d-flex mt-1 flex-end">
           <div onClick={handleBlockModal} className="pointer">
@@ -194,18 +187,14 @@ const CricketScoreboard = () => {
     },
   ];
   return (
-    <div className="p-1">
-      <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
-      </div>
-
+    <div>
+      <Table columns={cols} data={data} itemsPerPage={5} />
       <ConfirmationPopup
         confirmationPopupOpen={showBlockModal}
         setConfirmationPopupOpen={setShowBlockModal}
         discription={"Are You Sure to Block this Match"}
         submitButton={"Block"}
       />
-
       <ConfirmationPopup
         confirmationPopupOpen={showDeleteModal}
         setConfirmationPopupOpen={setShowDeleteModal}

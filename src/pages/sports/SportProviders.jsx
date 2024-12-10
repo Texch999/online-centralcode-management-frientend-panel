@@ -4,7 +4,7 @@ import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 const SportProviders = () => {
   const navigate = useNavigate();

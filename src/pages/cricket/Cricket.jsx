@@ -337,13 +337,12 @@ const Cricket = () => {
             <span className="fw-800">{match}</span>
           </span>
         </div>
-
-        <div className="medium-font flex-between">
+        <div className="small-font flex-between">
           <span
-            className="white-bg2 rounded-pill text-black flex-center grey-border me-4 px-3 hover-orange-clr py-1 pointer"
+            className="input-css2 rounded-pill me-4 px-3 text-black py-1 flex-center pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="me-2 d-flex" />
+            <FaArrowLeft className="me-1 d-flex" />
             Back
           </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
