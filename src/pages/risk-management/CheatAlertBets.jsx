@@ -12,16 +12,21 @@ import "../add-team/style.css";
 function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState();
+  const [selectedType, setSelectedType] = useState("cheats");
   const handleSportClick = (sport) => {
     setActiveSport(sport);
   };
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
   };
-  const handleChange = (e) => {
-    setSelectedType(e.target.value);
+  const handleChange = (selectedOption) => {
+    setSelectedType(selectedOption?.value);
   };
+
+  const cheataAndAlertsOptions = [
+    { value: "cheats", label: "Cheats" },
+    { value: "alerts", label: "Alerts" },
+  ];
 
   const userOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -403,10 +408,15 @@ function CheatAlertBets() {
       <div className="row mb-3">
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">Cheat/Alert</label>
-          <select onChange={handleChange} className="input-css2 small-font">
-            <option value="cheats">Cheats</option>
-            <option value="alerts">Alerts</option>
-          </select>
+          <Select
+            className="small-font"
+            options={cheataAndAlertsOptions}
+            onChange={handleChange}
+            placeholder="Select"
+            styles={customStyles}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">From</label>
