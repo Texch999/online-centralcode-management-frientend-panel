@@ -307,14 +307,13 @@ const Cricket = () => {
   return (
     <div className="">
       <div className="d-flex flex-between mt-3 mb-2">
-        <div
-          className="large-font pointer flex-center"
-          onClick={() => navigate(-1)}
-        >
-          <span className="grey-clr">
+        <div className="large-font pointer flex-center">
+          <span className="grey-clr" onClick={() => navigate(-2)}>
             Sports
             <MdKeyboardArrowRight size={18} />
             {vendor}
+          </span>
+          <span onClick={() => navigate(-1)}>
             <MdKeyboardArrowRight size={18} />
             {provider}
           </span>

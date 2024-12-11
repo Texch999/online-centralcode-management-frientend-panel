@@ -36,8 +36,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)}/>
-          <RiDeleteBinLine size={17} className="pointer ms-1" onClick={() => setOnBlockPopup(true)}/>
+          <GrEdit size={18} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)}/>
+          <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)}/>
         </div>
       ),
     },
@@ -54,8 +54,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -79,8 +79,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -102,8 +102,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -120,8 +120,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -139,8 +139,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -165,8 +165,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -189,8 +189,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -208,8 +208,8 @@ const PaymentGateway = () => {
       ),
       action: (
         <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+          <GrEdit size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },

@@ -4,7 +4,7 @@ import ScrollTable from "../../components/ScrollTable";
 import { BsEye } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import "../add-team/style.css";
-import "../live-block/style.css"
+import "../live-block/style.css";
 
 function RiskSports() {
   const navigate = useNavigate();
@@ -18,8 +18,10 @@ function RiskSports() {
     "Kabaddi",
   ];
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
+
+  console.log(activeSport, "===>activeSport");
 
   const HIGH_PROFIT_PLAYERS_COLUMNS = [
     { header: "S.NO", field: "s_no" },
@@ -52,7 +54,6 @@ function RiskSports() {
       exposure: <div className="red-font">10000000</div>,
       exp_profit: "10000000",
     },
-    
   ];
 
   const MATCH_ODDS_COLUMNS = [
@@ -291,8 +292,8 @@ function RiskSports() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`pointer me-3 px-3 ${
-                activeSport === sport ? "saffron-btn2" : "white-btn2"
+              className={`me-3 ${
+                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
               }`}
               onClick={() => handleSportClick(sport)}
             >
@@ -305,8 +306,12 @@ function RiskSports() {
         </div>
       </div>
       <div className="small-font py-3 d-flex">
-        <div className="pointer saffron-btn2 me-3">Top - Exp High Profit Players</div>
-        <div className="pointer white-btn2 me-3">Top Last Minute Bet Players</div>
+        <div className="pointer saffron-btn2 me-3">
+          Top - Exp High Profit Players
+        </div>
+        <div className="pointer white-btn2 me-3">
+          Top Last Minute Bet Players
+        </div>
       </div>
 
       <div className="d-flex table-parent-container">

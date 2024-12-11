@@ -264,12 +264,12 @@ const SportProviders = () => {
   return (
     <div>
       <div className="d-flex flex-between mt-3 mb-2">
-        <div className="pointer large-font" onClick={() => navigate(-1)}>
-          <span className="grey-clr">
+        <div className="pointer large-font">
+          <span className="grey-clr" onClick={() => navigate(-2)}>
             Sports
             <MdKeyboardArrowRight size={20} />
           </span>
-          <span className="black-text">
+          <span className="black-text" onClick={() => navigate(-1)}>
             {vendor}
             <MdKeyboardArrowRight size={20} />
             {provider}

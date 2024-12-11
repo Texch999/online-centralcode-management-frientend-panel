@@ -28,7 +28,7 @@ function LiveBlockSports() {
   ];
 
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
 
   const handleTabTopPlayer = (activeTab) => {
@@ -504,7 +504,7 @@ function LiveBlockSports() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 px-3 pointer ${
+              className={`me-3 pointer ${
                 activeSport === sport ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleSportClick(sport)}
@@ -524,7 +524,7 @@ function LiveBlockSports() {
         <div>
           <div className="small-font py-3 d-flex">
             <button
-              className={`me-3 px-3 py-2 ${
+              className={`me-3 py-2 ${
                 tabTopTenPlayer === "matched-amount-player"
                   ? "saffron-btn2"
                   : "white-btn2"
@@ -534,7 +534,7 @@ function LiveBlockSports() {
               Top 10 Matched Amount Player
             </button>
             <button
-              className={`me-3 px-3 py-2 ${
+              className={`me-3 py-2 ${
                 tabTopTenPlayer === "exposure-player"
                   ? "saffron-btn2"
                   : "white-btn2"

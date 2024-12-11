@@ -176,9 +176,7 @@ const PaymentGateway = () => {
 
           {/* Submit Button */}
           <div className="col-md-2 col-lg-1 align-self-end">
-            <button className="small-font saffron-btn2 w-100">
-              Submit
-            </button>
+            <button className="small-font saffron-btn2 w-100">Submit</button>
           </div>
         </div>
 
@@ -187,14 +185,14 @@ const PaymentGateway = () => {
 
           <div className="col-2 mb-3 mb-md-0 ">
             <div className="position-relative">
-            <Select
-              className="small-font"
-              options={countryOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-            />
+              <Select
+                className="small-font"
+                options={countryOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
           </div>
         </div>
