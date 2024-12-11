@@ -108,13 +108,13 @@ const CricketScoreboard = () => {
       live: [liveGameScoreBoardContent],
 
       action: (
-        <div class="d-flex mt-1 flex-end">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="flex-end grey-clr">
+          <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer"
+          />
         </div>
       ),
     },
@@ -132,13 +132,13 @@ const CricketScoreboard = () => {
       live: [liveGameScoreBoardContent],
 
       action: (
-        <div class="d-flex mt-1 flex-end">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="flex-end grey-clr">
+          <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer"
+          />
         </div>
       ),
     },
@@ -154,13 +154,13 @@ const CricketScoreboard = () => {
       series: [seriesContent],
       live: <div className="d-flex flex-center"></div>,
       action: (
-        <div class="d-flex mt-1 flex-end">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="flex-end grey-clr">
+          <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer"
+          />
         </div>
       ),
     },
@@ -175,13 +175,13 @@ const CricketScoreboard = () => {
       match: [matchContent],
       series: [seriesContent],
       action: (
-        <div class="d-flex mt-1 flex-end">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <FaRegTrashCan size={18} className="ms-2" />
-          </div>
+        <div class="flex-end grey-clr">
+          <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
+          <FaRegTrashCan
+            onClick={handleDeleteModal}
+            size={18}
+            className="ms-2 pointer"
+          />
         </div>
       ),
     },

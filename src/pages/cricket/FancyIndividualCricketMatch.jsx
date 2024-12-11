@@ -72,11 +72,14 @@ const FancyIndividualCricketMatch = () => {
   return (
     <div>
       <div className="d-flex flex-between my-3">
-        <div className="pointer large-font" onClick={() => navigate(-1)}>
-          <span className="grey-clr">
+        <div className="pointer large-font">
+          <span className="grey-clr" onClick={() => navigate(-2)}>
             Sports <MdKeyboardArrowRight />
             {vendor}
-            <MdKeyboardArrowRight /> {provider} <MdKeyboardArrowRight /> {match}
+            <MdKeyboardArrowRight /> {provider}
+          </span>
+          <span onClick={() => navigate(-1)}>
+            <MdKeyboardArrowRight /> {match}
           </span>
           <span className="black-text4">
             <MdKeyboardArrowRight />

@@ -281,22 +281,16 @@ const UsersMatchPl = () => {
       >
         <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
         <div>Match Wise P/L</div>
-        <div className="">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+        <div onClick={() => navigate(-2)}>
+          <IoIosArrowForward className="mx-1" />
           {matchName}
         </div>
-        <div className="">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+        <div onClick={() => navigate(-1)}>
+          <IoIosArrowForward className="mx-1" />
           {role}
         </div>
         <div className="orange-clr">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+          <IoIosArrowForward className="mx-1" />
           {userDetails}
         </div>
       </div>

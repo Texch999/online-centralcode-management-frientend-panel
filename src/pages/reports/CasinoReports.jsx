@@ -9,7 +9,6 @@ function CasinoReports() {
   const [openGameData, setOpenGameData] = useState(false);
   const [openProviderName, setOpenProviderName] = useState(false);
   const [openTableId, setOpenTableId] = useState(false);
-
   const handleSportClick = (sport) => {
     setActiveSport(activeSport === sport ? null : sport);
   };
@@ -111,88 +110,60 @@ function CasinoReports() {
     }));
 
   return (
-    <>
-      <div>
-        <div className="flex-between mb-3 mt-4">
-          <h6 className="d-flex yellow-font mb-0">P/L Casino Reports</h6>
-        </div>
-        <div className="d-flex small-font">
-          {SPORTS_BUTTONS?.map((sport, index) => (
-            <div
-              key={index}
-              className={`me-3 px-3 ${
-                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-              }`}
-              onClick={() => handleSportClick(sport)}
-            >
-              {sport}
-            </div>
-          ))}
-        </div>
-        {activeSport === "Vendor Report" && (
-          <>
-            <div className="w-100 d-flex flex-between ">
-              <div className="w-50 mt-4 px-2">
-                <h6 className="fw-600">Vendor Wise P/L</h6>
-                <div>
-                  <ScrollTable
-                    columns={GATEWAY_COLUMNS}
-                    data={GATEWAY_DATA}
-                    itemsPerPage={1}
-                  />
-                </div>
-              </div>
-
-              {openGameData === true && (
-                <div className="w-50 mt-4 px-2">
-                  <h6 className="fw-600">Vendor - Jayanta</h6>
-                  <div>
-                    <ScrollTable
-                      columns={VENDOR_COLUMNS}
-                      data={VENDOR_DATA}
-                      itemsPerPage={1}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="w-100 d-flex flex-between ">
-              {openProviderName === true && (
-                <div className="w-50 mt-4 px-2">
-                  <h6 className="fw-600">Vendor - Jayanta - Ezugi</h6>
-                  <div>
-                    <ScrollTable
-                      columns={GAME_VENDOR_COLUMNS}
-                      data={GAME_VENDOR_DATA}
-                      itemsPerPage={1}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {openTableId === true && (
-                <div className="w-50 mt-4 px-2">
-                  <h6 className="fw-600">
-                    Vendor - Jayanta - Ezugi - Roulette
-                  </h6>
-                  <div>
-                    <ScrollTable
-                      columns={GAME_TABLE_COLUMNS}
-                      data={GAME_TABLE_DATA}
-                      itemsPerPage={1}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-
-        {activeSport === "Downline Admins Report" && <AdminDownLineReport />}
-
-        {activeSport === "Casino Bet P/L" && <CasinoBetPl />}
+    <div>
+      <h6 className="yellow-font mb-3 mt-2">P/L Casino Reports</h6>
+      <div className="d-flex small-font">
+        {SPORTS_BUTTONS?.map((sport, index) => (
+          <div
+            key={index}
+            className={`me-3 px-3 ${
+              activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
+            }`}
+            onClick={() => handleSportClick(sport)}
+          >
+            {sport}
+          </div>
+        ))}
       </div>
-    </>
+      {activeSport === "Vendor Report" && (
+        <>
+          <div className="w-100 d-flex flex-between ">
+            <div className="w-50 mt-4 px-2">
+              <h6 className="fw-600">Vendor Wise P/L</h6>
+              <ScrollTable columns={GATEWAY_COLUMNS} data={GATEWAY_DATA} />
+            </div>
+            {openGameData === true && (
+              <div className="w-50 mt-4 px-2">
+                <h6 className="fw-600">Vendor - Jayanta</h6>
+                <ScrollTable columns={VENDOR_COLUMNS} data={VENDOR_DATA} />
+              </div>
+            )}
+          </div>
+          <div className="w-100 d-flex flex-between ">
+            {openProviderName === true && (
+              <div className="w-50 mt-4 px-2">
+                <h6 className="fw-600">Vendor - Jayanta - Ezugi</h6>
+                <ScrollTable
+                  columns={GAME_VENDOR_COLUMNS}
+                  data={GAME_VENDOR_DATA}
+                />
+              </div>
+            )}
+            {openTableId === true && (
+              <div className="w-50 mt-4 px-2">
+                <h6 className="fw-600">Vendor - Jayanta - Ezugi - Roulette</h6>
+                <ScrollTable
+                  columns={GAME_TABLE_COLUMNS}
+                  data={GAME_TABLE_DATA}
+                />
+              </div>
+            )}
+          </div>
+        </>
+      )}
+      {activeSport === "Downline Admins Report" && <AdminDownLineReport />}
+      {activeSport === "Casino Bet P/L" && <CasinoBetPl />}
+    </div>
   );
 }
 

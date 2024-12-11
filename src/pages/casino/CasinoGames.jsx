@@ -69,16 +69,22 @@ const CasinoGames = () => {
   return (
     <div>
       <div className="d-flex flex-between mt-3 mb-2">
-        <div className="pointer large-font" onClick={() => navigate(-1)}>
-          <span className="grey-clr">
+        <div className="pointer large-font">
+          <span
+            className="grey-clr"
+            onClick={() => navigate("/central-casino")}
+          >
             Casino
             <MdKeyboardArrowRight size={18} />
           </span>
-          <span className="grey-clr">
+          <span
+            className="grey-clr"
+            onClick={() => navigate("/central-casino")}
+          >
             {vendor}
             <MdKeyboardArrowRight size={18} />
           </span>
-          <span className="grey-clr">
+          <span className="grey-clr" onClick={() => navigate(-1)}>
             {provider} <MdKeyboardArrowRight size={18} />
           </span>
           {game}
