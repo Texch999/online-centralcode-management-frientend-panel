@@ -51,7 +51,7 @@ const PaymentGateway = () => {
       ),
       action: (
         <GrEdit
-          size={17}
+          size={18}
           className="pointer"
           onClick={() => setShowPaymentGatewayPopup(true)}
         />
@@ -68,7 +68,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <GrEdit size={18} />,
     },
     {
       gatewayName: "NEFT/RTGS",
@@ -88,7 +88,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <GrEdit size={18} />,
     },
     {
       gatewayName: "QR Code",
@@ -107,7 +107,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <GrEdit size={18} />,
     },
   ];
 

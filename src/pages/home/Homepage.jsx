@@ -32,7 +32,7 @@ function Homepage() {
   const [activeBtn, setActiveBtn] = useState(0);
   const BUTTONS = ["Casino Winners", "Casino Looser"];
   const FILTER_OPTIONS = [
-    { value: "today", label: "Taday" },
+    { value: "today", label: "Today" },
     { value: "this_week", label: "This Week" },
     { value: "this_month", label: "This Month" },
   ];
@@ -483,13 +483,12 @@ function Homepage() {
                   );
                 })}
               </div>
-              <div className="col-2 pointer">
+              <div className="pointer">
                 <Select
                   className="w-100 small-font"
                   options={FILTER_OPTIONS}
-                  placeholder="Select"
+                  placeholder="Select Timeframe"
                   styles={roundedReactSelect}
-                  maxMenuHeight={120}
                   menuPlacement="auto"
                 />
               </div>

@@ -148,7 +148,7 @@ const BetHistory = () => {
       ipAddress: <span className="red-font">127.0.0.1</span>,
       action: (
         <div className="text-center">
-          <FaSync size={17} className="red-font pointer" />
+          <FaSync size={18} className="red-font pointer" />
         </div>
       ),
     },
