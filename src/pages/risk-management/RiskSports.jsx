@@ -97,7 +97,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -123,7 +123,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -149,7 +149,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -208,7 +208,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -239,7 +239,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -270,7 +270,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -291,7 +291,7 @@ function RiskSports() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 px-3 ${
+              className={`pointer me-3 px-3 ${
                 activeSport === sport ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleSportClick(sport)}
@@ -305,8 +305,8 @@ function RiskSports() {
         </div>
       </div>
       <div className="small-font py-3 d-flex">
-        <div className="saffron-btn2 me-3">Top - Exp High Profit Players</div>
-        <div className="white-btn2 me-3">Top Last Minute Bet Players</div>
+        <div className="pointer saffron-btn2 me-3">Top - Exp High Profit Players</div>
+        <div className="pointer white-btn2 me-3">Top Last Minute Bet Players</div>
       </div>
 
       <div className="d-flex table-parent-container">

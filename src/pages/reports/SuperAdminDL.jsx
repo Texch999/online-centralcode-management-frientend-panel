@@ -26,7 +26,7 @@ function SuperAdminDL() {
   };
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const superAdminOptions = [
@@ -147,19 +147,19 @@ function SuperAdminDL() {
         </h6>
       </div>
 
-      <div className="d-flex w-10 flex-between small-font">
+      <div className="d-flex gap-2 small-font">
         {ACTIVE_BTNS?.map((item, index) => (
-          <div
+          <button
             key={index}
-            className={`me-3 ${
+            className={`col-1 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2 rounded"
+                : "white-btn2 rounded pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
             {item}
-          </div>
+          </button>
         ))}
       </div>
       <div className="d-flex w-90  mt-4">

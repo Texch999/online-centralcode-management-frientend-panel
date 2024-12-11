@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { BsEye } from "react-icons/bs";
 import { MdBlock } from "react-icons/md";
 import Table from "../../../components/Table";
@@ -124,7 +124,7 @@ const tableData1 = [
           <MdBlock className="font-20 me-2 red-font" />
         </div>
         <div className="pointer">
-          <GrEdit className="font-20 ms-2" />
+          <SlPencil className="font-20 ms-2" />
         </div>
       </div>
     ),
@@ -216,7 +216,7 @@ const tableData2 = [
           <MdBlock className="font-20 me-2" />
         </div>
         <div className="pointer">
-          <GrEdit className="font-20 ms-2" />
+          <SlPencil className="font-20 ms-2" />
         </div>
       </div>
     ),
@@ -308,7 +308,7 @@ const tableData3 = [
           <MdBlock className="font-20 me-2" />
         </div>
         <div className="pointer">
-          <GrEdit className="font-20 ms-2" />
+          <SlPencil className="font-20 ms-2" />
         </div>
       </div>
     ),

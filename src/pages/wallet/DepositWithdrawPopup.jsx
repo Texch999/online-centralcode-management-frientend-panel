@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
-import { Images } from "./../../images/index";
+import { Images } from "../../images/index";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 

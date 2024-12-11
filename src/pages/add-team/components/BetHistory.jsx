@@ -324,8 +324,8 @@ const BetHistory = () => {
           />
         </div>
 
-        <div className="col-1 d-flex align-items-end">
-          <button className="w-100 rounded small-font saffron-btn">
+        <div className="col-2 col-lg-1 d-flex align-items-end">
+          <button className="w-100 small-font saffron-btn2">
             Search
           </button>
         </div>

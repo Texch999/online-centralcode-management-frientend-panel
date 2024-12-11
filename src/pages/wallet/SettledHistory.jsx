@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
-import { IoTrashOutline } from "react-icons/io5";
+import { FaRegTrashCan } from "react-icons/fa6";
 import SettledPopup from "./SettledPopup";
 
 function SettledHistory() {
@@ -37,7 +37,7 @@ function SettledHistory() {
             className="black-text me-2"
             onClick={handleSettledPopupOpen}
           />
-          <IoTrashOutline size={18} className="black-text" />
+          <FaRegTrashCan size={18} className="black-text" />
         </div>
       ),
     },
@@ -52,7 +52,7 @@ function SettledHistory() {
       action: (
         <div className="flex-end">
           <SlPencil size={18} className="black-text me-2" />
-          <IoTrashOutline size={18} className="black-text" />
+          <FaRegTrashCan size={18} className="black-text" />
         </div>
       ),
     },
@@ -67,7 +67,7 @@ function SettledHistory() {
       action: (
         <div className="flex-end">
           <SlPencil size={18} className="black-text me-2" />
-          <IoTrashOutline size={18} className="black-text" />
+          <FaRegTrashCan size={18} className="black-text" />
         </div>
       ),
     },

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
 import { FaSync } from "react-icons/fa";
@@ -106,12 +106,12 @@ const ViewFancyBets = () => {
         <div className="d-flex flex-column justify-content-center">
           <button className="green-btn my-3">Live</button>
           <div className="flex-center">
-            <GrEdit
+            <SlPencil
               size={20}
               className="me-2 pointer"
               onClick={() => setOpenEditbetPopup(true)}
             />
-            <RiDeleteBinLine size={20} className="pointer ms-2" />
+            <FaRegTrashCan size={20} className="pointer ms-2" />
           </div>
         </div>
       ),
@@ -275,8 +275,8 @@ const ViewFancyBets = () => {
         <div className="d-flex flex-column justify-content-center">
           <button className="green-btn my-3">Live</button>
           <div className="flex-center">
-            <GrEdit size={20} className="me-2 pointer" />
-            <RiDeleteBinLine size={20} className="pointer ms-2" />
+            <SlPencil size={20} className="me-2 pointer" />
+            <FaRegTrashCan size={20} className="pointer ms-2" />
           </div>
         </div>
       ),
@@ -332,8 +332,8 @@ const ViewFancyBets = () => {
         <div className="d-flex flex-column justify-content-center">
           <button className="green-btn my-3">Live</button>
           <div className="flex-center">
-            <GrEdit size={20} className="me-2 pointer" />
-            <RiDeleteBinLine size={20} className="pointer ms-2" />
+            <SlPencil size={20} className="me-2 pointer" />
+            <FaRegTrashCan size={20} className="pointer ms-2" />
           </div>
         </div>
       ),
@@ -392,12 +392,12 @@ const ViewFancyBets = () => {
         <div className="d-flex flex-column justify-content-center">
           <button className="green-btn my-3">Declared</button>
           <div className="flex-center">
-            <GrEdit
+            <SlPencil
               size={20}
               className="me-2 pointer"
               onClick={() => setOpenEditbetPopup(true)}
             />
-            <RiDeleteBinLine size={20} className="pointer ms-2" />
+            <FaRegTrashCan size={20} className="pointer ms-2" />
           </div>
         </div>
       ),
@@ -454,8 +454,8 @@ const ViewFancyBets = () => {
         <div className="d-flex flex-column justify-content-center">
           <button className="green-btn my-3">Declared</button>
           <div className="flex-center">
-            <GrEdit size={20} className="me-2 pointer" />
-            <RiDeleteBinLine size={20} className="pointer ms-2" />
+            <SlPencil size={20} className="me-2 pointer" />
+            <FaRegTrashCan size={20} className="pointer ms-2" />
           </div>
         </div>
       ),
@@ -512,8 +512,8 @@ const ViewFancyBets = () => {
         <div className="d-flex flex-column justify-content-center">
           <button className="green-btn my-3">Declared</button>
           <div className="flex-center">
-            <GrEdit size={20} className="me-2 pointer" />
-            <RiDeleteBinLine size={20} className="pointer ms-2" />
+            <SlPencil size={20} className="me-2 pointer" />
+            <FaRegTrashCan size={20} className="pointer ms-2" />
           </div>
         </div>
       ),

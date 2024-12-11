@@ -11,7 +11,7 @@ function AdminDownLineReport() {
   const SPORTS_BUTTONS = ["Admins", "Users"];
 
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport)
   };
 
   const handleMatchClick = (userName) => {

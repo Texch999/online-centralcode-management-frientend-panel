@@ -282,13 +282,13 @@ const DefaultBottomShow = () => {
         </div>
 
         {/* Right Side Container */}
-        <div className="col-4 h-100">
+        <div className="col-4 align-self-end">
           <div className="bg-white director-admin-profile-bottom-section-right p-4">
             <h5 className="yellow-font small-font">Total Amount</h5>
             <input
               type="text"
               value="500000"
-              className="form-control mb-3 small-sont"
+              className="w-100 input-css fw-600 mb-2 small-font"
               readOnly
             />
 
@@ -296,7 +296,7 @@ const DefaultBottomShow = () => {
             <input
               type="text"
               value="500000"
-              className="form-control small-font mb-3"
+              className="w-100 input-css fw-600 small-font mb-2"
               readOnly
             />
 
@@ -304,7 +304,7 @@ const DefaultBottomShow = () => {
             <input
               type="text"
               value="500000"
-              className="form-control small-font mb-3"
+              className="w-100 input-css fw-600 small-font mb-2"
               readOnly
             />
           </div>

@@ -20,7 +20,7 @@ function OfflineDepositWithdraw() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-3 ${
+            className={`pointer me-3 px-3 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2"
             }`}
             onClick={() => handleSportClick(sport)}
@@ -137,7 +137,7 @@ function OfflineDepositWithdraw() {
       {/* Footer */}
       <div className="w-100 d-flex grey-bg2 rounded-bottom black-text small-font">
         <div className="col-7 p-2 d-flex justify-content-end align-items-center">
-          <span className="white-bg border py-2 px-3 br-4px">Clear All</span>
+          <span className="pointer white-bg border py-2 px-3 br-4px">Clear All</span>
         </div>
         <div className="col-2 p-2 flex-center">
           <input
@@ -148,7 +148,7 @@ function OfflineDepositWithdraw() {
         </div>
         <div className="col p-2">
           <div className="yellow-bg px-2 py-1 br-4px white-text flex-between">
-            Submit
+            <span className="pointer">Submit</span>
             <span className="rounded-circle white-bg py-1 px-2 black-text">
               0
             </span>{" "}

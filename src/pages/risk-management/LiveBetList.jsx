@@ -122,8 +122,8 @@ function LiveBetList() {
         <div>
           <div className="green-btn">Settled</div>
           <div className="flex-around mt-2">
-            <SlPencil size={18} onClick={handleEditBetPopupOpen} />
-            <FaRegTrashCan size={18} onClick={handleConfirmPopupOpen} />
+            <SlPencil size={18} className="pointer" onClick={handleEditBetPopupOpen} />
+            <FaRegTrashCan className="pointer" size={18} onClick={handleConfirmPopupOpen} />
           </div>
         </div>
       ),
@@ -248,7 +248,7 @@ function LiveBetList() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-2 ${
+            className={`pointer me-3 px-2 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2"
             }`}
             onClick={() => handleSportClick(sport)}

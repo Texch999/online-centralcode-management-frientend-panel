@@ -1,6 +1,7 @@
 import { FaSearch } from "react-icons/fa";
 import ScrollTable from "../../components/ScrollTable";
 import { BsEye } from "react-icons/bs";
+import "../live-block/style.css";
 
 function RiskCasino() {
   const HIGH_PROFIT_PLAYERS_COLUMNS = [
@@ -68,7 +69,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -84,7 +85,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -100,7 +101,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -140,7 +141,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -157,7 +158,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -174,7 +175,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -212,7 +213,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -228,7 +229,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -244,7 +245,7 @@ function RiskCasino() {
       ),
       view: (
         <div className="w-100 flex-center">
-          <BsEye size={18} className="black-text" />
+          <BsEye size={18} className="black-text pointer" />
         </div>
       ),
     },
@@ -331,19 +332,25 @@ function RiskCasino() {
         </div>
       </div>
       <div className="small-font pb-3 d-flex">
-        <div className="saffron-btn2 me-3">Top - Exp High Profit Players</div>
-        <div className="white-btn2 me-3">Top Last Minute Bet Players</div>
+        <div className="saffron-btn2 me-3 pointer">Top - Exp High Profit Players</div>
+        <div className="white-btn2 me-3 pointer">Top Last Minute Bet Players</div>
       </div>
-      <div className="d-flex">
-        <ScrollTable
-          columns={HIGH_PROFIT_PLAYERS_COLUMNS}
-          data={HIGH_PROFIT_PLAYERS_DATA}
-        />
-        <ScrollTable
-          columns={HIGH_PROFIT_PLAYERS_COLUMNS}
-          data={HIGH_PROFIT_PLAYERS_DATA}
-        />
+
+      <div className="d-flex table-parent-container">
+        <div className="table-wrapper me-3 w-50 table-special-effect border-start">
+          <ScrollTable
+            columns={HIGH_PROFIT_PLAYERS_COLUMNS}
+            data={HIGH_PROFIT_PLAYERS_DATA}
+          />
+        </div>
+        <div className="table-wrapper w-50 table-special-effect border-start border-end">
+          <ScrollTable
+            columns={HIGH_PROFIT_PLAYERS_COLUMNS}
+            data={HIGH_PROFIT_PLAYERS_DATA}
+          />
+        </div>
       </div>
+
       <>
         <h6 className="black-text mt-4 mb-3">
           Casino Websites (High Risk & Last Bet Players)

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../components/Table";
 import Form from "react-bootstrap/Form";
-import { AiOutlineEye } from "react-icons/ai";
+import { BsEye } from "react-icons/bs";
 import SlipShareDirector from "../popups/SlipShareDirector";
 import SlipRentalDirector from "../popups/SlipRentalDirector";
 import "../style.css";
@@ -55,7 +55,7 @@ const Transaction = () => {
             Success
           </div>
           <div>
-            <AiOutlineEye
+            <BsEye
               size={25}
               onClick={() => setIsModalShareOpen(true)}
               className="pointer"
@@ -120,7 +120,7 @@ const Transaction = () => {
             Success
           </div>
           <div>
-            <AiOutlineEye
+            <BsEye
               size={25}
               onClick={() => setIsModalRentalOpen(true)}
               className="pointer"
@@ -185,7 +185,7 @@ const Transaction = () => {
             Success
           </div>
           <div>
-            <AiOutlineEye
+            <BsEye
               size={25}
               onClick={() => setIsModalRentalOpen(true)}
               className="pointer"
@@ -225,7 +225,7 @@ const Transaction = () => {
             Success
           </div>
           <div>
-            <AiOutlineEye
+            <BsEye
               size={25}
               onClick={() => setIsModalRentalOpen(true)}
               className="pointer"

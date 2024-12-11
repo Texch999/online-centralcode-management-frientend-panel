@@ -8,8 +8,9 @@ import "../add-team/style.css";
 function MyStatement() {
   const [activeSport, setActiveSport] = useState("My Statements");
   const [settleBalance, setSettleBalance] = useState(false);
+
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
 
   const gameOptions = [
@@ -19,6 +20,7 @@ function MyStatement() {
   ];
 
   const SPORTS_BUTTONS = ["My Statements", "My Gateway Transaction"];
+
   const MY_TRANSACTIONS_COLUMNS = [
     { header: "S No", field: "serialNo" },
     { header: "Vendor Name", field: "vendorName" },
@@ -531,7 +533,6 @@ function MyStatement() {
         </div>
       )}
 
-
       <div className="col-10 col-lg-9 d-flex">
         <div className="w-100 flex-between flex-wrap mb-3 py-3 grey-bg2 rounded">
           <div className="col-6 px-3">
@@ -585,7 +586,6 @@ function MyStatement() {
           </div>
         )}
       </div>
-
 
       {activeSport === "My Statements" && (
         <div>

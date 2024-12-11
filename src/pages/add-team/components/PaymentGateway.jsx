@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../../components/Table";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import Form from "react-bootstrap/Form";
 import "../style.css";
 import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
@@ -50,7 +50,7 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <GrEdit
+        <SlPencil
           size={17}
           className="pointer"
           onClick={() => setShowPaymentGatewayPopup(true)}
@@ -68,7 +68,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <SlPencil size={17} />,
     },
     {
       gatewayName: "NEFT/RTGS",
@@ -88,7 +88,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <SlPencil size={17} />,
     },
     {
       gatewayName: "QR Code",
@@ -107,7 +107,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <SlPencil size={17} />,
     },
   ];
 
@@ -175,8 +175,8 @@ const PaymentGateway = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="col-md-2 col-lg-1 align-self-end pb-1">
-            <button className="small-font rounded saffron-btn w-100">
+          <div className="col-md-2 col-lg-1 align-self-end">
+            <button className="small-font saffron-btn2 w-100">
               Submit
             </button>
           </div>
