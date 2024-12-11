@@ -14,7 +14,7 @@ const ReferenceData = () => {
   const [addNewModalRejection, setAddNewModalRejection] = useState(false);
   const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const selectOptions = [
@@ -53,9 +53,7 @@ const ReferenceData = () => {
     },
     {
       questions: <div>What is your name?</div>,
-
       status: <div className="green-btn w-fill">Active</div>,
-
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
@@ -330,9 +328,7 @@ const ReferenceData = () => {
           <div
             key={index}
             className={`me-3 ${
-              activeBtn === item
-                ? "saffron-btn2 px-4"
-                : "white-btn2 pointer px-4"
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >

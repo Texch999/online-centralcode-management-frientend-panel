@@ -17,7 +17,7 @@ const Offer = () => {
     "All Bonus",
   ];
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const PosterImages = [
@@ -101,8 +101,8 @@ const Offer = () => {
               key={index}
               className={`me-3 ${
                 activeBtn === item
-                  ? "saffron-btn2 px-3"
-                  : "white-btn2 pointer px-3"
+                  ? "saffron-btn2"
+                  : "white-btn2 pointer"
               }`}
               onClick={() => handleSportClick(item)}
             >

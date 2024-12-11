@@ -44,7 +44,7 @@ const RecentAccessIp = () => {
           <IoSettingsOutline size={24} />
         </div>
         {activeRow === index && (
-          <div className="absolute box-shadow-table remove-list p-1 rounded white-bg pointer">
+          <div className="absolute box-shadow-table remove-list p-2 rounded white-bg pointer">
             Remove From Allow list
           </div>
         )}

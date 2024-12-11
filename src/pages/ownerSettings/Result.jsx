@@ -12,11 +12,11 @@ const Result = () => {
   const ACTIVE_BTNS = ["Sports", "Casino"];
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
-    navigation(`/match/${encodeURIComponent(matchName)}`);
+    navigation(`/results/${encodeURIComponent(matchName)}`);
   };
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const selectOptions = [

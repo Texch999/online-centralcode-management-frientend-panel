@@ -29,7 +29,7 @@ const PromotionType = () => {
   ];
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const CASINO_COLUMNS = [
@@ -142,10 +142,8 @@ const PromotionType = () => {
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
-            className={`me-4 ${
-              activeBtn === item
-                ? "saffron-btn2  px-3"
-                : "white-btn2 pointer px-3"
+            className={`me-3 ${
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -155,11 +153,11 @@ const PromotionType = () => {
       </div>
       {activeBtn === "Promotion Type" ? (
         <>
-          <div className="d-flex justify-content-between w-100 my-3 small-font">
-            <div className="flex-column w-25">
+          <div className="flex-between w-100 my-3 small-font">
+            <div className="flex-column">
               <label className="black-text4 mb-1">Promotion</label>
               <Select
-                className="small-font w-75"
+                className="small-font"
                 options={selectOptions}
                 placeholder="Select"
                 styles={customStyles}
@@ -169,10 +167,10 @@ const PromotionType = () => {
               />
             </div>
             <button
-              className="align-self-end saffron-btn2 pointer"
+              className="saffron-btn2 pointer"
               onClick={() => setAddNewModal(!addNewModal)}
             >
-              <IoAddOutline className="medium-font me-1" />
+              <IoAddOutline size={18} className="me-1" />
               <span>Add New</span>
             </button>
           </div>
@@ -180,7 +178,7 @@ const PromotionType = () => {
         </>
       ) : (
         <>
-          <div className="col-6 d-flex gap-3 align-items-center  mb-3 mt-3">
+          <div className="col-6 row my-3 small-font">
             <div className="col">
               <label className="black-text4 small-font mb-1">
                 Promotion Type
@@ -195,23 +193,21 @@ const PromotionType = () => {
                 classNamePrefix="custom-react-select"
               />
             </div>
-
-            <div className="w-50 flex-column mt-2">
+            <div className="col-5 flex-column">
               <label className="black-text4 small-font mb-1">
                 Upload Poster
               </label>
               <label htmlFor="poster">
                 <input type="file" style={{ display: "none" }} id="poster" />
                 <div className="input-css2 small-font flex-between">
-                  Upload <MdOutlineFileUpload size={16} className="grey-color" />
+                  Upload{" "}
+                  <MdOutlineFileUpload size={16} className="grey-color" />
                 </div>
               </label>
             </div>
-            
-            <div className="align-self-end saffron-btn2 small-font pointer w-25">
-              Submit
+            <div className="col flex-end">
+              <div className="w-100 saffron-btn2 pointer">Submit</div>
             </div>
-
           </div>
           <Table
             columns={CRICKET_COLUMNS}

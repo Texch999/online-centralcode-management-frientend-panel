@@ -20,7 +20,7 @@ const SandCBanner = () => {
   const [editPoster, setEditPoster] = useState(false);
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
   const handleSportClick2 = (item) => {
     setActiveBtn2(activeBtn2 === item ? null : item);
@@ -118,8 +118,8 @@ const SandCBanner = () => {
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2 px-3"
-                : "white-btn2 pointer px-3"
+                ? "saffron-btn2"
+                : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -134,8 +134,8 @@ const SandCBanner = () => {
             key={index}
             className={`me-3 ${
               activeBtn2 === item
-                ? "saffron-btn2 px-3"
-                : "white-btn2 pointer px-3"
+                ? "saffron-btn2"
+                : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick2(item)}
           >
