@@ -17,7 +17,7 @@ function LiveBetList() {
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);

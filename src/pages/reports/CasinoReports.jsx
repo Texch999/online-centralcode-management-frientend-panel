@@ -10,7 +10,7 @@ function CasinoReports() {
   const [openProviderName, setOpenProviderName] = useState(false);
   const [openTableId, setOpenTableId] = useState(false);
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
   const SPORTS_BUTTONS = [
     "Vendor Report",
@@ -116,7 +116,7 @@ function CasinoReports() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-3 ${
+            className={`me-3 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(sport)}

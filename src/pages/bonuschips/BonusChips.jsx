@@ -83,7 +83,7 @@ function BonusChips() {
           {buttons.map((btn, index) => (
             <div
               key={index}
-              className={`me-3 px-3 ${
+              className={`me-3 ${
                 activeIndex === index ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleActiveIndex(index)}

@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 function OfflineDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
   return (
@@ -20,7 +20,7 @@ function OfflineDepositWithdraw() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-3 ${
+            className={`me-3 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2"
             }`}
             onClick={() => handleSportClick(sport)}
