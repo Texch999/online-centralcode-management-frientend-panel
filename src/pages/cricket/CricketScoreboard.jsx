@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { MdBlock } from "react-icons/md";
 import FootballScoreboard from "./FootballScoreboard";
 import TennisScoreBoard from "./TennisScoreBoard";
@@ -71,6 +71,8 @@ const CricketScoreboard = () => {
       <TennisScoreBoard />
     ) : match === "HorseRacing" ? (
       <HorseRacingScoreBoard />
+    ) : match === "GreyhoundRacing" ? (
+      <HorseRacingScoreBoard />
     ) : (
       <ScoreboardCricket />
     );
@@ -94,31 +96,8 @@ const CricketScoreboard = () => {
       date: (
         <div>
           <div className="inplay-btn w-fit p-1 white-space">In-Play</div>
-          <div className="white-space">21-09-2024</div>
-          <div>08:00:00</div>
-        </div>
-      ),
-      match: [matchContent],
-      series: [seriesContent],
-      live: [liveGameScoreBoardContent],
-      action: (
-        <div class="flex-end grey-clr">
-          <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
-          <FaRegTrashCan
-            onClick={handleDeleteModal}
-            size={18}
-            className="ms-2 pointer"
-          />
-        </div>
-      ),
-    },
-
-    {
-      date: (
-        <div className="d-flex flex-column">
-          <div className="inplay-btn w-fit p-1 white-space">In-Play</div>
-          <div>21-09-2024</div>
-          <div>08:00:00</div>
+          <div className="white-space mt-1">21-09-2024</div>
+          <div className="mt-1">08:00:00</div>
         </div>
       ),
       match: [matchContent],
@@ -138,35 +117,14 @@ const CricketScoreboard = () => {
     {
       date: (
         <div className="d-flex flex-column">
-          <div className="mx-2">Today</div>
-          <div>21-09-2024</div>
-          <div>08:00:00</div>
+          <div>Today</div>
+          <div className="white-space mt-1">21-09-2024</div>
+          <div className="mt-1">08:00:00</div>
         </div>
       ),
       match: [matchContent],
       series: [seriesContent],
       live: <div className="d-flex flex-center"></div>,
-      action: (
-        <div class="flex-end grey-clr">
-          <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
-          <FaRegTrashCan
-            onClick={handleDeleteModal}
-            size={18}
-            className="ms-2 pointer"
-          />
-        </div>
-      ),
-    },
-    {
-      date: (
-        <div className="d-flex flex-column">
-          <div className=" mx-2">Upcoming</div>
-          <div>21-09-2024</div>
-          <div>08:00:00</div>
-        </div>
-      ),
-      match: [matchContent],
-      series: [seriesContent],
       action: (
         <div class="flex-end grey-clr">
           <MdBlock onClick={handleBlockModal} size={18} className="pointer" />

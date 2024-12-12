@@ -11,6 +11,7 @@ import { HiOutlineVolumeUp, HiOutlineVolumeOff } from "react-icons/hi";
 import { FaRegCirclePause } from "react-icons/fa6";
 import "../../add-team/style.css";
 import "../style.css";
+import ScoreboardCricket from "../../cricket/ScoreboardCricket";
 
 const LiveScoreBoard = ({ sport }) => {
   const [showBlockModal, setShowBlockModal] = useState(false);
@@ -87,17 +88,11 @@ const LiveScoreBoard = ({ sport }) => {
     );
   const liveGameScoreBoardContent =
     sport === "Football" ? (
-      <>
-        <FootballScoreboard />
-      </>
+      <FootballScoreboard />
     ) : sport === "Tennis" ? (
-      <>
-        <TennisScoreBoard />
-      </>
+      <TennisScoreBoard />
     ) : sport === "Horse Racing" ? (
-      <>
-        <HorseRacingScoreBoard />
-      </>
+      <HorseRacingScoreBoard />
     ) : (
       <ScoreboardCricket />
     );

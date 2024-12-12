@@ -237,7 +237,7 @@ const SportProviders = () => {
           <BsEye
             className="orange-clr"
             size={18}
-            onClick={() => handleGameMatches("GreyhoindRacing")}
+            onClick={() => handleGameMatches("GreyhoundRacing")}
           />
         </div>
       ),
