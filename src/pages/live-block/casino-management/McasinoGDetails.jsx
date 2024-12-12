@@ -6,6 +6,9 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { MdBlockFlipped } from "react-icons/md";
 import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../../popups/ConfirmationPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const McasinoGDetails = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false)
@@ -23,6 +26,12 @@ const McasinoGDetails = () => {
       )}`
     );
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CASINO_COLUMNS = [
     { header: "Provider ID/Name", field: "provider", width: "15%" },
@@ -85,9 +94,15 @@ const McasinoGDetails = () => {
       <div className="d-flex align-items-end">
         <div className=" flex-column me-3 col-2">
           <label className="black-text4 small-font mb-1">Providers</label>
-          <select className="input-css2 small-font ">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div>
           <button className="saffron-btn rounded">Submit</button>

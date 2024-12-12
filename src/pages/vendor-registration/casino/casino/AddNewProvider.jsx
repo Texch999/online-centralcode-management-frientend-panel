@@ -3,6 +3,9 @@ import { Modal } from "react-bootstrap";
 import { IoMdAdd } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import SuccessPopup from "../../../popups/SuccessPopup";
+import Select from "react-select";
+import { customStyles } from "../../../../components/ReactSelectStyles"
+import "../../../add-team/style.css"
 
 const AddNewProvider = ({ show, setShow }) => {
   const [success, setSuccess] = useState(false);
@@ -14,6 +17,12 @@ const AddNewProvider = ({ show, setShow }) => {
   const handleGameBtn = () => {
     setAddNewGame((prevState) => !prevState);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   return (
     <Modal show={show} onHide={() => setShow(false)} centered>
@@ -27,22 +36,28 @@ const AddNewProvider = ({ show, setShow }) => {
         <div className="flex-column small-font">
           <div className="felx-column px-2 text-black  my-2">
             <label className="small-font mb-1">Providers</label>
-            <select className="input-css small-font w-100 d-flex pointer">
-              <option className="grey-clr">Select</option>
-              <option className="text-black">provider1</option>
-              <option className="text-black">provider1</option>
-              <option className="text-black">provider1</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
 
           <div className="flex-column px-2 text-black my-2">
             <label className="small-font mb-1">Games</label>
-            <select className="input-css small-font w-100">
-              <option className="grey-clr">Select</option>
-              <option className="text-black">game1</option>
-              <option className="text-black">game1</option>
-              <option className="text-black">game1</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
 
           <div className="d-flex flex-end align-items-center px-2 my-2">

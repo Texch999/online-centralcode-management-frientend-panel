@@ -1,8 +1,16 @@
 import React from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const SettlePopUp = ({ settleBalance, setSettleBalance }) => {
+  const selectOptions = [
+    { value: "INR", label: "INR" },
+    { value: "USD", label: "USD" },
+  ];
+
   return (
     <>
       <Modal
@@ -25,10 +33,14 @@ const SettlePopUp = ({ settleBalance, setSettleBalance }) => {
               <label className="black-text4 mb-1">
                 Settled - Rezor Pay - Owner
               </label>
-              <select className="input-bg all-none p-2 small-font rounded">
-                <option>USD</option>
-                <option>INR</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
             <div className="col-6 flex-column ">
               <label className="black-text4 mb-1">Gateway Balance</label>

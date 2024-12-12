@@ -7,10 +7,19 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { SlPencil } from "react-icons/sl";
 import ConfirmationPopup from "../../popups/ConfirmationPopup";
 import EditBetPopup from "../../risk-management/EditBetPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const MCasinoBetHistory = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const [onEditBetPopup, setOnEditBetPopup] = useState(false);
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const { gamename, usergame, bethistory } = useParams();
   console.log(gamename, usergame, bethistory, "==>priya");
@@ -282,21 +291,33 @@ const MCasinoBetHistory = () => {
         </div>
       </div>
       <div className="d-flex col">
-        <div className=" flex-column me-3 col-2">
+        <div className=" flex-column me-3 col-3 col-lg-2">
           <label className="black-text4 small-font mb-1">Website</label>
-          <select className="input-css2 small-font ">
-            <option>All</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
-        <div className=" flex-column me-3 col-2">
+        <div className=" flex-column me-3 col-3 col-lg-2">
           <label className="black-text4 small-font mb-1">Table</label>
-          <select className="input-css2 small-font ">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
-        <div className="d-flex align-items-end">
-          <button className="saffron-btn small-font rounded pointer px-3">
+        <div className="col-2 col-lg-1 d-flex align-items-end">
+          <button className="w-75 saffron-btn2 small-font px-3">
             Submit
           </button>
         </div>
