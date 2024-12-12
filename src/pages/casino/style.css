@@ -136,7 +136,7 @@ progress::-webkit-progress-bar {
   border-radius: 5px;
 }
 .football-scoreboard-bg {
-  border-radius: 20px;
+  border-radius: 8px;
   background-image: url("../../../public/assets/football-bg.png");
   background-size: cover;
   background-repeat: no-repeat;
