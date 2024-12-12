@@ -7,12 +7,45 @@ import TennisScoreBoard from "../../cricket/TennisScoreBoard";
 import HorseRacingScoreBoard from "../../cricket/HorseRacingScoreBoard";
 import FootballScoreboard from "../../cricket/FootballScoreboard";
 import { Images } from "../../../images";
+import { FaEllipsisV, FaExpand } from "react-icons/fa";
+import { HiOutlineVolumeUp, HiOutlineVolumeOff } from "react-icons/hi";
+import { FaRegCirclePause } from "react-icons/fa6";
 import "../../add-team/style.css";
 import "../style.css";
+import ScoreboardCricket from "../../cricket/ScoreboardCricket";
 
 const LiveScoreBoard = ({ sport }) => {
-  const navigate = useNavigate();
-  // const { vendor, provider, match } = useParams();
+  const [showBlockModal, setShowBlockModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const handlePlayPauseClick = () => {
+    const video = document.getElementById("video");
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleMuteToggle = () => {
+    const video = document.getElementById("video");
+    video.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
+  };
+
+  const handleBlockModal = () => {
+    setShowBlockModal(!showBlockModal);
+  };
+  const handleDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
 
   const matchContent =
     sport === "Football" ? (
@@ -68,136 +101,8 @@ const LiveScoreBoard = ({ sport }) => {
         <HorseRacingScoreBoard />
       </>
     ) : (
-      <>
-        <div className="d-flex flex-center flex-column w-100">
-          <div className="rounded-grey-box my-2 px-1 py-1 w-100 small-font">
-            <div className="d-flex flex-between">
-              <span className="rounded-white-box">
-                <MdSportsCricket className="orange-clr fw-800 icon" />
-              </span>
-              <span className="medium-font text-white fw-600">NZ</span>
-              <span className="medium-font text-white">14-2</span>
-              <span className="small-font text-white">3.3 ov</span>
-              <span className="rounded-black-box text-white px-3 medium-font py-1 fw-600">
-                Ball Start
-              </span>
-              <span className="medium-font text-white fw-600  ">0-0</span>
-              <span className="small-font text-white">0.0 ov</span>
-              <span className="medium-font text-white fw-600">IND</span>
-              <span className="rounded-white-box">
-                <IoTennisballOutline className="orange-clr fw-800 icon" />
-              </span>
-            </div>
-          </div>
-          <div className="black-score-box w-100 text-white small-font">
-            <div className="d-flex flex-column w-100">
-              <div className="d-flex flex-between px-2">
-                <div className="flex-column w-100 small-font">
-                  <div className="row">
-                    <div className="col-2">Batsmen</div>
-                    <div className="col-2">R</div>
-                    <div className="col-2">B</div>
-                    <div className="col-2">4s</div>
-                    <div className="col-2">6s</div>
-                    <div className="col-2">SR</div>
-                  </div>
-                  <div className="hor-white-top my-1"></div>
-                  <div className="row">
-                    <div className="col-2">David Malan</div>
-                    <div className="col-2">100</div>
-                    <div className="col-2">10</div>
-                    <div className="col-2">2</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">800</div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-2">Ben Stokes*</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">4</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">0</div>
-                  </div>
-                </div>
-                <div className="grey-box-table flex-column flex-center py-3 w-50 px-2 small-font">
-                  <div className="d-flex">
-                    <div className="yellow-round text-black px-2 py-1 mx-1">
-                      6
-                    </div>
-                    <div className="dark-blue-round text-white px-2 py-1 mx-1">
-                      0
-                    </div>
-                    <div className="green-round text-white px-2 py-1 mx-1">
-                      4
-                    </div>
-                    <div className="dark-blue-round text-white px-2 py-1 mx-1">
-                      0
-                    </div>
-                    <div className="light-blue-round text-white px-2 py-1 mx-1">
-                      2
-                    </div>
-                    <div className="red-round text-white px-2 py-1 mx-1">w</div>
-                  </div>
-                  <div className="medium-font fw-600 pt-3 text-white">
-                    CRR.6.50
-                  </div>
-                </div>
-                <div className="flex-column w-100 small-font">
-                  <div className="row ps-2">
-                    <div className="col-2">Bowler</div>
-                    <div className="col-2">O</div>
-                    <div className="col-2">M</div>
-                    <div className="col-2">R</div>
-                    <div className="col-2">W</div>
-                    <div className="col-2">ECO</div>
-                  </div>
-                  <div className="hor-white-top my-1"></div>
-                  <div className="row ps-2">
-                    <div className="col-2">Kyle Jamieson</div>
-                    <div className="col-2">1.3</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">20</div>
-                    <div className="col-2">1</div>
-                    <div className="col-2">4.00</div>
-                  </div>
-
-                  <div className="row ps-2">
-                    <div className="col-2">Ben Stokes*</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">4</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">0</div>
-                    <div className="col-2">0</div>
-                  </div>
-                </div>
-              </div>
-              <div className="hor-white-top my-1">
-                <div className="d-flex flex-between px-2 my-1">
-                  <div>63%</div>
-                  <progress
-                    value="63"
-                    max="100"
-                    className="w-100 mx-1"
-                  ></progress>
-                  <div>36%</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
+      <ScoreboardCricket />
     );
-
-  const [showBlockModal, setShowBlockModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const handleBlockModal = () => {
-    setShowBlockModal(!showBlockModal);
-  };
-  const handleDeleteModal = () => {
-    setShowDeleteModal(!showDeleteModal);
-  };
 
   const cols = [
     { header: "Scoreboard", field: "watch", width: "8%" },
@@ -261,17 +166,84 @@ const LiveScoreBoard = ({ sport }) => {
       match: [matchContent],
       series: [seriesContent],
       live: (
-        <div class="video-container">
+        <div
+          className="position-relative bg-dark rounded overflow-hidden"
+          style={{ width: "300px", height: "140px" }}
+        >
           <video
-            controls
-            width="300"
-            height="150"
-            className="rounded"
+            id="video"
+            className="w-100 h-100"
+            style={{ objectFit: "cover" }}
             poster={Images.LiveImagePoster}
+            onClick={handlePlayPauseClick}
+            onEnded={handleVideoEnd}
           >
-            <source src="video-file.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
+            <source
+              // src="https://www.w3schools.com/html/mov_bbb.mp4"
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+              type="video/mp4"
+            />
           </video>
+
+          <div
+            className="position-absolute top-50 start-50 translate-middle"
+            style={{ pointerEvents: "none" }}
+          >
+            {!isPlaying ? (
+              <img
+                src={Images.VideoPlayIcon}
+                alt="Play Icon"
+                style={{ width: "40px", height: "40px" }}
+              />
+            ) : (
+              <FaRegCirclePause
+                alt="Pause Icon"
+                style={{ width: "40px", height: "40px" }}
+                className="text-white"
+              />
+            )}
+          </div>
+
+          <div className="position-absolute bottom-0 end-0 p-2 d-flex gap-2">
+            {/* Mute/Unmute Icon */}
+            <div
+              className="d-flex align-items-center justify-content-center pointer"
+              style={{
+                backgroundColor: "rgba(92, 92, 92, 0.6)",
+                padding: "8px",
+                borderRadius: "50%",
+              }}
+              onClick={handleMuteToggle}
+            >
+              {isMuted ? (
+                <HiOutlineVolumeOff size={18} className="text-white fs-5" />
+              ) : (
+                <HiOutlineVolumeUp size={18} className="text-white fs-5" />
+              )}
+            </div>
+
+            <div
+              className="d-flex align-items-center justify-content-center pointer"
+              style={{
+                backgroundColor: "rgba(92, 92, 92, 0.6)",
+                padding: "8px",
+                borderRadius: "50%",
+              }}
+            >
+              <FaExpand size={18} className="text-white fs-5" />
+            </div>
+
+            <div
+              className="d-flex align-items-center justify-content-center pointer"
+              style={{
+                backgroundColor: "rgba(92, 92, 92, 0.6)",
+                padding: "8px",
+                borderRadius: "50%",
+              }}
+            >
+              <FaEllipsisV size={18} className="text-white fs-5" />
+            </div>
+          </div>
         </div>
       ),
 
