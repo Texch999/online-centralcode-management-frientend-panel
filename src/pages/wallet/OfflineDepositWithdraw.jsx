@@ -150,7 +150,7 @@ function OfflineDepositWithdraw() {
         </div>
         <div className="col p-2">
           <div className="yellow-bg px-2 py-1 br-4px white-text flex-between">
-            <span className="pointer">Submit</span>
+            <button className="pointer">Submit</button>
             <span className="rounded-circle white-bg py-1 px-2 black-text">
               0
             </span>{" "}

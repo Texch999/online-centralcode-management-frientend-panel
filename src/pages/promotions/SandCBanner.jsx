@@ -207,7 +207,7 @@ const SandCBanner = () => {
           </div>
         </div>
         <div className="col-4 flex-end me-3">
-          <div className="w-100 saffron-btn2">Submit</div>
+          <button className="w-100 saffron-btn2">Submit</button>
         </div>
       </div>
 

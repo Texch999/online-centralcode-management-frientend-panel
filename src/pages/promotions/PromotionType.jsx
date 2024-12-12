@@ -206,7 +206,7 @@ const PromotionType = () => {
               </label>
             </div>
             <div className="col flex-end">
-              <div className="w-100 saffron-btn2 pointer">Submit</div>
+              <button className="w-100 saffron-btn2 pointer">Submit</button>
             </div>
           </div>
           <Table

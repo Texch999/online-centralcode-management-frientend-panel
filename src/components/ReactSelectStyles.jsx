@@ -8,6 +8,7 @@ export const customStyles = {
     outline: "none",
     minHeight: "none",
     borderRadius: "0.4rem",
+    cursor: "pointer",
   }),
 
   option: (base, state) => ({
@@ -56,6 +57,7 @@ export const roundedReactSelect = {
     outline: "none",
     minHeight: "none",
     borderRadius: "25px",
+    cursor: "pointer",
   }),
 
   option: (base, state) => ({
@@ -107,6 +109,7 @@ export const whiteReactSelect = {
     outline: state.isFocused ? "none" : "none",
     minHeight: "none",
     borderRadius: "5px",
+    cursor: "pointer",
   }),
 
   option: (base, state) => ({

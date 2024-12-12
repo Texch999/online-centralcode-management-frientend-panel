@@ -74,7 +74,7 @@ const AddNewSportsProvider = ({ show, setShow }) => {
                 className="input-css small-font text-black w-100 pointer mt-3"
               />
             )}
-            <div className="saffron-btn2 pointer mt-3">Submit</div>
+            <button className="saffron-btn2 pointer mt-3">Submit</button>
           </div>
         </div>
       </Modal.Body>
