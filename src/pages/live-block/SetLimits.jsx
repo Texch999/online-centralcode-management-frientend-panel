@@ -121,11 +121,11 @@ function SetLimits() {
     <div>
       <div className="flex-column mb-3 mt-2">
         <h6 className="d-flex yellow-font my-2">Set Limits</h6>
-        <div className="d-flex small-font">
+        <div className="col-8 col-lg-10 d-flex small-font">
           {buttons.map((btn, index) => (
             <div
               key={index}
-              className={`me-3 ${
+              className={`col-2 col-lg-1 me-3 ${
                 activeIndex === index ? "saffron-btn2" : "pointer white-btn2"
               }`}
               onClick={() => handleActiveIndex(index)}

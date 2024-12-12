@@ -55,7 +55,7 @@ const IndividualMatchOddsLive = () => {
         <div className="col-6 ps-3 d-flex justify-content-between align-items-center p-0">
           <div className="d-flex gap-3">
             <button
-              className={`small-font px-2 ${
+              className={`col-7 small-font px-2 ${
                 oddsLiveButton === "odds" ? "saffron-btn rounded" : "input-css2"
               }`}
               onClick={() => setoddsLiveButton("odds")}
@@ -63,7 +63,7 @@ const IndividualMatchOddsLive = () => {
               Odds
             </button>
             <button
-              className={`small-font ${
+              className={`col-7 small-font ${
                 oddsLiveButton === "live-score"
                   ? "saffron-btn rounded"
                   : "input-css2"

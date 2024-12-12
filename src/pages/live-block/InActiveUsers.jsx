@@ -60,9 +60,9 @@ function InActiveUsers() {
       activedays: <div className="red-font">60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 red-btn">In-Active</div>
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
           <MdDelete
-            className="large-font pointer ms-1"
+            className="large-font pointer ms-2"
             onClick={() => setShowDeletePopup(true)}
           />
         </div>
@@ -91,8 +91,8 @@ function InActiveUsers() {
       activedays: <div>60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -119,8 +119,8 @@ function InActiveUsers() {
       activedays: <div className="red-font">60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -147,8 +147,8 @@ function InActiveUsers() {
       activedays: <div>60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -175,8 +175,8 @@ function InActiveUsers() {
       activedays: <div className="red-font">60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -203,8 +203,8 @@ function InActiveUsers() {
       activedays: <div>60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -231,8 +231,8 @@ function InActiveUsers() {
       activedays: <div className="red-font">60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-9 col-lg-7 red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -259,8 +259,8 @@ function InActiveUsers() {
       activedays: <div>60 Days</div>,
       action: (
         <div className="d-flex align-items-center justify-content-around">
-          <div className="col-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-1" />
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },

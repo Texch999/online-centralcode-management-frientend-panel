@@ -221,7 +221,7 @@ function BetBlockUsers() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font my-2">Bet Block Users</h6>
+        <h6 className="d-flex large-font yellow-font my-2">Bet Block Users</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
