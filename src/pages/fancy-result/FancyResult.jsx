@@ -184,7 +184,7 @@ const FancyResult = () => {
           <input className="input-css2 small-font" type="date" />
         </div>
         <div className="col-2 flex-end">
-          <div className="w-100 saffron-btn2 br-5 small-font">Submit</div>
+          <button className="w-100 saffron-btn2 br-5 small-font">Submit</button>
         </div>
         <div className="col-2"></div>
         <div className="col-2 flex-end flex-center">

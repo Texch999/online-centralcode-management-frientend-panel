@@ -114,8 +114,8 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
                 <div className="p-2 grey-font border-top">
                   ID: 1234567890233
                 </div>
-                <div className="p-2 grey-font border-top">
-                  Type:
+                <div className="d-flex align-items-center px-2 grey-font border-top">
+                  <span>Type:</span>
                   <Select
                     className="small-font"
                     options={typeOptions}
@@ -134,7 +134,7 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
                     maxLength={4}
                     onChange={(e) => setInputValue(e.target.value)}
                     onBlur={() => setIsEditable(false)}
-                    className="w-50 all-none w-fit"
+                    className="w-50 all-none w-fit ms-2"
                   />
                   <SlPencil
                     size={16}
@@ -170,7 +170,9 @@ function EditBetPopup({ editBetPopupOpen, setEditBetPopupOpen }) {
             </div>
 
             <div className="col-4 d-flex align-items-end justify-content-end">
-              <div className="w-100 saffron-btn2 rounded">Save Changes</div>
+              <button className="w-100 saffron-btn2 rounded">
+                Save Changes
+              </button>
             </div>
           </div>
         </div>

@@ -142,7 +142,7 @@ const MarketResult = () => {
           <input className="input-css2 small-font" type="date" />
         </div>
         <div className="col-2 flex-end">
-          <div className="w-100 saffron-btn br-5 small-font">Submit</div>
+          <button className="w-100 saffron-btn br-5 small-font">Submit</button>
         </div>
         <div className="col-4 flex-end">
           <div className="d-flex align-items-center white-bg px-2 border py-1 rounded-pill">

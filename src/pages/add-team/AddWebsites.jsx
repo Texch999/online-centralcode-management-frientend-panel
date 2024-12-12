@@ -31,7 +31,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil
             size={18}
             className="pointer"
@@ -52,7 +52,7 @@ const AddWibsites = () => {
       url: "www.tcasinopark.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="gap-3 flex-center">
+          <div className="flex-center gap-4">
             <SlPencil
               size={18}
               className="pointer "
@@ -73,7 +73,7 @@ const AddWibsites = () => {
       url: "www.sparkbook.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="gap-3 flex-center">
+          <div className="flex-center gap-4">
             <SlPencil
               size={18}
               className="pointer "
@@ -89,7 +89,7 @@ const AddWibsites = () => {
       location: "Kolkata, India",
       url: "www.fun77.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>
@@ -102,7 +102,7 @@ const AddWibsites = () => {
       url: "www.diamondexchange.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="flex-center gap-3">
+          <div className="flex-center gap-4">
             <SlPencil
               size={18}
               className="pointer "
@@ -118,7 +118,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>
@@ -130,7 +130,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer font-red" />
         </div>
@@ -142,7 +142,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>
@@ -154,7 +154,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>
@@ -166,7 +166,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer red-font" />
         </div>
@@ -178,7 +178,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>
@@ -190,7 +190,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>
@@ -202,7 +202,7 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-4">
           <SlPencil size={18} className="pointer" />
           <MdBlockFlipped size={18} className="pointer" />
         </div>

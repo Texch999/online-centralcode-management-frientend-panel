@@ -26,7 +26,7 @@ const CasinoWebsite = () => {
 
   const CASINO_COLUMNS = [
     { header: "Website Name", field: "websiteName", width: "20%" },
-    { header: "Website URL", field: "websiteURL", width: "25%" },
+    { header: "Website URL", field: "websiteURL", width: "50%" },
     {
       header: <div className="text-center">P/L</div>,
       field: "pl",
@@ -40,7 +40,7 @@ const CasinoWebsite = () => {
   ];
   const CASINO_DATA = [
     {
-      websiteName: <div> Diamond Exchange</div>,
+      websiteName: <div>Diamond Exchange</div>,
       websiteURL: <div>www.diamondexchange.com</div>,
       pl: <div className="green-font text-center">5000000</div>,
 
@@ -60,11 +60,11 @@ const CasinoWebsite = () => {
   const CASINO_DATA_DUPLICATES = Array(10).fill(CASINO_DATA[0]);
 
   const CRICKET_COLUMNS = [
-    { header: "Providers Name", field: "providersName", width: "35%" },
+    { header: "Providers Name", field: "providersName", width: "70%" },
     {
       header: <div className="text-center">P/L</div>,
       field: "posterType",
-      width: "30%",
+      width: "20%",
     },
     {
       header: <div className="text-center">Status</div>,
