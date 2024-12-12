@@ -110,6 +110,7 @@ import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
+import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -290,6 +291,10 @@ function App() {
               <Route path="/bet-block-users" element={<BetBlockUsers />} />
               <Route path="/inactive-users" element={<InActiveUsers />} />
               <Route path="/set-limits" element={<SetLimits />} />
+              <Route
+                path="/white-label-setting"
+                element={<WhiteLabelSetting />}
+              />
             </Routes>
           </div>
         </div>

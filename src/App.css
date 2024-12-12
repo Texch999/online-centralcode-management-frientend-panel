@@ -276,6 +276,9 @@
 .grey-border {
   border: 2px solid #e0e0e0;
 }
+.grey-border2 {
+  border-bottom: 2px solid #333333;
+}
 .saffron-clr {
   color: #ffa310 !important;
 }
