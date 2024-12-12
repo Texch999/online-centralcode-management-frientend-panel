@@ -11,7 +11,6 @@ import { HiOutlineVolumeUp, HiOutlineVolumeOff } from "react-icons/hi";
 import { FaRegCirclePause } from "react-icons/fa6";
 import "../../add-team/style.css";
 import "../style.css";
-import ScoreboardCricket from "../../cricket/ScoreboardCricket";
 
 const LiveScoreBoard = ({ sport }) => {
   const [showBlockModal, setShowBlockModal] = useState(false);

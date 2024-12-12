@@ -7,7 +7,6 @@ import { Images } from "../../images";
 import PaymentGateway from "./components/PaymentGateway";
 import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
-import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 import ResetPasswordPopup from "../../pages/popups/ResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
 import "bootstrap/dist/css/bootstrap.min.css";

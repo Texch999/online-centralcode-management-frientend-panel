@@ -178,12 +178,17 @@ const PromotionType = () => {
         </>
       ) : (
         <>
-          <div className="col-6 row my-3 small-font">
-            <div className="col">
-              <label className="black-text4 small-font mb-1">
+          <div className="row my-3 small-font align-items-center">
+            {/* Promotion Type */}
+            <div className="col-md-3 col-lg-2">
+              <label
+                htmlFor="promotionType"
+                className="black-text4 small-font mb-1 d-block"
+              >
                 Promotion Type
               </label>
               <Select
+                id="promotionType"
                 className="small-font w-100"
                 options={selectOptions}
                 placeholder="Select"
@@ -193,22 +198,32 @@ const PromotionType = () => {
                 classNamePrefix="custom-react-select"
               />
             </div>
-            <div className="col-5 flex-column">
-              <label className="black-text4 small-font mb-1">
+
+            {/* Upload Poster */}
+            <div className="col-md-3 col-lg-2 px-0">
+              <label
+                htmlFor="poster"
+                className="black-text4 small-font mb-1 d-block"
+              >
                 Upload Poster
               </label>
-              <label htmlFor="poster">
-                <input type="file" style={{ display: "none" }} id="poster" />
-                <div className="input-css2 small-font flex-between">
-                  Upload{" "}
-                  <MdOutlineFileUpload size={16} className="grey-color" />
+              <label htmlFor="poster" className="d-block">
+                <input type="file" id="poster" style={{ display: "none" }} />
+                <div className="input-css2 small-font d-flex justify-content-between align-items-center pointer">
+                  Upload
+                  <MdOutlineFileUpload className="grey-color medium-font" />
                 </div>
               </label>
             </div>
-            <div className="col flex-end">
-              <div className="w-100 saffron-btn2 pointer">Submit</div>
+
+            {/* Submit Button */}
+            <div className="col-md-2 col-lg-1 align-self-end">
+              <button className="w-100 saffron-btn2 pointer small-font">
+                Submit
+              </button>
             </div>
           </div>
+
           <Table
             columns={CRICKET_COLUMNS}
             data={CRICKET_DATA}
