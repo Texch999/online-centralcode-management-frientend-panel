@@ -76,7 +76,6 @@ const CricketScoreboard = () => {
     );
 
   const cols = [
-    { header: "", field: "watch" },
     { header: "Date&Time", field: "date" },
     { header: "Matches/ID", field: "match" },
     ...(match !== "HorseRacing"
@@ -92,9 +91,9 @@ const CricketScoreboard = () => {
 
   const data = [
     {
-      watch: <div className="inplay-btn w-fit p-1 white-space">In-Play</div>,
       date: (
         <div>
+          <div className="inplay-btn w-fit p-1 white-space">In-Play</div>
           <div className="white-space">21-09-2024</div>
           <div>08:00:00</div>
         </div>
@@ -115,9 +114,9 @@ const CricketScoreboard = () => {
     },
 
     {
-      watch: <div className="inplay-btn w-fit p-1 white-space">In-Play</div>,
       date: (
         <div className="d-flex flex-column">
+          <div className="inplay-btn w-fit p-1 white-space">In-Play</div>
           <div>21-09-2024</div>
           <div>08:00:00</div>
         </div>
@@ -137,9 +136,9 @@ const CricketScoreboard = () => {
       ),
     },
     {
-      watch: <div className="mx-2">Today</div>,
       date: (
         <div className="d-flex flex-column">
+          <div className="mx-2">Today</div>
           <div>21-09-2024</div>
           <div>08:00:00</div>
         </div>
@@ -159,9 +158,9 @@ const CricketScoreboard = () => {
       ),
     },
     {
-      watch: <div className=" mx-2">Upcoming</div>,
       date: (
         <div className="d-flex flex-column">
+          <div className=" mx-2">Upcoming</div>
           <div>21-09-2024</div>
           <div>08:00:00</div>
         </div>
