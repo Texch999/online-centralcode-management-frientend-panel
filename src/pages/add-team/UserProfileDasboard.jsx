@@ -68,7 +68,7 @@ const cardData = [
     valueClass: "text-dark",
     icon: (
       <img
-        src={Images.adminProfileTotalPaid}
+        src={Images.adminProfileNetProfit}
         alt="ShareRevenue"
         className="chat-img m-1"
       />

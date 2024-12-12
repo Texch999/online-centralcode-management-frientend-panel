@@ -23,6 +23,7 @@ const cols = [
       </div>
     ),
     field: "back_lay",
+    width:"35%"
   },
   { header: <div className="text-center">Back</div>, field: "back" },
   { header: <div className="text-center">Lay</div>, field: "lay" },
@@ -115,7 +116,7 @@ const tableData1 = [
     ),
     live_block: (
       <div className="">
-        <button className="red-btn">Blocked</button>
+        <button className="col-12 red-btn">Blocked</button>
       </div>
     ),
     action: (
@@ -209,7 +210,7 @@ const tableData2 = [
         <div className="">100k</div>
       </div>
     ),
-    live_block: <div className="green-btn">Live</div>,
+    live_block: <div className="px-3 green-btn">Live</div>,
     action: (
       <div class="flex-center mt-1">
         <div className="pointer">
@@ -301,7 +302,7 @@ const tableData3 = [
         <div className="">100k</div>
       </div>
     ),
-    live_block: <div className="green-btn">Live</div>,
+    live_block: <div className="px-3 green-btn">Live</div>,
     action: (
       <div class="flex-center mt-1">
         <div className="pointer">
@@ -320,7 +321,6 @@ const Fancy = () => {
 
   const navigate = useNavigate();
   const { sport } = useParams();
-  console.log(sport);
 
   const handleFancyBets = (fancy) => {
     navigate(`/live-block-sports/${sport}/${fancy}`);

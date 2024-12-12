@@ -37,15 +37,15 @@ const IndividualMatchOddsLive = () => {
       {/* Content Section */}
       <div className="row d-flex px-3">
         <div className="col-6 d-flex align-items-center input-css2 rounded py-2">
-          <div className="col-4 small-font border-end border-2 px-2">
+          <div className="col-4 small-font border-2 px-2">
             <div>Live</div>
             <div>01-10-2024 16:11:00</div>
           </div>
-          <div className="col-4 small-font border-end border-2 px-2">
+          <div className="col-4 small-font border-start border-2 px-2">
             <div>ICICI T20 Women World Cup 2024</div>
             <div>Market ID: 1.11045677544</div>
           </div>
-          <div className="col-4 small-font px-2">
+          <div className="col-4 small-font border-start border-2 px-2">
             <div>New Zealand Wo vs South Africa Wo</div>
             <div>Match ID: 11023843754858</div>
           </div>
@@ -55,7 +55,7 @@ const IndividualMatchOddsLive = () => {
         <div className="col-6 ps-3 d-flex justify-content-between align-items-center p-0">
           <div className="d-flex gap-3">
             <button
-              className={`small-font ${
+              className={`col-7 small-font px-2 ${
                 oddsLiveButton === "odds" ? "saffron-btn rounded" : "input-css2"
               }`}
               onClick={() => setoddsLiveButton("odds")}
@@ -63,7 +63,7 @@ const IndividualMatchOddsLive = () => {
               Odds
             </button>
             <button
-              className={`small-font ${
+              className={`col-7 small-font ${
                 oddsLiveButton === "live-score"
                   ? "saffron-btn rounded"
                   : "input-css2"
@@ -74,8 +74,8 @@ const IndividualMatchOddsLive = () => {
             </button>
           </div>
           <div className="d-flex align-items-center">
-            <span>P/L:</span>
-            <button className="white-btn2 green-font ms-2">10000000</button>
+            <span className="medium-font">P/L:</span>
+            <button className="white-btn2 medium-font green-font ms-2">10000000</button>
           </div>
         </div>
       </div>

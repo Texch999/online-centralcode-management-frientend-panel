@@ -189,7 +189,7 @@ const AddManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={11}
+          itemsPerPage={9}
         />
       </div>
       {/* AddManagementPopup Modal */}
@@ -219,7 +219,7 @@ const AddManagementTeam = () => {
         submitButton={"Delete"}
         onSubmit={handleDeleteAccount}
       />
-      \{/* Reset Password Modal */}
+      {/* Reset Password Modal */}
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={setResetPasswordPopup}

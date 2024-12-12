@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import { FaSearch } from "react-icons/fa";
-import { BsEye } from "react-icons/bs";
+import "../live-block/style.css";
 
 function SetLimits() {
   const BONUS_COLUMNS = [
@@ -106,6 +105,7 @@ function SetLimits() {
       status: <div className="green-btn">Active</div>,
     },
   ];
+
   const buttons = ["Odds", "Book Maker 1", "Book Maker 2", "Fancy", "Casino"];
   const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndex = (index) => {
@@ -121,12 +121,12 @@ function SetLimits() {
     <div>
       <div className="flex-column mb-3 mt-2">
         <h6 className="d-flex yellow-font my-2">Set Limits</h6>
-        <div className="d-flex small-font">
+        <div className="col-8 col-lg-10 d-flex small-font">
           {buttons.map((btn, index) => (
             <div
               key={index}
-              className={`me-3 ${
-                activeIndex === index ? "saffron-btn2" : "white-btn2"
+              className={`col-2 col-lg-1 me-3 ${
+                activeIndex === index ? "saffron-btn2" : "pointer white-btn2"
               }`}
               onClick={() => handleActiveIndex(index)}
             >
@@ -135,7 +135,8 @@ function SetLimits() {
           ))}
         </div>
       </div>
-      <div className="d-flex w-100 white-bg p-3 table-wrapper">
+
+      <div className="liveblock-setlimit-header-top d-flex w-100 white-bg px-3 pt-3 pb-4">
         {bets.map((bet) => (
           <div className="col mx-2" key={bet.id}>
             <div className="w-100 d-flex flex-column">
@@ -148,12 +149,19 @@ function SetLimits() {
             </div>
           </div>
         ))}
-        <div className="col flex-end">
-          <div className="w-100 saffron-btn2">Submit</div>
+        <div className="col-1 align-self-end">
+          <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>
-      <hr className="m-0 border" />
-      <Table columns={BONUS_COLUMNS} data={BONUS_DATA} itemsPerPage={4} />
+
+      <div className="liveblock-setlimit-table-parent-bottom">
+        <Table
+          className="table-wrapper"
+          columns={BONUS_COLUMNS}
+          data={BONUS_DATA}
+          itemsPerPage={4}
+        />
+      </div>
     </div>
   );
 }

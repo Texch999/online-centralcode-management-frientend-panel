@@ -94,7 +94,7 @@ const BetHistory = () => {
       pl: <span className="yellow-font">100000000000</span>,
       ipAddress: <span className="yellow-font">127.0.0.1</span>,
       action: (
-        <div className="d-flex align-items-center">
+        <div className="d-flex gap-2 align-items-center">
           <SlPencil
             size={20}
             className="yellow-font m-2 pointer"
@@ -196,7 +196,7 @@ const BetHistory = () => {
       ipAddress: "127.0.0.1",
       action: (
         <>
-          <SlPencil size={20} className="m-2 pointer" />
+          <SlPencil size={20} className="me-3 pointer" />
           <FaRegTrashCan size={20} className="pointer" />
         </>
       ),
@@ -241,7 +241,7 @@ const BetHistory = () => {
       ipAddress: "127.0.0.1",
       action: (
         <>
-          <SlPencil size={20} className="m-2 pointer" />
+          <SlPencil size={20} className="me-3 pointer" />
           <FaRegTrashCan size={20} className="pointer" />
         </>
       ),

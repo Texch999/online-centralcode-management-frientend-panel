@@ -6,6 +6,7 @@ import ConfirmationPopup from "./../popups/ConfirmationPopup";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../../pages/add-team/style.css";
+import { WiDayThunderstorm } from "react-icons/wi";
 
 function InActiveUsers() {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -32,7 +33,7 @@ function InActiveUsers() {
     { header: "P/L", field: "pl" },
     { header: "Login Date", field: "logindate" },
     { header: "Active Days", field: "activedays" },
-    { header: "Action", field: "action" },
+    { header: <div className="ms-2">Action</div>, field: "action", width: "" },
   ];
 
   const INACTIVE_USER_DATA = [
@@ -58,10 +59,10 @@ function InActiveUsers() {
       logindate: <div className="red-font">04-10-2024</div>,
       activedays: <div className="red-font">60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="red-btn">In-Active</div>
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
           <MdDelete
-            className="large-font cursor-pointer"
+            className="large-font pointer ms-2"
             onClick={() => setShowDeletePopup(true)}
           />
         </div>
@@ -89,9 +90,9 @@ function InActiveUsers() {
       logindate: <div>04-10-2024</div>,
       activedays: <div>60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -117,9 +118,9 @@ function InActiveUsers() {
       logindate: <div className="red-font">04-10-2024</div>,
       activedays: <div className="red-font">60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -145,9 +146,9 @@ function InActiveUsers() {
       logindate: <div>04-10-2024</div>,
       activedays: <div>60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -173,9 +174,9 @@ function InActiveUsers() {
       logindate: <div className="red-font">04-10-2024</div>,
       activedays: <div className="red-font">60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -201,9 +202,9 @@ function InActiveUsers() {
       logindate: <div>04-10-2024</div>,
       activedays: <div>60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -229,9 +230,9 @@ function InActiveUsers() {
       logindate: <div className="red-font">04-10-2024</div>,
       activedays: <div className="red-font">60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -257,9 +258,9 @@ function InActiveUsers() {
       logindate: <div>04-10-2024</div>,
       activedays: <div>60 Days</div>,
       action: (
-        <div className="d-flex align-items-center justify-content-around w-100">
-          <div className="green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <MdDelete className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -274,37 +275,36 @@ function InActiveUsers() {
         </div>
       </div>
 
-      <div className="w-100 d-flex align-items-center justify-content-between my-3">
-        <div className="w-50 row">
-          <div className="col flex-column">
-            <label className="black-text4 small-font mb-1">Admin</label>
-            <Select
-              className="small-font"
-              options={adminOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          </div>
-          <div className="col flex-column">
-            <label className="black-text4 small-font mb-1">User</label>
-            <Select
-              className="small-font"
-              options={userOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          </div>
-          <div className="col flex-column d-flex align-items-end justify-content-end">
-            <button className="w-100 saffron-btn2 small-font">Submit</button>
-          </div>
+      <div className="row mb-3">
+        <div className="col-3 col-lg-2 pe-0">
+          <label className="black-text4 small-font mb-1">Admin</label>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
+        <div className="col-3 col-lg-2">
+          <label className="black-text4 small-font mb-1">User</label>
+          <Select
+            className="small-font"
+            options={userOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+        </div>
+        <button className="col-2 col-lg-1 saffron-btn2 small-font align-self-end">
+          Submit
+        </button>
       </div>
+
       <Table
         columns={INACTIVE_USER_COLUMNS}
         data={INACTIVE_USER_DATA}
