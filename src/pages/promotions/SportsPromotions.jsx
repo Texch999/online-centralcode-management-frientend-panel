@@ -21,7 +21,7 @@ const SportsPromotions = () => {
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   useEffect(() => {
@@ -114,9 +114,7 @@ const SportsPromotions = () => {
           <div
             key={index}
             className={`me-3 ${
-              activeBtn === item
-                ? "saffron-btn2 px-3"
-                : "white-btn2 pointer px-3"
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >

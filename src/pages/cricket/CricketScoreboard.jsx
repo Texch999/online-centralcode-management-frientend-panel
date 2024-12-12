@@ -11,67 +11,8 @@ import { FaRegTrashCan } from "react-icons/fa6";
 
 const CricketScoreboard = () => {
   const { vendor, provider, match } = useParams();
-  const matchContent =
-    match === "Football" ? (
-      <>
-        <div>Santos vs Cruzeiro MG</div>
-        <div>12345678912343455</div>
-      </>
-    ) : match === "HorseRacing" ? (
-      <>
-        <div>BathRust</div>
-        <div>67890123456789012</div>
-      </>
-    ) : match === "Tennis" ? (
-      <>
-        <div>Guangzhou Challenger 2023</div>
-        <div>67890123456789012</div>
-      </>
-    ) : (
-      <>
-        <div>ICC Women T20 World Cup</div>
-        <div>09876543211234567</div>
-      </>
-    );
-
-  const seriesContent =
-    match === "Football" ? (
-      <>
-        <div>Brazilian Series A</div>
-        <div>12345678912343455</div>
-      </>
-    ) : match === "Tennis" ? (
-      <>
-        <div>Evgeny Donskoy vs Omar Jasika</div>
-        <div>67890123456789012</div>
-      </>
-    ) : (
-      <>
-        <div>ICC Women T20 World Cup</div>
-        <div>56789012345678900</div>
-      </>
-    );
-  const liveGameScoreBoardContent =
-    match === "Football" ? (
-      <>
-        <FootballScoreboard />
-      </>
-    ) : match === "Tennis" ? (
-      <>
-        <TennisScoreBoard />
-      </>
-    ) : match === "HorseRacing" ? (
-      <>
-        <HorseRacingScoreBoard />
-      </>
-    ) : (
-      <>
-        <ScoreboardCricket />
-      </>
-    );
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const handleBlockModal = () => {
     setShowBlockModal(!showBlockModal);
   };
@@ -79,8 +20,63 @@ const CricketScoreboard = () => {
     setShowDeleteModal(!showDeleteModal);
   };
 
+  const matchContent =
+    match === "Football" ? (
+      <div>
+        Santos vs Cruzeiro MG <br />
+        12345678912343455
+      </div>
+    ) : match === "HorseRacing" ? (
+      <div>
+        BathRust
+        <br />
+        67890123456789012
+      </div>
+    ) : match === "Tennis" ? (
+      <div>
+        Guangzhou Challenger 2023
+        <br />
+        67890123456789012
+      </div>
+    ) : (
+      <div>
+        ICC Women T20 World Cup
+        <br />
+        09876543211234567
+      </div>
+    );
+  const seriesContent =
+    match === "Football" ? (
+      <div>
+        Brazilian Series A<br />
+        12345678912343455
+      </div>
+    ) : match === "Tennis" ? (
+      <div>
+        Evgeny Donskoy vs Omar Jasika
+        <br />
+        67890123456789012
+      </div>
+    ) : (
+      <div>
+        ICC Women T20 World Cup
+        <br />
+        56789012345678900
+      </div>
+    );
+  const liveGameScoreBoardContent =
+    match === "Football" ? (
+      <FootballScoreboard />
+    ) : match === "Tennis" ? (
+      <TennisScoreBoard />
+    ) : match === "HorseRacing" ? (
+      <HorseRacingScoreBoard />
+    ) : (
+      <ScoreboardCricket />
+    );
+
   const cols = [
-    { header: "", field: "watch", width: "10%" },
+    { header: "", field: "watch" },
     { header: "Date&Time", field: "date" },
     { header: "Matches/ID", field: "match" },
     ...(match !== "HorseRacing"
@@ -89,24 +85,23 @@ const CricketScoreboard = () => {
     {
       header: <div className="flex-center">Live Scoreboard</div>,
       field: "live",
-      width: "80%",
+      width: "100%",
     },
     { header: <div className="flex-end">Action</div>, field: "action" },
   ];
 
   const data = [
     {
-      watch: <div className="inplay-btn w-fit py-1 px-2">In-Play</div>,
+      watch: <div className="inplay-btn w-fit p-1 white-space">In-Play</div>,
       date: (
         <div>
-          <div>21-09-2024</div>
+          <div className="white-space">21-09-2024</div>
           <div>08:00:00</div>
         </div>
       ),
       match: [matchContent],
       series: [seriesContent],
       live: [liveGameScoreBoardContent],
-
       action: (
         <div class="flex-end grey-clr">
           <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
@@ -120,7 +115,7 @@ const CricketScoreboard = () => {
     },
 
     {
-      watch: <div className="inplay-btn w-fit py-1 px-2">In-Play</div>,
+      watch: <div className="inplay-btn w-fit p-1 white-space">In-Play</div>,
       date: (
         <div className="d-flex flex-column">
           <div>21-09-2024</div>
@@ -130,7 +125,6 @@ const CricketScoreboard = () => {
       match: [matchContent],
       series: [seriesContent],
       live: [liveGameScoreBoardContent],
-
       action: (
         <div class="flex-end grey-clr">
           <MdBlock onClick={handleBlockModal} size={18} className="pointer" />
@@ -188,7 +182,7 @@ const CricketScoreboard = () => {
   ];
   return (
     <div>
-      <Table columns={cols} data={data} itemsPerPage={5} />
+      <Table columns={cols} data={data} itemsPerPage={2} customPadding="p-2" />
       <ConfirmationPopup
         confirmationPopupOpen={showBlockModal}
         setConfirmationPopupOpen={setShowBlockModal}

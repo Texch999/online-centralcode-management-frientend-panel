@@ -599,24 +599,22 @@ function MyStatement() {
               greyBackground="footer-bg"
             />
           </div>
-          <div className="d-flex gap-2 mt-4">
-            <div className="w-45 ms-2">
+          <div className="row mt-4">
+            <div className="col-6">
               <h6 className="medium-font fw-600">Owner Accounts D/W</h6>
               <ScrollTable
                 columns={OWNER_ACCOUNT_COLUMNS}
                 data={OWNER_ACCOUNT_DATA}
                 footer={OWNER_ACCOUNT_FOOTER}
-                itemsPerPage={2}
                 greyBackground="footer-bg"
               />
             </div>
-            <div className="w-45 me-2">
+            <div className="col-6">
               <h6 className="medium-font fw-600">Payment Gateway D/W</h6>
               <ScrollTable
                 columns={PAYMENT_GATEWAY_COLUMNS}
                 data={PAYMENT_GATEWAY_DATA}
                 footer={PAYMENT_GATEWAY_FOOTER}
-                itemsPerPage={2}
                 greyBackground="footer-bg"
               />
             </div>

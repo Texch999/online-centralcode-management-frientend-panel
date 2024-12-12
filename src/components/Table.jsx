@@ -10,7 +10,6 @@ function Table({
   customPadding = "px-3 py-2",
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const hasData = data.length > 0;
   const startIndex = (currentPage - 1) * itemsPerPage;

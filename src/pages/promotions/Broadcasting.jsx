@@ -11,7 +11,7 @@ const Broadcasting = () => {
   const [activeBtn, setActiveBtn] = useState("User Broadcasting");
   const ACTIVE_BTNS = ["User Broadcasting", "Admin Broadcasting"];
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const selectOptions = [
@@ -88,8 +88,8 @@ const Broadcasting = () => {
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2"
+                : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >

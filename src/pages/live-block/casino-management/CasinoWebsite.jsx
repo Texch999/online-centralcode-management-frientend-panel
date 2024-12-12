@@ -21,7 +21,7 @@ const CasinoWebsite = () => {
   };
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const CASINO_COLUMNS = [

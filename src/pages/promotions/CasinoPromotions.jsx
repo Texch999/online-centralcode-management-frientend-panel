@@ -20,7 +20,7 @@ const CasinoPromotions = () => {
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
 
   const selectOptions = [
@@ -108,8 +108,8 @@ const CasinoPromotions = () => {
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2 px-3"
-                : "white-btn2 pointer px-3"
+                ? "saffron-btn2"
+                : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >

@@ -129,7 +129,6 @@ function App() {
                 path="/dashboard-view-all"
                 element={<DashboardViewAll />}
               />
-
               {/* Casino Routes */}
               <Route path="/central-casino" element={<Casino />} />
               <Route
@@ -148,7 +147,6 @@ function App() {
                 path="/sports-vendor-registration"
                 element={<SportsVendorRegistration />}
               />
-
               {/* Risk Management Routes */}
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/risk-sports" element={<RiskSports />} />
@@ -163,7 +161,6 @@ function App() {
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
-
               {/* User & Management Team Routes */}
               <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
@@ -194,7 +191,6 @@ function App() {
               />
               <Route path="/payment-details" element={<PaymentGateway />} />
               <Route path="/websites" element={<AddWibsites />} />
-
               {/* Reports */}
               <Route path="/pl-report-downline" element={<DownLineAdmins />} />
               <Route path="/match-wise-pl" element={<MatchWisePl />} />
@@ -217,7 +213,6 @@ function App() {
               <Route path="/pl-report-sports" element={<SportsReport />} />
               <Route path="/pl-report-users" element={<UserReports />} />
               <Route path="/client-rental-sheet" element={<ClientRental />} />
-
               {/* Sports Routes */}
               <Route path="/central-sports" element={<Sports />} />
               <Route path="/sports-promotions" element={<SportsPromotions />} />
@@ -236,7 +231,6 @@ function App() {
                 path="/central-sports/:vendor/:provider/:match/:individualMatch"
                 element={<FancyIndividualCricketMatch />}
               />
-
               {/* Promotions */}
               <Route
                 path="/create-promotion-type"
@@ -245,7 +239,6 @@ function App() {
               <Route path="/broadcasting" element={<Broadcasting />} />
               <Route path="/banners" element={<SandCBanner />} />
               <Route path="/offers" element={<Offer />} />
-
               {/* Owner Settings */}
               <Route path="/activity-logs" element={<ActivityLogs />} />
               <Route
@@ -254,8 +247,8 @@ function App() {
               />
               <Route path="/reference-data" element={<ReferenceData />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/results" element={<Result />} />
-
+              <Route path="/results" element={<Result />} />{" "}
+              <Route path="/results/:matchName" element={<IndividualMatch />} />
               {/* Live Block Routes */}
               <Route path="/live-block-sports" element={<LiveBlockSports />} />
               <Route
@@ -266,7 +259,6 @@ function App() {
                 path="/live-block-sports/:sport/:fancyType"
                 element={<ViewFancyBets />}
               />
-
               {/* Live Block Casino Management */}
               <Route path="/management-casino" element={<CasinoWebsite />} />
               <Route
@@ -293,7 +285,6 @@ function App() {
                 path="/management-casino-provider/:provider/:gamename/:bethistory"
                 element={<CasinoMBetHistory />}
               />
-
               {/* Miscellaneous */}
               <Route path="/bonus-chips" element={<BonusChips />} />
               <Route path="/bet-block-users" element={<BetBlockUsers />} />
