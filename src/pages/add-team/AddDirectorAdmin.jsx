@@ -28,7 +28,7 @@ const AddDirectorAdmin = () => {
   };
 
   const handleResetPasswordOpen = (user) => {
-    setSelectedUser(user); 
+    setSelectedUser(user);
     setResetPasswordPopup(true);
   };
 
@@ -38,7 +38,6 @@ const AddDirectorAdmin = () => {
   };
 
   const handleBlockUserOpen = (user) => {
-    console.log("handleBlockUserOpen triggered for user:", user);
     setSelectedUser(user);
     setConfirmationPopup(true);
   };
@@ -49,8 +48,6 @@ const AddDirectorAdmin = () => {
   };
 
   const handleBlockUserConfirm = () => {
-    // Perform the block action here
-    console.log(`User ${selectedUser} blocked.`);
     handleBlockUserClose();
   };
 
