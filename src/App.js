@@ -173,7 +173,7 @@ function App() {
               />
               <Route path="/downline-list" element={<DownlineList />} />
               <Route
-                path="/transactions-history"
+                path="/downline-list/:transactionHistory"
                 element={<DownlineTrasactionHistory />}
               />
               <Route

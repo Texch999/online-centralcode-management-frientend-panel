@@ -19,7 +19,7 @@ function BetBlockUsers() {
   ];
 
   const BLOCK_USER_COLUMNS = [
-    { header: "Role/Name", field: "roleName" },
+    { header: "Role/Name", field: "roleName"},
     { header: "User/Login Name", field: "userloginname" },
     { header: "Website", field: "website" },
     { header: "Deposit", field: "deposit" },
@@ -228,37 +228,36 @@ function BetBlockUsers() {
         </div>
       </div>
 
-      <div className="w-100 d-flex align-items-center justify-content-between my-3">
-        <div className="w-50 row">
-          <div className="col flex-column">
-            <label className="black-text4 small-font mb-1">Admin</label>
-            <Select
-              className="small-font"
-              options={adminOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          </div>
-          <div className="col flex-column">
-            <label className="black-text4 small-font mb-1">To</label>
-            <Select
-              className="small-font"
-              options={userOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          </div>
-          <div className="col flex-column d-flex align-items-end justify-content-end">
-            <button className="w-100 saffron-btn2 small-font">Submit</button>
-          </div>
+      <div className="row mb-3">
+        <div className="col-3 col-lg-2 pe-0">
+          <label className="black-text4 small-font mb-1">Admin</label>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
+        <div className="col-3 col-lg-2">
+          <label className="black-text4 small-font mb-1">User</label>
+          <Select
+            className="small-font"
+            options={userOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+        </div>
+        <button className="col-2 col-lg-1 saffron-btn2 small-font align-self-end">
+          Submit
+        </button>
       </div>
+
       <Table
         columns={BLOCK_USER_COLUMNS}
         data={BLOCK_USER_DATA}

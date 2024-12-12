@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { MdBlockFlipped, MdSwapVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
+
 import { FaSearch } from "react-icons/fa";
 import { Images } from "../../images/index";
 import Table from "../../components/Table";
@@ -15,6 +16,12 @@ const DownlineList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const role = localStorage.getItem("role");
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleNavigateUserDashboard = (trasaction) => {
+    navigate(`/downline-list/${trasaction}`);
+  };
 
   const cardData = [
     {
@@ -55,7 +62,7 @@ const DownlineList = () => {
       valueClass: "",
       icon: (
         <img
-          src={Images.adminProfileTotalPaid}
+          src={Images.adminProfileShareRevenue}
           alt="ShareRevenue"
           className="chat-img"
         />
@@ -70,7 +77,7 @@ const DownlineList = () => {
       valueClass: "text-dark",
       icon: (
         <img
-          src={Images.adminProfileTotalPaid}
+          src={Images.adminProfileShareRevenue}
           alt="ShareRevenue"
           className="chat-img"
         />
@@ -102,11 +109,6 @@ const DownlineList = () => {
       </div>
     );
   };
-  const navigate = useNavigate();
-
-  const handleNavigateUserDashboard = () => {
-    navigate("/transactions-history");
-  };
 
   const ACCOUNT_COLUMNS = [
     { header: "Account", field: "account" },
@@ -115,7 +117,7 @@ const DownlineList = () => {
     { header: "Total Cus W", field: "totalCusW" },
     { header: "Wall. Bal", field: "walletBalance" },
     { header: "Exposure", field: "exposure" },
-    { header: "Wall Ply. Bal", field: "walletPlayingBalance" },
+    { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
     { header: "Ref P/L", field: "referralPL" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
@@ -131,7 +133,7 @@ const DownlineList = () => {
       creditRef: (
         <>
           0{" "}
-          <GrEdit
+          <SlPencil
             className="icon-edit ms-2 pointer"
             size={15}
             onClick={() => setShowCreditAmountPopup(true)}
@@ -159,7 +161,7 @@ const DownlineList = () => {
             <MdSwapVert
               size={20}
               className="icon-action pointer"
-              onClick={handleNavigateUserDashboard}
+              onClick={() => handleNavigateUserDashboard("Trasactions History")}
             />
           </div>
         </div>
@@ -174,7 +176,7 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
@@ -205,7 +207,7 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
@@ -236,7 +238,7 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
@@ -267,7 +269,7 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
@@ -298,7 +300,7 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
@@ -376,6 +378,7 @@ const DownlineList = () => {
           </div>
         </div>
       </div>
+
       <div className="mt-3">
         <Table
           columns={ACCOUNT_COLUMNS}

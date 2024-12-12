@@ -19,9 +19,25 @@
   vertical-align: top !important;
 }
 
+/* react select custom style */
 .custom-react-select__control {
   background-color: white !important;
   border: 2px solid rgba(0, 0, 0, 0.1) !important;
   color: rgba(114, 114, 114, 1) !important;
   padding: 0.15rem !important;
+}
+
+.liveblock-setlimit-table-parent-bottom .table-wrapper {
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  border-top: solid 1px rgba(0, 0, 0, 0.16);
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 5px -1px !important;
+}
+
+.liveblock-setlimit-header-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px -2px 5px -1px;
 }
