@@ -1,6 +1,10 @@
 import { CgSoftwareUpload } from "react-icons/cg";
+import { whiteReactSelect } from "../../components/ReactSelectStyles";
+import Select from "react-select";
 
 function WhiteLabelSetting() {
+  const titleOptions = [{ value: "company", label: "Company" }];
+  const websiteOptions = [{ value: "website", label: "Website" }];
   return (
     <div>
       <div className="mb-3 mt-2">
@@ -12,15 +16,23 @@ function WhiteLabelSetting() {
             <label className="black-text4 small-font mb-1">
               Application Title
             </label>
-            <select className="input-css2 small-font black-text4">
-              <option>Company</option>
-            </select>
+            <Select
+              className="small-font"
+              options={titleOptions}
+              placeholder="Select"
+              styles={whiteReactSelect}
+              menuPlacement="auto"
+            />
           </div>
           <div className="col-9 flex-column mt-3">
             <label className="black-text4 small-font mb-1">Website</label>
-            <select className="input-css2 small-font">
-              <option>Select</option>
-            </select>
+            <Select
+              className="small-font"
+              options={websiteOptions}
+              placeholder="Select"
+              styles={whiteReactSelect}
+              menuPlacement="auto"
+            />
           </div>
           <div className="col-3 flex-end mt-3">
             <button className="w-100 input-css2 small-font flex-center black-text4 black-border">
