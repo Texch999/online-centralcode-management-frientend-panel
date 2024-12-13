@@ -205,7 +205,7 @@ function Homepage() {
           <div>Casino Park</div>
         </div>
       ),
-      pl: <div className="red-font">500000</div>,
+      pl: <div className="green-font">500000</div>,
     },
     {
       customer: (
