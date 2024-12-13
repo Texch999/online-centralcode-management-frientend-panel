@@ -27,8 +27,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Rental Revenue",
@@ -42,8 +42,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
   {
     title: "Total Paid",
@@ -57,8 +57,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
   {
     title: "Net Profit/Loss",
@@ -72,8 +72,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
 ];
 
@@ -90,8 +90,8 @@ const addDirectorTabsRowCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-2",
-    bootstrapClassesBottom: "mb-0 p-2 fw-600 px-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
   {
     title: "Total Users",
@@ -102,11 +102,11 @@ const addDirectorTabsRowCardsData = [
       <img
         src={Images.adminProfileTotalUsers}
         alt="TotalAdmins"
-        className="chat-img m-1"
+        className="chat-img"
       />
     ),
-    bootstrapClassesTop: "py-1 px-2",
-    bootstrapClassesBottom: "mb-0 fw-600 py-1 px-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
 ];
 
@@ -123,8 +123,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Exposer",
@@ -138,8 +138,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Sale Chips",
@@ -153,8 +153,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Downline Available Chips",
@@ -168,8 +168,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Balance Chips",
@@ -183,8 +183,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Downline P/L Chips",
@@ -198,8 +198,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
 ];
 
@@ -323,8 +323,8 @@ const UserProfileDashboard = () => {
   };
 
   const handleResetPasswordClose = () => {
-    setShowResetPasswordPopup(false)
-  }
+    setShowResetPasswordPopup(false);
+  };
 
   return (
     <div>
@@ -415,7 +415,7 @@ const UserProfileDashboard = () => {
           </div>
         </div>
       </div>
-      
+
       <ResetPasswordPopup
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}

@@ -29,7 +29,6 @@ const DownlineList = () => {
         role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
       backgroundColor: "#7DA0FA",
       value: "500000000",
-      valueClass: "text-dark",
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -37,14 +36,13 @@ const DownlineList = () => {
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
     {
       title: role === "Super Admin" ? "Share/Royalty Amount" : "Rental Revenue",
       backgroundColor: "#7DA0FA",
       value: "500000000",
-      valueClass: "text-dark",
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -52,14 +50,13 @@ const DownlineList = () => {
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
     {
       title: role === "Super Admin" ? "Total Withdraw" : "Total Paid",
       backgroundColor: "#7DA0FA",
       value: "0.00",
-      valueClass: "",
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -67,14 +64,13 @@ const DownlineList = () => {
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
     {
       title: role === "Super Admin" ? "Net P/L" : "Another Revenue",
       backgroundColor: "#7DA0FA",
       value: "300000000",
-      valueClass: "text-dark",
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -82,8 +78,8 @@ const DownlineList = () => {
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
   ];
 
@@ -91,7 +87,6 @@ const DownlineList = () => {
     title,
     backgroundColor,
     value,
-    valueClass,
     icon,
     bootstrapClassesTop,
     bootstrapClassesBottom,
@@ -105,7 +100,7 @@ const DownlineList = () => {
           <h6 className="mb-0 text-white small-font">{title}</h6>
           {icon}
         </div>
-        <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+        <p className={`medium-font fw-600 ${bootstrapClassesBottom}`}>{value}</p>
       </div>
     );
   };
@@ -340,7 +335,7 @@ const DownlineList = () => {
     <div>
       <div className="row d-flex justify-content-between align-items-center mb-3">
         <div className="col-md-3">
-          <h6 className="yellow-font medium-font mb-0">Downline List</h6>
+          <h6 className="yellow-font large-font mb-0">Downline List</h6>
         </div>
 
         <div className="col-md-9 d-flex flex-end align-items-center gap-3">
