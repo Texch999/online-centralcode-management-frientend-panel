@@ -72,18 +72,14 @@ function UserReports() {
     ),
     pl: (
       <div>
-        <span className="green-font">10000000</span> <br />
+        <span className="green-font">10000000</span> <br/>
         Result: Rajasthan Royals Win
       </div>
     ),
     status: (
-      <div className="large-font d-flex w-50 flex-between">
-        <span>
-          <SlPencil size={18} />
-        </span>
-        <span className="ms-2">
-          <FaRegTrashCan size={18} />
-        </span>
+      <div className="d-flex gap-3">
+          <SlPencil size={18} className="pointer"/>
+          <FaRegTrashCan size={18} className="pointer"/>
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),

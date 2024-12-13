@@ -6,10 +6,13 @@ import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Images } from "../../images";
 import UploadPosterPopUp from "./UploadPosterPopUp";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const Offer = () => {
   const [activeBtn, setActiveBtn] = useState("1st Deposit Bonus");
   const [uploadPoster, setUploadPoster] = useState(false);
+  const [offerDeleteModal, setOfferDeleteModal] = useState(false);
+
   const ACTIVE_BTNS = [
     "1st Deposit Bonus",
     "Cashback",
@@ -75,7 +78,7 @@ const Offer = () => {
                   />
                 </span>
                 <span className="white-bg rounded-pill p-1  pointer">
-                  <FaRegTrashCan size={20} />
+                  <FaRegTrashCan size={20} onClick={() => setOfferDeleteModal(true)}/>
                 </span>
               </div>
             </div>
@@ -100,9 +103,7 @@ const Offer = () => {
             <div
               key={index}
               className={`me-3 ${
-                activeBtn === item
-                  ? "saffron-btn2"
-                  : "white-btn2 pointer"
+                activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
               }`}
               onClick={() => handleSportClick(item)}
             >
@@ -119,9 +120,17 @@ const Offer = () => {
         </div>
       </div>
       <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={1} />
+
       <UploadPosterPopUp
         setUploadPoster={setUploadPoster}
         uploadPoster={uploadPoster}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={offerDeleteModal}
+        setConfirmationPopupOpen={() => setOfferDeleteModal(false)}
+        discription={"are you sure you want to delete this Offer"}
+        submitButton={"Delete"}
       />
     </div>
   );

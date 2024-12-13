@@ -11,16 +11,28 @@ import CasinoPromotionsPopUp from "./CasinoPromotionsPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const CasinoPromotions = () => {
   const [activeBtn, setActiveBtn] = useState("Admin Promotion");
   const [fullPoster, setFullPoster] = useState(false);
-  const [editPoster, setEditPoster] = useState(false);
   const [casinoPromotion, setCasinoPromotion] = useState(false);
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+  const [editPromotionModel, setEditPromotionModel] = useState(null);
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
+  };
+
+  const handleAddNew = () => {
+    setEditPromotionModel("Add New Promotion");
+    setCasinoPromotion(true);
+  };
+
+  const handleEdit = () => {
+    setEditPromotionModel("Edit New Promotion");
+    setCasinoPromotion(true);
   };
 
   const selectOptions = [
@@ -81,13 +93,13 @@ const CasinoPromotions = () => {
         </div>
       ),
       action: (
-        <div className="flex-center">
-          <SlPencil
+        <div className="d-flex gap-3 flex-center">
+          <SlPencil size={18} className="me-1 pointer" onClick={handleEdit} />
+          <FaRegTrashCan
             size={18}
-            className="me-1 pointer"
-            onClick={() => setEditPoster(!editPoster)}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
           />
-          <FaRegTrashCan size={18} className="ms-1" />
         </div>
       ),
     },
@@ -107,9 +119,7 @@ const CasinoPromotions = () => {
           <div
             key={index}
             className={`me-3 ${
-              activeBtn === item
-                ? "saffron-btn2"
-                : "white-btn2 pointer"
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -146,7 +156,7 @@ const CasinoPromotions = () => {
 
         <div
           className="white-bg px-3 py-2 grey-border flex-center blue-font rounded  pointer"
-          onClick={() => setCasinoPromotion(!casinoPromotion)}
+          onClick={handleAddNew}
         >
           <IoAddOutline className="medium-font me-2" />
           <span className="small-font">Add New</span>
@@ -160,8 +170,17 @@ const CasinoPromotions = () => {
       <CasinoPromotionsPopUp
         setCasinoPromotion={setCasinoPromotion}
         casinoPromotion={casinoPromotion}
+        editPromotionModel={editPromotionModel}
       />
+
       <FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
     </div>
   );
 };

@@ -12,14 +12,19 @@ import FullPosterPopUp from "./FullPosterPopUp";
 import { MdOutlineFileUpload } from "react-icons/md";
 import EditPosterPopUp from "./EditPosterPopUp";
 import Select from "react-select";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
-  const [addNewModal, setAddNewModal] = useState(false);
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
+  const [addNewModal, setAddNewModal] = useState(false);
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+  const [promotionBlockModal, setPromotionBlockModal] = useState(false);
+  const [posterDeleteModal, setPosterDeleteModal] = useState(false);
+  const [modalType, setModalType] = useState(null);
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
 
   const selectOptions = [
@@ -30,6 +35,16 @@ const PromotionType = () => {
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
+  };
+
+  const handleAddNew = () => {
+    setModalType("New Promotion Type");
+    setAddNewModal(true);
+  };
+
+  const handleEdit = () => {
+    setModalType("Edit Promotion Type");
+    setAddNewModal(true);
   };
 
   const CASINO_COLUMNS = [
@@ -48,9 +63,17 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <SlPencil size={18} />
-          <MdBlockFlipped size={18} className="mx-3" />
-          <FaRegTrashCan size={18} />
+          <SlPencil size={18} className="pointer" onClick={handleEdit} />
+          <MdBlockFlipped
+            size={18}
+            className="mx-3 pointer"
+            onClick={() => setPromotionBlockModal(true)}
+          />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
     },
@@ -62,9 +85,9 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <SlPencil size={18} />
-          <MdBlockFlipped size={18} className="mx-3" />
-          <FaRegTrashCan size={18} />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="mx-3 pointer" />
+          <FaRegTrashCan size={18} className="pointer" />
         </div>
       ),
     },
@@ -123,7 +146,11 @@ const PromotionType = () => {
             className="pointer me-2"
             onClick={() => setEditPoster(!editPoster)}
           />
-          <FaRegTrashCan size={18} className="pointer ms-2" />
+          <FaRegTrashCan
+            size={18}
+            className="pointer ms-2 delete"
+            onClick={() => setPosterDeleteModal(true)}
+          />
         </div>
       ),
     },
@@ -154,7 +181,7 @@ const PromotionType = () => {
       {activeBtn === "Promotion Type" ? (
         <>
           <div className="flex-between w-100 my-3 small-font">
-            <div className="flex-column">
+            <div className="col-3 col-lg-2 flex-column">
               <label className="black-text4 mb-1">Promotion</label>
               <Select
                 className="small-font"
@@ -167,8 +194,8 @@ const PromotionType = () => {
               />
             </div>
             <button
-              className="saffron-btn2 pointer"
-              onClick={() => setAddNewModal(!addNewModal)}
+              className="saffron-btn2 pointer align-self-end"
+              onClick={handleAddNew}
             >
               <IoAddOutline size={18} className="me-1" />
               <span>Add New</span>
@@ -235,9 +262,31 @@ const PromotionType = () => {
       <NewPromotionPopUp
         addNewModal={addNewModal}
         setAddNewModal={setAddNewModal}
+        modalType={modalType}
       />
+
       <FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
       <EditPosterPopUp setEditPoster={setEditPoster} editPoster={editPoster} />
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionBlockModal}
+        setConfirmationPopupOpen={() => setPromotionBlockModal(false)}
+        discription={"are you sure you want to block this Promotion"}
+        submitButton={"Block"}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={posterDeleteModal}
+        setConfirmationPopupOpen={() => setPosterDeleteModal(false)}
+        discription={"are you sure you want to delete this Poster"}
+        submitButton={"Delete"}
+      />
     </div>
   );
 };

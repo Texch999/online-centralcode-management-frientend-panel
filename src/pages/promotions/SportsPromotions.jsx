@@ -11,17 +11,30 @@ import AddNewPromotionPopUp from "./AddNewPromotionPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const SportsPromotions = () => {
   const [activeBtn, setActiveBtn] = useState("Admin Promotion");
   const [addPromotionsModal, setAddPromotionsModal] = useState(false);
   const [fullPoster, setFullPoster] = useState(false);
-  const [editPoster, setEditPoster] = useState(false);
   const [userPromotion, setUserPromotion] = useState(false);
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+  const [editPromotionModel, setEditPromotionModel] = useState(null);
+
   const ACTIVE_BTNS = ["Admin Promotion", "User Promotion"];
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
+  };
+
+  const handleAddNew = () => {
+    setEditPromotionModel("Add New Promotion");
+    setAddPromotionsModal(true);
+  };
+
+  const handleEdit = () => {
+    setEditPromotionModel("Edit New Promotion");
+    setAddPromotionsModal(true);
   };
 
   useEffect(() => {
@@ -89,12 +102,12 @@ const SportsPromotions = () => {
       ),
       action: (
         <div className="flex-center">
-          <SlPencil
+          <SlPencil size={18} className="me-2 pointer" onClick={handleEdit} />
+          <FaRegTrashCan
             size={18}
-            className="me-2 pointer"
-            onClick={() => setEditPoster(!editPoster)}
+            className="ms-2 pointer"
+            onClick={() => setPromotionDeleteModal(true)}
           />
-          <FaRegTrashCan size={18} className="ms-2" />
         </div>
       ),
     },
@@ -162,7 +175,7 @@ const SportsPromotions = () => {
         </div>
         <div
           className="white-bg align-self-end p-2 grey-border flex-center blue-font br-10 small-font pointer w-10"
-          onClick={() => setAddPromotionsModal(!addPromotionsModal)}
+          onClick={handleAddNew}
         >
           <IoAddOutline className="medium-font" />
           <span className="small-font">Add New</span>
@@ -187,8 +200,15 @@ const SportsPromotions = () => {
         setAddPromotionsModal={setAddPromotionsModal}
         addPromotionsModal={addPromotionsModal}
         userPromotion={userPromotion}
+        editPromotionModel={editPromotionModel}
       />
       <FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
     </div>
   );
 };

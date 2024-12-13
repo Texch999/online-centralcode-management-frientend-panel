@@ -120,7 +120,7 @@ function SetLimits() {
   return (
     <div>
       <div className="flex-column mb-3 mt-2">
-        <h6 className="d-flex yellow-font my-2">Set Limits</h6>
+        <h6 className="d-flex medium-font yellow-font my-3">Set Limits</h6>
         <div className="col-8 col-lg-10 d-flex small-font">
           {buttons.map((btn, index) => (
             <div

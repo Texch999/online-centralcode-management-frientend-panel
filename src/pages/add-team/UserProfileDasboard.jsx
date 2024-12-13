@@ -221,7 +221,7 @@ const Card = ({
         <h6 className="mb-0 text-white small-font">{title}</h6>
         {icon}
       </div>
-      <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+      <p className={`medium-font fw-600 ${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
     </div>
   );
 };
@@ -344,12 +344,11 @@ const UserProfileDashboard = () => {
 
             <div className="d-flex align-items-center gap-1 my-1">
               <div className="director-top-bg-icon px-2 py-1">
-                <MdRemoveRedEye size={18} className="text-warning pointer" />
+                <MdRemoveRedEye className="text-warning large-font pointer" />
               </div>
               <div className="director-top-bg-icon px-2 py-1">
                 <MdLockReset
-                  size={18}
-                  className="text-warning pointer"
+                  className="text-warning large-font pointer"
                   onClick={() => setShowResetPasswordPopup(true)}
                 />
               </div>
@@ -368,13 +367,12 @@ const UserProfileDashboard = () => {
                 className="super-admin-profile-img-con"
               />
               <div
-                className="d-flex gap-2 super-admin-img-down-content"
+                className="d-flex gap-2 super-admin-img-down-content align-items-end"
                 style={{ marginTop: "20px" }}
               >
-                <h6 className="small-font">Jayanta Pal</h6>
+                <h6 className="small-font mb-0">Jayanta Pal</h6>
                 <FaPen
-                  className="yellow-font pointer mt-1"
-                  size={13}
+                  className="yellow-font pointer medium-font mt-1"
                   onClick={() => setShowEditProfilePopup(true)}
                 />
               </div>
@@ -382,12 +380,12 @@ const UserProfileDashboard = () => {
             <div className="col-10">
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <div className="d-flex gap-4 align-items-center">
-                  <div className="d-flex gap-2 align-items-center">
-                    <FaUserTie />
+                  <div className="d-flex gap-2 align-items-end">
+                    <FaUserTie className="large-font"/>
                     <span className="small-font">Director</span>
                   </div>
-                  <div className="d-flex gap-2 align-items-center">
-                    <FaMapMarkerAlt />
+                  <div className="d-flex gap-2 align-items-end">
+                    <FaMapMarkerAlt className="large-font" />
                     <span className="small-font">India</span>
                   </div>
                 </div>

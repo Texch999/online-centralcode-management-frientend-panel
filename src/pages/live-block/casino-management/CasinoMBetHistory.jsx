@@ -267,7 +267,7 @@ const CasinoMBetHistory = () => {
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
           <h6 className="mb-0 pointer medium-font" onClick={() => navigate(-3)}>
-            <FiChevronLeft className="yellow-font mb-1" />
+            <FiChevronLeft className="yellow-font medium-font mb-1" />
             Casino Live Settings
             <FiChevronRight /> Casino Providers
           </h6>

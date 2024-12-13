@@ -10,6 +10,7 @@ const AddNewPromotionPopUp = ({
   addPromotionsModal,
   setAddPromotionsModal,
   userPromotion,
+  editPromotionModel
 }) => {
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -21,7 +22,7 @@ const AddNewPromotionPopUp = ({
     <Modal show={addPromotionsModal} size="md" centered>
       <Modal.Body>
         <div className="d-flex w-100 flex-between">
-          <h6 className="fw-600 mb-0">Add New Promotion</h6>
+          <h6 className="fw-600 mb-0">{editPromotionModel}</h6>
           <IoCloseSharp
             size={20}
             onClick={() => setAddPromotionsModal(false)}

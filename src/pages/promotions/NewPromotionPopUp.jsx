@@ -5,7 +5,7 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 
-const NewPromotionPopUp = ({ setAddNewModal, addNewModal }) => {
+const NewPromotionPopUp = ({ setAddNewModal, addNewModal, modalType}) => {
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
     { value: "Option 2", label: "Option 2" },
@@ -16,7 +16,7 @@ const NewPromotionPopUp = ({ setAddNewModal, addNewModal }) => {
     <Modal show={addNewModal} size="md" centered>
       <Modal.Body>
         <div className="d-flex w-100 flex-between">
-          <h6 className="mb-0 fw-600">New Promotion Type</h6>
+          <h6 className="mb-0 fw-600">{modalType}</h6>
           <IoCloseSharp
             size={20}
             onClick={() => setAddNewModal(false)}

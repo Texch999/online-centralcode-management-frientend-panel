@@ -564,7 +564,8 @@ const Result = () => {
           </div>
         ))}
       </div>
-      <div className="d-flex w-40 flex-between my-3">
+
+      <div className="col-8 col-lg-7 d-flex flex-between my-3">
         <div className="col-3 flex-column ">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />

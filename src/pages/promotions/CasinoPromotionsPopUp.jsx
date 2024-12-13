@@ -6,7 +6,7 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 
-const CasinoPromotionsPopUp = ({ setCasinoPromotion, casinoPromotion }) => {
+const CasinoPromotionsPopUp = ({ setCasinoPromotion, casinoPromotion, editPromotionModel }) => {
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
     { value: "Option 2", label: "Option 2" },
@@ -17,7 +17,7 @@ const CasinoPromotionsPopUp = ({ setCasinoPromotion, casinoPromotion }) => {
     <Modal show={casinoPromotion} size="md" centered>
       <Modal.Body>
         <div className="d-flex w-100 flex-between mb-2">
-          <h6 className="fw-600 mb-0">Add New Promotion</h6>
+          <h6 className="fw-600 mb-0">{editPromotionModel}</h6>
           <IoCloseSharp
             size={20}
             className="pointer"

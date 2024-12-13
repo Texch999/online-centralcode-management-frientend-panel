@@ -150,13 +150,9 @@ function SportsReport() {
       </div>
     ),
     status: (
-      <div className="large-font d-flex w-50 flex-between">
-        <span>
+      <div className="d-flex gap-3">
           <SlPencil size={18} />
-        </span>
-        <span className="ms-2">
           <FaRegTrashCan size={18} />
-        </span>
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),
