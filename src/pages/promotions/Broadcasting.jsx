@@ -6,9 +6,12 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const Broadcasting = () => {
   const [activeBtn, setActiveBtn] = useState("User Broadcasting");
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+
   const ACTIVE_BTNS = ["User Broadcasting", "Admin Broadcasting"];
   const handleSportClick = (item) => {
     setActiveBtn(item);
@@ -65,9 +68,9 @@ const Broadcasting = () => {
       ),
 
       icons: (
-        <div className="flex-center">
+        <div className="flex-center gap-3">
           <SlPencil size={18} className="pointer me-1" />
-          <FaRegTrashCan size={18} className="ms-1" />
+          <FaRegTrashCan size={18} className="ms-1 pointer" onClick={() => setPromotionDeleteModal(true)}/>
         </div>
       ),
     },
@@ -76,7 +79,7 @@ const Broadcasting = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Broadcasting</h6>
+        <h6 className="yellow-font medium-font mb-0">Broadcasting</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
@@ -160,6 +163,14 @@ const Broadcasting = () => {
       <div className="mt-4">
         <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={3} />
       </div>
+
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
+
     </div>
   );
 };

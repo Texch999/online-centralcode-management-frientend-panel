@@ -513,7 +513,7 @@ function MyStatement() {
       </div>
       {activeSport === "My Gateway Transaction" && (
         <div className="d-flex w-90 mb-3">
-          <div className="col-2 flex-column me-3">
+          <div className="col-3 col-lg-2 flex-column me-3">
             <label className="black-text4 small-font mb-1">Game</label>
             <Select
               className="small-font"
@@ -525,8 +525,8 @@ function MyStatement() {
               classNamePrefix="custom-react-select"
             />
           </div>
-          <div className="d-flex align-items-end w-100">
-            <button className="saffron-btn2 small-font pointer col-1 px-2">
+          <div className="col-2 d-flex align-items-end w-100">
+            <button className="  saffron-btn2 small-font pointer col-1 px-2">
               Submit
             </button>
           </div>

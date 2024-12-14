@@ -8,10 +8,12 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+  const [alertBetDeleteModal, setAlertBetDeleteModal] = useState(false);
   const [selectedType, setSelectedType] = useState("cheats");
   const handleSportClick = (sport) => {
     setActiveSport(sport);
@@ -109,15 +111,19 @@ function CheatAlertBets() {
       back: <div className="back-btn">10000000</div>,
       lay: <div className="lay-btn">10000000</div>,
       status: (
-        <div>
+        <div className="flex-column flex-center">
           <div className="green-btn">Settled</div>
-          <div className="flex-around mt-2">
+          <div className="d-flex gap-3 mt-3">
             <SlPencil
               className="pointer"
               size={18}
               onClick={handleEditBetPopupOpen}
             />
-            <FaRegTrashCan className="pointer" size={18} />
+            <FaRegTrashCan
+              className="pointer"
+              size={18}
+              onClick={() => setAlertBetDeleteModal(true)}
+            />
           </div>
         </div>
       ),
@@ -390,27 +396,29 @@ function CheatAlertBets() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Cheat/Alert Bets</h6>
+        <h6 className="yellow-font medium-font mb-0">Cheat/Alert Bets</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
+
       <div className="d-flex small-font pb-3">
         {SPORTS_BUTTONS?.map((sport, index) => (
-          <div
+          <button
             key={index}
-            className={`me-3 ${
+            className={`me-2 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(sport)}
           >
             {sport}
-          </div>
+          </button>
         ))}
       </div>
-      <div className="row mb-3">
-        <div className="col flex-column">
+
+      <div className="row col-11 mb-3">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">Cheat/Alert</label>
           <Select
             className="small-font"
@@ -422,15 +430,18 @@ function CheatAlertBets() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col flex-column">
+
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col flex-column">
+
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">To</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col flex-column">
+
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">User Name</label>
           <Select
             className="small-font"
@@ -442,7 +453,8 @@ function CheatAlertBets() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col flex-column">
+
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">Website Name</label>
           <Select
             className="small-font"
@@ -454,10 +466,12 @@ function CheatAlertBets() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col  flex-column d-flex align-items-end justify-content-end">
+
+        <div className="col-2 col-lg-1  flex-column d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>
+
       <Table
         columns={CHEAT_ALERTS_COLUMNS}
         data={selectedType === "alerts" ? ALERTS_DATA : CHEAT_DATA}
@@ -467,6 +481,13 @@ function CheatAlertBets() {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={alertBetDeleteModal}
+        setConfirmationPopupOpen={() => setAlertBetDeleteModal(false)}
+        discription={"are you sure you want to delete this Alert Bet"}
+        submitButton={"Delete"}
       />
     </div>
   );

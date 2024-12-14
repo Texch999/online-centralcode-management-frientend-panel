@@ -10,6 +10,8 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import CasinoPromotionsPopUp from "./CasinoPromotionsPopUp";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const SandCBanner = () => {
   const [activeBtn, setActiveBtn] = useState("User Posters");
@@ -17,13 +19,20 @@ const SandCBanner = () => {
   const ACTIVE_BTNS = ["User Posters", "Admin Posters"];
   const ACTIVE_BTNS2 = ["Live", "Schedule"];
   const [fullPoster, setFullPoster] = useState(false);
-  const [editPoster, setEditPoster] = useState(false);
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+  const [promotionModelTitle, setPromotionModelTitle] = useState(null);
+  const [sportsPromotionModel, setSportsPromotionModel] = useState(false);
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
   const handleSportClick2 = (item) => {
     setActiveBtn2(activeBtn2 === item ? null : item);
+  };
+
+  const handleEdit = () => {
+    setPromotionModelTitle("Edit Sports Promotion");
+    setSportsPromotionModel(true);
   };
 
   const selectOptions = [
@@ -91,13 +100,13 @@ const SandCBanner = () => {
         </div>
       ),
       action: (
-        <div className="flex-center">
-          <SlPencil
+        <div className="flex-center gap-3">
+          <SlPencil size={18} className="pointer me-1" onClick={handleEdit} />
+          <FaRegTrashCan
             size={18}
-            className="pointer me-1"
-            onClick={() => setEditPoster(!editPoster)}
+            className="ms-1 pointer"
+            onClick={() => setPromotionDeleteModal(true)}
           />
-          <FaRegTrashCan size={18} className="ms-1" />
         </div>
       ),
     },
@@ -117,9 +126,7 @@ const SandCBanner = () => {
           <div
             key={index}
             className={`me-3 ${
-              activeBtn === item
-                ? "saffron-btn2"
-                : "white-btn2 pointer"
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -133,9 +140,7 @@ const SandCBanner = () => {
           <div
             key={index}
             className={`me-3 ${
-              activeBtn2 === item
-                ? "saffron-btn2"
-                : "white-btn2 pointer"
+              activeBtn2 === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick2(item)}
           >
@@ -148,38 +153,38 @@ const SandCBanner = () => {
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Sports/Casino</label>
           <Select
-              className="small-font"
-              options={selectOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Websites</label>
           <Select
-              className="small-font"
-              options={selectOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Poster Location</label>
           <Select
-              className="small-font"
-              options={selectOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column me-3">
           <label className="black-text4 mb-1">Live Date</label>
@@ -213,6 +218,18 @@ const SandCBanner = () => {
 
       <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
       <FullPosterPopUp fullPoster={fullPoster} setFullPoster={setFullPoster} />
+
+      <CasinoPromotionsPopUp
+        setCasinoPromotion={setSportsPromotionModel}
+        casinoPromotion={sportsPromotionModel}
+        editPromotionModel={promotionModelTitle}
+      />
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
     </div>
   );
 };

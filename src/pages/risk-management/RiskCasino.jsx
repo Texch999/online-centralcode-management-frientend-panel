@@ -320,7 +320,7 @@ function RiskCasino() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Risk Management - Casino</h6>
+        <h6 className="yellow-font medium-font mb-0">Risk Management - Casino</h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />

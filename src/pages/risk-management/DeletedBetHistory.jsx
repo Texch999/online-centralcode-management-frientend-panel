@@ -208,7 +208,7 @@ function DeletedBetHistory() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Deleted Bet History</h6>
+        <h6 className="yellow-font medium-font mb-0">Deleted Bet History</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
@@ -216,7 +216,7 @@ function DeletedBetHistory() {
       </div>
       <div className="d-flex small-font pb-3">
         {SPORTS_BUTTONS?.map((sport, index) => (
-          <div
+          <button
             key={index}
             className={`me-3 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
@@ -224,19 +224,19 @@ function DeletedBetHistory() {
             onClick={() => handleSportClick(sport)}
           >
             {sport}
-          </div>
+          </button>
         ))}
       </div>
-      <div className="row w-75 mb-3">
-        <div className="col flex-column">
+      <div className="col-11 col-lg-7 row mb-3">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col flex-column">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">To</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col flex-column">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">User Name</label>
           <Select
             className="small-font"
@@ -248,7 +248,7 @@ function DeletedBetHistory() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col flex-column">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">Website Name</label>
           <Select
             className="small-font"
@@ -261,7 +261,7 @@ function DeletedBetHistory() {
           />
         </div>
         <div className="col flex-column d-flex align-items-end justify-content-end">
-          <button className="w-100 saffron-btn2 small-font">Submit</button>
+          <button className="w-75 saffron-btn2 small-font align-self-start">Submit</button>
         </div>
       </div>
       <Table

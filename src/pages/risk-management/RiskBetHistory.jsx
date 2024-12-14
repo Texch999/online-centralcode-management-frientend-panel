@@ -9,8 +9,11 @@ import EditBetPopup from "./EditBetPopup";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 function RiskBetHistory() {
+  const [deleteBetModal, setDeleteBetModal] = useState(false);
+
   const betPlacedOptions = [
     { value: "Option 1", label: "Option 1" },
     { value: "Option 2", label: "Option 2" },
@@ -83,15 +86,19 @@ function RiskBetHistory() {
       back: <div className="back-btn">10000000</div>,
       lay: <div className="lay-btn">10000000</div>,
       status: (
-        <div>
-          <div className="green-btn">Expo</div>
-          <div className="flex-around mt-2">
+        <div className="flex-column flex-center">
+          <button className="green-btn px-3">Expo</button>
+          <div className="d-flex gap-3 mt-3">
             <SlPencil
               size={18}
-              className="black-text"
+              className="black-text pointer"
               onClick={handleEditBetPopupOpen}
             />
-            <IoTrashOutline size={18} className="black-text" />
+            <IoTrashOutline
+              size={18}
+              className="black-text pointer"
+              onClick={() => setDeleteBetModal(true)}
+            />
           </div>
         </div>
       ),
@@ -139,15 +146,19 @@ function RiskBetHistory() {
       back: <div className="back-btn">10000000</div>,
       lay: <div className="lay-btn">10000000</div>,
       status: (
-        <div>
-          <div className="green-btn">Expo</div>
-          <div className="flex-around mt-2">
+        <div className="flex-column flex-center">
+          <button className="green-btn px-3">Expo</button>
+          <div className="d-flex gap-3 mt-3">
             <SlPencil
               size={18}
-              className="black-text"
+              className="black-text pointer"
               onClick={handleEditBetPopupOpen}
             />
-            <IoTrashOutline size={18} className="black-text" />
+            <IoTrashOutline
+              size={18}
+              className="black-text pointer"
+              onClick={() => setDeleteBetModal(true)}
+            />
           </div>
         </div>
       ),
@@ -195,15 +206,19 @@ function RiskBetHistory() {
       back: <div className="back-btn">10000000</div>,
       lay: <div className="lay-btn">10000000</div>,
       status: (
-        <div>
-          <div className="green-btn">Expo</div>
-          <div className="flex-around mt-2">
+        <div className="flex-column flex-center">
+          <button className="green-btn px-3">Expo</button>
+          <div className="d-flex gap-3 mt-3">
             <SlPencil
               size={18}
-              className="black-text"
+              className="black-text pointer"
               onClick={handleEditBetPopupOpen}
             />
-            <IoTrashOutline size={18} className="black-text" />
+            <IoTrashOutline
+              size={18}
+              className="black-text pointer"
+              onClick={() => setDeleteBetModal(true)}
+            />
           </div>
         </div>
       ),
@@ -251,15 +266,19 @@ function RiskBetHistory() {
       back: <div className="back-btn">10000000</div>,
       lay: <div className="lay-btn">10000000</div>,
       status: (
-        <div>
-          <div className="green-btn">Settled</div>
-          <div className="flex-around mt-2">
+        <div className="flex-column flex-center">
+          <button className="green-btn px-3">Expo</button>
+          <div className="d-flex gap-3 mt-3">
             <SlPencil
               size={18}
-              className="black-text"
+              className="black-text pointer"
               onClick={handleEditBetPopupOpen}
             />
-            <IoTrashOutline size={18} className="black-text" />
+            <IoTrashOutline
+              size={18}
+              className="black-text pointer"
+              onClick={() => setDeleteBetModal(true)}
+            />
           </div>
         </div>
       ),
@@ -270,8 +289,10 @@ function RiskBetHistory() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h5 className="black-font mb-0">Risk Management - Sports</h5>
-          <h6 className="ms-3 d-flex align-items-center yellow-font mb-0">
+          <h5 className="black-font medium-font mb-0">
+            Risk Management - Sports
+          </h5>
+          <h6 className="d-flex align-items-center medium-font yellow-font mb-0">
             <FiChevronRight /> Risk Bet History({matchName})
           </h6>
         </div>
@@ -285,7 +306,7 @@ function RiskBetHistory() {
           </div>
         </div>
       </div>
-      <div className="d-flex w-50 pb-3">
+      <div className="col-8 col-lg-6 d-flex pb-3">
         <div className="col-4 flex-column me-3">
           <label className="black-text4 small-font mb-1">Bet Palced</label>
           <Select
@@ -322,6 +343,13 @@ function RiskBetHistory() {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={deleteBetModal}
+        setConfirmationPopupOpen={() => setDeleteBetModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
       />
     </div>
   );

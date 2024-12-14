@@ -130,7 +130,7 @@ function DownLineAdmins() {
         <h6 className="d-flex  mb-0">
           {" "}
           {activeRole === false ? (
-            <div className="yellow-font">P/L Reports Downline Admins</div>
+            <div className="yellow-font medium-font">P/L Reports Downline Admins</div>
           ) : (
             <div>
               P/L Reports Downline Admins{" "}
@@ -144,7 +144,7 @@ function DownLineAdmins() {
         </h6>
       </div>
 
-      <div className="d-flex w-80 mb-3">
+      <div className="col-12 d-flex mb-3">
         {["From", "To"].map((label) => (
           <div key={label} className="col-2 flex-column mx-2">
             <label className="black-text4 small-font mb-1">{label}</label>
@@ -163,8 +163,8 @@ function DownLineAdmins() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="d-flex align-items-end w-100 small-font pointer mt-3 col-1">
-          <button className="saffron-btn2">Submit</button>
+        <div className="col-2 d-flex align-items-end small-font pointer mt-3 col-1">
+          <button className="saffron-btn2 w-75 w-lg-50">Submit</button>
         </div>
       </div>
 

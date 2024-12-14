@@ -10,7 +10,7 @@ function OfflineDepositWithdraw() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font mb-0">My Deposit & Withdraw</h6>
+        <h6 className="d-flex yellow-font medium-font mb-0">My Deposit & Withdraw</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
@@ -31,7 +31,7 @@ function OfflineDepositWithdraw() {
       </div>
       <div className="w-100 grey-bg2 d-flex py-3 rounded mb-3">
         <span className="small-font border-right px-3">Your Balance</span>
-        <h6 className="green-font fw-600 mb-0 px-3 border-left2">50000000</h6>
+        <h6 className="green-font fw-600 medium-font mb-0 px-3 border-left2">50000000</h6>
       </div>
       {/* Header */}
       <div className="w-100 d-flex grey-bg2 rounded-top black-text small-font border">
@@ -64,15 +64,19 @@ function OfflineDepositWithdraw() {
             1347
           </span>
         </div>
+
         <div className="col-3 border-left flex-between px-2 py-1">
-          <span className="yellow-bg br-4px py-1 px-2 white-text">D | W</span>
-          <input
-            className="border br-4px py-1 px-2 all-none"
-            placeholder="0"
-            type="number"
-          />
-          <span className="border br-4px py-1 px-2">Full</span>
+          <div className="yellow-bg br-4px py-1 px-2 white-text">D | W</div>
+          <div className="col-6 col-lg-7">
+            <input
+              className="w-100 border br-4px py-1 px-2 all-none"
+              placeholder="0"
+              type="number"
+            />
+          </div>
+          <div className="border br-4px py-1 px-2">Full</div>
         </div>
+
         <div className="col-2 flex-between border-left px-2 py-1">
           <span>
             0
@@ -84,7 +88,7 @@ function OfflineDepositWithdraw() {
         </div>
         <div className="col-2 border-left px-2 py-1 flex-center">
           <input
-            className="border br-4px py-1 px-2 all-none"
+            className="w-100 border br-4px py-1 px-2 all-none"
             placeholder="Remarks"
             type="text"
           />
@@ -105,15 +109,19 @@ function OfflineDepositWithdraw() {
             1347
           </span>
         </div>
+
         <div className="col-3 border-left flex-between px-2 py-1">
-          <span className="yellow-bg br-4px py-1 px-2 white-text">D | W</span>
-          <input
-            className="border br-4px py-1 px-2 all-none"
-            placeholder="0"
-            type="number"
-          />
-          <span className="border br-4px py-1 px-2">Full</span>
+          <div className="yellow-bg br-4px py-1 px-2 white-text">D | W</div>
+          <div className="col-6 col-lg-7">
+            <input
+              className="w-100 border br-4px py-1 px-2 all-none"
+              placeholder="0"
+              type="number"
+            />
+          </div>
+          <div className="border br-4px py-1 px-2">Full</div>
         </div>
+
         <div className="col-2 flex-between border-left px-2 py-1">
           <span>
             0
@@ -125,7 +133,7 @@ function OfflineDepositWithdraw() {
         </div>
         <div className="col-2 border-left px-2 py-1 flex-center">
           <input
-            className="border br-4px py-1 px-2 all-none"
+            className="w-100 border br-4px py-1 px-2 all-none"
             placeholder="Remarks"
             type="text"
           />
@@ -135,26 +143,28 @@ function OfflineDepositWithdraw() {
         </div>
       </div>
       {/* Footer */}
-      <div className="w-100 d-flex grey-bg2 rounded-bottom black-text small-font">
-        <div className="col-7 p-2 d-flex justify-content-end align-items-center">
-          <span className="pointer white-bg border py-2 px-3 br-4px">
-            Clear All
-          </span>
-        </div>
-        <div className="col-2 p-2 flex-center">
-          <input
-            className="white-bg all-none2 border p-2 br-4px"
-            placeholder="Password"
-            type="password"
-          />
-        </div>
-        <div className="col p-2">
-          <div className="yellow-bg px-2 py-1 br-4px white-text flex-between">
-            <button className="pointer">Submit</button>
-            <span className="rounded-circle white-bg py-1 px-2 black-text">
-              0
-            </span>{" "}
-            Payment
+      <div className="col-12 d-flex gap-2 grey-bg2 rounded-bottom black-text small-font flex-end">
+        <div className="col-8 col-lg-6 d-flex">
+          <div className="col-4 p-2 d-flex justify-content-end align-items-center">
+            <span className="pointer white-bg border py-2 px-3 br-4px">
+              Clear All
+            </span>
+          </div>
+          <div className="col-4 flex-center">
+            <input
+              className="white-bg p-2 all-none2 border br-4px"
+              placeholder="Password"
+              type="password"
+            />
+          </div>
+          <div className="col-4 pt-2 pe-2">
+            <div className="yellow-bg px-2 py-1 br-4px white-text flex-between">
+              <button className="pointer all-none text-white">Submit</button>
+              <span className="rounded-circle white-bg py-1 px-2 black-text">
+                0
+              </span>
+              Payment
+            </div>
           </div>
         </div>
       </div>

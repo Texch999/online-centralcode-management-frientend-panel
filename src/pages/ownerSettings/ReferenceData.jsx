@@ -7,14 +7,44 @@ import AddNewPopUp from "./AddNewPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
   const ACTIVE_BTNS = ["Rejection Reasons", "Security Questions"];
   const [addNewModalRejection, setAddNewModalRejection] = useState(false);
   const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+  const [deleteSecurityQuationModal, setDeleteSecurityQuationModal] =
+    useState(false);
+  const [rejectionTitleModel, setRejectionTitleModel] = useState(null);
+  const [securityTitleModel, setSecurityTitleModel] = useState(null);
+  const [editTitleButtonModel, setEditTitleButtonModel] = useState(null);
+
   const handleSportClick = (item) => {
     setActiveBtn(item);
+  };
+
+  const handleAddNew = () => {
+    setEditTitleButtonModel("Create")
+    if (activeBtn === "Rejection Reasons") {
+      setAddNewModalRejection(true);
+      setRejectionTitleModel("Add Rejection Reason");
+    } else {
+      setAddNewModalSecurity(true);
+      setSecurityTitleModel("Add Security Quations");
+    }
+  };
+
+  const handleEdit = () => {
+    setEditTitleButtonModel("Edit")
+    if (activeBtn === "Rejection Reasons") {
+      setAddNewModalRejection(true);
+      setRejectionTitleModel("Edit Rejection Reason");
+    } else {
+      setAddNewModalSecurity(true);
+      setSecurityTitleModel("Edit Security Quations");
+    }
   };
 
   const selectOptions = [
@@ -34,13 +64,13 @@ const ReferenceData = () => {
       questions: <div>What is your name?</div>,
       status: <div className="green-btn w-fill">Active</div>,
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil className="pointer" size={18} onClick={handleEdit} />
+          <FaRegTrashCan
+            className="pointer"
+            size={18}
+            onClick={() => setDeleteSecurityQuationModal(true)}
+          />
         </div>
       ),
       resultDateTime: (
@@ -55,37 +85,13 @@ const ReferenceData = () => {
       questions: <div>What is your name?</div>,
       status: <div className="green-btn w-fill">Active</div>,
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      questions: <div>What is your name?</div>,
-
-      status: <div className="green-btn w-fill">Active</div>,
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil className="pointer" size={18} onClick={handleEdit} />
+          <FaRegTrashCan
+            className="pointer"
+            size={18}
+            onClick={() => setDeleteSecurityQuationModal(true)}
+          />
         </div>
       ),
 
@@ -103,13 +109,37 @@ const ReferenceData = () => {
       status: <div className="green-btn w-fill">Active</div>,
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil className="pointer" size={18} onClick={handleEdit} />
+          <FaRegTrashCan
+            className="pointer"
+            size={18}
+            onClick={() => setDeleteSecurityQuationModal(true)}
+          />
+        </div>
+      ),
+
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+    {
+      questions: <div>What is your name?</div>,
+
+      status: <div className="green-btn w-fill">Active</div>,
+
+      action: (
+        <div className="d-flex gap-3">
+          <SlPencil className="pointer" size={18} onClick={handleEdit} />
+          <FaRegTrashCan
+            className="pointer"
+            size={18}
+            onClick={() => setDeleteSecurityQuationModal(true)}
+          />
         </div>
       ),
 
@@ -149,13 +179,13 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil size={18} className="pointer" onClick={handleEdit} />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
       tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -186,13 +216,13 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil size={18} />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
       tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -204,7 +234,6 @@ const ReferenceData = () => {
         </div>
       ),
     },
-
     {
       reason: <div>Insufficient Balance</div>,
 
@@ -224,13 +253,13 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil size={18} />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
       tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -242,7 +271,6 @@ const ReferenceData = () => {
         </div>
       ),
     },
-
     {
       reason: <div>Insufficient Balance</div>,
 
@@ -262,13 +290,13 @@ const ReferenceData = () => {
       ),
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil size={18} />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
       tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -280,7 +308,6 @@ const ReferenceData = () => {
         </div>
       ),
     },
-
     {
       reason: <div>Insufficient Balance</div>,
 
@@ -295,18 +322,55 @@ const ReferenceData = () => {
 
       status: (
         <div>
-          <div className="w-50  green-btn">Active</div>
+          <div className="green-btn w-fill">Active</div>
         </div>
       ),
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil size={18} />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
+        </div>
+      ),
+      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
+      resultDateTime: (
+        <div>
+          02-10-2024
+          <br />
+          10:34:00
+        </div>
+      ),
+    },
+    {
+      reason: <div>Insufficient Balance</div>,
+
+      discriptions: (
+        <div>
+          It means that a customer’s account lacks the necessary funds to cover
+          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
+          <br />
+          withdraw cash from an ATM
+        </div>
+      ),
+
+      status: (
+        <div>
+          <div className="green-btn w-fill">Active</div>
+        </div>
+      ),
+
+      action: (
+        <div className="d-flex gap-3">
+          <SlPencil size={18} />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
       tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -369,11 +433,7 @@ const ReferenceData = () => {
           {/* Add New Button */}
           <div
             className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
-            onClick={() =>
-              activeBtn === "Rejection Reasons"
-                ? setAddNewModalRejection(true)
-                : setAddNewModalSecurity(true)
-            }
+            onClick={handleAddNew}
           >
             <IoAddOutline className="large-font" /> Add new
           </div>
@@ -400,6 +460,23 @@ const ReferenceData = () => {
         addNewModalRejection={addNewModalRejection}
         setAddNewModalSecurity={setAddNewModalSecurity}
         addNewModalSecurity={addNewModalSecurity}
+        rejectionTitleModel={rejectionTitleModel}
+        securityTitleModel={securityTitleModel}
+        editTitleButtonModel={editTitleButtonModel}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={deleteSecurityQuationModal}
+        setConfirmationPopupOpen={() => setDeleteSecurityQuationModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
       />
     </div>
   );

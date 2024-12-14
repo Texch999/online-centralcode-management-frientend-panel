@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdLoop } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,8 +9,12 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
 import "../../add-team/style.css";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
+import EditBetPopup from "../../risk-management/EditBetPopup";
 
 const UsersMatchPl = () => {
+  const [deleteBetModal, setDeleteBetModal] = useState(false);
+  const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
   const navigate = useNavigate();
   const { matchName, role, userDetails } = useParams();
 
@@ -76,8 +80,14 @@ const UsersMatchPl = () => {
         <div className="d-flex flex-column flex-center ">
           <div className="green-btn">settled</div>
           <div className="flex-between my-2 ">
-            <SlPencil className="text-black font-20 pointer" />
-            <FaRegTrashCan className="text-black font-20 ms-3 pointer" />
+            <SlPencil
+              className="text-black font-20 pointer"
+              onClick={() => setEditBetPopupOpen(true)}
+            />
+            <FaRegTrashCan
+              className="text-black font-20 ms-3 pointer"
+              onClick={() => setDeleteBetModal(true)}
+            />
           </div>
         </div>
       ),
@@ -319,14 +329,24 @@ const UsersMatchPl = () => {
         </div>
       </div>
 
-      <div>
-        <Table
-          columns={cols}
-          data={data}
-          itemsPerPage={3}
-          footer={MATCHWISE_FOOTER}
-        />
-      </div>
+      <Table
+        columns={cols}
+        data={data}
+        itemsPerPage={3}
+        footer={MATCHWISE_FOOTER}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={deleteBetModal}
+        setConfirmationPopupOpen={() => setDeleteBetModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
+
+      <EditBetPopup
+        editBetPopupOpen={editBetPopupOpen}
+        setEditBetPopupOpen={setEditBetPopupOpen}
+      />
     </div>
   );
 };

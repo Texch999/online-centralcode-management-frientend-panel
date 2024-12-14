@@ -6,7 +6,12 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../../pages/add-team/style.css";
 
-const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
+const AddPrivacyPolicyPopUp = ({
+  addPrivacyModal,
+  setAddPrivacyModal,
+  addPrivacyTitleModal,
+  addPrivacyButtonTitleModal,
+}) => {
   const [selectWebsite, setSelectWebsite] = useState(false);
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -24,7 +29,7 @@ const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
       >
         <Modal.Body>
           <div className="d-flex w-100 flex-between">
-            <h6>Add Privacy Policy</h6>
+            <h6>{addPrivacyTitleModal}</h6>
             <IoCloseSharp
               className="pointer"
               onClick={() => setAddPrivacyModal(false)}
@@ -78,7 +83,7 @@ const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
             <div className="row">
               <div className="col-8"></div>
               <div className="saffron-btn2 small-font pointer mt-4 col-4">
-                Create
+                {addPrivacyButtonTitleModal}
               </div>
             </div>
           </div>

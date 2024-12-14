@@ -163,7 +163,7 @@ function ClientRental() {
         </div>
       </div>
 
-      <div className="d-flex w-50 flex-between mt-2 mb-2">
+      <div className="d-flex w-50 flex-between mt-2 mb-3">
         {rentalTickets === true ? (
           <>
             <div className="col-4 flex-column mx-2">
@@ -177,8 +177,7 @@ function ClientRental() {
           </>
         ) : (
           <>
-            {" "}
-            <div className="col-4 flex-column me-3">
+            <div className="col-5 flex-column me-2">
               <label className="black-text4 small-font mb-1">Role</label>
               <Select
                 className="small-font"
@@ -190,7 +189,7 @@ function ClientRental() {
                 classNamePrefix="custom-react-select"
               />
             </div>
-            <div className="col-4 flex-column me-3">
+            <div className="col-5 flex-column me-2">
               <label className="black-text4 small-font mb-1">Name</label>
               <Select
                 className="small-font"
@@ -205,7 +204,7 @@ function ClientRental() {
           </>
         )}
 
-        <div className="align-self-end saffron-btn2 small-font pointer col-4">
+        <div className="w-25 align-self-end saffron-btn2 small-font pointer col-4">
           Submit
         </div>
       </div>

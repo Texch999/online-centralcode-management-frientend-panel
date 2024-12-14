@@ -8,10 +8,27 @@ import PrivacyPopUp from "./PrivacyPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const PrivacyPolicy = () => {
-  const [addPrivacyModal, setAddPrivacyModal] = useState(false);
+  const [addEditPrivacyModal, setAddEditPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [privicyDeleteModal, setPrivicyDeleteModal] = useState(null);
+  const [addPrivacyTitleModal, setAddPrivacyTitleModal] = useState(null);
+  const [addPrivacyButtonTitleModal, setAddPrivacyButtonTitleModal] =
+    useState(null);
+
+  const handleAddNew = () => {
+    setAddPrivacyTitleModal("Add Privacy Policy");
+    setAddPrivacyButtonTitleModal("Create");
+    setAddEditPrivacyModal(true);
+  };
+
+  const handleEdit = () => {
+    setAddPrivacyTitleModal("Edit Privacy Policy");
+    setAddPrivacyButtonTitleModal("Edit");
+    setAddEditPrivacyModal(true);
+  };
 
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -53,13 +70,9 @@ const PrivacyPolicy = () => {
       ),
 
       action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+        <div className="d-flex gap-3">
+          <SlPencil size={18} className="pointer" onClick={handleEdit} />
+          <FaRegTrashCan size={18} className="pointer" onClick={() => setPrivicyDeleteModal(true)} />
         </div>
       ),
 
@@ -294,27 +307,24 @@ const PrivacyPolicy = () => {
   ];
   return (
     <div>
-      
       <div className="w-100 d-flex flex-between align-items-center mb-3 mt-2">
         <h6 className="yellow-font mb-0">Privacy Policy</h6>
         <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
-            <Select
-              className="small-font w-100"
-              options={selectOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          <div className="w-50 saffron-btn2 small-font pointer">
-            Submit
-          </div>
+          <Select
+            className="small-font w-100"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+          <div className="w-50 saffron-btn2 small-font pointer">Submit</div>
           <button
             className="col-1 flex-center align-items-center small-font pointer blue-font input-pill rounded w-25 py-2"
-            onClick={() => setAddPrivacyModal(true)}
+            onClick={handleAddNew}
           >
-            <IoAddOutline className="medium-font"/>
+            <IoAddOutline className="medium-font" />
             <span className="small-font">Add new</span>
           </button>
         </div>
@@ -327,12 +337,21 @@ const PrivacyPolicy = () => {
       />
 
       <AddPrivacyPolicyPopUp
-        setAddPrivacyModal={setAddPrivacyModal}
-        addPrivacyModal={addPrivacyModal}
+        addPrivacyModal={addEditPrivacyModal}
+        setAddPrivacyModal={setAddEditPrivacyModal}
+        addPrivacyTitleModal={addPrivacyTitleModal}
+        addPrivacyButtonTitleModal={addPrivacyButtonTitleModal}
       />
       <PrivacyPopUp
         setShowPrivacyModal={setShowPrivacyModal}
         showPrivacyModal={showPrivacyModal}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={privicyDeleteModal}
+        setConfirmationPopupOpen={() => setPrivicyDeleteModal(false)}
+        discription={"are you sure you want to delete this Privicy Policy"}
+        submitButton={"Delete"}
       />
     </div>
   );

@@ -219,7 +219,7 @@ function RiskLimitSet() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">
+        <h6 className="yellow-font medium-font mb-0">
           Sports & Casino High Risk Limit Set
         </h6>
         <div className="input-pill d-flex align-items-cente rounded-pill px-2">

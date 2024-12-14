@@ -119,9 +119,9 @@ function LiveBetList() {
       back: <div className="back-btn">10000000</div>,
       lay: <div className="lay-btn">10000000</div>,
       status: (
-        <div>
+        <div className="flex-column flex-center">
           <div className="green-btn">Settled</div>
-          <div className="flex-around mt-2">
+          <div className="d-flex gap-3 mt-3">
             <SlPencil size={18} className="pointer" onClick={handleEditBetPopupOpen} />
             <FaRegTrashCan className="pointer" size={18} onClick={handleConfirmPopupOpen} />
           </div>
@@ -233,7 +233,7 @@ function LiveBetList() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Live Bet List - Sports/Casino</h6>
+        <h6 className="yellow-font medium-font mb-0">Live Bet List - Sports/Casino</h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
@@ -246,7 +246,7 @@ function LiveBetList() {
       </div>
       <div className="d-flex small-font pb-3">
         {SPORTS_BUTTONS?.map((sport, index) => (
-          <div
+          <button
             key={index}
             className={`pointer me-3 px-2 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2"
@@ -254,7 +254,7 @@ function LiveBetList() {
             onClick={() => handleSportClick(sport)}
           >
             {sport}
-          </div>
+          </button>
         ))}
       </div>
       <div className="row mb-3">

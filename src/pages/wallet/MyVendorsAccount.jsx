@@ -152,7 +152,7 @@ function MyVendorsAccount() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">My Vendors Account</h6>
+        <h6 className="yellow-font medium-font mb-0">My Vendors Account</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
@@ -161,13 +161,13 @@ function MyVendorsAccount() {
       <div className="flex-between mb-3">
         <div className="w-50 d-flex p-3 grey-bg2 rounded">
           <div className="col-4 pe-3 flex-center">
-            <span className="w-100 saffron-btn2 medium-font">
+            <span className="w-100 saffron-btn2 small-font">
               Owner Balance
             </span>
           </div>
           <div className="col-8 white-btn2 flex-between">
             <span className="small-font">Casino Balance Chips</span>
-            <span className=" medium-font">1000000000</span>
+            <span className="medium-font">1000000000</span>
           </div>
         </div>
         <div className="white-btn2 medium-font px-3">Settled History</div>

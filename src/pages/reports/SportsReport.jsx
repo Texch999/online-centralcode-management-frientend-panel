@@ -9,12 +9,12 @@ import { BsEye } from "react-icons/bs";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 function SportsReport() {
-  const navigate = useNavigate();
   const [activeSport, setActiveSport] = useState("All");
+  const [reportsDeleteModal, setReportsDeleteModal] = useState(false);
   const [activeRole, setActiveRole] = useState(false);
-  const { username } = useParams();
 
   const websiteOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -49,53 +49,6 @@ function SportsReport() {
   const handleSportClick = (sport) => {
     setActiveSport(sport);
   };
-
-  const ADMIN_COLUMNS = [
-    { header: "Admin Details", field: "adminDetails" },
-    { header: "Share/Royalty", field: "shareRoyalty" },
-    { header: "My User Win", field: "myUserWin" },
-    { header: "My User Loss", field: "myUserLoss" },
-    { header: "My Casino P/L", field: "myCasinoPL" },
-    { header: "DL User Win", field: "dLUserWin" },
-    { header: "DL User Loss", field: "dLUserLoss" },
-    { header: "DL Casino P/L", field: "dLCasinoPL" },
-    { header: "Casino Net P/L", field: "netPL" },
-    { header: "Downline", field: "downline" },
-  ];
-
-  const ADMIN_DATA = Array(6).fill({
-    adminDetails: "Jayanta Admin",
-    shareRoyalty: "5%",
-    myUserWin: <div className="red-font">10000</div>,
-    myUserLoss: <div className="green-font">10000</div>,
-    myCasinoPL: <div className="green-font">500000</div>,
-    dLUserWin: <div className="red-font">500000</div>,
-    dLUserLoss: <div className="green-font">500000</div>,
-    dLCasinoPL: <div className="red-font">500000</div>,
-    netPL: <div className="green-font">500000</div>,
-    downline: (
-      <div className="w-60 flex-center">
-        <BsEye
-          size={18}
-          onClick={() => setActiveRole(true)}
-          className="pointer"
-        />
-      </div>
-    ),
-  });
-
-  const ADMIN_FOOTER = [
-    { header: "Total" },
-    { header: "" },
-    { header: <div className="red-font">7500000</div> },
-    { header: <div className="green-font">7500000</div> },
-    { header: <div className="green-font">7500000</div> },
-    { header: <div className="red-font">7500000</div> },
-    { header: <div className="green-font">7500000</div> },
-    { header: <div className="red-font">7500000</div> },
-    { header: <div className="green-font">7500000</div> },
-    { header: "" },
-  ];
 
   const DIRECTOR_COLUMNS = [
     { header: "S. No", field: "sno" },
@@ -151,8 +104,8 @@ function SportsReport() {
     ),
     status: (
       <div className="d-flex gap-3">
-          <SlPencil size={18} />
-          <FaRegTrashCan size={18} />
+          <SlPencil size={18} className="pointer"/>
+          <FaRegTrashCan className="pointer" size={18} onClick={() => setReportsDeleteModal(true)} />
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),
@@ -276,6 +229,14 @@ function SportsReport() {
         greyBackground="footer-bg"
         itemsPerPage={5}
       />
+
+<ConfirmationPopup
+        confirmationPopupOpen={reportsDeleteModal}
+        setConfirmationPopupOpen={() => setReportsDeleteModal(false)}
+        discription={"are you sure you want to delete this Report"}
+        submitButton={"Delete"}
+      />
+
     </div>
   );
 }

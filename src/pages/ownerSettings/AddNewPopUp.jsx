@@ -10,6 +10,9 @@ const AddNewPopUp = ({
   setAddNewModalRejection,
   setAddNewModalSecurity,
   addNewModalSecurity,
+  rejectionTitleModel,
+  securityTitleModel,
+  editTitleButtonModel
 }) => {
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -28,7 +31,7 @@ const AddNewPopUp = ({
         >
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
-              <h6>Add Rejection Reasons</h6>
+              <h6>{rejectionTitleModel}</h6>
               <IoCloseSharp
                 className="pointer"
                 onClick={() => setAddNewModalRejection(false)}
@@ -68,7 +71,7 @@ const AddNewPopUp = ({
               <div className="row">
                 <div className="col-8"></div>
                 <div className="saffron-btn2 small-font pointer mt-4 col-4">
-                  Create
+                  {editTitleButtonModel}
                 </div>
               </div>
             </div>
@@ -85,7 +88,7 @@ const AddNewPopUp = ({
         >
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
-              <h6>Add Security Questions</h6>
+              <h6>{securityTitleModel}</h6>
               <IoCloseSharp
                 className="pointer"
                 onClick={() => setAddNewModalSecurity(false)}
@@ -115,7 +118,7 @@ const AddNewPopUp = ({
               <div className="row">
                 <div className="col-8"></div>
                 <div className="saffron-btn2 small-font pointer mt-4 col-4">
-                  Create
+                  {editTitleButtonModel}
                 </div>
               </div>
             </div>
