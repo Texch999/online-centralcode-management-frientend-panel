@@ -132,8 +132,8 @@ function UserReports() {
         </div>
       </div>
 
-      <div className="d-flex w-50 flex-between mt-2 mb-2">
-        <div className="col-3 flex-column mx-2">
+      <div className="d-flex w-60 w-lg-50 flex-between mt-2 mb-2">
+        <div className="col-3 flex-column">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
@@ -141,7 +141,7 @@ function UserReports() {
           <label className="black-text4 small-font mb-1">To</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col-3 flex-column me-3">
+        <div className="col-3 flex-column me-2">
           <label className="black-text4 small-font mb-1">Website</label>
           <Select
             className="small-font"
@@ -154,7 +154,7 @@ function UserReports() {
           />
         </div>
 
-        <div className="col-3 flex-column me-3">
+        <div className="col-3 flex-column me-2">
           <label className="black-text4 small-font mb-1">Admin Name</label>
           <Select
             className="small-font"

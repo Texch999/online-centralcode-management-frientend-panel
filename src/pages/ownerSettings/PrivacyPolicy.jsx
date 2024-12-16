@@ -308,7 +308,7 @@ const PrivacyPolicy = () => {
   return (
     <div>
       <div className="w-100 d-flex flex-between align-items-center mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Privacy Policy</h6>
+        <h6 className="yellow-font medium-font mb-0">Privacy Policy</h6>
         <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
           <Select
             className="small-font w-100"

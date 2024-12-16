@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SlPencil } from "react-icons/sl";
-import { RiDeleteBinLine } from "react-icons/ri";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import Table from "../../components/Table";
@@ -37,7 +37,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)}/>
-          <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)}/>
+          <FaRegTrashCan size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)}/>
         </div>
       ),
     },
@@ -55,7 +55,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -80,7 +80,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -103,7 +103,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -121,7 +121,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -148,7 +148,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -172,7 +172,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -191,7 +191,7 @@ const PaymentGateway = () => {
       action: (
         <div className="flex-center gap-2">
           <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
+          <FaRegTrashCan size={18} className="pointer ms-1" />
         </div>
       ),
     },

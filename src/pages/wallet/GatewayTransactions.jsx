@@ -211,16 +211,16 @@ function GatewayTransactions() {
         </div>
       </div>
 
-      <div className="w-50 row my-3">
-        <div className="col flex-column">
+      <div className="col-8 row my-3">
+        <div className="col-4 col-lg-3 flex-column pe-0">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col flex-column">
+        <div className="col-4 col-lg-3 flex-column pe-0">
           <label className="black-text4 small-font mb-1">To</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col flex-column d-flex align-items-end justify-content-end">
+        <div className="col-2 flex-column d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>

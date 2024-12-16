@@ -120,7 +120,7 @@ const SlipShareDirector = ({ show, onHide }) => {
               </button>
             </div>
             <div className="col-6 p-0 ps-2">
-              <button className="white-btn rounded meduim-font w-100">
+              <button className="white-btn rounded medium-font w-100">
                 Reject
               </button>
             </div>

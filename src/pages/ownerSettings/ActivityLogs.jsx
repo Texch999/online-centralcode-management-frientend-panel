@@ -262,7 +262,7 @@ const ActivityLogs = () => {
 
   return (
     <div>
-      <h6 className="saffron-clr mt-2 mb-3">Activity Logs</h6>
+      <h6 className="saffron-clr medium-font mt-2 mb-3">Activity Logs</h6>
 
       <div className="d-flex w-30 flex-between mt-2">
         <div className="col flex-column ">

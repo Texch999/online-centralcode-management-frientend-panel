@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../components/Table";
-import { MdBlock, MdDeleteOutline } from "react-icons/md";
+import { MdBlock } from "react-icons/md";
+import { FaRegTrashCan } from "react-icons/fa6";
 import TennisScoreBoard from "../../cricket/TennisScoreBoard";
 import HorseRacingScoreBoard from "../../cricket/HorseRacingScoreBoard";
 import FootballScoreboard from "../../cricket/FootballScoreboard";
@@ -145,7 +146,7 @@ const LiveScoreBoard = ({ sport }) => {
             <MdBlock size={18} className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline size={18} className="font-20 mt-3" />
+            <FaRegTrashCan size={18} className="font-20 mt-3" />
           </div>
         </div>
       ),
@@ -255,7 +256,7 @@ const LiveScoreBoard = ({ sport }) => {
             <MdBlock size={18} className="font-20 grey-clr" />
           </div>
           <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline size={18} className="font-20 mt-3" />
+            <FaRegTrashCan size={18} className="font-20 mt-3" />
           </div>
         </div>
       ),

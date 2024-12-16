@@ -5,6 +5,7 @@ import "../../../App.css";
 import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
+import { FaPlus } from "react-icons/fa6";
 
 const AddDirectorAdminModal = ({ show, handleClose }) => {
   const role = localStorage.getItem("role_code");
@@ -32,7 +33,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
     <Modal show={show} onHide={handleClose} centered size="lg">
       <Modal.Body className="p-1 director-admin-popupbody px-2 py-2">
         {/* Row 1: Title and Close Icon */}
-        <div className="d-flex justify-content-between align-items-center mb-2 px-3">
+        <div className="d-flex justify-content-between align-items-center mb-2 px-2">
           {role === "management" ? (
             <h5 className="mb-0 medium-font black-text">
               Add Director & Super Admin
@@ -40,16 +41,16 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
           ) : (
             <h5 className="mb-0 medium-font black-text">Add Super Admin</h5>
           )}
-          <Button
+          <div
             variant="link"
             onClick={handleClose}
-            className="text-dark fs-4"
+            className="fs-4"
           >
-            <MdOutlineClose />
-          </Button>
+            <MdOutlineClose size={18}/>
+          </div>
         </div>
 
-        <form className="add-management-popup-form px-3">
+        <form className="add-management-popup-form px-2">
           <div className="row mb-3">
             <div className="col-md-4 position-relative">
               <label className="small-font">Role</label>
@@ -117,11 +118,11 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
 
           {/* Row 4: + Add Button */}
           <div className="row m-0 mt-0 mb-0">
-            <div className="col-md-12 text-end">
-              <button type="button" className="btn p-0">
-                <span style={{ color: "#1912C8", fontSize: "25px" }}>+</span>{" "}
-                Add
-              </button>
+            <div className="text-end">
+              <div type="button" className="d-flex flex-end align-items-center btn p-0 small-font">
+                <FaPlus className="medium-font me-1 blue-font"/>
+                <span className="medium-font">Add</span>
+              </div>
             </div>
           </div>
 
@@ -189,7 +190,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             <div className="col-md-4 d-flex align-items-end">
               <button
                 type="button"
-                className="saffron-btn2 add-mng-pop-btn w-100"
+                className="saffron-btn2 medium-font add-mng-pop-btn w-100"
               >
                 Submit
               </button>

@@ -386,7 +386,7 @@ const ReferenceData = () => {
 
   return (
     <div className="">
-      <h6 className="yellow-font mt-2 mb-3">Reference Data</h6>
+      <h6 className="yellow-font medium-font mt-2 mb-3">Reference Data</h6>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div

@@ -122,8 +122,16 @@ function LiveBetList() {
         <div className="flex-column flex-center">
           <div className="green-btn">Settled</div>
           <div className="d-flex gap-3 mt-3">
-            <SlPencil size={18} className="pointer" onClick={handleEditBetPopupOpen} />
-            <FaRegTrashCan className="pointer" size={18} onClick={handleConfirmPopupOpen} />
+            <SlPencil
+              size={18}
+              className="pointer"
+              onClick={handleEditBetPopupOpen}
+            />
+            <FaRegTrashCan
+              className="pointer"
+              size={18}
+              onClick={handleConfirmPopupOpen}
+            />
           </div>
         </div>
       ),
@@ -233,7 +241,9 @@ function LiveBetList() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font medium-font mb-0">Live Bet List - Sports/Casino</h6>
+        <h6 className="yellow-font medium-font mb-0">
+          Live Bet List - Sports/Casino
+        </h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
@@ -258,7 +268,7 @@ function LiveBetList() {
         ))}
       </div>
       <div className="row mb-3">
-        <div className="col flex-column">
+        <div className="col flex-column pe-0 pe-lg-2">
           <label className="black-text4 small-font mb-1">
             Order of Display
           </label>
@@ -272,7 +282,7 @@ function LiveBetList() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col flex-column">
+        <div className="col flex-column pe-0 pe-lg-2">
           <label className="black-text4 small-font mb-1">High Value</label>
           <Select
             className="small-font"
@@ -284,7 +294,7 @@ function LiveBetList() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col flex-column">
+        <div className="col flex-column pe-0 pe-lg-2">
           <label className="black-text4 small-font mb-1">Last</label>
           <Select
             className="small-font"
@@ -296,7 +306,7 @@ function LiveBetList() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col flex-column">
+        <div className="col flex-column pe-0 pe-lg-2">
           <label className="black-text4 small-font mb-1">Bet Status</label>
           <Select
             className="small-font"
@@ -308,7 +318,7 @@ function LiveBetList() {
             classNamePrefix="custom-react-select"
           />
         </div>
-        <div className="col  flex-column d-flex align-items-end justify-content-end">
+        <div className="col flex-column d-flex align-items-end justify-content-end">
           <button
             className="w-100 saffron-btn2 small-font"
             onClick={handleSuccessPopupOpen}

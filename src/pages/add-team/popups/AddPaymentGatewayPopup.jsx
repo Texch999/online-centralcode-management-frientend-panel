@@ -82,7 +82,7 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
       <Modal.Body className="p-3">
         <div className="d-flex justify-content-between align-items-center mb-2">
           <h5 className="medium-font fw-600">Add Payment Gateway</h5>
-          <MdOutlineClose size={22} onClick={onHide} className="pointer" />
+          <MdOutlineClose size={18} onClick={onHide} className="pointer" />
         </div>
 
         <div className="row mb-3">

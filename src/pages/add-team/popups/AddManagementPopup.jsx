@@ -58,11 +58,11 @@ const AddManagementPopup = ({
     <Modal show={show} onHide={onClose} size="lg" centered>
       <Modal.Body>
         <div className="d-flex justify-content-between align-items-center">
-          <h6 className="mb-0 fw-600 black-font">
+          <h6 className="mb-0 fw-600 black-font medium-font">
             {formData.name ? "Edit Management Team" : "Add Management Team"}
           </h6>
           <MdOutlineClose
-            size={20}
+            size={18}
             type="button"
             onClick={onClose}
             aria-label="Close"

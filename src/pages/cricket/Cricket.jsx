@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import {
   MdBlock,
-  MdDeleteOutline,
+  FaRegTrashCanOutline,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
 } from "react-icons/md";

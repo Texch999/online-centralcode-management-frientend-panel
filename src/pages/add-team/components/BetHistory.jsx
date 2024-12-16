@@ -8,6 +8,8 @@ import EditBetPopup from "../../risk-management/EditBetPopup";
 import SuccessPopup from "../../popups/ConfirmationPopup";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../../App.css"
+
 
 const columns = [
   { header: "Role/Name", field: "roleName" },
@@ -265,9 +267,9 @@ const BetHistory = () => {
         </div>
       </div>
 
-      <div className="row px-3">
-        <div className="col-2">
-          <label htmlFor="date-picker small-font" className="mb-1">
+      <div className="row px-3 align-items-end">
+        <div className="col-2 pe-0">
+          <label htmlFor="date-picker" className="mb-1 small-font">
             From
           </label>
           <input
@@ -277,8 +279,8 @@ const BetHistory = () => {
           />
         </div>
 
-        <div className="col-2">
-          <label htmlFor="date-picker small-font" className="mb-1">
+        <div className="col-2 pe-0">
+          <label htmlFor="date-picker small-font" className="mb-1 small-font">
             To
           </label>
           <input
@@ -288,7 +290,7 @@ const BetHistory = () => {
           />
         </div>
 
-        <div className="col-2 mt-1">
+        <div className="col-2 mt-1 pe-0">
           <label className="small-font mb-1">Website</label>
           <Select
             className="small-font"
@@ -300,7 +302,7 @@ const BetHistory = () => {
           />
         </div>
 
-        <div className="col-2 mt-1">
+        <div className="col-2 mt-1 pe-0">
           <label className="small-font mb-1">Admin</label>
           <Select
             className="small-font"
@@ -312,7 +314,7 @@ const BetHistory = () => {
           />
         </div>
 
-        <div className="col-2 mt-1">
+        <div className="col-2 mt-1 pe-0">
           <label className="small-font mb-1">Admin</label>
           <Select
             className="small-font"

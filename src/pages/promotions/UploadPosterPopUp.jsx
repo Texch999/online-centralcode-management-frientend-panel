@@ -9,7 +9,7 @@ const UploadPosterPopUp = ({ uploadPoster, setUploadPoster }) => {
     <Modal show={uploadPoster} size="md" centered>
       <Modal.Body>
         <div className="d-flex w-100 flex-between">
-          <h6 className="fw-600 mb-0">Upload Poster</h6>
+          <h6 className="fw-600 medium-font mb-0">Upload Poster</h6>
           <IoCloseSharp
             size={20}
             className="pointer"

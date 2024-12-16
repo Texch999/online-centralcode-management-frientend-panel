@@ -17,7 +17,7 @@ const CasinoPromotionsPopUp = ({ setCasinoPromotion, casinoPromotion, editPromot
     <Modal show={casinoPromotion} size="md" centered>
       <Modal.Body>
         <div className="d-flex w-100 flex-between mb-2">
-          <h6 className="fw-600 mb-0">{editPromotionModel}</h6>
+          <h6 className="fw-600 medium-font mb-0">{editPromotionModel}</h6>
           <IoCloseSharp
             size={20}
             className="pointer"

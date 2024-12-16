@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
 import { FaSearch } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { FaRegTrashCan } from "react-icons/fa6";
 import ConfirmationPopup from "./../popups/ConfirmationPopup";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -61,7 +61,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 red-btn">In-Active</div>
-          <MdDelete
+          <FaRegTrashCan
             className="large-font pointer ms-2"
             onClick={() => setShowDeletePopup(true)}
           />
@@ -92,7 +92,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -120,7 +120,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -148,7 +148,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -176,7 +176,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -204,7 +204,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -232,7 +232,7 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 red-btn">In-Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
@@ -260,11 +260,12 @@ function InActiveUsers() {
       action: (
         <div className="d-flex align-items-center justify-content-around">
           <div className="col-8 col-lg-7 green-btn">Active</div>
-          <MdDelete className="large-font cursor-pointer ms-2" />
+          <FaRegTrashCan className="large-font cursor-pointer ms-2" />
         </div>
       ),
     },
   ];
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">

@@ -24,14 +24,14 @@ const SlipRentalDirector = ({ show, onHide }) => {
       <div className="p-4">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex justify-content-center align-items-center">
-            <h5 className="medium-font fw-600">Srinivas</h5>
+            <span className="medium-font fw-600">Srinivas</span>
             <div className="saffron-btn rounded ms-2 me-2 small-font">
               Director
             </div>
 
-            <div>
-              <h5 className="medium-font fw-600 p-0 m-0">rental-500000</h5>
-              <h6 className="small-font fw-600">(Exp 31-09-2024)</h6>
+            <div className="d-flex flex-column">
+              <span className="medium-font fw-600 p-0 m-0">rental-500000</span>
+              <span className="small-font fw-600">(Exp 31-09-2024)</span>
             </div>
           </div>
 
@@ -154,12 +154,12 @@ const SlipRentalDirector = ({ show, onHide }) => {
 
           <div className="row p-0 m-0">
             <div className="col-6 p-0 pe-2">
-              <button className="saffron-btn rounded small-font w-100">
+              <button className="saffron-btn rounded medium-font w-100">
                 Approved
               </button>
             </div>
             <div className="col-6 p-0 ps-2">
-              <button className="white-btn rounded small-font w-100">
+              <button className="white-btn rounded medium-font w-100">
                 Reject
               </button>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MdBlock, MdDeleteOutline } from "react-icons/md";
+import { MdBlock, FaRegTrashCanOutline } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import ConfirmationPopup from "../popups/ConfirmationPopup";

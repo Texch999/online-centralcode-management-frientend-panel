@@ -169,16 +169,16 @@ function SportsReport() {
         ))}
       </div>
 
-      <div className="d-flex w-50 flex-between mt-2 mb-4">
-        <div className="col-3 flex-column mx-2">
+      <div className="row d-flex flex-between mt-2 mb-4">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col-3 flex-column mx-2">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">To</label>
           <input className="input-css2 small-font" type="date" />
         </div>
-        <div className="col-3 flex-column me-3">
+        <div className="col w-100 flex-column pe-0">
           <label className="black-text4 small-font mb-1">Website</label>
           <Select
             className="small-font"
@@ -191,10 +191,10 @@ function SportsReport() {
           />
         </div>
 
-        <div className="col-3 flex-column me-3">
+        <div className="col flex-column pe-0">
           <label className="black-text4 small-font mb-1">Admin Name</label>
           <Select
-            className="small-font"
+            className="small-font w-100"
             options={adminOptions}
             placeholder="Select"
             styles={customStyles}
@@ -204,10 +204,10 @@ function SportsReport() {
           />
         </div>
 
-        <div className="col-3 flex-column me-3">
+        <div className="col flex-column">
           <label className="black-text4 small-font mb-1">User Name</label>
           <Select
-            className="small-font"
+            className="small-font w-100"
             options={userOptions}
             placeholder="Select"
             styles={customStyles}
@@ -217,7 +217,7 @@ function SportsReport() {
           />
         </div>
 
-        <div className="align-self-end saffron-btn2 small-font pointer col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer w-10 me-3">
           Submit
         </div>
       </div>
