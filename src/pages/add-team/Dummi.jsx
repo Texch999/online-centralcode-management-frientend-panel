@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import Table from "../../components/Table";
 import AddManagementPopup from "./popups/AddManagementPopup";
 import { SlPencil } from "react-icons/sl";
@@ -13,9 +12,17 @@ import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const AddManagementTeam = () => {
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState(
+    Array.from({ length: 17 }, (_, index) => ({
+      id: index + 1,
+      role: "Designer",
+      name: `Jayanta ${index + 1}`,
+      loginname: `Jayanta121_${index + 1}`,
+      phone: `+91 755145673${index}`,
+      email: `jayanta${index + 1}@demo.com`,
+    }))
+  );
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
@@ -27,44 +34,34 @@ const AddManagementTeam = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingRowId, setEditingRowId] = useState(null);
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
 
-  const [formData, setFormData] = useState(initializeFormData());
-
-  function initializeFormData(data = {}) {
-    return {
-      role: data.role || "",
-      name: data.name || "",
-      loginName: data.loginName || "",
-      phone: data.phone || "",
-      email: data.email || "",
-      password: data.password || "",
-      confirmPassword: data.confirmPassword || "",
-      managementPassword: data.managementPassword || "",
-    };
-  }
-
-  // Fetch data from API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/management-team"
-        );
-        console.log("Fetched Data:", response.data); 
-        setTableData([...response.data]);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      }
-    };
-    fetchData();
-  }, []);
+  const [formData, setFormData] = useState({
+    role: "",
+    name: "",
+    loginName: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    managementPassword: "",
+  });
 
   const toggleModal = (modalName, value) => {
     setModalState((prev) => ({ ...prev, [modalName]: value }));
   };
 
   const handleAddModal = (isOpen) => {
-    setFormData(initializeFormData()); // Ensuring formData is reinitialized
+    setFormData({
+      role: "",
+      name: "",
+      loginName: "",
+      phoneNumber: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      managementPassword: "",
+    });
     setIsEditing(false);
     toggleModal("showAddModal", isOpen);
   };
@@ -72,7 +69,16 @@ const AddManagementTeam = () => {
   const handleEdit = (rowId) => {
     const rowData = tableData.find((row) => row.id === rowId);
     if (rowData) {
-      setFormData(initializeFormData(rowData)); // Initialize formData with row data
+      setFormData({
+        role: rowData.role,
+        name: rowData.name,
+        loginName: rowData.loginName,
+        phoneNumber: rowData.phone,
+        email: rowData.email,
+        password: "",
+        confirmPassword: "",
+        managementPassword: "",
+      });
       setIsEditing(true);
       setEditingRowId(rowId);
       toggleModal("showAddModal", true);
@@ -80,8 +86,6 @@ const AddManagementTeam = () => {
   };
 
   const handleFormSubmit = (newData) => {
-    if (!validateFormData(newData)) return;
-
     setTableData((prevData) => {
       if (isEditing) {
         return prevData.map((item) =>
@@ -93,29 +97,6 @@ const AddManagementTeam = () => {
     toggleModal("showAddModal", false);
   };
 
-  function validateFormData(data) {
-    if (!data.name || !data.email || !data.role) {
-      alert("Please fill in all required fields.");
-      return false;
-    }
-    return true;
-  }
-
-  const handleDeletePopup = (rowId) => {
-    setModalState({
-      ...modalState,
-      isDeletePopupVisible: true,
-      deleteAccountId: rowId,
-    });
-  };
-
-  const handleDeleteAccount = () => {
-    setTableData((prevData) =>
-      prevData.filter((row) => row.id !== modalState.deleteAccountId)
-    );
-    toggleModal("isDeletePopupVisible", false);
-  };
-
   const handleBlockPopup = (rowId) => {
     setModalState({
       ...modalState,
@@ -124,31 +105,66 @@ const AddManagementTeam = () => {
     });
   };
 
-  const handleBlockAccount = () => {
-    alert(`Account ID ${modalState.blockAccountId} has been blocked.`);
-    toggleModal("isBlockPopupVisible", false);
+  const handleDeletePopup = (rowId) => {
+    setModalState({
+      ...modalState,
+      isDeletePopupVisible: true,
+      deleteAccountId: rowId, // Store the ID of the account to delete
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    setTableData((prevData) =>
+      prevData.filter((row) => row.id !== modalState.deleteAccountId)
+    );
+    toggleModal("isDeletePopupVisible", false); // Close the delete popup
   };
 
   const handleResetPasswordPopup = (isOpen) => {
-    toggleModal("isResetPasswordVisible", isOpen);
+    setResetPasswordPopup(isOpen);
   };
 
-  const filteredData = tableData.filter((row) =>
-    row.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const columns = [
-    { header: "Role", field: "role" },
-    { header: "Name", field: "name" },
-    { header: "Login Name", field: "loginName" },
-    { header: "Phone", field: "phone" },
-    { header: "Email", field: "email", width: "20%" },
+    {
+      header: "Role",
+      field: "role",
+    },
+    {
+      header: "Name",
+      field: "name",
+    },
+    {
+      header: "Login Name",
+      field: "loginname",
+    },
+    {
+      header: "Phone",
+      field: "phone",
+    },
+    {
+      header: "Email",
+      field: "email",
+      width: "20%",
+    },
     {
       header: <div className="text-center">Action</div>,
       field: "action",
       width: "12%",
     },
   ];
+
+  const tableDataWithActions = tableData.map((row) => ({
+    ...row,
+    action: (
+      <ActionButtons
+        rowId={row.id}
+        onEdit={handleEdit}
+        onBlock={handleBlockPopup}
+        onResetPassword={handleResetPasswordPopup}
+        onDelete={handleDeletePopup}
+      />
+    ),
+  }));
 
   return (
     <div>
@@ -157,12 +173,7 @@ const AddManagementTeam = () => {
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
-            <input
-              className="small-font all-none"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <input className="small-font all-none" placeholder="Search..." />
           </div>
           <button
             className="small-font rounded-pill input-pill blue-font px-3 py-1"
@@ -176,22 +187,12 @@ const AddManagementTeam = () => {
       <div className="management-team-wrapper rounded-bg">
         <Table
           className="black-text"
-          data={filteredData.map((row) => ({
-            ...row,
-            action: (
-              <ActionButtons
-                rowId={row.id}
-                onEdit={handleEdit}
-                onDelete={handleDeletePopup}
-                onResetPassword={handleResetPasswordPopup}
-                onBlock={handleBlockPopup}
-              />
-            ),
-          }))}
+          data={tableDataWithActions}
           columns={columns}
           itemsPerPage={9}
         />
       </div>
+      {/* AddManagementPopup Modal */}
       <AddManagementPopup
         show={modalState.showAddModal}
         onClose={() => toggleModal("showAddModal", false)}
@@ -199,6 +200,16 @@ const AddManagementTeam = () => {
         setFormData={setFormData}
         onSubmit={handleFormSubmit}
       />
+      {/* Block Account Modal */}
+      <ConfirmationPopup
+        confirmationPopupOpen={modalState.isBlockPopupVisible}
+        setConfirmationPopupOpen={(value) =>
+          toggleModal("isBlockPopupVisible", value)
+        }
+        discription={"Are You Sure to Block this Account?"}
+        submitButton={"Block"}
+      />
+      {/* Delete Account Modal */}
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isDeletePopupVisible}
         setConfirmationPopupOpen={(value) =>
@@ -208,20 +219,10 @@ const AddManagementTeam = () => {
         submitButton={"Delete"}
         onSubmit={handleDeleteAccount}
       />
+      {/* Reset Password Modal */}
       <ResetPasswordPopup
-        resetPasswordPopup={modalState.isResetPasswordVisible}
-        setResetPasswordPopup={(value) =>
-          toggleModal("isResetPasswordVisible", value)
-        }
-      />
-      <ConfirmationPopup
-        confirmationPopupOpen={modalState.isBlockPopupVisible}
-        setConfirmationPopupOpen={(value) =>
-          toggleModal("isBlockPopupVisible", value)
-        }
-        discription={"Are You Sure to Block this Account?"}
-        submitButton={"Block"}
-        onSubmit={handleBlockAccount}
+        resetPasswordPopup={resetPasswordPopup}
+        setResetPasswordPopup={setResetPasswordPopup}
       />
     </div>
   );
@@ -230,9 +231,9 @@ const AddManagementTeam = () => {
 const ActionButtons = ({
   rowId,
   onEdit,
-  onDelete,
-  onResetPassword,
   onBlock,
+  onResetPassword,
+  onDelete,
 }) => (
   <div className="d-flex gap-3 flex-center">
     <SlPencil

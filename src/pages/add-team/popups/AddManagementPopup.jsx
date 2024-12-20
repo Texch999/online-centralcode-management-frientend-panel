@@ -6,6 +6,7 @@ import "../style.css";
 import "../../../App.css";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
+import axios from "axios";
 
 const AddManagementPopup = ({
   formData,
@@ -20,19 +21,21 @@ const AddManagementPopup = ({
     managementPassword: false,
   });
 
-  const handleChange = (value, action) => {
-    if (action.name === "role") {
-      setFormData({
-        ...formData,
-        [action.name]: value.value, // Update with selected value
-      });
-    } else {
-      const { name, value } = action.target;
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  // Handle react-select changes
+  const handleSelectChange = (selectedOption) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      role: selectedOption.value, // Set selected role value
+    }));
   };
 
   const togglePasswordVisibility = (field) => {
@@ -42,12 +45,55 @@ const AddManagementPopup = ({
     }));
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   onSubmit(formData);
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:8000/api/management-team",
+  //       formData
+  //     );
+  //     onSubmit(response.data); // Update table with new user
+  //     onClose();
+  //   } catch (error) {
+  //     console.error("Error adding management team member:", error);
+  //     alert("Failed to add the new member. Please try again.");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    try {
+      let response;
+      if (formData.id) {
+        // If formData contains an id, it's an edit, so use PUT request
+        response = await axios.put(
+          `http://localhost:8000/api/management-team/${formData.id}`,
+          formData
+        );
+      } else {
+        // Otherwise, it's a new entry, use POST request
+        response = await axios.post(
+          "http://localhost:8000/api/management-team",
+          formData
+        );
+      }
+
+      onSubmit(response.data); // Update table with new or edited user
+      onClose(); // Close the modal
+    } catch (error) {
+      console.error("Error adding/editing management team member:", error);
+      alert("Failed to add/edit the member. Please try again.");
+    }
   };
 
-  // Options for the dropdown
+
   const roleOptions = [
     { value: "Accounts", label: "Accounts" },
     { value: "Designer", label: "Designer" },
@@ -63,10 +109,11 @@ const AddManagementPopup = ({
           </h6>
           <MdOutlineClose
             size={18}
-            type="button"
             onClick={onClose}
             aria-label="Close"
+            className="pointer"
           />
+          
         </div>
         <form
           className="add-management-popup-form mt-2"
@@ -81,9 +128,7 @@ const AddManagementPopup = ({
                 value={roleOptions.find(
                   (option) => option.value === formData.role
                 )}
-                onChange={(selectedOption) =>
-                  handleChange(selectedOption, { name: "role" })
-                }
+                onChange={handleSelectChange}
                 placeholder="Select"
                 styles={customStyles}
                 maxMenuHeight={120}
@@ -96,8 +141,8 @@ const AddManagementPopup = ({
               <input
                 type="text"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
+                value={formData.name || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
@@ -107,8 +152,8 @@ const AddManagementPopup = ({
               <input
                 type="text"
                 name="loginName"
-                value={formData.loginName}
-                onChange={handleChange}
+                value={formData.loginName || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
@@ -120,9 +165,9 @@ const AddManagementPopup = ({
               <label className="small-font mb-1">Phone Number</label>
               <input
                 type="text"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
+                name="phone"
+                value={formData.phone || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
@@ -132,8 +177,8 @@ const AddManagementPopup = ({
               <input
                 type={showPassword.password ? "text" : "password"}
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
+                value={formData.password || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
               />
@@ -155,8 +200,8 @@ const AddManagementPopup = ({
               <input
                 type={showPassword.confirmPassword ? "text" : "password"}
                 name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
+                value={formData.confirmPassword || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Re-enter Password"
               />
@@ -181,8 +226,8 @@ const AddManagementPopup = ({
               <input
                 type="email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={formData.email || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
               />
@@ -192,8 +237,8 @@ const AddManagementPopup = ({
               <input
                 type={showPassword.managementPassword ? "text" : "password"}
                 name="managementPassword"
-                value={formData.managementPassword}
-                onChange={handleChange}
+                value={formData.managementPassword || ""}
+                onChange={handleInputChange}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
               />
