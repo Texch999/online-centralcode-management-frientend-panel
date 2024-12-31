@@ -6,28 +6,14 @@ import TopMatchedAmountPlayer from "./components/TopMatchedAmountPlayer";
 import "../add-team/style.css";
 import "./style.css";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router";
-
-const live_data_details_columns = [
-  { header: "Live / Open Date & Time", field: "dateTime", width: "13%" },
-  { header: "Series Name", field: "seriesName", width: "15%" },
-  { header: "Match ID", field: "matchID" },
-  { header: "Match Name", field: "matchName" },
-  { header: "Back", field: "back" },
-  { header: "Lay", field: "lay" },
-  { header: "Exposure", field: "exposure" },
-  { header: "Declare Bets P/L", field: "declareBets" },
-  { header: <div className="">Action</div>, field: "action", width: "10%" },
-];
+import { useNavigate } from "react-router-dom";
 
 function LiveBlockSports() {
   const [activeSport, setActiveSport] = useState("Cricket");
   const [tabTopTenPlayer, setTabTopTenPlayer] = useState(
     "matched-amount-player"
   );
-
   const navigate = useNavigate();
-
   const handleClickCricketPage = (sport) => {
     navigate(`/live-block-sports/${sport}`);
   };
@@ -42,12 +28,24 @@ function LiveBlockSports() {
   ];
 
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
 
   const handleTabTopPlayer = (activeTab) => {
     setTabTopTenPlayer(activeTab);
   };
+
+  const live_data_details_columns = [
+    { header: "Live / Open Date & Time", field: "dateTime", width: "13%" },
+    { header: "Series Name", field: "seriesName", width: "15%" },
+    { header: "Match ID", field: "matchID" },
+    { header: "Match Name", field: "matchName" },
+    { header: "Back", field: "back" },
+    { header: "Lay", field: "lay" },
+    { header: "Exposure", field: "exposure" },
+    { header: "Declare Bets P/L", field: "declareBets" },
+    { header: <div className="">Action</div>, field: "action", width: "10%" },
+  ];
 
   const cricketData = [
     {
@@ -80,101 +78,9 @@ function LiveBlockSports() {
         <BsEye
           size={18}
           className="pointer ms-2"
-          onClick={() => handleClickCricketPage("Cricket")}
+          onClick={() => handleClickCricketPage(activeSport)}
         />
       ),
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
     },
     {
       live: "Live",
@@ -249,7 +155,7 @@ function LiveBlockSports() {
 
   const footballData = [
     {
-      live: "Football",
+      live: "live",
       dateTime: (
         <>
           <div className="green-font">Live</div>
@@ -278,101 +184,9 @@ function LiveBlockSports() {
         <BsEye
           size={18}
           className="pointer ms-2"
-          onClick={() => handleClickCricketPage("Football")}
+          onClick={() => handleClickCricketPage(activeSport)}
         />
       ),
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
     },
     {
       live: "Live",
@@ -447,7 +261,7 @@ function LiveBlockSports() {
 
   const tennisData = [
     {
-      live: "Football",
+      live: "Live",
       dateTime: (
         <>
           <div className="green-font">Live</div>
@@ -476,101 +290,9 @@ function LiveBlockSports() {
         <BsEye
           size={18}
           className="pointer ms-2"
-          onClick={() => handleClickCricketPage("Tennis")}
+          onClick={() => handleClickCricketPage(activeSport)}
         />
       ),
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
     },
     {
       live: "Live",
@@ -645,7 +367,7 @@ function LiveBlockSports() {
 
   const horseRacingData = [
     {
-      live: "Football",
+      live: "Live",
       dateTime: (
         <>
           <div className="green-font">Live</div>
@@ -747,98 +469,6 @@ function LiveBlockSports() {
       declareBets: <span className="green-font">5000000</span>,
       action: <BsEye size={18} className="pointer ms-2" />,
     },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
-    {
-      live: "Live",
-      dateTime: "01-10-2024 16:11:00",
-      seriesName: (
-        <>
-          <div>ICICI T20 Women World Cup</div>
-          <div>2024</div>
-          <div>M. ID: 1.11045677544</div>
-        </>
-      ),
-      matchID: "11023843754858",
-      matchName: (
-        <>
-          <div>New Zealand Wo</div>
-          <div>vs South Africa Wo</div>
-        </>
-      ),
-      back: <span className="sky-blu-font">5000000</span>,
-      lay: <span className="red-font">0</span>,
-      exposure: <span className="red-font">471.19</span>,
-      declareBets: <span className="green-font">5000000</span>,
-      action: <BsEye size={18} className="pointer ms-2" />,
-    },
   ];
 
   const getSportData = (sport) => {
@@ -851,6 +481,8 @@ function LiveBlockSports() {
         return tennisData;
       case "Horse Racing":
         return horseRacingData;
+      case "Greyhound Racing":
+        return horseRacingData;
       default:
         return cricketData;
     }
@@ -859,7 +491,7 @@ function LiveBlockSports() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Sports Live Settings</h6>
+        <h6 className="yellow-font medium-font mb-0">Sports Live Settings</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
@@ -872,7 +504,7 @@ function LiveBlockSports() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 px-3 pointer ${
+              className={`me-3 pointer ${
                 activeSport === sport ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleSportClick(sport)}
@@ -888,37 +520,44 @@ function LiveBlockSports() {
       </div>
 
       {/* Tabs for Top Players */}
-      <div className="small-font py-3 d-flex">
-        <button
-          className={`me-3 px-3 py-2 ${
-            tabTopTenPlayer === "matched-amount-player"
-              ? "saffron-btn2"
-              : "white-btn2"
-          }`}
-          onClick={() => handleTabTopPlayer("matched-amount-player")}
-        >
-          Top 10 Matched Amount Player
-        </button>
-        <button
-          className={`me-3 px-3 py-2 ${
-            tabTopTenPlayer === "exposure-player"
-              ? "saffron-btn2"
-              : "white-btn2"
-          }`}
-          onClick={() => handleTabTopPlayer("exposure-player")}
-        >
-          Top 10 Exposure Player
-        </button>
-      </div>
+      {activeSport === "Cricket" || activeSport === "Football" ? (
+        <div>
+          <div className="small-font py-3 d-flex">
+            <button
+              className={`me-3 py-2 ${
+                tabTopTenPlayer === "matched-amount-player"
+                  ? "saffron-btn2"
+                  : "white-btn2"
+              }`}
+              onClick={() => handleTabTopPlayer("matched-amount-player")}
+            >
+              Top 10 Matched Amount Player
+            </button>
+            <button
+              className={`me-3 py-2 ${
+                tabTopTenPlayer === "exposure-player"
+                  ? "saffron-btn2"
+                  : "white-btn2"
+              }`}
+              onClick={() => handleTabTopPlayer("exposure-player")}
+            >
+              Top 10 Exposure Player
+            </button>
+          </div>
 
-      {/* Tab Content */}
-      <div>
-        {tabTopTenPlayer === "matched-amount-player" ? (
-          <TopMatchedAmountPlayer />
-        ) : (
-          <TopExposurePlayer />
-        )}
-      </div>
+          {/* Tab Content */}
+          <div>
+            {tabTopTenPlayer === "matched-amount-player" ? (
+              <TopMatchedAmountPlayer />
+            ) : (
+              <TopExposurePlayer />
+            )}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className="mt-4">
         <Table
           data={getSportData(activeSport)}

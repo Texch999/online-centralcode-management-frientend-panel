@@ -1,33 +1,58 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { FaSync } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { GrEdit } from "react-icons/gr";
-import Table from "../../../components/Table"
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
+import Table from "../../../components/Table";
 import EditBetPopup from "../../risk-management/EditBetPopup";
+import SuccessPopup from "../../popups/ConfirmationPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
 const columns = [
-  { header: "Role/Name", field: "roleName", width: "15%" },
-  { header: "Website", field: "website", width: "10%" },
+  { header: "Role/Name", field: "roleName" },
+  { header: "Website", field: "website" },
   {
     header: "Sports - Series/Company Name",
     field: "sportsCompanyName",
-    width: "20%",
   },
-  { header: "Date & Time", field: "dateTime", width: "10%" },
-  { header: "Bet Place", field: "betPlace", width: "20%" },
-  { header: "P/L", field: "pl", width: "10%" },
-  { header: "IP Address", field: "ipAddress", width:"8%" },
-  { header: "Action", field: "action", width: "25%" },
+  { header: "Date & Time", field: "dateTime" },
+  { header: "Bet Place", field: "betPlace" },
+  { header: "P/L", field: "pl" },
+  { header: "IP Address", field: "ipAddress" },
+  { header: <div className="text-center">Action</div>, field: "action" },
 ];
-
 
 const BetHistory = () => {
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+  const [onDeleteBetpopup, setOnDeleteBetpopup] = useState(false);
 
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
   };
+
+  const websiteOptions = [
+    { value: "texchange", label: "texchange.com" },
+    { value: "fun77", label: "fun77.com" },
+    { value: "tcasinopark", label: "tcasinopark.com" },
+    { value: "diamondexchange", label: "diamondexchange.com" },
+  ];
+  const adminOptions1 = [
+    { value: "Director - Srinivas", label: "Director - Srinivas" },
+    { value: "Super Admin- Ranjit", label: "Super Admin- Ranjit" },
+    { value: "Admin - Rajesh", label: "Admin - Rajesh" },
+    { value: "SA- Jitah", label: "SA- Jitah" },
+    { value: "Agent - Lokesh", label: "Agent - Lokesh" },
+    { value: "Agent - Suresh", label: "Agent - Suresh" },
+  ];
+
+  const adminOptions2 = [
+    { value: "Jithendhra", label: "Jithendhra" },
+    { value: "Sri", label: "Sri" },
+    { value: "Rahul", label: "Rahul" },
+    { value: "Hanu", label: "Hanu" },
+    { value: "Harish", label: "Harish" },
+  ];
 
   const data = [
     {
@@ -69,10 +94,18 @@ const BetHistory = () => {
       pl: <span className="yellow-font">100000000000</span>,
       ipAddress: <span className="yellow-font">127.0.0.1</span>,
       action: (
-        <>
-          <GrEdit size={20} className="yellow-font m-2 pointer" onClick={handleEditBetPopupOpen}/>
-          <RiDeleteBinLine size={20} className="pointer"/>
-        </>
+        <div className="d-flex gap-2 align-items-center">
+          <SlPencil
+            size={20}
+            className="yellow-font m-2 pointer"
+            onClick={handleEditBetPopupOpen}
+          />
+          <FaRegTrashCan
+            size={20}
+            className="pointer"
+            onClick={() => setOnDeleteBetpopup(true)}
+          />
+        </div>
       ),
     },
     {
@@ -115,7 +148,7 @@ const BetHistory = () => {
       ipAddress: <span className="red-font">127.0.0.1</span>,
       action: (
         <div className="text-center">
-          <FaSync size={17} className="red-font pointer" />
+          <FaSync size={18} className="red-font pointer" />
         </div>
       ),
     },
@@ -148,19 +181,23 @@ const BetHistory = () => {
       betPlace: (
         <>
           <div>Bet Place: Chennai Super Kings/</div>
-          <div>Side: <span className="sky-blu-font">Back</span></div>
+          <div>
+            Side: <span className="sky-blu-font">Back</span>
+          </div>
           <div className="yellow-font">Match Odds - 1.50</div>
           <div className="yellow-font">Amount - 1000000</div>
           <div>Bet ID: 298960884003</div>
-          <div>Win/Loss: <span className="green-font">Win</span></div>
+          <div>
+            Win/Loss: <span className="green-font">Win</span>
+          </div>
         </>
       ),
       pl: <span className="green-font">100000000000</span>,
       ipAddress: "127.0.0.1",
       action: (
         <>
-          <GrEdit size={20} className="m-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer"/>
+          <SlPencil size={20} className="me-3 pointer" />
+          <FaRegTrashCan size={20} className="pointer" />
         </>
       ),
     },
@@ -204,20 +241,19 @@ const BetHistory = () => {
       ipAddress: "127.0.0.1",
       action: (
         <>
-          <GrEdit size={20} className="m-2 pointer" />
-          <RiDeleteBinLine size={20} className="pointer"/>
+          <SlPencil size={20} className="me-3 pointer" />
+          <FaRegTrashCan size={20} className="pointer" />
         </>
       ),
     },
   ];
 
-
   return (
     <div className="py-4 bg-white shadow rounded">
-      <div className="px-4 d-flex justify-content-between align-items-center mb-3">
+      <div className="px-3 d-flex justify-content-between align-items-center mb-3">
         <h6 className="medium-font">Bet History</h6>
         <div className="d-flex align-items-center">
-          <span className="me-2 black-text medium-font">Active</span>
+          <span className="me-2 black-text small-font">Active</span>
           <Form>
             <Form.Check
               type="switch"
@@ -225,81 +261,71 @@ const BetHistory = () => {
               className="director-admin-profile-toggle-btn"
             />
           </Form>
-          <span className="me-2 black-text medium-font">In-active</span>
+          <span className="me-2 black-text small-font">In-active</span>
         </div>
       </div>
 
-      <div className="row gap-1 px-3">
+      <div className="row px-3">
         <div className="col-2">
-          <label htmlFor="date-picker" className="mb-1">
+          <label htmlFor="date-picker small-font" className="mb-1">
             From
           </label>
-          <div className="position-relative">
-            <input
-              type="date"
-              id="date-picker"
-              className="custom-date-input form-control bg-light border rounded pr-5"
-            />
-            {/* <CiCalendarDate className="input-icon" /> */}
-          </div>
+          <input
+            type="date"
+            id="date-picker"
+            className="rounded small-font input-css w-100 "
+          />
         </div>
 
         <div className="col-2">
-          <label htmlFor="date-picker" className="mb-1">
+          <label htmlFor="date-picker small-font" className="mb-1">
             To
           </label>
-          <div className="position-relative">
-            <input
-              type="date"
-              id="date-picker"
-              className="custom-date-input form-control bg-light border rounded pr-5"
-            />
-            {/* <CiCalendarDate className="input-icon" /> */}
-          </div>
+          <input
+            type="date"
+            id="date-picker"
+            className="small-font input-css w-100 rounded"
+          />
         </div>
 
-        <div className="col-2">
-          <label className="medium-font mb-1 d-block">Website</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              <option className="medium-font">texchange.com</option>
-              <option className="medium-font">fun77.com</option>
-              <option className="medium-font">tcasinopark.com</option>
-              <option className="medium-font">diamondexchange.com</option>
-            </select>
-          </div>
+        <div className="col-2 mt-1">
+          <label className="small-font mb-1">Website</label>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
 
-        <div className="col-2">
-          <label className="medium-font mb-1 d-block">Admin</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              <option className="medium-font">Director - Srinivas</option>
-              <option className="medium-font">Super Admin - Ranjit</option>
-              <option className="medium-font">Admin - Rajesh</option>
-              <option className="medium-font">SA- Jitah</option>
-              <option className="medium-font">Agent - Lokesh</option>
-              <option className="medium-font">Agent - Suresh</option>
-            </select>
-          </div>
+        <div className="col-2 mt-1">
+          <label className="small-font mb-1">Admin</label>
+          <Select
+            className="small-font"
+            options={adminOptions1}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
 
-        <div className="col-2">
-          <label className="medium-font mb-1 d-block">Admin</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              <option className="medium-font">Jitendra</option>
-              <option className="medium-font">Jayanta</option>
-              <option className="medium-font">Sri</option>
-              <option className="medium-font">Rahul</option>
-              <option className="medium-font">Raj</option>
-              <option className="medium-font">Sri Varma</option>
-            </select>
-          </div>
+        <div className="col-2 mt-1">
+          <label className="small-font mb-1">Admin</label>
+          <Select
+            className="small-font"
+            options={adminOptions2}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+          />
         </div>
 
-        <div className="col-1 d-flex align-items-end">
-          <button className="text-white rounded saffron-btn px-4">
+        <div className="col-2 col-lg-1 d-flex align-items-end">
+          <button className="w-100 small-font saffron-btn2">
             Search
           </button>
         </div>
@@ -311,6 +337,12 @@ const BetHistory = () => {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+      <SuccessPopup
+        confirmationPopupOpen={onDeleteBetpopup}
+        setConfirmationPopupOpen={() => setOnDeleteBetpopup(false)}
+        discription={"Are You Sure to Delete This Bet"}
+        submitButton={"Delete"}
       />
     </div>
   );

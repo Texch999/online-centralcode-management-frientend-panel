@@ -1,30 +1,38 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { LiaPenSolid } from "react-icons/lia";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const Broadcasting = () => {
   const [activeBtn, setActiveBtn] = useState("User Broadcasting");
   const ACTIVE_BTNS = ["User Broadcasting", "Admin Broadcasting"];
-
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
-    { header: "Website", field: "website", width: "10%" },
+    { header: "Website", field: "website", width: "15%" },
     {
       header: "Broadcasting Location",
       field: "broadcastingLocation",
-      width: "10%",
+      width: "15%",
     },
     {
       header: "Broadcasting Message",
       field: "broadcastingMessage",
-      width: "30%",
+      width: "40%",
     },
     { header: "", field: "icons", width: "10%" },
   ];
@@ -46,9 +54,7 @@ const Broadcasting = () => {
           www.fun77.com
         </div>
       ),
-
       broadcastingLocation: <div>Home Page</div>,
-
       broadcastingMessage: (
         <div>
           Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -59,176 +65,9 @@ const Broadcasting = () => {
       ),
 
       icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      dateTime: (
-        <div>
-          1-10-2024
-          <br />
-          16:11:00
-        </div>
-      ),
-      type: <div>Sports</div>,
-      website: (
-        <div>
-          www.texchange.com
-          <br />
-          www.diamondexchange.com <br />
-          www.fun77.com
-        </div>
-      ),
-
-      broadcastingLocation: <div>Home Page</div>,
-
-      broadcastingMessage: (
-        <div>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </div>
-      ),
-
-      icons: (
-        <div className="large-font w-50 flex-between">
-          <span>
-            <LiaPenSolid />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan />
-          </span>
+        <div className="flex-center">
+          <SlPencil size={18} className="pointer me-1" />
+          <FaRegTrashCan size={18} className="ms-1" />
         </div>
       ),
     },
@@ -249,8 +88,8 @@ const Broadcasting = () => {
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2"
+                : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -261,25 +100,43 @@ const Broadcasting = () => {
       <div className="d-flex w-60  mt-3">
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">Sports/Casino</label>
-          <select className="input-css2 small-font">
-            <option>All</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">Websites</label>
-          <select className="input-css2 small-font">
-            <option>All</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">
             Broadcasting Location
           </label>
-          <select className="input-css2 small-font">
-            <option>All</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-6 flex-column  ">

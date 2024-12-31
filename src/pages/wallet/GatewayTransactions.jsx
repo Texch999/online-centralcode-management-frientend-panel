@@ -51,7 +51,7 @@ function GatewayTransactions() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            className="black-text"
+            className="black-text pointer"
             onClick={handleDepositWithdrawPopupOpen}
           />
         </div>
@@ -84,7 +84,7 @@ function GatewayTransactions() {
         <div className="w-100 flex-center">
           <BsEye
             size={18}
-            className="black-text"
+            className="black-text pointer"
             onClick={handleDepositWithdrawPopupOpen}
           />
         </div>
@@ -115,9 +115,10 @@ function GatewayTransactions() {
       status: <div className="green-btn">Approved</div>,
       view: (
         <div className="w-100 flex-center">
+          
           <BsEye
             size={18}
-            className="black-text"
+            className="black-text pointer"
             onClick={handleDepositWithdrawPopupOpen}
           />
         </div>

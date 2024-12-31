@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import Table from "../../../components/Table";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import Form from "react-bootstrap/Form";
 import "../style.css";
 import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
 
-const countryOptions = ["India", "USA", "Canada"];
-const gatewayOptions = ["NEFT", "SWIFT", "RTGS"];
-const detailOptions = ["NEFT", "Detail 2", "Detail 3"];
+const countryOptions = [
+  { value: "India", label: "India" },
+  { value: "USA", label: "USA" },
+  { value: "Canada", label: "Canada" },
+];
+
+const gatewayOptions = [
+  { value: "NEFT", label: "NEFT" },
+  { value: "SWIFT", label: "SWIFT" },
+  { value: "RTGS", label: "RTGS" },
+];
+const detailOptions = [
+  { value: "NEFT", label: "NEFT" },
+  { value: "Detail 2", label: "Detail 2" },
+  { value: "Detail 3", label: "Detail 3" },
+];
 
 const columns = [
   { header: "Gateway Name", field: "gatewayName", width: "15%" },
@@ -35,7 +50,7 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <GrEdit
+        <SlPencil
           size={17}
           className="pointer"
           onClick={() => setShowPaymentGatewayPopup(true)}
@@ -53,7 +68,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <SlPencil size={17} />,
     },
     {
       gatewayName: "NEFT/RTGS",
@@ -73,7 +88,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <SlPencil size={17} />,
     },
     {
       gatewayName: "QR Code",
@@ -92,7 +107,7 @@ const PaymentGateway = () => {
           Active
         </span>
       ),
-      action: <GrEdit size={17} />,
+      action: <SlPencil size={17} />,
     },
   ];
 
@@ -102,7 +117,7 @@ const PaymentGateway = () => {
         <div className="px-4 d-flex justify-content-between align-items-center mb-3">
           <h6 className="medium-font">Add Payment gateway</h6>
           <div className="d-flex align-items-center">
-            <span className="me-2 black-text medium-font">Active</span>
+            <span className="me-2 black-text small-font">Active</span>
 
             <Form>
               <Form.Check
@@ -112,7 +127,7 @@ const PaymentGateway = () => {
               />
             </Form>
 
-            <span className="me-2 black-text medium-font">In-active</span>
+            <span className="me-2 black-text small-font">In-active</span>
           </div>
         </div>
         <hr className="dashed-line mb-4" style={{ color: "black" }} />
@@ -120,66 +135,64 @@ const PaymentGateway = () => {
         <div className="row align-items-center py-3 px-3 mb-2 payment-gateway-select-container">
           {/* Country Dropdown */}
           <div className="col-md-2 mb-3 mb-md-0">
-            <label className="medium-font mb-1 d-block">Country</label>
-            <div className="position-relative">
-              <select className="small-font border form-select custom-select bg-light rounded px-3 w-100">
-                {countryOptions.map((country, index) => (
-                  <option className="small-font" key={index} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <label className="small-font mb-1 d-block">Country</label>
+            <Select
+              className="small-font"
+              options={countryOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
 
           {/* Gateway Dropdown */}
           <div className="col-md-2 mb-3 mb-md-0">
-            <label className="medium-font mb-1 d-block">Gateway</label>
+            <label className="small-font mb-1 d-block">Gateway</label>
             <div className="position-relative">
-              <select className="form-select custom-select bg-light border rounded px-3 w-100">
-                {gatewayOptions.map((gateway, index) => (
-                  <option className="medium-font" key={index} value={gateway}>
-                    {gateway}
-                  </option>
-                ))}
-              </select>
+              <Select
+                className="small-font"
+                options={gatewayOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
           </div>
 
           {/* Select Details Dropdown */}
-          <div className="col-md-7 mb-3 mb-md-0">
-            <label className="medium-font mb-1 d-block">Select Details</label>
-            <div className="position-relative">
-              <select className="form-select custom-select bg-light border rounded px-3 w-100">
-                {detailOptions.map((detail, index) => (
-                  <option className="medium-font" key={index} value={detail}>
-                    {detail}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="col-md-6 col-lg-7 mb-3 mb-md-0">
+            <label className="small-font mb-1 d-block">Select Details</label>
+            <Select
+              className="small-font"
+              options={detailOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
 
           {/* Submit Button */}
-          <div className="col-md-1 text-md-end align-self-end">
-            <button className="text-white rounded saffron-btn px-4 w-100 w-md-auto">
-              Submit
-            </button>
+          <div className="col-md-2 col-lg-1 align-self-end">
+            <button className="small-font saffron-btn2 w-100">Submit</button>
           </div>
         </div>
 
         <div className="row d-flex justify-content-between px-3">
-          <h6 className="col-2">All Currencies</h6>
+          <h6 className="col-2 small-font">All Currencies</h6>
 
           <div className="col-2 mb-3 mb-md-0 ">
             <div className="position-relative">
-              <select className="form-select custom-select bg-light border rounded px-3 w-100">
-                {countryOptions.map((country, index) => (
-                  <option className="medium-font" key={index} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
+              <Select
+                className="small-font"
+                options={countryOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
           </div>
         </div>
@@ -192,78 +205,6 @@ const PaymentGateway = () => {
           show={showPaymentGatewayPopup}
           onHide={() => setShowPaymentGatewayPopup(false)}
         />
-      </div>
-      <hr className="dashed-line mb-4" style={{ color: "black" }} />
-
-      <div className="row align-items-center py-3 px-3 mb-2 payment-gateway-select-container">
-        {/* Country Dropdown */}
-        <div className="col-md-2 mb-3 mb-md-0">
-          <label className="medium-font mb-1 d-block">Country</label>
-          <div className="position-relative">
-            <select className="small-font border form-select custom-select bg-light rounded px-3 w-100">
-              {countryOptions.map((country, index) => (
-                <option className="small-font" key={index} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Gateway Dropdown */}
-        <div className="col-md-2 mb-3 mb-md-0">
-          <label className="medium-font mb-1 d-block">Gateway</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              {gatewayOptions.map((gateway, index) => (
-                <option className="medium-font" key={index} value={gateway}>
-                  {gateway}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Select Details Dropdown */}
-        <div className="col-md-7 mb-3 mb-md-0">
-          <label className="medium-font mb-1 d-block">Select Details</label>
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              {detailOptions.map((detail, index) => (
-                <option className="medium-font" key={index} value={detail}>
-                  {detail}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="col-md-1 text-md-end align-self-end">
-          <button className="text-white rounded saffron-btn px-4 w-100 w-md-auto">
-            Submit
-          </button>
-        </div>
-      </div>
-
-      <div className="row d-flex justify-content-between px-3">
-        <h6 className="col-2">All Currencies</h6>
-
-        <div className="col-2 mb-3 mb-md-0 ">
-          <div className="position-relative">
-            <select className="form-select custom-select bg-light border rounded px-3 w-100">
-              {countryOptions.map((country, index) => (
-                <option className="medium-font" key={index} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div className="table-parent-container mt-2">
-        <Table data={data} columns={columns} itemsPerPage={3} />
       </div>
     </div>
   );

@@ -1,10 +1,26 @@
 import React, { useState } from "react";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { FiChevronRight } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function ClientRental() {
   const [rentalTickets, setRentalTickets] = useState(false);
+
+  const roleOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const nameOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const DIRECTOR_COLUMNS = [
     { header: "Start Date", field: "startDate" },
     { header: "Name & Role", field: "nameRole" },
@@ -42,7 +58,7 @@ function ClientRental() {
         className="flex-center large-font pointer"
         onClick={() => setRentalTickets(true)}
       >
-        <MdOutlineRemoveRedEye size={18} />
+        <BsEye size={18} />
       </div>
     ),
   });
@@ -104,12 +120,11 @@ function ClientRental() {
     netBal: <div className="green-font">24000000</div>,
     icons: (
       <div className="flex-center large-font pointer">
-        <MdOutlineRemoveRedEye size={18} />  <span className="active-btn-table small-font ms-2">Approved</span>
+        <BsEye size={18} />{" "}
+        <span className="active-btn-table small-font ms-2">Approved</span>
       </div>
     ),
   });
-
-
 
   const summaryData = [
     { label: "Total Rental Amount", value: "1000000000", color: "green-font" },
@@ -165,20 +180,32 @@ function ClientRental() {
             {" "}
             <div className="col-4 flex-column me-3">
               <label className="black-text4 small-font mb-1">Role</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={roleOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
             <div className="col-4 flex-column me-3">
               <label className="black-text4 small-font mb-1">Name</label>
-              <select className="input-css2 small-font">
-                <option>Select</option>
-              </select>
+              <Select
+                className="small-font"
+                options={nameOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
           </>
         )}
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-4">
+        <div className="align-self-end saffron-btn2 small-font pointer col-4">
           Submit
         </div>
       </div>

@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { IoAddOutline } from "react-icons/io5";
 import { MdBlockFlipped } from "react-icons/md";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import NewPromotionPopUp from "./NewPromotionPopUp";
 import { Images } from "../../images";
@@ -11,16 +11,40 @@ import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
 import { MdOutlineFileUpload } from "react-icons/md";
 import EditPosterPopUp from "./EditPosterPopUp";
+import Select from "react-select";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
-  const [addNewModal, setAddNewModal] = useState(false);
   const [fullPoster, setFullPoster] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
+  const [addNewModal, setAddNewModal] = useState(false);
+  const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
+  const [promotionBlockModal, setPromotionBlockModal] = useState(false);
+  const [posterDeleteModal, setPosterDeleteModal] = useState(false);
+  const [modalType, setModalType] = useState(null);
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
 
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
+  };
+
+  const handleAddNew = () => {
+    setModalType("New Promotion Type");
+    setAddNewModal(true);
+  };
+
+  const handleEdit = () => {
+    setModalType("Edit Promotion Type");
+    setAddNewModal(true);
   };
 
   const CASINO_COLUMNS = [
@@ -39,9 +63,17 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <LiaPenSolid size={18} />
-          <MdBlockFlipped size={18} className="mx-3" />
-          <FaRegTrashCan size={18} />
+          <SlPencil size={18} className="pointer" onClick={handleEdit} />
+          <MdBlockFlipped
+            size={18}
+            className="mx-3 pointer"
+            onClick={() => setPromotionBlockModal(true)}
+          />
+          <FaRegTrashCan
+            size={18}
+            className="pointer"
+            onClick={() => setPromotionDeleteModal(true)}
+          />
         </div>
       ),
     },
@@ -53,9 +85,9 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <LiaPenSolid size={18} />
-          <MdBlockFlipped size={18} className="mx-3" />
-          <FaRegTrashCan size={18} />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="mx-3 pointer" />
+          <FaRegTrashCan size={18} className="pointer" />
         </div>
       ),
     },
@@ -67,7 +99,7 @@ const PromotionType = () => {
 
       icons: (
         <div className="flex-end">
-          <LiaPenSolid size={18} />
+          <SlPencil size={18} />
           <MdBlockFlipped size={18} className="mx-3" />
           <FaRegTrashCan size={18} />
         </div>
@@ -76,9 +108,13 @@ const PromotionType = () => {
   ];
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
-    { header: "Poster Type", field: "posterType", width: "30%" },
-    { header: "Poster", field: "Poster", width: "50%" },
-    { header: "", field: "icons", width: "10%" },
+    { header: "Poster Type", field: "posterType", width: "50%" },
+    { header: <div className="flex-center">Poster</div>, field: "Poster" },
+    {
+      header: <div className="flex-center">Action</div>,
+      field: "action",
+      width: "10%",
+    },
   ];
 
   const CRICKET_DATA = [
@@ -92,25 +128,29 @@ const PromotionType = () => {
       ),
       posterType: <div>Cricket</div>,
       Poster: (
-        <div className="relative poster-img">
-          <img src={Images.Poster1} alt="Poster" />
-
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => setFullPoster(!fullPoster)}
-          />
+        <div className="flex-center">
+          <div className="relative poster-img">
+            <img src={Images.Poster1} alt="Poster" />
+            <TbArrowsDiagonal
+              className="absolute zoom-out white-bg pointer"
+              size={18}
+              onClick={() => setFullPoster(!fullPoster)}
+            />
+          </div>
         </div>
       ),
-      icons: (
-        <div className="d-flex w-50 flex-between">
-          <span onClick={() => setEditPoster(!editPoster)}>
-            <LiaPenSolid size={18} className="pointer" />
-          </span>
-
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
+      action: (
+        <div className="flex-center">
+          <SlPencil
+            size={18}
+            className="pointer me-2"
+            onClick={() => setEditPoster(!editPoster)}
+          />
+          <FaRegTrashCan
+            size={18}
+            className="pointer ms-2 delete"
+            onClick={() => setPosterDeleteModal(true)}
+          />
         </div>
       ),
     },
@@ -125,15 +165,12 @@ const PromotionType = () => {
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-
       <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
-            className={`me-4 ${
-              activeBtn === item
-                ? "saffron-btn2  px-3"
-                : "white-btn2 pointer px-3"
+            className={`me-3 ${
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -142,66 +179,114 @@ const PromotionType = () => {
         ))}
       </div>
       {activeBtn === "Promotion Type" ? (
-        <div className="d-flex align-items-end justify-content-between w-100 mt-2 small-font">
-          <div className="flex-column col-3">
-            <label className="black-text4 mb-1">Promotion</label>
-            <select className="w-100 input-css2">
-              <option>All</option>
-            </select>
+        <>
+          <div className="flex-between w-100 my-3 small-font">
+            <div className="col-3 col-lg-2 flex-column">
+              <label className="black-text4 mb-1">Promotion</label>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
+            </div>
+            <button
+              className="saffron-btn2 pointer align-self-end"
+              onClick={handleAddNew}
+            >
+              <IoAddOutline size={18} className="me-1" />
+              <span>Add New</span>
+            </button>
           </div>
-          <div
-            className="saffron-btn2 pointer"
-            onClick={() => setAddNewModal(!addNewModal)}
-          >
-            <IoAddOutline size={18} className="me-1" />
-            <span>Add New</span>
-          </div>
-        </div>
+          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={2} />
+        </>
       ) : (
-        <div className="d-flex w-100 flex-between mt-2">
-          <div className="d-flex w-50 flex-between mt-2">
-            <div className="col-4 flex-column me-3">
-              <label className="black-text4 small-font mb-1">
+        <>
+          <div className="row my-3 small-font align-items-center">
+            {/* Promotion Type */}
+            <div className="col-md-3 col-lg-2">
+              <label
+                htmlFor="promotionType"
+                className="black-text4 small-font mb-1 d-block"
+              >
                 Promotion Type
               </label>
-              <select className="input-css2 small-font">
-                <option>General Poster</option>
-              </select>
+              <Select
+                id="promotionType"
+                className="small-font w-100"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
-            <div className="col-6 flex-column me-3 ">
-              <label className="black-text4 small-font " htmlFor="poster">
+
+            {/* Upload Poster */}
+            <div className="col-md-3 col-lg-2 px-0">
+              <label
+                htmlFor="poster"
+                className="black-text4 small-font mb-1 d-block"
+              >
                 Upload Poster
-                <input type="file" style={{ display: "none" }} id="poster" />
-                <div className="input-css2 small-font d-flex flex-between">
-                  Upload <MdOutlineFileUpload />
+              </label>
+              <label htmlFor="poster" className="d-block">
+                <input type="file" id="poster" style={{ display: "none" }} />
+                <div className="input-css2 small-font d-flex justify-content-between align-items-center pointer">
+                  Upload
+                  <MdOutlineFileUpload className="grey-color medium-font" />
                 </div>
               </label>
             </div>
 
-            <div className="saffron-btn2 small-font pointer mt-4 col-2 mx-2">
-              Submit
+            {/* Submit Button */}
+            <div className="col-md-2 col-lg-1 align-self-end">
+              <button className="w-100 saffron-btn2 pointer small-font">
+                Submit
+              </button>
             </div>
           </div>
-        </div>
-      )}
 
-      <div className="mt-4 ">
-        {activeBtn === "Promotion Type" ? (
-          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={2} />
-        ) : (
           <Table
             columns={CRICKET_COLUMNS}
             data={CRICKET_DATA}
             itemsPerPage={2}
           />
-        )}
-      </div>
+        </>
+      )}
+
       <NewPromotionPopUp
         addNewModal={addNewModal}
         setAddNewModal={setAddNewModal}
+        modalType={modalType}
       />
+
       <FullPosterPopUp setFullPoster={setFullPoster} fullPoster={fullPoster} />
       <EditPosterPopUp setEditPoster={setEditPoster} editPoster={editPoster} />
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionDeleteModal}
+        setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
+        discription={"are you sure you want to delete this Promotion"}
+        submitButton={"Delete"}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={promotionBlockModal}
+        setConfirmationPopupOpen={() => setPromotionBlockModal(false)}
+        discription={"are you sure you want to block this Promotion"}
+        submitButton={"Block"}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={posterDeleteModal}
+        setConfirmationPopupOpen={() => setPosterDeleteModal(false)}
+        discription={"are you sure you want to delete this Poster"}
+        submitButton={"Delete"}
+      />
     </div>
   );
 };

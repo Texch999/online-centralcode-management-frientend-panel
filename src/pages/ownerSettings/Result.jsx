@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
+import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const Result = () => {
   const [activeBtn, setActiveBtn] = useState("Sports");
   const ACTIVE_BTNS = ["Sports", "Casino"];
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
-    navigation(`/match/${encodeURIComponent(matchName)}`);
+    navigation(`/results/${encodeURIComponent(matchName)}`);
   };
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
@@ -286,7 +295,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -330,54 +339,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
-            size={18}
-            onClick={() =>
-              handleMatchClick("New Zealand Wo vs South Africa Wo")
-            }
-            className="pointer"
-          />
-        </div>
-      ),
-    },
-    {
-      dateTime: <div>1-10-2024 16:11:00</div>,
-      sports: <div>Cricket</div>,
-      seriesName: (
-        <div>
-          ICICI T20 Women World Cup 2024
-          <br />
-          M. ID: 1.11045677544
-        </div>
-      ),
-
-      matchName: (
-        <div
-          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
-          className="pointer"
-        >
-          New Zealand Wo vs South Africa Wo
-          <br />M ID: 11023843754858
-        </div>
-      ),
-
-      result: (
-        <div>
-          <span className="green-font"> New Zealand Wo</span>
-          <br />R ID: 12345678943323
-        </div>
-      ),
-      runs: (
-        <div className="green-font">
-          Balls: 17.2
-          <br />
-          Runs: 220
-        </div>
-      ),
-      resultDateTime: <div>02-10-2024 10:34:00</div>,
-      viewFancy: (
-        <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -424,7 +386,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -471,7 +433,7 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -518,7 +480,54 @@ const Result = () => {
       resultDateTime: <div>02-10-2024 10:34:00</div>,
       viewFancy: (
         <div className="  w-60  flex-center">
-          <MdOutlineRemoveRedEye
+          <BsEye
+            size={18}
+            onClick={() =>
+              handleMatchClick("New Zealand Wo vs South Africa Wo")
+            }
+            className="pointer"
+          />
+        </div>
+      ),
+    },
+    {
+      dateTime: <div>1-10-2024 16:11:00</div>,
+      sports: <div>Cricket</div>,
+      seriesName: (
+        <div>
+          ICICI T20 Women World Cup 2024
+          <br />
+          M. ID: 1.11045677544
+        </div>
+      ),
+
+      matchName: (
+        <div
+          onClick={() => handleMatchClick("New Zealand Wo vs South Africa Wo")}
+          className="pointer"
+        >
+          New Zealand Wo vs South Africa Wo
+          <br />M ID: 11023843754858
+        </div>
+      ),
+
+      result: (
+        <div>
+          <span className="green-font"> New Zealand Wo</span>
+          <br />R ID: 12345678943323
+        </div>
+      ),
+      runs: (
+        <div className="green-font">
+          Balls: 17.2
+          <br />
+          Runs: 220
+        </div>
+      ),
+      resultDateTime: <div>02-10-2024 10:34:00</div>,
+      viewFancy: (
+        <div className="  w-60  flex-center">
+          <BsEye
             size={18}
             onClick={() =>
               handleMatchClick("New Zealand Wo vs South Africa Wo")
@@ -540,14 +549,14 @@ const Result = () => {
         </div>
       </div>
 
-      <div className="d-flex w-10 flex-between small-font">
+      <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2  px-3"
+                : "white-btn2 pointer px-3"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -555,8 +564,9 @@ const Result = () => {
           </div>
         ))}
       </div>
-      <div className="d-flex w-40 flex-between mt-2">
-        <div className="col-3 flex-column mx-2">
+
+      <div className="col-8 col-lg-7 d-flex flex-between my-3">
+        <div className="col-3 flex-column ">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
         </div>
@@ -568,9 +578,15 @@ const Result = () => {
         {activeBtn !== "Casino" && (
           <div className="col-3 flex-column me-3">
             <label className="black-text4 small-font mb-1">Sports</label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
         )}
 
@@ -578,36 +594,42 @@ const Result = () => {
           <>
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Provider</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
 
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Game</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
           </>
         )}
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
           Submit
         </div>
       </div>
 
-      <div className="mt-4">
-        {activeBtn === "Sports" ? (
-          <Table
-            columns={CRICKET_COLUMNS}
-            data={CRICKET_DATA}
-            itemsPerPage={4}
-          />
-        ) : (
-          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
-        )}
-      </div>
+      {activeBtn === "Sports" ? (
+        <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={4} />
+      ) : (
+        <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
+      )}
     </div>
   );
 };

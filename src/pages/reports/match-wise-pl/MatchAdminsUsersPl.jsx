@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import "../../home/style.css";
+import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const MatchAdminsUsersPl = () => {
   const navigate = useNavigate();
@@ -13,6 +16,18 @@ const MatchAdminsUsersPl = () => {
   const handleClick = (index) => {
     setActiveBtn(index);
   };
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const userOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const handleMatchusersPl = (userdetails) => {
     navigate(`/match-wise-pl/${matchName}/${role}/${userdetails}`);
@@ -65,7 +80,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-4 pointer"
             onClick={() => handleMatchusersPl("Agent-Sri")}
           />
@@ -109,7 +124,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -150,7 +165,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -191,7 +206,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -232,7 +247,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -273,7 +288,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -327,7 +342,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-4 pointer"
             onClick={() => handleMatchusersPl("User-Lokesh")}
           />
@@ -370,7 +385,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -410,7 +425,7 @@ const MatchAdminsUsersPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-4 pointer" />
+          <BsEye className="text-black font-20 me-4 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -447,16 +462,12 @@ const MatchAdminsUsersPl = () => {
       >
         <IoIosArrowBack className="orange-clr fw-800  me-1" />
         <div>Match Wise P/L</div>
-        <div className="">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+        <div onClick={() => navigate(-2)}>
+          <IoIosArrowForward className="mx-1" />
           {matchName}
         </div>
-        <div className="orange-clr">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+        <div className="orange-clr" onClick={() => navigate(-1)}>
+          <IoIosArrowForward className="mx-1" />
           {role}
         </div>
       </div>
@@ -475,35 +486,43 @@ const MatchAdminsUsersPl = () => {
         <div className="d-flex pe-2 small-font col-4">
           {roles.map((btn, index) => {
             return (
-              <div
+              <button
                 key={index}
                 onClick={() => handleClick(index)}
-                className={`input-css2 px-4 py-2 br-5 me-2 pointer ${
-                  activeBtn === index ? "saffron-btn" : ""
+                className={`w-25 input-css2 px-4 py-2 br-5 me-2 pointer ${
+                  activeBtn === index ? "saffron-btn w-25" : ""
                 }`}
               >
                 {btn}
-              </div>
+              </button>
             );
           })}
         </div>
         {activeBtn === 0 ? (
           <div className="flex-column pe-2 small-font col-2">
             <label className="mb-1">Admin</label>
-            <select className="input-css2">
-              <option>select</option>
-              <option>select</option>
-              <option>select</option>
-            </select>
+            <Select
+              className="small-font"
+              options={adminOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
         ) : (
           <div className="flex-column pe-2 small-font col-2">
             <label className="mb-1">User</label>
-            <select className="input-css2">
-              <option>select</option>
-              <option>select</option>
-              <option>select</option>
-            </select>
+            <Select
+              className="small-font"
+              options={userOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
         )}
       </div>

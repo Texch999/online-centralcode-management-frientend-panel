@@ -90,7 +90,7 @@ function SubHeader() {
           },
           { label: "Sports Promotions", path: "/sports-promotions" },
           { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Offer", path: "/offer" },
+          { label: "Offers", path: "/offers" },
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
@@ -112,7 +112,7 @@ function SubHeader() {
         label: "Live/Block",
         options: [
           { label: "Sports", path: "/live-block-sports" },
-          { label: "Casino", path: "/casino" },
+          { label: "Casino", path: "//management-casino" },
           { label: "Set Limits", path: "/set-limits" },
           { label: "In-active Users", path: "/inactive-users" },
           { label: "Bet Block Users", path: "/bet-block-users" },

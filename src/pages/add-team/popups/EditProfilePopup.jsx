@@ -32,7 +32,7 @@ const EditProfilePopup = ({ show, onHide }) => {
     <Modal centered show={show} onHide={onHide} size="md">
       <Modal.Body className="p-3">
         <div className="d-flex justify-content-between align-items-center mb-2">
-          <h5 className="medium-font fw-600">Add Payment Gateway</h5>
+          <h5 className="small-font fw-600">Edit profile</h5>
           <MdOutlineClose size={22} onClick={onHide} className="pointer" />
         </div>
 
@@ -45,7 +45,7 @@ const EditProfilePopup = ({ show, onHide }) => {
             <input
               id="name"
               type="text"
-              className="all-none rounded input-css w-100"
+              className="all-none rounded input-css w-100 small-font"
               placeholder="Enter"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -60,7 +60,7 @@ const EditProfilePopup = ({ show, onHide }) => {
             <input
               id="phoneNumber"
               type="text"
-              className="all-none rounded input-css w-100"
+              className="all-none rounded input-css w-100 small-font"
               placeholder="Enter"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
@@ -83,7 +83,7 @@ const EditProfilePopup = ({ show, onHide }) => {
               />
               <label
                 htmlFor="profilePhoto"
-                className="upload-input-popup d-flex justify-content-between align-items-center rounded w-100 pointer all-none"
+                className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
               >
                 <span className="small-font">Upload</span>
                 <AiOutlineCloudUpload size={20} />
@@ -94,7 +94,7 @@ const EditProfilePopup = ({ show, onHide }) => {
             <div className="col-4 pointer mt-3 ">
               <button
                 type="button"
-                className="saffron-btn rounded w-100"
+                className="saffron-btn2 rounded w-100 small-font"
                 onClick={handleSubmit}
               >
                 Save Changes

@@ -54,6 +54,7 @@ function Login() {
         setError("Invalid username");
         return;
     }
+
     localStorage.setItem("role_name", role_name);
     localStorage.setItem("role_code", role_code);
     localStorage.setItem("isLoggedIn", "true");
@@ -65,6 +66,12 @@ function Login() {
     setPasswordVisible(!passwordVisible);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center">
       <div
@@ -74,38 +81,41 @@ function Login() {
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
           <div className="ps-4 pe-5 flex-column px-5 w-75">
             <div className="welcome-font">WELCOME</div>
-            <div className="black-text white-space">
+            <div className="black-text">
               We are glad to see you back with us
             </div>
             <div className="py-4 medium-font">
-              <div className="d-flex align-items-center input-bg loginbox-radius mt-2 px-2">
+              <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-2 p-2">
                 <img
                   className="icon-img"
                   alt="username-icon"
                   src={Images.loginUserImages}
                 />
                 <input
-                  className="input-css"
+                  className="all-none w-inherit ps-2"
                   placeholder="Username"
                   value={username}
                   onChange={(e) => {
                     setUsername(e.target.value);
                     setError("");
                   }}
+                  onKeyPress={handleKeyPress} 
                   aria-label="Username"
                 />
               </div>
               {error && <div className="small-font red-font mt-1">{error}</div>}
-              <div className="d-flex align-items-center input-bg loginbox-radius mt-3 px-2">
+
+              <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-3 p-2">
                 <img
                   className="icon-img"
                   alt="password-icon"
                   src={Images.loginUserLock}
                 />
                 <input
-                  className="input-css"
+                  className="all-none w-inherit ps-2"
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
+                  onKeyPress={handleKeyPress} 
                   aria-label="Password"
                 />
                 <span
@@ -113,12 +123,13 @@ function Login() {
                   style={{ cursor: "pointer" }}
                 >
                   {passwordVisible ? (
-                    <FiEyeOff size={24} />
+                    <FiEyeOff size={22} />
                   ) : (
-                    <FiEye size={24} />
+                    <FiEye size={22} />
                   )}
                 </span>
               </div>
+
               <button className="orange-btn mt-4 w-100" onClick={handleLogin}>
                 Submit
               </button>

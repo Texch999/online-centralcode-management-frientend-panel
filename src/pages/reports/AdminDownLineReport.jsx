@@ -1,23 +1,17 @@
 import React, { useState } from "react";
-import ScrollTable from "../../components/ScrollTable";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
+import { BsEye } from "react-icons/bs";
 
 function AdminDownLineReport() {
   const navigate = useNavigate();
   const [activeSport, setActiveSport] = useState("Admins");
   const [activeRole, setActiveRole] = useState(false);
 
-  const SPORTS_BUTTONS = [
-    "Admins",
-    "Users",
-    
-  ];
-  
+  const SPORTS_BUTTONS = ["Admins", "Users"];
+
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
 
   const handleMatchClick = (userName) => {
@@ -49,7 +43,7 @@ function AdminDownLineReport() {
     netPL: <div className="green-font">500000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => setActiveRole(true)}
           className="pointer"
@@ -62,7 +56,7 @@ function AdminDownLineReport() {
     { header: "Total" },
     { header: "" },
     { header: <div className="red-font">7500000</div> },
-    { header: <div className="green-font">7500000</div>},
+    { header: <div className="green-font">7500000</div> },
     { header: <div className="green-font">7500000</div> },
     { header: <div className="red-font">7500000</div> },
     { header: <div className="green-font">7500000</div> },
@@ -86,7 +80,7 @@ function AdminDownLineReport() {
     userCasinoPL: <div className="green-font">10000</div>,
     icons: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => handleMatchClick("Jayanth - user")}
           className="pointer"
@@ -101,7 +95,6 @@ function AdminDownLineReport() {
     { header: <div className="green-font">7500000</div> },
     { header: <div className="red-font">7500000</div> },
     { header: "" },
- 
   ];
 
   const summaryData = [
@@ -115,10 +108,6 @@ function AdminDownLineReport() {
 
   return (
     <div>
-     
-
-     
-
       <div className="d-flex w-90 mt-4">
         <div className="w-100  flex-between flex-wrap mb-3 py-3 grey-bg2 rounded">
           {summaryData.map(({ label, value, color }) => (
@@ -131,23 +120,25 @@ function AdminDownLineReport() {
           ))}
         </div>
         <div className="netpl-btn mb-3 ms-3  col-3   pointer">
-          <div className="white-btn2 d-flex small-font ">Casino Net P/L  <span className="green-font">1000000</span></div>
+          <div className="white-btn2 d-flex small-font ">
+            Casino Net P/L <span className="green-font">1000000</span>
+          </div>
         </div>
       </div>
 
       <div className="d-flex small-font mt-3 mb-3">
-          {SPORTS_BUTTONS?.map((sport, index) => (
-            <div
-              key={index}
-              className={`me-3 px-3 ${
-                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-              }`}
-              onClick={() => handleSportClick(sport)}
-            >
-              {sport}
-            </div>
-          ))}
-        </div>
+        {SPORTS_BUTTONS?.map((sport, index) => (
+          <div
+            key={index}
+            className={`me-3 ${
+              activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
+            }`}
+            onClick={() => handleSportClick(sport)}
+          >
+            {sport}
+          </div>
+        ))}
+      </div>
 
       {activeSport === "Admins" && (
         <Table
@@ -173,4 +164,3 @@ function AdminDownLineReport() {
 }
 
 export default AdminDownLineReport;
-

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import ScrollTable from "../../components/ScrollTable";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
-import { LiaPenSolid } from "react-icons/lia";
+import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function SportsReport() {
   const navigate = useNavigate();
@@ -14,10 +16,38 @@ function SportsReport() {
   const [activeRole, setActiveRole] = useState(false);
   const { username } = useParams();
 
-  const SPORTS_BUTTONS = ["All", "Toss","Cricket","Cricket/Fancy Bet","Football","Tennis","Horse Racing","Greyhound Racing","Kabaddi"];
+  const websiteOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const userOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const SPORTS_BUTTONS = [
+    "All",
+    "Toss",
+    "Cricket",
+    "Cricket/Fancy Bet",
+    "Football",
+    "Tennis",
+    "Horse Racing",
+    "Greyhound Racing",
+    "Kabaddi",
+  ];
 
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
 
   const ADMIN_COLUMNS = [
@@ -45,7 +75,7 @@ function SportsReport() {
     netPL: <div className="green-font">500000</div>,
     downline: (
       <div className="w-60 flex-center">
-        <MdOutlineRemoveRedEye
+        <BsEye
           size={18}
           onClick={() => setActiveRole(true)}
           className="pointer"
@@ -120,13 +150,9 @@ function SportsReport() {
       </div>
     ),
     status: (
-        <div className="large-font d-flex w-50 flex-between">
-        <span>
-          <LiaPenSolid size={18}/>
-        </span>
-        <span className="ms-2">
-          <FaRegTrashCan size={18}/>
-        </span>
+      <div className="d-flex gap-3">
+          <SlPencil size={18} />
+          <FaRegTrashCan size={18} />
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),
@@ -139,31 +165,32 @@ function SportsReport() {
     { header: "" },
     { header: "" },
     { header: "" },
-    { header: <div className="green-font">7500000</div>  },
+    { header: <div className="green-font">7500000</div> },
     { header: "" },
   ];
 
   const summaryData = [
     { label: "Users Sports Win", value: "1000000000", color: "red-font" },
     { label: "Users Sports Loss", value: "1000000000", color: "green-font" },
-    { label: "Users SportsTotal  P/L", value: "2000000000", color: "green-font" },
+    {
+      label: "Users SportsTotal  P/L",
+      value: "2000000000",
+      color: "green-font",
+    },
   ];
 
   return (
     <div>
       <div className="flex-between mb-3 mt-4">
-        <h6 className="d-flex yellow-font mb-0">
-        P/L Reports Sports Wise
-        </h6>
+        <h6 className="d-flex yellow-font mb-0">P/L Reports Sports Wise</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-     
 
-      <div className="d-flex w-40 mt-4">
-        <div className="w-100   mb-3 py-3 grey-bg2 rounded">
+      <div className="col-5 col-lg-4 d-flex mt-4 mb-3">
+        <div className="w-100 mb-3 py-3 grey-bg2 rounded">
           {summaryData.map(({ label, value, color }) => (
             <div key={label} className="col-12 px-3 mt-2">
               <div className="white-btn2 flex-between">
@@ -174,11 +201,12 @@ function SportsReport() {
           ))}
         </div>
       </div>
-      <div className="d-flex w-70 flex-between small-font">
+
+      <div className="col-11 col-lg-8 d-flex flex-between small-font mb-4">
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-3 ${
+            className={`me-3 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(sport)}
@@ -188,38 +216,55 @@ function SportsReport() {
         ))}
       </div>
 
-      <div className="d-flex w-50 flex-between mt-2 mb-2">
-      <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">From</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-          <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">To</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
+      <div className="d-flex w-50 flex-between mt-2 mb-4">
+        <div className="col-3 flex-column mx-2">
+          <label className="black-text4 small-font mb-1">From</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
+        <div className="col-3 flex-column mx-2">
+          <label className="black-text4 small-font mb-1">To</label>
+          <input className="input-css2 small-font" type="date" />
+        </div>
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">Website</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">Admin Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">User Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={userOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
-       
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
           Submit
         </div>
       </div>
@@ -227,14 +272,12 @@ function SportsReport() {
       <Table
         columns={DIRECTOR_COLUMNS}
         data={DIRECTOR_DATA}
-       footer={DIRECTOR_FOOTER}
+        footer={DIRECTOR_FOOTER}
         greyBackground="footer-bg"
         itemsPerPage={5}
-       
       />
     </div>
   );
 }
 
 export default SportsReport;
-

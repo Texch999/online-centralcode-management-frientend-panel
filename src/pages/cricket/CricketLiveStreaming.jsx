@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { MdBlock, MdDeleteOutline } from "react-icons/md";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const CricketLiveStreaming = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const CricketLiveStreaming = () => {
       <>
         <iframe
           width="300"
-          height="200"
+          height="150"
           src="https://www.youtube.com/embed/-eaLutjqXu0?si=PdWBHVKXvC4nkNeI"
           title="YouTube video player"
           frameborder="0"
@@ -68,7 +69,7 @@ const CricketLiveStreaming = () => {
       <>
         <iframe
           width="300"
-          height="200"
+          height="150"
           src="https://www.youtube.com/embed/CGRzfUccmNE?si=6xSZtz34KLFbHSie"
           title="YouTube video player"
           frameborder="0"
@@ -81,7 +82,7 @@ const CricketLiveStreaming = () => {
       <>
         <iframe
           width="300"
-          height="200"
+          height="150"
           src="https://www.youtube.com/embed/aUDgaN6iHFc?si=CVADDxsX_h1hkEhe"
           title="YouTube video player"
           frameborder="0"
@@ -94,7 +95,7 @@ const CricketLiveStreaming = () => {
       <>
         <iframe
           width="300"
-          height="200"
+          height="150"
           src="https://www.youtube.com/embed/F0_aypvtW8Y?si=E_8oO598HmxNP80O"
           title="YouTube video player"
           frameborder="0"
@@ -115,8 +116,8 @@ const CricketLiveStreaming = () => {
   };
 
   const cols = [
-    { header: "", field: "watch" },
-    { header: "Date & Time", field: "date" },
+    { header: "", field: "watch", width: "10%" },
+    { header: "Date&Time", field: "date" },
     { header: "Matches/ID", field: "match" },
     ...(match !== "HorseRacing"
       ? [{ header: "Series Name/ID", field: "series" }]
@@ -127,110 +128,69 @@ const CricketLiveStreaming = () => {
 
   const data = [
     {
-      watch: <div className="inplay-btn w-fit py-1 px-2 mx-2">In Play</div>,
+      watch: (
+        <div className="inplay-btn w-fit py-1 px-2 white-space">In-Play</div>
+      ),
       date: (
-        <div className="d-flex flex-column">
-          <div>21-09-2024</div>
+        <div>
+          <div className="white-space">21-09-2024</div>
           <div>08:00:00</div>
         </div>
       ),
       match: [matchContent],
       series: [seriesContent],
-      live: [liveStreamContent],
+      live: <div className="flex-center">{[liveStreamContent]}</div>,
 
       action: (
-        <div class="d-flex mt-1">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
-          </div>
-        </div>
-      ),
-    },
-    {
-      watch: <div className="inplay-btn w-fit py-1 px-2 mx-2">In Play</div>,
-      date: (
-        <div className="d-flex flex-column">
-          <div>21-09-2024</div>
-          <div>08:00:00</div>
-        </div>
-      ),
-      match: [matchContent],
-      series: [seriesContent],
-      live: [liveStreamContent],
-      action: (
-        <div class="d-flex mt-1">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
-          </div>
-        </div>
-      ),
-    },
-    {
-      watch: <div className="mx-2">Today</div>,
-      date: (
-        <div className="d-flex flex-column">
-          <div>21-09-2024</div>
-          <div>08:00:00</div>
-        </div>
-      ),
-      match: [matchContent],
-      series: [seriesContent],
-      live: [liveStreamContent],
-
-      action: (
-        <div class="d-flex mt-1">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
-          </div>
+        <div class="d-flex">
+          <MdBlock
+            size={18}
+            className="me-1 grey-clr pointer"
+            onClick={handleBlockModal}
+          />
+          <FaRegTrashCan
+            size={18}
+            className="ms-1 grey-clr pointer"
+            onClick={handleDeleteModal}
+          />
         </div>
       ),
     },
     {
       watch: <div className=" mx-2">Upcoming</div>,
       date: (
-        <div className="d-flex flex-column">
-          <div>21-09-2024</div>
+        <div>
+          <div className="white-space">21-09-2024</div>
           <div>08:00:00</div>
         </div>
       ),
       match: [matchContent],
       series: [seriesContent],
-      live: [liveStreamContent],
-
       action: (
-        <div class="d-flex mt-1">
-          <div onClick={handleBlockModal} className="pointer">
-            <MdBlock className="font-20 grey-clr" />
-          </div>
-          <div onClick={handleDeleteModal} className="pointer">
-            <MdDeleteOutline className="font-20 ms-2" />
-          </div>
+        <div class="d-flex">
+          <MdBlock
+            size={18}
+            className="me-1 grey-clr pointer"
+            onClick={handleBlockModal}
+          />
+          <FaRegTrashCan
+            size={18}
+            className="ms-1 grey-clr pointer"
+            onClick={handleDeleteModal}
+          />
         </div>
       ),
     },
   ];
   return (
-    <div className="p-1">
-      <div>
-        <Table columns={cols} data={data} itemsPerPage={5} />
-      </div>
-
+    <div>
+      <Table columns={cols} data={data} itemsPerPage={5} />
       <ConfirmationPopup
         confirmationPopupOpen={showBlockModal}
         setConfirmationPopupOpen={setShowBlockModal}
         discription={"Are You Sure to Block this Match"}
         submitButton={"Block"}
       />
-
       <ConfirmationPopup
         confirmationPopupOpen={showDeleteModal}
         setConfirmationPopupOpen={setShowDeleteModal}

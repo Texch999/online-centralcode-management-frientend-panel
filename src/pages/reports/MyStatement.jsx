@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import ScrollTable from "../../components/ScrollTable";
 import SettlePopUp from "./SettlePopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function MyStatement() {
   const [activeSport, setActiveSport] = useState("My Statements");
-  const [settleBalance,setSettleBalance]=useState(false)
+  const [settleBalance, setSettleBalance] = useState(false);
+
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
+
+  const gameOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const SPORTS_BUTTONS = ["My Statements", "My Gateway Transaction"];
+
   const MY_TRANSACTIONS_COLUMNS = [
     { header: "S No", field: "serialNo" },
     { header: "Vendor Name", field: "vendorName" },
@@ -390,7 +402,6 @@ function MyStatement() {
     { header: <div className="green-font">7500000</div> },
   ];
 
-  
   const GATEWAY_COLUMNS = [
     { header: "S No", field: "SNo" },
     { header: "Date & Time", field: "dateTime" },
@@ -404,80 +415,78 @@ function MyStatement() {
   const GATEWAY_DATA = [
     {
       SNo: 1,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
 
-    
     {
       SNo: 2,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 3,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 4,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 5,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 6,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
     {
       SNo: 7,
-      dateTime: <div >08-10-2024, 15:43:00</div>,
+      dateTime: <div>08-10-2024, 15:43:00</div>,
       from: <div>Rozer Pay</div>,
-      to: <div >Owner</div>,
-      gatewayBalance: <div >500000</div>,
+      to: <div>Owner</div>,
+      gatewayBalance: <div>500000</div>,
       ownerWithdraw: <div className="red-font">500000</div>,
-      gatewayNetBal: <div >500000</div>,
+      gatewayNetBal: <div>500000</div>,
     },
-
   ];
 
   const GATEWAY_FOOTER = [
     { header: "Total" },
     { header: "" },
-    { header: ""},
-    { header:"" },
+    { header: "" },
+    { header: "" },
     { header: "" },
     { header: <div className="red-font">7500000</div> },
-    { header: ""},
+    { header: "" },
   ];
 
   return (
@@ -486,7 +495,7 @@ function MyStatement() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-3 ${
+            className={`me-3 ${
               activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(sport)}
@@ -496,31 +505,39 @@ function MyStatement() {
         ))}
       </div>
       <div className="flex-between mb-3 mt-4">
-        <h6 className="d-flex yellow-font mb-0">
+        <h6 className="d-flex yellow-font medium-font mb-0">
           {activeSport === "My Statements"
             ? "My Statements"
             : "My Gateway Transaction"}
         </h6>
       </div>
       {activeSport === "My Gateway Transaction" && (
-        <div className="d-flex w-80 mb-3">
+        <div className="d-flex w-90 mb-3">
           <div className="col-2 flex-column me-3">
             <label className="black-text4 small-font mb-1">Game</label>
-            <select className="input-css2 small-font">
-              <option>Select</option>
-            </select>
+            <Select
+              className="small-font"
+              options={gameOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
-          <div className="saffron-btn2 small-font pointer mt-3 col-1">
-            Submit
+          <div className="d-flex align-items-end w-100">
+            <button className="saffron-btn2 small-font pointer col-1 px-2">
+              Submit
+            </button>
           </div>
         </div>
       )}
-      <div className="d-flex  w-60">
+
+      <div className="col-10 col-lg-9 d-flex">
         <div className="w-100 flex-between flex-wrap mb-3 py-3 grey-bg2 rounded">
           <div className="col-6 px-3">
             <div className="white-btn2 flex-between">
               <span className="small-font">
-                {" "}
                 {activeSport === "My Statements"
                   ? "Own D/W. P&L"
                   : "Total Deposit"}{" "}
@@ -561,14 +578,18 @@ function MyStatement() {
         </div>
 
         {activeSport === "My Gateway Transaction" && (
-          <div className="flex-end mb-3 ms-3 pointer" onClick={()=>setSettleBalance(true  )}>
+          <div
+            className="flex-end mb-3 ms-3 pointer"
+            onClick={() => setSettleBalance(true)}
+          >
             <div className="white-btn2 medium-font  ">Settlements</div>
           </div>
         )}
       </div>
+
       {activeSport === "My Statements" && (
         <div>
-          <h6 className="fw-600">Vendors Account</h6>
+          <h6 className="medium-font fw-600">Vendors Account</h6>
           <div>
             <ScrollTable
               columns={MY_TRANSACTIONS_COLUMNS}
@@ -578,24 +599,22 @@ function MyStatement() {
               greyBackground="footer-bg"
             />
           </div>
-          <div className="d-flex w-100 flex-between mt-4">
-            <div className="w-45 ms-2">
-              <h6 className="fw-600">Owner Accounts D/W</h6>
+          <div className="row mt-4">
+            <div className="col-6">
+              <h6 className="medium-font fw-600">Owner Accounts D/W</h6>
               <ScrollTable
                 columns={OWNER_ACCOUNT_COLUMNS}
                 data={OWNER_ACCOUNT_DATA}
                 footer={OWNER_ACCOUNT_FOOTER}
-                itemsPerPage={2}
                 greyBackground="footer-bg"
               />
             </div>
-            <div className="w-45 me-2">
-              <h6 className="fw-600">Payment Gateway D/W</h6>
+            <div className="col-6">
+              <h6 className="medium-font fw-600">Payment Gateway D/W</h6>
               <ScrollTable
                 columns={PAYMENT_GATEWAY_COLUMNS}
                 data={PAYMENT_GATEWAY_DATA}
                 footer={PAYMENT_GATEWAY_FOOTER}
-                itemsPerPage={2}
                 greyBackground="footer-bg"
               />
             </div>
@@ -605,7 +624,7 @@ function MyStatement() {
 
       {activeSport === "My Gateway Transaction" && (
         <div>
-          <h6 className="fw-600">Gateway Transactions</h6>
+          <h6 className="medium-font fw-600">Gateway Transactions</h6>
           <div>
             <ScrollTable
               columns={GATEWAY_COLUMNS}
@@ -617,7 +636,10 @@ function MyStatement() {
           </div>
         </div>
       )}
-      <SettlePopUp setSettleBalance={setSettleBalance} settleBalance={settleBalance}/>
+      <SettlePopUp
+        setSettleBalance={setSettleBalance}
+        settleBalance={settleBalance}
+      />
     </div>
   );
 }

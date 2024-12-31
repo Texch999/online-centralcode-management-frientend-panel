@@ -2,7 +2,10 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const IndividualMatchPl = () => {
   const navigate = useNavigate();
@@ -10,8 +13,25 @@ const IndividualMatchPl = () => {
   const handleMatchAdminsUsersPlPage = (role) => {
     navigate(`/match-wise-pl/${matchName}/${role}`);
   };
+
+  const roleOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const cols = [
-    { header: <div className="">Date & Time</div>, field: "date", width:"15%" },
+    {
+      header: <div className="">Date & Time</div>,
+      field: "date",
+      width: "15%",
+    },
     { header: "Name & Role", field: "name" },
     { header: "Series Name", field: "series" },
     { header: "Match Name", field: "match" },
@@ -57,7 +77,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-3 pointer"
             onClick={() => handleMatchAdminsUsersPlPage("Director - Jayanta")}
           />
@@ -101,7 +121,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye
+          <BsEye
             className="text-black font-20 me-3 pointer"
             onClick={() => handleMatchAdminsUsersPlPage("Super Admin-Lokesh")}
           />
@@ -145,7 +165,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -186,7 +206,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -227,7 +247,7 @@ const IndividualMatchPl = () => {
       pl: <div className="green-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
@@ -268,23 +288,22 @@ const IndividualMatchPl = () => {
       pl: <div className="red-clr">10000000</div>,
       status: (
         <div className="d-flex flex-between flex-center ">
-          <MdOutlineRemoveRedEye className="text-black font-20 me-3 pointer" />
+          <BsEye className="text-black font-20 me-3 pointer" />
           <div className="green-btn">Settled</div>
         </div>
       ),
     },
   ];
 
-  
   const MATCH_FOOTER = [
-    { header: "Total", },
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: ""},
-    { header: <div className="clr-green">1500000</div>},
-    { header: ""},
+    { header: "Total" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: "" },
+    { header: <div className="clr-green">1500000</div> },
+    { header: "" },
   ];
   return (
     <div className="d-flex flex-column p-1">
@@ -303,41 +322,54 @@ const IndividualMatchPl = () => {
       </div>
 
       <div className="w-40 flex-column flex-wrap py-2 grey-bg2 rounded px-3">
-      <div className="white-bg radius-10 px-2 py-2 flex-between small-font my-1">
-        Admins P/L
-        <span className="green-clr">500000</span>
-      </div>
-      <div className="white-bg radius-10 py-2 px-2 flex-between small-font my-1">
-        Users P/L
-        <span className="green-clr">500000</span>
-      </div>
+        <div className="white-bg radius-10 px-2 py-2 flex-between small-font my-1">
+          Admins P/L
+          <span className="green-clr">500000</span>
+        </div>
+        <div className="white-bg radius-10 py-2 px-2 flex-between small-font my-1">
+          Users P/L
+          <span className="green-clr">500000</span>
+        </div>
       </div>
 
       <div className="d-flex w-100 my-2 align-items-center">
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Role</label>
-          <select className="input-css2">
-            <option>select</option>
-            <option>select</option>
-            <option>select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={roleOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Admin</label>
-          <select className="input-css2">
-            <option>select</option>
-            <option>select</option>
-            <option>select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
-        <div className="saffron-btn br-5 small-font col-2 px-2 mt-3">
+        <div className="saffron-btn2 align-self-end small-font">
           Submit
         </div>
       </div>
 
       <div>
-        <Table columns={cols} data={data} itemsPerPage={5} footer={MATCH_FOOTER}/>
+        <Table
+          columns={cols}
+          data={data}
+          itemsPerPage={5}
+          footer={MATCH_FOOTER}
+        />
       </div>
     </div>
   );

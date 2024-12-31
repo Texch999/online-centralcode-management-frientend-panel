@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import Table from "../../components/Table";
 import { Images } from "../../images";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const PaymentGateway = () => {
   const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false)
+  const [onBlockPopup, setOnBlockPopup] = useState(false)
 
   const columns = [
     { header: "Gateway Name", field: "gatewayName", width: "15%" },
     { header: "Payment Details", field: "paymentDetails", width: "25%" },
-    { header: "Last Updated", field: "lastUpdated", width: "10%" },
+    { header: "Last Updated", field: "lastUpdated", width: "15%" },
     { header: "Country", field: "country", width: "10%" },
     { header: "Currency", field: "currency", width: "10%" },
     { header: "Status", field: "status", width: "10%" },
-    { header: "Action", field: "action", width: "20%" }, // Increased width to fit two icons
+    { header: <div className="text-center">Actions</div>, field: "action", width: "7%" }, // Increased width to fit two icons
   ];
 
   const data = [
@@ -33,9 +35,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)}/>
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)}/>
+          <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)}/>
         </div>
       ),
     },
@@ -51,9 +53,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -76,9 +78,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -99,9 +101,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -117,31 +119,13 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
 
-    {
-      gatewayName: "Google Pay",
-      paymentDetails: "7551078156",
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
-        </div>
-      ),
-    },
 
     {
       gatewayName: "NEFT/RTGS",
@@ -162,9 +146,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -186,9 +170,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -205,9 +189,9 @@ const PaymentGateway = () => {
         </span>
       ),
       action: (
-        <div className="d-flex gap-2">
-          <GrEdit size={17} className="pointer me-2" />
-          <RiDeleteBinLine size={17} className="pointer ms-1" />
+        <div className="flex-center gap-2">
+          <SlPencil size={18} className="pointer me-2" />
+          <RiDeleteBinLine size={18} className="pointer ms-1" />
         </div>
       ),
     },
@@ -225,17 +209,24 @@ const PaymentGateway = () => {
           </div>
 
           <button className="rounded-pill input-pill blue-font small-font px-2" onClick={() => setOnAddPaymentGateway(true)}>
-            {" "}
             <FaPlus /> Add New Gateway{" "}
           </button>
         </div>
       </div>
 
       <div className="mt-2">
-        <Table data={data} columns={columns} itemsPerPage={8} />
+        <Table data={data} columns={columns} itemsPerPage={6} />
       </div>
 
       <AddPaymentGatewayPopup show={onAddPaymentGateway} onHide={() => setOnAddPaymentGateway(false)}/>
+
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to delete this Gateway?"}
+        submitButton={"Delete"}
+      />
+
     </div>
   );
 };

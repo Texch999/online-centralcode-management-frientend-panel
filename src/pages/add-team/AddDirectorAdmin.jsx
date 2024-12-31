@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { MdLockReset, MdBlockFlipped } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import { IoEyeOutline } from "react-icons/io5";
-import AddDirectorAdminPopup from "./AddDirectorAdminPopup";
+import { BsEye } from "react-icons/bs";
+import AddDirectorAdminPopup from "./popups/AddDirectorAdminPopup";
 import "../add-team/style.css";
 import "../../App.css";
+import ResetPasswordPopup from "../popups/ResetPasswordPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
   const [showModal, setShowModal] = useState(false);
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
+  const [confirmationPopup, setConfirmationPopup] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null); // Tracks user for reset or block actions
 
   const handleModalOpen = () => {
     setShowModal(true);
@@ -20,6 +25,30 @@ const AddDirectorAdmin = () => {
 
   const handleModalClose = () => {
     setShowModal(false);
+  };
+
+  const handleResetPasswordOpen = (user) => {
+    setSelectedUser(user);
+    setResetPasswordPopup(true);
+  };
+
+  const handleResetPasswordClose = () => {
+    setSelectedUser(null);
+    setResetPasswordPopup(false);
+  };
+
+  const handleBlockUserOpen = (user) => {
+    setSelectedUser(user);
+    setConfirmationPopup(true);
+  };
+
+  const handleBlockUserClose = () => {
+    setSelectedUser(null);
+    setConfirmationPopup(false);
+  };
+
+  const handleBlockUserConfirm = () => {
+    handleBlockUserClose();
   };
 
   const navigate = useNavigate();
@@ -39,13 +68,33 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text pointer" />
-          <MdLockReset size={18} className="black-text pointer" />
-          <MdBlockFlipped size={18} className="black-text pointer" />
-          <IoEyeOutline size={18} className="black-text pointer" />
+          <SlPencil
+            size={18}
+            className="black-text pointer"
+            onClick={() => setShowModal(true)}
+          />
+          <MdLockReset
+            size={18}
+            className="black-text pointer"
+            onClick={() => handleResetPasswordOpen("Jayanta")}
+          />
+          <MdBlockFlipped
+            size={18}
+            className="black-text pointer"
+            onClick={() => handleBlockUserOpen("Jayanta")}
+          />
+          <BsEye
+            size={18}
+            className="black-text pointer"
+            onClick={handleNavigateUserDashboard}
+          />
         </div>
       ),
     },
@@ -59,13 +108,21 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "10000000",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
+          <MdLockReset
+            size={18}
+            className="black-text pointer"
+            onClick={() => handleResetPasswordOpen("Jayanta")}
+          />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -79,13 +136,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -104,13 +165,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%", "500000", "5%", "200000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -124,13 +189,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%"],
       billing: "0",
       pl: <div className="green-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -144,13 +213,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="green-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -164,13 +237,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -189,13 +266,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%", "2000000", "2000000", "2000000"],
       billing: "0",
       pl: <div className="green-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -209,13 +290,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["100000"],
       billing: "0",
       pl: <div className="red-font">5000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -229,13 +314,17 @@ const AddDirectorAdmin = () => {
       shareRent: ["10%"],
       billing: "0",
       pl: <div className="green-font">2000000</div>,
-      dw: <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">D/W</button>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
       action: (
         <div className="d-flex flex-center gap-3">
-          <GrEdit size={18} className="black-text" />
+          <SlPencil size={18} className="black-text" />
           <MdLockReset size={18} className="black-text" />
           <MdBlockFlipped size={18} className="black-text" />
-          <IoEyeOutline size={18} className="black-text" />
+          <BsEye size={18} className="black-text" />
         </div>
       ),
     },
@@ -250,11 +339,11 @@ const AddDirectorAdmin = () => {
     { header: "Share/Rent", field: "shareRent" },
     { header: "Billing", field: "billing" },
     { header: "P/L", field: "pl" },
-    { header: "", field: "dw", width:"1%" },
+    { header: "", field: "dw", width: "1%" },
     {
       header: <div className="text-center">Action</div>,
       field: "action",
-      width:"8%"
+      width: "8%",
     },
   ];
 
@@ -279,18 +368,18 @@ const AddDirectorAdmin = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        {role === "management" ? ( 
-        <h6 className="yellow-font mb-0">Add Director & Super Admin</h6>
-        ):(
+        {role === "management" ? (
+          <h6 className="yellow-font medium-font mb-0">Add Director & Super Admin</h6>
+        ) : (
           <h6 className="yellow-font mb-0">Add Super Admin</h6>
-      )}
+        )}
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
             <input className="small-font all-none" placeholder="Search..." />
           </div>
           <button
-            className="small-font blue-font border px-3 py-1 rounded-pill"
+            className="small-font rounded-pill input-pill blue-font px-3 py-1"
             onClick={handleModalOpen}
           >
             <FaPlus className="me-2" />
@@ -301,8 +390,19 @@ const AddDirectorAdmin = () => {
 
       <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
 
-      {/* Modal Component */}
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
+
+      <ResetPasswordPopup
+        resetPasswordPopup={resetPasswordPopup}
+        setResetPasswordPopup={handleResetPasswordClose}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={confirmationPopup}
+        setConfirmationPopupOpen={setConfirmationPopup}
+        discription={`Are you sure you want to block ${selectedUser}?`}
+        submitButton="Block"
+      />
     </div>
   );
 };

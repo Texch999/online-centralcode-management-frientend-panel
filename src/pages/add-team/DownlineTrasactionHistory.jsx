@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
+import { useParams } from "react-router-dom";
+import { FiChevronLeft } from "react-icons/fi";
 
 const DownlineTrasactionHistory = () => {
+  const { transactionHistory } = useParams();
+
+  // State for active button
+  const [activeButton, setActiveButton] = useState("All");
+
+  // Button labels
+  const buttons = ["All", "Deposit", "Withdraw"];
+
+  // Handle button click
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+  };
+
   const TRANSACTION_COLUMNS = [
     { header: "S No", field: "sNo", width: "5%" },
     { header: "Date & Time", field: "dateTime", width: "15%" },
@@ -180,12 +195,12 @@ const DownlineTrasactionHistory = () => {
 
   return (
     <div>
-      <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0">Downline List</h6>
-        <div className="col-6 d-flex justify-content-end gap-3 medium-font">
-          <select className="input-pill rounded-pill px-5">
-            <option>All</option>
-          </select>
+      <div className="row d-flex justify-content-between align-items-center mb-4 mt-2">
+        <h6 className="col-3 mb-0 d-flex align-items-center">
+          <FiChevronLeft className="medium-font black-text" />
+          <span className="yellow-font medium-font">{transactionHistory}</span>
+        </h6>
+        <div className="col-4 d-flex justify-content-end gap-3 medium-font">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 w-60">
             <FaSearch size={16} className="grey-clr me-2" />
             <input className="small-font all-none" placeholder="Search..." />
@@ -195,16 +210,25 @@ const DownlineTrasactionHistory = () => {
 
       <div className="row justify-content-between align-items-center">
         <div className="col-4 d-flex gap-2 small-font">
-          <button className="saffron-btn rounded">All</button>
-          <button className="white-btn rounded">Deposit</button>
-          <button className="white-btn rounded">Withdraw</button>
+          {buttons.map((button) => (
+            <button
+              key={button}
+              className={`col-3 col-lg-2
+                ${button === activeButton ? "saffron-btn rounded" : "white-btn rounded"}`
+              }
+              onClick={() => handleButtonClick(button)}
+            >
+              {button}
+            </button>
+          ))}
         </div>
 
         <div className="col-6 d-flex justify-content-end gap-3 small-font">
           <input type="date" className="input-css2 clr-white" />
           <input type="date" className="input-css2 clr-white" />
-          <button className="saffron-btn w-100 rounded">Submit</button>
+          <button className="saffron-btn w-25 rounded">Submit</button>
         </div>
+        
       </div>
 
       <div className="mt-3">
@@ -216,9 +240,9 @@ const DownlineTrasactionHistory = () => {
           rowColor={(row) => (row.debit > 0 ? "red-text" : "green-text")}
         />
       </div>
-
     </div>
   );
 };
 
 export default DownlineTrasactionHistory;
+

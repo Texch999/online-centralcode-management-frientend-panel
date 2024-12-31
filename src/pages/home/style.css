@@ -1,11 +1,6 @@
 .orange-clr {
   color: #fc9b4e;
 }
-.viewall-btn {
-  border: 1px solid #0000001a;
-  background: #ffffff;
-  border-radius: 1rem;
-}
 .dashboard-white-bg {
   color: #ffffff;
   background: #ffffff;
@@ -40,7 +35,7 @@
   color: #ffffff !important;
 }
 .grey-dot-line {
-  border: 1px dotted #ffffff66;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
 }
 .h-5vh {
   height: 4vh;
@@ -133,7 +128,7 @@
   border-radius: 50px;
 }
 .dot-line-black {
-  border: 1.2px dashed #00000033;
+  border: 1px dashed #00000033;
 }
 .font-25 {
   font-size: 25px;
@@ -144,14 +139,12 @@
 .back-box {
   background-color: #6bc0ff;
   color: #001d58;
-  padding-top: 1px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 .lay-box {
   background-color: #ff8282;
   color: #001d58;
-  padding-top: 1px;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 .back-btn-cricket {
   background: #e8ebf5;
@@ -180,13 +173,13 @@
 }
 .table-50vh {
   max-height: 50vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
   position: relative;
 }
 .table-50vh2 {
   max-height: 64vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
   position: relative;
 }

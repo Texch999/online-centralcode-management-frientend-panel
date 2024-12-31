@@ -3,6 +3,8 @@ import { FaSearch } from "react-icons/fa";
 import ScrollTable from "../../components/ScrollTable";
 import { BsEye } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import "../add-team/style.css";
+import "../live-block/style.css";
 
 function RiskSports() {
   const navigate = useNavigate();
@@ -16,8 +18,10 @@ function RiskSports() {
     "Kabaddi",
   ];
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
+
+  console.log(activeSport, "===>activeSport");
 
   const HIGH_PROFIT_PLAYERS_COLUMNS = [
     { header: "S.NO", field: "s_no" },
@@ -94,7 +98,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -120,7 +124,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -146,7 +150,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -205,7 +209,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -236,7 +240,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -267,7 +271,7 @@ function RiskSports() {
           <BsEye
             size={18}
             onClick={() => navigate("/risk-sports/matchName")}
-            className="black-text"
+            className="black-text pointer"
           />
         </div>
       ),
@@ -288,8 +292,8 @@ function RiskSports() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 px-3 ${
-                activeSport === sport ? "saffron-btn2" : "white-btn2"
+              className={`me-3 ${
+                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
               }`}
               onClick={() => handleSportClick(sport)}
             >
@@ -302,19 +306,29 @@ function RiskSports() {
         </div>
       </div>
       <div className="small-font py-3 d-flex">
-        <div className="saffron-btn2 me-3">Top - Exp High Profit Players</div>
-        <div className="white-btn2 me-3">Top Last Minute Bet Players</div>
+        <div className="pointer saffron-btn2 me-3">
+          Top - Exp High Profit Players
+        </div>
+        <div className="pointer white-btn2 me-3">
+          Top Last Minute Bet Players
+        </div>
       </div>
-      <div className="d-flex border">
-        <ScrollTable
-          columns={HIGH_PROFIT_PLAYERS_COLUMNS}
-          data={HIGH_PROFIT_PLAYERS_DATA}
-        />
-        <ScrollTable
-          columns={HIGH_PROFIT_PLAYERS_COLUMNS}
-          data={HIGH_PROFIT_PLAYERS_DATA}
-        />
+
+      <div className="d-flex table-parent-container">
+        <div className="table-wrapper me-3 w-50 table-special-effect border-start">
+          <ScrollTable
+            columns={HIGH_PROFIT_PLAYERS_COLUMNS}
+            data={HIGH_PROFIT_PLAYERS_DATA}
+          />
+        </div>
+        <div className="table-wrapper w-50 table-special-effect border-start border-end">
+          <ScrollTable
+            columns={HIGH_PROFIT_PLAYERS_COLUMNS}
+            data={HIGH_PROFIT_PLAYERS_DATA}
+          />
+        </div>
       </div>
+
       <>
         <h6 className="black-text mt-4 mb-3">
           Match Odds (High Risk & Last Bet Players Matches)

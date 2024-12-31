@@ -1,26 +1,45 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import {
-  MdOutlineDelete,
-  MdOutlineModeEditOutline,
-  MdLoop,
-} from "react-icons/md";
+import { MdLoop } from "react-icons/md";
 import EditBetPopup from "./EditBetPopup";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { SlPencil } from "react-icons/sl";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState();
+  const [selectedType, setSelectedType] = useState("cheats");
   const handleSportClick = (sport) => {
-    setActiveSport(activeSport === sport ? null : sport);
+    setActiveSport(sport);
   };
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
   };
-  const handleChange = (e) => {
-    setSelectedType(e.target.value);
+  const handleChange = (selectedOption) => {
+    setSelectedType(selectedOption?.value);
   };
+
+  const cheataAndAlertsOptions = [
+    { value: "cheats", label: "Cheats" },
+    { value: "alerts", label: "Alerts" },
+  ];
+
+  const userOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const websiteOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const SPORTS_BUTTONS = [
     "All",
     "Toss",
@@ -93,11 +112,12 @@ function CheatAlertBets() {
         <div>
           <div className="green-btn">Settled</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
+            <SlPencil
+              className="pointer"
               size={18}
               onClick={handleEditBetPopupOpen}
             />
-            <MdOutlineDelete size={18} />
+            <FaRegTrashCan className="pointer" size={18} />
           </div>
         </div>
       ),
@@ -258,11 +278,8 @@ function CheatAlertBets() {
         <div>
           <div className="green-btn">Settled</div>
           <div className="flex-around mt-2">
-            <MdOutlineModeEditOutline
-              size={18}
-              onClick={handleEditBetPopupOpen}
-            />
-            <MdOutlineDelete size={18} />
+            <SlPencil size={18} onClick={handleEditBetPopupOpen} />
+            <FaRegTrashCan size={18} />
           </div>
         </div>
       ),
@@ -383,8 +400,8 @@ function CheatAlertBets() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 px-3 ${
-              activeSport === sport ? "saffron-btn2" : "white-btn2"
+            className={`me-3 ${
+              activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(sport)}
           >
@@ -395,10 +412,15 @@ function CheatAlertBets() {
       <div className="row mb-3">
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">Cheat/Alert</label>
-          <select onChange={handleChange} className="input-css2 small-font">
-            <option value="cheats">Cheats</option>
-            <option value="alerts">Alerts</option>
-          </select>
+          <Select
+            className="small-font"
+            options={cheataAndAlertsOptions}
+            onChange={handleChange}
+            placeholder="Select"
+            styles={customStyles}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">From</label>
@@ -410,15 +432,27 @@ function CheatAlertBets() {
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">User Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={userOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">Website Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col  flex-column d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>

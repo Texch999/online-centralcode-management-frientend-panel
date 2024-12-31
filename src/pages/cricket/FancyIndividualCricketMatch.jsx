@@ -2,15 +2,19 @@ import React from "react";
 import Table from "../../components/Table";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const FancyIndividualCricketMatch = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const { vendor, provider, match, individualMatch } = useParams();
   const cols = [
-    { header: <div className="ms-3">Fancy Odds</div>, field: "fancyodds" },
-    { header: <div className="flex-center">No</div>, field: "no" },
-    { header: <div className="flex-center">Yes</div>, field: "yes" },
+    { header: <div>Fancy Odds</div>, field: "fancyodds" },
+    { header: <div className="flex-center">No</div>, field: "no", width: "9%" },
+    {
+      header: <div className="flex-center">Yes</div>,
+      field: "yes",
+      width: "9%",
+    },
     { header: "No", field: "no1" },
     { header: "Yes", field: "yes1" },
     { header: <div className="flex-center">Position</div>, field: "position" },
@@ -19,136 +23,81 @@ const FancyIndividualCricketMatch = () => {
 
   const data = [
     {
-      fancyodds: <div className="ms-3 my-2">10 Over New Zealand Adv</div>,
+      fancyodds: <div>10 Over New Zealand Adv</div>,
       no: (
-        <div className="d-flex flex-column back-box py-1 text-center">
-          <span>53</span>
+        <div className="flex-column back-box p-1 text-center">
+          <span className="fw-600">53</span>
           <span>100</span>
         </div>
       ),
       yes: (
-        <div className="d-flex flex-column lay-box py-1 text-center">
-          <span>1.58</span>
-          <span>16.3k</span>
+        <div className="flex-column lay-box p-1 text-center">
+          <span className="fw-600">1.58</span>
+          <span>1638k</span>
         </div>
       ),
-      no1: <div className="my-2">10000000</div>,
-      yes1: <div className="my-2">10000000</div>,
+      no1: <div>10000000</div>,
+      yes1: <div>10000000</div>,
       position: (
-        <div className="flex-center ">
-          <div className="w-fit green-btn">declared</div>
+        <div className="flex-center">
+          <div className="w-fit green-btn">Declared</div>
         </div>
       ),
-      pl: <div className="green-clr my-2">10000000</div>,
-    },
-
-    {
-      fancyodds: <div className="ms-3 my-2">10 Over India Adv</div>,
-      no: (
-        <div className="d-flex flex-column back-box py-1 text-center">
-          <span>53</span>
-          <span>100</span>
-        </div>
-      ),
-      yes: (
-        <div className="d-flex flex-column lay-box py-1 text-center">
-          <span>1.58</span>
-          <span>16.3k</span>
-        </div>
-      ),
-      no1: <div className="my-2">10000000</div>,
-      yes1: <div className="my-2">10000000</div>,
-      position: (
-        <div className="flex-center ">
-          <div className="w-fit red-btn">Live</div>
-        </div>
-      ),
-      pl: <div className="green-clr my-2">-</div>,
-    },
-
-    {
-      fancyodds: <div className="ms-3 my-2">15 Over New Zealand Adv</div>,
-      no: (
-        <div className="d-flex flex-column back-box py-1 text-center">
-          <span>53</span>
-          <span>100</span>
-        </div>
-      ),
-      yes: (
-        <div className="d-flex flex-column lay-box py-1 text-center">
-          <span>1.58</span>
-          <span>16.3k</span>
-        </div>
-      ),
-      no1: <div className="my-2">0</div>,
-      yes1: <div className="my-2">0</div>,
-      position: (
-        <div className="flex-center ">
-          <div className="w-fit red-btn">Live</div>
-        </div>
-      ),
-      pl: <div className="green-clr my-2">-</div>,
+      pl: <div className="green-clr">10000000</div>,
     },
     {
-      fancyodds: <div className="ms-3 my-2">20 Over New Zealand Adv</div>,
+      fancyodds: <div>10 Over India Adv</div>,
       no: (
-        <div className="d-flex flex-column back-box py-1 text-center">
-          <span>53</span>
+        <div className="flex-column back-box p-1 text-center">
+          <span className="fw-600">53</span>
           <span>100</span>
         </div>
       ),
       yes: (
-        <div className="d-flex flex-column lay-box py-1 text-center">
-          <span>1.58</span>
+        <div className="flex-column lay-box p-1 text-center">
+          <span className="fw-600">1.58</span>
           <span>16.3k</span>
         </div>
       ),
-      no1: <div className="my-2">10000000</div>,
-      yes1: <div className="my-2">10000000</div>,
+      no1: <div>10000000</div>,
+      yes1: <div>10000000</div>,
       position: (
         <div className="flex-center ">
-          <div className="w-fit red-btn">Live</div>
+          <div className="w-fit red-btn">LIVE</div>
         </div>
       ),
-      pl: <div className="green-clr my-2">10000000</div>,
+      pl: <div className="green-clr">-</div>,
     },
   ];
   return (
     <div>
-      <div className="d-flex flex-between mb-3">
-        <div className="pointer large-font" onClick={() => navigate(-1)}>
-          <span className="grey-clr">
-            Sports <span className="mx-1 font-20">{">"}</span>
+      <div className="d-flex flex-between my-3">
+        <div className="pointer large-font">
+          <span className="grey-clr" onClick={() => navigate(-2)}>
+            Sports <MdKeyboardArrowRight />
+            {vendor}
+            <MdKeyboardArrowRight /> {provider}
           </span>
-          <span className="grey-clr">{vendor}</span>
-          <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
-            {provider}
+          <span onClick={() => navigate(-1)}>
+            <MdKeyboardArrowRight /> {match}
           </span>
-          <span className="grey-clr">
-            <span className="mx-1 font-20 grey-clr">{">"}</span>
-            {match}
-          </span>
-          <span>
-            <span className="mx-1 font-20">{">"}</span>
-            <span className="fw-600">{individualMatch}</span>
+          <span className="black-text4">
+            <MdKeyboardArrowRight />
+            {individualMatch}
           </span>
         </div>
-        <div className="medium-font">
+        <div className="small-font flex-center">
           <span
-            className="white-bg rounded-pill me-4 px-3 grey-border py-1 hover-orange-clr pointer"
+            className="flex-center white-bg rounded-pill me-3 px-2 grey-border py-1 hover-orange-clr pointer"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="me-2" />
+            <FaArrowLeft className="me-2 d-flex" />
             Back
           </span>
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
-
-      <div>
-        <Table columns={cols} data={data} itemsPerPage={4} />
-      </div>
+      <Table columns={cols} data={data} itemsPerPage={4} />
     </div>
   );
 };
