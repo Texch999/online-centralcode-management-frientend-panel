@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { BsEye } from "react-icons/bs";
 import { MdBlock } from "react-icons/md";
 import Table from "../../../components/Table";
-import LiveFancy from "./LiveFancy";
-import DeclaredFancy from "./DeclaredFancy";
-import { useNavigate, useParams } from "react-router";
-import "../style.css"
+import LiveFancyBets from "./LiveFancy";
+import DeclaredFancyBets from "./DeclaredFancy";
 
-const cols1 = [
+import "../style.css";
+import { useNavigate, useParams } from "react-router-dom";
+
+const cols = [
   { header: "Odds", field: "odds" },
   {
     header: (
@@ -22,10 +23,11 @@ const cols1 = [
       </div>
     ),
     field: "back_lay",
+    width:"35%"
   },
   { header: <div className="text-center">Back</div>, field: "back" },
   { header: <div className="text-center">Lay</div>, field: "lay" },
-  { header: <div className="text-center">Exposure</div>, field: "exposure"},
+  { header: <div className="text-center">Exposure</div>, field: "exposure" },
   { header: "", field: "live_block", width: "5%" },
   {
     header: <div className="flex-center">Action</div>,
@@ -112,45 +114,21 @@ const tableData1 = [
         <div className="">100k</div>
       </div>
     ),
-    live_block: <div className="" >
-      <button className="red-btn">Blocked</button>
-    </div>,
+    live_block: (
+      <div className="">
+        <button className="col-12 red-btn">Blocked</button>
+      </div>
+    ),
     action: (
       <div class="flex-center mt-1">
         <div className="pointer">
           <MdBlock className="font-20 me-2 red-font" />
         </div>
         <div className="pointer">
-          <GrEdit className="font-20 ms-2" />
+          <SlPencil className="font-20 ms-2" />
         </div>
       </div>
     ),
-  },
-];
-
-const cols2 = [
-  { header: "Odds", field: "odds" },
-  {
-    header: (
-      <div className="row">
-        <div className="col-6 flex-end">
-          <span>Back</span>
-        </div>
-        <div className="col-6 d-flex">
-          <span>Lay</span>
-        </div>
-      </div>
-    ),
-    field: "back_lay",
-  },
-  { header: <div className="text-center">Back</div>, field: "back" },
-  { header: <div className="text-center">Lay</div>, field: "lay" },
-  { header: <div className="text-center">Exposure</div>, field: "exposure" },
-  { header: "", field: "live_block", width: "5%" },
-  {
-    header: <div className="flex-center">Action</div>,
-    field: "action",
-    width: "7%",
   },
 ];
 
@@ -232,43 +210,17 @@ const tableData2 = [
         <div className="">100k</div>
       </div>
     ),
-    live_block: <div className="green-btn">Live</div>,
+    live_block: <div className="px-3 green-btn">Live</div>,
     action: (
       <div class="flex-center mt-1">
         <div className="pointer">
           <MdBlock className="font-20 me-2" />
         </div>
         <div className="pointer">
-          <GrEdit className="font-20 ms-2" />
+          <SlPencil className="font-20 ms-2" />
         </div>
       </div>
     ),
-  },
-];
-
-const cols3 = [
-  { header: "Odds", field: "odds" },
-  {
-    header: (
-      <div className="row">
-        <div className="col-6 flex-end">
-          <span>Back</span>
-        </div>
-        <div className="col-6 d-flex">
-          <span>Lay</span>
-        </div>
-      </div>
-    ),
-    field: "back_lay",
-  },
-  { header: <div className="text-center">Back</div>, field: "back" },
-  { header: <div className="text-center">Lay</div>, field: "lay" },
-  { header: <div className="text-center">Exposure</div>, field: "exposure" },
-  { header: "", field: "live_block", width: "5%" },
-  {
-    header: <div className="flex-center">Action</div>,
-    field: "action",
-    width: "7%",
   },
 ];
 
@@ -350,100 +302,109 @@ const tableData3 = [
         <div className="">100k</div>
       </div>
     ),
-    live_block: <div className="green-btn">Live</div>,
+    live_block: <div className="px-3 green-btn">Live</div>,
     action: (
       <div class="flex-center mt-1">
         <div className="pointer">
           <MdBlock className="font-20 me-2" />
         </div>
         <div className="pointer">
-          <GrEdit className="font-20 ms-2" />
+          <SlPencil className="font-20 ms-2" />
         </div>
       </div>
     ),
   },
 ];
 
-const CricketOdds = () => {
+const Fancy = () => {
   const [clickFancyButton, setClickFancyButton] = useState("live_fancy");
-
 
   const navigate = useNavigate();
   const { sport } = useParams();
 
   const handleFancyBets = (fancy) => {
-    navigate(`/sports-live-cricket/${sport}/${fancy}`);
+    navigate(`/live-block-sports/${sport}/${fancy}`);
   };
 
   const handleDeclaredFancyBets = (declaredFancy) => {
-    navigate(`/sports-live-cricket/${sport}/${declaredFancy}`);
+    navigate(`/live-block-sports/${sport}/${declaredFancy}`);
   };
 
   return (
     <div>
       <div className="table-items-centerd mt-3">
-        <Table columns={cols1} data={tableData1} itemsPerPage={5} />
+        <Table columns={cols} data={tableData1} itemsPerPage={5} />
       </div>
 
       <div className="table-items-centerd mt-3">
-        <Table columns={cols2} data={tableData2} itemsPerPage={5} />
+        <Table columns={cols} data={tableData2} itemsPerPage={5} />
       </div>
 
       <div className="table-items-centerd mt-3">
-        <Table columns={cols3} data={tableData3} itemsPerPage={5} />
+        <Table columns={cols} data={tableData3} itemsPerPage={5} />
       </div>
 
-      <div className="mt-3 shadow p-3 bg-white rounded">
-        <h5 className="medium-font">Fancy</h5>
-        <div className="row flex-between mt-1">
-          <div className="col-6 d-flex gap-2">
-            <button
-              className={`rounded small-font ${
-                clickFancyButton === "live_fancy" ? "saffron-btn" : "white-btn2"
-              }`}
-              onClick={() => setClickFancyButton("live_fancy")}
-            >
-              Live Fancy
-            </button>
-            <button
-              className={`rounded small-font ${
-                clickFancyButton === "declared_fancy"
-                  ? "saffron-btn"
-                  : "white-btn2"
-              }`}
-              onClick={() => setClickFancyButton("declared_fancy")}
-            >
-              Declared Fancy
-            </button>
-          </div>
-          <div className="col-6 d-flex">
-            <div className="col text-end">
-              {clickFancyButton === "live_fancy" ? (
-                <button
-                  className="saffron-btn rounded small-font me-4"
-                  onClick={() => handleFancyBets("View Fancy Bets")}
-                >
-                  View Fancy Bets
-                  <BsEye className="ms-2" size={18} />
-                </button>
-              ) : (
-                <button
-                  className="saffron-btn rounded small-font me-4"
-                  onClick={() =>
-                    handleDeclaredFancyBets("View Fancy Declared Bets")
-                  }
-                >
-                  View fancy Declared Bets
-                  <BsEye className="ms-2" size={18} />
-                </button>
-              )}
+      {sport !== "Horse Racing" ? (
+        <div className="mt-3 shadow p-3 bg-white rounded">
+          <h5 className="medium-font">Fancy</h5>
+          <div className="row flex-between mt-1">
+            <div className="col-6 d-flex gap-2">
+              <button
+                className={`rounded small-font ${
+                  clickFancyButton === "live_fancy"
+                    ? "saffron-btn"
+                    : "white-btn2"
+                }`}
+                onClick={() => setClickFancyButton("live_fancy")}
+              >
+                Live Fancy
+              </button>
+              <button
+                className={`rounded small-font ${
+                  clickFancyButton === "declared_fancy"
+                    ? "saffron-btn"
+                    : "white-btn2"
+                }`}
+                onClick={() => setClickFancyButton("declared_fancy")}
+              >
+                Declared Fancy
+              </button>
+            </div>
+            <div className="col-6 d-flex">
+              <div className="col text-end">
+                {clickFancyButton === "live_fancy" ? (
+                  <button
+                    className="saffron-btn rounded small-font me-4"
+                    onClick={() => handleFancyBets("View Fancy Bets")}
+                  >
+                    View Fancy Bets
+                    <BsEye className="ms-2" size={18} />
+                  </button>
+                ) : (
+                  <button
+                    className="saffron-btn rounded small-font me-4"
+                    onClick={() =>
+                      handleDeclaredFancyBets("View Fancy Declared Bets")
+                    }
+                  >
+                    View fancy Declared Bets
+                    <BsEye className="ms-2" size={18} />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
+          {clickFancyButton === "live_fancy" ? (
+            <LiveFancyBets />
+          ) : (
+            <DeclaredFancyBets />
+          )}
         </div>
-        {clickFancyButton === "live_fancy" ? <LiveFancy /> : <DeclaredFancy />}
-      </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
 
-export default CricketOdds;
+export default Fancy;

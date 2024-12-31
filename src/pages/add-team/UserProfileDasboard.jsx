@@ -7,7 +7,6 @@ import { Images } from "../../images";
 import PaymentGateway from "./components/PaymentGateway";
 import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
-import ManagementResetPasswordPopup from "./ManagementResetPasswordPopup";
 import ResetPasswordPopup from "../../pages/popups/ResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,8 +27,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Rental Revenue",
@@ -43,8 +42,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
   {
     title: "Total Paid",
@@ -58,8 +57,8 @@ const cardData = [
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
   {
     title: "Net Profit/Loss",
@@ -68,13 +67,13 @@ const cardData = [
     valueClass: "text-dark",
     icon: (
       <img
-        src={Images.adminProfileTotalPaid}
+        src={Images.adminProfileNetProfit}
         alt="ShareRevenue"
         className="chat-img m-1"
       />
     ),
-    bootstrapClassesTop: "px-3 py-2",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 py-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
 ];
 
@@ -91,8 +90,8 @@ const addDirectorTabsRowCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-2",
-    bootstrapClassesBottom: "mb-0 p-2 fw-600 px-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
   {
     title: "Total Users",
@@ -103,11 +102,11 @@ const addDirectorTabsRowCardsData = [
       <img
         src={Images.adminProfileTotalUsers}
         alt="TotalAdmins"
-        className="chat-img m-1"
+        className="chat-img"
       />
     ),
-    bootstrapClassesTop: "py-1 px-2",
-    bootstrapClassesBottom: "mb-0 fw-600 py-1 px-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-600 downline-list-card-bottom",
   },
 ];
 
@@ -124,8 +123,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Exposer",
@@ -139,8 +138,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Sale Chips",
@@ -154,8 +153,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Downline Available Chips",
@@ -169,8 +168,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Balance Chips",
@@ -184,8 +183,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
   {
     title: "Downline P/L Chips",
@@ -199,8 +198,8 @@ const bottomCardsData = [
         className="chat-img"
       />
     ),
-    bootstrapClassesTop: "p-3",
-    bootstrapClassesBottom: "mb-0 fw-bold px-3 p-2",
+    bootstrapClassesTop: "downline-list-card-top",
+    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
 ];
 
@@ -222,7 +221,7 @@ const Card = ({
         <h6 className="mb-0 text-white small-font">{title}</h6>
         {icon}
       </div>
-      <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+      <p className={`medium-font fw-600 ${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
     </div>
   );
 };
@@ -282,13 +281,13 @@ const DefaultBottomShow = () => {
         </div>
 
         {/* Right Side Container */}
-        <div className="col-4 h-100">
+        <div className="col-4 align-self-end">
           <div className="bg-white director-admin-profile-bottom-section-right p-4">
             <h5 className="yellow-font small-font">Total Amount</h5>
             <input
               type="text"
               value="500000"
-              className="form-control mb-3 small-sont"
+              className="w-100 input-css fw-600 mb-2 small-font"
               readOnly
             />
 
@@ -296,7 +295,7 @@ const DefaultBottomShow = () => {
             <input
               type="text"
               value="500000"
-              className="form-control small-font mb-3"
+              className="w-100 input-css fw-600 small-font mb-2"
               readOnly
             />
 
@@ -304,7 +303,7 @@ const DefaultBottomShow = () => {
             <input
               type="text"
               value="500000"
-              className="form-control small-font mb-3"
+              className="w-100 input-css fw-600 small-font mb-2"
               readOnly
             />
           </div>
@@ -324,8 +323,8 @@ const UserProfileDashboard = () => {
   };
 
   const handleResetPasswordClose = () => {
-    setShowResetPasswordPopup(false)
-  }
+    setShowResetPasswordPopup(false);
+  };
 
   return (
     <div>
@@ -345,12 +344,11 @@ const UserProfileDashboard = () => {
 
             <div className="d-flex align-items-center gap-1 my-1">
               <div className="director-top-bg-icon px-2 py-1">
-                <MdRemoveRedEye size={18} className="text-warning pointer" />
+                <MdRemoveRedEye className="text-warning large-font pointer" />
               </div>
               <div className="director-top-bg-icon px-2 py-1">
                 <MdLockReset
-                  size={18}
-                  className="text-warning pointer"
+                  className="text-warning large-font pointer"
                   onClick={() => setShowResetPasswordPopup(true)}
                 />
               </div>
@@ -369,13 +367,12 @@ const UserProfileDashboard = () => {
                 className="super-admin-profile-img-con"
               />
               <div
-                className="d-flex gap-2 super-admin-img-down-content"
+                className="d-flex gap-2 super-admin-img-down-content align-items-end"
                 style={{ marginTop: "20px" }}
               >
-                <h6 className="small-font">Jayanta Pal</h6>
+                <h6 className="small-font mb-0">Jayanta Pal</h6>
                 <FaPen
-                  className="yellow-font pointer mt-1"
-                  size={13}
+                  className="yellow-font pointer medium-font mt-1"
                   onClick={() => setShowEditProfilePopup(true)}
                 />
               </div>
@@ -383,12 +380,12 @@ const UserProfileDashboard = () => {
             <div className="col-10">
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <div className="d-flex gap-4 align-items-center">
-                  <div className="d-flex gap-2 align-items-center">
-                    <FaUserTie />
+                  <div className="d-flex gap-2 align-items-end">
+                    <FaUserTie className="large-font"/>
                     <span className="small-font">Director</span>
                   </div>
-                  <div className="d-flex gap-2 align-items-center">
-                    <FaMapMarkerAlt />
+                  <div className="d-flex gap-2 align-items-end">
+                    <FaMapMarkerAlt className="large-font" />
                     <span className="small-font">India</span>
                   </div>
                 </div>
@@ -416,7 +413,7 @@ const UserProfileDashboard = () => {
           </div>
         </div>
       </div>
-      
+
       <ResetPasswordPopup
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}

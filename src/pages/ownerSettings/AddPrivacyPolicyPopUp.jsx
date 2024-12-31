@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import SelectWebsitePopUp from "./SelectWebsitePopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../../pages/add-team/style.css";
 
 const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
   const [selectWebsite, setSelectWebsite] = useState(false);
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   return (
     <>
       <Modal
@@ -16,7 +25,7 @@ const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
         <Modal.Body>
           <div className="d-flex w-100 flex-between">
             <h6>Add Privacy Policy</h6>
-            <IoClose
+            <IoCloseSharp
               className="pointer"
               onClick={() => setAddPrivacyModal(false)}
             />
@@ -25,22 +34,36 @@ const AddPrivacyPolicyPopUp = ({ addPrivacyModal, setAddPrivacyModal }) => {
           <div className="row mt-3 small-font">
             <div className="col-4 flex-column">
               <label className="black-text4 mb-1">Country</label>
-              <select className="input-bg all-none p-2 small-font rounded">
-                <option>India</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
             <div className="col-4 flex-column">
               <label className="black-text4 mb-1">Show Website</label>
-              <select className="input-bg all-none p-2 small-font rounded" onClick={()=>setSelectWebsite(true)}>
-                <option>Select</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
             <div className="col-4 flex-column">
               <label className="black-text4 mb-1">Status</label>
-              <select className="input-bg all-none p-2 small-font rounded">
-                <option>Active</option>
-                <option>In-Active</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+              />
             </div>
 
             <div className="col-12 flex-column mt-3 ">

@@ -1,24 +1,37 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../../components/Table";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { MdBlockFlipped } from "react-icons/md";
 import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../../popups/ConfirmationPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const McasinoGDetails = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false)
   const { gamename, usergame } = useParams();
 
+  
+
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(
       `/management-casino/${encodeURIComponent(gamename)}/${encodeURIComponent(
+        usergame
+      )}/${encodeURIComponent(
         matchName
-      )}/${encodeURIComponent(matchName)}`
+      )}`
     );
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CASINO_COLUMNS = [
     { header: "Provider ID/Name", field: "provider", width: "15%" },
@@ -59,15 +72,14 @@ const McasinoGDetails = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className=" mb-0 pointer" onClick={() => navigation(-2)}>
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
+          <h6 className=" mb-0 pointer medium-font" onClick={() => navigation(-2)}>
+            <FiChevronLeft className="yellow-font mb-1" />
             Casino Live Settings<FiChevronRight /> Website <FiChevronRight />
           </h6>
-          <span className="pointer" onClick={() => navigation(-1)}>
+          <span className="pointer medium-font" onClick={() => navigation(-1)}>
             {gamename}
           </span>
-          <FiChevronRight />
-          <span className="yellow-font">{usergame}</span>
+          <span className="yellow-font medium-font"> <FiChevronRight /> {usergame}</span>
         </div>
         <div className="d-flex ">
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
@@ -82,9 +94,15 @@ const McasinoGDetails = () => {
       <div className="d-flex align-items-end">
         <div className=" flex-column me-3 col-2">
           <label className="black-text4 small-font mb-1">Providers</label>
-          <select className="input-css2 small-font ">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div>
           <button className="saffron-btn rounded">Submit</button>

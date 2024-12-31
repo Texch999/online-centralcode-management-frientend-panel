@@ -13,14 +13,14 @@ function ConfirmationPopup({
   };
 
   return (
-    <Modal show={confirmationPopupOpen} centered className="confirm-popup">
+    <Modal show={confirmationPopupOpen} centered className="confirm-popup" size="md">
       <Modal.Body>
         <div className="flex-end black-text4 ">
           <IoCloseSharp size={20} onClick={handleCancel} className="pointer" />
         </div>
         <center>
-          <img src={Images?.qnmark} alt="Q_Mark" />
-          <h5 className="black-text4 fw-600  mt-2 mb-3">{discription}</h5>{" "}
+          <img src={Images?.qnmark} alt="Q_Mark" style={{height:"90px", width:"90px"}}/>
+          <h5 className="black-text4 fw-600 medium-font  mt-2 mb-3">{discription}</h5>{" "}
           <div className="small-font black-text4">
             Lorem Ipsum is simply dummy text of the printing...
           </div>

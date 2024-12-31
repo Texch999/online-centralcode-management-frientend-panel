@@ -6,8 +6,23 @@ import { SlPencil } from "react-icons/sl";
 import { IoTrashOutline } from "react-icons/io5";
 import Table from "./../../components/Table";
 import EditBetPopup from "./EditBetPopup";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function RiskBetHistory() {
+  const betPlacedOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const bedPositionOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const { matchName } = useParams();
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
   const handleEditBetPopupOpen = () => {
@@ -273,15 +288,27 @@ function RiskBetHistory() {
       <div className="d-flex w-50 pb-3">
         <div className="col-4 flex-column me-3">
           <label className="black-text4 small-font mb-1">Bet Palced</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={betPlacedOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col-4 flex-column me-3">
           <label className="black-text4 small-font mb-1">Bet Position</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={bedPositionOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="col-2 d-flex align-items-end justify-content-end">
           <button className="w-100 saffron-btn2 small-font">Submit</button>

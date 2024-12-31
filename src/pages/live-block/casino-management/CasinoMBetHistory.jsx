@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../../components/Table";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -7,10 +7,25 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { SlPencil } from "react-icons/sl";
 import ConfirmationPopup from "../../popups/ConfirmationPopup";
 import EditBetPopup from "../../risk-management/EditBetPopup";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const CasinoMBetHistory = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const [onEditBetPopup, setOnEditBetPopup] = useState(false);
+
+  const websiteOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const tableOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const { provider, gamename, bethistory } = useParams();
   const navigate = useNavigate();
@@ -74,7 +89,11 @@ const CasinoMBetHistory = () => {
       status: (
         <div className="d-flex gap-3 flex-between">
           <div className="d-flex gap-3">
-            <SlPencil className="pointer" size={18} onClick={() => setOnEditBetPopup(true)}/>
+            <SlPencil
+              className="pointer"
+              size={18}
+              onClick={() => setOnEditBetPopup(true)}
+            />
             <FaRegTrashCan
               className="pointer"
               size={18}
@@ -247,19 +266,20 @@ const CasinoMBetHistory = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className="mb-0 pointer" onClick={() => navigate(-3)}>
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
-            Casino Live Settings 2<FiChevronRight /> Casino Providers{" "}
-            <FiChevronRight />
+          <h6 className="mb-0 pointer medium-font" onClick={() => navigate(-3)}>
+            <FiChevronLeft className="yellow-font medium-font mb-1" />
+            Casino Live Settings
+            <FiChevronRight /> Casino Providers
           </h6>
-          <span className="pointer" onClick={() => navigate(-2)}>
+          <span className="pointer medium-font" onClick={() => navigate(-2)}>
+            <FiChevronRight />
             {provider}
           </span>
-          <FiChevronRight />
-          <span className="pointer" onClick={() => navigate(-1)}>
+          <span className="pointer medium-font" onClick={() => navigate(-1)}>
+            <FiChevronRight />
             {gamename}
           </span>
-          <span className="yellow-font">
+          <span className="yellow-font medium-font">
             <FiChevronRight /> {bethistory}
           </span>
         </div>
@@ -277,19 +297,31 @@ const CasinoMBetHistory = () => {
       <div className="d-flex col">
         <div className=" flex-column me-3 col-2">
           <label className="black-text4 small-font mb-1">Website</label>
-          <select className="input-css2 small-font ">
-            <option>All</option>
-          </select>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className=" flex-column me-3 col-2">
           <label className="black-text4 small-font mb-1">Table</label>
-          <select className="input-css2 small-font ">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={tableOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="d-flex align-items-end">
-          <button className="saffron-btn small-font rounded pointer px-3">
+          <button className="saffron-btn2 small-font rounded pointer px-3">
             Submit
           </button>
         </div>

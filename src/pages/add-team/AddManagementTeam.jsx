@@ -169,7 +169,7 @@ const AddManagementTeam = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Add Management Team</h6>
+        <h6 className="yellow-font medium-font mb-0">Add Management Team</h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
@@ -189,7 +189,7 @@ const AddManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={11}
+          itemsPerPage={9}
         />
       </div>
       {/* AddManagementPopup Modal */}
@@ -219,7 +219,7 @@ const AddManagementTeam = () => {
         submitButton={"Delete"}
         onSubmit={handleDeleteAccount}
       />
-      \{/* Reset Password Modal */}
+      {/* Reset Password Modal */}
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={setResetPasswordPopup}

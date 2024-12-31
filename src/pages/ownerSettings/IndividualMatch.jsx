@@ -283,26 +283,20 @@ const IndividualMatch = () => {
   ];
   return (
     <div>
-      <div className="mt-2">
-        <div className="d-flex justify-content-between w-100">
-          <div className="d-flex ">
-          
-            <h6>Result</h6>
-            <FiChevronRight className=" mx-2" size={18} />
-            <h6>Cricket</h6>
-            <FiChevronRight className=" mx-2 saffron-clr" size={18} />
-            <h6 className="saffron-clr">{matchName}</h6>
-          </div>
-
-          <div className="input-pill d-flex align-items-center rounded-pill px-2">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
-          </div>
+      <div className="d-flex justify-content-between w-100 mt-2 mb-3">
+        <div className="d-flex align-items-center">
+          <h6 className="mb-0">Result</h6>
+          <FiChevronRight size={18} />
+          <h6 className="mb-0">Cricket</h6>
+          <FiChevronRight className="saffron-clr" size={18} />
+          <h6 className="saffron-clr mb-0">{matchName}</h6>
+        </div>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
+          <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
-      <div className=" mt-4 ">
-        <Table columns={RISK_COLUMNS} data={RISK_DATA} itemsPerPage={5} />
-      </div>
+      <Table columns={RISK_COLUMNS} data={RISK_DATA} itemsPerPage={4} />
     </div>
   );
 };

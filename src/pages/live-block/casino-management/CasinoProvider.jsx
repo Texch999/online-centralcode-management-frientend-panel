@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
@@ -11,6 +11,7 @@ const CasinoProvider = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
 
   const { provider } = useParams();
+  console.log(provider,"==>pranay");
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(
@@ -23,7 +24,7 @@ const CasinoProvider = () => {
   const CASINO_COLUMNS = [
     { header: "Games", field: "games", width: "25%" },
     { header: "P/L", field: "pl", width: "35%" },
-    { header: "Status", field: "status", width: "5%" },
+    { header: <div className="text-center">Status</div>, field: "status", width: "5%" },
   ];
   const CASINO_DATA = [
     {
@@ -31,7 +32,7 @@ const CasinoProvider = () => {
       pl: <div className="green-font">5000000</div>,
 
       status: (
-        <div className="w-100 flex-between  pointer">
+        <div className="d-flex justify-content-center gap-3  pointer">
           <BsEye size={18} onClick={() => handleMatchClick("Roulette")} />
           <MdBlockFlipped size={18} onClick={() => setOnBlockPopup(true)} />
           <span className="active-btn-table">Live</span>
@@ -45,14 +46,14 @@ const CasinoProvider = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <div className="d-flex align-items-center">
-          <h6 className="mb-0 pointer" onClick={() => navigation(-1)}>
-            <FiChevronLeft size={18} className="yellow-font mb-1" />
+          <h6 className="mb-0 pointer medium-font" onClick={() => navigation(-1)}>
+            <FiChevronLeft className="yellow-font mb-1" />
             Casino Live Settings
-            <span className="yellow-font">
+            <span className="yellow-font medium-font">
               <FiChevronRight /> Casino Providers
             </span>
           </h6>
-          <span className="yellow-font">
+          <span className="yellow-font medium-font">
             <FiChevronRight />
             {provider}
           </span>

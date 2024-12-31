@@ -5,8 +5,8 @@ import { SlPencil } from "react-icons/sl";
 
 const cols4 = [
   { header: "Date & Time", field: "date_time", width: "15%" },
-  { header: "Sports", field: "sports", width: "15%" },
-  { header: "Match", field: "match", width: "30%" },
+  { header: "Sports", field: "sports", width: "10%" },
+  { header: "Match", field: "match", width: "25%" },
   {
     header: (
       <div className="row">
@@ -19,18 +19,19 @@ const cols4 = [
       </div>
     ),
     field: "no_yes",
-    width: "20%",
+    width: "15%",
   },
   { header: "No", field: "no", width: "10%" },
   { header: "Yes", field: "yes", width: "10%" },
   {
     header: <div className="text-center">Exposure</div>,
     field: "exposure",
-    width: "10%",
+    width: "",
   },
   {
     header: <div className="">Positon</div>,
     field: "position",
+    width:""
   },
 ];
 
@@ -48,11 +49,11 @@ const tableData4 = [
     no_yes: (
       <div className="d-flex red-font ms-1">
         <div className="col d-flex flex-column lay-box py-1 mx-1 text-center">
-          <span className="fw-600">4.6</span>
-          <span>1k</span>
+          <span className="fw-600 px-2">4.6</span>
+          <span className="px-2">1k</span>
         </div>
         <div className="col d-flex flex-column back-box py-1 mx-1 text-center">
-          <span className="fw-600">3.05</span>
+          <span className="fw-600 px-2">3.05</span>
           <span>2k</span>
         </div>
       </div>
@@ -67,8 +68,8 @@ const tableData4 = [
       </div>
     ),
     position: (
-      <div className="d-flex gap-1 align-items-center justify-content-between">
-          <button className="green-btn">Live</button>
+      <div className="d-flex gap-2 align-items-center justify-content-between">
+          <button className="col-6 green-btn align-self-center">Live</button>
         <div className="d-flex">
           <MdBlock size={18} className="me-3" />
           <SlPencil size={18} />
@@ -109,8 +110,8 @@ const tableData4 = [
       </div>
     ),
     position: (
-      <div className="d-flex gap-3 align-items-center justify-content-between">
-        <button className="red-btn">Bloked</button>
+      <div className="d-flex gap-2 align-items-center justify-content-between">
+        <button className="col-6 red-btn ">Bloked</button>
         <div className="d-flex">
           <MdBlock size={18} className="red-font me-3" />
           <SlPencil size={18} />
@@ -152,7 +153,7 @@ const tableData4 = [
     ),
     position: (
       <div className="d-flex gap-2 align-items-center justify-content-between">
-        <button className="green-btn">Live</button>
+        <button className="col-6 green-btn">Live</button>
         <div className="d-flex">
           <MdBlock size={18} className="me-3" />
           <SlPencil size={18} />
@@ -194,7 +195,7 @@ const tableData4 = [
     ),
     position: (
       <div className="d-flex gap-2 align-items-center justify-content-between">
-        <button className="green-btn">Live</button>
+        <button className="col-6 green-btn">Live</button>
         <div className="d-flex">
           <MdBlock size={18} className="me-3" />
           <SlPencil size={18} />
@@ -235,10 +236,8 @@ const tableData4 = [
       </div>
     ),
     position: (
-      <div className="d-flex gap-1 align-items-center justify-content-between">
-        <div className="text-center">
-          <button className="green-btn">Live</button>
-        </div>
+      <div className="d-flex gap-2 align-items-center justify-content-between">
+        <button className="col-6 green-btn">Live</button>
         <div className="d-flex">
           <MdBlock size={18} className="me-3" />
           <SlPencil size={18} />

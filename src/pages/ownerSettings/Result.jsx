@@ -3,18 +3,27 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const Result = () => {
   const [activeBtn, setActiveBtn] = useState("Sports");
   const ACTIVE_BTNS = ["Sports", "Casino"];
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
-    navigation(`/match/${encodeURIComponent(matchName)}`);
+    navigation(`/results/${encodeURIComponent(matchName)}`);
   };
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
@@ -555,7 +564,8 @@ const Result = () => {
           </div>
         ))}
       </div>
-      <div className="d-flex w-40 flex-between my-3">
+
+      <div className="col-8 col-lg-7 d-flex flex-between my-3">
         <div className="col-3 flex-column ">
           <label className="black-text4 small-font mb-1">From</label>
           <input className="input-css2 small-font" type="date" />
@@ -568,9 +578,15 @@ const Result = () => {
         {activeBtn !== "Casino" && (
           <div className="col-3 flex-column me-3">
             <label className="black-text4 small-font mb-1">Sports</label>
-            <select className="input-css2 small-font">
-              <option>All</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
         )}
 
@@ -578,34 +594,42 @@ const Result = () => {
           <>
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Provider</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
 
             <div className="col-3 flex-column me-3">
               <label className="black-text4 small-font mb-1">Game</label>
-              <select className="input-css2 small-font">
-                <option>All</option>
-              </select>
+              <Select
+                className="small-font"
+                options={selectOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
             </div>
           </>
         )}
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
           Submit
         </div>
       </div>
 
       {activeBtn === "Sports" ? (
-          <Table
-            columns={CRICKET_COLUMNS}
-            data={CRICKET_DATA}
-            itemsPerPage={4}
-          />
-        ) : (
-          <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
-        )}
+        <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={4} />
+      ) : (
+        <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={4} />
+      )}
     </div>
   );
 };

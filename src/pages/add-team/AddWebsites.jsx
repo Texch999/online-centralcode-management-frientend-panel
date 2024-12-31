@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../components/Table";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
 import { MdBlockFlipped } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -17,7 +17,11 @@ const AddWibsites = () => {
     { header: "Website Name", field: "websiteName", width: "25%" },
     { header: "Location", field: "location", width: "20%" },
     { header: "URL", field: "url", width: "20%" },
-    { header: <div className="ps-1">Action</div>, field: "action" },
+    {
+      header: <div className="ps-1 text-center">Action</div>,
+      field: "action",
+      width: "10%",
+    },
   ];
 
   const data = [
@@ -27,10 +31,14 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" onClick={() => setOnAddwebsitePopup(true)}/>
+        <div className="flex-center gap-4">
+          <SlPencil
+            size={18}
+            className="pointer"
+            onClick={() => setOnAddwebsitePopup(true)}
+          />
           <MdBlockFlipped
-            size={17}
+            size={18}
             className="pointer"
             onClick={() => setConfirmationPopupOpen(true)}
           />
@@ -44,14 +52,14 @@ const AddWibsites = () => {
       url: "www.tcasinopark.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="d-flex gap-3">
-            <GrEdit
-              size={17}
+          <div className="flex-center gap-4">
+            <SlPencil
+              size={18}
               className="pointer "
               onClick={() => setOnAddwebsitePopup(true)}
             />
             <MdBlockFlipped
-              size={17}
+              size={18}
               className="pointer"
               onClick={() => setConfirmationPopupOpen(true)}
             />
@@ -65,13 +73,13 @@ const AddWibsites = () => {
       url: "www.sparkbook.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="d-flex gap-3">
-            <GrEdit
-              size={17}
+          <div className="flex-center gap-4">
+            <SlPencil
+              size={18}
               className="pointer "
               onClick={() => setOnAddwebsitePopup(true)}
             />
-            <MdBlockFlipped size={17} className="pointer" />
+            <MdBlockFlipped size={18} className="pointer" />
           </div>
         ),
     },
@@ -81,9 +89,9 @@ const AddWibsites = () => {
       location: "Kolkata, India",
       url: "www.fun77.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -94,13 +102,13 @@ const AddWibsites = () => {
       url: "www.diamondexchange.com",
       action:
         role === "Super Admin" ? null : (
-          <div className="d-flex gap-3">
-            <GrEdit
-              size={17}
+          <div className="flex-center gap-4">
+            <SlPencil
+              size={18}
               className="pointer "
               onClick={() => setOnAddwebsitePopup(true)}
             />
-            <MdBlockFlipped size={17} className="pointer red-font" />
+            <MdBlockFlipped size={18} className="pointer red-font" />
           </div>
         ),
     },
@@ -110,9 +118,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -122,9 +130,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer font-red" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer font-red" />
         </div>
       ),
     },
@@ -134,9 +142,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -146,9 +154,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -158,9 +166,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer red-font" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer red-font" />
         </div>
       ),
     },
@@ -170,9 +178,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -182,9 +190,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -194,9 +202,9 @@ const AddWibsites = () => {
       location: "Hyderabad, India",
       url: "www.texchange.com",
       action: (
-        <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+        <div className="flex-center gap-4">
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -217,9 +225,9 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
           <MdBlockFlipped
-            size={17}
+            size={18}
             className="pointer"
             onClick={() => setConfirmationPopupOpen(true)}
           />
@@ -233,9 +241,9 @@ const AddWibsites = () => {
       url: "www.tcasinopark.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
           <MdBlockFlipped
-            size={17}
+            size={18}
             className="pointer"
             onClick={() => setConfirmationPopupOpen(true)}
           />
@@ -249,8 +257,8 @@ const AddWibsites = () => {
       url: "www.sparkbook.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -261,8 +269,8 @@ const AddWibsites = () => {
       url: "www.fun77.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -273,8 +281,8 @@ const AddWibsites = () => {
       url: "www.diamondexchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer red-font" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer red-font" />
         </div>
       ),
     },
@@ -285,8 +293,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -297,8 +305,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer font-red" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer font-red" />
         </div>
       ),
     },
@@ -309,8 +317,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -321,8 +329,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -333,8 +341,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer red-font" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer red-font" />
         </div>
       ),
     },
@@ -345,8 +353,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -357,8 +365,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -369,8 +377,8 @@ const AddWibsites = () => {
       url: "www.texchange.com",
       action: (
         <div className="d-flex gap-3">
-          <GrEdit size={17} className="pointer" />
-          <MdBlockFlipped size={17} className="pointer" />
+          <SlPencil size={18} className="pointer" />
+          <MdBlockFlipped size={18} className="pointer" />
         </div>
       ),
     },
@@ -402,14 +410,14 @@ const AddWibsites = () => {
 
       {role === "management" ? (
         <div className="mt-2">
-          <Table data={data} columns={columns} itemsPerPage={12} />
+          <Table data={data} columns={columns} itemsPerPage={11} />
         </div>
       ) : (
         <div className="mt-2">
           <Table
             data={directorswebsitedata}
             columns={directorswebsitecolumns}
-            itemsPerPage={12}
+            itemsPerPage={11}
           />
         </div>
       )}

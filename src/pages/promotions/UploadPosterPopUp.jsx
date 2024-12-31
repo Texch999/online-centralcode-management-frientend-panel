@@ -1,5 +1,5 @@
 import React from "react";
-import { IoClose, IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { Images } from "../../images";
@@ -22,7 +22,7 @@ const UploadPosterPopUp = ({ uploadPoster, setUploadPoster }) => {
             <label htmlFor="poster">
               <input type="file" style={{ display: "none" }} id="poster" />
               <div className="input-bg small-font d-flex flex-between p-2 rounded">
-                <span>Select File</span> <MdOutlineFileUpload size={18} />
+                <span className="grey-font">Select File</span> <MdOutlineFileUpload size={18} className="grey-font"/>
               </div>
             </label>
           </div>

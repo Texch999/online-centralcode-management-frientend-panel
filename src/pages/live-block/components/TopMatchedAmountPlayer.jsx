@@ -78,6 +78,7 @@ const TopMatchedAmountPlayer = () => {
 
   return (
     <div className="top-ten-playes-list">
+
       <div className="d-flex table-parent-container">
         <div className="table-wrapper me-3 w-50 table-special-effect border-start">
           <Table
@@ -92,6 +93,7 @@ const TopMatchedAmountPlayer = () => {
           />
         </div>
       </div>
+      
     </div>
   );
 };

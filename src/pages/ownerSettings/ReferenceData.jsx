@@ -4,6 +4,9 @@ import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import AddNewPopUp from "./AddNewPopUp";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
@@ -11,8 +14,14 @@ const ReferenceData = () => {
   const [addNewModalRejection, setAddNewModalRejection] = useState(false);
   const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const SECURITY_COLUMNS = [
     { header: "Questions", field: "questions", width: "80%" },
@@ -44,9 +53,7 @@ const ReferenceData = () => {
     },
     {
       questions: <div>What is your name?</div>,
-
       status: <div className="green-btn w-fill">Active</div>,
-
       action: (
         <div className="large-font d-flex w-50 flex-between">
           <span>
@@ -314,16 +321,14 @@ const ReferenceData = () => {
   ];
 
   return (
-    <div>
+    <div className="">
       <h6 className="yellow-font mt-2 mb-3">Reference Data</h6>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
-              activeBtn === item
-                ? "saffron-btn2 px-4"
-                : "white-btn2 pointer px-4"
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
@@ -332,48 +337,49 @@ const ReferenceData = () => {
         ))}
       </div>
       <hr className="my-3" />
-      <div className="d-flex w-100 flex-between">
-        <div className="col-7 fw-600 ">
+
+      <div className="d-flex align-items-center justify-content-between">
+        {/* Title Section */}
+        <div className="col-7 fw-600">
           {activeBtn === "Rejection Reasons"
             ? "Rejection Reasons"
             : "Security Questions"}
         </div>
-        {activeBtn === "Rejection Reasons" ? (
-          <div className="col-5 d-flex flex-between">
-            <div className="col-5 ">
-              <select className="input-css2 col-12  small-font">
-                <option>All</option>
-              </select>
-            </div>
-            <div className="saffron-btn2 small-font pointer  col-3 mx-2">
-              Submit
-            </div>
-            <div
-              className="bg-white small-font pointer  col-3 p-2 blue-font grey-border rounded flex-center "
-              onClick={() => setAddNewModalRejection(true)}
-            >
-              <IoAddOutline className="large-font" /> Add new
-            </div>
+
+        {/* Action Section */}
+        <div className="col-5 d-flex justify-content-between align-items-center">
+          {/* Select Dropdown */}
+          <div className="col-5">
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
           </div>
-        ) : (
-          <div className="col-5 d-flex flex-between">
-            <div className="col-5 ">
-              <select className="input-css2 col-12 mt-4 small-font">
-                <option>All</option>
-              </select>
-            </div>
-            <div className="saffron-btn2 small-font pointer mt-4 col-3">
-              Submit
-            </div>
-            <div
-              className="bg-white small-font pointer mt-4 col-3 p-2 blue-font grey-border rounded flex-center"
-              onClick={() => setAddNewModalSecurity(true)}
-            >
-              <IoAddOutline className="large-font" /> Add new
-            </div>
+
+          {/* Submit Button */}
+          <div className="saffron-btn2 small-font pointer col-3 mx-2">
+            Submit
           </div>
-        )}
+
+          {/* Add New Button */}
+          <div
+            className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
+            onClick={() =>
+              activeBtn === "Rejection Reasons"
+                ? setAddNewModalRejection(true)
+                : setAddNewModalSecurity(true)
+            }
+          >
+            <IoAddOutline className="large-font" /> Add new
+          </div>
+        </div>
       </div>
+
       <div className="mt-3">
         {activeBtn === "Rejection Reasons" ? (
           <Table

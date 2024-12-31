@@ -8,7 +8,6 @@ function ScrollTable({
   customPadding = "py-2 px-3",
   greyBackground = "white-bg",
 }) {
-  
   return (
     <div className={`w-100 table-wrapper ${tableHeight}`}>
       <table className="w-100 fixed-table white-bg">
@@ -17,7 +16,7 @@ function ScrollTable({
             {columns.map(({ header, width }, index) => (
               <th
                 key={index}
-                className={`border-bottom small-font fw-600 black-text ${customPadding}`}
+                className={`white-space border-bottom small-font fw-600 black-text ${customPadding}`}
                 style={{ width: width || "auto" }}
               >
                 {header}

@@ -3,12 +3,33 @@ import Table from "../../../components/Table";
 import "../../home/style.css";
 import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const MatchWisePl = () => {
   const navigate = useNavigate();
   const handleMatchPlPage = (matchName) => {
     navigate(`/match-wise-pl/${matchName}`);
   };
+  const sportOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const seriesOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const matchOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const cols = [
     { header: "Date & Time", field: "date" },
     { header: "Series Name", field: "series" },
@@ -262,31 +283,42 @@ const MatchWisePl = () => {
         </div>
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Select Sport</label>
-          <select className="input-css2">
-            <option>sport1</option>
-            <option>sport2</option>
-            <option>sport3</option>
-          </select>
+          <Select
+            className="small-font"
+            options={sportOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Select Series</label>
-          <select className="input-css2">
-            <option>series1</option>
-            <option>series2</option>
-            <option>series3</option>
-          </select>
+          <Select
+            className="small-font"
+            options={seriesOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Select Match</label>
-          <select className="input-css2">
-            <option>match1</option>
-            <option>match2</option>
-            <option>match3</option>
-          </select>
+          <Select
+            className="small-font"
+            options={matchOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
-
-        <div className="saffron-btn br-5 small-font col-2 px-2 mt-3">
-          Submit
+        <div className="col align-self-end ms-2">
+          <button className="saffron-btn2 small-font w-50">Submit</button>
         </div>
       </div>
 

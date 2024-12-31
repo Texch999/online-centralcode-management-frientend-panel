@@ -1,10 +1,20 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function SettledPopup({ setteledPopupOpen, setSettledPopupOpen }) {
   const handleCancel = () => {
     setSettledPopupOpen(false);
   };
+
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   return (
     <Modal show={setteledPopupOpen} centered size="md">
       <Modal.Body>
@@ -15,10 +25,14 @@ function SettledPopup({ setteledPopupOpen, setSettledPopupOpen }) {
         <div className="row small-font mb-3">
           <div className="col-6 flex-column mt-3">
             <label className="mb-1 black-text4">Select Currency</label>
-            <select className="input-bg rounded p-2 grey-font all-none">
-              <option>USD</option>
-              <option>INR</option>
-            </select>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+            />
           </div>
           <div className="col-6 flex-column mt-3">
             <label className="mb-1 black-text4">Payment Mode</label>

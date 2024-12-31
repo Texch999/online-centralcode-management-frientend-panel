@@ -6,10 +6,19 @@ import Table from "../../../components/Table";
 import "../../home/style.css";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { SlPencil } from "react-icons/sl";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const UsersMatchPl = () => {
   const navigate = useNavigate();
   const { matchName, role, userDetails } = useParams();
+
+  const allOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const cols = [
     { header: "Date & Time", field: "date", width: "15%" },
@@ -272,22 +281,16 @@ const UsersMatchPl = () => {
       >
         <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
         <div>Match Wise P/L</div>
-        <div className="">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+        <div onClick={() => navigate(-2)}>
+          <IoIosArrowForward className="mx-1" />
           {matchName}
         </div>
-        <div className="">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+        <div onClick={() => navigate(-1)}>
+          <IoIosArrowForward className="mx-1" />
           {role}
         </div>
         <div className="orange-clr">
-          <span>
-            <IoIosArrowForward className="mx-1" />
-          </span>
+          <IoIosArrowForward className="mx-1" />
           {userDetails}
         </div>
       </div>
@@ -300,14 +303,18 @@ const UsersMatchPl = () => {
       <div className="d-flex w-100 my-2 align-items-center">
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Bet Placed</label>
-          <select className="input-css2">
-            <option>All</option>
-            <option>All</option>
-            <option>All</option>
-          </select>
+          <Select
+            className="small-font"
+            options={allOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
-        <div className="saffron-btn br-5 small-font col-2 px-2 mt-3">
+        <div className="saffron-btn2 align-self-end small-font col-2 pointer">
           Submit
         </div>
       </div>

@@ -2,26 +2,33 @@ import React, { useState } from "react";
 import { MdBlockFlipped, MdSwapVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
-import { GrEdit } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
+
 import { FaSearch } from "react-icons/fa";
 import { Images } from "../../images/index";
 import Table from "../../components/Table";
 import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
-
-
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const DownlineList = () => {
-  const role = localStorage.getItem("role")
+  const [onBlockPopup, setOnBlockPopup] = useState(false);
+  const role = localStorage.getItem("role");
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleNavigateUserDashboard = (trasaction) => {
+    navigate(`/downline-list/${trasaction}`);
+  };
 
   const cardData = [
     {
-      title: role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
+      title:
+        role === "Super Admin" ? "Received Rental Amount" : "Share Revenue",
       backgroundColor: "#7DA0FA",
       value: "500000000",
-      valueClass: "text-dark",
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -29,14 +36,13 @@ const DownlineList = () => {
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
     {
       title: role === "Super Admin" ? "Share/Royalty Amount" : "Rental Revenue",
       backgroundColor: "#7DA0FA",
       value: "500000000",
-      valueClass: "text-dark",
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -44,46 +50,43 @@ const DownlineList = () => {
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
     {
       title: role === "Super Admin" ? "Total Withdraw" : "Total Paid",
       backgroundColor: "#7DA0FA",
       value: "0.00",
-      valueClass: "",
       icon: (
         <img
-          src={Images.adminProfileTotalPaid}
+          src={Images.adminProfileShareRevenue}
           alt="ShareRevenue"
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
     {
       title: role === "Super Admin" ? "Net P/L" : "Another Revenue",
       backgroundColor: "#7DA0FA",
       value: "300000000",
-      valueClass: "text-dark",
       icon: (
         <img
-          src={Images.adminProfileTotalPaid}
+          src={Images.adminProfileShareRevenue}
           alt="ShareRevenue"
           className="chat-img"
         />
       ),
-      bootstrapClassesTop: "p-3",
-      bootstrapClassesBottom: "mb-0 fw-bold px-3 p-3",
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
     },
   ];
-  
+
   const Card = ({
     title,
     backgroundColor,
     value,
-    valueClass,
     icon,
     bootstrapClassesTop,
     bootstrapClassesBottom,
@@ -97,14 +100,9 @@ const DownlineList = () => {
           <h6 className="mb-0 text-white small-font">{title}</h6>
           {icon}
         </div>
-        <p className={`${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+        <p className={`medium-font fw-600 ${bootstrapClassesBottom}`}>{value}</p>
       </div>
     );
-  };
-  const navigate = useNavigate();
-
-  const handleNavigateUserDashboard = () => {
-    navigate("/transactions-history");
   };
 
   const ACCOUNT_COLUMNS = [
@@ -114,7 +112,7 @@ const DownlineList = () => {
     { header: "Total Cus W", field: "totalCusW" },
     { header: "Wall. Bal", field: "walletBalance" },
     { header: "Exposure", field: "exposure" },
-    { header: "Wall Ply. Bal", field: "walletPlayingBalance" },
+    { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
     { header: "Ref P/L", field: "referralPL" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
@@ -130,7 +128,7 @@ const DownlineList = () => {
       creditRef: (
         <>
           0{" "}
-          <GrEdit
+          <SlPencil
             className="icon-edit ms-2 pointer"
             size={15}
             onClick={() => setShowCreditAmountPopup(true)}
@@ -139,7 +137,7 @@ const DownlineList = () => {
       ),
       totalCusD: 10000,
       totalCusW: 5000,
-      walletBalance: <spanc className="yellow-font">2000</spanc>,
+      walletBalance: <span className="yellow-font">2000</span>,
       exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
@@ -150,11 +148,15 @@ const DownlineList = () => {
           </button>
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2 pointer" />
-            <MdBlockFlipped size={20} className="icon-action me-2 pointer" />
+            <MdBlockFlipped
+              size={20}
+              className="icon-action me-2 pointer"
+              onClick={() => setOnBlockPopup(true)}
+            />
             <MdSwapVert
               size={20}
               className="icon-action pointer"
-              onClick={handleNavigateUserDashboard}
+              onClick={() => handleNavigateUserDashboard("Trasactions History")}
             />
           </div>
         </div>
@@ -169,12 +171,12 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
       totalCusW: 5000,
-      walletBalance: <spanc className="yellow-font">2000</spanc>,
+      walletBalance: <span className="yellow-font">2000</span>,
       exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
@@ -200,12 +202,12 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
       totalCusW: 5000,
-      walletBalance: <spanc className="yellow-font">2000</spanc>,
+      walletBalance: <span className="yellow-font">2000</span>,
       exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
@@ -231,12 +233,12 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
       totalCusW: 5000,
-      walletBalance: <spanc className="yellow-font">2000</spanc>,
+      walletBalance: <span className="yellow-font">2000</span>,
       exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
@@ -262,12 +264,12 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
       totalCusW: 5000,
-      walletBalance: <spanc className="yellow-font">2000</spanc>,
+      walletBalance: <span className="yellow-font">2000</span>,
       exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
@@ -293,12 +295,12 @@ const DownlineList = () => {
       ),
       creditRef: (
         <>
-          0 <GrEdit className="icon-edit ms-2" size={15} />
+          0 <SlPencil className="icon-edit ms-2" size={15} />
         </>
       ),
       totalCusD: 10000,
       totalCusW: 5000,
-      walletBalance: <spanc className="yellow-font">2000</spanc>,
+      walletBalance: <span className="yellow-font">2000</span>,
       exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
@@ -331,17 +333,23 @@ const DownlineList = () => {
 
   return (
     <div>
-      <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font medium-font mb-0">Downline List</h6>
-        <div className="d-flex flex-between w-30">
-          <div>
-            <select className="input-pill rounded-pill px-5">
-              <option>All</option>
-            </select>
-          </div>
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 w-60">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
+      <div className="row d-flex justify-content-between align-items-center mb-3">
+        <div className="col-md-3">
+          <h6 className="yellow-font large-font mb-0">Downline List</h6>
+        </div>
+
+        <div className="col-md-9 d-flex flex-end align-items-center gap-3">
+          <select className="input-pill rounded-pill px-4 small-font">
+            <option value="all">All</option>
+          </select>
+
+          <div className="input-pill d-flex align-items-center rounded-pill px-3">
+            <FaSearch size={18} className="grey-clr me-2" />
+            <input
+              className="small-font all-none w-100"
+              placeholder="Search..."
+              type="text"
+            />
           </div>
         </div>
       </div>
@@ -365,6 +373,7 @@ const DownlineList = () => {
           </div>
         </div>
       </div>
+
       <div className="mt-3">
         <Table
           columns={ACCOUNT_COLUMNS}
@@ -380,6 +389,13 @@ const DownlineList = () => {
       <CreditReferencePopup
         show={showCreditAmountPopup}
         onHide={() => setShowCreditAmountPopup(false)}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={onBlockPopup}
+        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+        discription={"are you sure you want to block this Account?"}
+        submitButton={"Block"}
       />
     </div>
   );

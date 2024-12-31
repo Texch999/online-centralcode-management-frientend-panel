@@ -3,6 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Table from "../../../components/Table";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../../components/ReactSelectStyles";
+import "../../add-team/style.css";
 
 const IndividualMatchPl = () => {
   const navigate = useNavigate();
@@ -10,6 +13,19 @@ const IndividualMatchPl = () => {
   const handleMatchAdminsUsersPlPage = (role) => {
     navigate(`/match-wise-pl/${matchName}/${role}`);
   };
+
+  const roleOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const cols = [
     {
       header: <div className="">Date & Time</div>,
@@ -319,22 +335,30 @@ const IndividualMatchPl = () => {
       <div className="d-flex w-100 my-2 align-items-center">
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Role</label>
-          <select className="input-css2">
-            <option>select</option>
-            <option>select</option>
-            <option>select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={roleOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
         <div className="flex-column pe-2 small-font col-2">
           <label className="mb-1">Admin</label>
-          <select className="input-css2">
-            <option>select</option>
-            <option>select</option>
-            <option>select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
-        <div className="saffron-btn br-5 small-font col-2 px-2 mt-3">
+        <div className="saffron-btn2 align-self-end small-font">
           Submit
         </div>
       </div>

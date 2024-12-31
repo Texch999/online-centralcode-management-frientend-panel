@@ -4,8 +4,29 @@ import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function UserReports() {
+  const websiteOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const adminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const userOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
   const DIRECTOR_COLUMNS = [
     { header: "Date & Time/IP Add.", field: "dateTimeIP" },
     { header: "User / Market Name", field: "userMarketName" },
@@ -51,18 +72,14 @@ function UserReports() {
     ),
     pl: (
       <div>
-        <span className="green-font">10000000</span> <br />
+        <span className="green-font">10000000</span> <br/>
         Result: Rajasthan Royals Win
       </div>
     ),
     status: (
-      <div className="large-font d-flex w-50 flex-between">
-        <span>
-          <SlPencil size={18} />
-        </span>
-        <span className="ms-2">
-          <FaRegTrashCan size={18} />
-        </span>
+      <div className="d-flex gap-3">
+          <SlPencil size={18} className="pointer"/>
+          <FaRegTrashCan size={18} className="pointer"/>
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),
@@ -119,26 +136,44 @@ function UserReports() {
         </div>
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">Website</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={websiteOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">Admin Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={adminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
         <div className="col-3 flex-column me-3">
           <label className="black-text4 small-font mb-1">User Name</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={userOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
 
-        <div className="saffron-btn2 small-font pointer mt-4  col-2">
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
           Submit
         </div>
       </div>

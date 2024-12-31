@@ -9,7 +9,7 @@ const ActivityLogs = () => {
   const navigation = useNavigate();
 
   const handleMatchClick = (userActivity) => {
-    navigation(`/userActivity/${(userActivity)}`);
+    navigation(`/userActivity/${userActivity}`);
   };
 
   const ACTIVITY_COLUMNS = [
@@ -274,7 +274,7 @@ const ActivityLogs = () => {
           <input className="input-css2 small-font" type="date" />
         </div>
 
-        <div className="saffron-btn2 small-font pointer mt-4 col-4">Submit</div>
+        <button className="align-self-end saffron-btn2 small-font pointer col-4">Submit</button>
       </div>
       <div className="mt-4">
         <Table

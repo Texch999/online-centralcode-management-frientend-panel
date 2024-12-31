@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoEyeOutline } from "react-icons/io5";
+import { BsEye } from "react-icons/bs";
 import { MdBlock } from "react-icons/md";
 import Table from "./../../components/Table";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
@@ -92,7 +92,7 @@ const FancyCricket = () => {
               )
             }
           >
-            <IoEyeOutline className="font-20 ms-2 orange-clr" />
+            <BsEye className="font-20 ms-2 orange-clr" />
           </div>
         </div>
       ),
@@ -123,7 +123,7 @@ const FancyCricket = () => {
               )
             }
           >
-            <IoEyeOutline className="font-20 ms-2 orange-clr" />
+            <BsEye className="font-20 ms-2 orange-clr" />
           </div>
         </div>
       ),

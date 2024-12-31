@@ -4,6 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 import DepositWithdrawPopup from "../wallet/DepositWithdrawPopup";
 import { BsEye } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import "../add-team/style.css";
 
 function SuperAdminDL() {
   const navigate = useNavigate();
@@ -23,8 +26,14 @@ function SuperAdminDL() {
   };
 
   const handleSportClick = (item) => {
-    setActiveBtn(activeBtn === item ? null : item);
+    setActiveBtn(item);
   };
+
+  const superAdminOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
 
   const ADMIN_COLUMNS = [
     { header: "Admin Details", field: "adminDetails" },
@@ -138,19 +147,19 @@ function SuperAdminDL() {
         </h6>
       </div>
 
-      <div className="d-flex w-10 flex-between small-font">
+      <div className="d-flex gap-2 small-font">
         {ACTIVE_BTNS?.map((item, index) => (
-          <div
+          <button
             key={index}
-            className={`me-3 ${
+            className={`col-1 ${
               activeBtn === item
-                ? "saffron-btn2  px-4"
-                : "white-btn2 pointer px-4"
+                ? "saffron-btn2 rounded"
+                : "white-btn2 rounded pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
             {item}
-          </div>
+          </button>
         ))}
       </div>
       <div className="d-flex w-90  mt-4">
@@ -192,12 +201,18 @@ function SuperAdminDL() {
       <div className="d-flex w-80 mb-3">
         <div className="col-2 flex-column me-3">
           <label className="black-text4 small-font mb-1">Select Admin</label>
-          <select className="input-css2 small-font">
-            <option>Select</option>
-          </select>
+          <Select
+            className="small-font"
+            options={superAdminOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
         </div>
-        <div className="saffron-btn2 small-font pointer mt-3  col-1">
-          Submit
+        <div className="d-flex align-items-end col-1">
+          <button className="saffron-btn2 small-font pointer">Submit</button>
         </div>
       </div>
 
