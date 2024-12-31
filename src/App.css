@@ -546,3 +546,13 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.position-relative{
+  position: relative;
+}
+.edit-icon-position{
+  position: absolute;
+  top:55%;
+  left:56%;
+
+}

@@ -8,11 +8,13 @@ import {
   FaChevronUp,
   FaUserTie,
 } from "react-icons/fa";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { IoMdLogOut, IoMdNotificationsOutline } from "react-icons/io";
 import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { ImUserPlus } from "react-icons/im";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
+import { MdEdit } from "react-icons/md";
+import EditProfilePopup from "../pages/popups/EditProfilePopup";
 
 function Header() {
   const navigate = useNavigate();
@@ -40,122 +42,137 @@ function Header() {
   };
 
   const isDashboard = window?.location?.pathname === "/";
+  const [editProfilePopup, setEditProfilePopup] = useState(false);
+  const handleProfileImage = () => {
+    setEditProfilePopup(true);
+  };
 
   return (
-    <div className="header">
-      <div className="w-100 flex-between px-2 py-1">
-        <div className="d-flex align-items-center">
-          <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" />
-          <div className="d-flex align-items-center input-css ms-1">
-            <FaSearch size={18} className="grey-clr me-2" />
-            <input
-              className="all-none small-font"
-              placeholder="Search Here..."
+    <div>
+      <div className="header">
+        <div className="w-100 flex-between px-2 py-1">
+          <div className="d-flex align-items-center">
+            <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" />
+            <div className="d-flex align-items-center input-css ms-1">
+              <FaSearch size={18} className="grey-clr me-2" />
+              <input
+                className="all-none small-font"
+                placeholder="Search Here..."
+              />
+            </div>
+          </div>
+          <div className="d-flex align-items-center">
+            {role_name === "Central Panel" && (
+              <div
+                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
+                  isActiveBtn ? "active-saffron-btn white-text" : ""
+                }`}
+                onClick={handleRegisterBtn}
+              >
+                <ImUserPlus size={18} />
+                <span className="ps-2 small-font white-space">
+                  Vendor Registration and List
+                </span>
+              </div>
+            )}
+            <IoMdNotificationsOutline
+              size={24}
+              className="grey-clr me-2 mx-3 fw-800"
+            />
+            <div className="position-relative" onClick={handleProfileImage}>
+              <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
+              <span className="edit-icon-position">
+                <MdEdit className="saffron-clr" size={20} />
+              </span>
+            </div>
+
+            <IoMdLogOut
+              size={24}
+              title="Logout"
+              className="grey-clr mx-2 fw-800 pointer"
+              onClick={handleLogout}
             />
           </div>
         </div>
-        <div className="d-flex align-items-center">
-          {role_name === "Central Panel" && (
+        <div className="flex-between grey-border">
+          <div className="d-flex">
             <div
-              className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
-                isActiveBtn ? "active-saffron-btn white-text" : ""
-              }`}
-              onClick={handleRegisterBtn}
+              className={`${isDashboard ? "saffron-btn" : "white-btn"}`}
+              onClick={() => navigate("/")}
             >
-              <ImUserPlus size={18} />
-              <span className="ps-2 small-font white-space">
-                Vendor Registration and List
-              </span>
+              <PiSquaresFourFill size={24} className="me-2" />
+              <span className="medium-font pointer">Dashboard</span>
             </div>
-          )}
-          <IoMdNotificationsOutline
-            size={24}
-            className="grey-clr me-2 mx-3 fw-800"
-          />
-          <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
-          <PiDotsNineBold
-            size={24}
-            title="Logout"
-            className="grey-clr mx-2 fw-800 pointer"
-            onClick={handleLogout}
-          />
-        </div>
-      </div>
-      <div className="flex-between grey-border">
-        <div className="d-flex">
-          <div
-            className={`${isDashboard ? "saffron-btn" : "white-btn"}`}
-            onClick={() => navigate("/")}
-          >
-            <PiSquaresFourFill size={24} className="me-2" />
-            <span className="medium-font pointer">Dashboard</span>
-          </div>
-          {role_name !== "Central Panel" ? (
-            <div
-              className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
-              onClick={handleNavigate}
-            >
-              {role_name !== "Central Panel" ? (
-                <FaUserTie size={22} className="me-2" />
-              ) : (
-                <FaUserCog size={22} className="me-2" />
-              )}
-              <span className="medium-font pointer">{role_name}</span>
-            </div>
-          ) : (
-            <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
-              <Dropdown.Toggle
-                variant="none"
-                className={`${
-                  !isDashboard ? "saffron-btn" : "white-btn"
-                } br-0px d-flex align-items-center`}
-                id="dropdown-autoclose-true"
+            {role_name !== "Central Panel" ? (
+              <div
+                className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
+                onClick={handleNavigate}
               >
-                <FaUserCog size={24} className="me-2" />
-                <span className="medium-font pointer">{role_name}</span>
-                {isDropdownOpen ? (
-                  <FaChevronUp size={16} className="ms-2" />
+                {role_name !== "Central Panel" ? (
+                  <FaUserTie size={22} className="me-2" />
                 ) : (
-                  <FaChevronDown size={16} className="ms-2" />
+                  <FaUserCog size={22} className="me-2" />
                 )}
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="w-100 br-0px p-0">
-                <Dropdown.Item
-                  className="white-btn white-hover small-font"
-                  onClick={() => navigate("/central-casino")}
+                <span className="medium-font pointer">{role_name}</span>
+              </div>
+            ) : (
+              <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
+                <Dropdown.Toggle
+                  variant="none"
+                  className={`${
+                    !isDashboard ? "saffron-btn" : "white-btn"
+                  } br-0px d-flex align-items-center`}
+                  id="dropdown-autoclose-true"
                 >
-                  Casino
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className="white-btn white-hover small-font"
-                  onClick={() => navigate("/central-sports")}
-                >
-                  Sports
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className="white-btn white-hover small-font"
-                  onClick={() => navigate("/fancy-results")}
-                >
-                  Fancy Results
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className="white-btn white-hover small-font"
-                  onClick={() => navigate("/market-results")}
-                >
-                  Market Results
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          )}
+                  <FaUserCog size={24} className="me-2" />
+                  <span className="medium-font pointer">{role_name}</span>
+                  {isDropdownOpen ? (
+                    <FaChevronUp size={16} className="ms-2" />
+                  ) : (
+                    <FaChevronDown size={16} className="ms-2" />
+                  )}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="w-100 br-0px p-0">
+                  <Dropdown.Item
+                    className="white-btn white-hover small-font"
+                    onClick={() => navigate("/central-casino")}
+                  >
+                    Casino
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className="white-btn white-hover small-font"
+                    onClick={() => navigate("/central-sports")}
+                  >
+                    Sports
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className="white-btn white-hover small-font"
+                    onClick={() => navigate("/fancy-results")}
+                  >
+                    Fancy Results
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className="white-btn white-hover small-font"
+                    onClick={() => navigate("/market-results")}
+                  >
+                    Market Results
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
+          </div>
+          <div className="flex-center p-2 chat-border me-3">
+            <img className="chat-img" src={Images?.ChatIcon} alt="Chat Icon" />
+            <span className="ms-2 black-text3 medium-font">Chat</span>
+          </div>
         </div>
-        <div className="flex-center p-2 chat-border me-3">
-          <img className="chat-img" src={Images?.ChatIcon} alt="Chat Icon" />
-          <span className="ms-2 black-text3 medium-font">Chat</span>
-        </div>
+        {role_name !== "Central Panel" &&
+          role_name !== "White Label Setting" && <SubHeader />}
       </div>
-      {role_name !== "Central Panel" && role_name !== "White Label Setting" && (
-        <SubHeader />
-      )}
+      <EditProfilePopup
+        editProfilePopup={editProfilePopup}
+        setEditProfilePopup={setEditProfilePopup}
+      />
     </div>
   );
 }
