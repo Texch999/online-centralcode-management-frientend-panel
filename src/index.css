@@ -77,6 +77,9 @@ option:hover {
 .w-inherit {
   width: inherit;
 }
+input[type="date"] {
+  text-transform: uppercase !important;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .x-small-font {
