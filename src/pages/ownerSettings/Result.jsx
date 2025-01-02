@@ -553,10 +553,8 @@ const Result = () => {
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
-            className={`me-3 ${
-              activeBtn === item
-                ? "saffron-btn2  px-3"
-                : "white-btn2 pointer px-3"
+            className={`me-3 px-3 ${
+              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
