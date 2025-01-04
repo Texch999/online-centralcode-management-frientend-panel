@@ -208,6 +208,11 @@
   border: none;
   outline: none;
 }
+.all-none3 {
+  border: none;
+  outline: none;
+  background: none;
+}
 .black-text2 {
   color: #1d1d1d;
   font-weight: 500;
