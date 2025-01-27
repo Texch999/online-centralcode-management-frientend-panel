@@ -1,57 +1,24 @@
 import { Images } from "../images";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    const usernameRegex = /^[a-zA-Z ]*$/;
-    const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/;
-
-    const trimmedUsername = username.trim();
-    if (!trimmedUsername) {
-      setError("Username is required");
-      return;
-    }
-
-    if (!usernameRegex.test(trimmedUsername)) {
-      setError("Username can only contain letters and spaces");
-      return;
-    }
-
-    if (trimmedUsername.length < 5 || trimmedUsername.length > 15) {
-      setError("Username must be between 5 and 15 characters long");
-      return;
-    }
-
-    if (!password) {
-      setPasswordError("Password is required");
-      return;
-    }
-
-    if (password.length < 6 || password.length > 36) {
-      setPasswordError("Password must be between 6 and 36 characters long");
-      return;
-    }
-
-    if (!passwordRegex.test(password)) {
-      setPasswordError(
-        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character"
-      );
-      return;
-    }
-
+  const handleLogin = (data) => {
     let role_name = "";
     let role_code = "";
 
-    switch (trimmedUsername.toLowerCase()) {
+    switch (data.username.trim().toLowerCase()) {
       case "central_panel":
         role_name = "Central Panel";
         role_code = "central_panel";
@@ -85,7 +52,6 @@ function Login() {
         role_code = "white_label";
         break;
       default:
-        setError("Invalid username");
         return;
     }
 
@@ -100,12 +66,6 @@ function Login() {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleLogin();
-    }
-  };
-
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center">
       <div
@@ -113,7 +73,10 @@ function Login() {
         style={{ maxWidth: "1000px" }}
       >
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
-          <div className="ps-4 pe-5 flex-column px-5 w-75">
+          <form
+            className="ps-4 pe-5 flex-column px-5 w-75"
+            onSubmit={handleSubmit(handleLogin)}
+          >
             <div className="welcome-font">WELCOME</div>
             <div className="black-text">
               We are glad to see you back with us
@@ -129,23 +92,33 @@ function Login() {
                 <input
                   className="all-none w-inherit ps-2"
                   placeholder="Username"
-                  value={username}
                   maxLength={15}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const usernameRegex = /^[a-zA-Z ]*$/;
-                    if (usernameRegex.test(value)) {
-                      setUsername(value);
-                      setError("");
-                    } else {
-                      setError("Username can only contain letters and spaces");
-                    }
-                  }}
-                  onKeyPress={handleKeyPress}
+                  {...register("username", {
+                    required: "Username is required",
+                    pattern: {
+                      value: /^[a-zA-Z ]*$/,
+                      message: "Username can only contain letters and spaces",
+                    },
+                    minLength: {
+                      value: 5,
+                      message: "Username must be at least 5 characters",
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: "Username must not exceed 15 characters",
+                    },
+                  })}
                   aria-label="Username"
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^a-zA-Z ]/g, "");
+                  }}
                 />
               </div>
-              {error && <div className="small-font red-font mt-1">{error}</div>}
+              {errors.username && (
+                <div className="small-font red-font mt-1">
+                  {errors.username.message}
+                </div>
+              )}
 
               <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-3 p-2">
                 <img
@@ -156,22 +129,25 @@ function Login() {
                 <input
                   className="all-none w-inherit ps-2"
                   type={passwordVisible ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  minLength={6}
                   maxLength={36}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setPassword(value);
-                    setPasswordError("");
-
-                    if (value.length < 6 || value.length > 36) {
-                      setPasswordError(
-                        "Password must be between 6 and 36 characters long"
-                      );
-                    }
-                  }}
-                  onKeyPress={handleKeyPress}
+                  placeholder="Password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                    maxLength: {
+                      value: 36,
+                      message: "Password must not exceed 36 characters",
+                    },
+                    pattern: {
+                      value:
+                        /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/,
+                      message:
+                        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+                    },
+                  })}
                   aria-label="Password"
                 />
                 <span
@@ -185,15 +161,17 @@ function Login() {
                   )}
                 </span>
               </div>
-              {passwordError && (
-                <div className="small-font red-font mt-1">{passwordError}</div>
+              {errors.password && (
+                <div className="small-font red-font mt-1">
+                  {errors.password.message}
+                </div>
               )}
 
-              <button className="orange-btn mt-4 w-100" onClick={handleLogin}>
+              <button className="orange-btn mt-4 w-100" type="submit">
                 Submit
               </button>
             </div>
-          </div>
+          </form>
           <img
             src={Images.LoginImageOne}
             alt="login-one"
