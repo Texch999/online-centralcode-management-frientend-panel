@@ -115,7 +115,9 @@ function Login() {
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
           <div className="ps-4 pe-5 flex-column px-5 w-75">
             <div className="welcome-font">WELCOME</div>
-            <div className="black-text">We are glad to see you back with us</div>
+            <div className="black-text">
+              We are glad to see you back with us
+            </div>
             <div className="py-4 medium-font">
               <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-2 p-2">
                 <img
@@ -156,13 +158,17 @@ function Login() {
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
                   value={password}
+                  minLength={6}
+                  maxLength={36}
                   onChange={(e) => {
                     const value = e.target.value;
                     setPassword(value);
                     setPasswordError("");
 
                     if (value.length < 6 || value.length > 36) {
-                      setPasswordError("Password must be between 6 and 36 characters long");
+                      setPasswordError(
+                        "Password must be between 6 and 36 characters long"
+                      );
                     }
                   }}
                   onKeyPress={handleKeyPress}
@@ -172,7 +178,11 @@ function Login() {
                   onClick={handlePasswordVisibility}
                   style={{ cursor: "pointer" }}
                 >
-                  {passwordVisible ? <FiEyeOff size={22} /> : <FiEye size={22} />}
+                  {passwordVisible ? (
+                    <FiEyeOff size={22} />
+                  ) : (
+                    <FiEye size={22} />
+                  )}
                 </span>
               </div>
               {passwordError && (
