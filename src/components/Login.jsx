@@ -5,19 +5,53 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function Login() {
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (!username.trim()) {
+    const usernameRegex = /^[a-zA-Z ]*$/;
+    const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/;
+
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) {
       setError("Username is required");
+      return;
+    }
+
+    if (!usernameRegex.test(trimmedUsername)) {
+      setError("Username can only contain letters and spaces");
+      return;
+    }
+
+    if (trimmedUsername.length < 5 || trimmedUsername.length > 15) {
+      setError("Username must be between 5 and 15 characters long");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+
+    if (password.length < 6 || password.length > 36) {
+      setPasswordError("Password must be between 6 and 36 characters long");
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      setPasswordError(
+        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character"
+      );
       return;
     }
 
     let role_name = "";
     let role_code = "";
-    switch (username.toLowerCase()) {
+
+    switch (trimmedUsername.toLowerCase()) {
       case "central_panel":
         role_name = "Central Panel";
         role_code = "central_panel";
@@ -81,9 +115,7 @@ function Login() {
         <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
           <div className="ps-4 pe-5 flex-column px-5 w-75">
             <div className="welcome-font">WELCOME</div>
-            <div className="black-text">
-              We are glad to see you back with us
-            </div>
+            <div className="black-text">We are glad to see you back with us</div>
             <div className="py-4 medium-font">
               <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-2 p-2">
                 <img
@@ -91,15 +123,23 @@ function Login() {
                   alt="username-icon"
                   src={Images.loginUserImages}
                 />
+
                 <input
                   className="all-none w-inherit ps-2"
                   placeholder="Username"
                   value={username}
+                  maxLength={15}
                   onChange={(e) => {
-                    setUsername(e.target.value);
-                    setError("");
+                    const value = e.target.value;
+                    const usernameRegex = /^[a-zA-Z ]*$/;
+                    if (usernameRegex.test(value)) {
+                      setUsername(value);
+                      setError("");
+                    } else {
+                      setError("Username can only contain letters and spaces");
+                    }
                   }}
-                  onKeyPress={handleKeyPress} 
+                  onKeyPress={handleKeyPress}
                   aria-label="Username"
                 />
               </div>
@@ -115,20 +155,29 @@ function Login() {
                   className="all-none w-inherit ps-2"
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
-                  onKeyPress={handleKeyPress} 
+                  value={password}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setPassword(value);
+                    setPasswordError("");
+
+                    if (value.length < 6 || value.length > 36) {
+                      setPasswordError("Password must be between 6 and 36 characters long");
+                    }
+                  }}
+                  onKeyPress={handleKeyPress}
                   aria-label="Password"
                 />
                 <span
                   onClick={handlePasswordVisibility}
                   style={{ cursor: "pointer" }}
                 >
-                  {passwordVisible ? (
-                    <FiEyeOff size={22} />
-                  ) : (
-                    <FiEye size={22} />
-                  )}
+                  {passwordVisible ? <FiEyeOff size={22} /> : <FiEye size={22} />}
                 </span>
               </div>
+              {passwordError && (
+                <div className="small-font red-font mt-1">{passwordError}</div>
+              )}
 
               <button className="orange-btn mt-4 w-100" onClick={handleLogin}>
                 Submit
