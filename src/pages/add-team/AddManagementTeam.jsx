@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
 import AddManagementPopup from "./popups/AddManagementPopup";
 import { SlPencil } from "react-icons/sl";
@@ -10,8 +10,29 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { getEmployees } from "../../api/apiMethods";
 
 const AddManagementTeam = () => {
+  const token = localStorage.getItem("jwt_token");
+  const [error, setError] = useState("");
+  const [employeeList, setShowEmployeeList] = useState([]);
+  const GetEmployee = () => {
+    getEmployees(token)
+      .then((response) => {
+        if (response?.message === "Employees fetched successfully.") {
+          console.log(response, "response from API");
+          setShowEmployeeList(response?.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Login failed");
+      });
+  };
+  useEffect(() => {
+    GetEmployee();
+  }, []);
   const [tableData, setTableData] = useState(
     Array.from({ length: 17 }, (_, index) => ({
       id: index + 1,
@@ -109,7 +130,7 @@ const AddManagementTeam = () => {
     setModalState({
       ...modalState,
       isDeletePopupVisible: true,
-      deleteAccountId: rowId, // Store the ID of the account to delete
+      deleteAccountId: rowId,
     });
   };
 
@@ -117,7 +138,7 @@ const AddManagementTeam = () => {
     setTableData((prevData) =>
       prevData.filter((row) => row.id !== modalState.deleteAccountId)
     );
-    toggleModal("isDeletePopupVisible", false); // Close the delete popup
+    toggleModal("isDeletePopupVisible", false);
   };
 
   const handleResetPasswordPopup = (isOpen) => {

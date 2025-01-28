@@ -554,3 +554,8 @@
 .text-capitalize {
   text-transform: capitalize;
 }
+.disabled-btn {
+  background-color: #d3d3d3; 
+  cursor: not-allowed; 
+  color: #a0a0a0; 
+}
