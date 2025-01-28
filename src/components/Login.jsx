@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { loginUser } from "../api/apiMethods";
 
 function Login() {
   const {
@@ -13,53 +14,34 @@ function Login() {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleLogin = (data) => {
-    let role_name = "";
-    let role_code = "";
+    const payload = {
+      login_name: data.username, // or "login_name" if your backend expects it
+      password: data.password,
+    };
+    console.log(payload, "payload");
+    loginUser(payload)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response, "response from API");
+          localStorage.setItem("jwt_token", response?.token);
+          localStorage?.setItem("isLoggedIn", true);
+          localStorage.setItem("role_name", response?.user?.role?.role_name);
+          localStorage.setItem("role_code", response?.user?.role?.role_name);
+          window.location.reload();
+          navigate("/");
+          setError("");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Login failed");
+      });
 
-    switch (data.username.trim().toLowerCase()) {
-      case "central_panel":
-        role_name = "Central Panel";
-        role_code = "central_panel";
-        break;
-      case "management":
-        role_name = "Management";
-        role_code = "management";
-        break;
-      case "director":
-        role_name = "Director";
-        role_code = "director";
-        break;
-      case "super_admin":
-        role_name = "Super Admin";
-        role_code = "super_admin";
-        break;
-      case "accounts_team":
-        role_name = "Accounts Team";
-        role_code = "accounts_team";
-        break;
-      case "risk_team":
-        role_name = "Risk Team";
-        role_code = "risk_team";
-        break;
-      case "designing_team":
-        role_name = "Designing Team";
-        role_code = "designing_team";
-        break;
-      case "white_label":
-        role_name = "White Label Setting";
-        role_code = "white_label";
-        break;
-      default:
-        return;
-    }
-
-    localStorage.setItem("role_name", role_name);
-    localStorage.setItem("role_code", role_code);
-    localStorage.setItem("isLoggedIn", "true");
-    navigate("/");
-    window.location.reload();
+    setTimeout(() => setError(""), 2000);
   };
 
   const handlePasswordVisibility = () => {
@@ -88,10 +70,9 @@ function Login() {
                   alt="username-icon"
                   src={Images.loginUserImages}
                 />
-
                 <input
                   className="all-none w-inherit ps-2"
-                  placeholder="Username"
+                  placeholder="Login Name"
                   maxLength={15}
                   {...register("username", {
                     required: "Username is required",
@@ -109,9 +90,6 @@ function Login() {
                     },
                   })}
                   aria-label="Username"
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^a-zA-Z ]/g, "");
-                  }}
                 />
               </div>
               {errors.username && (
@@ -129,8 +107,8 @@ function Login() {
                 <input
                   className="all-none w-inherit ps-2"
                   type={passwordVisible ? "text" : "password"}
-                  maxLength={36}
                   placeholder="Password"
+                  maxLength={36}
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -145,7 +123,7 @@ function Login() {
                       value:
                         /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/,
                       message:
-                        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+                        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
                     },
                   })}
                   aria-label="Password"
@@ -171,6 +149,7 @@ function Login() {
                 Submit
               </button>
             </div>
+            {error && <div className="small-font red-font">{error}</div>}
           </form>
           <img
             src={Images.LoginImageOne}

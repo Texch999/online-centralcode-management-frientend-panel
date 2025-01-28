@@ -55,7 +55,7 @@ function Header() {
           </div>
         </div>
         <div className="d-flex align-items-center">
-          {role_name === "Central Panel" && (
+          {role_name === "owner" && (
             <div
               className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
                 isActiveBtn ? "active-saffron-btn white-text" : ""
@@ -88,19 +88,23 @@ function Header() {
             onClick={() => navigate("/")}
           >
             <PiSquaresFourFill size={24} className="me-2" />
-            <span className="medium-font pointer">Dashboard</span>
+            <span className="medium-font pointer text-capitalize">
+              Dashboard
+            </span>
           </div>
-          {role_name !== "Central Panel" ? (
+          {role_name !== "owner" ? (
             <div
               className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
               onClick={handleNavigate}
             >
-              {role_name !== "Central Panel" ? (
+              {role_name !== "owner" ? (
                 <FaUserTie size={22} className="me-2" />
               ) : (
                 <FaUserCog size={22} className="me-2" />
               )}
-              <span className="medium-font pointer">{role_name}</span>
+              <span className="medium-font pointer text-capitalize">
+                {role_name}
+              </span>
             </div>
           ) : (
             <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
@@ -112,7 +116,9 @@ function Header() {
                 id="dropdown-autoclose-true"
               >
                 <FaUserCog size={24} className="me-2" />
-                <span className="medium-font pointer">{role_name}</span>
+                <span className="medium-font pointer text-capitalize">
+                  {role_name}
+                </span>
                 {isDropdownOpen ? (
                   <FaChevronUp size={16} className="ms-2" />
                 ) : (
@@ -153,7 +159,7 @@ function Header() {
           <span className="ms-2 black-text3 medium-font">Chat</span>
         </div>
       </div>
-      {role_name !== "Central Panel" && role_name !== "White Label Setting" && (
+      {role_name !== "owner" && role_name !== "White Label Setting" && (
         <SubHeader />
       )}
     </div>
