@@ -1,6 +1,6 @@
 import { Images } from "../images";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { loginUser } from "../api/apiMethods";
@@ -9,26 +9,34 @@ function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+    setValue,
+  } = useForm({
+    mode: "onChange",
+  });
 
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (data) => {
     const payload = {
-      login_name: data.username, // or "login_name" if your backend expects it
+      login_name: data.username,
       password: data.password,
     };
     console.log(payload, "payload");
+
+    setLoading(true);
     loginUser(payload)
       .then((response) => {
-        console.log(response, "response login");
+        setLoading(false);
+
         if (response?.status === true) {
           console.log(response, "response from API");
           localStorage.setItem("jwt_token", response?.token);
           localStorage?.setItem("isLoggedIn", true);
+          localStorage.setItem("emp_id", response?.user?.role?.role_id);
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
           window.location.reload();
@@ -39,6 +47,7 @@ function Login() {
         }
       })
       .catch((error) => {
+        setLoading(false);
         setError(error?.message || "Login failed");
       });
 
@@ -148,8 +157,14 @@ function Login() {
                 </div>
               )}
 
-              <button className="orange-btn mt-4 w-100" type="submit">
-                Submit
+              <button
+                className={`orange-btn mt-4 w-100 ${
+                  !isValid || loading ? "disabled-btn" : ""
+                }`}
+                type="submit"
+                disabled={!isValid || loading}
+              >
+                {loading ? "Logging in..." : "Submit"} {/* Show loading text */}
               </button>
             </div>
             {error && <div className="small-font red-font">{error}</div>}

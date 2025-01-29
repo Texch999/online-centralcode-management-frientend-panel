@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
 import AddManagementPopup from "./popups/AddManagementPopup";
 import { SlPencil } from "react-icons/sl";
@@ -10,19 +10,44 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { getEmployees } from "../../api/apiMethods";
 
 const AddManagementTeam = () => {
-  const [tableData, setTableData] = useState(
-    Array.from({ length: 17 }, (_, index) => ({
-      id: index + 1,
-      role: "Designer",
-      name: `Jayanta ${index + 1}`,
-      loginname: `Jayanta121_${index + 1}`,
-      phone: `+91 755145673${index}`,
-      email: `jayanta${index + 1}@demo.com`,
-    }))
-  );
+  const token = localStorage.getItem("jwt_token");
+  const [error, setError] = useState("");
+  const [tableData, setTableData] = useState([]);
+  const GetEmployee = () => {
+    getEmployees(token)
+      .then((response) => {
+        if (response?.message === "Employees fetched successfully.") {
+          console.log(response, "response from API");
+          setTableData(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Login failed");
+      });
+  };
+  useEffect(() => {
+    GetEmployee();
+  }, []);
 
+  const TableData = tableData.map((employee) => {
+    console.log(tableData, "tableData");
+    return {
+      id: employee.id,
+      name: employee.name,
+      login_name: employee.login_name,
+      phone_no: employee.phone_no,
+      email: employee.email,
+      role: [employee.role] || "Unknown",
+      status: employee.status === 1 ? "Active" : "Inactive",
+      created_date: new Date(employee.created_date).toLocaleString(),
+      updated_date: new Date(employee.updated_date).toLocaleString(),
+    };
+  });
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
@@ -109,7 +134,7 @@ const AddManagementTeam = () => {
     setModalState({
       ...modalState,
       isDeletePopupVisible: true,
-      deleteAccountId: rowId, // Store the ID of the account to delete
+      deleteAccountId: rowId,
     });
   };
 
@@ -117,7 +142,7 @@ const AddManagementTeam = () => {
     setTableData((prevData) =>
       prevData.filter((row) => row.id !== modalState.deleteAccountId)
     );
-    toggleModal("isDeletePopupVisible", false); // Close the delete popup
+    toggleModal("isDeletePopupVisible", false);
   };
 
   const handleResetPasswordPopup = (isOpen) => {
@@ -135,11 +160,11 @@ const AddManagementTeam = () => {
     },
     {
       header: "Login Name",
-      field: "loginname",
+      field: "login_name",
     },
     {
       header: "Phone",
-      field: "phone",
+      field: "phone_no",
     },
     {
       header: "Email",
@@ -152,8 +177,7 @@ const AddManagementTeam = () => {
       width: "12%",
     },
   ];
-
-  const tableDataWithActions = tableData.map((row) => ({
+  const tableDataWithActions = TableData.map((row) => ({
     ...row,
     action: (
       <ActionButtons
