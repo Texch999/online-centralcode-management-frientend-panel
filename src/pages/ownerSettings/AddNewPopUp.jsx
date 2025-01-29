@@ -4,11 +4,11 @@ import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
-import { CircleLoader } from "react-spinners";
 import {
   createSecurityQuestions,
   updateSecurityQuestions,
 } from "../../api/apiMethods";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const AddNewPopUp = ({
   addNewModalRejection,
@@ -26,6 +26,7 @@ const AddNewPopUp = ({
   const [securityQns, setSecurityQns] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const handleStatusChange = (selectedOption) => {
     setSelectedStatus(selectedOption.value);
   };
@@ -34,6 +35,10 @@ const AddNewPopUp = ({
     { value: 2, label: "In-Active" },
   ];
   console.log(typeof selectedStatus);
+  const handleSuccessmodal = () => {
+    setSuccessPopupOpen(true);
+    setAddNewModalSecurity(false);
+  };
 
   // const secQnsPayload = {
   //   questions: securityQns,
@@ -70,9 +75,8 @@ const AddNewPopUp = ({
     response
       .then(() => {
         getSecurityQuestions();
-        setLoading(true);
         setSelectedSecurityQuestion(null);
-        setAddNewModalSecurity(false);
+        handleSuccessmodal();
       })
       .catch((error) => console.error("Error:", error));
     setLoading(false);
@@ -146,41 +150,35 @@ const AddNewPopUp = ({
             centered
           >
             <Modal.Body>
-              {loading ? (
-                <div className="d-flex flex-center mt-4 align-items-center">
-                  <CircleLoader color="#3498db" size={25} />
-                </div>
-              ) : (
-                <>
-                  <div className="d-flex w-100 flex-between">
-                    <h6>{`${
-                      selectedSecurityQuestion ? "Edit" : "Add"
-                    } Security Questions`}</h6>
-                    <IoCloseSharp
-                      className="pointer"
-                      onClick={() => setAddNewModalSecurity(false)}
-                    />
-                  </div>
+              <div className="d-flex w-100 flex-between">
+                <h6>{`${
+                  selectedSecurityQuestion ? "Edit" : "Add"
+                } Security Questions`}</h6>
+                <IoCloseSharp
+                  className="pointer"
+                  onClick={() => setAddNewModalSecurity(false)}
+                />
+              </div>
 
-                  <div className="row mt-3 small-font">
-                    <div className="col-4 flex-column">
-                      <label className="black-text4 mb-1">Status</label>
-                      <Select
-                        className="small-font"
-                        options={selectOptions}
-                        placeholder="Select"
-                        styles={customStyles}
-                        maxMenuHeight={120}
-                        menuPlacement="auto"
-                        value={selectOptions.find(
-                          (option) => option.value === selectedStatus
-                        )}
-                        onChange={handleStatusChange}
-                      />
-                    </div>
-                    <div className="col-8 flex-column ">
-                      <label className="black-text4 mb-1">Questions</label>
-                      {/* <input
+              <div className="row mt-3 small-font">
+                <div className="col-4 flex-column">
+                  <label className="black-text4 mb-1">Status</label>
+                  <Select
+                    className="small-font"
+                    options={selectOptions}
+                    placeholder="Select"
+                    styles={customStyles}
+                    maxMenuHeight={120}
+                    menuPlacement="auto"
+                    value={selectOptions.find(
+                      (option) => option.value === selectedStatus
+                    )}
+                    onChange={handleStatusChange}
+                  />
+                </div>
+                <div className="col-8 flex-column ">
+                  <label className="black-text4 mb-1">Questions</label>
+                  {/* <input
                   type="text"
                   placeholder="Enter"
                   className="all-none input-bg small-font p-2 rounded"
@@ -188,38 +186,41 @@ const AddNewPopUp = ({
                   onChange={(e) => setSecurityQns(e.target.value)}
                 /> */}
 
-                      {selectedSecurityQuestion ? (
-                        <input
-                          type="text"
-                          placeholder="Enter"
-                          className="all-none input-bg small-font p-2 rounded"
-                          value={securityQns}
-                          onChange={(e) => setSecurityQns(e.target.value)}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="Enter"
-                          className="all-none input-bg small-font p-2 rounded"
-                          value={securityQns}
-                          onChange={(e) => setSecurityQns(e.target.value)}
-                        />
-                      )}
-                    </div>
-                    <div className="row">
-                      <div className="col-8"></div>
-                      <div
-                        className="saffron-btn2 small-font pointer mt-4 col-4"
-                        onClick={handleSubmit}
-                      >
-                        {`${selectedSecurityQuestion ? "Update" : "Create"}`}
-                      </div>
-                    </div>
+                  {selectedSecurityQuestion ? (
+                    <input
+                      type="text"
+                      placeholder="Enter"
+                      className="all-none input-bg small-font p-2 rounded"
+                      value={securityQns}
+                      onChange={(e) => setSecurityQns(e.target.value)}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="Enter"
+                      className="all-none input-bg small-font p-2 rounded"
+                      value={securityQns}
+                      onChange={(e) => setSecurityQns(e.target.value)}
+                    />
+                  )}
+                </div>
+                <div className="row">
+                  <div className="col-8"></div>
+                  <div
+                    className="saffron-btn2 small-font pointer mt-4 col-4"
+                    onClick={handleSubmit}
+                  >
+                    {`${selectedSecurityQuestion ? "Update" : "Create"}`}
                   </div>
-                </>
-              )}
+                </div>
+              </div>
             </Modal.Body>
           </Modal>
+          <SuccessPopup
+            successPopupOpen={successPopupOpen}
+            setSuccessPopupOpe={setSuccessPopupOpen}
+            discription={"Security Questions Created Successfully"}
+          />
         </div>
       )}
     </>

@@ -9,7 +9,7 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 import { getAllSecurityQuestions } from "../../api/apiMethods";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { ClipLoader, PacmanLoader } from "react-spinners";
+import { ClipLoader, PacmanLoader, CircleLoader } from "react-spinners";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
@@ -24,6 +24,7 @@ const ReferenceData = () => {
 
   const [selectedQnsId, setSelectedSecQnsId] = useState(null);
   const [loading, setLoading] = useState(false);
+ 
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
@@ -360,7 +361,7 @@ const ReferenceData = () => {
           />
         ) : loading ? (
           <div className="d-flex flex-center mt-10 align-items-center">
-            <PacmanLoader color="#3498db" size={25} />
+            <CircleLoader color="#3498db" size={30} />
           </div>
         ) : (
           <Table
