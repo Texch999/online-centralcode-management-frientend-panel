@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
@@ -7,15 +7,48 @@ import AddNewPopUp from "./AddNewPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import { getAllSecurityQuestions } from "../../api/apiMethods";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { ClipLoader, PacmanLoader } from "react-spinners";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
   const ACTIVE_BTNS = ["Rejection Reasons", "Security Questions"];
   const [addNewModalRejection, setAddNewModalRejection] = useState(false);
   const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
+  const [error, setError] = useState("");
+  const [securityQuestions, setSecurityQuestions] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedSecurityQuestion, setSelectedSecurityQuestion] =
+    useState(null);
+
+  const [selectedQnsId, setSelectedSecQnsId] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
+
+  const getSecurityQuestions = () => {
+    setLoading(true);
+    getAllSecurityQuestions()
+      .then((response) => {
+        console.log(response, "get sec qns");
+        setSecurityQuestions(response?.data);
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.log(error, "get sec qns erorr occur");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    getSecurityQuestions();
+  }, []);
+
+  console.log(securityQuestions, "securityQuestions");
 
   const selectOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -29,100 +62,38 @@ const ReferenceData = () => {
     { header: "Action", field: "action", width: "10%" },
   ];
 
-  const SECURITY_DATA = [
-    {
-      questions: <div>What is your name?</div>,
-      status: <div className="green-btn w-fill">Active</div>,
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
+  const SECURITY_DATA = securityQuestions.map((item, index) => ({
+    questions: <div>{item?.questions}</div>,
+    status:
+      item?.status === 1 ? (
+        <div className="green-btn w-fill">Active</div>
+      ) : (
+        <div className="red-btn w-fill">In-Active</div>
       ),
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      questions: <div>What is your name?</div>,
-      status: <div className="green-btn w-fill">Active</div>,
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      questions: <div>What is your name?</div>,
-
-      status: <div className="green-btn w-fill">Active</div>,
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      questions: <div>What is your name?</div>,
-
-      status: <div className="green-btn w-fill">Active</div>,
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-  ];
-
+    action: (
+      <div className="large-font d-flex w-50 flex-between">
+        <span
+          onClick={() => {
+            setSelectedSecurityQuestion(item);
+            setSelectedSecQnsId(item?.id);
+            setAddNewModalSecurity(true);
+          }}
+        >
+          <SlPencil size={18} />
+        </span>
+        <span className="ms-2" onClick={() => setShowDeleteModal(true)}>
+          <FaRegTrashCan size={18} />
+        </span>
+      </div>
+    ),
+    resultDateTime: (
+      <div>
+        {item?.created_date}
+        <br />
+        {item?.updated_date}
+      </div>
+    ),
+  }));
   const REJECTION_COLUMNS = [
     { header: "Reason", field: "reason", width: "15%" },
     { header: "Discriptions", field: "discriptions", width: "55%" },
@@ -387,6 +358,10 @@ const ReferenceData = () => {
             data={REJECTION_DATA}
             itemsPerPage={4}
           />
+        ) : loading ? (
+          <div className="d-flex flex-center mt-10 align-items-center">
+            <PacmanLoader color="#3498db" size={25} />
+          </div>
         ) : (
           <Table
             columns={SECURITY_COLUMNS}
@@ -400,7 +375,18 @@ const ReferenceData = () => {
         addNewModalRejection={addNewModalRejection}
         setAddNewModalSecurity={setAddNewModalSecurity}
         addNewModalSecurity={addNewModalSecurity}
+        getSecurityQuestions={getSecurityQuestions}
+        setSelectedSecurityQuestion={setSelectedSecurityQuestion}
+        selectedSecurityQuestion={selectedSecurityQuestion}
+        selectedQnsId={selectedQnsId}
+        setSelectedSecQnsId={setSelectedSecQnsId}
       />
+      {/* <ConfirmationPopup
+        confirmationPopupOpen={showDeleteModal}
+        setConfirmationPopupOpen={setShowDeleteModal}
+        discription={"Are You Sure to Delete this Match"}
+        submitButton={"Delete"}
+      /> */}
     </div>
   );
 };

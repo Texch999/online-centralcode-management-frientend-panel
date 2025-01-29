@@ -1,21 +1,82 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import { CircleLoader } from "react-spinners";
+import {
+  createSecurityQuestions,
+  updateSecurityQuestions,
+} from "../../api/apiMethods";
 
 const AddNewPopUp = ({
   addNewModalRejection,
   setAddNewModalRejection,
   setAddNewModalSecurity,
   addNewModalSecurity,
+  getSecurityQuestions,
+  setSelectedSecurityQuestion,
+  selectedSecurityQuestion,
+  selectedQnsId,
+  setSelectedSecQnsId,
 }) => {
+  console.log(selectedSecurityQuestion, "selectedSecurityQuestion");
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [securityQns, setSecurityQns] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleStatusChange = (selectedOption) => {
+    setSelectedStatus(selectedOption.value);
+  };
   const selectOptions = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
+    { value: 1, label: "Active" },
+    { value: 2, label: "In-Active" },
   ];
+  console.log(typeof selectedStatus);
+
+  // const secQnsPayload = {
+  //   questions: securityQns,
+  //   status: selectedStatus,
+  // };
+  // console.log(secQnsPayload, "secQnsPayload");
+  // const postSecurityQuestion = () => {
+  //   createSecurityQuestions(secQnsPayload)
+  //     .then((response) => {
+  //       console.log(response, "post sec qns");
+  //       setAddNewModalSecurity(false);
+  //       getSecurityQuestions();
+  //     })
+
+  //     .catch((error) => {
+  //       console.log(error, "erorr occur");
+  //       setError(error?.message);
+  //     });
+  // };
+
+  const handleSubmit = () => {
+    const payload = {
+      id: selectedSecurityQuestion?.id,
+      questions: securityQns,
+      status: selectedStatus,
+    };
+
+    console.log(payload, "payloda,,,,");
+
+    const response = selectedSecurityQuestion
+      ? updateSecurityQuestions(payload)
+      : createSecurityQuestions(payload);
+
+    response
+      .then(() => {
+        getSecurityQuestions();
+        setLoading(true);
+        setSelectedSecurityQuestion(null);
+        setAddNewModalSecurity(false);
+      })
+      .catch((error) => console.error("Error:", error));
+    setLoading(false);
+  };
 
   return (
     <>
@@ -77,50 +138,89 @@ const AddNewPopUp = ({
       )}
 
       {addNewModalSecurity && (
-        <Modal
-          show={addNewModalSecurity}
-          size="md"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Body>
-            <div className="d-flex w-100 flex-between">
-              <h6>Add Security Questions</h6>
-              <IoCloseSharp
-                className="pointer"
-                onClick={() => setAddNewModalSecurity(false)}
-              />
-            </div>
+        <div>
+          <Modal
+            show={addNewModalSecurity}
+            size="md"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Body>
+              {loading ? (
+                <div className="d-flex flex-center mt-4 align-items-center">
+                  <CircleLoader color="#3498db" size={25} />
+                </div>
+              ) : (
+                <>
+                  <div className="d-flex w-100 flex-between">
+                    <h6>{`${
+                      selectedSecurityQuestion ? "Edit" : "Add"
+                    } Security Questions`}</h6>
+                    <IoCloseSharp
+                      className="pointer"
+                      onClick={() => setAddNewModalSecurity(false)}
+                    />
+                  </div>
 
-            <div className="row mt-3 small-font">
-              <div className="col-4 flex-column">
-                <label className="black-text4 mb-1">Status</label>
-                <Select
-                  className="small-font"
-                  options={selectOptions}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                />
-              </div>
-              <div className="col-8 flex-column ">
-                <label className="black-text4 mb-1">Questions</label>
-                <input
+                  <div className="row mt-3 small-font">
+                    <div className="col-4 flex-column">
+                      <label className="black-text4 mb-1">Status</label>
+                      <Select
+                        className="small-font"
+                        options={selectOptions}
+                        placeholder="Select"
+                        styles={customStyles}
+                        maxMenuHeight={120}
+                        menuPlacement="auto"
+                        value={selectOptions.find(
+                          (option) => option.value === selectedStatus
+                        )}
+                        onChange={handleStatusChange}
+                      />
+                    </div>
+                    <div className="col-8 flex-column ">
+                      <label className="black-text4 mb-1">Questions</label>
+                      {/* <input
                   type="text"
                   placeholder="Enter"
                   className="all-none input-bg small-font p-2 rounded"
-                />
-              </div>
-              <div className="row">
-                <div className="col-8"></div>
-                <div className="saffron-btn2 small-font pointer mt-4 col-4">
-                  Create
-                </div>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
+                  value={securityQns}
+                  onChange={(e) => setSecurityQns(e.target.value)}
+                /> */}
+
+                      {selectedSecurityQuestion ? (
+                        <input
+                          type="text"
+                          placeholder="Enter"
+                          className="all-none input-bg small-font p-2 rounded"
+                          value={securityQns}
+                          onChange={(e) => setSecurityQns(e.target.value)}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="Enter"
+                          className="all-none input-bg small-font p-2 rounded"
+                          value={securityQns}
+                          onChange={(e) => setSecurityQns(e.target.value)}
+                        />
+                      )}
+                    </div>
+                    <div className="row">
+                      <div className="col-8"></div>
+                      <div
+                        className="saffron-btn2 small-font pointer mt-4 col-4"
+                        onClick={handleSubmit}
+                      >
+                        {`${selectedSecurityQuestion ? "Update" : "Create"}`}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </Modal.Body>
+          </Modal>
+        </div>
       )}
     </>
   );
