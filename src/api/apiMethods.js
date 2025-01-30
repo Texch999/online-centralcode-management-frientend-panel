@@ -30,8 +30,40 @@ export const getWebsiteDetails = (id, data) =>
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
+
+
+//VijayaLakshmi
+const getPromotionsTypes = () => {
+  return apiRequest("getPromotionsTypes");
+};
+
+const getPromotionsImage = () => {
+  return apiRequest("getPromotionsImage");
+};
+const createPromotionImages = (data) => {
+  return apiRequest("createPromotionImages", data);
+};
+const statusPromotionsTypes = (id,data) => {
+  return apiRequest("statusPromotionsTypes",data,id);
+};
+const deletePromotionsImages = (id) => {
+  return apiRequest("deletePromotionsImages",id);
+};
+
 export {
-  loginUser, addManagemnentTeam, getRoles,
-  getEmployees, getWebsitesList, getAllCountires,
-  createWebsite
+  loginUser,
+  addManagemnentTeam,
+  getRoles,
+  getEmployees,
+  getPromotionsTypes,
+  getPromotionsImage,
+  createPromotionImages,
+  statusPromotionsTypes,
+  deletePromotionsImages,
+  getWebsitesList,
+  getAllCountires,
+  createWebsite,
+  updateWebsite,
+  getWebsiteDetails,
+  blockAndUnblock
 };
