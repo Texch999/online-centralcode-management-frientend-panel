@@ -5,7 +5,11 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 import {
+  createRejReasons,
   createSecurityQuestions,
+  getRejReasonsById,
+  getSecQusetionsById,
+  updateRejReasons,
   updateSecurityQuestions,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
@@ -16,12 +20,17 @@ const AddNewPopUp = ({
   setAddNewModalSecurity,
   addNewModalSecurity,
   getSecurityQuestions,
-  setSelectedSecurityQuestion,
-  selectedSecurityQuestion,
   selectedQnsId,
+  setIsEdit,
+  isEdit,
+  setSelectedRejReasonId,
+  selectedRejReasonId,
+  getRejReasons,
   setSelectedSecQnsId,
 }) => {
-  console.log(selectedSecurityQuestion, "selectedSecurityQuestion");
+  console.log(selectedRejReasonId, "is eidtt");
+  console.log(isEdit, "edit");
+
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [securityQns, setSecurityQns] = useState("");
   const [error, setError] = useState("");
@@ -30,56 +39,103 @@ const AddNewPopUp = ({
   const handleStatusChange = (selectedOption) => {
     setSelectedStatus(selectedOption.value);
   };
+  const [rejReason, setRejReason] = useState("");
+  const [rejReasonDescription, setRejReasonDescription] = useState("");
+  const [secQnsByIdData, setSecQnsByIdData] = useState([]);
+  console.log(secQnsByIdData, "secQnsByIdData");
+  const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const selectOptions = [
     { value: 1, label: "Active" },
     { value: 2, label: "In-Active" },
   ];
   console.log(typeof selectedStatus);
-  const handleSuccessmodal = () => {
-    setSuccessPopupOpen(true);
-    setAddNewModalSecurity(false);
+
+  const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
+  console.log(rejReasonsDataById, "rejReasonsDataById");
+  const getRejReasonsId = () => {
+    getRejReasonsById(selectedRejReasonId)
+      .then((response) => {
+        setRejReasonsDataById(response);
+      })
+      .catch((error) => {
+        console.log(error, "get rej reasons by id error occur");
+      });
   };
+  useEffect(() => {
+    if (isEdit && selectedRejReasonId) {
+      getRejReasonsId();
+    }
+  }, [selectedRejReasonId, isEdit]);
 
-  // const secQnsPayload = {
-  //   questions: securityQns,
-  //   status: selectedStatus,
-  // };
-  // console.log(secQnsPayload, "secQnsPayload");
-  // const postSecurityQuestion = () => {
-  //   createSecurityQuestions(secQnsPayload)
-  //     .then((response) => {
-  //       console.log(response, "post sec qns");
-  //       setAddNewModalSecurity(false);
-  //       getSecurityQuestions();
-  //     })
+  const getSecQnsById = () => {
+    getSecQusetionsById(selectedQnsId)
+      .then((response) => {
+        console.log(response, "get sec qns by id");
+        setSelectedSecurityQuestion(response);
+      })
+      .catch((error) => {
+        console.log(error, "get sec qns by id error occur");
+      });
+  };
+  useEffect(() => {
+    getSecQnsById();
+  }, [selectedQnsId]);
 
-  //     .catch((error) => {
-  //       console.log(error, "erorr occur");
-  //       setError(error?.message);
-  //     });
-  // };
-
-  const handleSubmit = () => {
+  const handleSecQuestionsSubmit = () => {
     const payload = {
-      id: selectedSecurityQuestion?.id,
-      questions: securityQns,
-      status: selectedStatus,
+      questions: securityQns || selectedSecurityQuestion?.questions,
+      status: selectedStatus || selectedSecurityQuestion.status,
     };
-
-    console.log(payload, "payloda,,,,");
-
-    const response = selectedSecurityQuestion
-      ? updateSecurityQuestions(payload)
+    const response = selectedQnsId
+      ? updateSecurityQuestions(selectedQnsId, payload)
       : createSecurityQuestions(payload);
-
     response
       .then(() => {
         getSecurityQuestions();
-        setSelectedSecurityQuestion(null);
-        handleSuccessmodal();
+        setSecurityQns("");
+        setSelectedStatus(null);
+        setAddNewModalSecurity(false);
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 1000);
       })
       .catch((error) => console.error("Error:", error));
     setLoading(false);
+  };
+
+  const handlePostRejectionReasons = () => {
+    const rejReasonsPayload = {
+      reason: rejReason || rejReasonsDataById.reason,
+      description: rejReasonDescription || rejReasonsDataById.description,
+      status: selectedStatus || rejReasonsDataById.status,
+    };
+
+    console.log(rejReasonsPayload, "payload");
+
+    const handleError = (error) => {
+      console.log(error, "error occurred");
+      setError(error?.message);
+    };
+    const response = isEdit
+      ? updateRejReasons(selectedRejReasonId, rejReasonsPayload)
+      : createRejReasons(rejReasonsPayload);
+    console.log(selectedRejReasonId, "dddd");
+    response
+      .then(() => {
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 1000);
+
+        setRejReason("");
+        setRejReasonDescription("");
+        setSelectedStatus(null);
+        setRejReasonsDataById([]);
+        getRejReasons();
+        setAddNewModalRejection(false);
+      })
+      .catch(handleError);
   };
 
   return (
@@ -93,7 +149,7 @@ const AddNewPopUp = ({
         >
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
-              <h6>Add Rejection Reasons</h6>
+              <h6>{`${isEdit === true ? "Edit" : "Add"}`} Rejection Reasons</h6>
               <IoCloseSharp
                 className="pointer"
                 onClick={() => setAddNewModalRejection(false)}
@@ -110,6 +166,16 @@ const AddNewPopUp = ({
                   styles={customStyles}
                   maxMenuHeight={120}
                   menuPlacement="auto"
+                  value={
+                    isEdit
+                      ? selectOptions.find(
+                          (option) => option.value === rejReasonsDataById.status
+                        )
+                      : selectOptions.find(
+                          (option) => option.value === selectedStatus
+                        ) || null
+                  }
+                  onChange={handleStatusChange}
                 />
               </div>
               <div className="col-8 flex-column ">
@@ -118,6 +184,10 @@ const AddNewPopUp = ({
                   type="text"
                   placeholder="Enter"
                   className="all-none input-bg small-font p-2 rounded"
+                  value={
+                    isEdit === true ? rejReasonsDataById.reason : rejReason
+                  }
+                  onChange={(e) => setRejReason(e.target.value)}
                 />
               </div>
 
@@ -128,12 +198,21 @@ const AddNewPopUp = ({
                   className="all-none input-bg small-font p-2 rounded"
                   rows="4"
                   style={{ resize: "none" }}
+                  value={
+                    isEdit === true
+                      ? rejReasonsDataById?.description
+                      : rejReasonDescription
+                  }
+                  onChange={(e) => setRejReasonDescription(e.target.value)}
                 ></textarea>
               </div>
               <div className="row">
                 <div className="col-8"></div>
-                <div className="saffron-btn2 small-font pointer mt-4 col-4">
-                  Create
+                <div
+                  className="saffron-btn2 small-font pointer mt-4 col-4"
+                  onClick={handlePostRejectionReasons}
+                >
+                  {`${isEdit === true ? "Update" : "Create"}`}
                 </div>
               </div>
             </div>
@@ -151,9 +230,10 @@ const AddNewPopUp = ({
           >
             <Modal.Body>
               <div className="d-flex w-100 flex-between">
-                <h6>{`${
-                  selectedSecurityQuestion ? "Edit" : "Add"
-                } Security Questions`}</h6>
+                <h6>
+                  {`${isEdit === true ? "Edit" : "Add"}`}
+                  Add Security Questions
+                </h6>
                 <IoCloseSharp
                   className="pointer"
                   onClick={() => setAddNewModalSecurity(false)}
@@ -170,47 +250,40 @@ const AddNewPopUp = ({
                     styles={customStyles}
                     maxMenuHeight={120}
                     menuPlacement="auto"
-                    value={selectOptions.find(
-                      (option) => option.value === selectedStatus
-                    )}
+                    value={
+                      isEdit
+                        ? selectOptions.find(
+                            (option) =>
+                              option.value === selectedSecurityQuestion?.status
+                          )
+                        : selectOptions.find(
+                            (option) => option.value === selectedStatus
+                          ) || null
+                    }
                     onChange={handleStatusChange}
                   />
                 </div>
                 <div className="col-8 flex-column ">
                   <label className="black-text4 mb-1">Questions</label>
-                  {/* <input
-                  type="text"
-                  placeholder="Enter"
-                  className="all-none input-bg small-font p-2 rounded"
-                  value={securityQns}
-                  onChange={(e) => setSecurityQns(e.target.value)}
-                /> */}
-
-                  {selectedSecurityQuestion ? (
-                    <input
-                      type="text"
-                      placeholder="Enter"
-                      className="all-none input-bg small-font p-2 rounded"
-                      value={securityQns}
-                      onChange={(e) => setSecurityQns(e.target.value)}
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      placeholder="Enter"
-                      className="all-none input-bg small-font p-2 rounded"
-                      value={securityQns}
-                      onChange={(e) => setSecurityQns(e.target.value)}
-                    />
-                  )}
+                  <input
+                    type="text"
+                    placeholder="Enter"
+                    className="all-none input-bg small-font p-2 rounded"
+                    value={
+                      isEdit === true
+                        ? selectedSecurityQuestion?.questions
+                        : securityQns
+                    }
+                    onChange={(e) => setSecurityQns(e.target.value)}
+                  />
                 </div>
                 <div className="row">
                   <div className="col-8"></div>
                   <div
                     className="saffron-btn2 small-font pointer mt-4 col-4"
-                    onClick={handleSubmit}
+                    onClick={handleSecQuestionsSubmit}
                   >
-                    {`${selectedSecurityQuestion ? "Update" : "Create"}`}
+                    {`${isEdit === true ? "Update" : "Create"}`}
                   </div>
                 </div>
               </div>
@@ -218,7 +291,7 @@ const AddNewPopUp = ({
           </Modal>
           <SuccessPopup
             successPopupOpen={successPopupOpen}
-            setSuccessPopupOpe={setSuccessPopupOpen}
+            setSuccessPopupOpen={setSuccessPopupOpen}
             discription={"Security Questions Created Successfully"}
           />
         </div>

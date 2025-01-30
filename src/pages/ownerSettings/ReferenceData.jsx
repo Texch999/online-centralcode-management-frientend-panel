@@ -7,9 +7,11 @@ import AddNewPopUp from "./AddNewPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
-import { getAllSecurityQuestions } from "../../api/apiMethods";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { ClipLoader, PacmanLoader, CircleLoader } from "react-spinners";
+import {
+  getAllRejectionReasons,
+  getAllSecurityQuestions,
+} from "../../api/apiMethods";
+import { CircleLoader } from "react-spinners";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
@@ -19,12 +21,12 @@ const ReferenceData = () => {
   const [error, setError] = useState("");
   const [securityQuestions, setSecurityQuestions] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedSecurityQuestion, setSelectedSecurityQuestion] =
-    useState(null);
-
+  // const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const [selectedQnsId, setSelectedSecQnsId] = useState(null);
+  const [rejReasonsData, setRejReasonsData] = useState([]);
   const [loading, setLoading] = useState(false);
- 
+  const [isEdit, setIsEdit] = useState("");
+  const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
@@ -34,7 +36,7 @@ const ReferenceData = () => {
     setLoading(true);
     getAllSecurityQuestions()
       .then((response) => {
-        console.log(response, "get sec qns");
+        console.log(response?.status, "get sec qns");
         setSecurityQuestions(response?.data);
       })
       .catch((error) => {
@@ -49,12 +51,31 @@ const ReferenceData = () => {
     getSecurityQuestions();
   }, []);
 
-  console.log(securityQuestions, "securityQuestions");
+  console.log(selectedRejReasonId, "selectedRejReasonId");
+
+  const getRejReasons = () => {
+    setLoading(true);
+    getAllRejectionReasons()
+      .then((response) => {
+        console.log(response.status, "response get rej reasons");
+        setRejReasonsData(response?.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+        console.log("error occur");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    getRejReasons();
+  }, []);
+  console.log(rejReasonsData, "rejReasonsData");
 
   const selectOptions = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
+    { value: "1", label: "Active" },
+    { value: "2", label: "In-Active" },
   ];
 
   const SECURITY_COLUMNS = [
@@ -75,9 +96,9 @@ const ReferenceData = () => {
       <div className="large-font d-flex w-50 flex-between">
         <span
           onClick={() => {
-            setSelectedSecurityQuestion(item);
             setSelectedSecQnsId(item?.id);
             setAddNewModalSecurity(true);
+            isEdit(true);
           }}
         >
           <SlPencil size={18} />
@@ -101,196 +122,43 @@ const ReferenceData = () => {
     { header: "Status", field: "status", width: "10%" },
     { header: "Action", field: "action", width: "10%" },
   ];
-  const REJECTION_DATA = [
-    {
-      reason: <div>Insufficient Balance</div>,
+  const REJECTION_DATA = rejReasonsData.map((item, index) => ({
+    reason: <div>{item?.reason}</div>,
 
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
-          <br />
-          withdraw cash from an ATM
-        </div>
-      ),
+    discriptions: <div>{item?.description}</div>,
 
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
+    status:
+      item?.status === 1 ? (
+        <div className="green-btn w-fill">Active</div>
+      ) : (
+        <div className="red-btn w-fill">In-Active</div>
       ),
 
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
-          <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
-          <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
-          <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-
-    {
-      reason: <div>Insufficient Balance</div>,
-
-      discriptions: (
-        <div>
-          It means that a customer’s account lacks the necessary funds to cover
-          a withdrawal, purchase, or payment. For example, if someone tries to{" "}
-          <br />
-          withdraw cash from an ATM
-        </div>
-      ),
-
-      status: (
-        <div>
-          <div className="w-50  green-btn">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-      tableNumber: <div className="green-font">T ID: 12345678943323</div>,
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-  ];
+    action: (
+      <div className="large-font d-flex w-50 flex-between">
+        <span
+          onClick={() => {
+            setAddNewModalRejection(true);
+            setSelectedRejReasonId(item?.id);
+            setIsEdit(true);
+          }}
+        >
+          <SlPencil size={18} />
+        </span>
+        <span className="ms-2">
+          <FaRegTrashCan size={18} />
+        </span>
+      </div>
+    ),
+    tableNumber: <div className="green-font">T ID: 12345678943323</div>,
+    resultDateTime: (
+      <div>
+        02-10-2024
+        <br />
+        10:34:00
+      </div>
+    ),
+  }));
 
   return (
     <div className="">
@@ -333,19 +201,23 @@ const ReferenceData = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <div className="saffron-btn2 small-font pointer col-3 mx-2">
             Submit
           </div>
 
-          {/* Add New Button */}
           <div
             className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
-            onClick={() =>
-              activeBtn === "Rejection Reasons"
-                ? setAddNewModalRejection(true)
-                : setAddNewModalSecurity(true)
-            }
+            onClick={() => {
+              if (activeBtn === "Rejection Reasons") {
+                setAddNewModalRejection(true);
+                setIsEdit(false);
+                setSelectedRejReasonId(null);
+              } else {
+                setAddNewModalSecurity(true);
+                setSelectedSecQnsId(null);
+                isEdit(false);
+              }
+            }}
           >
             <IoAddOutline className="large-font" /> Add new
           </div>
@@ -354,14 +226,26 @@ const ReferenceData = () => {
 
       <div className="mt-3">
         {activeBtn === "Rejection Reasons" ? (
-          <Table
-            columns={REJECTION_COLUMNS}
-            data={REJECTION_DATA}
-            itemsPerPage={4}
-          />
+          loading ? (
+            <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+              <CircleLoader color="#3498db" size={40} />
+              <div className="medium-font black-font my-3">
+                Just a moment... great things take time ⏳
+              </div>
+            </div>
+          ) : (
+            <Table
+              columns={REJECTION_COLUMNS}
+              data={REJECTION_DATA}
+              itemsPerPage={4}
+            />
+          )
         ) : loading ? (
-          <div className="d-flex flex-center mt-10 align-items-center">
-            <CircleLoader color="#3498db" size={30} />
+          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            <CircleLoader color="#3498db" size={40} />
+            <div className="medium-font black-font my-3">
+              Just a moment... great things take time ⏳
+            </div>
           </div>
         ) : (
           <Table
@@ -377,17 +261,16 @@ const ReferenceData = () => {
         setAddNewModalSecurity={setAddNewModalSecurity}
         addNewModalSecurity={addNewModalSecurity}
         getSecurityQuestions={getSecurityQuestions}
-        setSelectedSecurityQuestion={setSelectedSecurityQuestion}
-        selectedSecurityQuestion={selectedSecurityQuestion}
+        setRejReasonsData={setRejReasonsData}
+        rejReasonsData={rejReasonsData}
         selectedQnsId={selectedQnsId}
         setSelectedSecQnsId={setSelectedSecQnsId}
+        selectedRejReasonId={selectedRejReasonId}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        setSelectedRejReasonId={setSelectedRejReasonId}
+        getRejReasons={getRejReasons}
       />
-      {/* <ConfirmationPopup
-        confirmationPopupOpen={showDeleteModal}
-        setConfirmationPopupOpen={setShowDeleteModal}
-        discription={"Are You Sure to Delete this Match"}
-        submitButton={"Delete"}
-      /> */}
     </div>
   );
 };

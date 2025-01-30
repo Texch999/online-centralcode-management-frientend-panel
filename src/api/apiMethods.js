@@ -22,14 +22,41 @@ const getRoles = (data) => {
 const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
+const getAllRejectionReasons = (data) => {
+  return apiRequest("getAllRejectionReasons", data);
+};
+const createRejReasons=(data)=>{
+  return apiRequest("createRejReasons",data);
+};
+const updateRejReasons=(id,data)=>{
+  return apiRequest("updateRejReasons", data,id);
+};
+const getSecQusetionsById=(id,data)=>{
+  return apiRequest("getSecQusetionsById", data, id);
+};
+const getRejReasonsById=(id,data)=>{
+  return apiRequest("getRejReasonsById", data, id);
+};
+const getSecQuestionsPagination = (page = 1, pageSize = 10) => {
+  return apiRequest("getSecQuestionsPagination", null, null, {
+    page: page,
+    pageSize: pageSize,
+    status: 1, 
+  });
+};
 
 export {
   loginUser,
   createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
-  loginUser,
   addManagemnentTeam,
   getRoles,
   getEmployees,
+  getAllRejectionReasons,
+  createRejReasons,
+  updateRejReasons,
+  getSecQusetionsById,
+  getRejReasonsById,
+  getSecQuestionsPagination,
 };
