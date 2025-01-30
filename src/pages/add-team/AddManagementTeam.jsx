@@ -12,6 +12,7 @@ import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getEmployees } from "../../api/apiMethods";
 import Roles from "../../utils/enum";
+import EditManagementPopup from "./popups/EditManagementPopup";
 
 const AddManagementTeam = () => {
   const token = localStorage.getItem("jwt_token");
@@ -36,34 +37,24 @@ const AddManagementTeam = () => {
   }, []);
 
   const TableData = tableData.map((employee) => {
-    console.log(tableData, "tableData");
     return {
       id: employee.id,
-      name: employee.name,
+      name: employee.name,  
       login_name: employee.login_name,
       phone_no: employee.phone_no,
       email: employee.email,
-      role: Roles[employee.role] || "Unknown", // Look up the role name from the Roles enum
-      status: employee.status === 1 ? "Active" : "Inactive",
+      role: Roles[employee.role] || "Unknown",
+      status: employee.status === 1 ? "green-clr" : "clr-red",
+      statusColor: employee.status === 1 ? "green-clr" : "clr-red",
       created_date: new Date(employee.created_date).toLocaleString(),
       updated_date: new Date(employee.updated_date).toLocaleString(),
     };
   });
-  // const TableData = tableData.map((employee) => {
-  //   console.log(tableData, "tableData");
-  //   return {
-  //     id: employee.id,
-  //     name: employee.name,
-  //     login_name: employee.login_name,
-  //     phone_no: employee.phone_no,
-  //     email: employee.email,
-  //     role: Roles[employee.role] || "Unknown", // Look up the role name from the Roles enum
-  //     // role: [employee.role] || "Unknown",
-  //     status: employee.status === 1 ? "Active" : "Inactive",
-  //     created_date: new Date(employee.created_date).toLocaleString(),
-  //     updated_date: new Date(employee.updated_date).toLocaleString(),
-  //   };
-  // });
+
+  console.log(TableData);
+
+  console.log(TableData, "TableData");
+
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
@@ -76,6 +67,8 @@ const AddManagementTeam = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingRowId, setEditingRowId] = useState(null);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
+  const [resetPasswordId, setResetPasswordId] = useState(null);
+  console.log(editingRowId, "editingRowId");
 
   const [formData, setFormData] = useState({
     role: "",
@@ -113,8 +106,8 @@ const AddManagementTeam = () => {
       setFormData({
         role: rowData.role,
         name: rowData.name,
-        loginName: rowData.loginName,
-        phoneNumber: rowData.phone,
+        loginName: rowData.login_name,
+        phoneNumber: rowData.phone_no,
         email: rowData.email,
         password: "",
         confirmPassword: "",
@@ -139,11 +132,20 @@ const AddManagementTeam = () => {
   };
 
   const handleBlockPopup = (rowId) => {
-    setModalState({
-      ...modalState,
+    const updatedTableData = tableData.map((row) => {
+      if (row.id === rowId) {
+        const newStatus = row.status === 1 ? 2 : 1;
+        return { ...row, status: newStatus };
+      }
+      return row;
+    });
+    setTableData(updatedTableData);
+
+    setModalState((prevState) => ({
+      ...prevState,
       isBlockPopupVisible: true,
       blockAccountId: rowId,
-    });
+    }));
   };
 
   const handleDeletePopup = (rowId) => {
@@ -160,9 +162,9 @@ const AddManagementTeam = () => {
     );
     toggleModal("isDeletePopupVisible", false);
   };
-
-  const handleResetPasswordPopup = (isOpen) => {
-    setResetPasswordPopup(isOpen);
+  const handleResetPasswordPopup = (rowId) => {
+    setResetPasswordId(rowId);
+    setResetPasswordPopup(true);
   };
 
   const columns = [
@@ -193,6 +195,14 @@ const AddManagementTeam = () => {
       width: "12%",
     },
   ];
+  const [EditShow, setEditShow] = useState();
+  const handleEditShow = (rowId) => {
+    setEditShow(true);
+    setEditingRowId(rowId);
+  };
+  const handleEditShowClose = () => {
+    setEditShow(false);
+  };
   const tableDataWithActions = TableData.map((row) => ({
     ...row,
     action: (
@@ -202,6 +212,8 @@ const AddManagementTeam = () => {
         onBlock={handleBlockPopup}
         onResetPassword={handleResetPasswordPopup}
         onDelete={handleDeletePopup}
+        status={row.status}
+        handleEditShow={handleEditShow}
       />
     ),
   }));
@@ -229,26 +241,54 @@ const AddManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={9}
+          itemsPerPage={3}
         />
       </div>
       {/* AddManagementPopup Modal */}
-      <AddManagementPopup
+      {/* <AddManagementPopup
         show={modalState.showAddModal}
         onClose={() => toggleModal("showAddModal", false)}
         formData={formData}
         setFormData={setFormData}
         onSubmit={handleFormSubmit}
+      /> */}
+      <AddManagementPopup
+        show={modalState.showAddModal}
+        onClose={() => toggleModal("showAddModal", false)}  
+        formData={formData}
+        setFormData={setFormData}
+        onSubmit={handleFormSubmit}
       />
-      {/* Block Account Modal */}
+      <EditManagementPopup
+        EditShow={EditShow}
+        handleEditShowClose={handleEditShowClose}
+        editingRowId={editingRowId}
+      />
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isBlockPopupVisible}
         setConfirmationPopupOpen={(value) =>
           toggleModal("isBlockPopupVisible", value)
         }
-        discription={"Are You Sure to Block this Account?"}
-        submitButton={"Block"}
+        discription={
+          modalState.blockAccountId &&
+          (tableData.find((row) => row.id === modalState.blockAccountId)
+            ?.status === 1
+            ? "Are you sure you want to activate this account?"
+            : "Are you sure you want to block  this account?")
+        }
+        submitButton={
+          modalState.blockAccountId &&
+          (tableData.find((row) => row.id === modalState.blockAccountId)
+            ?.status === 1
+            ? "Activate"
+            : "Block")
+        }
+        blockAccountId={modalState.blockAccountId}
+        status={
+          tableData.find((row) => row.id === modalState.blockAccountId)?.status
+        }
       />
+
       {/* Delete Account Modal */}
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isDeletePopupVisible}
@@ -263,6 +303,7 @@ const AddManagementTeam = () => {
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={setResetPasswordPopup}
+        resetPasswordId={resetPasswordId}
       />
     </div>
   );
@@ -274,29 +315,29 @@ const ActionButtons = ({
   onBlock,
   onResetPassword,
   onDelete,
-}) => (
-  <div className="d-flex gap-3 flex-center">
-    <SlPencil
-      size={18}
-      className="pointer black-text"
-      onClick={() => onEdit(rowId)}
-    />
-    <MdLockReset
-      size={18}
-      className="pointer black-text"
-      onClick={() => onResetPassword(true)}
-    />
-    <MdBlockFlipped
-      size={18}
-      className="pointer black-text"
-      onClick={() => onBlock(rowId)}
-    />
-    <FaRegTrashCan
-      size={18}
-      className="pointer black-text"
-      onClick={() => onDelete(rowId)}
-    />
-  </div>
-);
+  status,
+  handleEditShow,
+}) => {
+  const blockIconColor = status === "green-clr" ? "green-clr" : "clr-red";
+  return (
+    <div className="d-flex gap-3 flex-center">
+      <SlPencil
+        size={18}
+        className="pointer black-text"
+        onClick={() => handleEditShow(rowId)}
+      />
+      <MdLockReset
+        size={18}
+        className="pointer black-text"
+        onClick={() => onResetPassword(rowId)}
+      />
+      <MdBlockFlipped
+        size={18}
+        className={blockIconColor === "green-clr" ? "green-clr" : "clr-red"}
+        onClick={() => onBlock(rowId)}
+      />
+    </div>
+  );
+};
 
 export default AddManagementTeam;

@@ -1,26 +1,63 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
+import { blockEmploye } from "../../api/apiMethods";
+import { useEffect } from "react";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
   setConfirmationPopupOpen,
   discription,
   submitButton,
+  blockAccountId,
+  status,
 }) {
+  console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-
+  const onSubmit = () => {
+    const requestData = {
+      status: status,
+    };
+    blockEmploye(blockAccountId, requestData)
+      .then((response) => {
+        if (response.status === true) {
+          setTimeout(() => {
+            setConfirmationPopupOpen(false);
+          }, 1000);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        console.log(error?.message || "Request failed");
+      });
+  };
+  useEffect(() => {
+    onSubmit();
+  }, []);
   return (
-    <Modal show={confirmationPopupOpen} centered className="confirm-popup" size="md">
+    <Modal
+      show={confirmationPopupOpen}
+      centered
+      className="confirm-popup"
+      size="md"
+    >
       <Modal.Body>
         <div className="flex-end black-text4 ">
           <IoCloseSharp size={20} onClick={handleCancel} className="pointer" />
         </div>
         <center>
-          <img src={Images?.qnmark} alt="Q_Mark" style={{height:"90px", width:"90px"}}/>
-          <h5 className="black-text4 fw-600 medium-font  mt-2 mb-3">{discription}</h5>{" "}
+          <img
+            src={Images?.qnmark}
+            alt="Q_Mark"
+            style={{ height: "90px", width: "90px" }}
+          />
+          <h1>{status}</h1>
+          <h5 className="black-text4 fw-600 medium-font  mt-2 mb-3">
+            {discription}
+          </h5>{" "}
           <div className="small-font black-text4">
             Lorem Ipsum is simply dummy text of the printing...
           </div>
@@ -31,7 +68,9 @@ function ConfirmationPopup({
             >
               Cancel
             </button>
-            <button className="w-50 saffron-btn2 ms-2">{submitButton}</button>
+            <button className="w-50 saffron-btn2 ms-2" onClick={onSubmit}>
+              {submitButton}
+            </button>
           </div>
         </center>
       </Modal.Body>

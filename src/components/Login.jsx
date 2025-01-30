@@ -19,11 +19,12 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  const [loginData, setLoginData] = useState();
+  console.log(loginData, "loginData");
   const handleLogin = (data) => {
     const payload = {
-      login_name: data.username,
-      password: data.password,
+      login_name: data?.username,
+      password: data?.password,
     };
     console.log(payload, "payload");
 
@@ -34,12 +35,14 @@ function Login() {
 
         if (response?.status === true) {
           console.log(response, "response from API");
+          setLoginData(response);
           localStorage.setItem("jwt_token", response?.token);
           localStorage?.setItem("isLoggedIn", true);
           localStorage.setItem("emp_id", response?.user?.role?.role_id);
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
-          window.location.reload();
+          localStorage.setItem("user_id", response?.user?.id);
+
           navigate("/");
           setError("");
         } else {

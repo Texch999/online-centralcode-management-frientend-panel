@@ -12,4 +12,26 @@ const getRoles = (data) => {
 const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
-export { loginUser, addManagemnentTeam, getRoles, getEmployees };
+const resetEmployeePassword = (id, data) => {
+  return apiRequest("resetEmployeePassword", data, id);
+};
+const blockEmploye = (id, data) => {
+  return apiRequest("blockEmploye", data, id);
+};
+
+const updateEmployeeByID = (id, data) => {
+  return apiRequest("updateEmployeeByID", data, id);
+};
+const getEmployeeDetailsById = (id) => {
+  return apiRequest("getEmployeeDetailsById", null, id);
+};
+export {
+  loginUser,
+  addManagemnentTeam,
+  getRoles,
+  getEmployees,
+  resetEmployeePassword,
+  blockEmploye,
+  updateEmployeeByID,
+  getEmployeeDetailsById,
+};

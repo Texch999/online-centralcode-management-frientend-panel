@@ -555,7 +555,18 @@
   text-transform: capitalize;
 }
 .disabled-btn {
-  background-color: #d3d3d3; 
-  cursor: not-allowed; 
-  color: #a0a0a0; 
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+  color: #a0a0a0;
+}
+.green-block {
+  color: green;
+}
+
+.red-block {
+  color: red;
+}
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
