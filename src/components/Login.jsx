@@ -39,6 +39,7 @@ function Login() {
           localStorage.setItem("emp_id", response?.user?.role?.role_id);
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
+          localStorage.setItem("user_id", response?.user?.id);
           window.location.reload();
           navigate("/");
           setError("");

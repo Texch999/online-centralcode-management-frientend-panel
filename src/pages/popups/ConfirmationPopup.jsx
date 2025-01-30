@@ -1,17 +1,22 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
+import { blockAndUnblock } from "../../api/apiMethods";
+import { useState } from "react";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
   setConfirmationPopupOpen,
   discription,
   submitButton,
+  CallbackFunction
 }) {
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-
+  const handleBlockAndUnblock = () => {
+    CallbackFunction()
+  }
   return (
     <Modal show={confirmationPopupOpen} centered className="confirm-popup" size="md">
       <Modal.Body>
@@ -19,7 +24,7 @@ function ConfirmationPopup({
           <IoCloseSharp size={20} onClick={handleCancel} className="pointer" />
         </div>
         <center>
-          <img src={Images?.qnmark} alt="Q_Mark" style={{height:"90px", width:"90px"}}/>
+          <img src={Images?.qnmark} alt="Q_Mark" style={{ height: "90px", width: "90px" }} />
           <h5 className="black-text4 fw-600 medium-font  mt-2 mb-3">{discription}</h5>{" "}
           <div className="small-font black-text4">
             Lorem Ipsum is simply dummy text of the printing...
@@ -31,7 +36,7 @@ function ConfirmationPopup({
             >
               Cancel
             </button>
-            <button className="w-50 saffron-btn2 ms-2">{submitButton}</button>
+            <button className="w-50 saffron-btn2 ms-2" onClick={handleBlockAndUnblock}>{submitButton}</button>
           </div>
         </center>
       </Modal.Body>

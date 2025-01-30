@@ -12,4 +12,26 @@ const getRoles = (data) => {
 const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
-export { loginUser, addManagemnentTeam, getRoles, getEmployees };
+const getWebsitesList = (params) => {
+  return apiRequest("getWebsitesList", {}, params);
+};
+const getAllCountires = (data) => {
+  return apiRequest("getAllCountires", data);
+};
+const createWebsite = (data) => {
+  return apiRequest("createWebsite", data);
+};
+export const updateWebsite = (id, data) =>
+  apiRequest("updateWebsite", data, id);
+
+export const getWebsiteDetails = (id, data) =>
+  apiRequest("getWebsiteDetails", data, id);
+
+export const blockAndUnblock = (id, data) =>
+  apiRequest("blockAndUnblock", data, id);
+
+export {
+  loginUser, addManagemnentTeam, getRoles,
+  getEmployees, getWebsitesList, getAllCountires,
+  createWebsite
+};
