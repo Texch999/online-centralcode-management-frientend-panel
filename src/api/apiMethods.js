@@ -13,9 +13,32 @@ const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
 
-
 //VijayaLakshmi
 const getPromotionsTypes = () => {
-  return apiRequest("/rest2/0.1/user/:id/api/getPromotionsTypes")
-}
-export { loginUser, addManagemnentTeam, getRoles, getEmployees, getPromotionsTypes };
+  return apiRequest("getPromotionsTypes");
+};
+
+const getPromotionsImage = () => {
+  return apiRequest("getPromotionsImage");
+};
+const createPromotionImages = (data) => {
+  return apiRequest("createPromotionImages", data);
+};
+const statusPromotionsTypes = (id,data) => {
+  return apiRequest("statusPromotionsTypes",data,id);
+};
+const deletePromotionsImages = (id) => {
+  return apiRequest("deletePromotionsImages",id);
+};
+
+export {
+  loginUser,
+  addManagemnentTeam,
+  getRoles,
+  getEmployees,
+  getPromotionsTypes,
+  getPromotionsImage,
+  createPromotionImages,
+  statusPromotionsTypes,
+  deletePromotionsImages,
+};

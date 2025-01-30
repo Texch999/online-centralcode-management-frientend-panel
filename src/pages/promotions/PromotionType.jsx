@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
-import { IoAddOutline } from "react-icons/io5";
 import { MdBlockFlipped } from "react-icons/md";
-import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
-import NewPromotionPopUp from "./NewPromotionPopUp";
-import { Images } from "../../images";
 import { TbArrowsDiagonal } from "react-icons/tb";
 import FullPosterPopUp from "./FullPosterPopUp";
 import { MdOutlineFileUpload } from "react-icons/md";
-import EditPosterPopUp from "./EditPosterPopUp";
 import Select from "react-select";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
-import { getPromotionsTypes } from "../../api/apiMethods";
+import {
+  createPromotionImages,
+  getPromotionsImage,
+  getPromotionsTypes,
+} from "../../api/apiMethods";
 import axios from "axios";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
+import { imgUrl } from "../../api/baseUrl";
 
 const PromotionType = () => {
   const [activeBtn, setActiveBtn] = useState("Promotion Type");
   const [fullPoster, setFullPoster] = useState(false);
   const [fullPosterImage, setFullPosterImage] = useState(false);
-  const [editPoster, setEditPoster] = useState(false);
   const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
   const [posterDeleteModal, setPosterDeleteModal] = useState(false);
   const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
@@ -40,6 +39,11 @@ const PromotionType = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
+  useEffect(() => {
+    getPromotions();
+    getPromotionsImages();
+  }, []);
+
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
   };
@@ -49,20 +53,11 @@ const PromotionType = () => {
     setSelectedFile(file);
   };
 
-  useEffect(() => {
-    getPromotions();
-    getPromotionsImages();
-  }, []);
-
   const getPromotions = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:9001/rest2/0.1/user/:id/api/getPromotionsTypes"
-      );
-      if (response?.status === 200) {
-        setPromotionsTypes(response?.data?.promotionsTypes);
-      } else {
-        console.log("Something Went Wrong");
+      const response = await getPromotionsTypes();
+      if ((response.status = "200")) {
+        setPromotionsTypes(response.promotionsTypes);
       }
     } catch (error) {
       console.log("error", error);
@@ -70,13 +65,9 @@ const PromotionType = () => {
   };
   const getPromotionsImages = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:9001/rest2/0.1/user/:id/api/getPromotionsImages"
-      );
-      if (response?.status === 200) {
-        setPromotionsIMages(response?.data?.promotionsImages);
-      } else {
-        console.log("Something Went Wrong");
+      const response = await getPromotionsImage();
+      if ((response.status = "200")) {
+        setPromotionsIMages(response.promotionsImages);
       }
     } catch (error) {
       console.log("error", error);
@@ -89,29 +80,19 @@ const PromotionType = () => {
     formData.append("image", selectedFile);
 
     try {
-      const response = await axios.post(
-        "http://localhost:9001/rest2/0.1/user/:id/api/createPromotionImages",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setMessage(response.data.message);
+      const response = await createPromotionImages(formData);
+      console.log("response", response);
+      if ((response.status = "200")) {
+        setMessage(response.message);
+        setErrorPopupOpen(false);
         setSelectedFile(null);
         setSelectedOption(null);
         getPromotionsImages();
         setSuccessPopupOpen(true);
-      } else {
-        setMessage(response.data.message);
-        setSelectedFile(null);
-        setErrorPopupOpen(true);
       }
     } catch (error) {
-      setMessage(error?.response?.data?.message);
+      console.log("error", error);
+      setMessage(error?.message);
       setSelectedFile(null);
       setErrorPopupOpen(true);
     }
@@ -150,7 +131,15 @@ const PromotionType = () => {
 
   const PROMOTIONS_DATA = promotionsTypes?.map((promotion) => ({
     promotionid: <div>{promotion.id}</div>,
-    dateTime: <div>{new Date(promotion.created_at).toLocaleString()}</div>,
+    dateTime: (
+      <div>
+        {new Intl.DateTimeFormat("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(new Date(promotion.created_at))}
+      </div>
+    ),
     promotionType: <div>{promotion.promotionsType}</div>,
 
     icons: (
@@ -192,6 +181,10 @@ const PromotionType = () => {
 
   const activePromotions = searchQuery ? filteredPromotions : promotionsIMages;
 
+  useEffect(() => {
+    console.log("activePromotions");
+  }, [activePromotions]);
+
   const PROMOTIONSIMAGES_DATA = activePromotions?.map((promotionsImage) => ({
     promotionid: <div>{promotionsImage.promotionsId}</div>,
     promotionType: <div>{promotionsImage.promotionsType}</div>,
@@ -199,7 +192,7 @@ const PromotionType = () => {
       <div className="flex-center">
         <div className="relative poster-img">
           <img
-            src={`http://localhost:9001/uploads/${promotionsImage.image}`}
+            src={`${imgUrl}/${promotionsImage.image}`}
             alt="Promotion"
             style={{ width: "200px", height: "150px" }}
           />
@@ -213,7 +206,13 @@ const PromotionType = () => {
       </div>
     ),
     dateTime: (
-      <div>{new Date(promotionsImage.created_at).toLocaleString()}</div>
+      <div>
+        {new Intl.DateTimeFormat("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(new Date(promotionsImage.created_at))}
+      </div>
     ),
 
     icons: (

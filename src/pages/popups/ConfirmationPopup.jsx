@@ -4,6 +4,10 @@ import { Images } from "../../images";
 import axios from "axios";
 import { useState } from "react";
 import SuccessPopup from "./SuccessPopup";
+import {
+  deletePromotionsImages,
+  statusPromotionsTypes,
+} from "../../api/apiMethods";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
@@ -22,17 +26,14 @@ function ConfirmationPopup({
       let response;
 
       if (api === "BlockUnBlockPromotion") {
-        response = await axios.put(
-          `http://localhost:9001/rest2/0.1/user/:id/api/statusPromotionsTypes/${selectedId}`
-        );
+        response = await statusPromotionsTypes(selectedId);
       } else {
-        response = await axios.delete(
-          `http://localhost:9001/rest2/0.1/user/:id/api/deletePromotionsImages/${selectedId}`
-        );
+        response = await deletePromotionsImages(selectedId);
       }
-
-      if (response.status === 200) {
-        setMessage(response?.data?.message);
+      console.log("response kwd gvljenvojenvvojwrg", response);
+      if (response?.status === "200") {
+        console.log("hiyhb");
+        setMessage(response?.message);
         setSuccessPopupOpen(true);
 
         setTimeout(() => {
