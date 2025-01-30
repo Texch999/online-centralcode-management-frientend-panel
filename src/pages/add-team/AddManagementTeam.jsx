@@ -11,6 +11,7 @@ import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getEmployees } from "../../api/apiMethods";
+import Roles from "../../utils/enum";
 
 const AddManagementTeam = () => {
   const token = localStorage.getItem("jwt_token");
@@ -42,12 +43,27 @@ const AddManagementTeam = () => {
       login_name: employee.login_name,
       phone_no: employee.phone_no,
       email: employee.email,
-      role: [employee.role] || "Unknown",
+      role: Roles[employee.role] || "Unknown", // Look up the role name from the Roles enum
       status: employee.status === 1 ? "Active" : "Inactive",
       created_date: new Date(employee.created_date).toLocaleString(),
       updated_date: new Date(employee.updated_date).toLocaleString(),
     };
   });
+  // const TableData = tableData.map((employee) => {
+  //   console.log(tableData, "tableData");
+  //   return {
+  //     id: employee.id,
+  //     name: employee.name,
+  //     login_name: employee.login_name,
+  //     phone_no: employee.phone_no,
+  //     email: employee.email,
+  //     role: Roles[employee.role] || "Unknown", // Look up the role name from the Roles enum
+  //     // role: [employee.role] || "Unknown",
+  //     status: employee.status === 1 ? "Active" : "Inactive",
+  //     created_date: new Date(employee.created_date).toLocaleString(),
+  //     updated_date: new Date(employee.updated_date).toLocaleString(),
+  //   };
+  // });
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
