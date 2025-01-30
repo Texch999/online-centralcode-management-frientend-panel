@@ -12,4 +12,10 @@ const getRoles = (data) => {
 const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
-export { loginUser, addManagemnentTeam, getRoles, getEmployees };
+
+
+//VijayaLakshmi
+const getPromotionsTypes = () => {
+  return apiRequest("/rest2/0.1/user/:id/api/getPromotionsTypes")
+}
+export { loginUser, addManagemnentTeam, getRoles, getEmployees, getPromotionsTypes };
