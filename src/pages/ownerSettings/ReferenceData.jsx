@@ -98,7 +98,7 @@ const ReferenceData = () => {
           onClick={() => {
             setSelectedSecQnsId(item?.id);
             setAddNewModalSecurity(true);
-            isEdit(true);
+            setIsEdit(true);
           }}
         >
           <SlPencil size={18} />
@@ -214,8 +214,8 @@ const ReferenceData = () => {
                 setSelectedRejReasonId(null);
               } else {
                 setAddNewModalSecurity(true);
+                setIsEdit(false);
                 setSelectedSecQnsId(null);
-                isEdit(false);
               }
             }}
           >

@@ -1,16 +1,44 @@
+const Login_User_Id = localStorage.getItem("user_id");
 const endpoints = {
-  loginUser: { method: "post", url: "/login" },
-  createSecurityQuestions: { method: "post", url: "/secQuestion/" },
-  getAllSecurityQuestions: { method: "get", url: "/secQuestion/" },
-  getSecQusetionsById: { method: "get", url: (id) => `/secQuestion/${id}` },
-  updateSecurityQuestions: { method: "put", url: (id) => `/secQuestion/${id}` },
+  loginUser: { method: "post", url: "/master/login" },
+  //security questions
+  createSecurityQuestions: {
+    method: "post",
+    url: `user/${Login_User_Id}/secQuestion`,
+  },
+  getAllSecurityQuestions: {
+    method: "get",
+    url: `user/${Login_User_Id}/secQuestion/`,
+  },
+  getSecQusetionsById: {
+    method: "get",
+    url: (id) => `user/${Login_User_Id}/secQuestion/${id}`,
+  },
+  updateSecurityQuestions: {
+    method: "put",
+    url: (id) => `user/${Login_User_Id}/secQuestion/${id}`,
+  },
+  //employee management
   addManagemnentTeam: { method: "post", url: "/employee" },
   getRoles: { method: "get", url: "/rolesList" },
   getEmployees: { method: "get", url: "/employees" },
-  getAllRejectionReasons: { method: "get", url: "/rejectionReasons/" },
-  createRejReasons: { method: "post", url: "/rejectionReasons/" },
-  updateRejReasons: { method: "put", url: (id) => `/rejectionReasons/${id}` },
-  getRejReasonsById: { method: "get", url: (id) => `/rejectionReasons/${id}` },
+  //rejection reasons
+  getAllRejectionReasons: {
+    method: "get",
+    url: `user/${Login_User_Id}/rejectionReasons/`,
+  },
+  createRejReasons: {
+    method: "post",
+    url: `user/${Login_User_Id}/rejectionReasons/`,
+  },
+  updateRejReasons: {
+    method: "put",
+    url: (id) => `user/${Login_User_Id}/rejectionReasons/${id}`,
+  },
+  getRejReasonsById: {
+    method: "get",
+    url: (id) => `user/${Login_User_Id}/rejectionReasons/${id}`,
+  },
   getSecQuestionsPagination: {
     method: "get",
     url: (queryParams) =>

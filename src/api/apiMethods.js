@@ -1,9 +1,9 @@
-import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
+// security Questions
 const createSecurityQuestions = (data) => {
   return apiRequest("createSecurityQuestions", data);
 };
@@ -13,6 +13,11 @@ const getAllSecurityQuestions = (data) => {
 const updateSecurityQuestions = (id, data) => {
   return apiRequest("updateSecurityQuestions", data, id);
 };
+const getSecQusetionsById=(id,data)=>{
+  return apiRequest("getSecQusetionsById", data, id);
+};
+
+// manage team
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
@@ -22,6 +27,8 @@ const getRoles = (data) => {
 const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
+
+// rejection reasons
 const getAllRejectionReasons = (data) => {
   return apiRequest("getAllRejectionReasons", data);
 };
@@ -30,9 +37,6 @@ const createRejReasons=(data)=>{
 };
 const updateRejReasons=(id,data)=>{
   return apiRequest("updateRejReasons", data,id);
-};
-const getSecQusetionsById=(id,data)=>{
-  return apiRequest("getSecQusetionsById", data, id);
 };
 const getRejReasonsById=(id,data)=>{
   return apiRequest("getRejReasonsById", data, id);
