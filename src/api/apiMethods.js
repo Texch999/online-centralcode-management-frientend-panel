@@ -13,7 +13,7 @@ const getAllSecurityQuestions = (data) => {
 const updateSecurityQuestions = (id, data) => {
   return apiRequest("updateSecurityQuestions", data, id);
 };
-const getSecQusetionsById=(id,data)=>{
+const getSecQusetionsById = (id, data) => {
   return apiRequest("getSecQusetionsById", data, id);
 };
 
@@ -32,21 +32,30 @@ const getEmployees = (data) => {
 const getAllRejectionReasons = (data) => {
   return apiRequest("getAllRejectionReasons", data);
 };
-const createRejReasons=(data)=>{
-  return apiRequest("createRejReasons",data);
+const createRejReasons = (data) => {
+  return apiRequest("createRejReasons", data);
 };
-const updateRejReasons=(id,data)=>{
-  return apiRequest("updateRejReasons", data,id);
+const updateRejReasons = (id, data) => {
+  return apiRequest("updateRejReasons", data, id);
 };
-const getRejReasonsById=(id,data)=>{
+const getRejReasonsById = (id, data) => {
   return apiRequest("getRejReasonsById", data, id);
 };
-const getSecQuestionsPagination = (page = 1, pageSize = 10) => {
-  return apiRequest("getSecQuestionsPagination", null, null, {
-    page: page,
-    pageSize: pageSize,
-    status: 1, 
-  });
+//priavacy policy
+const getPrivacyPolicy = (data) => {
+  return apiRequest("getPrivacyPolicy", data);
+};
+const getPrivacyPolicyById = (id, data) => {
+  return apiRequest("getPrivacyPolicyById", data, id);
+};
+const getCountries = (data) => {
+  return apiRequest("getCountries", data);
+};
+const getWebsites = (data) => {
+  return apiRequest("getWebsites", data);
+};
+const createPrivacyPolicy = (data) => {
+  return apiRequest("createPrivacyPolicy", data);
 };
 
 export {
@@ -62,5 +71,9 @@ export {
   updateRejReasons,
   getSecQusetionsById,
   getRejReasonsById,
-  getSecQuestionsPagination,
+  getPrivacyPolicy,
+  getCountries,
+  getWebsites,
+  getPrivacyPolicyById,
+  createPrivacyPolicy,
 };

@@ -13,6 +13,7 @@ import {
   updateSecurityQuestions,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
+import { useForm } from "react-hook-form";
 
 const AddNewPopUp = ({
   addNewModalRejection,
@@ -28,6 +29,21 @@ const AddNewPopUp = ({
   getRejReasons,
   setSelectedSecQnsId,
 }) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange", // Validates on change
+    defaultValues: {
+      reason: "",
+      description: "",
+      status: null,
+    },
+  });
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [securityQns, setSecurityQns] = useState("");
   const [error, setError] = useState("");
@@ -67,33 +83,70 @@ const AddNewPopUp = ({
     }
   }, [isEdit, rejReasonsDataById]);
 
-  const handlePostRejectionReasons = () => {
-    const rejReasonsPayload = {
-      reason: rejReason,
-      description: rejReasonDescription,
-      status: selectedStatus,
+  useEffect(() => {
+    if (isEdit && selectedRejReasonId) {
+      getRejReasonsById(selectedRejReasonId).then((response) => {
+        setValue("reason", response.reason);
+        setValue("description", response.description);
+        setValue(
+          "status",
+          selectOptions.find((opt) => opt.value === response.status)
+        );
+      });
+    }
+  }, [isEdit, selectedRejReasonId, setValue]);
+
+  const onSubmit = (data) => {
+    const payload = {
+      reason: data.reason,
+      description: data.description,
+      status: data.status.value,
     };
+
     const response = isEdit
-      ? updateRejReasons(selectedRejReasonId, rejReasonsPayload)
-      : createRejReasons(rejReasonsPayload);
+      ? updateRejReasons(selectedRejReasonId, payload)
+      : createRejReasons(payload);
+
     response
       .then(() => {
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 1000);
-
-        setRejReason("");
-        setRejReasonDescription("");
-        setSelectedStatus(null);
-        setRejReasonsDataById([]);
+        reset();
         getRejReasons();
         setAddNewModalRejection(false);
       })
-      .catch((error) => {
-        setError(error.message);
-      });
+      .catch((error) => console.error("Error:", error));
   };
+
+  // const handlePostRejectionReasons = () => {
+  //   const rejReasonsPayload = {
+  //     reason: rejReason,
+  //     description: rejReasonDescription,
+  //     status: selectedStatus,
+  //   };
+  //   const response = isEdit
+  //     ? updateRejReasons(selectedRejReasonId, rejReasonsPayload)
+  //     : createRejReasons(rejReasonsPayload);
+  //   response
+  //     .then(() => {
+  //       setSuccessPopupOpen(true);
+  //       setTimeout(() => {
+  //         setSuccessPopupOpen(false);
+  //       }, 1000);
+
+  //       setRejReason("");
+  //       setRejReasonDescription("");
+  //       setSelectedStatus(null);
+  //       setRejReasonsDataById([]);
+  //       getRejReasons();
+  //       setAddNewModalRejection(false);
+  //     })
+  //     .catch((error) => {
+  //       setError(error.message);
+  //     });
+  // };
 
   useEffect(() => {
     if (isEdit && selectedQnsId) {
@@ -140,71 +193,156 @@ const AddNewPopUp = ({
   return (
     <>
       {addNewModalRejection && (
-        <Modal
-          show={addNewModalRejection}
-          size="md"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
+        // <Modal
+        //   show={addNewModalRejection}
+        //   size="md"
+        //   aria-labelledby="contained-modal-title-vcenter"
+        //   centered
+        // >
+        //   <Modal.Body>
+        //     <div className="d-flex w-100 flex-between">
+        //       <h6>{`${isEdit === true ? "Edit" : "Add"}`} Rejection Reasons</h6>
+        //       <IoCloseSharp
+        //         className="pointer"
+        //         onClick={() => setAddNewModalRejection(false)}
+        //       />
+        //     </div>
+
+        //     <div className="row mt-3 small-font">
+        //       <div className="col-4 flex-column">
+        //         <label className="black-text4 mb-1">Status</label>
+        //         <Select
+        //           className="small-font"
+        //           options={selectOptions}
+        //           placeholder="Select"
+        //           styles={customStyles}
+        //           maxMenuHeight={120}
+        //           menuPlacement="auto"
+        //           value={
+        //             selectOptions.find(
+        //               (option) => option.value === selectedStatus
+        //             ) || null
+        //           }
+        //           onChange={handleStatusChange}
+        //         />
+        //       </div>
+        //       <div className="col-8 flex-column ">
+        //         <label className="black-text4 mb-1">Reason</label>
+        //         <input
+        //           type="text"
+        //           placeholder="Enter"
+        //           className="all-none input-bg small-font p-2 rounded"
+        //           value={rejReason}
+        //           onChange={(e) => setRejReason(e.target.value)}
+        //         />
+        //       </div>
+
+        //       <div className="col-12 flex-column mt-3 ">
+        //         <label className="black-text4 mb-1">Description</label>
+        //         <textarea
+        //           placeholder="Enter"
+        //           className="all-none input-bg small-font p-2 rounded"
+        //           rows="4"
+        //           style={{ resize: "none" }}
+        //           value={rejReasonDescription}
+        //           onChange={(e) => setRejReasonDescription(e.target.value)}
+        //         ></textarea>
+        //       </div>
+        //       <div className="row">
+        //         <div className="col-8"></div>
+        //         <div
+        //           className="saffron-btn2 small-font pointer mt-4 col-4"
+        //           onClick={handlePostRejectionReasons}
+        //         >
+        //           {`${isEdit === true ? "Update" : "Create"}`}
+        //         </div>
+        //       </div>
+        //     </div>
+        //   </Modal.Body>
+        // </Modal>
+        <Modal show={addNewModalRejection} size="md" centered>
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
-              <h6>{`${isEdit === true ? "Edit" : "Add"}`} Rejection Reasons</h6>
+              <h6>{isEdit ? "Edit" : "Add"} Rejection Reason</h6>
               <IoCloseSharp
                 className="pointer"
                 onClick={() => setAddNewModalRejection(false)}
               />
             </div>
 
-            <div className="row mt-3 small-font">
-              <div className="col-4 flex-column">
-                <label className="black-text4 mb-1">Status</label>
-                <Select
-                  className="small-font"
-                  options={selectOptions}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                  value={
-                    selectOptions.find(
-                      (option) => option.value === selectedStatus
-                    ) || null
-                  }
-                  onChange={handleStatusChange}
-                />
-              </div>
-              <div className="col-8 flex-column ">
-                <label className="black-text4 mb-1">Reason</label>
-                <input
-                  type="text"
-                  placeholder="Enter"
-                  className="all-none input-bg small-font p-2 rounded"
-                  value={rejReason}
-                  onChange={(e) => setRejReason(e.target.value)}
-                />
-              </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="row mt-3 small-font">
+                {/* Status Select */}
+                <div className="col-4 flex-column">
+                  <label className="black-text4 mb-1">Status</label>
+                  <Select
+                    options={selectOptions}
+                    placeholder="Select"
+                    styles={customStyles}
+                    value={watch("status")}
+                    onChange={(selectedOption) =>
+                      setValue("status", selectedOption)
+                    }
+                  />
+                  {errors.status && (
+                    <p className="text-danger small-font">
+                      {errors.status.message}
+                    </p>
+                  )}
+                </div>
 
-              <div className="col-12 flex-column mt-3 ">
-                <label className="black-text4 mb-1">Description</label>
-                <textarea
-                  placeholder="Enter"
-                  className="all-none input-bg small-font p-2 rounded"
-                  rows="4"
-                  style={{ resize: "none" }}
-                  value={rejReasonDescription}
-                  onChange={(e) => setRejReasonDescription(e.target.value)}
-                ></textarea>
-              </div>
-              <div className="row">
-                <div className="col-8"></div>
-                <div
-                  className="saffron-btn2 small-font pointer mt-4 col-4"
-                  onClick={handlePostRejectionReasons}
-                >
-                  {`${isEdit === true ? "Update" : "Create"}`}
+                {/* Reason Input */}
+                <div className="col-8 flex-column">
+                  <label className="black-text4 mb-1">Reason</label>
+                  <input
+                    type="text"
+                    placeholder="Enter"
+                    className="all-none input-bg small-font p-2 rounded"
+                    {...register("reason", { required: "Reason is required" })}
+                  />
+                  {errors.reason && (
+                    <p className="text-danger small-font">
+                      {errors.reason.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Description Textarea */}
+                <div className="col-12 flex-column mt-3">
+                  <label className="black-text4 mb-1">Description</label>
+                  <textarea
+                    placeholder="Enter"
+                    className="all-none input-bg small-font p-2 rounded"
+                    rows="4"
+                    style={{ resize: "none" }}
+                    {...register("description", {
+                      required: "Description is required",
+                    })}
+                  ></textarea>
+                  {errors.description && (
+                    <p className="text-danger small-font">
+                      {errors.description.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Submit Button (Disabled Until Form is Valid) */}
+                <div className="row">
+                  <div className="col-8"></div>
+                  <button
+                    type="submit"
+                    className="saffron-btn2 small-font pointer mt-4 col-4"
+                    disabled={!isValid}
+                    style={{
+                      opacity: isValid ? 1 : 0.5,
+                      pointerEvents: isValid ? "auto" : "none",
+                    }}
+                  >
+                    {isEdit ? "Update" : "Create"}
+                  </button>
                 </div>
               </div>
-            </div>
+            </form>
           </Modal.Body>
         </Modal>
       )}

@@ -39,11 +39,26 @@ const endpoints = {
     method: "get",
     url: (id) => `user/${Login_User_Id}/rejectionReasons/${id}`,
   },
-  getSecQuestionsPagination: {
+
+  // privacy policy
+  getPrivacyPolicy: {
     method: "get",
-    url: (queryParams) =>
-      `/secQuestion/?page=${queryParams.page}&pageSize=${queryParams.pageSize}`,
+    url: `user/${Login_User_Id}/privacypolicies/`,
   },
+  getPrivacyPolicyById: {
+    method: "get",
+    url:(id)=> `user/${Login_User_Id}/privacypolicies/${id}`,
+  },
+  createPrivacyPolicy: {
+    method: "post",
+    url: `user/${Login_User_Id}/privacypolicies/`,
+  },
+  updatePrivacyPolicyById: {
+    method: "put",
+    url:(id)=> `user/${Login_User_Id}/privacypolicies/${id}`,
+  },
+  getCountries:{method:"get",url:`user/${Login_User_Id}/countries/countries`},
+  getWebsites:{method:"get",url:`user/${Login_User_Id}/website/websites`},
 };
 
 export default endpoints;
