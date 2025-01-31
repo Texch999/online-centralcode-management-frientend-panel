@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaSpinner } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -38,6 +38,7 @@ const PromotionType = () => {
   const [message, setMessage] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getPromotions();
@@ -50,7 +51,18 @@ const PromotionType = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
+
+    if (file) {
+      const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+      if (file.size > maxSize) {
+        setMessage("File size should not exceed 2MB.");
+        setErrorPopupOpen(true);
+        return;
+      }
+
+      setSelectedFile(file);
+    }
   };
 
   const getPromotions = async () => {
@@ -73,16 +85,18 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
-
+console.log(message,"mjvclidhfcv  ;wifg")
   const handlePromotionsImages = async () => {
     const formData = new FormData();
     formData.append("promotionsId", selectedOption.value);
     formData.append("image", selectedFile);
 
     try {
+      setLoading(true);
       const response = await createPromotionImages(formData);
       console.log("response", response);
       if ((response.status = "200")) {
+        setLoading(false);
         setMessage(response.message);
         setErrorPopupOpen(false);
         setSelectedFile(null);
@@ -93,6 +107,7 @@ const PromotionType = () => {
     } catch (error) {
       console.log("error", error);
       setMessage(error?.message);
+      setLoading(false);
       setSelectedFile(null);
       setErrorPopupOpen(true);
     }
@@ -183,7 +198,7 @@ const PromotionType = () => {
 
   useEffect(() => {
     console.log("activePromotions");
-  }, [activePromotions]);
+  }, [filteredPromotions]);
 
   const PROMOTIONSIMAGES_DATA = activePromotions?.map((promotionsImage) => ({
     promotionid: <div>{promotionsImage.promotionsId}</div>,
@@ -301,7 +316,11 @@ const PromotionType = () => {
                   className="w-100 saffron-btn2 pointer small-font"
                   onClick={handlePromotionsImages}
                 >
-                  Submit
+                  {loading ? (
+                    <FaSpinner className="spinner-circle" />
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </div>

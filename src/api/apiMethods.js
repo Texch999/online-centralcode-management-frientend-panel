@@ -27,8 +27,20 @@ const createPromotionImages = (data) => {
 const statusPromotionsTypes = (id,data) => {
   return apiRequest("statusPromotionsTypes",data,id);
 };
-const deletePromotionsImages = (id) => {
-  return apiRequest("deletePromotionsImages",id);
+const deletePromotionsImages = (id, data) => {
+  return apiRequest("deletePromotionsImages",data,id);
+};
+const getBroadCasting = () => {
+  return apiRequest("getBroadCasting");
+};
+const createBroadCasting = (data) => {
+  return apiRequest("createBroadCasting", data);
+};
+const editBroadCasting = (id,data) => {
+  return apiRequest("editBroadCasting",data,id);
+};
+const statusBroadCasting = (id, data) => {
+  return apiRequest("deletePromotionsImages",data,id);
 };
 
 export {
@@ -41,4 +53,8 @@ export {
   createPromotionImages,
   statusPromotionsTypes,
   deletePromotionsImages,
+  getBroadCasting,
+  createBroadCasting,
+  editBroadCasting,
+  statusBroadCasting
 };

@@ -23,8 +23,24 @@ const endpoints = {
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${UserId}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${UserId}/api/deletePromotionsImages/${id}`,
   },
+  getBroadCasting: {
+    method: "get",
+    url: `/user/${UserId}/broadcasting`
+  },
+  createBroadCasting: {
+    method: "post",
+    url: `/user/${UserId}/broadcasting`
+  },
+  editBroadCasting: {
+    method: "post",
+    url: (id) => `/user/${UserId}/broadcasting/${id}`
+  },
+  statusBroadCasting: {
+    method: "post",
+    url: (id) => `/user/${UserId}/broadcasting/${id}`
+  }
 };
 
 export default endpoints;

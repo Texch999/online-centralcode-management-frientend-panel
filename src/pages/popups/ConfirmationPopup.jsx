@@ -8,6 +8,7 @@ import {
   deletePromotionsImages,
   statusPromotionsTypes,
 } from "../../api/apiMethods";
+import { FaSpinner } from "react-icons/fa";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
@@ -20,9 +21,11 @@ function ConfirmationPopup({
 }) {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const BockOrUnblock = async () => {
     try {
+      setLoading(true);
       let response;
 
       if (api === "BlockUnBlockPromotion") {
@@ -30,10 +33,9 @@ function ConfirmationPopup({
       } else {
         response = await deletePromotionsImages(selectedId);
       }
-      console.log("response kwd gvljenvojenvvojwrg", response);
       if (response?.status === "200") {
-        console.log("hiyhb");
         setMessage(response?.message);
+        setLoading(false);
         setSuccessPopupOpen(true);
 
         setTimeout(() => {
@@ -43,6 +45,7 @@ function ConfirmationPopup({
       }
     } catch (error) {
       console.log("error", error);
+      setLoading(false);
     }
   };
 
@@ -86,7 +89,7 @@ function ConfirmationPopup({
                 className="w-50 saffron-btn2 ms-2"
                 onClick={BockOrUnblock}
               >
-                {submitButton}
+                {loading ? <FaSpinner className="spinnerspinner-circle" /> : submitButton}
               </button>
             </div>
           </center>
