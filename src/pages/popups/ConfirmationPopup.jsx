@@ -1,7 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
-import axios from "axios";
 import { useState } from "react";
 import SuccessPopup from "./SuccessPopup";
 import {
@@ -16,8 +15,7 @@ function ConfirmationPopup({
   discription,
   selectedId,
   submitButton,
-  getAction,
-  api,
+  CallbackFunction
 }) {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -52,7 +50,9 @@ function ConfirmationPopup({
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-
+  const handleBlockAndUnblock = () => {
+    CallbackFunction()
+  }
   return (
     <>
       <Modal

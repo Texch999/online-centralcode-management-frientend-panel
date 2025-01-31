@@ -6,6 +6,7 @@
 .management-team-wrapper {
   margin: auto;
 }
+
 .blue-font {
   color: #1912c8;
 }
@@ -213,21 +214,25 @@
 
 /* live block card styling */
 
-.downline-list-card-top{
+.downline-list-card-top {
   padding: 1rem;
 }
 
-.downline-list-card-bottom{
+.downline-list-card-bottom {
   padding: 1rem;
 }
 
 
 @media only screen and (min-width: 768px) and (max-width: 950px) {
-  .downline-list-card-top{
+  .downline-list-card-top {
     padding: 0.5rem;
   }
 
-  .downline-list-card-bottom{
+  .downline-list-card-bottom {
     padding: 0.5rem;
   }
+}
+
+.error-text {
+  color: tomato;
 }

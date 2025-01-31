@@ -4,7 +4,27 @@ const endpoints = {
   addManagemnentTeam: { method: "post", url: "/employee" },
   getRoles: { method: "get", url: "/rolesList" },
   getEmployees: { method: "get", url: "/employees" },
-
+  createWebsite: { method: "post", url: `/user/${UserId}/website/website` },
+  updateWebsite: {
+    method: "put",
+    url: (id) => `/user/${UserId}/website/update/websiteby/${id}`,
+  },
+  getWebsiteDetails: {
+    method: "get",
+    url: (id) => `/user/${UserId}/website/websiteby/${id}`,
+  },
+  getWebsitesList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${UserId}/website/websites?${query}`;
+    },
+  },
+  getAllCountires: { method: "get", url: `/user/${UserId}/countries` },
+  blockAndUnblock: {
+    method: "put",
+    url: (id) => `/user/${UserId}/website/block-unblock/${id}`,
+  },
   getPromotionsTypes: {
     method: "get",
     url: `/user/${UserId}/api/getPromotionsTypes`,
