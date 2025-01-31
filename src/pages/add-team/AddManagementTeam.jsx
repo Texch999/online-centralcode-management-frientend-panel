@@ -13,13 +13,14 @@ import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getEmployees } from "../../api/apiMethods";
 import Roles from "../../utils/enum";
 import EditManagementPopup from "./popups/EditManagementPopup";
+import PaginationComponent from "../../components/Pagination";
 
 const AddManagementTeam = () => {
   const token = localStorage.getItem("jwt_token");
   const [error, setError] = useState("");
   const [tableData, setTableData] = useState([]);
   const GetEmployee = () => {
-    getEmployees(token)
+    getEmployees({ limit: 10, offset: 0 })
       .then((response) => {
         if (response?.message === "Employees fetched successfully.") {
           console.log(response, "response from API");
@@ -32,6 +33,7 @@ const AddManagementTeam = () => {
         setError(error?.message || "Login failed");
       });
   };
+
   useEffect(() => {
     GetEmployee();
   }, []);
@@ -39,7 +41,7 @@ const AddManagementTeam = () => {
   const TableData = tableData.map((employee) => {
     return {
       id: employee.id,
-      name: employee.name,  
+      name: employee.name,
       login_name: employee.login_name,
       phone_no: employee.phone_no,
       email: employee.email,
@@ -241,20 +243,13 @@ const AddManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={3}
+          itemsPerPage={5}
         />
       </div>
-      {/* AddManagementPopup Modal */}
-      {/* <AddManagementPopup
-        show={modalState.showAddModal}
-        onClose={() => toggleModal("showAddModal", false)}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={handleFormSubmit}
-      /> */}
+
       <AddManagementPopup
         show={modalState.showAddModal}
-        onClose={() => toggleModal("showAddModal", false)}  
+        onClose={() => toggleModal("showAddModal", false)}
         formData={formData}
         setFormData={setFormData}
         onSubmit={handleFormSubmit}

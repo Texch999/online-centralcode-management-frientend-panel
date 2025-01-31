@@ -9,8 +9,17 @@ const addManagemnentTeam = (data) => {
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
-const getEmployees = (data) => {
-  return apiRequest("getEmployees", data);
+// const getEmployees = (data) => {
+//   return apiRequest("getEmployees", data);
+// };
+// const getEmployees = ({ limit = 10, offset = 0 }) => {
+//   return apiRequest("getEmployees", null, { limit, offset });
+// };
+// const getEmployees = (params) => {
+//   return apiRequest("getEmployees", {}, params);
+// };
+const getEmployees = (params) => {
+  return apiRequest("getEmployees", {}, params);
 };
 const resetEmployeePassword = (id, data) => {
   return apiRequest("resetEmployeePassword", data, id);

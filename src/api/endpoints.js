@@ -6,7 +6,26 @@ const endpoints = {
   addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
 
   getRoles: { method: "get", url: `/user/${userID}/rolesList` },
-  getEmployees: { method: "get", url: `/user/${userID}/employees` },
+  // getEmployees: { method: "get", url: `/user/${userID}/employees` },
+  // getEmployees: ({ limit, offset }) => ({
+  //   method: "get",
+  //   url: `/user/${userID}/employeeeees?limit=${limit}&offset=${offset}`,
+  // }),
+
+  // getEmployees: {
+  //   method: "get",
+  //   url: (params) => {
+  //     const query = new URLSearchParams(params).toString();
+  //     return `/user/${userID}/employees?${query}`;
+  //   },
+  // },
+  getEmployees: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
+      return `/user/${userID}/employees?${query}`;
+    },
+  },
   resetEmployeePassword: {
     method: "post",
     url: (id) => `/user/${userID}/employeeUpdatePassword/${id}`,
