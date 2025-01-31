@@ -6,13 +6,20 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
-import { createBroadCasting, getBroadCasting } from "../../api/apiMethods";
+import {
+  createBroadCasting,
+  getBroadCasting,
+  statusBroadCasting,
+} from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
+import EditBroadcastPopup from "./EditBroadcastPopup";
+import { MdBlockFlipped } from "react-icons/md";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const ACTIVE_BTNS = [
-  { value: "1", label: "User Broadcasting" },
-  { value: "2", label: "Admin Broadcasting" },
+  { value: 1, label: "User Broadcasting" },
+  { value: 2, label: "Admin Broadcasting" },
 ];
 
 const Broadcasting = () => {
@@ -27,33 +34,50 @@ const Broadcasting = () => {
   const [message, setMessage] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [editBroadcast, setEditBroadcast] = useState(false);
+
+  const [selectedBroadcastId, setSelectedBroadcastId] = useState();
+  const [selectedBroadcastStatus, setSelectedBroadcastStatus] = useState();
+  const [broadcastBlockModal, setBroadcastBlockModal] = useState(false);
+  const [selectedIdForEdit, setSelectedIdForEdit] = useState([]);
+
+  const [errors, setErrors] = useState({
+    selectType: "",
+    selectWebsites: "",
+    selectLocations: "",
+    textMessage: "",
+  });
 
   const selectOptionsType = [
-    { value: "1", label: "Sports" },
-    { value: "2", label: "Casino" },
+    { value: 1, label: "Sports" },
+    { value: 2, label: "Casino" },
   ];
 
   const selectOptionsWebsites = [
-    { value: "1", label: "WEBSITE 1" },
-    { value: "2", label: "WEBSITE 2" },
+    { value: 1, label: "WEBSITE 1" },
+    { value: 2, label: "WEBSITE 2" },
   ];
 
-  const selectOptionsLocations = [{ value: "1", label: "Home" }];
+  const selectOptionsLocations = [{ value: 1, label: "Home" }];
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
+    setErrors((pre) => ({ ...pre, selectType }));
   };
 
   const handleSelectWebsites = (selected) => {
     setSelectWebsites(selected);
+    setErrors((pre) => ({ ...pre, selectWebsites }));
   };
 
   const handleSelectLocations = (selected) => {
     setSelectLocations(selected);
+    setErrors((pre) => ({ ...pre, selectLocations }));
   };
 
   const handleMessageChange = (event) => {
     setTextMessage(event.target.value);
+    setErrors((pre) => ({ ...pre, textMessage: "" }));
   };
 
   useEffect(() => {
@@ -63,44 +87,98 @@ const Broadcasting = () => {
   const getBroadCastingdata = async () => {
     try {
       const response = await getBroadCasting();
-      if ((response.status = "200")) {
-        setBroadCastingdata(response.data);
+      console.log(response, "redlknoshc");
+      if ((response.status = 200)) {
+        setBroadCastingdata(response.retData.data);
       }
     } catch (error) {
       console.log("error", error);
     }
   };
 
-  const formData = {
-    panel_type: activeBtn.value,
-    type: selectType?.value,
-    website_id: selectWebsites?.value,
-    location_type: selectLocations?.value,
-    message: textMessage,
-  };
-
   const handleSubmit = async () => {
+    let newErrors = {};
+
+    if (!selectType) {
+      newErrors.selectType = "Type is required.";
+    }
+
+    if (!selectWebsites) {
+      newErrors.selectWebsites = "Website is required.";
+    }
+    if (!selectLocations) {
+      newErrors.selectLocations = "Locations is required.";
+    }
+    if (!textMessage) {
+      newErrors.textMessage = "Text is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    const formData = {
+      panel_type: activeBtn.value,
+      type: selectType?.value,
+      website_id: selectWebsites?.value,
+      location_type: selectLocations?.value,
+      message: textMessage,
+    };
     setLoading(true);
     try {
       const response = await createBroadCasting(formData);
-      if (response.status = "200") {
+      if ((response.status = 200)) {
         setLoading(false);
         setMessage(response.message);
         setErrorPopupOpen(false);
         setSelectType(null);
         setSelectWebsites(null);
         setSelectLocations(null);
-        setTextMessage(null);
+        setTextMessage("");
         getBroadCastingdata();
+        setErrorPopupOpen(false);
         setSuccessPopupOpen(true);
       }
     } catch (error) {
-      console.log("error", error);
       setLoading(false);
+      setMessage(error?.message);
       setSelectType(null);
       setSelectWebsites(null);
       setSelectLocations(null);
-      setTextMessage(null);
+      setTextMessage("");
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(true);
+    }
+  };
+
+  const handleEditBroadcasting = (id) => {
+    setSelectedIdForEdit(broadCastingdata.find((item) => item.id === id));
+    if (selectedIdForEdit) {
+      setEditBroadcast(true);
+    }
+  };
+
+  const handleBlockAndUnblockBroadcasting = (id, status) => {
+    setSelectedBroadcastId(id);
+    setSelectedBroadcastStatus(status);
+    setBroadcastBlockModal(true);
+  };
+
+  const BockOrUnblock = async () => {
+    try {
+      setLoading(true);
+      const response = await statusBroadCasting(selectedBroadcastId);
+      if (response?.status === 200) {
+        setMessage(response?.message);
+        setLoading(false);
+        getBroadCastingdata();
+        setErrorPopupOpen(false);
+        setSuccessPopupOpen(true);
+      }
+    } catch (error) {
+      setLoading(false);
+      setMessage(error?.message);
+      setErrorPopupOpen(true);
     }
   };
 
@@ -120,7 +198,21 @@ const Broadcasting = () => {
     },
     { header: "", field: "icons", width: "10%" },
   ];
-  const CASINO_DATA = broadCastingdata?.map((broadCast) => ({
+
+  const filteredbroadCastingdata = broadCastingdata?.filter((item) => {
+    const activedbutton = activeBtn.value;
+    if (activedbutton === 1) {
+      return item.panel_type === 1;
+    } else if (activedbutton === 2) {
+      return item.panel_type === 2;
+    }
+
+    return false;
+  });
+
+  useEffect(() => {}, [filteredbroadCastingdata, activeBtn]);
+
+  const CASINO_DATA = filteredbroadCastingdata?.map((broadCast) => ({
     dateTime: (
       <div>
         {new Intl.DateTimeFormat("en-GB", {
@@ -137,8 +229,19 @@ const Broadcasting = () => {
 
     icons: (
       <div className="flex-center">
-        <SlPencil size={18} className="pointer me-1" />
-        <FaRegTrashCan size={18} className="ms-1" />
+        <SlPencil
+          size={18}
+          className="pointer me-1"
+          onClick={() => handleEditBroadcasting(broadCast.id)}
+        />
+        <MdBlockFlipped
+          style={{ color: broadCast.status === 1 ? "green" : "red" }}
+          size={18}
+          className="mx-3 pointer"
+          onClick={() =>
+            handleBlockAndUnblockBroadcasting(broadCast.id, broadCast.status)
+          }
+        />
       </div>
     ),
   }));
@@ -182,6 +285,9 @@ const Broadcasting = () => {
             value={selectType}
             onChange={handleSelectType}
           />
+          {errors.selectType && (
+            <span className="text-danger small-font">{errors.selectType}</span>
+          )}
         </div>
 
         <div className="col-3 flex-column me-3">
@@ -197,6 +303,11 @@ const Broadcasting = () => {
             value={selectWebsites}
             onChange={handleSelectWebsites}
           />
+          {errors.selectWebsites && (
+            <span className="text-danger small-font">
+              {errors.selectWebsites}
+            </span>
+          )}
         </div>
 
         <div className="col-3 flex-column me-3">
@@ -214,6 +325,11 @@ const Broadcasting = () => {
             value={selectLocations}
             onChange={handleSelectLocations}
           />
+          {errors.selectLocations && (
+            <span className="text-danger small-font">
+              {errors.selectLocations}
+            </span>
+          )}
         </div>
 
         <div className="col-6 flex-column">
@@ -228,6 +344,9 @@ const Broadcasting = () => {
             value={textMessage}
             onChange={handleMessageChange}
           ></textarea>
+          {errors.textMessage && (
+            <span className="text-danger small-font">{errors.textMessage}</span>
+          )}
         </div>
 
         <div className="col-2 flex-end">
@@ -252,6 +371,24 @@ const Broadcasting = () => {
         errorPopupOpen={errorPopupOpen}
         setErrorPopupOpen={setErrorPopupOpen}
         discription={message}
+      />
+      <ConfirmationPopup
+        confirmationPopupOpen={broadcastBlockModal}
+        setConfirmationPopupOpen={() => setBroadcastBlockModal(false)}
+        discription={`are you sure you want to ${
+          selectedBroadcastStatus === 1 ? "Block" : "UnBlock"
+        } this Braodcast`}
+        selectedId={selectedBroadcastId}
+        submitButton={selectedBroadcastStatus === 1 ? "Block" : "UnBlock"}
+        CallbackFunction={BockOrUnblock}
+      />
+      <EditBroadcastPopup
+        editBroadcast={editBroadcast}
+        setEditBroadcast={setEditBroadcast}
+        editBroadcastModel={"Edit Broadcast"}
+        selectedIdForEdit={selectedIdForEdit}
+        setSelectedIdForEdit={setSelectedIdForEdit}
+        CallbackFunction={getBroadCastingdata}
       />
     </div>
   );

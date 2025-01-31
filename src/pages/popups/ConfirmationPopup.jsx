@@ -2,59 +2,21 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { useState } from "react";
-import SuccessPopup from "./SuccessPopup";
-import {
-  deletePromotionsImages,
-  statusPromotionsTypes,
-} from "../../api/apiMethods";
-import { FaSpinner } from "react-icons/fa";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
   setConfirmationPopupOpen,
   discription,
-  selectedId,
   submitButton,
   CallbackFunction,
-  getAction,
-  api,
 }) {
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const BockOrUnblock = async () => {
-    try {
-      setLoading(true);
-      let response;
-
-      if (api === "BlockUnBlockPromotion") {
-        response = await statusPromotionsTypes(selectedId);
-      } else {
-        response = await deletePromotionsImages(selectedId);
-      }
-      if (response?.status === "200") {
-        setMessage(response?.message);
-        setLoading(false);
-        setSuccessPopupOpen(true);
-
-        setTimeout(() => {
-          getAction();
-          setConfirmationPopupOpen(false);
-        }, 100);
-      }
-    } catch (error) {
-      console.log("error", error);
-      setLoading(false);
-    }
-  };
-
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
   const handleBlockAndUnblock = () => {
-    CallbackFunction()
-  }
+    CallbackFunction();
+    setConfirmationPopupOpen(false);
+  };
   return (
     <>
       <Modal
@@ -89,20 +51,14 @@ function ConfirmationPopup({
               </button>
               <button
                 className="w-50 saffron-btn2 ms-2"
-                onClick={BockOrUnblock}
+                onClick={handleBlockAndUnblock}
               >
-                {loading ? <FaSpinner className="spinnerspinner-circle" /> : submitButton}
+                {submitButton}
               </button>
             </div>
           </center>
         </Modal.Body>
       </Modal>
-
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={message}
-      />
     </>
   );
 }

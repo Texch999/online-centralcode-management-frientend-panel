@@ -54,12 +54,12 @@ const endpoints = {
     url: `/user/${UserId}/broadcasting`
   },
   editBroadCasting: {
-    method: "post",
+    method: "put",
     url: (id) => `/user/${UserId}/broadcasting/${id}`
   },
-  statusBroadCasting: {
-    method: "post",
-    url: (id) => `/user/${UserId}/broadcasting/${id}`
+  statusBroadcastUpdate: {
+    method: "put",
+    url: (id) => `/user/${UserId}/broadcasting/statusBroadcastUpdate/${id}`
   }
 };
 

@@ -41,6 +41,7 @@ export const getPromotionsImage = () => {
   return apiRequest("getPromotionsImage");
 };
 export const createPromotionImages = (data) => {
+  console.log("data", data)
   return apiRequest("createPromotionImages", data);
 };
 export const statusPromotionsTypes = (id,data) => {
@@ -59,5 +60,7 @@ export const editBroadCasting = (id,data) => {
   return apiRequest("editBroadCasting",data,id);
 };
 export const statusBroadCasting = (id, data) => {
-  return apiRequest("deletePromotionsImages",data,id);
+  return apiRequest("statusBroadcastUpdate",data,id);
 };
+
+
