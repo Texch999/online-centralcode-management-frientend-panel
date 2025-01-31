@@ -1,24 +1,24 @@
 import apiRequest from "./apiRequest";
 
-const loginUser = (data) => {
+export const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
-const addManagemnentTeam = (data) => {
+export const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
-const getRoles = (data) => {
+export const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
-const getEmployees = (data) => {
+export const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
-const getWebsitesList = (params) => {
+export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
-const getAllCountires = (data) => {
+export const getAllCountires = (data) => {
   return apiRequest("getAllCountires", data);
 };
-const createWebsite = (data) => {
+export const createWebsite = (data) => {
   return apiRequest("createWebsite", data);
 };
 export const updateWebsite = (id, data) =>
@@ -33,53 +33,31 @@ export const blockAndUnblock = (id, data) =>
 
 
 //VijayaLakshmi
-const getPromotionsTypes = () => {
+export const getPromotionsTypes = () => {
   return apiRequest("getPromotionsTypes");
 };
 
-const getPromotionsImage = () => {
+export const getPromotionsImage = () => {
   return apiRequest("getPromotionsImage");
 };
-const createPromotionImages = (data) => {
+export const createPromotionImages = (data) => {
   return apiRequest("createPromotionImages", data);
 };
-const statusPromotionsTypes = (id,data) => {
+export const statusPromotionsTypes = (id,data) => {
   return apiRequest("statusPromotionsTypes",data,id);
 };
-const deletePromotionsImages = (id, data) => {
+export const deletePromotionsImages = (id, data) => {
   return apiRequest("deletePromotionsImages",data,id);
 };
-const getBroadCasting = () => {
+export const getBroadCasting = () => {
   return apiRequest("getBroadCasting");
 };
-const createBroadCasting = (data) => {
+export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
-const editBroadCasting = (id,data) => {
+export const editBroadCasting = (id,data) => {
   return apiRequest("editBroadCasting",data,id);
 };
-const statusBroadCasting = (id, data) => {
+export const statusBroadCasting = (id, data) => {
   return apiRequest("deletePromotionsImages",data,id);
-};
-
-export {
-  loginUser,
-  addManagemnentTeam,
-  getRoles,
-  getEmployees,
-  getPromotionsTypes,
-  getPromotionsImage,
-  createPromotionImages,
-  statusPromotionsTypes,
-  deletePromotionsImages,
-  getWebsitesList,
-  getAllCountires,
-  createWebsite,
-  updateWebsite,
-  getWebsiteDetails,
-  blockAndUnblock
-  getBroadCasting,
-  createBroadCasting,
-  editBroadCasting,
-  statusBroadCasting
 };

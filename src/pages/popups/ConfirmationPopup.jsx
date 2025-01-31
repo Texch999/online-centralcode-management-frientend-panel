@@ -15,7 +15,9 @@ function ConfirmationPopup({
   discription,
   selectedId,
   submitButton,
-  CallbackFunction
+  CallbackFunction,
+  getAction,
+  api,
 }) {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
