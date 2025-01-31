@@ -2,6 +2,8 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { useState } from "react";
+import { blockEmploye } from "../../api/apiMethods";
+import { useEffect } from "react";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
@@ -10,6 +12,7 @@ function ConfirmationPopup({
   submitButton,
   CallbackFunction,
 }) {
+  console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };

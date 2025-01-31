@@ -5,22 +5,35 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
-import { addManagemnentTeam, getRoles } from "../../../api/apiMethods";
+import {
+  addManagemnentTeam,
+  getEmployeeDetailsById,
+  getRoles,
+} from "../../../api/apiMethods";
 import "../style.css";
 import "../../../App.css";
 
-const AddManagementPopup = ({ onClose, onSubmit, show }) => {
+const AddManagementPopup = ({
+  onClose,
+  onSubmit,
+  show,
+  mode,
+  isEdit,
+  managementData,
+  editingRowId,
+}) => {
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
     managementPassword: false,
   });
-
+  console.log(editingRowId, "editingRowId");
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState(3);
 
   console.log(roleOptions, "roleOptions");
+
   const {
     register,
     handleSubmit,
@@ -87,12 +100,49 @@ const AddManagementPopup = ({ onClose, onSubmit, show }) => {
         setError(error?.message || "Login failed");
       });
   };
+  // const [employeeData, setEmployeeData] = useState();
+  // console.log(employeeData, "employeeData");
+
+  // const GetEmployementDetailsById = () => {
+  //   getEmployeeDetailsById(editingRowId)
+  //     .then((response) => {
+  //       console.log(response, "Full API Response");
+  //       if (response && response.userDeatils) {
+  //         console.log(response.userDeatils, "response123");
+  //         setEmployeeData(response.userDeatils);
+  //       } else {
+  //         setError("No employee data found");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("API Call Error:", error);
+  //       setError(error?.message || "Login failed");
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   GetEmployementDetailsById();
+  // }, [editingRowId]);
+
+
+  // useEffect(() => {
+  //   if (isEdit && employeeData) {
+  //     setValue("role", employeeData.role_id);
+  //     setValue("name", employeeData.name);
+  //     setValue("loginName", employeeData.login_name);
+  //     setValue("phoneNumber", employeeData.phone_no);
+  //     setValue("email", employeeData.email);
+  //     setSelectedRoleId(employeeData.role_id);
+  //   }
+  // }, [isEdit, employeeData, setValue]);
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <Modal.Body>
         <div className="d-flex justify-content-between align-items-center">
-          <h6 className="mb-0 fw-600 black-font">Add Management Team</h6>
+          {mode === "edit" ? "Edit Management Team" : "Add Management Team"}
+
+          {/* <h6 className="mb-0 fw-600 black-font">Add Management Team</h6> */}
           <MdOutlineClose
             size={20}
             type="button"
@@ -107,7 +157,25 @@ const AddManagementPopup = ({ onClose, onSubmit, show }) => {
           <div className="row mb-3">
             <div className="col">
               <label className="small-font mb-1">Role</label>
-
+              {/* 
+                <Select
+                  className="small-font"
+                  options={roleOptions}
+                  value={roleOptions.find(
+                    (option) => option.value === selectedRoleId
+                  )}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  onChange={(selectedOption) => {
+                    console.log("Selected Option:", selectedOption);
+                    setSelectedRoleId(selectedOption?.value);
+                    setValue("role", selectedOption?.value, {
+                      shouldValidate: true,
+                    });
+                  }}
+                /> */}
               <Select
                 className="small-font"
                 options={roleOptions}
@@ -119,7 +187,6 @@ const AddManagementPopup = ({ onClose, onSubmit, show }) => {
                 maxMenuHeight={120}
                 menuPlacement="auto"
                 onChange={(selectedOption) => {
-                  console.log("Selected Option:", selectedOption);
                   setSelectedRoleId(selectedOption?.value);
                   setValue("role", selectedOption?.value, {
                     shouldValidate: true,
