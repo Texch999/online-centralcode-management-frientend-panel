@@ -12,13 +12,13 @@ const getRoles = (data) => {
 const getEmployees = (data) => {
   return apiRequest("getEmployees", data);
 };
-const getWebsitesList = (params) => {
+export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
-const getAllCountires = (data) => {
+export const getAllCountires = (data) => {
   return apiRequest("getAllCountires", data);
 };
-const createWebsite = (data) => {
+export const createWebsite = (data) => {
   return apiRequest("createWebsite", data);
 };
 export const updateWebsite = (id, data) =>
@@ -29,7 +29,6 @@ export const getWebsiteDetails = (id, data) =>
 
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
-
 
 
 //VijayaLakshmi
@@ -43,13 +42,27 @@ const getPromotionsImage = () => {
 const createPromotionImages = (data) => {
   return apiRequest("createPromotionImages", data);
 };
-const statusPromotionsTypes = (id,data) => {
-  return apiRequest("statusPromotionsTypes",data,id);
+const statusPromotionsTypes = (id, data) => {
+  return apiRequest("statusPromotionsTypes", data, id);
 };
 const deletePromotionsImages = (id) => {
-  return apiRequest("deletePromotionsImages",id);
+  return apiRequest("deletePromotionsImages", id);
 };
 
+export const getLoggedInLogs = (params) => {
+  return apiRequest("getLoggedInLogs", {}, params);
+};
+export const getLoggedInLogsById = (params) => {
+  return apiRequest("getLoggedInLogsById", {}, params);
+};
+
+export const getDirectorLoginLogs = (params) => {
+  return apiRequest("getDirectorLoginLogs", {}, params);
+};
+
+export const getDirectorLoginLogsById = (params) => {
+  return apiRequest("getDirectorLoginLogsById", {}, params);
+};
 export {
   loginUser,
   addManagemnentTeam,
@@ -60,10 +73,5 @@ export {
   createPromotionImages,
   statusPromotionsTypes,
   deletePromotionsImages,
-  getWebsitesList,
-  getAllCountires,
-  createWebsite,
-  updateWebsite,
-  getWebsiteDetails,
-  blockAndUnblock
+
 };

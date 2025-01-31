@@ -8,6 +8,7 @@ import AddWebsitesPopup from "./popups/AddWebsitesPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 import { getAllCountires, getWebsitesList, blockAndUnblock } from "../../api/apiMethods";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
@@ -21,6 +22,9 @@ const AddWibsites = () => {
   const [websiteId, setWebsiteId] = useState(null);
   const [status, setStatus] = useState(null);
   const [filterName, setFilterName] = useState("");
+  const [openSuccessPopup, setOpenSuccessPopup] = useState(false)
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [displayMsg, setDisplayeMsg] = useState("")
   const itemsPerPage = 9;
   const currentOffset = (currentPage - 1) * 11
   const getAllWebsiteList = () => {
@@ -33,8 +37,8 @@ const AddWibsites = () => {
     })
       .then((response) => {
         if (response?.status) {
-          const data = [...response.data].reverse();
-          setWebsite(data);
+          // const data = [...response.data].reverse();
+          setWebsite(response.data);
         } else {
           setError("Something Went Wrong");
           setWebsite([]);
@@ -103,7 +107,6 @@ const AddWibsites = () => {
                 setOnAddwebsitePopup(true)
                 setEditMode(true)
                 setWebsiteId(website?.id)
-
               }}
             />
           </div>
@@ -311,8 +314,8 @@ const AddWibsites = () => {
         })
           .then((response) => {
             if (response?.status) {
-              const data = [...response.data].reverse();
-              setWebsite(data);
+              // const data = [...response.data].reverse();
+              setWebsite(response.data);
             } else {
               setError("Data Not Found");
               setWebsite(response.data);
@@ -333,9 +336,12 @@ const AddWibsites = () => {
       .then((response) => {
         if (response?.status === true) {
           getWebsitesCallback();
+          setOpenSuccessPopup(true)
+          setDisplayeMsg(response.message)
           setTimeout(() => {
             setError(response?.message);
             setConfirmationPopupOpen(false);
+            setOpenSuccessPopup(false)
           }, 2000);
 
         } else {
@@ -344,8 +350,13 @@ const AddWibsites = () => {
       })
       .catch((error) => {
         setError(error?.message || "API request failed");
-      });
+        setErrorPopupOpen(true)
+        setDisplayeMsg(error?.message)
+        setTimeout(() => {
+          setErrorPopupOpen(false)
+        }, 2000);
 
+      });
   }
 
   return (
@@ -414,6 +425,14 @@ const AddWibsites = () => {
         CallbackFunction={handleBlockAndUnblock}
       />
       <SuccessPopup
+        successPopupOpen={openSuccessPopup}
+        setSuccessPopupOpen={setOpenSuccessPopup}
+        discription={displayMsg}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={displayMsg}
       />
     </div >
   );

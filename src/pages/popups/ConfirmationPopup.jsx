@@ -2,42 +2,17 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { useState } from "react";
+import SuccessPopup from "./SuccessPopup";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
   setConfirmationPopupOpen,
   discription,
-  selectedId,
   submitButton,
   CallbackFunction
 }) {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
-
-  const BockOrUnblock = async () => {
-    try {
-      let response;
-
-      if (api === "BlockUnBlockPromotion") {
-        response = await statusPromotionsTypes(selectedId);
-      } else {
-        response = await deletePromotionsImages(selectedId);
-      }
-      console.log("response kwd gvljenvojenvvojwrg", response);
-      if (response?.status === "200") {
-        console.log("hiyhb");
-        setMessage(response?.message);
-        setSuccessPopupOpen(true);
-
-        setTimeout(() => {
-          getAction();
-          setConfirmationPopupOpen(false);
-        }, 100);
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
 
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
@@ -79,7 +54,7 @@ function ConfirmationPopup({
               </button>
               <button
                 className="w-50 saffron-btn2 ms-2"
-                onClick={BockOrUnblock}
+                onClick={handleBlockAndUnblock}
               >
                 {submitButton}
               </button>

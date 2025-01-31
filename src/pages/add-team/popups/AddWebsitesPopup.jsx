@@ -7,6 +7,7 @@ import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
 import { createWebsite, getWebsiteDetails, updateWebsite } from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
+import ErrorPopup from "../../popups/ErrorPopup";
 
 const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMode, websiteId, setEditMode }) => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,8 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [displayMsg, setDisplayeMsg] = useState("")
   const PanelOptions = [
     { value: 1, label: "Admin Panel" },
     { value: 2, label: "User Panel" },
@@ -192,6 +195,12 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         })
         .catch((error) => {
           setApiError(error?.message || "API request failed");
+          setErrorPopupOpen(true)
+          setDisplayeMsg(error?.message)
+          setTimeout(() => {
+            setErrorPopupOpen(false)
+          }, 2000);
+
         });
     }
   };
@@ -305,6 +314,11 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={`${editMode ? "Website Is Updated Successfully" : "Website Is Created Successfully"} `}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={displayMsg}
       />
     </div>
 

@@ -45,6 +45,38 @@ const endpoints = {
     method: "delete",
     url: (id) => `/user/${UserId}/api/statusPromotionsTypes/${id}`,
   },
+
+
+  getLoggedInLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${UserId}/loginLogs?${query}`;
+    },
+  },
+  getLoggedInLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${UserId}/loginLogsById?${query}`;
+    },
+  },
+  getDirectorLoginLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${UserId}/getParentLoginLogs?${query}`;
+    },
+  },
+  getDirectorLoginLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${UserId}/getParentLoginLogsById?${query}`;
+    },
+  },
+
+
 };
 
 export default endpoints;
