@@ -3,6 +3,8 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { useState } from "react";
 import SuccessPopup from "./SuccessPopup";
+import { blockEmploye } from "../../api/apiMethods";
+import { useEffect } from "react";
 
 function ConfirmationPopup({
   confirmationPopupOpen,

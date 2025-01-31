@@ -10,26 +10,25 @@ function Table({
   customPadding = "px-3 py-2",
   onPageChange
 }) {
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const totalPages = Math.ceil(data.length / itemsPerPage);
+  // const hasData = data.length > 0;
+
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const hasData = data.length > 0;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, data.length);
   const currentData = data.slice(startIndex, endIndex);
-
+  
   const handlePageChange = (page) => {
-    if (hasData) {
-      setCurrentPage(page);
-      if (onPageChange) {
-        onPageChange(page); 
-      }
-    }
+    setCurrentPage(page);
   };
-
+  
   const maxPageButtons = 5;
   const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
   const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
-
+  
   const pageButtons = Array.from(
     { length: endPage - startPage + 1 },
     (_, i) => {
@@ -46,6 +45,31 @@ function Table({
       );
     }
   );
+  // const handlePageChange = (page) => {
+  //   if (hasData) setCurrentPage(page);
+  // };
+
+  // const maxPageButtons = 5;
+  // const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+  // const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+  // const pageButtons = Array.from(
+  //   { length: endPage - startPage + 1 },
+  //   (_, i) => {
+  //     const pageNumber = startPage + i;
+  //     return (
+  //       <div
+  //         key={pageNumber}
+  //         onClick={() => handlePageChange(pageNumber)}
+  //         className={`chat-img flex-center small-font black-text2 mx-1 br-3px ${
+  //           currentPage === pageNumber ? "grey-bg black-border" : "border"
+  //         }`}
+  //       >
+  //         {pageNumber}
+  //       </div>
+  //     );
+  //   }
+  // );
 
   const renderPagination = hasData && totalPages > 1;
 

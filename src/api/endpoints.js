@@ -1,49 +1,46 @@
-const UserId = localStorage.getItem("user_id");
+const userID = localStorage.getItem("user_id");
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
-  addManagemnentTeam: { method: "post", url: "/employee" },
-  getRoles: { method: "get", url: "/rolesList" },
-  getEmployees: { method: "get", url: "/employees" },
-  createWebsite: { method: "post", url: `/user/${UserId}/website/website` },
+  createWebsite: { method: "post", url: `/user/${userID}/website/website` },
   updateWebsite: {
     method: "put",
-    url: (id) => `/user/${UserId}/website/update/websiteby/${id}`,
+    url: (id) => `/user/${userID}/website/update/websiteby/${id}`,
   },
   getWebsiteDetails: {
     method: "get",
-    url: (id) => `/user/${UserId}/website/websiteby/${id}`,
+    url: (id) => `/user/${userID}/website/websiteby/${id}`,
   },
   getWebsitesList: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${UserId}/website/websites?${query}`;
+      return `/user/${userID}/website/websites?${query}`;
     },
   },
-  getAllCountires: { method: "get", url: `/user/${UserId}/countries` },
+  getAllCountires: { method: "get", url: `/user/${userID}/countries` },
   blockAndUnblock: {
     method: "put",
-    url: (id) => `/user/${UserId}/website/block-unblock/${id}`,
+    url: (id) => `/user/${userID}/website/block-unblock/${id}`,
   },
   getPromotionsTypes: {
     method: "get",
-    url: `/user/${UserId}/api/getPromotionsTypes`,
+    url: `/user/${userID}/api/getPromotionsTypes`,
   },
   getPromotionsImage: {
     method: "get",
-    url: `/user/${UserId}/api/getPromotionsImages`,
+    url: `/user/${userID}/api/getPromotionsImages`,
   },
   createPromotionImages: {
     method: "post",
-    url: `/user/${UserId}/api/createPromotionImages`,
+    url: `/user/${userID}/api/createPromotionImages`,
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${UserId}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${UserId}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
 
 
@@ -51,32 +48,72 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${UserId}/loginLogs?${query}`;
+      return `/user/${userID}/loginLogs?${query}`;
     },
   },
   getLoggedInLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${UserId}/loginLogsById?${query}`;
+      return `/user/${userID}/loginLogsById?${query}`;
     },
   },
   getDirectorLoginLogs: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${UserId}/getParentLoginLogs?${query}`;
+      return `/user/${userID}/getParentLoginLogs?${query}`;
     },
   },
   getDirectorLoginLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${UserId}/getParentLoginLogsById?${query}`;
+      return `/user/${userID}/getParentLoginLogsById?${query}`;
     },
   },
 
+  // addManagemnentTeam: { method: "post", url: "/employee" },
+  addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
 
+  getRoles: { method: "get", url: `/user/${userID}/rolesList` },
+  // getEmployees: { method: "get", url: `/user/${userID}/employees` },
+  // getEmployees: ({ limit, offset }) => ({
+  //   method: "get",
+  //   url: `/user/${userID}/employeeeees?limit=${limit}&offset=${offset}`,
+  // }),
+
+  // getEmployees: {
+  //   method: "get",
+  //   url: (params) => {
+  //     const query = new URLSearchParams(params).toString();
+  //     return `/user/${userID}/employees?${query}`;
+  //   },
+  // },
+  getEmployees: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
+      return `/user/${userID}/employees?${query}`;
+    },
+  },
+  resetEmployeePassword: {
+    method: "post",
+    url: (id) => `/user/${userID}/employeeUpdatePassword/${id}`,
+  },
+  blockEmploye: {
+    method: "post",
+    url: (id) => `/user/${userID}/employeeBlockUnblock/${id}`,
+  },
+
+  updateEmployeeByID: {
+    method: "post",
+    url: (id) => `/user/${userID}/employee/${id}`,
+  },
+  getEmployeeDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID}/employee/${id}`,
+  },
 };
 
 export default endpoints;

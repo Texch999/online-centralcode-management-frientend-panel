@@ -17,6 +17,7 @@ const apiRequest = (
         : endpoint.url;
 
     if (queryParams) {
+      // Ensure queryParams include pagination params like limit and offset
       const queryString = qs.stringify(queryParams, { addQueryPrefix: true });
       url += queryString;
     }
@@ -32,7 +33,7 @@ const apiRequest = (
     })
       .then((response) => {
         res(response?.data);
-        console.log(response.data,"response")
+        console.log(response.data, "response");
       })
       .catch((error) => {
         if (error.response) {

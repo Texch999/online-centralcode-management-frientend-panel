@@ -674,6 +674,17 @@
   cursor: not-allowed;
   color: #a0a0a0;
 }
+.green-block {
+  color: green;
+}
+
+.red-block {
+  color: red;
+}
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .tab-btn {
   padding: 10px 20px;
