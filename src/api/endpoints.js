@@ -57,8 +57,16 @@ const endpoints = {
     method: "put",
     url:(id)=> `user/${Login_User_Id}/privacypolicies/${id}`,
   },
+  privacyPolicyStatusUpdate: {
+    method: "patch",
+    url: (data) =>  `user/${Login_User_Id}/privacypolicies/${data.id}/status/${data.status}`,
+  },
+  
   getCountries:{method:"get",url:`user/${Login_User_Id}/countries/countries`},
   getWebsites:{method:"get",url:`user/${Login_User_Id}/website/websites`},
+  
+  // createPaymentGateway:{method:"post",url:`user/${Login_User_Id}/paymentDetails`},
+  // getPaymentGateways:{method:"get",url:`user/${Login_User_Id}/paymentDetails`},
 };
 
 export default endpoints;

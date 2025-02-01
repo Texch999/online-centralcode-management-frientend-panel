@@ -5,14 +5,26 @@ import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../../pages/add-team/style.css";
+// import {Editor, EditorState} from 'draft-js';
 import {
   createPrivacyPolicy,
   getCountries,
   getPrivacyPolicy,
   getPrivacyPolicyById,
   getWebsites,
+  countries,
+  setCountries,
 } from "../../api/apiMethods";
 import { Controller, useForm } from "react-hook-form";
+import SuccessPopup from "./../popups/SuccessPopup";
+import {
+  ContentState,
+  convertFromRaw,
+  convertToRaw,
+  Editor,
+  EditorState,
+} from "draft-js";
+import "draft-js/dist/Draft.css";
 
 const AddPrivacyPolicyPopUp = ({
   addPrivacyModal,
@@ -20,6 +32,10 @@ const AddPrivacyPolicyPopUp = ({
   isEditModal,
   setIsEditModal,
   getPolicyPrivacyData,
+  countries,
+  setCountries,
+  websites,
+  setWebsites,
 }) => {
   // Initialize React Hook Form
   const {
@@ -28,19 +44,23 @@ const AddPrivacyPolicyPopUp = ({
     control,
     setValue,
     watch,
+    reset,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
-  const [selectWebsite, setSelectWebsite] = useState(false);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
   const [error, setError] = useState("");
-  const [countries, setCountries] = useState([]);
+  // const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedWebsite, setSelectedWebsite] = useState("");
-  const [websites, setWebsites] = useState([]);
+  // const [websites, setWebsites] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [privacyData, setPrivacyData] = useState([]);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
+
   const countryOptions = countries.map((item) => ({
     value: item?.id,
     label: item?.name,
@@ -62,33 +82,63 @@ const AddPrivacyPolicyPopUp = ({
     { value: "1", label: "Active" },
     { value: "2", label: "In-Active" },
   ];
-  const getAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        console.log("Countries", response.data);
-        setCountries(response.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
-  useEffect(() => {
-    getAllCountries();
-  }, []);
+  // const getAllCountries = () => {
+  //   getCountries()
+  //     .then((response) => {
+  //       console.log("Countries", response.data);
+  //       setCountries(response.data);
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getAllCountries();
+  // }, []);
 
-  const getAllWebsites = () => {
-    getWebsites()
-      .then((response) => {
-        console.log("Websites", response.data);
-        setWebsites(response.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
+  // const getAllWebsites = () => {
+  //   getWebsites()
+  //     .then((response) => {
+  //       console.log("Websites", response.data);
+  //       setWebsites(response.data);
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getAllWebsites();
+  // }, []);
+
   useEffect(() => {
-    getAllWebsites();
-  }, []);
+    const savedDescription = watch("description");
+    if (savedDescription) {
+      try {
+        const contentState = convertFromRaw(JSON.parse(savedDescription));
+        setEditorState(EditorState.createWithContent(contentState));
+      } catch (error) {
+        setEditorState(
+          EditorState.createWithContent(
+            ContentState.createFromText(savedDescription)
+          )
+        );
+      }
+    }
+  }, [watch("description")]);
+
+  const handleEditorChange = (newEditorState) => {
+    setEditorState(newEditorState);
+    const content = newEditorState.getCurrentContent();
+    const rawContent = JSON.stringify(convertToRaw(content));
+    setValue("description", rawContent, { shouldValidate: true });
+  };
+  const handleClose = () => {
+    setAddPrivacyModal(false);
+    setIsEditModal(false);
+    reset();
+    setEditorState(EditorState.createEmpty());
+    setSuccessPopupOpen(false);
+  };
 
   const onSubmit = (data) => {
     const payload = {
@@ -97,13 +147,21 @@ const AddPrivacyPolicyPopUp = ({
       is_active: Number(data.status?.value),
       description: data.description,
     };
-    console.log(payload,"fghfgh")
+    console.log(payload, "fghfgh");
     createPrivacyPolicy(payload)
       .then((response) => {
+        setAddPrivacyModal();
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 1000);
+        reset();
+        getPolicyPrivacyData();
         console.log("response from API", response);
       })
       .catch((error) => {
         setError(error?.message);
+        console.log(error, "error from API", error);
       });
   };
 
@@ -111,17 +169,14 @@ const AddPrivacyPolicyPopUp = ({
     <>
       <Modal
         show={addPrivacyModal}
-        size="md"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Body>
           <div className="d-flex w-100 flex-between">
             <h6>Add Privacy Policy</h6>
-            <IoCloseSharp
-              className="pointer"
-              onClick={() => setAddPrivacyModal(false)}
-            />
+            <IoCloseSharp className="pointer" onClick={handleClose} />
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -225,6 +280,19 @@ const AddPrivacyPolicyPopUp = ({
                     },
                   })}
                 ></textarea>
+                {/* <div className="border p-2" style={{ minHeight: "300px" }}>
+                  <Controller
+                    name="description"
+                    control={control}
+                    rules={{ required: "Description is required" }}
+                    render={() => (
+                      <Editor
+                        editorState={editorState}
+                        onChange={handleEditorChange}
+                      />
+                    )}
+                  />
+                </div> */}
                 {errors.description && (
                   <p className="text-danger small-font">
                     {errors.description.message}
@@ -251,9 +319,10 @@ const AddPrivacyPolicyPopUp = ({
         </Modal.Body>
       </Modal>
 
-      <SelectWebsitePopUp
-        setSelectWebsite={setSelectWebsite}
-        selectWebsite={selectWebsite}
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={"Privacy Policy Created Successfully"}
       />
     </>
   );

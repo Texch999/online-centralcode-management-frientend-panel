@@ -1,7 +1,12 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-const PrivacyPopUp = ({ showPrivacyModal, setShowPrivacyModal }) => {
+const PrivacyPopUp = ({
+  showPrivacyModal,
+  setShowPrivacyModal,
+  setShowPrivacyText,
+  showPrivacyText,
+}) => {
   return (
     <Modal
       show={showPrivacyModal}
@@ -13,7 +18,7 @@ const PrivacyPopUp = ({ showPrivacyModal, setShowPrivacyModal }) => {
         <Modal.Title>Privacy Policy</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="small-font">
+        {/* <div className="small-font">
           <p>
             Welcome to [Company Name]. We value your privacy and are committed
             to protecting your personal information. This privacy policy
@@ -83,7 +88,11 @@ const PrivacyPopUp = ({ showPrivacyModal, setShowPrivacyModal }) => {
             If you have any questions about this privacy policy, please contact
             us at: txchange.com
           </p>
-        </div>
+        </div> */}
+        <div
+          className="small-font"
+          dangerouslySetInnerHTML={{ __html: showPrivacyText }}
+        />
       </Modal.Body>
     </Modal>
   );

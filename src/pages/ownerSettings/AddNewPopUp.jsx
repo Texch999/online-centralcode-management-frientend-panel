@@ -37,12 +37,12 @@ const AddNewPopUp = ({
     reset,
     formState: { errors, isValid },
   } = useForm({
-    mode: "onChange", // Validates on change
-    defaultValues: {
-      reason: "",
-      description: "",
-      status: null,
-    },
+    mode: "onChange",
+    // defaultValues: {
+    //   reason: "",
+    //   description: "",
+    //   status: null,
+    // },
   });
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [securityQns, setSecurityQns] = useState("");
@@ -63,17 +63,17 @@ const AddNewPopUp = ({
     { value: 2, label: "In-Active" },
   ];
 
-  useEffect(() => {
-    if (isEdit && selectedRejReasonId) {
-      getRejReasonsById(selectedRejReasonId)
-        .then((response) => {
-          setRejReasonsDataById(response);
-        })
-        .catch((error) => {
-          console.log(error, "Error fetching rejection reason by ID");
-        });
-    }
-  }, [isEdit, selectedRejReasonId]);
+  const handleCloseRejReasons = () => {
+    setAddNewModalRejection(false);
+    reset();
+    getRejReasons();
+  };
+
+  const handleCloseSecQns = () => {
+    setAddNewModalSecurity(false);
+    reset();
+    getSecurityQuestions();
+  };
 
   useEffect(() => {
     if (isEdit && rejReasonsDataById) {
@@ -96,7 +96,11 @@ const AddNewPopUp = ({
     }
   }, [isEdit, selectedRejReasonId, setValue]);
 
-  const onSubmit = (data) => {
+  const onSubmitRejReasons = (data) => {
+    if (!data.status) {
+      setError({ status: { message: "Status is required" } });
+      return;
+    }
     const payload = {
       reason: data.reason,
       description: data.description,
@@ -120,46 +124,7 @@ const AddNewPopUp = ({
       .catch((error) => console.error("Error:", error));
   };
 
-  // const handlePostRejectionReasons = () => {
-  //   const rejReasonsPayload = {
-  //     reason: rejReason,
-  //     description: rejReasonDescription,
-  //     status: selectedStatus,
-  //   };
-  //   const response = isEdit
-  //     ? updateRejReasons(selectedRejReasonId, rejReasonsPayload)
-  //     : createRejReasons(rejReasonsPayload);
-  //   response
-  //     .then(() => {
-  //       setSuccessPopupOpen(true);
-  //       setTimeout(() => {
-  //         setSuccessPopupOpen(false);
-  //       }, 1000);
-
-  //       setRejReason("");
-  //       setRejReasonDescription("");
-  //       setSelectedStatus(null);
-  //       setRejReasonsDataById([]);
-  //       getRejReasons();
-  //       setAddNewModalRejection(false);
-  //     })
-  //     .catch((error) => {
-  //       setError(error.message);
-  //     });
-  // };
-
-  useEffect(() => {
-    if (isEdit && selectedQnsId) {
-      getSecQusetionsById(selectedQnsId)
-        .then((response) => {
-          setSelectedSecurityQuestion(response);
-        })
-        .catch((error) => {
-          console.log(error, "Error fetching rejection reason by ID");
-        });
-    }
-  }, [isEdit, selectedQnsId]);
-
+  // sec qns
   useEffect(() => {
     if (isEdit && selectedSecurityQuestion) {
       setSecurityQns(selectedSecurityQuestion?.questions || "");
@@ -167,29 +132,45 @@ const AddNewPopUp = ({
     }
   }, [isEdit, selectedSecurityQuestion]);
 
-  const handleSecQuestionsSubmit = () => {
+  useEffect(() => {
+    if (isEdit && selectedQnsId) {
+      getSecQusetionsById(selectedQnsId).then((response) => {
+        setValue("securityQns", isEdit === true ? response.questions : "");
+        setValue(
+          "status",
+          selectOptions.find((opt) => opt.value === response.status)
+        );
+      });
+    }
+  }, [isEdit, selectedQnsId, setValue]);
+
+  const onSubmitSecQns = (data) => {
+    if (!data.status) {
+      setError({ status: { message: "Status is required" } });
+      return;
+    }
+
     const payload = {
-      questions: securityQns,
-      status: selectedStatus,
+      questions: data.securityQns,
+      status: data.status?.value || null,
     };
+
     const response = isEdit
       ? updateSecurityQuestions(selectedQnsId, payload)
       : createSecurityQuestions(payload);
+
     response
       .then(() => {
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 1000);
+        reset();
         getSecurityQuestions();
-        setSecurityQns("");
-        setSelectedStatus(null);
         setAddNewModalSecurity(false);
       })
       .catch((error) => console.error("Error:", error));
-    setLoading(false);
   };
-
   return (
     <>
       {addNewModalRejection && (
@@ -266,13 +247,12 @@ const AddNewPopUp = ({
               <h6>{isEdit ? "Edit" : "Add"} Rejection Reason</h6>
               <IoCloseSharp
                 className="pointer"
-                onClick={() => setAddNewModalRejection(false)}
+                onClick={handleCloseRejReasons}
               />
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitRejReasons)}>
               <div className="row mt-3 small-font">
-                {/* Status Select */}
                 <div className="col-4 flex-column">
                   <label className="black-text4 mb-1">Status</label>
                   <Select
@@ -291,7 +271,6 @@ const AddNewPopUp = ({
                   )}
                 </div>
 
-                {/* Reason Input */}
                 <div className="col-8 flex-column">
                   <label className="black-text4 mb-1">Reason</label>
                   <input
@@ -307,7 +286,6 @@ const AddNewPopUp = ({
                   )}
                 </div>
 
-                {/* Description Textarea */}
                 <div className="col-12 flex-column mt-3">
                   <label className="black-text4 mb-1">Description</label>
                   <textarea
@@ -326,7 +304,6 @@ const AddNewPopUp = ({
                   )}
                 </div>
 
-                {/* Submit Button (Disabled Until Form is Valid) */}
                 <div className="row">
                   <div className="col-8"></div>
                   <button
@@ -348,66 +325,131 @@ const AddNewPopUp = ({
       )}
 
       {addNewModalSecurity && (
-        <div>
-          <Modal
-            show={addNewModalSecurity}
-            size="md"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
-            <Modal.Body>
-              <div className="d-flex w-100 flex-between">
-                <h6>
-                  {`${isEdit === true ? "Edit" : "Add"}`}
-                  Security Questions
-                </h6>
-                <IoCloseSharp
-                  className="pointer"
-                  onClick={() => setAddNewModalSecurity(false)}
-                />
-              </div>
+        // <div>
+        //   <Modal
+        //     show={addNewModalSecurity}
+        //     size="md"
+        //     aria-labelledby="contained-modal-title-vcenter"
+        //     centered
+        //   >
+        //     <Modal.Body>
+        //       <div className="d-flex w-100 flex-between">
+        //         <h6>
+        //           {`${isEdit === true ? "Edit" : "Add"}`}
+        //           Security Questions
+        //         </h6>
+        //         <IoCloseSharp
+        //           className="pointer"
+        //           onClick={() => setAddNewModalSecurity(false)}
+        //         />
+        //       </div>
 
+        //       <div className="row mt-3 small-font">
+        //         <div className="col-4 flex-column">
+        //           <label className="black-text4 mb-1">Status</label>
+        //           <Select
+        //             className="small-font"
+        //             options={selectOptions}
+        //             placeholder="Select"
+        //             styles={customStyles}
+        //             maxMenuHeight={120}
+        //             menuPlacement="auto"
+        //             value={
+        //               selectOptions.find(
+        //                 (option) => option.value === selectedStatus
+        //               ) || null
+        //             }
+        //             onChange={handleStatusChange}
+        //           />
+        //         </div>
+        //         <div className="col-8 flex-column ">
+        //           <label className="black-text4 mb-1">Questions</label>
+        //           <input
+        //             type="text"
+        //             placeholder="Enter"
+        //             className="all-none input-bg small-font p-2 rounded"
+        //             value={securityQns}
+        //             onChange={(e) => setSecurityQns(e.target.value)}
+        //           />
+        //         </div>
+        //         <div className="row">
+        //           <div className="col-8"></div>
+        //           <div
+        //             className="saffron-btn2 small-font pointer mt-4 col-4"
+        //             onClick={handleSecQuestionsSubmit}
+        //           >
+        //             {`${isEdit ? "Update" : "Create"}`}
+        //           </div>
+        //         </div>
+        //       </div>
+        //     </Modal.Body>
+        //   </Modal>
+        // </div>
+
+        <Modal show={addNewModalSecurity} size="md" centered>
+          <Modal.Body>
+            <div className="d-flex w-100 flex-between">
+              <h6>{isEdit ? "Edit" : "Add"} Security Questions</h6>
+              <IoCloseSharp className="pointer" onClick={handleCloseSecQns} />
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmitSecQns)}>
               <div className="row mt-3 small-font">
                 <div className="col-4 flex-column">
                   <label className="black-text4 mb-1">Status</label>
                   <Select
-                    className="small-font"
                     options={selectOptions}
                     placeholder="Select"
                     styles={customStyles}
-                    maxMenuHeight={120}
-                    menuPlacement="auto"
-                    value={
-                      selectOptions.find(
-                        (option) => option.value === selectedStatus
-                      ) || null
+                    value={watch("status") || null}
+                    onChange={(selectedOption) =>
+                      setValue("status", selectedOption, {
+                        shouldValidate: true,
+                      })
                     }
-                    onChange={handleStatusChange}
                   />
+                  {errors.status && (
+                    <p className="text-danger small-font">
+                      {errors.status.message}
+                    </p>
+                  )}
                 </div>
-                <div className="col-8 flex-column ">
+
+                <div className="col-8 flex-column">
                   <label className="black-text4 mb-1">Questions</label>
                   <input
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
-                    value={securityQns}
-                    onChange={(e) => setSecurityQns(e.target.value)}
+                    {...register("securityQns", {
+                      required: "Question is required",
+                    })}
                   />
+                  {errors.securityQns && (
+                    <p className="text-danger small-font">
+                      {errors.securityQns.message}
+                    </p>
+                  )}
                 </div>
+
                 <div className="row">
                   <div className="col-8"></div>
-                  <div
+                  <button
+                    type="submit"
                     className="saffron-btn2 small-font pointer mt-4 col-4"
-                    onClick={handleSecQuestionsSubmit}
+                    disabled={!isValid}
+                    style={{
+                      opacity: isValid ? 1 : 0.5,
+                      pointerEvents: isValid ? "auto" : "none",
+                    }}
                   >
-                    {`${isEdit ? "Update" : "Create"}`}
-                  </div>
+                    {isEdit ? "Update" : "Create"}
+                  </button>
                 </div>
               </div>
-            </Modal.Body>
-          </Modal>
-        </div>
+            </form>
+          </Modal.Body>
+        </Modal>
       )}
 
       <SuccessPopup

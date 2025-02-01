@@ -12,7 +12,13 @@ import {
   getCountries,
   getPrivacyPolicy,
   getPrivacyPolicyById,
+  getWebsites,
 } from "../../api/apiMethods";
+import EditPrivacyPolicy from "./EditPrivacyPolicy";
+import { CircleLoader } from "react-spinners";
+import { CgWebsite } from "react-icons/cg";
+import SelectWebsitePopUp from "./SelectWebsitePopUp";
+import ActiveInActiveModal from "../popups/ActiveInActiveModal";
 
 const PrivacyPolicy = () => {
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
@@ -20,20 +26,71 @@ const PrivacyPolicy = () => {
   const [privacyList, setPrivacyList] = useState([]);
   const [privacyListById, setPrivacyListById] = useState([]);
   const [error, setError] = useState("");
+  const [countries, setCountries] = useState([]);
+  const [showPrivacyText, setShowPrivacyText] = useState("");
+  const [privacyPolicyId, setPrivacyPolicyId] = useState(null);
+  const [websites, setWebsites] = useState([]);
+  const [editPrivacyPolicyModal, setEditPrivacyPolicyModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectWebsite, setSelectWebsite] = useState(false);
+  console.log(privacyPolicyId, "privacyPolicyId");
+  const [activeInActivePopup, setActiveInActivePopup] = useState(false);
+  const [statusId, setStatusId] = useState(null);
+  const [privacyStatusId, setPrivacyStatusId] = useState("");
+  console.log(privacyStatusId, "privacyStatusId");
+  console.log(statusId, "statusId");
 
   const [isEditModal, setIsEditModal] = useState("");
-  const handleEditPrivacyModal = () => {
-    setIsEditModal(false);
-    setShowPrivacyModal(true);
+  const handleEditPrivacyModal = (id) => {
+    setPrivacyPolicyId(id);
+    setEditPrivacyPolicyModal(true);
   };
   const handleAddPrivacyModal = () => {
     setAddPrivacyModal(true);
+  };
+
+  const handleStatus = (id, status) => {
+    setActiveInActivePopup(true);
+    setPrivacyStatusId(id);
+    setStatusId(status);
   };
 
   const selectOptions = [
     { value: "1", label: "Active" },
     { value: "2", label: "In-Active" },
   ];
+
+  const getAllCountries = () => {
+    getCountries()
+      .then((response) => {
+        console.log("Countries", response);
+        setCountries(response.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    getAllCountries();
+  }, []);
+
+  const getAllWebsites = () => {
+    getWebsites()
+      .then((response) => {
+        console.log("Websites", response.data);
+        setWebsites(response.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    getAllWebsites();
+  }, []);
+
+  const hanldeWebsites = () => {
+    setSelectWebsite(true);
+  };
 
   const REJECTION_COLUMNS = [
     { header: "Country", field: "country", width: "20%" },
@@ -43,101 +100,148 @@ const PrivacyPolicy = () => {
     { header: "Action", field: "action", width: "30%" },
   ];
 
-  const REJECTION_DATA = [
-    {
-      country: <div>India</div>,
+  const REJECTION_DATA = privacyList.map((item, index) => {
+    const country = countries.find((country) => country?.id === item?.country_id);
+    const website = websites.find((website) => website?.id === item?.website_id);
 
+    return {
+      country: <div>{country ? country?.name : 'unknown'}</div>,
       policyDetails: (
         <div
           className="saffron-btn2 w-20 pointer"
           onClick={() => {
             setIsEditModal(true);
             setShowPrivacyModal(true);
+            setShowPrivacyText(item?.description);
           }}
         >
           View
         </div>
       ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
+      showingWebsite: <div>{website ? website?.web_name : 'unknown'}</div>,
       status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span onClick={handleEditPrivacyModal}>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      country: <div>India</div>,
-
-      policyDetails: (
         <div
-          className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
+          className={`${
+            item?.is_active === 1 ? "green-btn" : "red-btn"
+          }  w-fill`}
         >
-          View
+          {item?.is_active === 1 ? "Active" : "In-Active"}
         </div>
       ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
       action: (
         <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
+          <span className="mx-2" onClick={hanldeWebsites}>
+            <CgWebsite size={20} />
           </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
+          <span onClick={() => handleEditPrivacyModal(item?.id)}>
+            <SlPencil size={20} />
+          </span>
+          <span
+            className="ms-2"
+            onClick={() => handleStatus(item?.id, item?.is_active)}
+          >
+            <FaRegTrashCan size={20} />
           </span>
         </div>
       ),
+    };
+  });
+  // [
+  //   {
+  //     country: <div>India</div>,
 
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-  ];
+  //     policyDetails: (
+  //       <div
+  //         className="saffron-btn2 w-20 pointer"
+  //         onClick={() => {
+  //           setIsEditModal(true);
+  //           setShowPrivacyModal(true);
+  //         }}
+  //       >
+  //         View
+  //       </div>
+  //     ),
+
+  //     showingWebsite: (
+  //       <div>
+  //         we2Call.com <br />
+  //         www.ravana.com <br />
+  //         txchange.com
+  //       </div>
+  //     ),
+  //     status: (
+  //       <div>
+  //         <div className="green-btn w-fill">Active</div>
+  //       </div>
+  //     ),
+
+  //     action: (
+  //       <div className="large-font d-flex w-50 flex-between">
+  //         <span onClick={handleEditPrivacyModal}>
+  //           <SlPencil size={18} />
+  //         </span>
+  //         <span className="ms-2">
+  //           <FaRegTrashCan size={18} />
+  //         </span>
+  //       </div>
+  //     ),
+
+  //     resultDateTime: (
+  //       <div>
+  //         02-10-2024
+  //         <br />
+  //         10:34:00
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     country: <div>India</div>,
+
+  //     policyDetails: (
+  //       <div
+  //         className="saffron-btn2 w-20 pointer"
+  //         onClick={() => setShowPrivacyModal(true)}
+  //       >
+  //         View
+  //       </div>
+  //     ),
+
+  //     showingWebsite: (
+  //       <div>
+  //         we2Call.com <br />
+  //         www.ravana.com <br />
+  //         txchange.com
+  //       </div>
+  //     ),
+  //     status: (
+  //       <div>
+  //         <div className="green-btn w-fill">Active</div>
+  //       </div>
+  //     ),
+
+  //     action: (
+  //       <div className="large-font d-flex w-50 flex-between">
+  //         <span>
+  //           <SlPencil size={18} />
+  //         </span>
+  //         <span className="ms-2">
+  //           <FaRegTrashCan size={18} />
+  //         </span>
+  //       </div>
+  //     ),
+
+  //     resultDateTime: (
+  //       <div>
+  //         02-10-2024
+  //         <br />
+  //         10:34:00
+  //       </div>
+  //     ),
+  //   },
+  // ];
 
   const getPolicyPrivacyData = () => {
+    setLoading(true);
     getPrivacyPolicy()
       .then((response) => {
         console.log("getPrivacyPolicy success", response);
@@ -146,25 +250,13 @@ const PrivacyPolicy = () => {
       .catch((error) => {
         setError(error?.message);
         console.log("getPrivacyPolicy error", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   useEffect(() => {
     getPolicyPrivacyData();
-  }, []);
-
-  const getPolicyProvacyDataById = () => {
-    getPrivacyPolicyById()
-      .then((response) => {
-        console.log("getPrivacyPolicy success", response);
-        setPrivacyListById(response.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-        console.log("getPrivacyPolicy error", error);
-      });
-  };
-  useEffect(() => {
-    getPolicyProvacyDataById();
   }, []);
 
   return (
@@ -191,12 +283,22 @@ const PrivacyPolicy = () => {
           </button>
         </div>
       </div>
-
-      <Table
-        columns={REJECTION_COLUMNS}
-        data={REJECTION_DATA}
-        itemsPerPage={5}
-      />
+      <div>
+        {loading ? (
+          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            <CircleLoader color="#3498db" size={40} />
+            <div className="medium-font black-font my-3">
+              Just a moment...............⏳
+            </div>
+          </div>
+        ) : (
+          <Table
+            columns={REJECTION_COLUMNS}
+            data={REJECTION_DATA}
+            itemsPerPage={5}
+          />
+        )}
+      </div>
 
       <AddPrivacyPolicyPopUp
         setAddPrivacyModal={setAddPrivacyModal}
@@ -204,11 +306,40 @@ const PrivacyPolicy = () => {
         isEditModal={isEditModal}
         setIsEditModal={setIsEditModal}
         getPolicyPrivacyData={getPolicyPrivacyData}
-        
+        setCountries={setCountries}
+        countries={countries}
+        websites={websites}
+        setWebsites={setWebsites}
       />
       <PrivacyPopUp
         setShowPrivacyModal={setShowPrivacyModal}
         showPrivacyModal={showPrivacyModal}
+        setShowPrivacyText={setShowPrivacyText}
+        showPrivacyText={showPrivacyText}
+      />
+      <EditPrivacyPolicy
+        setEditPrivacyPolicyModal={setEditPrivacyPolicyModal}
+        editPrivacyPolicyModal={editPrivacyPolicyModal}
+        setPrivacyPolicyId={setPrivacyPolicyId}
+        privacyPolicyId={privacyPolicyId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
+      />
+      <SelectWebsitePopUp
+        setSelectWebsite={setSelectWebsite}
+        selectWebsite={selectWebsite}
+      />
+      <ActiveInActiveModal
+        privacyStatusId={privacyStatusId}
+        setPrivacyStatusId={setPrivacyStatusId}
+        statusId={statusId}
+        setStatusId={setStatusId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
+        setActiveInActivePopup={setActiveInActivePopup}
+        activeInActivePopup={activeInActivePopup}
+        discription={`Are you sure want to ${
+          statusId === 1 ? "In-Active" : "Active"
+        }  Privacy Policy`}
+        submitButton={statusId === 1 ? "In-Active" : "Active"}
       />
     </div>
   );

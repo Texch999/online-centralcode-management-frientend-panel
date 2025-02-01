@@ -16,6 +16,9 @@ const apiRequest = (
         ? endpoint.url(pathParams)
         : endpoint.url;
 
+    console.log("Final API URL:", url);
+    console.log(queryParams);
+
     if (queryParams) {
       const queryString = qs.stringify(queryParams, { addQueryPrefix: true });
       url += queryString;

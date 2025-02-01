@@ -45,7 +45,7 @@ function Header() {
     <div className="header">
       <div className="w-100 flex-between px-2 py-1">
         <div className="d-flex align-items-center">
-          <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" />
+          <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" onClick={()=>navigate("/")}/>
           <div className="d-flex align-items-center input-css ms-1">
             <FaSearch size={18} className="grey-clr me-2" />
             <input

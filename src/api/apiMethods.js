@@ -57,6 +57,18 @@ const getWebsites = (data) => {
 const createPrivacyPolicy = (data) => {
   return apiRequest("createPrivacyPolicy", data);
 };
+const updatePrivacyPolicyById = (id, data) => {
+  return apiRequest("updatePrivacyPolicyById", data, id);
+};
+// const createPaymentGateway = (data) => {
+//   return apiRequest("createPaymentGateway", data);
+// };
+// const getPaymentGateways = (data) => {
+//   return apiRequest("getPaymentGateways", data);
+// };
+const privacyPolicyStatusUpdate = (id,status) => {
+  return apiRequest("privacyPolicyStatusUpdate", id, {status,id});
+};
 
 export {
   loginUser,
@@ -76,4 +88,8 @@ export {
   getWebsites,
   getPrivacyPolicyById,
   createPrivacyPolicy,
+  // createPaymentGateway,
+  // getPaymentGateways,
+  updatePrivacyPolicyById,
+  privacyPolicyStatusUpdate,
 };
