@@ -195,7 +195,8 @@ const ActivityLogs = () => {
   const [activeTab, setActiveTab] = useState("employees");
   const [type, setType] = useState(null)
   const user_id = localStorage.getItem("user_id")
-
+  const [fromDate, setFromDate] = useState(new Date().toISOString().split("T")[0]);
+  const [toDate, setToDate] = useState(new Date().toISOString().split("T")[0]);
   const handleMatchClick = (userActivity, id) => {
     const encodedUserId = encodeURIComponent(id);
     const encodedUserActivity = encodeURIComponent(userActivity);
@@ -203,11 +204,34 @@ const ActivityLogs = () => {
       state: { activeTab }
     });
   };
+  const [errors, setErrors] = useState({ fromDate: "", toDate: "" });
 
-  const getEmployeeAllLogs = () => {
+  const validateDates = () => {
+    const newErrors = { fromDate: "", toDate: "" };
+
+    if (!fromDate) {
+      newErrors.fromDate = "From date is required.";
+    }
+
+    if (!toDate) {
+      newErrors.toDate = "To date is required.";
+    }
+
+    if (fromDate && toDate && new Date(fromDate) > new Date(toDate)) {
+      newErrors.toDate = "To date must be greater than or equal to From date.";
+    }
+
+    setErrors(newErrors);
+
+    // Return true if there are no errors
+    return !newErrors.fromDate && !newErrors.toDate;
+  };
+  const getEmployeeAllLogs = (from, to) => {
     getLoggedInLogs({
       limit: 10,
       offset: 0,
+      fromDate: from,
+      toDate: to
     })
       .then((response) => {
         if (response?.status) {
@@ -221,12 +245,14 @@ const ActivityLogs = () => {
         setError(error?.message || "API request failed");
       });
   };
-  const getDownlineLogs = () => {
+  const getDownlineLogs = (from, to) => {
     getDirectorLoginLogs({
       limit: 10,
       offset: 0,
       id: user_id,
-      type: type
+      type: type,
+      fromDate: from,
+      toDate: to
     })
       .then((response) => {
         if (response?.status) {
@@ -270,7 +296,6 @@ const ActivityLogs = () => {
     { header: "No of IP Login", field: "iplogin" },
     { header: "", field: "show" },
   ];
-  // Map filtered logs to table data
   const ACTIVITY_DATA = logData.map((item) => ({
     prod: (
       <div>
@@ -327,7 +352,17 @@ const ActivityLogs = () => {
       </div>
     ),
   }));
-
+  const handleDataBetweenFromAndToDates = () => {
+    if (validateDates()) {
+      if (activeTab === "employees") {
+        getEmployeeAllLogs(fromDate, toDate);
+      } else if (activeTab === "directors") {
+        getDownlineLogs(fromDate, toDate);
+      } else if (activeTab === "admins") {
+        getDownlineLogs(fromDate, toDate);
+      }
+    }
+  }
   return (
     <div>
       <h6 className="saffron-clr mt-2 mb-3">Activity Logs</h6>
@@ -354,18 +389,33 @@ const ActivityLogs = () => {
         </button>
       </div>
 
-      {/* Date filters */}
       <div className="d-flex w-30 flex-between mt-2">
-        <div className="col flex-column ">
+        <div className="col flex-column">
           <label className="black-text4 small-font mb-1">From</label>
-          <input className="input-css2 small-font" type="date" />
-        </div>
-        <div className="col flex-column mx-2">
-          <label className="black-text4 small-font mb-1">To</label>
-          <input className="input-css2 small-font" type="date" />
+          <input
+            className="input-css2 small-font"
+            value={fromDate}
+            type="date"
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+          {errors.fromDate && <p className="text-danger small-font">{errors.fromDate}</p>}
         </div>
 
-        <button className="align-self-end saffron-btn2 small-font pointer col-4">
+        <div className="col flex-column mx-2">
+          <label className="black-text4 small-font mb-1">To</label>
+          <input
+            className="input-css2 small-font"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+            type="date"
+          />
+          {errors.toDate && <p className="text-danger small-font">{errors.toDate}</p>}
+        </div>
+
+        <button
+          className="align-self-end saffron-btn2 small-font pointer col-4"
+          onClick={handleDataBetweenFromAndToDates}
+        >
           Submit
         </button>
       </div>
