@@ -5,9 +5,10 @@ function Table({
   data = [],
   columns = [],
   footer = [],
-  itemsPerPage = 10,
+  itemsPerPage,
   rowColor,
   customPadding = "px-3 py-2",
+  onPageChange
 }) {
   // const [currentPage, setCurrentPage] = useState(1);
   // const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -36,9 +37,8 @@ function Table({
         <div
           key={pageNumber}
           onClick={() => handlePageChange(pageNumber)}
-          className={`chat-img flex-center small-font black-text2 mx-1 br-3px ${
-            currentPage === pageNumber ? "grey-bg black-border" : "border"
-          }`}
+          className={`chat-img flex-center small-font black-text2 mx-1 br-3px ${currentPage === pageNumber ? "grey-bg black-border" : "border"
+            }`}
         >
           {pageNumber}
         </div>
@@ -102,9 +102,8 @@ function Table({
                     <td
                       key={colIndex}
                       style={{ width: column.width }}
-                      className={`${
-                        rowColor ? rowColor(row) : "black-text"
-                      } align-top small-font ${customPadding}`}
+                      className={`${rowColor ? rowColor(row) : "black-text"
+                        } align-top small-font ${customPadding}`}
                     >
                       {row[column.field]}
                     </td>
@@ -145,9 +144,8 @@ function Table({
         <div className="d-flex align-items-center justify-content-end mt-3 me-3">
           <div className="d-flex">
             <div
-              className={`chat-img flex-center black-text2 me-1 br-3px ${
-                currentPage > 1 ? "grey-bg black-border" : "border"
-              }`}
+              className={`chat-img flex-center black-text2 me-1 br-3px ${currentPage > 1 ? "grey-bg black-border" : "border"
+                }`}
               onClick={
                 currentPage > 1 ? () => handlePageChange(currentPage - 1) : null
               }
@@ -156,9 +154,8 @@ function Table({
             </div>
             {pageButtons}
             <div
-              className={`chat-img flex-center black-text2 ms-1 br-3px ${
-                currentPage < totalPages ? "grey-bg black-border" : "border"
-              }`}
+              className={`chat-img flex-center black-text2 ms-1 br-3px ${currentPage < totalPages ? "grey-bg black-border" : "border"
+                }`}
               onClick={
                 currentPage < totalPages
                   ? () => handlePageChange(currentPage + 1)
