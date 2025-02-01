@@ -102,7 +102,6 @@ const PrivacyPolicy = () => {
 
   const REJECTION_DATA = privacyList.map((item, index) => {
     const country = countries.find((country) => country?.id === item?.country_id);
-    const website = websites.find((website) => website?.id === item?.website_id);
 
     return {
       country: <div>{country ? country?.name : 'unknown'}</div>,
@@ -118,7 +117,7 @@ const PrivacyPolicy = () => {
           View
         </div>
       ),
-      showingWebsite: <div>{website ? website?.web_name : 'unknown'}</div>,
+      showingWebsite: <div>{item?.website_name}</div>,
       status: (
         <div
           className={`${
@@ -323,6 +322,8 @@ const PrivacyPolicy = () => {
         setPrivacyPolicyId={setPrivacyPolicyId}
         privacyPolicyId={privacyPolicyId}
         getPolicyPrivacyData={getPolicyPrivacyData}
+        setShowPrivacyText={setShowPrivacyText}
+        showPrivacyText={showPrivacyText}
       />
       <SelectWebsitePopUp
         setSelectWebsite={setSelectWebsite}

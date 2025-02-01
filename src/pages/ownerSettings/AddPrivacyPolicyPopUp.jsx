@@ -5,7 +5,6 @@ import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../../pages/add-team/style.css";
-// import {Editor, EditorState} from 'draft-js';
 import {
   createPrivacyPolicy,
   getCountries,
@@ -17,14 +16,8 @@ import {
 } from "../../api/apiMethods";
 import { Controller, useForm } from "react-hook-form";
 import SuccessPopup from "./../popups/SuccessPopup";
-import {
-  ContentState,
-  convertFromRaw,
-  convertToRaw,
-  Editor,
-  EditorState,
-} from "draft-js";
-import "draft-js/dist/Draft.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AddPrivacyPolicyPopUp = ({
   addPrivacyModal,
@@ -37,7 +30,6 @@ const AddPrivacyPolicyPopUp = ({
   websites,
   setWebsites,
 }) => {
-  // Initialize React Hook Form
   const {
     register,
     handleSubmit,
@@ -47,8 +39,7 @@ const AddPrivacyPolicyPopUp = ({
     reset,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
+  const [values, setValues] = useState("");
   const [error, setError] = useState("");
   // const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -65,87 +56,41 @@ const AddPrivacyPolicyPopUp = ({
     value: item?.id,
     label: item?.name,
   }));
-  const handleCountryChange = (selectedOption) => {
-    console.log("country changed");
-    setSelectedCountry(selectedOption);
-  };
 
   const websiteOptions = websites.map((item) => ({
     value: item?.id,
     label: item?.web_name,
   }));
-  const handleWebsiteChange = (selectedOption) => {
-    console.log("website changed");
-    setSelectedWebsite(selectedOption);
-  };
+
   const statusOptions = [
     { value: "1", label: "Active" },
     { value: "2", label: "In-Active" },
   ];
-  // const getAllCountries = () => {
-  //   getCountries()
-  //     .then((response) => {
-  //       console.log("Countries", response.data);
-  //       setCountries(response.data);
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message);
-  //     });
-  // };
-  // useEffect(() => {
-  //   getAllCountries();
-  // }, []);
 
-  // const getAllWebsites = () => {
-  //   getWebsites()
-  //     .then((response) => {
-  //       console.log("Websites", response.data);
-  //       setWebsites(response.data);
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message);
-  //     });
-  // };
-  // useEffect(() => {
-  //   getAllWebsites();
-  // }, []);
-
-  useEffect(() => {
-    const savedDescription = watch("description");
-    if (savedDescription) {
-      try {
-        const contentState = convertFromRaw(JSON.parse(savedDescription));
-        setEditorState(EditorState.createWithContent(contentState));
-      } catch (error) {
-        setEditorState(
-          EditorState.createWithContent(
-            ContentState.createFromText(savedDescription)
-          )
-        );
-      }
-    }
-  }, [watch("description")]);
-
-  const handleEditorChange = (newEditorState) => {
-    setEditorState(newEditorState);
-    const content = newEditorState.getCurrentContent();
-    const rawContent = JSON.stringify(convertToRaw(content));
-    setValue("description", rawContent, { shouldValidate: true });
-  };
   const handleClose = () => {
     setAddPrivacyModal(false);
     setIsEditModal(false);
     reset();
-    setEditorState(EditorState.createEmpty());
     setSuccessPopupOpen(false);
   };
 
+  useEffect(() => {
+    setValue("description", values);
+  }, [values, setValue]);
+
   const onSubmit = (data) => {
+    if (!values || values === "<p><br></p>") {
+      setError("description", {
+        type: "manual",
+        message: "Description is required",
+      });
+      return;
+    }
     const payload = {
       country_id: data.country?.value,
       website_id: data.website?.value,
       is_active: Number(data.status?.value),
-      description: data.description,
+      description: values,
     };
     console.log(payload, "fghfgh");
     createPrivacyPolicy(payload)
@@ -156,6 +101,7 @@ const AddPrivacyPolicyPopUp = ({
           setSuccessPopupOpen(false);
         }, 1000);
         reset();
+        setValues("");
         getPolicyPrivacyData();
         console.log("response from API", response);
       })
@@ -265,9 +211,9 @@ const AddPrivacyPolicyPopUp = ({
                 )}
               </div>
 
-              <div className="col-12 flex-column mt-3 ">
+              <div className="col-12 flex-column mt-3 mb-4 ">
                 <label className="black-text4 mb-1">Description</label>
-                <textarea
+                {/* <textarea
                   placeholder="Enter"
                   className="all-none input-bg small-font p-2 rounded"
                   rows="30"
@@ -279,20 +225,8 @@ const AddPrivacyPolicyPopUp = ({
                       message: "Description must be at least 100 characters",
                     },
                   })}
-                ></textarea>
-                {/* <div className="border p-2" style={{ minHeight: "300px" }}>
-                  <Controller
-                    name="description"
-                    control={control}
-                    rules={{ required: "Description is required" }}
-                    render={() => (
-                      <Editor
-                        editorState={editorState}
-                        onChange={handleEditorChange}
-                      />
-                    )}
-                  />
-                </div> */}
+                ></textarea> */}
+                <ReactQuill theme="snow" value={values} onChange={setValues} />
                 {errors.description && (
                   <p className="text-danger small-font">
                     {errors.description.message}
@@ -302,7 +236,7 @@ const AddPrivacyPolicyPopUp = ({
 
               <div className="row">
                 <div className="col-8"></div>
-                <div className=" small-font pointer mt-4 col-4">
+                <div className=" small-font pointer mt-4 flex-end col-4">
                   <button
                     type="submit"
                     className={` w-100 ${
