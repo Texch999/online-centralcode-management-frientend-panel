@@ -1,15 +1,14 @@
 import React from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
-import { Images } from "../../images";
+import { imgUrl } from "../../api/baseUrl";
 
-
-const FullPosterPopUp = ({ fullPoster, setFullPoster }) => {
+const FullPosterPopUp = ({ fullPoster, setFullPoster, setFullPosterImage, fullPosterImage}) => {
   return (
     <>
       <Modal show={fullPoster} size="lg" centered>
         <img
-          src={Images.Poster2}
+          src={`${imgUrl}/${fullPosterImage}`}
           alt="Full Poster"
           className="promotion-poster relative"
         />

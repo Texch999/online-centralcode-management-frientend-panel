@@ -1,9 +1,9 @@
 import { Images } from "../images";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { loginUser } from "../api/apiMethods";
+import { loginDirector, loginUser } from "../api/apiMethods";
 
 function Login() {
   const {
@@ -19,21 +19,31 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [loginData, setLoginData] = useState();
+  console.log(loginData, "loginData");
+  const location = useLocation();  // Get the current pathname
 
   const handleLogin = (data) => {
     const payload = {
-      login_name: data.username,
-      password: data.password,
+      login_name: data?.username,
+      password: data?.password,
     };
     console.log(payload, "payload");
 
     setLoading(true);
-    loginUser(payload)
+
+    // const loginApiCall = location.pathname === "/director/login" ? loginDirector : loginUser;
+    const loginApiCall = location.pathname === "/director/login" || !location.pathname ? loginDirector : loginUser;
+
+
+    loginApiCall(payload)  // Call the appropriate API function based on the pathname
+
       .then((response) => {
         setLoading(false);
 
         if (response?.status === true) {
           console.log(response, "response from API");
+          setLoginData(response);
           localStorage.setItem("jwt_token", response?.token);
           localStorage?.setItem("isLoggedIn", true);
           localStorage.setItem("emp_role_id", response?.user?.role?.role_id);
@@ -159,9 +169,8 @@ function Login() {
               )}
 
               <button
-                className={`orange-btn mt-4 w-100 ${
-                  !isValid || loading ? "disabled-btn" : ""
-                }`}
+                className={`orange-btn mt-4 w-100 ${!isValid || loading ? "disabled-btn" : ""
+                  }`}
                 type="submit"
                 disabled={!isValid || loading}
               >
