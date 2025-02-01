@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // Components
 import Login from "./components/Login";
@@ -115,22 +115,30 @@ import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
 
+  const PrivateRoute = ({ children }) => {
+    return isLoggedIn ? children : <Navigate to="/director/login" />;
+  };
+  const path = window.location.pathname;
+  const location = useLocation();
+
+  const showLoginPage =
+    location.pathname === "/master/login" ||
+    location.pathname === "/director/login";
+
   return (
     <div>
-      {!isLoggedIn ? (
+      {showLoginPage || !isLoggedIn ? (
         <Login />
       ) : (
         <div>
           {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
-              {/* Home and Main Routes */}
               <Route path="/" element={<Homepage />} />
               <Route
                 path="/dashboard-view-all"
                 element={<DashboardViewAll />}
               />
-              {/* Casino Routes */}
               <Route path="/central-casino" element={<Casino />} />
               <Route
                 path="/central-casino/:vendor/:provider"
@@ -148,7 +156,6 @@ function App() {
                 path="/sports-vendor-registration"
                 element={<SportsVendorRegistration />}
               />
-              {/* Risk Management Routes */}
               <Route path="/risk-limit-set" element={<RiskLimitSet />} />
               <Route path="/risk-sports" element={<RiskSports />} />
               <Route path="/risk-casino" element={<RiskCasino />} />
@@ -162,7 +169,6 @@ function App() {
                 element={<DeletedBetHistory />}
               />
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
-              {/* User & Management Team Routes */}
               <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route
@@ -243,7 +249,7 @@ function App() {
               {/* Owner Settings */}
               <Route path="/activity-logs" element={<ActivityLogs />} />
               <Route
-                path="/userActivity/:userActivity"
+                path="/userActivity/:userId/:userActivity"
                 element={<RecentAccessIp />}
               />
               <Route path="/reference-data" element={<ReferenceData />} />

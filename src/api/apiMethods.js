@@ -3,67 +3,15 @@ import apiRequest from "./apiRequest";
 const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
+const loginDirector = (data) => {
+  return apiRequest("loginDirector", data);
+};
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
- const getRoles = (data) => {
+const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
-//  const getEmployees = (data) => {
-//   return apiRequest("getEmployees", data);
-// };
-export const getWebsitesList = (params) => {
-  return apiRequest("getWebsitesList", {}, params);
-};
-export const getAllCountires = (data) => {
-  return apiRequest("getAllCountires", data);
-};
-export const createWebsite = (data) => {
-  return apiRequest("createWebsite", data);
-};
-export const updateWebsite = (id, data) =>
-  apiRequest("updateWebsite", data, id);
-
-export const getWebsiteDetails = (id, data) =>
-  apiRequest("getWebsiteDetails", data, id);
-
-export const blockAndUnblock = (id, data) =>
-  apiRequest("blockAndUnblock", data, id);
-
-
-
-//VijayaLakshmi
-export const getPromotionsTypes = () => {
-  return apiRequest("getPromotionsTypes");
-};
-
-export const getPromotionsImage = () => {
-  return apiRequest("getPromotionsImage");
-};
-export const createPromotionImages = (data) => {
-  console.log("data", data)
-  return apiRequest("createPromotionImages", data);
-};
-export const statusPromotionsTypes = (id,data) => {
-  return apiRequest("statusPromotionsTypes",data,id);
-};
-export const deletePromotionsImages = (id, data) => {
-  return apiRequest("deletePromotionsImages",data,id);
-};
-export const getBroadCasting = () => {
-  return apiRequest("getBroadCasting");
-};
-export const createBroadCasting = (data) => {
-  return apiRequest("createBroadCasting", data);
-};
-export const editBroadCasting = (id,data) => {
-  return apiRequest("editBroadCasting",data,id);
-};
-export const statusBroadCasting = (id, data) => {
-  return apiRequest("statusBroadcastUpdate",data,id);
-};
-
-
 // const getEmployees = (data) => {
 //   return apiRequest("getEmployees", data);
 // };
@@ -76,11 +24,20 @@ export const statusBroadCasting = (id, data) => {
 const getEmployees = (params) => {
   return apiRequest("getEmployees", {}, params);
 };
+const getDirectors = (params) => {
+  return apiRequest("getDirectors", {}, params);
+};
 const resetEmployeePassword = (id, data) => {
   return apiRequest("resetEmployeePassword", data, id);
 };
+const resetDirectorPassword = (id, data) => {
+  return apiRequest("resetDirectorPassword", data, id);
+};
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
+};
+const blockDirector = (id, data) => {
+  return apiRequest("blockDirector", data, id);
 };
 
 const updateEmployeeByID = (id, data) => {
@@ -99,3 +56,61 @@ export {
   updateEmployeeByID,
   getEmployeeDetailsById,
 };
+<<<<<<<<< Temporary merge branch 1
+const getWebsitesList = (params) => {
+  return apiRequest("getWebsitesList", {}, params);
+};
+const getAllCountires = (data) => {
+  return apiRequest("getAllCountires", data);
+};
+const createWebsite = (data) => {
+  return apiRequest("createWebsite", data);
+};
+export const updateWebsite = (id, data) =>
+  apiRequest("updateWebsite", data, id);
+
+export const getWebsiteDetails = (id, data) =>
+  apiRequest("getWebsiteDetails", data, id);
+
+export const blockAndUnblock = (id, data) =>
+  apiRequest("blockAndUnblock", data, id);
+
+
+
+//VijayaLakshmi
+const getPromotionsTypes = () => {
+  return apiRequest("getPromotionsTypes");
+};
+
+const getPromotionsImage = () => {
+  return apiRequest("getPromotionsImage");
+};
+const createPromotionImages = (data) => {
+  return apiRequest("createPromotionImages", data);
+};
+const statusPromotionsTypes = (id,data) => {
+  return apiRequest("statusPromotionsTypes",data,id);
+};
+const deletePromotionsImages = (id) => {
+  return apiRequest("deletePromotionsImages",id);
+};
+
+export {
+  loginUser,
+  addManagemnentTeam,
+  getRoles,
+  getEmployees,
+  getPromotionsTypes,
+  getPromotionsImage,
+  createPromotionImages,
+  statusPromotionsTypes,
+  deletePromotionsImages,
+  getWebsitesList,
+  getAllCountires,
+  createWebsite,
+  updateWebsite,
+  getWebsiteDetails,
+  blockAndUnblock
+};
+=========
+>>>>>>>>> Temporary merge branch 2

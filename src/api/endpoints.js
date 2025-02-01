@@ -1,74 +1,59 @@
+<<<<<<<<< Temporary merge branch 1
 const UserId = localStorage.getItem("user_id");
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
   addManagemnentTeam: { method: "post", url: "/employee" },
   getRoles: { method: "get", url: "/rolesList" },
-  // getEmployees: { method: "get", url: "/employees" },
+  getEmployees: { method: "get", url: "/employees" },
   createWebsite: { method: "post", url: `/user/${UserId}/website/website` },
   updateWebsite: {
     method: "put",
-    url: (id) => `/user/${UserId}/website/update/websiteby/${id}`,
+    url: (id) => `/user/${userID}/website/update/websiteby/${id}`,
   },
   getWebsiteDetails: {
     method: "get",
-    url: (id) => `/user/${UserId}/website/websiteby/${id}`,
+    url: (id) => `/user/${userID}/website/websiteby/${id}`,
   },
   getWebsitesList: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${UserId}/website/websites?${query}`;
+      return `/user/${userID}/website/websites?${query}`;
     },
   },
-  getAllCountires: { method: "get", url: `/user/${UserId}/countries` },
+  getAllCountires: { method: "get", url: `/user/${userID}/countries` },
   blockAndUnblock: {
     method: "put",
-    url: (id) => `/user/${UserId}/website/block-unblock/${id}`,
+    url: (id) => `/user/${userID}/website/block-unblock/${id}`,
   },
   getPromotionsTypes: {
     method: "get",
-    url: `/user/${UserId}/api/getPromotionsTypes`,
+    url: `/user/${userID}/api/getPromotionsTypes`,
   },
   getPromotionsImage: {
     method: "get",
-    url: `/user/${UserId}/api/getPromotionsImages`,
+    url: `/user/${userID}/api/getPromotionsImages`,
   },
   createPromotionImages: {
     method: "post",
-    url: `/user/${UserId}/api/createPromotionImages`,
+    url: `/user/${userID}/api/createPromotionImages`,
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${UserId}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${UserId}/api/deletePromotionsImages/${id}`,
-  },
-  getBroadCasting: {
-    method: "get",
-    url: `/user/${UserId}/broadcasting`
-  },
-  createBroadCasting: {
-    method: "post",
-    url: `/user/${UserId}/broadcasting`
-  },
-  editBroadCasting: {
-    method: "put",
-    url: (id) => `/user/${UserId}/broadcasting/${id}`
-  },
-  statusBroadcastUpdate: {
-    method: "put",
-    url: (id) => `/user/${UserId}/broadcasting/statusBroadcastUpdate/${id}`
-  },
+    url: (id) => `/user/${UserId}/api/statusPromotionsTypes/${id}`,
+=========
+const userID = localStorage.getItem("user_id");
 
-
-
+const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
   // addManagemnentTeam: { method: "post", url: "/employee" },
-  addManagemnentTeam: { method: "post", url: `/user/${UserId}/employee` },
+  addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
 
-  getRoles: { method: "get", url: `/user/${UserId}/rolesList` },
+  getRoles: { method: "get", url: `/user/${userID}/rolesList` },
   // getEmployees: { method: "get", url: `/user/${userID}/employees` },
   // getEmployees: ({ limit, offset }) => ({
   //   method: "get",
@@ -86,16 +71,31 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
-      return `/user/${UserId}/employees?${query}`;
+      return `/user/${userID}/employees?${query}`;
+    },
+  },
+  getDirectors: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID}/directors?${query}`;
     },
   },
   resetEmployeePassword: {
     method: "post",
     url: (id) => `/user/${UserId}/employeeUpdatePassword/${id}`,
   },
+  resetDirectorPassword: {
+    method: "post",
+    url: (id) => `/user/${userID}/directorUpdatePassword/${id}`,
+  },
   blockEmploye: {
     method: "post",
     url: (id) => `/user/${UserId}/employeeBlockUnblock/${id}`,
+  },
+  blockDirector: {
+    method: "post",
+    url: (id) => `/user/${userID}/directorBlockUnblock/${id}`,
   },
 
   updateEmployeeByID: {
@@ -104,7 +104,8 @@ const endpoints = {
   },
   getEmployeeDetailsById: {
     method: "get",
-    url: (id) => `/user/${UserId}/employee/${id}`,
+    url: (id) => `/user/${userID}/employee/${id}`,
+>>>>>>>>> Temporary merge branch 2
   },
 };
 

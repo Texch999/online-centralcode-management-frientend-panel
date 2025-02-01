@@ -10,7 +10,7 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { getEmployees } from "../../api/apiMethods";
+import { blockDirector, blockEmploye, getEmployees, resetEmployeePassword } from "../../api/apiMethods";
 import Roles from "../../utils/enum";
 import EditManagementPopup from "./popups/EditManagementPopup";
 import PaginationComponent from "../../components/Pagination";
@@ -219,7 +219,61 @@ const AddManagementTeam = () => {
       />
     ),
   }));
+  // Handle form submission
+  const onEmployeePasswordSubmit = (data) => {
+    if (!resetPasswordId) {
+      alert("Invalid ID");
+      return;
+    }
 
+    const requestData = {
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      management_password: data.managementPassword,
+    };
+
+    resetEmployeePassword(resetPasswordId, requestData)
+      .then((response) => {
+        if (response) {
+          setTimeout(() => {
+            setResetPasswordPopup(false);
+          }, 1000);
+          // setShowSuccessPopup(true);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        alert(error?.message || "Request failed");
+      });
+  };
+  const status =
+    tableData.find((row) => row.id === modalState.blockAccountId)?.status
+  const blockAccountId = modalState.blockAccountId
+
+
+  const onEmployeeBlockSubmit = () => {
+    const requestData = {
+      status: status,
+    };
+    blockEmploye(blockAccountId, requestData)
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response, "response")
+          setTimeout(() => {
+            // setConfirmationPopupOpen(false);
+          }, 1000);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        console.log(error?.message || "Request failed");
+      });
+  };
+  useEffect(() => {
+    onEmployeeBlockSubmit();
+  }, []);
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -282,6 +336,7 @@ const AddManagementTeam = () => {
         status={
           tableData.find((row) => row.id === modalState.blockAccountId)?.status
         }
+        onSubmit={onEmployeeBlockSubmit}
       />
 
       {/* Delete Account Modal */}
@@ -298,7 +353,8 @@ const AddManagementTeam = () => {
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={setResetPasswordPopup}
-        resetPasswordId={resetPasswordId}
+        IndividualpassowrdId={resetPasswordId}
+        onSubmit={onEmployeePasswordSubmit}
       />
     </div>
   );

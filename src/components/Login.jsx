@@ -1,9 +1,9 @@
 import { Images } from "../images";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { loginUser } from "../api/apiMethods";
+import { loginDirector, loginUser } from "../api/apiMethods";
 
 function Login() {
   const {
@@ -21,6 +21,8 @@ function Login() {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState();
   console.log(loginData, "loginData");
+  const location = useLocation();  // Get the current pathname
+
   const handleLogin = (data) => {
     const payload = {
       login_name: data?.username,
@@ -29,7 +31,13 @@ function Login() {
     console.log(payload, "payload");
 
     setLoading(true);
-    loginUser(payload)
+
+    // const loginApiCall = location.pathname === "/director/login" ? loginDirector : loginUser;
+    const loginApiCall = location.pathname === "/director/login" || !location.pathname ? loginDirector : loginUser;
+
+
+    loginApiCall(payload)  // Call the appropriate API function based on the pathname
+
       .then((response) => {
         setLoading(false);
 
@@ -42,7 +50,7 @@ function Login() {
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
           localStorage.setItem("user_id", response?.user?.id);
-          window.location.reload();
+          // window.location.reload();
           navigate("/");
           setError("");
         } else {
@@ -159,9 +167,8 @@ function Login() {
               )}
 
               <button
-                className={`orange-btn mt-4 w-100 ${
-                  !isValid || loading ? "disabled-btn" : ""
-                }`}
+                className={`orange-btn mt-4 w-100 ${!isValid || loading ? "disabled-btn" : ""
+                  }`}
                 type="submit"
                 disabled={!isValid || loading}
               >
