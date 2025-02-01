@@ -10,33 +10,13 @@ function ConfirmationPopup({
   discription,
   submitButton,
   blockAccountId,
-  status,
+  onSubmit
 }) {
   console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-  const onSubmit = () => {
-    const requestData = {
-      status: status,
-    };
-    blockEmploye(blockAccountId, requestData)
-      .then((response) => {
-        if (response.status === true) {
-          setTimeout(() => {
-            setConfirmationPopupOpen(false);
-          }, 1000);
-        } else {
-          alert("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        console.log(error?.message || "Request failed");
-      });
-  };
-  useEffect(() => {
-    onSubmit();
-  }, []);
+
   return (
     <Modal
       show={confirmationPopupOpen}
@@ -54,7 +34,6 @@ function ConfirmationPopup({
             alt="Q_Mark"
             style={{ height: "90px", width: "90px" }}
           />
-          <h1>{status}</h1>
           <h5 className="black-text4 fw-600 medium-font  mt-2 mb-3">
             {discription}
           </h5>{" "}

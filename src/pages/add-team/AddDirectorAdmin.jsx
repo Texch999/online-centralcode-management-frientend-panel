@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
@@ -11,6 +11,7 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -26,9 +27,11 @@ const AddDirectorAdmin = () => {
   const handleModalClose = () => {
     setShowModal(false);
   };
-
-  const handleResetPasswordOpen = (user) => {
-    setSelectedUser(user);
+  const [selectedDirectorId, setSelectedDirectorId] = useState(null);
+  console.log(selectedDirectorId, "selectedDirectorId")
+  const handleResetPasswordOpen = (id) => {
+    setSelectedDirectorId(id);
+    // setSelectedUser(user);
     setResetPasswordPopup(true);
   };
 
@@ -57,278 +60,7 @@ const AddDirectorAdmin = () => {
     navigate("/user-profile-dashboard");
   };
 
-  const tableData = [
-    {
-      id: 1,
-      role: "Super Admin",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "Hyd-India",
-      linkWebsites: ["techx.com"],
-      shareRent: ["10%"],
-      billing: "0",
-      pl: <div className="red-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil
-            size={18}
-            className="black-text pointer"
-            onClick={() => setShowModal(true)}
-          />
-          <MdLockReset
-            size={18}
-            className="black-text pointer"
-            onClick={() => handleResetPasswordOpen("Jayanta")}
-          />
-          <MdBlockFlipped
-            size={18}
-            className="black-text pointer"
-            onClick={() => handleBlockUserOpen("Jayanta")}
-          />
-          <BsEye
-            size={18}
-            className="black-text pointer"
-            onClick={handleNavigateUserDashboard}
-          />
-        </div>
-      ),
-    },
-    {
-      id: 2,
-      role: "Super Admin",
-      name: "Lokesh",
-      loginname: "lokeshraj02",
-      inUsed: "Kolk-India",
-      linkWebsites: ["sparkbook999.com"],
-      shareRent: ["100000"],
-      billing: "10000000",
-      pl: <div className="red-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset
-            size={18}
-            className="black-text pointer"
-            onClick={() => handleResetPasswordOpen("Jayanta")}
-          />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 3,
-      role: "Director",
-      name: "Srinivas",
-      loginname: "sri8954",
-      inUsed: "USA",
-      linkWebsites: ["casinopark.com"],
-      shareRent: ["100000"],
-      billing: "0",
-      pl: <div className="red-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 4,
-      role: "Super Admin",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "UAI",
-      linkWebsites: [
-        "casinocafe.com",
-        "sparkbook999.com",
-        "fun77.com",
-        "diamondexchange.com",
-      ],
-      shareRent: ["10%", "500000", "5%", "200000"],
-      billing: "0",
-      pl: <div className="red-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 5,
-      role: "Super Admin",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "Bangladesh",
-      linkWebsites: ["fun88.com"],
-      shareRent: ["10%"],
-      billing: "0",
-      pl: <div className="green-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 6,
-      role: "Director",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "Japan",
-      linkWebsites: ["sparkbook999.com"],
-      shareRent: ["100000"],
-      billing: "0",
-      pl: <div className="green-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 7,
-      role: "Director",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "India",
-      linkWebsites: ["techx.com"],
-      shareRent: ["100000"],
-      billing: "0",
-      pl: <div className="red-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 8,
-      role: "Super Admin",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "UAI",
-      linkWebsites: [
-        "casinocafe.com",
-        "sparkbook999.com",
-        "fun77.com",
-        "diamondexchange.com",
-      ],
-      shareRent: ["10%", "2000000", "2000000", "2000000"],
-      billing: "0",
-      pl: <div className="green-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 9,
-      role: "Director",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "Bangladesh",
-      linkWebsites: ["fun88.com"],
-      shareRent: ["100000"],
-      billing: "0",
-      pl: <div className="red-font">5000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      id: 10,
-      role: "Director",
-      name: "Jayanta",
-      loginname: "Jayanta121",
-      inUsed: "Japan",
-      linkWebsites: ["sparkbook999.com"],
-      shareRent: ["10%"],
-      billing: "0",
-      pl: <div className="green-font">2000000</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
-      action: (
-        <div className="d-flex flex-center gap-3">
-          <SlPencil size={18} className="black-text" />
-          <MdLockReset size={18} className="black-text" />
-          <MdBlockFlipped size={18} className="black-text" />
-          <BsEye size={18} className="black-text" />
-        </div>
-      ),
-    },
-  ];
+
 
   const columns = [
     { header: "Role", field: "role" },
@@ -346,25 +78,116 @@ const AddDirectorAdmin = () => {
       width: "8%",
     },
   ];
+  const [error, setError] = useState()
+  const [tableData, setTableData] = useState()
 
-  const tableDataWithActions = tableData.map((row) => ({
-    ...row,
-    linkWebsites: (
-      <div>
-        {row.linkWebsites.map((website, index) => (
-          <div key={index}>{website}</div>
-        ))}
-      </div>
+  const TableData = tableData?.map(user => ({
+    id: user.id, // Use the API id
+    role: user.type === 1 ? "Director" : "Super Admin", // Map 'type' to 'role', assuming '1' is Director, modify as needed
+    name: user.login_name, // Map 'login_name' to 'name'
+    loginname: user.login_name, // Assuming 'login_name' should also be used as 'loginname'
+    inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
+    linkWebsites: [], // No website info provided, so leaving it empty
+    shareRent: [], // No shareRent info provided, so leaving it empty
+    billing: "0", // Assuming default value for billing
+    pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
+    dw: (
+      <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+        D/W
+      </button>
     ),
-    shareRent: (
-      <div>
-        {row.shareRent.map((rent, index) => (
-          <div key={index}>{rent}</div>
-        ))}
+    action: (
+      <div className="d-flex flex-center gap-3">
+        <SlPencil
+          size={18}
+          className="black-text pointer"
+          onClick={() => setShowModal(true)}
+        />
+        <MdLockReset
+          size={18}
+          className="black-text pointer"
+          onClick={() => handleResetPasswordOpen(user.id)}
+        />
+        <MdBlockFlipped
+          size={18}
+          className="black-text pointer"
+          onClick={() => handleBlockUserOpen(user.login_name)}
+        />
+        <BsEye
+          size={18}
+          className="black-text pointer"
+          onClick={handleNavigateUserDashboard}
+        />
       </div>
     ),
   }));
+  console.log(tableData, "tableData")
 
+  const GetAllDirectors = () => {
+    getDirectors({ limit: 10, offset: 0 })
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response, "response from API");
+          setTableData(response.data);
+
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Login failed");
+      });
+  };
+  useEffect(() => { GetAllDirectors() }, [])
+
+  // const tableDataWithActions = tableData.map((row) => ({
+  //   ...row,
+  //   linkWebsites: (
+  //     <div>
+  //       {row.linkWebsites.map((website, index) => (
+  //         <div key={index}>{website}</div>
+  //       ))}
+  //     </div>
+  //   ),
+  //   shareRent: (
+  //     <div>
+  //       {row.shareRent.map((rent, index) => (
+  //         <div key={index}>{rent}</div>
+  //       ))}
+  //     </div>
+  //   ),
+  // }));
+
+
+
+  const onDirectorResetPassword = (data) => {
+    if (!selectedDirectorId) {
+      alert("Invalid ID");
+      return;
+    }
+
+    const requestData = {
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      parent_password: data.managementPassword,
+    };
+
+    resetDirectorPassword(selectedDirectorId, requestData)
+      .then((response) => {
+        if (response) {
+          setTimeout(() => {
+            setResetPasswordPopup(false);
+          }, 1000);
+          // setShowSuccessPopup(true);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        alert(error?.message || "Request failed");
+      });
+  };
+  
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -388,13 +211,14 @@ const AddDirectorAdmin = () => {
         </div>
       </div>
 
-      <Table data={tableDataWithActions} columns={columns} itemsPerPage={7} />
+      <Table data={TableData} columns={columns} itemsPerPage={7} />
 
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
 
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
+        onSubmit={onDirectorResetPassword}
       />
 
       <ConfirmationPopup
