@@ -1,18 +1,19 @@
 import apiRequest from "./apiRequest";
 
-export const loginUser = (data) => {
+const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
 };
-
+const addManagemnentTeam = (data) => {
+  return apiRequest("addManagemnentTeam", data);
+};
 const createDirector = (data) => {
   return apiRequest("createDirector", data);
 };
-
-const getCountries = (data) => {
-  return apiRequest("getCountries", data);
+const getRoles = (data) => {
+  return apiRequest("getRoles", data);
 };
 const getAdminWebsites = (data) => {
   return apiRequest("getAdminWebsites", data);
@@ -20,67 +21,6 @@ const getAdminWebsites = (data) => {
 const getUserWebsites = (data) => {
   return apiRequest("getUserWebsites", data);
 };
-export const addManagemnentTeam = (data) => {
-  return apiRequest("addManagemnentTeam", data);
-};
-export const getRoles = (data) => {
-  return apiRequest("getRoles", data);
-};
-export const getEmployees = (data) => {
-  return apiRequest("getEmployees", data);
-};
-export const getWebsitesList = (params) => {
-  return apiRequest("getWebsitesList", {}, params);
-};
-export const getAllCountires = (data) => {
-  return apiRequest("getAllCountires", data);
-};
-export const createWebsite = (data) => {
-  return apiRequest("createWebsite", data);
-};
-export const updateWebsite = (id, data) =>
-  apiRequest("updateWebsite", data, id);
-
-export const getWebsiteDetails = (id, data) =>
-  apiRequest("getWebsiteDetails", data, id);
-
-export const blockAndUnblock = (id, data) =>
-  apiRequest("blockAndUnblock", data, id);
-
-
-
-//VijayaLakshmi
-export const getPromotionsTypes = () => {
-  return apiRequest("getPromotionsTypes");
-};
-
-export const getPromotionsImage = () => {
-  return apiRequest("getPromotionsImage");
-};
-export const createPromotionImages = (data) => {
-  console.log("data", data)
-  return apiRequest("createPromotionImages", data);
-};
-export const statusPromotionsTypes = (id,data) => {
-  return apiRequest("statusPromotionsTypes",data,id);
-};
-export const deletePromotionsImages = (id, data) => {
-  return apiRequest("deletePromotionsImages",data,id);
-};
-export const getBroadCasting = () => {
-  return apiRequest("getBroadCasting");
-};
-export const createBroadCasting = (data) => {
-  return apiRequest("createBroadCasting", data);
-};
-export const editBroadCasting = (id,data) => {
-  return apiRequest("editBroadCasting",data,id);
-};
-export const statusBroadCasting = (id, data) => {
-  return apiRequest("statusBroadcastUpdate",data,id);
-};
-
-
 // const getEmployees = (data) => {
 //   return apiRequest("getEmployees", data);
 // };
@@ -123,6 +63,29 @@ const postDirectorAccountDetails = (data) => {
   return apiRequest("postDirectorAccountDetails", data);
 }
 
+const getCountries = (data) => {
+  return apiRequest("getCountries", data);
+};
+
+
+
+export const getWebsitesList = (params) => {
+  return apiRequest("getWebsitesList", {}, params);
+};
+export const getAllCountires = (data) => {
+  return apiRequest("getAllCountires", data);
+};
+export const createWebsite = (data) => {
+  return apiRequest("createWebsite", data);
+};
+export const updateWebsite = (id, data) =>
+  apiRequest("updateWebsite", data, id);
+
+export const getWebsiteDetails = (id, data) =>
+  apiRequest("getWebsiteDetails", data, id);
+
+export const blockAndUnblock = (id, data) =>
+  apiRequest("blockAndUnblock", data, id);
 
 
 //VijayaLakshmi
@@ -142,6 +105,19 @@ const statusPromotionsTypes = (id, data) => {
 const deletePromotionsImages = (id) => {
   return apiRequest("deletePromotionsImages", id);
 };
+export const getBroadCasting = () => {
+  return apiRequest("getBroadCasting");
+};
+
+export const createBroadCasting = (data) => {
+  return apiRequest("createBroadCasting", data);
+};
+export const editBroadCasting = (id,data) => {
+  return apiRequest("editBroadCasting",data,id);
+};
+export const statusBroadCasting = (id, data) => {
+  return apiRequest("statusBroadcastUpdate",data,id);
+};
 
 export const getLoggedInLogs = (params) => {
   return apiRequest("getLoggedInLogs", {}, params);
@@ -157,6 +133,9 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
+const suspendDirectorAccountPaymentDetails=(id,status)=>{
+  return apiRequest("suspendDirectorAccountPaymentDetails",id,{id,status});
+}
 export {
   loginUser,
   addManagemnentTeam,
@@ -172,7 +151,6 @@ export {
   updateEmployeeByID,
   getEmployeeDetailsById,
   getDirectorAccountDetails,
-  getCountries,
   postDirectorAccountDetails,
   getDirectors,
   loginDirector,
@@ -182,4 +160,5 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
+  suspendDirectorAccountPaymentDetails
 };

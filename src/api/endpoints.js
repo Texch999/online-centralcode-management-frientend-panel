@@ -42,23 +42,23 @@ const endpoints = {
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${UserId}/api/deletePromotionsImages/${id}`,
+    url: (id) => `/user/${userID}/api/deletePromotionsImages/${id}`,
   },
   getBroadCasting: {
     method: "get",
-    url: `/user/${UserId}/broadcasting`
+    url: `/user/${userID}/broadcasting`
   },
   createBroadCasting: {
     method: "post",
-    url: `/user/${UserId}/broadcasting`
+    url: `/user/${userID}/broadcasting`
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${UserId}/broadcasting/${id}`
+    url: (id) => `/user/${userID}/broadcasting/${id}`
   },
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) => `/user/${UserId}/broadcasting/statusBroadcastUpdate/${id}`
+    url: (id) => `/user/${userID}/broadcasting/statusBroadcastUpdate/${id}`
   },
 
 
@@ -120,7 +120,7 @@ const endpoints = {
   },
   getDirectorAccountDetails:{
     method: "get",
-    url: "/user/2/directorAccount/",
+    url: `/user/${userID}/directorAccount/`,
   },
   getCountries:{
     method:"get",
@@ -128,8 +128,12 @@ const endpoints = {
   },
   postDirectorAccountDetails:{
     method:"post",
-    url:`/user/2/directorAccount/`,
-  }
+    url:`/user/${userID}/directorAccount/`,
+  },
+  suspendDirectorAccountPaymentDetails:{
+    method:"patch",
+    url:(data)=>`/user/${userID}/directorAccount/${data?.id}/status/${data?.status}`,
+  },
 
 }
 

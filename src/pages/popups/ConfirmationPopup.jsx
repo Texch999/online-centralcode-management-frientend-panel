@@ -11,15 +11,15 @@ function ConfirmationPopup({
   discription,
   submitButton,
   CallbackFunction,
+  onSubmit
 }) {
-  console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-  const handleBlockAndUnblock = () => {
-    CallbackFunction();
-    setConfirmationPopupOpen(false);
-  };
+  // const handleBlockAndUnblock = () => {
+  //   CallbackFunction();
+  //   setConfirmationPopupOpen(false);
+  // };
   return (
     <>
       <Modal
@@ -54,7 +54,9 @@ function ConfirmationPopup({
               </button>
               <button
                 className="w-50 saffron-btn2 ms-2"
-                onClick={handleBlockAndUnblock}
+                onClick={()=>{
+                  onSubmit()
+                 }}
               >
                 {submitButton}
               </button>

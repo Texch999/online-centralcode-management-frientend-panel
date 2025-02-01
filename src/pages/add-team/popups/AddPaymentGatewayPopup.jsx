@@ -7,7 +7,7 @@ import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
 import { postDirectorAccountDetails } from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
-import ErrorPopup from "../../popups/SuccessPopup";
+import ErrorPopup from "../../popups/ErrorPopup";
 
 
 
@@ -62,7 +62,7 @@ const AddPaymentGatewayPopup = ({ show, onHide, data, getDirectorAccountData }) 
   const addDirectorAccountDetails = async () => {
     const formData = new FormData();
     formData.append("gateway_type", parseInt(paymentMethod));
-    formData.append("status", 1);
+    // formData.append("status", 1);
     formData.append("director_id", 1);
 
     if (paymentMethod === "1") {
@@ -127,6 +127,7 @@ const AddPaymentGatewayPopup = ({ show, onHide, data, getDirectorAccountData }) 
   ];
 
   return (
+    <>
     <Modal centered show={show} onHide={onHide} size="md">
       <Modal.Body className="p-3">
         <div className="d-flex justify-content-between align-items-center mb-2">
@@ -353,17 +354,19 @@ const AddPaymentGatewayPopup = ({ show, onHide, data, getDirectorAccountData }) 
           </div>
         )}
       </Modal.Body>
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={"success"}
-      />
-        <ErrorPopup
-        errorPopupOpen={errorPopupOpen}
-        setErrorPopupOpen={setErrorPopupOpen}
-        discription={error}
-      />
+      
     </Modal>
+    <SuccessPopup
+    successPopupOpen={successPopupOpen}
+    setSuccessPopupOpen={setSuccessPopupOpen}
+    discription={"success"}
+  />
+    <ErrorPopup
+    errorPopupOpen={errorPopupOpen}
+    setErrorPopupOpen={setErrorPopupOpen}
+    discription={error}
+  />
+  </>
 
   );
 

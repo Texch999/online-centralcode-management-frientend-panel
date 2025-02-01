@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { SlPencil } from "react-icons/sl";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaSearch } from "react-icons/fa";
@@ -7,7 +7,7 @@ import Table from "../../components/Table";
 import { Images } from "../../images";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import {getDirectorAccountDetails,getCountries} from '../../../src/api/apiMethods'
+import { getDirectorAccountDetails, getCountries, suspendDirectorAccountPaymentDetails } from '../../../src/api/apiMethods'
 
 
 
@@ -18,7 +18,8 @@ const PaymentGateway = () => {
   const [error, setError] = useState(null);
   const [accountList, setAccountList] = useState([]);
   const [countries, setCountries] = useState([]);
-
+  const [paymentId, setPaymentId] = useState(null);
+  const [statusId, setStatusId] = useState(null)
   const getDirectorAccountData = () => {
     setLoading(true);
     getDirectorAccountDetails()
@@ -44,7 +45,7 @@ const PaymentGateway = () => {
     3: "QR Code"
   };
 
-  
+
   const getCountry = () => {
     setLoading(true);
     getCountries()
@@ -68,7 +69,7 @@ const PaymentGateway = () => {
     const country = countries.find((c) => c.id === id);
     return country ? country.name : "Unknown";
   };
-  
+
   // Function to get currency dynamically
   const getCurrencySymbol = (id) => {
     const country = countries.find((c) => c.id === id);
@@ -80,9 +81,28 @@ const PaymentGateway = () => {
     const date = new Date(isoDate);
     return date.toLocaleDateString("en-GB"); // Formats to "DD-MM-YYYY"
   };
-  
-  
-  
+
+
+  const handleStatus = (id, status) => {
+    //onsole.log(id,status);
+    setOnBlockPopup(true);
+    setPaymentId(id);
+    setStatusId(status);
+
+  }
+  const status_id = statusId === 1 ? 2:1;
+
+  const suspendStatus = () => {
+    suspendDirectorAccountPaymentDetails(paymentId, status_id).then((response) => {
+      console.log(response);
+
+    }).catch((error) => {
+      console.log(error);
+
+    })
+  }
+
+
 
   const columns = [
     { header: "Gateway Name", field: "gatewayName", width: "15%" },
@@ -273,11 +293,11 @@ const PaymentGateway = () => {
     paymentDetails: item.gateway_type === 1
       ? `${item.bank_name} \n A/C No: ${item.bank_acc_no} \n IFSC: ${item.bank_ifsc}`
       : item.qr_code_image
-      ? <div className="d-flex align-items-center">
+        ? <div className="d-flex align-items-center">
           <img src={item.qr_code_image} alt="QR Code" className="w-10 h-10 me-2" />
           {item.bank_name}
         </div>
-      : item.upi_provider || "N/A",
+        : item.upi_provider || "N/A",
     lastUpdated: formatDate(item.updated_date),
     country: getCountryName(item.country), // Function to map country code to name
     currency: getCurrencySymbol(item.country), // Function to get currency symbol
@@ -289,11 +309,11 @@ const PaymentGateway = () => {
     action: (
       <div className="flex-center gap-2">
         <SlPencil size={18} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)} />
-        <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)} />
+        <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => handleStatus(item?.id, item?.status)} />
       </div>
     ),
   }));
-  
+
 
   return (
     <div>
@@ -316,13 +336,14 @@ const PaymentGateway = () => {
         <Table data={transformedData} columns={columns} itemsPerPage={6} />
       </div>
 
-      <AddPaymentGatewayPopup show={onAddPaymentGateway} onHide={() => setOnAddPaymentGateway(false)} data = {countries}  getDirectorAccountData={getDirectorAccountData}/>
+      <AddPaymentGatewayPopup show={onAddPaymentGateway} onHide={() => setOnAddPaymentGateway(false)} data={countries} getDirectorAccountData={getDirectorAccountData} />
 
       <ConfirmationPopup
         confirmationPopupOpen={onBlockPopup}
         setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-        discription={"are you sure you want to delete this Gateway?"}
-        submitButton={"Delete"}
+        discription={`are you sure you want to ${statusId === 1 ? "In-Active":"Active"} this Gateway?`}
+        submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
+        onSubmit={suspendStatus}
       />
 
     </div>
