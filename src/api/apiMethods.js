@@ -34,6 +34,19 @@ const updateEmployeeByID = (id, data) => {
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
 };
+const getDirectorAccountDetails = (data) => {
+  return apiRequest("getDirectorAccountDetails");
+};
+
+const postDirectorAccountDetails = (data) => {
+  return apiRequest("postDirectorAccountDetails", data);
+}
+
+const getCountries = (data) => {
+  return apiRequest("getCountries", data);
+};
+
+
 export {
   loginUser,
   addManagemnentTeam,
@@ -43,4 +56,7 @@ export {
   blockEmploye,
   updateEmployeeByID,
   getEmployeeDetailsById,
+  getDirectorAccountDetails,
+  getCountries,
+  postDirectorAccountDetails
 };

@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
+import { postDirectorAccountDetails } from "../../../api/apiMethods";
+import SuccessPopup from "../../popups/SuccessPopup";
+import ErrorPopup from "../../popups/SuccessPopup";
 
-const AddPaymentGatewayPopup = ({ show, onHide }) => {
+
+
+const AddPaymentGatewayPopup = ({ show, onHide, data, getDirectorAccountData }) => {
   const [paymentMethod, setPaymentMethod] = useState("1");
   const [provider, setProvider] = useState("");
   const [upiID, setUpiID] = useState("");
@@ -14,42 +19,91 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
   const [bankIFSC, setBankIFSC] = useState("");
   const [bankName, setBankName] = useState("");
   const [country, setCountry] = useState("");
+  const [error, setError] = useState("");
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [qrCode, setQrCode] = useState(null);
 
-  const handleSubmit = () => {
+  const cOptions = data.map((item) => ({
+    value: item?.id,
+    label: item?.name,
+  }));
+
+  const handleQrCodeChange = (e) => {
+    setQrCode(e.target.files[0]); // Store the selected file
+  };
+
+  const handleSubmit = async () => {
+    console.log("Image Selected:", qrCode);
+
+    // Validation
     if (paymentMethod === "2") {
       if (provider === "" || upiID === "" || country === "") {
         alert("Please fill in all fields before submitting.");
         return;
       }
     } else if (paymentMethod === "3") {
-      if (bankName === "" || qrCode === null) {
+      if (bankName === "" || !qrCode) {
         alert("Please fill in all fields before submitting.");
         return;
       }
     } else {
-      if (
-        accountNumber === "" ||
-        bankIFSC === "" ||
-        bankName === "" ||
-        country === ""
-      ) {
+      if (accountNumber === "" || bankIFSC === "" || bankName === "" || country === "") {
         alert("Please fill in all fields before submitting.");
         return;
       }
     }
 
-    console.log({
-      paymentMethod,
-      provider,
-      upiID,
-      accountNumber,
-      bankIFSC,
-      bankName,
-      country,
-      qrCode,
-    });
+    await addDirectorAccountDetails();
+    onHide(); // Close the modal
+  };
 
+  // Send data to backend using FormData for file upload
+  const addDirectorAccountDetails = async () => {
+    const formData = new FormData();
+    formData.append("gateway_type", parseInt(paymentMethod));
+    formData.append("status", 1);
+    formData.append("director_id", 1);
+
+    if (paymentMethod === "1") {
+      formData.append("bank_acc_no", accountNumber);
+      formData.append("bank_ifsc", bankIFSC);
+      formData.append("bank_name", bankName);
+      formData.append("country", country);
+    } else if (paymentMethod === "2") {
+      formData.append("upi_provider", provider);
+      formData.append("upi_provider_id", upiID);
+      formData.append("country", country);
+    } else if (paymentMethod === "3") {
+      formData.append("qr_code_image", qrCode); // Attach file
+      formData.append("bank_name", bankName);
+    }
+
+    try {
+      const response = await postDirectorAccountDetails(formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Important for file uploads
+        },
+      });
+
+      console.log("Response from API:", response);
+
+      setSuccessPopupOpen(true);
+      setTimeout(() => {
+        setSuccessPopupOpen(false);
+      }, 5000);
+
+      reset(); // Reset form values
+      getDirectorAccountData(); // Refresh data
+    } catch (error) {
+      setError(error?.message);
+      setErrorPopupOpen(true);
+      console.error("Error from API:", error);
+      // alert("Something went wrong! Please try again later.");
+    }
+  };
+
+  const reset = () => {
     setPaymentMethod("1");
     setProvider("");
     setUpiID("");
@@ -58,13 +112,8 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
     setBankName("");
     setCountry("");
     setQrCode(null);
-
-    onHide();
   };
 
-  const handleQrCodeChange = (e) => {
-    setQrCode(e.target.files[0]);
-  };
   const paymentMethodOptions = [
     { value: "1", label: "NEFT/RTGS" },
     { value: "2", label: "UPI" },
@@ -92,24 +141,12 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
             </label>
             <Select
               className="small-font"
-              options={[
-                { value: "1", label: "NEFT/RTGS" },
-                { value: "2", label: "UPI" },
-                { value: "3", label: "QR Code" },
-              ]}
+              options={paymentMethodOptions}
               placeholder="Select"
               styles={customStyles}
               maxMenuHeight={120}
               menuPlacement="auto"
-              value={{
-                value: paymentMethod,
-                label:
-                  paymentMethod === "1"
-                    ? "NEFT/RTGS"
-                    : paymentMethod === "2"
-                    ? "UPI"
-                    : "QR Code",
-              }}
+              value={paymentMethodOptions.find((method) => method.value === paymentMethod)}
               onChange={(selected) => setPaymentMethod(selected.value)}
             />
           </div>
@@ -124,24 +161,12 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
                 </label>
                 <Select
                   className="small-font"
-                  options={[
-                    { value: "GooglePay", label: "Google Pay" },
-                    { value: "PhonePe", label: "PhonePe" },
-                    { value: "Paytm", label: "Paytm" },
-                  ]}
+                  options={upiProviderOptions}
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
                   menuPlacement="auto"
-                  value={{
-                    value: provider,
-                    label:
-                      provider === "GooglePay"
-                        ? "Google Pay"
-                        : provider === "PhonePe"
-                        ? "PhonePe"
-                        : "Paytm",
-                  }}
+                  value={upiProviderOptions.find((option) => option.value === provider)}
                   onChange={(selected) => setProvider(selected.value)}
                 />
               </div>
@@ -260,15 +285,23 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
               <label htmlFor="country" className="small-font mb-1">
                 Country
               </label>
-              <input
+              <Select
                 id="country"
-                type="text"
-                className="w-100 small-font rounded input-css all-none"
-                placeholder="Enter"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
+                className="small-font"
+                styles={customStyles}
+                placeholder="Select"
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                options={cOptions}
+                value={cOptions.find((option) => option.value === country) || ""}
+                onChange={(selectedOption) => setCountry(selectedOption ? selectedOption.value : "")}
+              // options={data.map((c) => ({
+              //   value: c.id, // use id as value
+              //   label: c.name, // display name as label
+              // }))}
               />
             </div>
+
 
             {/* Submit Button */}
             <div className="col-4 d-flex justify-content-end align-items-end">
@@ -292,13 +325,17 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
                 <label htmlFor="country" className="small-font mb-1">
                   Country
                 </label>
-                <input
+                <Select
                   id="country"
-                  type="text"
-                  className="w-100 small-font rounded input-css all-none"
-                  placeholder="Enter"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
+                  className="small-font"
+                  styles={customStyles}
+                  placeholder="Select"
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  options={cOptions}
+                  value={cOptions.find((option) => option.value === country) || ""}
+                  onChange={(selectedOption) => setCountry(selectedOption ? selectedOption.value : "")}
+
                 />
               </div>
             )}
@@ -316,8 +353,20 @@ const AddPaymentGatewayPopup = ({ show, onHide }) => {
           </div>
         )}
       </Modal.Body>
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={"success"}
+      />
+        <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={error}
+      />
     </Modal>
+
   );
+
 };
 
 AddPaymentGatewayPopup.propTypes = {

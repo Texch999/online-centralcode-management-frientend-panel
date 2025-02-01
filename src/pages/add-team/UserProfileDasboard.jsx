@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { MdLockReset, MdRemoveRedEye } from "react-icons/md";
+import { MdLockReset, MdRemoveRedEye, MdOutlineVisibilityOff } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Images } from "../../images";
@@ -317,6 +317,8 @@ const UserProfileDashboard = () => {
   const [activeTab, setActiveTab] = useState("websitesLimit");
   const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false);
   const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -339,12 +341,22 @@ const UserProfileDashboard = () => {
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 text-white rounded-pill px-3">
             <div className="d-flex align-items-center gap-4 px-2">
               <span className="fw-600 small-font">Password</span>
-              <span className="fw-600 small-font">1234567823</span>
+              <span className="fw-600 small-font"> {showPassword ? "1234567823" : "********"}</span>
             </div>
 
             <div className="d-flex align-items-center gap-1 my-1">
-              <div className="director-top-bg-icon px-2 py-1">
+              {/* <div className="director-top-bg-icon px-2 py-1">
                 <MdRemoveRedEye className="text-warning large-font pointer" />
+              </div> */}
+              <div
+                className="director-top-bg-icon px-2 py-1 pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <MdOutlineVisibilityOff className="text-warning large-font" />
+                ) : (
+                  <MdRemoveRedEye className="text-warning large-font" />
+                )}
               </div>
               <div className="director-top-bg-icon px-2 py-1">
                 <MdLockReset
@@ -381,7 +393,7 @@ const UserProfileDashboard = () => {
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <div className="d-flex gap-4 align-items-center">
                   <div className="d-flex gap-2 align-items-end">
-                    <FaUserTie className="large-font"/>
+                    <FaUserTie className="large-font" />
                     <span className="small-font">Director</span>
                   </div>
                   <div className="d-flex gap-2 align-items-end">
@@ -428,33 +440,29 @@ const UserProfileDashboard = () => {
         <div className="col-7 p-0">
           <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3">
             <button
-              className={`small-font rounded p-2 w-25 ${
-                activeTab === "websitesLimit" && "saffron-btn"
-              }`}
+              className={`small-font rounded p-2 w-25 ${activeTab === "websitesLimit" && "saffron-btn"
+                }`}
               onClick={() => handleTabClick("websitesLimit")}
             >
               Websites/Limit
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${
-                activeTab === "paymentGateway" && "saffron-btn"
-              }`}
+              className={`small-font rounded p-2 text-center w-25 ${activeTab === "paymentGateway" && "saffron-btn"
+                }`}
               onClick={() => handleTabClick("paymentGateway")}
             >
               Payment Gateway
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${
-                activeTab === "transaction" && "saffron-btn"
-              }`}
+              className={`small-font rounded p-2 text-center w-25 ${activeTab === "transaction" && "saffron-btn"
+                }`}
               onClick={() => handleTabClick("transaction")}
             >
               Transaction
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${
-                activeTab === "betHistory" && "saffron-btn"
-              }`}
+              className={`small-font rounded p-2 text-center w-25 ${activeTab === "betHistory" && "saffron-btn"
+                }`}
               onClick={() => handleTabClick("betHistory")}
             >
               Bet History

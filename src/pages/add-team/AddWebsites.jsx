@@ -410,14 +410,14 @@ const AddWibsites = () => {
 
       {role === "management" ? (
         <div className="mt-2">
-          <Table data={data} columns={columns} itemsPerPage={11} />
+          <Table data={data} columns={columns} itemsPerPage={9} />
         </div>
       ) : (
         <div className="mt-2">
           <Table
             data={directorswebsitedata}
             columns={directorswebsitecolumns}
-            itemsPerPage={11}
+            itemsPerPage={9}
           />
         </div>
       )}

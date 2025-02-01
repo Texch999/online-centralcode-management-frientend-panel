@@ -9,6 +9,8 @@ import EditBetPopup from "./EditBetPopup";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+
 
 function RiskBetHistory() {
   const betPlacedOptions = [
@@ -25,8 +27,13 @@ function RiskBetHistory() {
 
   const { matchName } = useParams();
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
+  };
+  const handleDeleteBetPopupOpen = () => {
+    setShowDeletePopup(true);
   };
 
   const BET_HISTORY_COLUMNS = [
@@ -91,7 +98,10 @@ function RiskBetHistory() {
               className="black-text"
               onClick={handleEditBetPopupOpen}
             />
-            <IoTrashOutline size={18} className="black-text" />
+            <IoTrashOutline
+              size={18}
+              className="black-text"
+              onClick={handleDeleteBetPopupOpen} />
           </div>
         </div>
       ),
@@ -322,6 +332,12 @@ function RiskBetHistory() {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+      <ConfirmationPopup
+        confirmationPopupOpen={showDeletePopup}
+        setConfirmationPopupOpen={setShowDeletePopup}
+        discription="Are you sure you want to block this bet?"
+        submitButton="Block"
       />
     </div>
   );

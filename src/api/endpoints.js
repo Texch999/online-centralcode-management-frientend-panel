@@ -43,6 +43,19 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID}/employee/${id}`,
   },
-};
+  getDirectorAccountDetails:{
+    method: "get",
+    url: "/user/2/directorAccount/",
+  },
+  getCountries:{
+    method:"get",
+    url:`/user/${userID}/countries/countries`,
+  },
+  postDirectorAccountDetails:{
+    method:"post",
+    url:`/user/2/directorAccount/`,
+  }
+
+}
 
 export default endpoints;
