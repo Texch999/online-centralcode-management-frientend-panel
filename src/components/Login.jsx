@@ -46,11 +46,11 @@ function Login() {
           setLoginData(response);
           localStorage.setItem("jwt_token", response?.token);
           localStorage?.setItem("isLoggedIn", true);
-          localStorage.setItem("emp_id", response?.user?.role?.role_id);
+          localStorage.setItem("emp_role_id", response?.user?.role?.role_id);
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
           localStorage.setItem("user_id", response?.user?.id);
-          // window.location.reload();
+          window.location.reload();
           navigate("/");
           setError("");
         } else {
@@ -95,6 +95,7 @@ function Login() {
                   className="all-none w-inherit ps-2"
                   placeholder="Login Name"
                   maxLength={15}
+                  autoComplete="username"
                   {...register("username", {
                     required: "Username is required",
                     pattern: {
@@ -130,6 +131,7 @@ function Login() {
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
                   maxLength={36}
+                  autoComplete="current-password"
                   {...register("password", {
                     required: "Password is required",
                     minLength: {

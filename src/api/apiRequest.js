@@ -16,6 +16,9 @@ const apiRequest = (
         ? endpoint.url(pathParams)
         : endpoint.url;
 
+    console.log("Final API URL:", url);
+    console.log(queryParams);
+
     if (queryParams) {
       // Ensure queryParams include pagination params like limit and offset
       const queryString = qs.stringify(queryParams, { addQueryPrefix: true });

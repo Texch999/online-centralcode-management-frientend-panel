@@ -3,6 +3,21 @@ import apiRequest from "./apiRequest";
 const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
+// security Questions
+const createSecurityQuestions = (data) => {
+  return apiRequest("createSecurityQuestions", data);
+};
+const getAllSecurityQuestions = (data) => {
+  return apiRequest("getAllSecurityQuestions", data);
+};
+const updateSecurityQuestions = (id, data) => {
+  return apiRequest("updateSecurityQuestions", data, id);
+};
+const getSecQusetionsById = (id, data) => {
+  return apiRequest("getSecQusetionsById", data, id);
+};
+
+// manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
 };
@@ -15,24 +30,12 @@ const createDirector = (data) => {
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
-const getCountries = (data) => {
-  return apiRequest("getCountries", data);
-};
 const getAdminWebsites = (data) => {
   return apiRequest("getAdminWebsites", data);
 };
 const getUserWebsites = (data) => {
   return apiRequest("getUserWebsites", data);
 };
-// const getEmployees = (data) => {
-//   return apiRequest("getEmployees", data);
-// };
-// const getEmployees = ({ limit = 10, offset = 0 }) => {
-//   return apiRequest("getEmployees", null, { limit, offset });
-// };
-// const getEmployees = (params) => {
-//   return apiRequest("getEmployees", {}, params);
-// };
 const getEmployees = (params) => {
   return apiRequest("getEmployees", {}, params);
 };
@@ -77,7 +80,6 @@ export const getWebsiteDetails = (id, data) =>
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
-
 //VijayaLakshmi
 const getPromotionsTypes = () => {
   return apiRequest("getPromotionsTypes");
@@ -110,11 +112,62 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
+
+// rejection reasons
+const getAllRejectionReasons = (data) => {
+  return apiRequest("getAllRejectionReasons", data);
+};
+const createRejReasons = (data) => {
+  return apiRequest("createRejReasons", data);
+};
+const updateRejReasons = (id, data) => {
+  return apiRequest("updateRejReasons", data, id);
+};
+const getRejReasonsById = (id, data) => {
+  return apiRequest("getRejReasonsById", data, id);
+};
+//priavacy policy
+const getPrivacyPolicy = (data) => {
+  return apiRequest("getPrivacyPolicy", data);
+};
+const getPrivacyPolicyById = (id, data) => {
+  return apiRequest("getPrivacyPolicyById", data, id);
+};
+const getCountries = (data) => {
+  return apiRequest("getCountries", data);
+};
+const getWebsites = (data) => {
+  return apiRequest("getWebsites", data);
+};
+const createPrivacyPolicy = (data) => {
+  return apiRequest("createPrivacyPolicy", data);
+};
+const updatePrivacyPolicyById = (id, data) => {
+  return apiRequest("updatePrivacyPolicyById", data, id);
+};
+const privacyPolicyStatusUpdate = (id, status) => {
+  return apiRequest("privacyPolicyStatusUpdate", id, { status, id });
+};
+
 export {
   loginUser,
+  createSecurityQuestions,
+  getAllSecurityQuestions,
+  updateSecurityQuestions,
   addManagemnentTeam,
   getRoles,
   getEmployees,
+  getAllRejectionReasons,
+  createRejReasons,
+  updateRejReasons,
+  getSecQusetionsById,
+  getRejReasonsById,
+  getPrivacyPolicy,
+  getWebsites,
+  getPrivacyPolicyById,
+  createPrivacyPolicy,
+  updatePrivacyPolicyById,
+  privacyPolicyStatusUpdate,
   getPromotionsTypes,
   getPromotionsImage,
   createPromotionImages,

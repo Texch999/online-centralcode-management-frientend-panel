@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
+import { getWebsites } from "../../api/apiMethods";
 
 const SelectWebsitePopUp = ({ selectWebsite, setSelectWebsite }) => {
+  const [websites, setWebsites] = useState([]);
+    const [error, setError] = useState("");
+   
   return (
     <Modal show={selectWebsite} onHide={() => setSelectWebsite(false)} centered>
       <div className="p-2">
