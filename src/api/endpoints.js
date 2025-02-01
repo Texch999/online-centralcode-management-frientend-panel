@@ -1,6 +1,8 @@
 const userID = localStorage.getItem("user_id");
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
+  loginDirector: { method: "post", url: "/director/login" },
+
   createWebsite: { method: "post", url: `/user/${userID}/website/website` },
   updateWebsite: {
     method: "put",
@@ -43,7 +45,6 @@ const endpoints = {
     url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
 
-
   getLoggedInLogs: {
     method: "get",
     url: (params) => {
@@ -75,35 +76,48 @@ const endpoints = {
 
   // addManagemnentTeam: { method: "post", url: "/employee" },
   addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
+  createDirector: { method: "post", url: `/user/${userID}/create` },
 
   getRoles: { method: "get", url: `/user/${userID}/rolesList` },
-  // getEmployees: { method: "get", url: `/user/${userID}/employees` },
-  // getEmployees: ({ limit, offset }) => ({
-  //   method: "get",
-  //   url: `/user/${userID}/employeeeees?limit=${limit}&offset=${offset}`,
-  // }),
+  getCountries: { method: "get", url: `/user/${userID}/countries` },
+  getAdminWebsites: {
+    method: "get",
+    url: `/user/${userID}/website/adminWebsites`,
+  },
+  getUserWebsites: {
+    method: "get",
+    url: `/user/${userID}/website/userWebsites`,
+  },
 
-  // getEmployees: {
-  //   method: "get",
-  //   url: (params) => {
-  //     const query = new URLSearchParams(params).toString();
-  //     return `/user/${userID}/employees?${query}`;
-  //   },
-  // },
   getEmployees: {
     method: "get",
     url: (params) => {
-      const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
+      const query = new URLSearchParams(params).toString();
       return `/user/${userID}/employees?${query}`;
+    },
+  },
+  getDirectors: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID}/directors?${query}`;
     },
   },
   resetEmployeePassword: {
     method: "post",
     url: (id) => `/user/${userID}/employeeUpdatePassword/${id}`,
   },
+  resetDirectorPassword: {
+    method: "post",
+    url: (id) => `/user/${userID}/directorUpdatePassword/${id}`,
+  },
   blockEmploye: {
     method: "post",
     url: (id) => `/user/${userID}/employeeBlockUnblock/${id}`,
+  },
+  blockDirector: {
+    method: "post",
+    url: (id) => `/user/${userID}/directorBlockUnblock/${id}`,
   },
 
   updateEmployeeByID: {

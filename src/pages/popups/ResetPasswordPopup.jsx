@@ -8,7 +8,8 @@ import { resetEmployeePassword } from "../../api/apiMethods";
 function ResetPasswordPopup({
   resetPasswordPopup,
   setResetPasswordPopup,
-  resetPasswordId,
+  IndividualpassowrdId,
+  onSubmit,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -29,34 +30,7 @@ function ResetPasswordPopup({
     setResetPasswordPopup(false);
   };
 
-  // Handle form submission
-  const onSubmit = (data) => {
-    if (!resetPasswordId) {
-      alert("Invalid ID");
-      return;
-    }
 
-    const requestData = {
-      password: data.password,
-      confirm_password: data.confirmPassword,
-      management_password: data.managementPassword,
-    };
-
-    resetEmployeePassword(resetPasswordId, requestData)
-      .then((response) => {
-        if (response) {
-          setTimeout(() => {
-            setResetPasswordPopup(false);
-          }, 1000);
-          setShowSuccessPopup(true);
-        } else {
-          alert("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        alert(error?.message || "Request failed");
-      });
-  };
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
