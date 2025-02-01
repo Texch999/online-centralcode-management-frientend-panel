@@ -249,7 +249,7 @@ function App() {
               {/* Owner Settings */}
               <Route path="/activity-logs" element={<ActivityLogs />} />
               <Route
-                path="/userActivity/:userActivity"
+                path="/userActivity/:userId/:userActivity"
                 element={<RecentAccessIp />}
               />
               <Route path="/reference-data" element={<ReferenceData />} />
