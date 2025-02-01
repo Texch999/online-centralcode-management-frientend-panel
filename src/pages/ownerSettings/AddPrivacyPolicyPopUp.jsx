@@ -18,6 +18,7 @@ import { Controller, useForm } from "react-hook-form";
 import SuccessPopup from "./../popups/SuccessPopup";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const AddPrivacyPolicyPopUp = ({
   addPrivacyModal,
@@ -48,6 +49,8 @@ const AddPrivacyPolicyPopUp = ({
   const [selectedStatus, setSelectedStatus] = useState("");
   const [privacyData, setPrivacyData] = useState([]);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [errorPopup, setErrorPopup] = useState(false);
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -107,6 +110,7 @@ const AddPrivacyPolicyPopUp = ({
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true);
         console.log(error, "error from API", error);
       });
   };
@@ -257,6 +261,11 @@ const AddPrivacyPolicyPopUp = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={"Privacy Policy Created Successfully"}
+      />
+      <ErrorPopup
+        discription={setError}
+        errorPopup={errorPopup}
+        setErrorPopup={setErrorPopup}
       />
     </>
   );

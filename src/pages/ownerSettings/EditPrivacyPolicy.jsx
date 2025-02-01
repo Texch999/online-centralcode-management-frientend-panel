@@ -8,6 +8,7 @@ import SuccessPopup from "../popups/SuccessPopup";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import e from "cors";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const EditPrivacyPolicy = ({
   setEditPrivacyPolicyModal,
@@ -21,6 +22,8 @@ const EditPrivacyPolicy = ({
   const [showPrivacyText, setShowPrivacyText] = useState({ description: "" });
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   console.log(showPrivacyText?.description, "showPrivacyText");
+  const [errorPopup,
+    setErrorPopup]=useState(false);
 
   const getPolicyPrivacyDataById = () => {
     getPrivacyPolicyById(privacyPolicyId)
@@ -30,6 +33,7 @@ const EditPrivacyPolicy = ({
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true)
         console.log("getPrivacyPolicy error", error);
       });
   };
@@ -54,6 +58,8 @@ const EditPrivacyPolicy = ({
         getPolicyPrivacyData();
       })
       .catch((error) => {
+        setError(error?.message);
+        setErrorPopup(true)
         console.log(error, "errorrrr");
       });
   };
@@ -101,6 +107,11 @@ const EditPrivacyPolicy = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={"Privacy Policy Created Successfully"}
+      />
+      <ErrorPopup
+        discription={setError}
+        errorPopup={errorPopup}
+        setErrorPopup={setErrorPopup}
       />
     </div>
   );

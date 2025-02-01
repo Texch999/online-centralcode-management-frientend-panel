@@ -19,6 +19,7 @@ import { CircleLoader } from "react-spinners";
 import { CgWebsite } from "react-icons/cg";
 import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import ActiveInActiveModal from "../popups/ActiveInActiveModal";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const PrivacyPolicy = () => {
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
@@ -39,6 +40,7 @@ const PrivacyPolicy = () => {
   const [privacyStatusId, setPrivacyStatusId] = useState("");
   console.log(privacyStatusId, "privacyStatusId");
   console.log(statusId, "statusId");
+  const [errorPopup, setErrorPopup] = useState(false);
 
   const [isEditModal, setIsEditModal] = useState("");
   const handleEditPrivacyModal = (id) => {
@@ -101,10 +103,12 @@ const PrivacyPolicy = () => {
   ];
 
   const REJECTION_DATA = privacyList.map((item, index) => {
-    const country = countries.find((country) => country?.id === item?.country_id);
+    const country = countries.find(
+      (country) => country?.id === item?.country_id
+    );
 
     return {
-      country: <div>{country ? country?.name : 'unknown'}</div>,
+      country: <div>{country ? country?.name : "unknown"}</div>,
       policyDetails: (
         <div
           className="saffron-btn2 w-20 pointer"
@@ -248,6 +252,7 @@ const PrivacyPolicy = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true);
         console.log("getPrivacyPolicy error", error);
       })
       .finally(() => {
@@ -341,6 +346,11 @@ const PrivacyPolicy = () => {
           statusId === 1 ? "In-Active" : "Active"
         }  Privacy Policy`}
         submitButton={statusId === 1 ? "In-Active" : "Active"}
+      />
+      <ErrorPopup
+        discription={setError}
+        errorPopup={errorPopup}
+        setErrorPopup={setErrorPopup}
       />
     </div>
   );
