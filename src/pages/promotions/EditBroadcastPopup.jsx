@@ -27,6 +27,12 @@ const EditBroadcastPopup = ({
     location: null,
     message: "",
   });
+  useEffect(() => {
+    if (editBroadcast) {
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(false);
+    }
+  }, [editBroadcast]);
 
   useEffect(() => {
     if (selectedIdForEdit) {
@@ -52,24 +58,42 @@ const EditBroadcastPopup = ({
   const selectOptionsLocations = [{ value: 1, label: "Home" }];
 
   const handleSubmit = async () => {
-    const id = selectedIdForEdit.type;
+    const id = selectedIdForEdit.id;
+    setLoading(true);
+
+    const { website, location, ...formDataWithoutWebsiteAndLocation } =
+      formData;
+
     try {
-      const response = await editBroadCasting(id, formData);
-      if (response.status === 2000) {
+      const response = await editBroadCasting(
+        id,
+        formDataWithoutWebsiteAndLocation
+      );
+
+      if (response.status === 200) {
         setMessage(response.message);
         setErrorPopupOpen(false);
-        CallbackFunction();
         setSuccessPopupOpen(true);
-        setEditBroadcast(false);
+        setTimeout(() => {
+          handleClose();
+        }, [2000]);
       }
     } catch (error) {
+      setMessage("An error occurred while updating.");
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
-      setEditBroadcast(false);
+      setTimeout(() => {
+        handleClose();
+      }, [2000]);
+    } finally {
+      setLoading(false);
+      CallbackFunction();
     }
   };
 
   const handleClose = () => {
+    setSuccessPopupOpen(false);
+    setErrorPopupOpen(false);
     setEditBroadcast(false);
   };
 
@@ -96,26 +120,34 @@ const EditBroadcastPopup = ({
                 menuPlacement="auto"
                 classNamePrefix="custom-react-select"
                 onChange={(selected) =>
-                  setFormData({ ...formData, type: selected ? selected.value : null })
+                  setFormData({
+                    ...formData,
+                    type: selected ? selected.value : null,
+                  })
                 }
-                value={formData.type ? selectOptionsType.find(option => option.value === formData.type) : null}
+                value={
+                  formData.type
+                    ? selectOptionsType.find(
+                        (option) => option.value === formData.type
+                      )
+                    : null
+                }
               />
             </div>
 
             <div className="col-6 flex-column me-3">
               <label className="black-text4 small-font mb-1">Websites</label>
-              <Select
-                className="small-font"
-                options={selectOptionsWebsites}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-                onChange={(selected) =>
-                  setFormData({ ...formData, website: selected ? selected.value : null })
+              <input
+                className="all-none input-css2 small-font p-2 rounded"
+                type="text"
+                placeholder="Enter website"
+                value={
+                  formData.website
+                    ? selectOptionsWebsites.find(
+                        (option) => option.value === formData.website
+                      )?.label || ""
+                    : ""
                 }
-                value={formData.website ? selectOptionsWebsites.find(option => option.value === formData.website) : null}
               />
             </div>
 
@@ -123,18 +155,17 @@ const EditBroadcastPopup = ({
               <label className="black-text4 small-font mb-1">
                 Broadcasting Location
               </label>
-              <Select
-                className="small-font"
-                options={selectOptionsLocations}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-                onChange={(selected) =>
-                  setFormData({ ...formData, location: selected ? selected.value : null })
+              <input
+                className="all-none input-css2 small-font p-2 rounded"
+                type="text"
+                placeholder="Enter location"
+                value={
+                  formData.location
+                    ? selectOptionsLocations.find(
+                        (option) => option.value === formData.location
+                      )?.label || ""
+                    : ""
                 }
-                value={formData.location ? selectOptionsLocations.find(option => option.value === formData.location) : null}
               />
             </div>
           </div>
@@ -156,7 +187,7 @@ const EditBroadcastPopup = ({
               />
             </div>
 
-            <div className="col-3 flex-end ml-10">
+            <div className="col-6 flex-end ml-10">
               <div
                 className="saffron-btn2 small-font pointer ms-2 w-100 mr-2"
                 onClick={handleSubmit}
@@ -172,6 +203,7 @@ const EditBroadcastPopup = ({
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={message}
       />
+
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
         setErrorPopupOpen={setErrorPopupOpen}
@@ -182,4 +214,3 @@ const EditBroadcastPopup = ({
 };
 
 export default EditBroadcastPopup;
-

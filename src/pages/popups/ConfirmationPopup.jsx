@@ -12,7 +12,6 @@ function ConfirmationPopup({
   submitButton,
   CallbackFunction,
 }) {
-  console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };

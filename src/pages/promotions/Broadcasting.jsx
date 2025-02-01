@@ -9,6 +9,7 @@ import "../add-team/style.css";
 import {
   createBroadCasting,
   getBroadCasting,
+  getWebsitesList,
   statusBroadCasting,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
@@ -36,6 +37,8 @@ const Broadcasting = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [editBroadcast, setEditBroadcast] = useState(false);
 
+  const [websitesList, setWebsitesList] = useState([]);
+
   const [selectedBroadcastId, setSelectedBroadcastId] = useState();
   const [selectedBroadcastStatus, setSelectedBroadcastStatus] = useState();
   const [broadcastBlockModal, setBroadcastBlockModal] = useState(false);
@@ -52,11 +55,19 @@ const Broadcasting = () => {
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
   ];
+  console.log("selectWebsites", selectWebsites);
+  console.log("selectLocations", selectLocations);
+  console.log("websitesList", websitesList);
+  console.log("websitesList", websitesList);
+  const selectOptionsWebsites = websitesList?.map((item) => ({
+    value: item.id, // Ensure value is a number
+    label: item.web_name, // Ensure label is a string
+  }));
 
-  const selectOptionsWebsites = [
-    { value: 1, label: "WEBSITE 1" },
-    { value: 2, label: "WEBSITE 2" },
-  ];
+  // const selectOptionsWebsites = [
+  //   { value: 1, label: "WEBSITE 1" },
+  //   { value: 2, label: "WEBSITE 2" },
+  // ];
 
   const selectOptionsLocations = [{ value: 1, label: "Home" }];
 
@@ -66,8 +77,9 @@ const Broadcasting = () => {
   };
 
   const handleSelectWebsites = (selected) => {
+    console.log("Selected Website:", selected);
     setSelectWebsites(selected);
-    setErrors((pre) => ({ ...pre, selectWebsites }));
+    setErrors((prev) => ({ ...prev, selectWebsites: "" }));
   };
 
   const handleSelectLocations = (selected) => {
@@ -81,9 +93,21 @@ const Broadcasting = () => {
   };
 
   useEffect(() => {
+    getWebsites();
     getBroadCastingdata();
   }, []);
 
+  const getWebsites = async () => {
+    try {
+      const response = await getWebsitesList();
+      console.log(response, "redlknoshc");
+      if ((response.status = 200)) {
+        setWebsitesList(response?.data);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const getBroadCastingdata = async () => {
     try {
       const response = await getBroadCasting();
@@ -120,10 +144,13 @@ const Broadcasting = () => {
     const formData = {
       panel_type: activeBtn.value,
       type: selectType?.value,
-      website_id: selectWebsites?.value,
+      website_id: Array.isArray(selectWebsites)
+        ? selectWebsites.map((site) => String(site.value)) // Convert to string if needed
+        : String(selectWebsites?.value), // Ensure it's a string
       location_type: selectLocations?.value,
       message: textMessage,
     };
+
     setLoading(true);
     try {
       const response = await createBroadCasting(formData);

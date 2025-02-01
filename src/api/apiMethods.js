@@ -1,17 +1,17 @@
 import apiRequest from "./apiRequest";
 
-export const loginUser = (data) => {
+const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
-export const addManagemnentTeam = (data) => {
+const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
-export const getRoles = (data) => {
+ const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
-export const getEmployees = (data) => {
-  return apiRequest("getEmployees", data);
-};
+//  const getEmployees = (data) => {
+//   return apiRequest("getEmployees", data);
+// };
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };

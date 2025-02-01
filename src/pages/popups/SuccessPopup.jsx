@@ -14,7 +14,7 @@ const SuccessPopup = ({
     <Modal show={successPopupOpen} centered className="confirm-popup">
       <Modal.Body>
         <div className="flex-end black-text4">
-          <IoCloseSharp size={20} onClick={handleCancel} className="pointer"/>
+          <IoCloseSharp size={20} onClick={handleCancel} className="pointer" />
         </div>
         <center>
           <img src={Images?.check} alt="Check_Mark" />

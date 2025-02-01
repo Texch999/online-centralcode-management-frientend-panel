@@ -3,7 +3,7 @@ const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
   addManagemnentTeam: { method: "post", url: "/employee" },
   getRoles: { method: "get", url: "/rolesList" },
-  getEmployees: { method: "get", url: "/employees" },
+  // getEmployees: { method: "get", url: "/employees" },
   createWebsite: { method: "post", url: `/user/${UserId}/website/website` },
   updateWebsite: {
     method: "put",
@@ -66,9 +66,9 @@ const endpoints = {
 
   loginUser: { method: "post", url: "/master/login" },
   // addManagemnentTeam: { method: "post", url: "/employee" },
-  addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
+  addManagemnentTeam: { method: "post", url: `/user/${UserId}/employee` },
 
-  getRoles: { method: "get", url: `/user/${userID}/rolesList` },
+  getRoles: { method: "get", url: `/user/${UserId}/rolesList` },
   // getEmployees: { method: "get", url: `/user/${userID}/employees` },
   // getEmployees: ({ limit, offset }) => ({
   //   method: "get",
@@ -86,25 +86,25 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
-      return `/user/${userID}/employees?${query}`;
+      return `/user/${UserId}/employees?${query}`;
     },
   },
   resetEmployeePassword: {
     method: "post",
-    url: (id) => `/user/${userID}/employeeUpdatePassword/${id}`,
+    url: (id) => `/user/${UserId}/employeeUpdatePassword/${id}`,
   },
   blockEmploye: {
     method: "post",
-    url: (id) => `/user/${userID}/employeeBlockUnblock/${id}`,
+    url: (id) => `/user/${UserId}/employeeBlockUnblock/${id}`,
   },
 
   updateEmployeeByID: {
     method: "post",
-    url: (id) => `/user/${userID}/employee/${id}`,
+    url: (id) => `/user/${UserId}/employee/${id}`,
   },
   getEmployeeDetailsById: {
     method: "get",
-    url: (id) => `/user/${userID}/employee/${id}`,
+    url: (id) => `/user/${UserId}/employee/${id}`,
   },
 };
 
