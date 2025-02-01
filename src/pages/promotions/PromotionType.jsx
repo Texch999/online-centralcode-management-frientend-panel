@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaSpinner } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -12,8 +12,10 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 import {
   createPromotionImages,
+  deletePromotionsImages,
   getPromotionsImage,
   getPromotionsTypes,
+  statusPromotionsTypes,
 } from "../../api/apiMethods";
 import axios from "axios";
 import SuccessPopup from "../popups/SuccessPopup";
@@ -38,6 +40,8 @@ const PromotionType = () => {
   const [message, setMessage] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({ promotionType: "", image: "" });
 
   useEffect(() => {
     getPromotions();
@@ -46,17 +50,29 @@ const PromotionType = () => {
 
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
+    setErrors((prev) => ({ ...prev, promotionType: "" }));
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
+
+    if (file) {
+      const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+      if (file.size > maxSize) {
+        setMessage("File size should not exceed 2MB.");
+        setErrorPopupOpen(true);
+        return;
+      }
+      setSelectedFile(file);
+      setErrors((prev) => ({ ...prev, image: "" }));
+    }
   };
 
   const getPromotions = async () => {
     try {
       const response = await getPromotionsTypes();
-      if ((response.status = "200")) {
+      if (response.status = 200) {
         setPromotionsTypes(response.promotionsTypes);
       }
     } catch (error) {
@@ -66,7 +82,7 @@ const PromotionType = () => {
   const getPromotionsImages = async () => {
     try {
       const response = await getPromotionsImage();
-      if ((response.status = "200")) {
+      if (response.status = 200) {
         setPromotionsIMages(response.promotionsImages);
       }
     } catch (error) {
@@ -75,26 +91,41 @@ const PromotionType = () => {
   };
 
   const handlePromotionsImages = async () => {
+    let newErrors = {};
+
+    if (!selectedOption) {
+      newErrors.promotionType = "Promotion Type is required.";
+    }
+
+    if (!selectedFile) {
+      newErrors.image = "Image is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("promotionsId", selectedOption.value);
     formData.append("image", selectedFile);
 
     try {
+      setLoading(true);
       const response = await createPromotionImages(formData);
-      console.log("response", response);
-      if ((response.status = "200")) {
+      if (response.status === 200) {
+        setLoading(false);
         setMessage(response.message);
-        setErrorPopupOpen(false);
         setSelectedFile(null);
         setSelectedOption(null);
         getPromotionsImages();
+        setErrors({});
         setSuccessPopupOpen(true);
       }
     } catch (error) {
-      console.log("error", error);
       setMessage(error?.message);
-      setSelectedFile(null);
-      setErrorPopupOpen(true);
+      setLoading(false);
+      setErrors({ image: "An error occurred. Please try again." });
     }
   };
 
@@ -117,6 +148,7 @@ const PromotionType = () => {
     setSelectedPromotionId(id);
     setPosterDeleteModal(true);
   };
+
   const handleFullScreen = (image) => {
     setFullPosterImage(image);
     setFullPoster(!fullPoster);
@@ -144,21 +176,12 @@ const PromotionType = () => {
 
     icons: (
       <div className="flex-end">
-        {promotion.status === 1 ? (
-          <MdBlockFlipped
-            style={{ color: "green" }}
-            size={18}
-            className="mx-3 pointer"
-            onClick={() => handleBlockOrUnblock(promotion.id, promotion.status)}
-          />
-        ) : (
-          <MdBlockFlipped
-            style={{ color: "red" }}
-            size={18}
-            className="mx-3 pointer"
-            onClick={() => handleBlockOrUnblock(promotion.id, promotion.status)}
-          />
-        )}
+        <MdBlockFlipped
+          style={{ color: promotion.status === 1 ? "green" : "red" }}
+          size={18}
+          className="mx-3 pointer"
+          onClick={() => handleBlockOrUnblock(promotion.id, promotion.status)}
+        />
       </div>
     ),
   }));
@@ -182,8 +205,8 @@ const PromotionType = () => {
   const activePromotions = searchQuery ? filteredPromotions : promotionsIMages;
 
   useEffect(() => {
-    console.log("activePromotions");
-  }, [activePromotions]);
+    console.log("filteredPromotions");
+  }, [filteredPromotions]);
 
   const PROMOTIONSIMAGES_DATA = activePromotions?.map((promotionsImage) => ({
     promotionid: <div>{promotionsImage.promotionsId}</div>,
@@ -226,6 +249,48 @@ const PromotionType = () => {
     ),
   }));
 
+  const BockOrUnblock = async () => {
+    try {
+      setLoading(true);
+      const response = await statusPromotionsTypes(selectedPromotionId);
+      if (response?.status === 200) {
+        setMessage(response?.message);
+        setLoading(false);
+        getPromotions();
+        setErrorPopupOpen(false);
+        setSuccessPopupOpen(true);
+
+        // setTimeout(() => {
+        //   getAction();
+        // }, 100);
+      }
+    } catch (error) {
+      setLoading(false);
+      setErrorPopupOpen(true);
+    }
+  };
+
+  const DeletePoster = async () => {
+    try {
+      setLoading(true);
+      const response = await deletePromotionsImages(selectedPromotionId);
+      if (response?.status === "200") {
+        setMessage(response?.message);
+        setLoading(false);
+        getPromotionsImages();
+        setErrorPopupOpen(false);
+        setSuccessPopupOpen(true);
+
+        // setTimeout(() => {
+        //   getAction();
+        // }, 100);
+      }
+    } catch (error) {
+      setLoading(false);
+      setErrorPopupOpen(true);
+    }
+  };
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -246,9 +311,11 @@ const PromotionType = () => {
       </div>
       {activeBtn === "Promotion Type" ? (
         <>
-          <div className="flex-between w-100 my-3 small-font"></div>
-          <Table columns={PROMOTIONS_COLUMNS} data={PROMOTIONS_DATA} />{" "}
-          {/* itemsPerPage={2} /> \\*/}
+          <Table
+            columns={PROMOTIONS_COLUMNS}
+            data={PROMOTIONS_DATA}
+            itemsPerPage={10}
+          />
         </>
       ) : (
         <>
@@ -273,6 +340,11 @@ const PromotionType = () => {
                   value={selectedOption}
                   onChange={handleSelectChange}
                 />
+                {errors.promotionType && (
+                  <span className="text-danger small-font">
+                    {errors.promotionType}
+                  </span>
+                )}
               </div>
 
               <div className="col-md-3 col-lg-5 px-0">
@@ -294,6 +366,9 @@ const PromotionType = () => {
                     <MdOutlineFileUpload className="grey-color medium-font" />
                   </div>
                 </label>
+                {errors.image && (
+                  <span className="text-danger small-font">{errors.image}</span>
+                )}
               </div>
 
               <div className="col-md-2 col-lg-5 align-self-end">
@@ -301,7 +376,11 @@ const PromotionType = () => {
                   className="w-100 saffron-btn2 pointer small-font"
                   onClick={handlePromotionsImages}
                 >
-                  Submit
+                  {loading ? (
+                    <FaSpinner className="spinner-circle" />
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </div>
@@ -345,8 +424,7 @@ const PromotionType = () => {
         } this Promotion`}
         selectedId={selectedPromotionId}
         submitButton={selectedPromotionStatus === 1 ? "Block" : "UnBlock"}
-        getAction={getPromotions}
-        api={"BlockUnBlockPromotion"}
+        CallbackFunction={BockOrUnblock}
       />
 
       <ConfirmationPopup
@@ -355,8 +433,7 @@ const PromotionType = () => {
         discription={"are you sure you want to delete this Poster"}
         selectedId={selectedPromotionId}
         submitButton={"Delete"}
-        getAction={getPromotionsImages}
-        api={"DeletePoster"}
+        CallbackFunction={DeletePoster}
       />
       <SuccessPopup
         successPopupOpen={successPopupOpen}

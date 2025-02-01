@@ -42,38 +42,28 @@ const endpoints = {
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${UserId}/api/deletePromotionsImages/${id}`,
+  },
+  getBroadCasting: {
+    method: "get",
+    url: `/user/${UserId}/broadcasting`
+  },
+  createBroadCasting: {
+    method: "post",
+    url: `/user/${UserId}/broadcasting`
+  },
+  editBroadCasting: {
+    method: "put",
+    url: (id) => `/user/${UserId}/broadcasting/${id}`
+  },
+  statusBroadcastUpdate: {
+    method: "put",
+    url: (id) => `/user/${UserId}/broadcasting/statusBroadcastUpdate/${id}`
   },
 
-  getLoggedInLogs: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID}/loginLogs?${query}`;
-    },
-  },
-  getLoggedInLogsById: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID}/loginLogsById?${query}`;
-    },
-  },
-  getDirectorLoginLogs: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID}/getParentLoginLogs?${query}`;
-    },
-  },
-  getDirectorLoginLogsById: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID}/getParentLoginLogsById?${query}`;
-    },
-  },
 
+
+  loginUser: { method: "post", url: "/master/login" },
   // addManagemnentTeam: { method: "post", url: "/employee" },
   addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
   createDirector: { method: "post", url: `/user/${userID}/create` },

@@ -2,7 +2,6 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { useState } from "react";
-import SuccessPopup from "./SuccessPopup";
 import { blockEmploye } from "../../api/apiMethods";
 import { useEffect } from "react";
 
@@ -11,18 +10,16 @@ function ConfirmationPopup({
   setConfirmationPopupOpen,
   discription,
   submitButton,
-  blockAccountId,
-  onSubmit
+  CallbackFunction,
 }) {
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [message, setMessage] = useState("");
-
+  console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-  // const handleBlockAndUnblock = () => {
-  //   CallbackFunction()
-  // }
+  const handleBlockAndUnblock = () => {
+    CallbackFunction();
+    setConfirmationPopupOpen(false);
+  };
   return (
     <>
       <Modal
@@ -57,7 +54,7 @@ function ConfirmationPopup({
               </button>
               <button
                 className="w-50 saffron-btn2 ms-2"
-                onClick={onSubmit}
+                onClick={handleBlockAndUnblock}
               >
                 {submitButton}
               </button>
@@ -65,12 +62,6 @@ function ConfirmationPopup({
           </center>
         </Modal.Body>
       </Modal>
-
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={message}
-      />
     </>
   );
 }
