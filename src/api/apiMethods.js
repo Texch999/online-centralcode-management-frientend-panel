@@ -148,6 +148,9 @@ const updatePrivacyPolicyById = (id, data) => {
 const privacyPolicyStatusUpdate = (id, status) => {
   return apiRequest("privacyPolicyStatusUpdate", id, { status, id });
 };
+const getAvailableWebsites = (id, data) => {
+  return apiRequest("getAvailableWebsites", data, id);
+};
 
 export {
   loginUser,
@@ -185,4 +188,5 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
+  getAvailableWebsites,
 };

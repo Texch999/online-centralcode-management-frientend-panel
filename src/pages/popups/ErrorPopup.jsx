@@ -7,6 +7,7 @@ const ErrorPopup = ({
   setErrorPopupOpen,
   discription,
 }) => {
+  console.log(discription, "ErrorPopup");
   const handleCancel = () => {
     setErrorPopupOpen(false);
   };

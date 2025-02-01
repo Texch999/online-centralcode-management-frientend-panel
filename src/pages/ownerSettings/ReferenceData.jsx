@@ -12,6 +12,7 @@ import {
   getAllSecurityQuestions,
 } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
@@ -27,6 +28,7 @@ const ReferenceData = () => {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState("");
   const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
+  const [errorPopup, setErrorPopup] = useState(false);
 
   const handleSportClick = (item) => {
     setActiveBtn(item);
@@ -40,8 +42,10 @@ const ReferenceData = () => {
         setSecurityQuestions(response?.data);
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error?.message);
         console.log(error, "get sec qns erorr occur");
+        const errorMessage = error?.response?.data?.error
+        setErrorPopup(true);
       })
       .finally(() => {
         setLoading(false);
@@ -103,9 +107,9 @@ const ReferenceData = () => {
         >
           <SlPencil size={18} />
         </span>
-        <span className="ms-2" onClick={() => setShowDeleteModal(true)}>
+        {/* <span className="ms-2" onClick={() => setShowDeleteModal(true)}>
           <FaRegTrashCan size={18} />
-        </span>
+        </span> */}
       </div>
     ),
     resultDateTime: (
@@ -145,9 +149,9 @@ const ReferenceData = () => {
         >
           <SlPencil size={18} />
         </span>
-        <span className="ms-2">
+        {/* <span className="ms-2">
           <FaRegTrashCan size={18} />
-        </span>
+        </span> */}
       </div>
     ),
     tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -270,6 +274,11 @@ const ReferenceData = () => {
         setIsEdit={setIsEdit}
         setSelectedRejReasonId={setSelectedRejReasonId}
         getRejReasons={getRejReasons}
+      />
+      <ErrorPopup
+        discription={error}
+        errorPopup={errorPopup}
+        setErrorPopup={setErrorPopup}
       />
     </div>
   );

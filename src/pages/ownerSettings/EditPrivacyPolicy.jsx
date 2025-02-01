@@ -109,7 +109,7 @@ const EditPrivacyPolicy = ({
         discription={"Privacy Policy Created Successfully"}
       />
       <ErrorPopup
-        discription={setError}
+        discription={error}
         errorPopup={errorPopup}
         setErrorPopup={setErrorPopup}
       />

@@ -14,6 +14,7 @@ import {
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import { useForm } from "react-hook-form";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const AddNewPopUp = ({
   addNewModalRejection,
@@ -38,11 +39,6 @@ const AddNewPopUp = ({
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
-    // defaultValues: {
-    //   reason: "",
-    //   description: "",
-    //   status: null,
-    // },
   });
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [securityQns, setSecurityQns] = useState("");
@@ -62,6 +58,9 @@ const AddNewPopUp = ({
     { value: 1, label: "Active" },
     { value: 2, label: "In-Active" },
   ];
+
+  const [errorPopup, setErrorPopup] = useState(false);
+  console.log(error, "error" )
 
   const handleCloseRejReasons = () => {
     setAddNewModalRejection(false);
@@ -121,7 +120,9 @@ const AddNewPopUp = ({
         getRejReasons();
         setAddNewModalRejection(false);
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => console.error("Error:", error?.message));
+    setError(error?.message);
+    setErrorPopup(true);
   };
 
   // sec qns
@@ -145,10 +146,10 @@ const AddNewPopUp = ({
   }, [isEdit, selectedQnsId, setValue]);
 
   const onSubmitSecQns = (data) => {
-    if (!data.status) {
-      setError({ status: { message: "Status is required" } });
-      return;
-    }
+    // if (!data.status) {
+    //   setError({ status: { message: "Status is required" } });
+    //   return;
+    // }
 
     const payload = {
       questions: data.securityQns,
@@ -169,7 +170,11 @@ const AddNewPopUp = ({
         getSecurityQuestions();
         setAddNewModalSecurity(false);
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => {
+        setErrorPopup(true);
+        setError(error);
+        console.log("Error:", error?.message);
+      });
   };
   return (
     <>
@@ -456,6 +461,11 @@ const AddNewPopUp = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={"success"}
+      />
+      <ErrorPopup
+        discription={error}
+        errorPopup={errorPopup}
+        setErrorPopup={setErrorPopup}
       />
     </>
   );

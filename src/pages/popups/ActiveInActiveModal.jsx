@@ -81,7 +81,7 @@ const ActiveInActiveModal = ({
         </Modal.Body>
       </Modal>
       <ErrorPopup
-        discription={setError}
+        discription={error}
         errorPopup={errorPopup}
         setErrorPopup={setErrorPopup}
       />

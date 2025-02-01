@@ -191,6 +191,7 @@ const endpoints = {
     url: `user/${userID}/countries/countries`,
   },
   getWebsites: { method: "get", url: `user/${userID}/website/websites` },
+  getAvailableWebsites: { method: "get", url:(id)=> `user/${userID}/privacypolicies/${id}/websites`},
 };
 
 export default endpoints;
