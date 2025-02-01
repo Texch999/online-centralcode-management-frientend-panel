@@ -422,7 +422,7 @@ const AddWibsites = () => {
         discription="Are you sure you want to block this website?"
         submitButton={status === 1 ? "Block" : "Unblock"}
         websiteId={websiteId}
-        CallbackFunction={handleBlockAndUnblock}
+        onSubmit={handleBlockAndUnblock}
       />
       <SuccessPopup
         successPopupOpen={openSuccessPopup}
