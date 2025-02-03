@@ -186,7 +186,7 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID}/create` },
   createBroadCasting: {
     method: "post",
-    url:`/user/${userID}/api/broadcasting`,
+    url: `/user/${userID}/api/broadcasting`,
   },
   getBroadCasting: {
     method: "get",
@@ -199,6 +199,7 @@ const endpoints = {
   editBroadCasting: {
     method: "put",
     url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
-}}
+  }
+}
 
 export default endpoints;
