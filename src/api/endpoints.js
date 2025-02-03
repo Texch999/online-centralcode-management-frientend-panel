@@ -135,6 +135,82 @@ const endpoints = {
     url:(data)=>`/user/${userID}/directorAccount/${data?.id}/status/${data?.status}`,
   },
 
+  //security questions
+  createSecurityQuestions: {
+    method: "post",
+    url: `/user/${userID}/secQuestion`,
+  },
+  getAllSecurityQuestions: {
+    method: "get",
+    url: `/user/${userID}/secQuestion/`,
+  },
+  getSecQusetionsById: {
+    method: "get",
+    url: (id) => `/user/${userID}/secQuestion/${id}`,
+  },
+  updateSecurityQuestions: {
+    method: "put",
+    url: (id) => `/user/${userID}/secQuestion/${id}`,
+  },
+  //rejection reasons
+  getAllRejectionReasons: {
+    method: "get",
+    url: `/user/${userID}/rejectionReasons/`,
+  },
+  createRejReasons: {
+    method: "post",
+    url: `/user/${userID}/rejectionReasons/`,
+  },
+  updateRejReasons: {
+    method: "put",
+    url: (id) => `/user/${userID}/rejectionReasons/${id}`,
+  },
+  getRejReasonsById: {
+    method: "get",
+    url: (id) => `/user/${userID}/rejectionReasons/${id}`,
+  },
+  // privacy policy
+  getPrivacyPolicy: {
+    method: "get",
+    url: `/user/${userID}/privacypolicies/`,
+  },
+  getPrivacyPolicyById: {
+    method: "get",
+    url: (id) => `/user/${userID}/privacypolicies/${id}`,
+  },
+  createPrivacyPolicy: {
+    method: "post",
+    url: `/user/${userID}/privacypolicies/`,
+  },
+  updatePrivacyPolicyById: {
+    method: "put",
+    url: (id) => `/user/${userID}/privacypolicies/${id}`,
+  },
+  privacyPolicyStatusUpdate: {
+    method: "patch",
+    url: (data) =>
+      `/user/${userID}/privacypolicies/${data.id}/status/${data.status}`,
+  },
+
+  getCountries: {
+    method: "get",
+    url: `/user/${userID}/countries/countries`,
+  },
+  getWebsites: { method: "get", url: `/user/${userID}/website/websites` },
+  getDirectorEmployeesLoginLogsList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID}/directorEmployeeloginLogsbyDirector?${query}`;
+    },
+  },
+  getDirectorEmployeesLoginLogsByEmployeeId: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID}/DirectorEmploginLogsbyEmployeeId?${query}`;
+    },
+  },
 }
 
 export default endpoints;

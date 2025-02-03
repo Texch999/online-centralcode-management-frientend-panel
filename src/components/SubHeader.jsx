@@ -102,6 +102,7 @@ function SubHeader() {
       {
         label: "Adding",
         options: [
+          { label: "Employees Team", path: "/management-team" },
           { label: "Add Super Admin", path: "/director-admin" },
           { label: "View Downline List", path: "/downline-list" },
           { label: "Payment Details", path: "/payment-details" },
@@ -360,9 +361,8 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${
-                activeIndex === index ? "grey-btn" : "balck-btn"
-              } br-0px flex-center w-100`}
+              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
+                } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>
