@@ -1,7 +1,7 @@
 
 const userID = localStorage.getItem("user_id");
 const endpoints = {
-  loginUser: { method: "post", url: "/master/login" },
+  // loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID}/website/website` },
   updateWebsite: {
     method: "put",
@@ -199,7 +199,8 @@ const endpoints = {
   editBroadCasting: {
     method: "put",
     url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
-  }
+  },
+  loginDirector: { method: "post", url: "/director/login" },
 }
 
 export default endpoints;
