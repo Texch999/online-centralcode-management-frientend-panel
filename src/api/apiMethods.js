@@ -24,9 +24,6 @@ const loginDirector = (data) => {
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
-const createDirector = (data) => {
-  return apiRequest("createDirector", data);
-};
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
@@ -36,6 +33,15 @@ const getAdminWebsites = (data) => {
 const getUserWebsites = (data) => {
   return apiRequest("getUserWebsites", data);
 };
+// const getEmployees = (data) => {
+//   return apiRequest("getEmployees", data);
+// };
+// const getEmployees = ({ limit = 10, offset = 0 }) => {
+//   return apiRequest("getEmployees", null, { limit, offset });
+// };
+// const getEmployees = (params) => {
+//   return apiRequest("getEmployees", {}, params);
+// };
 const getEmployees = (params) => {
   return apiRequest("getEmployees", {}, params);
 };
@@ -62,23 +68,25 @@ const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
 };
 
-export const getWebsitesList = (params) => {
+const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
-export const getAllCountires = (data) => {
+const getAllCountires = (data) => {
   return apiRequest("getAllCountires", data);
 };
-export const createWebsite = (data) => {
+const createWebsite = (data) => {
   return apiRequest("createWebsite", data);
 };
-export const updateWebsite = (id, data) =>
+const updateWebsite = (id, data) =>
   apiRequest("updateWebsite", data, id);
 
-export const getWebsiteDetails = (id, data) =>
+const getWebsiteDetails = (id, data) =>
   apiRequest("getWebsiteDetails", data, id);
 
-export const blockAndUnblock = (id, data) =>
+const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
+
+
 
 //VijayaLakshmi
 const getPromotionsTypes = () => {
@@ -100,7 +108,8 @@ const deletePromotionsImages = (id) => {
 
 export const getLoggedInLogs = (params) => {
   return apiRequest("getLoggedInLogs", {}, params);
-};
+}
+
 export const getLoggedInLogsById = (params) => {
   return apiRequest("getLoggedInLogsById", {}, params);
 };
@@ -119,6 +128,9 @@ const getAllRejectionReasons = (data) => {
 };
 const createRejReasons = (data) => {
   return apiRequest("createRejReasons", data);
+};
+const createDirector = (data) => {
+  return apiRequest("createDirector", data);
 };
 const updateRejReasons = (id, data) => {
   return apiRequest("updateRejReasons", data, id);
@@ -159,10 +171,21 @@ const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
   return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
 };
 
+const getBroadCasting = () => {
+  return apiRequest("getBroadCasting");
+};
+const createBroadCasting = (data) => {
+  return apiRequest("createBroadCasting", data);
+};
+const editBroadCasting = (id, data) => {
+  return apiRequest("editBroadCasting", data, id);
+};
+const statusBroadCasting = (id, data) => {
+  return apiRequest("statusBroadcastUpdate", data, id);
+};
 
 export {
   loginUser,
-  createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
   addManagemnentTeam,
@@ -198,5 +221,16 @@ export {
   resetDirectorPassword,
   getAvailableWebsites,
   getDirectorEmployeesLoginLogsList,
-  getDirectorEmployeesLoginLogsByEmployeeId
-};
+  getDirectorEmployeesLoginLogsByEmployeeId,
+  getWebsitesList,
+  getAllCountires,
+  createWebsite,
+  updateWebsite,
+  getWebsiteDetails,
+  blockAndUnblock,
+  getBroadCasting,
+  createBroadCasting,
+  editBroadCasting,
+  statusBroadCasting,
+  createSecurityQuestions
+}
