@@ -19,7 +19,9 @@ const PaymentGateway = () => {
   const [accountList, setAccountList] = useState([]);
   const [countries, setCountries] = useState([]);
   const [paymentId, setPaymentId] = useState(null);
-  const [statusId, setStatusId] = useState(null)
+  const [statusId, setStatusId] = useState(null);
+  const [editMode, setEditMode] = useState(false)
+
   const getDirectorAccountData = () => {
     setLoading(true);
     getDirectorAccountDetails()
@@ -114,180 +116,180 @@ const PaymentGateway = () => {
     { header: <div className="text-center">Actions</div>, field: "action", width: "7%" }, // Increased width to fit two icons
   ];
 
-  const data = [
-    {
-      gatewayName: "Google Pay",
-      paymentDetails: "7551078156",
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)} />
-          <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)} />
-        </div>
-      ),
-    },
-    {
-      gatewayName: "UPI",
-      paymentDetails: "srilICICI@ibl",
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
-    {
-      gatewayName: "NEFT/RTGS",
-      paymentDetails: (
-        <div>
-          Srikumar Sunkara <br />
-          A/C No: 34311236216 <br />
-          IFSC Code: ICIC0040 <br />
-          Bank: ICICI Bank
-        </div>
-      ),
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
-    {
-      gatewayName: "QR Code",
-      paymentDetails: (
-        <div className="d-flex align-items-center">
-          <img src={Images.QrImg} alt="QR Code" className="w-10 h-10 me-2" />{" "}
-          ICICI Bank
-        </div>
-      ),
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
-    {
-      gatewayName: "Google Pay",
-      paymentDetails: "7551078156",
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
+  // const data = [
+  //   {
+  //     gatewayName: "Google Pay",
+  //     paymentDetails: "7551078156",
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" onClick={() => setOnAddPaymentGateway(true)} />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => setOnBlockPopup(true)} />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     gatewayName: "UPI",
+  //     paymentDetails: "srilICICI@ibl",
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     gatewayName: "NEFT/RTGS",
+  //     paymentDetails: (
+  //       <div>
+  //         Srikumar Sunkara <br />
+  //         A/C No: 34311236216 <br />
+  //         IFSC Code: ICIC0040 <br />
+  //         Bank: ICICI Bank
+  //       </div>
+  //     ),
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     gatewayName: "QR Code",
+  //     paymentDetails: (
+  //       <div className="d-flex align-items-center">
+  //         <img src={Images.QrImg} alt="QR Code" className="w-10 h-10 me-2" />{" "}
+  //         ICICI Bank
+  //       </div>
+  //     ),
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     gatewayName: "Google Pay",
+  //     paymentDetails: "7551078156",
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
 
 
-    {
-      gatewayName: "NEFT/RTGS",
-      paymentDetails: (
-        <div>
-          Srikumar Sunkara <br />
-          A/C No: 34311236216 <br />
-          IFSC Code: ICIC0040 <br />
-          Bank: ICICI Bank
-        </div>
-      ),
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
+  //   {
+  //     gatewayName: "NEFT/RTGS",
+  //     paymentDetails: (
+  //       <div>
+  //         Srikumar Sunkara <br />
+  //         A/C No: 34311236216 <br />
+  //         IFSC Code: ICIC0040 <br />
+  //         Bank: ICICI Bank
+  //       </div>
+  //     ),
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
 
-    {
-      gatewayName: "Google Pay",
-      paymentDetails: (
-        <div className="d-flex align-items-center">
-          <img src={Images.QrImg} alt="QR Code" className="w-10 h-10 me-2" />{" "}
-          ICICI Bank
-        </div>
-      ),
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
+  //   {
+  //     gatewayName: "Google Pay",
+  //     paymentDetails: (
+  //       <div className="d-flex align-items-center">
+  //         <img src={Images.QrImg} alt="QR Code" className="w-10 h-10 me-2" />{" "}
+  //         ICICI Bank
+  //       </div>
+  //     ),
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
 
-    {
-      gatewayName: "Google Pay",
-      paymentDetails: "7551078156",
-      lastUpdated: "26-09-2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: (
-        <div className="flex-center gap-2">
-          <SlPencil size={18} className="pointer me-2" />
-          <RiDeleteBinLine size={18} className="pointer ms-1" />
-        </div>
-      ),
-    },
-  ];
+  //   {
+  //     gatewayName: "Google Pay",
+  //     paymentDetails: "7551078156",
+  //     lastUpdated: "26-09-2024",
+  //     country: "India",
+  //     currency: "INR ₹",
+  //     status: (
+  //       <span className="payment-gateway-status-badge badge py-2 px-3">
+  //         Active
+  //       </span>
+  //     ),
+  //     action: (
+  //       <div className="flex-center gap-2">
+  //         <SlPencil size={18} className="pointer me-2" />
+  //         <RiDeleteBinLine size={18} className="pointer ms-1" />
+  //       </div>
+  //     ),
+  //   },
+  // ];
   const transformedData = accountList.map(item => ({
     gatewayName: gatewayTypeMap[item.gateway_type] || "Unknown",
     paymentDetails: item.gateway_type === 1
@@ -336,7 +338,11 @@ const PaymentGateway = () => {
         <Table data={transformedData} columns={columns} itemsPerPage={6} />
       </div>
 
-      <AddPaymentGatewayPopup show={onAddPaymentGateway} onHide={() => setOnAddPaymentGateway(false)} data={countries} getDirectorAccountData={getDirectorAccountData} />
+      <AddPaymentGatewayPopup 
+      show={onAddPaymentGateway} 
+      onHide={() => setOnAddPaymentGateway(false)} 
+      data={countries} 
+      getDirectorAccountData={getDirectorAccountData} />
 
       <ConfirmationPopup
         confirmationPopupOpen={onBlockPopup}
