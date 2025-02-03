@@ -139,7 +139,7 @@ const PrivacyPolicy = () => {
           View
         </div>
       ),
-      showingWebsite: <div>{item?.website_name}</div>,
+      showingWebsite: <div>{item?.web_name}</div>,
       status: (
         <div
           className={`${
@@ -195,7 +195,7 @@ const PrivacyPolicy = () => {
         <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
           <Select
             className="small-font w-100"
-            options={countryOptions}
+            options={websiteOptions}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
