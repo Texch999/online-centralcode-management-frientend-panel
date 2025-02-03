@@ -55,19 +55,28 @@ const PromotionType = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
+  
     if (file) {
-      const maxSize = 2 * 1024 * 1024; // 2MB in bytes
-
+      const maxSize = 2 * 1024 * 1024;
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+  
+      if (!allowedTypes.includes(file.type)) {
+        setMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
+        setErrorPopupOpen(true);
+        return;
+      }
+  
       if (file.size > maxSize) {
         setMessage("File size should not exceed 2MB.");
         setErrorPopupOpen(true);
         return;
       }
+  
       setSelectedFile(file);
       setErrors((prev) => ({ ...prev, image: "" }));
     }
   };
+  
 
   const getPromotions = async () => {
     try {
@@ -125,7 +134,8 @@ const PromotionType = () => {
     } catch (error) {
       setMessage(error?.message);
       setLoading(false);
-      setErrors({ image: "An error occurred. Please try again." });
+      setSelectedFile(null)
+      setErrorPopupOpen(true);
     }
   };
 
