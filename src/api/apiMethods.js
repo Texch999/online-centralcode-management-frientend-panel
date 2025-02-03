@@ -138,9 +138,6 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
-const suspendDirectorAccountPaymentDetails=(id,status)=>{
-  return apiRequest("suspendDirectorAccountPaymentDetails",id,{id,status});
-}
 
 // rejection reasons
 const getAllRejectionReasons = (data) => {
@@ -221,7 +218,6 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
-  suspendDirectorAccountPaymentDetails,
   getDirectorEmployeesLoginLogsList,
   getDirectorEmployeesLoginLogsByEmployeeId
 };
