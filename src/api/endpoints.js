@@ -199,7 +199,11 @@ const endpoints = {
   editBroadCasting: {
     method: "put",
     url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
-  }
+  },
+  loginDirector:{
+    method: "post",
+    url: "/director/login"
+  },
 }
 
 export default endpoints;

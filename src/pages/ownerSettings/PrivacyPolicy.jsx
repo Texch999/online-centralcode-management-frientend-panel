@@ -106,10 +106,11 @@ const PrivacyPolicy = () => {
   useEffect(() => {
     getAllWebsites();
   }, []);
+  console.log(privacyList,"privacyList");
 
   const filteredData = isSubmitted
     ? selectedCountry
-      ? privacyList.filter((item) => item.country_id === selectedCountry.value)
+      ? privacyList.filter((item) => item.website_id === selectedCountry.value)
       : privacyList
     : privacyList;
   const REJECTION_COLUMNS = [
@@ -121,12 +122,12 @@ const PrivacyPolicy = () => {
   ];
 
   const REJECTION_DATA = filteredData.map((item, index) => {
-    const country = countries.find(
-      (country) => country?.id === item?.country_id
-    );
+    // const country = countries.find(
+    //   (country) => country?.id === item?.country_id
+    // );
 
     return {
-      country: <div>{country ? country?.name : "unknown"}</div>,
+      country: <div>{item?.name}</div>,
       policyDetails: (
         <div
           className="saffron-btn2 w-20 pointer"
@@ -195,7 +196,7 @@ const PrivacyPolicy = () => {
         <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
           <Select
             className="small-font w-100"
-            options={websiteOptions}
+            options={countryOptions}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
