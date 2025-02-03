@@ -152,6 +152,14 @@ const getAvailableWebsites = (id, data) => {
   return apiRequest("getAvailableWebsites", data, id);
 };
 
+const getDirectorEmployeesLoginLogsList = (params) => {
+  return apiRequest("getDirectorEmployeesLoginLogsList", {}, params);
+};
+const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
+  return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
+};
+
+
 export {
   loginUser,
   createSecurityQuestions,
@@ -189,4 +197,6 @@ export {
   blockDirector,
   resetDirectorPassword,
   getAvailableWebsites,
+  getDirectorEmployeesLoginLogsList,
+  getDirectorEmployeesLoginLogsByEmployeeId
 };

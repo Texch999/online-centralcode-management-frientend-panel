@@ -50,7 +50,6 @@ function Login() {
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
           localStorage.setItem("user_id", response?.user?.id);
-          window.location.reload();
           navigate("/");
           setError("");
         } else {
