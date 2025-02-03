@@ -149,6 +149,14 @@ const privacyPolicyStatusUpdate = (id, status) => {
   return apiRequest("privacyPolicyStatusUpdate", id, { status, id });
 };
 
+const getDirectorEmployeesLoginLogsList = (params) => {
+  return apiRequest("getDirectorEmployeesLoginLogsList", {}, params);
+};
+const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
+  return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
+};
+
+
 export {
   loginUser,
   createSecurityQuestions,
@@ -185,4 +193,6 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
+  getDirectorEmployeesLoginLogsList,
+  getDirectorEmployeesLoginLogsByEmployeeId
 };

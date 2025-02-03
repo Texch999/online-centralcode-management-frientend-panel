@@ -186,7 +186,7 @@ import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
-import { getDirectorLoginLogs, getLoggedInLogs } from "../../api/apiMethods";
+import { getDirectorLoginLogs, getLoggedInLogs, getDirectorEmployeesLoginLogsList } from "../../api/apiMethods";
 
 const ActivityLogs = () => {
   const navigation = useNavigate();
@@ -197,6 +197,7 @@ const ActivityLogs = () => {
   const user_id = localStorage.getItem("user_id")
   const [fromDate, setFromDate] = useState(new Date().toISOString().split("T")[0]);
   const [toDate, setToDate] = useState(new Date().toISOString().split("T")[0]);
+  const userRole = localStorage.getItem("role_code");
   const handleMatchClick = (userActivity, id) => {
     const encodedUserId = encodeURIComponent(id);
     const encodedUserActivity = encodeURIComponent(userActivity);
@@ -259,7 +260,26 @@ const ActivityLogs = () => {
           setLogsData(response.data);
         } else {
           setError("Something Went Wrong");
-
+        }
+      })
+      .catch((error) => {
+        setLogsData([]);
+        setError(error?.message || "API request failed");
+      });
+  };
+  const getDirectorDownlineLoginLogsList = (from, to) => {
+    getDirectorEmployeesLoginLogsList({
+      limit: 10,
+      offset: 0,
+      id: user_id,
+      fromDate: from,
+      toDate: to
+    })
+      .then((response) => {
+        if (response?.status) {
+          setLogsData(response.data);
+        } else {
+          setError("Something Went Wrong");
         }
       })
       .catch((error) => {
@@ -273,13 +293,23 @@ const ActivityLogs = () => {
     setActiveTab(tab);
   };
   useEffect(() => {
-    if (activeTab === "employees") {
-      getEmployeeAllLogs();
-    } else if (activeTab === "directors") {
-      getDownlineLogs();
-    } else if (activeTab === "admins") {
-      getDownlineLogs();
+    if (userRole === "director") {
+      if (activeTab === "employees") {
+        getDirectorDownlineLoginLogsList()
+      } else if (activeTab === "admins") {
+        console.log("Integrated Soon")
+        setLogsData([]);
+      }
+    } else {
+      if (activeTab === "employees") {
+        getEmployeeAllLogs();
+      } else if (activeTab === "directors") {
+        getDownlineLogs();
+      } else if (activeTab === "admins") {
+        getDownlineLogs();
+      }
     }
+
   }, [activeTab]);
 
   const ACTIVITY_COLUMNS = [
@@ -354,7 +384,13 @@ const ActivityLogs = () => {
   }));
   const handleDataBetweenFromAndToDates = () => {
     if (validateDates()) {
-      if (activeTab === "employees") {
+      if (userRole === "director") {
+        if (activeTab === "employees") {
+          getDirectorDownlineLoginLogsList(fromDate, toDate)
+        } else if (activeTab === "admins") {
+          console.log("Integrated Soon")
+        }
+      } else if (activeTab === "employees") {
         getEmployeeAllLogs(fromDate, toDate);
       } else if (activeTab === "directors") {
         getDownlineLogs(fromDate, toDate);
@@ -381,12 +417,13 @@ const ActivityLogs = () => {
         >
           Admins
         </button>
-        <button
+        {userRole !== "director" ? <button
           className={`tab-btn ${activeTab === "directors" ? "active" : ""}`}
           onClick={() => handleTabClick("directors", 1)}
         >
           Directors
-        </button>
+        </button> : null}
+
       </div>
 
       <div className="d-flex w-30 flex-between mt-2">

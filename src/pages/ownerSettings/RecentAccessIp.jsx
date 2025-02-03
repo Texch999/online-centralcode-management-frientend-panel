@@ -5,7 +5,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
-import { getDirectorLoginLogsById, getLoggedInLogsById } from "../../api/apiMethods";
+import { getDirectorEmployeesLoginLogsByEmployeeId, getDirectorLoginLogsById, getLoggedInLogsById } from "../../api/apiMethods";
 
 const RecentAccessIp = () => {
   const [activeRow, setActiveRow] = useState(null);
@@ -14,6 +14,7 @@ const RecentAccessIp = () => {
   const { activeTab } = location.state || {};
   const decodedUserId = decodeURIComponent(userId);
   const decodedUserActivity = decodeURIComponent(userActivity);
+  const userRole = localStorage.getItem("role_code");
   const ACTIVITY_COLUMNS = [
     { header: "Prod", field: "prod", width: "10%" },
     { header: "First Date/Time", field: "firstDateTime", width: "20%" },
@@ -45,6 +46,24 @@ const RecentAccessIp = () => {
   }
   const getDirectorLogsById = () => {
     getDirectorLoginLogsById({
+      id: decodedUserId,
+      limit: 10,
+      offset: 0,
+    })
+      .then((response) => {
+        if (response?.status) {
+          setLogsData(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setLogsData([]);
+        setError(error?.message || "API request failed");
+      });
+  }
+  const getDirectorEmplyessLogsById = () => {
+    getDirectorEmployeesLoginLogsByEmployeeId({
       id: decodedUserId,
       limit: 10,
       offset: 0,
@@ -119,11 +138,20 @@ const RecentAccessIp = () => {
     ),
   }));
   useEffect(() => {
-    if (activeTab === "employees") {
-      getAllLogsById()
+    if (userRole === "director") {
+      if (activeTab === "employees") {
+        getDirectorEmplyessLogsById()
+      } else if (activeTab === "admins") {
+        console.log("Integrated Soon")
+      }
     } else {
-      getDirectorLogsById()
+      if (activeTab === "employees") {
+        getAllLogsById()
+      } else {
+        getDirectorLogsById()
+      }
     }
+
   }, [])
   return (
     <div>
