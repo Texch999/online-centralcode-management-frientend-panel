@@ -193,11 +193,47 @@ const endpoints = {
   },
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) =>
+      `/user/${userID()}/api/broadcasting/statusBroadcastUpdate/${id}`,
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/${id}`,
+    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+  },
+  loginDirector: {
+    method: "post",
+    url: "/director/login",
+  },
+
+  // loginDirector: { method: "post", url: "/director/login" },
+
+  getLoggedInLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/loginLogs?${query}`;
+    },
+  },
+  getLoggedInLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/loginLogsById?${query}`;
+    },
+  },
+  getDirectorLoginLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/getParentLoginLogs?${query}`;
+    },
+  },
+  getDirectorLoginLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/getParentLoginLogsById?${query}`;
+    },
   },
 };
 
