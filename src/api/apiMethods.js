@@ -67,7 +67,11 @@ const getDirectorAccountDetails = (data) => {
 
 const postDirectorAccountDetails = (data) => {
   return apiRequest("postDirectorAccountDetails", data);
-}
+};
+const suspendDirectorAccountPaymentDetails=(id,status)=>{
+  return apiRequest("suspendDirectorAccountPaymentDetails",id,{id,status});
+};
+
 
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
@@ -171,6 +175,9 @@ const updatePrivacyPolicyById = (id, data) => {
 const privacyPolicyStatusUpdate = (id, status) => {
   return apiRequest("privacyPolicyStatusUpdate", id, { status, id });
 };
+const getAvailableWebsites = (id, data) => {
+  return apiRequest("getAvailableWebsites", data, id);
+};
 
 const getDirectorEmployeesLoginLogsList = (params) => {
   return apiRequest("getDirectorEmployeesLoginLogsList", {}, params);
@@ -210,6 +217,7 @@ export {
   getEmployeeDetailsById,
   getDirectorAccountDetails,
   postDirectorAccountDetails,
+  suspendDirectorAccountPaymentDetails,
   getDirectors,
   loginDirector,
   createDirector,
@@ -219,5 +227,6 @@ export {
   blockDirector,
   resetDirectorPassword,
   getDirectorEmployeesLoginLogsList,
-  getDirectorEmployeesLoginLogsByEmployeeId
+  getDirectorEmployeesLoginLogsByEmployeeId,
+  getAvailableWebsites
 };
