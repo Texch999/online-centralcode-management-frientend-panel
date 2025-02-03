@@ -40,7 +40,7 @@ const endpoints = {
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID}/api/deletePromotionsImages/${id}`,
+    url: (id) => `/user/${userID()}/api/deletePromotionsImages/${id}`,
   },
 
   loginUser: { method: "post", url: "/master/login" },
@@ -185,19 +185,19 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID()}/create` },
   createBroadCasting: {
     method: "post",
-    url: `/user/${userID}/broadcasting`,
+    url: `/user/${userID()}/broadcasting`,
   },
   getBroadCasting: {
     method: "get",
-    url: `/user/${userID}/broadcasting`,
+    url: `/user/${userID()}/broadcasting`,
   },
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) => `/user/${userID}/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/broadcasting/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
 };
 
