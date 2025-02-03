@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 
-const userID = localStorage.getItem("user_id");
+const userID = localStorage.getItem("user_id"); // Function to get userID dynamically
+
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID}/website/website` },
@@ -41,7 +43,7 @@ const endpoints = {
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID}/api/deletePromotionsImages/${id}`,
   },
 
   loginUser: { method: "post", url: "/master/login" },
@@ -186,20 +188,20 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID}/create` },
   createBroadCasting: {
     method: "post",
-    url: `/user/${userID}/api/broadcasting`,
+    url: `/user/${userID}/broadcasting`,
   },
   getBroadCasting: {
     method: "get",
-    url: `/user/${userID}/api/broadcasting`,
+    url: `/user/${userID}/broadcasting`,
   },
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) => `/user/${userID}/api/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) => `/user/${userID}/broadcasting/statusBroadcastUpdate/${id}`,
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
-  }
-}
+    url: (id) => `/user/${userID}/broadcasting/${id}`,
+  },
+};
 
 export default endpoints;

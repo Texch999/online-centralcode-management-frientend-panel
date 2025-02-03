@@ -407,7 +407,7 @@ const Broadcasting = () => {
         } this Braodcast`}
         selectedId={selectedBroadcastId}
         submitButton={selectedBroadcastStatus === 1 ? "Block" : "UnBlock"}
-        CallbackFunction={BockOrUnblock}
+        onSubmit={BockOrUnblock}
       />
       <EditBroadcastPopup
         editBroadcast={editBroadcast}
@@ -415,7 +415,7 @@ const Broadcasting = () => {
         editBroadcastModel={"Edit Broadcast"}
         selectedIdForEdit={selectedIdForEdit}
         setSelectedIdForEdit={setSelectedIdForEdit}
-        CallbackFunction={getBroadCastingdata}
+        onSubmit={getBroadCastingdata}
       />
     </div>
   );

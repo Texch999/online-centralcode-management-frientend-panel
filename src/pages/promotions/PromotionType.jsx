@@ -72,7 +72,7 @@ const PromotionType = () => {
   const getPromotions = async () => {
     try {
       const response = await getPromotionsTypes();
-      if (response.status = 200) {
+      if ((response.status = 200)) {
         setPromotionsTypes(response.promotionsTypes);
       }
     } catch (error) {
@@ -82,7 +82,7 @@ const PromotionType = () => {
   const getPromotionsImages = async () => {
     try {
       const response = await getPromotionsImage();
-      if (response.status = 200) {
+      if ((response.status = 200)) {
         setPromotionsIMages(response.promotionsImages);
       }
     } catch (error) {
@@ -145,6 +145,7 @@ const PromotionType = () => {
   };
 
   const handleDeletePoster = (id) => {
+    console.log("sdmvnejfvne", id);
     setSelectedPromotionId(id);
     setPosterDeleteModal(true);
   };
@@ -266,15 +267,17 @@ const PromotionType = () => {
       }
     } catch (error) {
       setLoading(false);
+      setMessage(error?.message);
       setErrorPopupOpen(true);
     }
   };
 
   const DeletePoster = async () => {
+    console.log("selectedPromotionId", selectedPromotionId);
     try {
       setLoading(true);
       const response = await deletePromotionsImages(selectedPromotionId);
-      if (response?.status === "200") {
+      if (response?.status === 200) {
         setMessage(response?.message);
         setLoading(false);
         getPromotionsImages();
@@ -286,7 +289,9 @@ const PromotionType = () => {
         // }, 100);
       }
     } catch (error) {
+      console.log("error", error)
       setLoading(false);
+      setMessage(error?.message);
       setErrorPopupOpen(true);
     }
   };
@@ -424,7 +429,7 @@ const PromotionType = () => {
         } this Promotion`}
         selectedId={selectedPromotionId}
         submitButton={selectedPromotionStatus === 1 ? "Block" : "UnBlock"}
-        CallbackFunction={BockOrUnblock}
+        onSubmit={BockOrUnblock}
       />
 
       <ConfirmationPopup
@@ -433,7 +438,7 @@ const PromotionType = () => {
         discription={"are you sure you want to delete this Poster"}
         selectedId={selectedPromotionId}
         submitButton={"Delete"}
-        CallbackFunction={DeletePoster}
+        onSubmit={DeletePoster}
       />
       <SuccessPopup
         successPopupOpen={successPopupOpen}
