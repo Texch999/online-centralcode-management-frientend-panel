@@ -198,7 +198,7 @@ const endpoints = {
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/api/statusPromotionsTypes/${id}`,
   },
   loginDirector: {
     method: "post",
