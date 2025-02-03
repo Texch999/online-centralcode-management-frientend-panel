@@ -60,7 +60,7 @@ const AddNewPopUp = ({
   ];
 
   const [errorPopup, setErrorPopup] = useState(false);
-  console.log(error, "error" )
+  console.log(error, "error");
 
   const handleCloseRejReasons = () => {
     setAddNewModalRejection(false);
@@ -456,16 +456,16 @@ const AddNewPopUp = ({
           </Modal.Body>
         </Modal>
       )}
-
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={"success"}
-      />
       <ErrorPopup
         discription={error}
         errorPopup={errorPopup}
         setErrorPopup={setErrorPopup}
+      />
+      
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={"success"}
       />
     </>
   );
