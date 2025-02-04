@@ -160,7 +160,7 @@ const endpoints = {
 
   getCountries: {
     method: "get",
-    url: `/user/${userID()}/countries/countries`,
+    url: `/user/${userID()}/countries`,
   },
   getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
   getDirectorEmployeesLoginLogsList: {
@@ -224,6 +224,54 @@ const endpoints = {
     },
   },
 
+  loginDirector: { method: "post", url: "/director/login" },
+
+  getLoggedInLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/loginLogs?${query}`;
+    },
+  },
+  getLoggedInLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/loginLogsById?${query}`;
+    },
+  },
+  getDirectorLoginLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/getParentLoginLogs?${query}`;
+    },
+  },
+  getDirectorLoginLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/getParentLoginLogsById?${query}`;
+    },
+  },
+  // director created SA list 
+  getDirectorDwnList:{
+    method: "get",
+    url: `/user/${userID()}/directors`
+  },
+  getDirectorDwnListById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/${id}`
+  },
+  updateDirectorDwnlnPswd:{
+    method: "post",
+    url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`
+  },
+  unblockBlockDirectorDwnln:{
+    method: "post",
+    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`
+  },
+  
   // statusBanner: {
   //   method: "put",
   //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
