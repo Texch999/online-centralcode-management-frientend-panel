@@ -25,7 +25,7 @@ const AddDirectorAdmin = () => {
   const handleModalOpen = () => {
     setShowModal(true);
   };
-  console.log(directorId, "directorId")
+  // console.log(directorId, "directorId")
   const handleEditModalOpen = (id) => {
     setDirectorId(id)
     setShowEditModal(true)
