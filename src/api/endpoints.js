@@ -216,6 +216,14 @@ const endpoints = {
     method: "delete",
     url: (id) => `/user/${userID()}/api/banners/${id}`,
   },
+  getDirectorAccessWebites: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+    },
+  },
+
   // statusBanner: {
   //   method: "put",
   //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
