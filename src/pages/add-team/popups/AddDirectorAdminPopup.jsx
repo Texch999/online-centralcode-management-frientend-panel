@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { FaArrowLeft, FaArrowRight, FaCalendar, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaCalendar,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 import "../../../App.css";
 import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { createDirector, getAdminWebsites, getCountries, getUserWebsites } from "../../../api/apiMethods";
-import { adminRoles, Roles } from "../../../utils/enum";
+import {
+  createDirector,
+  getAdminWebsites,
+  getCountries,
+  getUserWebsites,
+} from "../../../api/apiMethods";
+import { adminRoles, directorDwnlns, Roles } from "../../../utils/enum";
 
 const AddDirectorAdminModal = ({ show, handleClose }) => {
   const role = localStorage.getItem("role_code");
+  const role_name = localStorage.getItem("role_name");
 
   const [activeForm, setActiveForm] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +47,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const [managementPassword, setManagementPassword] = useState("");
   const [roleId, setRoleId] = useState(null); // Store selected role ID
 
-
   const roleOptions = [
     { value: "Accounts", label: "Accounts" },
     { value: "Designer", label: "Designer" },
@@ -45,60 +56,21 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   const adminWebsites = [{ label: "Brahma", value: "brahma" }];
-  const accountTypes = [{ label: "Share", value: "share" }, { label: "Rental", value: "rental" }];
+  const accountTypes = [
+    { label: "Share", value: "share" },
+    { label: "Rental", value: "rental" },
+  ];
   const [accountType, setAccountType] = useState(null);
-  const [error, setError] = useState()
-  const [countryData, setCountryData] = useState()
-  const [selectedCountryId, setSelectedCountryId] = useState('');
+  const [error, setError] = useState();
+  const [countryData, setCountryData] = useState();
+  const [selectedCountryId, setSelectedCountryId] = useState("");
 
   const handleChange = (event) => {
     setSelectedCountryId(event.target.value);
   };
-  // const handleDirector = (event) => {
-  //   event?.preventDefault(); // Prevents the form from submitting and reloading the page
 
-  //   const payload = {
-  //     type: 1,
-  //     name: "Sangram123",
-  //     login_name: "Sangram123",
-  //     password: "Sangram@1996",
-  //     country_id: 1,
-  //     confirm_password: "Sangram@1996",
-  //     parent_password: "Owner&123",
-  //     accessWebsites: [
-  //       {
-  //         admin_panel_id: 1,
-  //         user_paner_id: 1,
-  //         commission_type: 2,
-  //         share: 5.5
-  //       },
-  //       {
-  //         admin_panel_id: 1,
-  //         user_paner_id: 1,
-  //         commission_type: 1,
-  //         rent_start_date: "2025-01-30",
-  //         rent_expiry_date: "2025-01-30",
-  //         max_chips_rent: 1500,
-  //         rent_percentage: 5.5
-  //       }
-  //     ]
-
-  //   }
-  //   createDirector(payload).then((response) => {
-
-  //     if (response?.status === true) {
-  //       console.log(response, "response from API");
-
-  //     } else {
-  //       setError("Something Went Wrong");
-  //     }
-  //   })
-  //     .catch((error) => {
-  //       setError(error?.message || "Login failed");
-  //     });
-  // }
-  console.log(roleId, "roleId")
-  console.log(countryData, "countryData")
+  console.log(roleId, "roleId");
+  console.log(countryData, "countryData");
 
   const handleDirector = (event) => {
     event?.preventDefault();
@@ -118,13 +90,15 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
           commission_type: accountType === "share" ? 2 : 1,
           share: accountType === "share" ? commission : undefined,
           rent_start_date: accountType === "rental" ? rentStartDate : undefined,
-          rent_expiry_date: accountType === "rental" ? rentExpiryDate : undefined,
+          rent_expiry_date:
+            accountType === "rental" ? rentExpiryDate : undefined,
           max_chips_rent: accountType === "rental" ? maxChipsRent : undefined,
-          rent_percentage: accountType === "rental" ? rentPercentage : undefined,
+          rent_percentage:
+            accountType === "rental" ? rentPercentage : undefined,
         },
       ],
     };
-    console.log(formData, "formData")
+    console.log(formData, "formData");
     createDirector(formData)
       .then((response) => {
         if (response?.status === true) {
@@ -138,64 +112,74 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
       });
   };
 
-  useEffect(() => { handleDirector() }, [])
+  useEffect(() => {
+    handleDirector();
+  }, []);
 
   const GetAllCountries = () => {
-
-    getCountries().then((response) => {
-
-      if (response?.status === true) {
-        setCountryData(response?.data)
-        console.log(response, "countries");
-
-      } else {
-        setError("Something Went Wrong");
-      }
-    })
+    getCountries()
+      .then((response) => {
+        if (response?.status === true) {
+          setCountryData(response?.data);
+          console.log(response, "countries");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
       .catch((error) => {
         setError(error?.message || "Not able to get Countries");
       });
-  }
-  useEffect(() => { GetAllCountries() }, [])
+  };
+  useEffect(() => {
+    GetAllCountries();
+  }, []);
 
   const GetAllAdminWebsites = () => {
-
-    getAdminWebsites().then((response) => {
-
-      if (response?.status === true) {
-        console.log(response, "AdminWebsites");
-
-      } else {
-        setError("Something Went Wrong");
-      }
-    })
+    getAdminWebsites()
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response, "AdminWebsites");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
       .catch((error) => {
         setError(error?.message || "Not able to get Countries");
       });
-  }
-  useEffect(() => { GetAllAdminWebsites() }, [])
+  };
+  useEffect(() => {
+    GetAllAdminWebsites();
+  }, []);
 
   const GetAllUserWebsites = () => {
-
-    getUserWebsites().then((response) => {
-
-      if (response?.status === true) {
-        console.log(response, "countries");
-
-      } else {
-        setError("Something Went Wrong");
-      }
-    })
+    getUserWebsites()
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response, "countries");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
       .catch((error) => {
         setError(error?.message || "Not able to get Countries");
       });
-  }
-  useEffect(() => { GetAllUserWebsites() }, [])
+  };
+  useEffect(() => {
+    GetAllUserWebsites();
+  }, []);
 
-  const adminRoless = Object.entries(adminRoles).map(([value, label]) => ({
+  const adminRoless =role_name === "director" ?
+  (
+    Object.entries(directorDwnlns).map(([value, label]) => ({
+      value: Number(value), // Role ID (number)
+      label, // Role name (string)
+    }))
+  ):(
+   Object.entries(adminRoles).map(([value, label]) => ({
     value: Number(value), // Role ID (number)
     label, // Role name (string)
-  }));
+  }))
+)
 
   const handleRoleChange = (selectedOption) => {
     setRoleId(selectedOption.value); // Update role ID when the role is selected
@@ -220,14 +204,27 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
           </Button>
         </div>
         <div className="d-flex mb-3">
-          <button className={`btn ${activeForm === 1 ? "btn-primary" : "btn-secondary"}`} onClick={() => setActiveForm(1)}>
+          <button
+            className={`btn ${
+              activeForm === 1 ? "btn-primary" : "btn-secondary"
+            }`}
+            onClick={() => setActiveForm(1)}
+          >
             Form 1
           </button>
-          <button className={`btn ms-2 ${activeForm === 2 ? "btn-primary" : "btn-secondary"}`} onClick={() => setActiveForm(2)}>
+          <button
+            className={`btn ms-2 ${
+              activeForm === 2 ? "btn-primary" : "btn-secondary"
+            }`}
+            onClick={() => setActiveForm(2)}
+          >
             Form 2
           </button>
         </div>
-        <form className="add-management-popup-form px-3" style={{ display: activeForm === 1 ? "block" : "none" }}>
+        <form
+          className="add-management-popup-form px-3"
+          style={{ display: activeForm === 1 ? "block" : "none" }}
+        >
           <div className="row mb-3">
             <div className="col-md-6">
               <label className="small-font">Name</label>
@@ -258,7 +255,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             <div className="col-md-6 position-relative">
               <label className="small-font">Role</label>
               <div className="custom-select-wrapper">
-
                 <Select
                   className="small-font"
                   options={adminRoless}
@@ -267,7 +263,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                   maxMenuHeight={120}
                   menuPlacement="auto"
                   onChange={handleRoleChange}
-
                 />
               </div>
             </div>
@@ -279,7 +274,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                 placeholder="Enter"
                 value={selectedCountryId}
                 onChange={handleChange}
-
               >
                 <option value="">Select a country</option>
                 {countryData?.map((country, index) => (
@@ -289,7 +283,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                 ))}
               </select>
             </div>
-
           </div>
 
           <div className="row mb-3">
@@ -338,7 +331,9 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                 type={showManagementPassword ? "text" : "password"}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
-                value={managementPassword} onChange={(e) => setManagementPassword(e.target.value)} required
+                value={managementPassword}
+                onChange={(e) => setManagementPassword(e.target.value)}
+                required
               />
               <span
                 className="position-absolute"
@@ -363,9 +358,10 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
           </div>
         </form>
         {/* Form 2 */}
-        <form className="custom-form small-font p-3" style={{ display: activeForm === 2 ? "block" : "none" }}>
-
-
+        <form
+          className="custom-form small-font p-3"
+          style={{ display: activeForm === 2 ? "block" : "none" }}
+        >
           {/* Row 3: Website, Share, Rent */}
           <div className="row mb-3">
             <div className="col-md-12 position-relative">
@@ -381,7 +377,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                 />
               </div>
             </div>
-
           </div>
 
           <div className="row mb-3">
@@ -392,7 +387,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
               />
-
             </div>
           </div>
           <div className="row mb-3">
@@ -405,113 +399,137 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
-                  onChange={(selectedOption) => setAccountType(selectedOption.value)}
+                  onChange={(selectedOption) =>
+                    setAccountType(selectedOption.value)
+                  }
                 />
               </div>
             </div>
           </div>
-          {accountType === "share" && <>    <div className="row mb-3">
-            <div className="col-md-12 position-relative">
-              <label className="small-font">Commisiion</label>
-              <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
-                <input
-                  className="small-font bg-none p-2"
-                  placeholder="Enter"
-                  value={commission}
-                  onChange={(e) => setCommission(e.target.value)}
-                />
-                <span><b>1%</b></span>
-
-              </div>
-            </div>
-          </div>
-            <div className="row mb-3">
-              <div className="col-md-12 position-relative">
-                <label className="small-font">Downline Sharing</label>
-                <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
-                  <input
-                    className="small-font bg-none p-2"
-                    placeholder="Enter"
-                    value={downlineSharing} onChange={(e) => setDownlineSharing(e.target.value)}
-                  />
-                  <span><b>= (My Sharing 40%)</b></span>
+          {accountType === "share" && (
+            <>
+              {" "}
+              <div className="row mb-3">
+                <div className="col-md-12 position-relative">
+                  <label className="small-font">Commisiion</label>
+                  <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                    <input
+                      className="small-font bg-none p-2"
+                      placeholder="Enter"
+                      value={commission}
+                      onChange={(e) => setCommission(e.target.value)}
+                    />
+                    <span>
+                      <b>1%</b>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div></>}
-          {accountType === "rental" && <>     <div className="row mb-3">
-            <div className="col-md-12 position-relative">
-              <label className="small-font">Extra Chips</label>
-              <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
-                <input
-                  className="small-font bg-none p-2"
-                  placeholder="Enter"
-                  value={extraChips} onChange={(e) => setExtraChips(e.target.value)}
-                />
-                <span><b>= (My Sharing 40%)</b></span>
+              <div className="row mb-3">
+                <div className="col-md-12 position-relative">
+                  <label className="small-font">Downline Sharing</label>
+                  <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                    <input
+                      className="small-font bg-none p-2"
+                      placeholder="Enter"
+                      value={downlineSharing}
+                      onChange={(e) => setDownlineSharing(e.target.value)}
+                    />
+                    <span>
+                      <b>= (My Sharing 40%)</b>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label className="small-font">Start Date</label>
-                <input
-                  type="date"
-                  className="small-font rounded all-none input-css w-100"
-                  placeholder="Enter"
-                  value={rentStartDate} onChange={(e) => setRentStartDate(e.target.value)}
-                />
+            </>
+          )}
+          {accountType === "rental" && (
+            <>
+              {" "}
+              <div className="row mb-3">
+                <div className="col-md-12 position-relative">
+                  <label className="small-font">Extra Chips</label>
+                  <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                    <input
+                      className="small-font bg-none p-2"
+                      placeholder="Enter"
+                      value={extraChips}
+                      onChange={(e) => setExtraChips(e.target.value)}
+                    />
+                    <span>
+                      <b>= (My Sharing 40%)</b>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="col-md-6">
-                <label className="small-font">Expiry Date</label>
-                <input
-                  type="date"
-                  className="small-font rounded all-none input-css w-100"
-                  placeholder="Enter"
-                  value={rentExpiryDate} onChange={(e) => setRentExpiryDate(e.target.value)}
-                />
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <label className="small-font">Start Date</label>
+                  <input
+                    type="date"
+                    className="small-font rounded all-none input-css w-100"
+                    placeholder="Enter"
+                    value={rentStartDate}
+                    onChange={(e) => setRentStartDate(e.target.value)}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="small-font">Expiry Date</label>
+                  <input
+                    type="date"
+                    className="small-font rounded all-none input-css w-100"
+                    placeholder="Enter"
+                    value={rentExpiryDate}
+                    onChange={(e) => setRentExpiryDate(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label className="small-font">Max Chips Monthly</label>
-                <input
-                  type="text"
-                  className="small-font rounded all-none input-css w-100"
-                  placeholder="Enter"
-                  value={maxChipsMonthly} onChange={(e) => setMaxChipsMonthly(e.target.value)}
-                />
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <label className="small-font">Max Chips Monthly</label>
+                  <input
+                    type="text"
+                    className="small-font rounded all-none input-css w-100"
+                    placeholder="Enter"
+                    value={maxChipsMonthly}
+                    onChange={(e) => setMaxChipsMonthly(e.target.value)}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="small-font">Monthly Amount</label>
+                  <input
+                    type="text"
+                    className="small-font rounded all-none input-css w-100"
+                    placeholder="Enter"
+                    value={monthlyAmount}
+                    onChange={(e) => setMonthlyAmount(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="col-md-6">
-                <label className="small-font">Monthly Amount</label>
-                <input
-                  type="text"
-                  className="small-font rounded all-none input-css w-100"
-                  placeholder="Enter"
-                  value={monthlyAmount} onChange={(e) => setMonthlyAmount(e.target.value)}
-                />
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <label className="small-font">Max Chips Monthly</label>
+                  <input
+                    type="text"
+                    className="small-font rounded all-none input-css w-100"
+                    placeholder="Enter"
+                    value={maxChipsRent}
+                    onChange={(e) => setMaxChipsRent(e.target.value)}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="small-font">My Percentage</label>
+                  <input
+                    type="text"
+                    className="small-font rounded all-none input-css w-100"
+                    placeholder="Enter"
+                    value={rentPercentage}
+                    onChange={(e) => setRentPercentage(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label className="small-font">Max Chips Monthly</label>
-                <input
-                  type="text"
-                  className="small-font rounded all-none input-css w-100"
-                  placeholder="Enter"
-                  value={maxChipsRent} onChange={(e) => setMaxChipsRent(e.target.value)}
-
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="small-font">My Percentage</label>
-                <input
-                  type="text"
-                  className="small-font rounded all-none input-css w-100"
-                  placeholder="Enter"
-                  value={rentPercentage} onChange={(e) => setRentPercentage(e.target.value)}
-                />
-              </div>
-            </div></>}
+            </>
+          )}
 
           <div className="mb-3">
             <div className="custom-checkbox">
@@ -524,13 +542,23 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             </div>
           </div>
           <div className="text-center mb-3">
-            <button type="button" className="btn btn-outline-primary">+ Add Another</button>
+            <button type="button" className="btn btn-outline-primary">
+              + Add Another
+            </button>
           </div>
           <div className="d-flex justify-content-between">
-            <button type="button" className="btn btn-warning" onClick={() => setActiveForm(1)}>
+            <button
+              type="button"
+              className="btn btn-warning"
+              onClick={() => setActiveForm(1)}
+            >
               <FaArrowLeft /> Previous
             </button>
-            <button type="submit" className="btn btn-warning" onClick={(event) => handleDirector(event)}>
+            <button
+              type="submit"
+              className="btn btn-warning"
+              onClick={(event) => handleDirector(event)}
+            >
               Submit <FaArrowRight />
             </button>
           </div>

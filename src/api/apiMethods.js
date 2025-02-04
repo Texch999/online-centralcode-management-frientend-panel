@@ -1,3 +1,4 @@
+import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
@@ -117,8 +118,9 @@ const createPromotionImages = (data) => {
 const statusPromotionsTypes = (id, data) => {
   return apiRequest("statusPromotionsTypes", data, id);
 };
-const deletePromotionsImages = (id) => {
-  return apiRequest("deletePromotionsImages", id);
+const deletePromotionsImages = (id, data) => {
+  console.log("data", id);
+  return apiRequest("deletePromotionsImages", data, id);
 };
 export const getBroadCasting = () => {
   return apiRequest("getBroadCasting");
@@ -192,7 +194,49 @@ const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
   return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
 };
 
+const getBroadCasting = () => {
+  return apiRequest("getBroadCasting");
+};
+const createBroadCasting = (data) => {
+  return apiRequest("createBroadCasting", data);
+};
+const editBroadCasting = (id, data) => {
+  return apiRequest("editBroadCasting", data, id);
+};
+const statusBroadCasting = (id, data) => {
+  return apiRequest("statusBroadcastUpdate", data, id);
+};
+const getDirectorDwnList = (data) => {
+  return apiRequest("getDirectorDwnList", data);
+};
+const getDirectorDwnListById = (id, data) => {
+  return apiRequest("getDirectorDwnListById", data, id);
+};
+const updateDirectorDwnlnPswd = (id, data) => {
+  return apiRequest("updateDirectorDwnlnPswd", data, id);
+};
+const unblockBlockDirectorDwnln = (id, data) => {
+  return apiRequest("unblockBlockDirectorDwnln", data, id);
+};
+const getBanner = () => {
+  return apiRequest("getBanner");
+};
+const createBanner = (data) => {
+  return apiRequest("createBanner", data);
+};
+const editBanner = (id, data) => {
+  return apiRequest("editBanner", data, id);
+};
+const deleteBanner = (id, data) => {
+  return apiRequest("deleteBanner", data, id);
+};
+const statusUpdateBanner = (id, data) => {
+  return apiRequest("statusUpdateBanner", data, id);
+};
 
+const getDirectorAccessWebites = (params) => {
+  return apiRequest("getDirectorAccessWebites", {}, params);
+};
 export {
   loginUser,
   createSecurityQuestions,
@@ -236,5 +280,26 @@ export {
   resetDirectorPassword,
   getDirectorEmployeesLoginLogsList,
   getDirectorEmployeesLoginLogsByEmployeeId,
-  getAvailableWebsites
+  getAvailableWebsites,
+  getWebsitesList,
+  getAllCountires,
+  createWebsite,
+  updateWebsite,
+  getWebsiteDetails,
+  blockAndUnblock,
+  getBroadCasting,
+  createBroadCasting,
+  editBroadCasting,
+  statusBroadCasting,
+  createSecurityQuestions,
+  getDirectorDwnList,
+  getDirectorDwnListById,
+  updateDirectorDwnlnPswd,
+  unblockBlockDirectorDwnln,
+  getDirectorAccessWebites,
+  getBanner,
+  createBanner,
+  editBanner,
+  deleteBanner,
+  statusUpdateBanner,
 };

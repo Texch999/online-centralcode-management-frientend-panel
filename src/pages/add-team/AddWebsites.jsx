@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import { MdBlockFlipped } from "react-icons/md";
@@ -7,15 +7,17 @@ import { FaPlus } from "react-icons/fa6";
 import AddWebsitesPopup from "./popups/AddWebsitesPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
-import { getAllCountires, getWebsitesList, blockAndUnblock } from "../../api/apiMethods";
+import { getAllCountires, getWebsitesList, blockAndUnblock, getDirectorAccessWebites } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
+  const userId = localStorage.getItem("user_id");
   const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [error, setError] = useState("")
   const [websites, setWebsite] = useState([])
+  const [directorSites, setDirectorSites] = useState([])
   const [countries, setCountries] = useState([])
   const [editMode, setEditMode] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,6 +51,26 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
+  const getAllDirectorWebsiteList = () => {
+    const offset = currentOffset
+    getDirectorAccessWebites({
+      limit: 11,
+      offset,
+      adminWebName: filterName,
+    })
+      .then((response) => {
+        if (response?.status) {
+          setDirectorSites(response.data);
+        } else {
+          setError("Something Went Wrong");
+          setDirectorSites([]);
+        }
+      })
+      .catch((error) => {
+        setDirectorSites([]);
+        setError(error?.message || "API request failed");
+      });
+  };
   const getCountries = () => {
     getAllCountires()
       .then((response) => {
@@ -62,18 +84,30 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   }
+  const isInitialRender = useRef(true);
+
   useEffect(() => {
-    getCountries()
-  }, []);
-  useEffect(() => {
-    if (filterName === "") {
-      getAllWebsiteList();
+    if ((isInitialRender.current) && (filterName === "")) {
+      isInitialRender.current = false; 
+      if (role === "management") {
+        getAllWebsiteList();
+      } else {
+        getAllDirectorWebsiteList();
+      }
     }
-  }, [filterName])
+  }, [filterName, role]);
+
+  // useEffect(() => {
+  //   if (filterName === "") {
+  //     if (role === "management") {
+  //       getAllWebsiteList();
+  //     } else {
+  //       getAllDirectorWebsiteList()
+  //     }
+  //   }
+  // }, [filterName,role])
   const handlePageChange = (page) => {
-    console.log(page, "current page")
     setCurrentPage(page);
-    getAllWebsiteList();
   };
 
   const columns = [
@@ -126,216 +160,55 @@ const AddWibsites = () => {
   }));
   const directorswebsitecolumns = [
     { header: "Type", field: "type", width: "15%" },
+    { header: "Admin", field: "admin", width: "15%" },
     { header: "Website Name", field: "websiteName", width: "25%" },
     { header: "Location", field: "location", width: "20%" },
     { header: "URL", field: "url", width: "20%" },
+    // { header: "Action", field: "action", width: "20%" },
   ];
 
-  const directorswebsitedata = [
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped
-            size={18}
-            className="pointer"
-            onClick={() => setConfirmationPopupOpen(true)}
-          />
-        </div>
-      ),
-    },
-    {
-      type: "White Label",
-      websiteName: "T Casino Park",
-      location: "Delhi, India",
-      url: "www.tcasinopark.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped
-            size={18}
-            className="pointer"
-            onClick={() => setConfirmationPopupOpen(true)}
-          />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "Spark Book",
-      location: "Hyderabad, India",
-      url: "www.sparkbook.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "White Label",
-      websiteName: "Fun77",
-      location: "Kolkata, India",
-      url: "www.fun77.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "Diamond Exchange",
-      location: "Kochi, India",
-      url: "www.diamondexchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer red-font" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer font-red" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer red-font" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-    {
-      type: "Company",
-      websiteName: "T Exchange",
-      location: "Hyderabad, India",
-      url: "www.texchange.com",
-      action: (
-        <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer" />
-          <MdBlockFlipped size={18} className="pointer" />
-        </div>
-      ),
-    },
-  ];
-  const getWebsitesCallback = () => {
-    getAllWebsiteList()
-  }
+  const directorswebsitedata = directorSites.map((adminPanel) => ({
+    type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
+    admin: adminPanel.admin_web_name,
+    websiteName: adminPanel.users.map(user => (
+      <div key={user.website_access_id}>{user.user_web_name}</div>
+    )),
+    location: adminPanel.users.map(user => (
+      <div key={user.website_access_id}>{user.user_web_city}</div>
+    )),
+
+    url: adminPanel.users.map(user => (
+      <div key={user.website_access_id}>
+        {user.user_web_url}
+      </div>
+    )),
+    // action: (
+    //   <div className="d-flex gap-3">
+    //     <SlPencil size={18} className="pointer" />
+    //     <MdBlockFlipped
+    //       size={18}
+    //       className="pointer"
+    //       onClick={() => setConfirmationPopupOpen(true)}
+    //     />
+    //   </div>
+    // ),
+  }));
 
   const handleFiltration = async (e) => {
     if (e.key === "Enter") {
-      setError(null);
-      try {
-        const limit = itemsPerPage;
-        const offset = currentOffset;
-        getWebsitesList({
-          limit: 11,
-          offset,
-          web_name: filterName,
-        })
-          .then((response) => {
-            if (response?.status) {
-              // const data = [...response.data].reverse();
-              setWebsite(response.data);
-            } else {
-              setError("Data Not Found");
-              setWebsite(response.data);
-            }
-          })
-          .catch((error) => {
-            setError(error?.message || "API request failed");
-            setWebsite([]);
-          });
-      } catch (error) {
-        console.error("Try-Catch Error:", error);
+      if (role === "management") {
+        setError(null);
+        getAllWebsiteList()
+      } else {
+        getAllDirectorWebsiteList()
       }
     }
-
   };
   const handleBlockAndUnblock = () => {
     blockAndUnblock(websiteId)
       .then((response) => {
         if (response?.status === true) {
-          getWebsitesCallback();
+          getAllWebsiteList()
           setOpenSuccessPopup(true)
           setDisplayeMsg(response.message)
           setTimeout(() => {
@@ -374,13 +247,16 @@ const AddWibsites = () => {
                 setFilterName(e.target.value.trim())}
               onKeyDown={handleFiltration}
             />
-
           </div>
 
           {role === "management" ? (
             <button
               className="rounded-pill input-pill blue-font small-font px-2"
-              onClick={() => setOnAddwebsitePopup(true)}
+              onClick={
+                () => {
+                  getCountries();
+                  setOnAddwebsitePopup(true)
+                }}
             >
               <FaPlus /> Add New Website{" "}
             </button>
@@ -423,7 +299,7 @@ const AddWibsites = () => {
         show={onAddwebsitePopup}
         onHide={() => setOnAddwebsitePopup(false)}
         countries={countries}
-        getWebsitesCallback={getWebsitesCallback}
+        getWebsitesCallback={getAllWebsiteList}
         editMode={editMode}
         websiteId={websiteId}
         setEditMode={setEditMode}

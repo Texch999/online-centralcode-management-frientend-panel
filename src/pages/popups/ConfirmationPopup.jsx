@@ -10,13 +10,17 @@ function ConfirmationPopup({
   setConfirmationPopupOpen,
   discription,
   submitButton,
-  onSubmit
+  onSubmit,
 }) {
-
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
- 
+
+  const handleSunmit = async () => {
+    onSubmit();
+    setConfirmationPopupOpen(false);
+  };
+
   return (
     <>
       <Modal
@@ -49,10 +53,7 @@ function ConfirmationPopup({
               >
                 Cancel
               </button>
-              <button
-                className="w-50 saffron-btn2 ms-2"
-                onClick={onSubmit}
-              >
+              <button className="w-50 saffron-btn2 ms-2" onClick={() =>handleSunmit()}>
                 {submitButton}
               </button>
             </div>

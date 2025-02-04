@@ -44,7 +44,7 @@ const ReferenceData = () => {
       .catch((error) => {
         setError(error?.message);
         console.log(error, "get sec qns erorr occur");
-        const errorMessage = error?.response?.data?.error
+        const errorMessage = error?.response?.data?.error;
         setErrorPopup(true);
       })
       .finally(() => {
@@ -98,15 +98,17 @@ const ReferenceData = () => {
       ),
     action: (
       <div className="large-font d-flex w-50 flex-between">
-        <span
-          onClick={() => {
-            setSelectedSecQnsId(item?.id);
-            setAddNewModalSecurity(true);
-            setIsEdit(true);
-          }}
-        >
-          <SlPencil size={18} />
+        <span className="pointer">
+          <SlPencil
+            size={18}
+            onClick={() => {
+              setSelectedSecQnsId(item?.id);
+              setAddNewModalSecurity(true);
+              setIsEdit(true);
+            }}
+          />
         </span>
+
         {/* <span className="ms-2" onClick={() => setShowDeleteModal(true)}>
           <FaRegTrashCan size={18} />
         </span> */}
@@ -140,15 +142,17 @@ const ReferenceData = () => {
 
     action: (
       <div className="large-font d-flex w-50 flex-between">
-        <span
-          onClick={() => {
-            setAddNewModalRejection(true);
-            setSelectedRejReasonId(item?.id);
-            setIsEdit(true);
-          }}
-        >
-          <SlPencil size={18} />
+        <span className="pointer">
+          <SlPencil
+            size={18}
+            onClick={() => {
+              setAddNewModalRejection(true);
+              setSelectedRejReasonId(item?.id);
+              setIsEdit(true);
+            }}
+          />
         </span>
+
         {/* <span className="ms-2">
           <FaRegTrashCan size={18} />
         </span> */}
@@ -234,7 +238,7 @@ const ReferenceData = () => {
             <div className="d-flex flex-column flex-center mt-10rem align-items-center">
               <CircleLoader color="#3498db" size={40} />
               <div className="medium-font black-font my-3">
-                Just a moment... great things take time ⏳
+                Just a moment...... ⏳
               </div>
             </div>
           ) : (
@@ -248,7 +252,7 @@ const ReferenceData = () => {
           <div className="d-flex flex-column flex-center mt-10rem align-items-center">
             <CircleLoader color="#3498db" size={40} />
             <div className="medium-font black-font my-3">
-              Just a moment... great things take time ⏳
+              Just a moment......⏳
             </div>
           </div>
         ) : (

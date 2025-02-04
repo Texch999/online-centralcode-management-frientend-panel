@@ -4,7 +4,6 @@ import { Images } from "../../images";
 import { useEffect } from "react";
 
 const ErrorPopup = ({ errorPopupOpen, setErrorPopupOpen, discription }) => {
-  console.log(discription, "ErrorPopup");
   const handleCancel = () => {
     setErrorPopupOpen(false);
   };

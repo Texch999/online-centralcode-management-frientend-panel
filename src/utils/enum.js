@@ -11,6 +11,9 @@ const adminRoles = Object.freeze({
   1: "director",
   2: "SuperAdmin",
 });
+const directorDwnlns = Object.freeze({
+  1: "Super Admin",
+});
 
 // Correct way to export both objects
-module.exports = { Roles, adminRoles };
+module.exports = { Roles, adminRoles, directorDwnlns };

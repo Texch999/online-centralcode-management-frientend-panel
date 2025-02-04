@@ -11,7 +11,16 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
+import {
+  blockDirector,
+  getDirectorDwnList,
+  getDirectorDwnListById,
+  getDirectors,
+  resetDirectorPassword,
+  unblockBlockDirectorDwnln,
+  updateDirectorDwnlnPswd,
+} from "../../api/apiMethods";
+import { CgUnblock } from "react-icons/cg";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -19,8 +28,25 @@ const AddDirectorAdmin = () => {
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); // Tracks user for reset or block actions
+  const [directorDwnList, setDirectorDwnList] = useState([]);
+  const [dirDwnlnId, setDirDwnlnId] = useState(null);
+  const [dirDwnlnBlockUnblockId, setDirDwnlnBlockUnblockId] = useState(null);
+  const [statusId, setStatusId] = useState(null);
+  const login_role_name = localStorage.getItem("role_name");
+
+  const handleResetPswdDirDwn = (id) => {
+    setResetPasswordPopup(true);
+    setDirDwnlnId(id);
+  };
+  const handleBlockUnblockDirDwn = (id, user, status) => {
+    setConfirmationPopup(true);
+    setSelectedUser(user);
+    setDirDwnlnBlockUnblockId(id);
+    setStatusId(status);
+  };
 
   const handleModalOpen = () => {
+    
     setShowModal(true);
   };
 
@@ -28,7 +54,7 @@ const AddDirectorAdmin = () => {
     setShowModal(false);
   };
   const [selectedDirectorId, setSelectedDirectorId] = useState(null);
-  console.log(selectedDirectorId, "selectedDirectorId")
+  console.log(selectedDirectorId, "selectedDirectorId");
   const handleResetPasswordOpen = (id) => {
     setSelectedDirectorId(id);
     // setSelectedUser(user);
@@ -60,8 +86,41 @@ const AddDirectorAdmin = () => {
     navigate("/user-profile-dashboard");
   };
 
+  // director sa list
+  const getDirectorDwnSAList = () => {
+    getDirectorDwnList()
+      .then((response) => {
+        if (response) {
+          console.log(response?.directorsWithWebsites, "response0000");
+          setDirectorDwnList(response?.directorsWithWebsites);
+        } else {
+          console.log(error, "Ganga chi chi hci");
+        }
+      })
+      .catch((error) => {
+        console.log(error, "error");
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    getDirectorDwnSAList();
+  }, []);
 
+  console.log(dirDwnlnId, "dirDwnlnId");
 
+  const getDrirectorDwnlnById = () => {
+    getDirectorDwnListById(dirDwnlnId)
+      .then((response) => {
+        console.log("responsegetidddd", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    getDrirectorDwnlnById();
+  }, [dirDwnlnId]);
   const columns = [
     { header: "Role", field: "role" },
     { header: "Name", field: "name" },
@@ -78,50 +137,112 @@ const AddDirectorAdmin = () => {
       width: "8%",
     },
   ];
-  const [error, setError] = useState()
-  const [tableData, setTableData] = useState()
+  const [error, setError] = useState();
+  const [tableData, setTableData] = useState();
 
-  const TableData = tableData?.map(user => ({
-    id: user.id, // Use the API id
-    role: user.type === 1 ? "Director" : "Super Admin", // Map 'type' to 'role', assuming '1' is Director, modify as needed
-    name: user.login_name, // Map 'login_name' to 'name'
-    loginname: user.login_name, // Assuming 'login_name' should also be used as 'loginname'
-    inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
-    linkWebsites: [], // No website info provided, so leaving it empty
-    shareRent: [], // No shareRent info provided, so leaving it empty
-    billing: "0", // Assuming default value for billing
-    pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
-    dw: (
-      <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-        D/W
-      </button>
-    ),
-    action: (
-      <div className="d-flex flex-center gap-3">
-        <SlPencil
-          size={18}
-          className="black-text pointer"
-          onClick={() => setShowModal(true)}
-        />
-        <MdLockReset
-          size={18}
-          className="black-text pointer"
-          onClick={() => handleResetPasswordOpen(user.id)}
-        />
-        <MdBlockFlipped
-          size={18}
-          className="black-text pointer"
-          onClick={() => handleBlockUserOpen(user.login_name)}
-        />
-        <BsEye
-          size={18}
-          className="black-text pointer"
-          onClick={handleNavigateUserDashboard}
-        />
-      </div>
-    ),
-  }));
-  console.log(tableData, "tableData")
+  const TableData =
+    role === "management"
+      ? tableData?.map((user) => ({
+          id: user.id, // Use the API id
+          role: user.type === 1 ? "Director" : "Super Admin", // Map 'type' to 'role', assuming '1' is Director, modify as needed
+          name: user.login_name, // Map 'login_name' to 'name'
+          loginname: user.login_name, // Assuming 'login_name' should also be used as 'loginname'
+          inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
+          linkWebsites: [], // No website info provided, so leaving it empty
+          shareRent: [], // No shareRent info provided, so leaving it empty
+          billing: "0", // Assuming default value for billing
+          pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
+          dw: (
+            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+              D/W
+            </button>
+          ),
+          action: (
+            <div className="d-flex flex-center gap-3">
+              <SlPencil
+                size={18}
+                className="black-text pointer"
+                onClick={() => setShowModal(true)}
+              />
+              <MdLockReset
+                size={18}
+                className="black-text pointer"
+                onClick={() => handleResetPasswordOpen(user.id)}
+              />
+              <MdBlockFlipped
+                size={18}
+                className="black-text pointer"
+                onClick={() => handleBlockUserOpen(user.login_name)}
+              />
+              <BsEye
+                size={18}
+                className="black-text pointer"
+                onClick={handleNavigateUserDashboard}
+              />
+            </div>
+          ),
+        }))
+      : directorDwnList?.map((item) => ({
+          id: item.id, // Use the API id
+          role: item.type === 2 ? "Super Admin" : "", // Map 'type' to 'role', assuming '1' is Director, modify as needed
+          name: item.name, // Map 'login_name' to 'name'
+          loginname: item.login_name, // Assuming 'login_name' should also be used as 'loginname'
+          inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
+          // linkWebsites: item?.accessWebsites, // No website info provided, so leaving it empty
+          shareRent: [], // No shareRent info provided, so leaving it empty
+          billing: "0", // Assuming default value for billing
+          pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
+          dw: (
+            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+              D/W
+            </button>
+          ),
+          action: (
+            <div className="d-flex flex-center gap-3">
+              <SlPencil
+                size={18}
+                className="black-text pointer"
+                onClick={() => setShowModal(true)}
+              />
+              <MdLockReset
+                size={18}
+                className="black-text pointer"
+                onClick={() => handleResetPswdDirDwn(item?.id)}
+              />
+              {item?.status === 1 ? (
+                <CgUnblock
+                  size={20}
+                  className="green-font pointer"
+                  onClick={() =>
+                    handleBlockUnblockDirDwn(
+                      item?.id,
+                      item?.login_name,
+                      item?.status
+                    )
+                  }
+                />
+              ) : (
+                <MdBlockFlipped
+                  size={18}
+                  className="red-font pointer"
+                  onClick={() =>
+                    handleBlockUnblockDirDwn(
+                      item?.id,
+                      item?.login_name,
+                      item?.status
+                    )
+                  }
+                />
+              )}
+              <BsEye
+                size={18}
+                className="black-text pointer"
+                onClick={handleNavigateUserDashboard}
+              />
+            </div>
+          ),
+        }));
+  console.log(tableData, "tableData");
 
   const GetAllDirectors = () => {
     getDirectors({ limit: 10, offset: 0 })
@@ -129,7 +250,6 @@ const AddDirectorAdmin = () => {
         if (response.status === true) {
           console.log(response, "response from API");
           setTableData(response.data);
-
         } else {
           setError("Something Went Wrong");
         }
@@ -138,7 +258,9 @@ const AddDirectorAdmin = () => {
         setError(error?.message || "Login failed");
       });
   };
-  useEffect(() => { GetAllDirectors() }, [])
+  useEffect(() => {
+    GetAllDirectors();
+  }, []);
 
   // const tableDataWithActions = tableData.map((row) => ({
   //   ...row,
@@ -157,8 +279,6 @@ const AddDirectorAdmin = () => {
   //     </div>
   //   ),
   // }));
-
-
 
   const onDirectorResetPassword = (data) => {
     if (!selectedDirectorId) {
@@ -187,12 +307,55 @@ const AddDirectorAdmin = () => {
         alert(error?.message || "Request failed");
       });
   };
-  
+
+  // director dwnl
+  const resetPasswordDwnln = (data) => {
+    if (!dirDwnlnId) {
+      alert("Invalid ID");
+      return;
+    }
+
+    const payload = {
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      parent_password: data.managementPassword,
+    };
+
+    updateDirectorDwnlnPswd(dirDwnlnId, payload)
+      .then((response) => {
+        if (response) {
+          setTimeout(() => {
+            setResetPasswordPopup(false);
+          }, 1000);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        alert(error?.message || "Request failed");
+      });
+  };
+
+  const blockUnblock = () => {
+    unblockBlockDirectorDwnln(dirDwnlnBlockUnblockId)
+      .then((response) => {
+        console.log(response, "resp");
+        getDirectorDwnSAList();
+        setDirectorDwnList();
+        setConfirmationPopup(false);
+      })
+      .catch((error) => {
+        console.log(error, "error");
+        setError(error?.message);
+      });
+  };
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
         {role === "management" ? (
-          <h6 className="yellow-font medium-font mb-0">Add Director & Super Admin</h6>
+          <h6 className="yellow-font medium-font mb-0">
+            Add Director & Super Admin
+          </h6>
         ) : (
           <h6 className="yellow-font mb-0">Add Super Admin</h6>
         )}
@@ -218,14 +381,21 @@ const AddDirectorAdmin = () => {
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
-        onSubmit={onDirectorResetPassword}
+        onSubmit={
+          login_role_name === "director"
+            ? resetPasswordDwnln
+            : onDirectorResetPassword
+        }
       />
 
       <ationPopup
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
-        discription={`Are you sure you want to block ${selectedUser}?`}
-        submitButton="Block"
+        discription={`Are you sure you want to ${
+          statusId === 1 ? "Unblock" : "Block"
+        } ${selectedUser}?`}
+        submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
+        onSubmit={login_role_name === "director" ? blockUnblock : ""}
       />
     </div>
   );

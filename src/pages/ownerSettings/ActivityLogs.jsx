@@ -301,6 +301,7 @@ const ActivityLogs = () => {
         setLogsData([]);
       }
     } else {
+      if (userRole === "management") {
       if (activeTab === "employees") {
         getEmployeeAllLogs();
       } else if (activeTab === "directors") {
@@ -309,7 +310,7 @@ const ActivityLogs = () => {
         getDownlineLogs();
       }
     }
-
+    }
   }, [activeTab]);
 
   const ACTIVITY_COLUMNS = [
@@ -390,12 +391,16 @@ const ActivityLogs = () => {
         } else if (activeTab === "admins") {
           console.log("Integrated Soon")
         }
-      } else if (activeTab === "employees") {
-        getEmployeeAllLogs(fromDate, toDate);
-      } else if (activeTab === "directors") {
-        getDownlineLogs(fromDate, toDate);
-      } else if (activeTab === "admins") {
-        getDownlineLogs(fromDate, toDate);
+      } else {
+        if (userRole === "management") {
+          if (activeTab === "employees") {
+            getEmployeeAllLogs(fromDate, toDate);
+          } else if (activeTab === "directors") {
+            getDownlineLogs(fromDate, toDate);
+          } else if (activeTab === "admins") {
+            getDownlineLogs(fromDate, toDate);
+          }
+        }
       }
     }
   }
