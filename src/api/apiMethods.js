@@ -103,8 +103,8 @@ const statusPromotionsTypes = (id, data) => {
   return apiRequest("statusPromotionsTypes", data, id);
 };
 const deletePromotionsImages = (id, data) => {
-  console.log("data",id)
-  return apiRequest("deletePromotionsImages",data, id);
+  console.log("data", id)
+  return apiRequest("deletePromotionsImages", data, id);
 };
 export const getLoggedInLogs = (params) => {
   return apiRequest("getLoggedInLogs", {}, params);
@@ -184,6 +184,9 @@ const statusBroadCasting = (id, data) => {
   return apiRequest("statusBroadcastUpdate", data, id);
 };
 
+const getDirectorAccessWebites = (params) => {
+  return apiRequest("getDirectorAccessWebites", {}, params);
+};
 export {
   loginUser,
   getAllSecurityQuestions,
@@ -232,5 +235,6 @@ export {
   createBroadCasting,
   editBroadCasting,
   statusBroadCasting,
-  createSecurityQuestions
+  createSecurityQuestions,
+  getDirectorAccessWebites
 }

@@ -235,6 +235,14 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
+  getDirectorAccessWebites: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+    },
+  },
+
 };
 
 export default endpoints;

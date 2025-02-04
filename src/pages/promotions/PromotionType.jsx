@@ -17,7 +17,6 @@ import {
   getPromotionsTypes,
   statusPromotionsTypes,
 } from "../../api/apiMethods";
-import axios from "axios";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
 import { imgUrl } from "../../api/baseUrl";
