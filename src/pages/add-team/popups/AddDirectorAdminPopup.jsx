@@ -46,13 +46,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const [downlineSharing, setDownlineSharing] = useState("");
   const [managementPassword, setManagementPassword] = useState("");
   const [roleId, setRoleId] = useState(null); // Store selected role ID
-  const [currentPage, setCurrentPage] = useState(null); // Store current
-  const itemsPerPage = 9;
-  const currentOffset = (currentPage - 1) * 11;
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
 
   const roleOptions = [
     { value: "Accounts", label: "Accounts" },
@@ -69,6 +62,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   ];
   const [accountType, setAccountType] = useState(null);
   const [directorSites, setDirectorSites] = useState([]);
+  console.log(directorSites,"directorSites")
   const [error, setError] = useState();
   const [countryData, setCountryData] = useState();
   const [selectedCountryId, setSelectedCountryId] = useState("");
@@ -85,9 +79,9 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
 
     const formData = {
       type: roleId,
-      name,
+      name :name,
       login_name: loginName,
-      password,
+      password :password,
       confirm_password: confirmPassword,
       parent_password: managementPassword,
       country_id: selectedCountryId,
