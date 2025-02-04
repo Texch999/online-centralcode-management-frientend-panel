@@ -71,6 +71,12 @@ const postDirectorAccountDetails = (data) => {
 const suspendDirectorAccountPaymentDetails=(id,status)=>{
   return apiRequest("suspendDirectorAccountPaymentDetails",id,{id,status});
 };
+const updateDirectorAccountDetails=(id,data)=>{
+  return apiRequest("updateDirectorAccountDetails",data,id);
+};
+const getDirectorAccountById=(id,data) =>{
+  return apiRequest("getDirectorAccountById",data,id);
+}
 
 
 const getCountries = (data) => {
@@ -217,6 +223,8 @@ export {
   getEmployeeDetailsById,
   getDirectorAccountDetails,
   postDirectorAccountDetails,
+  getDirectorAccountById,
+  updateDirectorAccountDetails,
   suspendDirectorAccountPaymentDetails,
   getDirectors,
   loginDirector,
