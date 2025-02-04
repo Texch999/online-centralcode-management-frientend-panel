@@ -96,14 +96,14 @@ const AddNewPopUp = ({
   }, [isEdit, selectedRejReasonId, setValue]);
 
   const onSubmitRejReasons = (data) => {
-    if (!data.status) {
-      setError({ status: { message: "Status is required" } });
-      return;
-    }
+    // if (!data.status) {
+    //   setError({ status: { message: "Status is required" } });
+    //   return;
+    // }
     const payload = {
       reason: data.reason,
       description: data.description,
-      status: data.status.value,
+      status: data.status?.value || null,
     };
 
     const response = isEdit
@@ -264,9 +264,15 @@ const AddNewPopUp = ({
                     options={selectOptions}
                     placeholder="Select"
                     styles={customStyles}
-                    value={watch("status")}
+                    // value={watch("status")}
+                    // onChange={(selectedOption) =>
+                    //   setValue("status", selectedOption)
+                    // }
+                    value={watch("status") || null}
                     onChange={(selectedOption) =>
-                      setValue("status", selectedOption)
+                      setValue("status", selectedOption, {
+                        shouldValidate: true,
+                      })
                     }
                   />
                   {errors.status && (
@@ -461,7 +467,7 @@ const AddNewPopUp = ({
         errorPopup={errorPopup}
         setErrorPopup={setErrorPopup}
       />
-      
+
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
