@@ -160,7 +160,7 @@ const endpoints = {
 
   getCountries: {
     method: "get",
-    url: `/user/${userID()}/countries/countries`,
+    url: `/user/${userID()}/countries`,
   },
   getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
   getDirectorEmployeesLoginLogsList: {
@@ -235,6 +235,24 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
+  // director created SA list 
+  getDirectorDwnList:{
+    method: "get",
+    url: `/user/${userID()}/directors`
+  },
+  getDirectorDwnListById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/${id}`
+  },
+  updateDirectorDwnlnPswd:{
+    method: "post",
+    url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`
+  },
+  unblockBlockDirectorDwnln:{
+    method: "post",
+    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`
+  },
+  
 };
 
 export default endpoints;

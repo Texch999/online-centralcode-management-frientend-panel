@@ -1,3 +1,4 @@
+import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
@@ -77,16 +78,12 @@ const getAllCountires = (data) => {
 const createWebsite = (data) => {
   return apiRequest("createWebsite", data);
 };
-const updateWebsite = (id, data) =>
-  apiRequest("updateWebsite", data, id);
+const updateWebsite = (id, data) => apiRequest("updateWebsite", data, id);
 
 const getWebsiteDetails = (id, data) =>
   apiRequest("getWebsiteDetails", data, id);
 
-const blockAndUnblock = (id, data) =>
-  apiRequest("blockAndUnblock", data, id);
-
-
+const blockAndUnblock = (id, data) => apiRequest("blockAndUnblock", data, id);
 
 //VijayaLakshmi
 const getPromotionsTypes = () => {
@@ -108,7 +105,7 @@ const deletePromotionsImages = (id) => {
 
 export const getLoggedInLogs = (params) => {
   return apiRequest("getLoggedInLogs", {}, params);
-}
+};
 
 export const getLoggedInLogsById = (params) => {
   return apiRequest("getLoggedInLogsById", {}, params);
@@ -183,6 +180,18 @@ const editBroadCasting = (id, data) => {
 const statusBroadCasting = (id, data) => {
   return apiRequest("statusBroadcastUpdate", data, id);
 };
+const getDirectorDwnList = (data) => {
+  return apiRequest("getDirectorDwnList", data);
+};
+const getDirectorDwnListById = (id, data) => {
+  return apiRequest("getDirectorDwnListById", data, id);
+};
+const updateDirectorDwnlnPswd = (id, data) => {
+  return apiRequest("updateDirectorDwnlnPswd", data, id);
+};
+const unblockBlockDirectorDwnln=(id,data)=>{
+  return apiRequest("unblockBlockDirectorDwnln", data, id);
+}
 
 export {
   loginUser,
@@ -232,5 +241,9 @@ export {
   createBroadCasting,
   editBroadCasting,
   statusBroadCasting,
-  createSecurityQuestions
-}
+  createSecurityQuestions,
+  getDirectorDwnList,
+  getDirectorDwnListById,
+  updateDirectorDwnlnPswd,
+  unblockBlockDirectorDwnln,
+};

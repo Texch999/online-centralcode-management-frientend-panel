@@ -17,6 +17,7 @@ function ResetPasswordPopup({
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const token = localStorage.getItem("jwt_token");
+  const login_role_name = localStorage.getItem("role_name");
 
   // Initialize react-hook-form
   const {
@@ -29,8 +30,6 @@ function ResetPasswordPopup({
   const handleCancel = () => {
     setResetPasswordPopup(false);
   };
-
-
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
@@ -128,7 +127,9 @@ function ResetPasswordPopup({
 
             {/* Management Password Field */}
             <div className="col-12 flex-column mt-3">
-              <label className="black-text4 mb-1">Management Password</label>
+              <label className="black-text4 mb-1">{`${
+                login_role_name === "director" ? "Director" : "Management"
+              } Password`}</label>
               <div className="grey-box flex-between">
                 <input
                   className="all-none"

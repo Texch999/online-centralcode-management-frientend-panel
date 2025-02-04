@@ -106,7 +106,7 @@ const PrivacyPolicy = () => {
   useEffect(() => {
     getAllWebsites();
   }, []);
-  console.log(privacyList,"privacyList");
+  console.log(privacyList, "privacyList");
 
   const filteredData = isSubmitted
     ? selectedCountry
@@ -155,9 +155,15 @@ const PrivacyPolicy = () => {
           <span className="mx-3" onClick={() => hanldeWebsites(item?.id)}>
             <CgWebsite size={20} />
           </span>
-          <span onClick={() => handleEditPrivacyModal(item?.id)}>
-            <SlPencil size={20} />
-          </span>
+          {item?.is_active === 2 ? (
+            <span title="this action is denied">
+              <SlPencil size={20} />
+            </span>
+          ) : (
+            <span onClick={() => handleEditPrivacyModal(item?.id)}>
+              <SlPencil size={20} />
+            </span>
+          )}
           <span
             className="ms-2"
             onClick={() => handleStatus(item?.id, item?.is_active)}
