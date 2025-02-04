@@ -193,47 +193,28 @@ const endpoints = {
   },
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) =>
-      `/user/${userID()}/api/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID()}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
-  loginDirector: {
+
+  getBanner: {
+    method: "get",
+    url: `/user/${userID()}/api/get/banners`,
+  },
+  createBanner: {
     method: "post",
-    url: "/director/login",
+    url: `/user/${userID()}/api/create/banners`,
   },
-
-  // loginDirector: { method: "post", url: "/director/login" },
-
-  getLoggedInLogs: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogs?${query}`;
-    },
+  editBanner: {
+    method: "put",
+    url: (id) => `/user/${userID()}/api/banners/${id}`,
   },
-  getLoggedInLogsById: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogsById?${query}`;
-    },
-  },
-  getDirectorLoginLogs: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/getParentLoginLogs?${query}`;
-    },
-  },
-  getDirectorLoginLogsById: {
-    method: "get",
-    url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/getParentLoginLogsById?${query}`;
-    },
+  deleteBanner: {
+    method: "delete",
+    url: (id) => `/user/${userID()}/api/banners/${id}`,
   },
   getDirectorAccessWebites: {
     method: "get",
@@ -243,6 +224,10 @@ const endpoints = {
     },
   },
 
+  // statusBanner: {
+  //   method: "put",
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
 };
 
 export default endpoints;

@@ -183,6 +183,21 @@ const editBroadCasting = (id, data) => {
 const statusBroadCasting = (id, data) => {
   return apiRequest("statusBroadcastUpdate", data, id);
 };
+const getBanner = () => {
+  return apiRequest("getBanner");
+};
+const createBanner = (data) => {
+  return apiRequest("createBanner", data);
+};
+const editBanner = (id, data) => {
+  return apiRequest("editBanner", data, id);
+};
+const deleteBanner = (id, data) => {
+  return apiRequest("deleteBanner", data, id);
+};
+// const statusBanner = (id, data) => {
+//   return apiRequest("statusBanner", data, id);
+// };
 
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
@@ -236,5 +251,9 @@ export {
   editBroadCasting,
   statusBroadCasting,
   createSecurityQuestions,
-  getDirectorAccessWebites
+  getDirectorAccessWebites,
+  getBanner,
+  createBanner,
+  editBanner,
+  deleteBanner
 }

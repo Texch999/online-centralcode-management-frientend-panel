@@ -55,19 +55,11 @@ const Broadcasting = () => {
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
   ];
-  console.log("selectWebsites", selectWebsites);
-  console.log("selectLocations", selectLocations);
-  console.log("websitesList", websitesList);
-  console.log("websitesList", websitesList);
+ 
   const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id, // Ensure value is a number
-    label: item.web_name, // Ensure label is a string
+    value: item.id, 
+    label: item.web_name,
   }));
-
-  // const selectOptionsWebsites = [
-  //   { value: 1, label: "WEBSITE 1" },
-  //   { value: 2, label: "WEBSITE 2" },
-  // ];
 
   const selectOptionsLocations = [{ value: 1, label: "Home" }];
 
