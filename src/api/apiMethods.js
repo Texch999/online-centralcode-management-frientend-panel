@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {

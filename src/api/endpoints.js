@@ -1,18 +1,19 @@
 const userID = () => localStorage.getItem("user_id");
+
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
   loginDirector: { method: "post", url: "/director/login" },
 
-  addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
-  addDirectorTeam: { method: "post", url: `/user/${userID}/directorEmployee` },
+  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+  addDirectorTeam: { method: "post", url: `/user/${userID()}/directorEmployee` },
 
-  createDirector: { method: "post", url: `/user/${userID}/create` },
+  createDirector: { method: "post", url: `/user/${userID()}/create` },
 
-  getRoles: { method: "get", url: `/user/${userID}/rolesList` },
-  getCountries: { method: "get", url: `/user/${userID}/countries` },
+  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+  getCountries: { method: "get", url: `/user/${userID()}/countries` },
   getAdminWebsites: {
     method: "get",
-    url: `/user/${userID}/website/adminWebsites`,
+    url: `/user/${userID()}/website/adminWebsites`,
   },
   // loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
@@ -113,7 +114,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID}/directorEmployees?${query}`;
+      return `/user/${userID()}/directorEmployees?${query}`;
     },
   },
   resetEmployeePassword: {
@@ -139,7 +140,7 @@ const endpoints = {
   },
   updateDirectorByID: {
     method: "post",
-    url: (id) => `/user/${userID}/updateDirector/${id}`,
+    url: (id) => `/user/${userID()}/updateDirector/${id}`,
   },
   getEmployeeDetailsById: {
     method: "get",
@@ -147,7 +148,7 @@ const endpoints = {
   },
   getDirectorDetailsById: {
     method: "get",
-    url: (id) => `/user/${userID}/director/${id}`,
+    url: (id) => `/user/${userID()}/director/${id}`,
   },
 
   //security questions
