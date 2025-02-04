@@ -1,8 +1,24 @@
+import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
   return apiRequest("loginUser", data);
 };
+// security Questions
+const createSecurityQuestions = (data) => {
+  return apiRequest("createSecurityQuestions", data);
+};
+const getAllSecurityQuestions = (data) => {
+  return apiRequest("getAllSecurityQuestions", data);
+};
+const updateSecurityQuestions = (id, data) => {
+  return apiRequest("updateSecurityQuestions", data, id);
+};
+const getSecQusetionsById = (id, data) => {
+  return apiRequest("getSecQusetionsById", data, id);
+};
+
+// manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
 };
@@ -12,14 +28,9 @@ const addManagemnentTeam = (data) => {
 const addDirectorTeam = (data) => {
   return apiRequest("addDirectorTeam", data);
 };
-const createDirector = (data) => {
-  return apiRequest("createDirector", data);
-};
+
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
-};
-const getCountries = (data) => {
-  return apiRequest("getCountries", data);
 };
 const getAdminWebsites = (data) => {
   return apiRequest("getAdminWebsites", data);
@@ -68,11 +79,170 @@ const getDirectorDetailsById = (id) => {
 const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
 };
+const getWebsitesList = (params) => {
+  return apiRequest("getWebsitesList", {}, params);
+};
+const getAllCountires = (data) => {
+  return apiRequest("getAllCountires", data);
+};
+const createWebsite = (data) => {
+  return apiRequest("createWebsite", data);
+};
+const updateWebsite = (id, data) => apiRequest("updateWebsite", data, id);
+
+const getWebsiteDetails = (id, data) =>
+  apiRequest("getWebsiteDetails", data, id);
+
+const blockAndUnblock = (id, data) => apiRequest("blockAndUnblock", data, id);
+
+//VijayaLakshmi
+const getPromotionsTypes = () => {
+  return apiRequest("getPromotionsTypes");
+};
+
+const getPromotionsImage = () => {
+  return apiRequest("getPromotionsImage");
+};
+const createPromotionImages = (data) => {
+  return apiRequest("createPromotionImages", data);
+};
+const statusPromotionsTypes = (id, data) => {
+  return apiRequest("statusPromotionsTypes", data, id);
+};
+const deletePromotionsImages = (id, data) => {
+  return apiRequest("deletePromotionsImages", data, id);
+};
+export const getLoggedInLogs = (params) => {
+  return apiRequest("getLoggedInLogs", {}, params);
+};
+
+export const getLoggedInLogsById = (params) => {
+  return apiRequest("getLoggedInLogsById", {}, params);
+};
+
+export const getDirectorLoginLogs = (params) => {
+  return apiRequest("getDirectorLoginLogs", {}, params);
+};
+
+export const getDirectorLoginLogsById = (params) => {
+  return apiRequest("getDirectorLoginLogsById", {}, params);
+};
+
+// rejection reasons
+const getAllRejectionReasons = (data) => {
+  return apiRequest("getAllRejectionReasons", data);
+};
+const createRejReasons = (data) => {
+  return apiRequest("createRejReasons", data);
+};
+const createDirector = (data) => {
+  return apiRequest("createDirector", data);
+};
+const updateRejReasons = (id, data) => {
+  return apiRequest("updateRejReasons", data, id);
+};
+const getRejReasonsById = (id, data) => {
+  return apiRequest("getRejReasonsById", data, id);
+};
+//priavacy policy
+const getPrivacyPolicy = (data) => {
+  return apiRequest("getPrivacyPolicy", data);
+};
+const getPrivacyPolicyById = (id, data) => {
+  return apiRequest("getPrivacyPolicyById", data, id);
+};
+const getCountries = (data) => {
+  return apiRequest("getCountries", data);
+};
+const getWebsites = (data) => {
+  return apiRequest("getWebsites", data);
+};
+const createPrivacyPolicy = (data) => {
+  return apiRequest("createPrivacyPolicy", data);
+};
+const updatePrivacyPolicyById = (id, data) => {
+  return apiRequest("updatePrivacyPolicyById", data, id);
+};
+const privacyPolicyStatusUpdate = (id, status) => {
+  return apiRequest("privacyPolicyStatusUpdate", id, { status, id });
+};
+const getAvailableWebsites = (id, data) => {
+  return apiRequest("getAvailableWebsites", data, id);
+};
+
+const getDirectorEmployeesLoginLogsList = (params) => {
+  return apiRequest("getDirectorEmployeesLoginLogsList", {}, params);
+};
+const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
+  return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
+};
+
+const getBroadCasting = () => {
+  return apiRequest("getBroadCasting");
+};
+const createBroadCasting = (data) => {
+  return apiRequest("createBroadCasting", data);
+};
+const editBroadCasting = (id, data) => {
+  return apiRequest("editBroadCasting", data, id);
+};
+const statusBroadCasting = (id, data) => {
+  return apiRequest("statusBroadcastUpdate", data, id);
+};
+const getDirectorDwnList = (data) => {
+  return apiRequest("getDirectorDwnList", data);
+};
+const getDirectorDwnListById = (id, data) => {
+  return apiRequest("getDirectorDwnListById", data, id);
+};
+const updateDirectorDwnlnPswd = (id, data) => {
+  return apiRequest("updateDirectorDwnlnPswd", data, id);
+};
+const unblockBlockDirectorDwnln = (id, data) => {
+  return apiRequest("unblockBlockDirectorDwnln", data, id);
+};
+const getBanner = () => {
+  return apiRequest("getBanner");
+};
+const createBanner = (data) => {
+  return apiRequest("createBanner", data);
+};
+const editBanner = (id, data) => {
+  return apiRequest("editBanner", data, id);
+};
+const deleteBanner = (id, data) => {
+  return apiRequest("deleteBanner", data, id);
+};
+const statusUpdateBanner = (id, data) => {
+  return apiRequest("statusUpdateBanner", data, id);
+};
+
+const getDirectorAccessWebites = (params) => {
+  return apiRequest("getDirectorAccessWebites", {}, params);
+};
 export {
   loginUser,
+  getAllSecurityQuestions,
+  updateSecurityQuestions,
   addManagemnentTeam,
   getRoles,
   getEmployees,
+  getAllRejectionReasons,
+  createRejReasons,
+  updateRejReasons,
+  getSecQusetionsById,
+  getRejReasonsById,
+  getPrivacyPolicy,
+  getWebsites,
+  getPrivacyPolicyById,
+  createPrivacyPolicy,
+  updatePrivacyPolicyById,
+  privacyPolicyStatusUpdate,
+  getPromotionsTypes,
+  getPromotionsImage,
+  createPromotionImages,
+  statusPromotionsTypes,
+  deletePromotionsImages,
   resetEmployeePassword,
   blockEmploye,
   updateEmployeeByID,
@@ -88,4 +258,28 @@ export {
   getDirectorDetailsById,
   getDirectorEmployees,
   addDirectorTeam,
+  getAvailableWebsites,
+  getDirectorEmployeesLoginLogsList,
+  getDirectorEmployeesLoginLogsByEmployeeId,
+  getWebsitesList,
+  getAllCountires,
+  createWebsite,
+  updateWebsite,
+  getWebsiteDetails,
+  blockAndUnblock,
+  getBroadCasting,
+  createBroadCasting,
+  editBroadCasting,
+  statusBroadCasting,
+  createSecurityQuestions,
+  getDirectorDwnList,
+  getDirectorDwnListById,
+  updateDirectorDwnlnPswd,
+  unblockBlockDirectorDwnln,
+  getDirectorAccessWebites,
+  getBanner,
+  createBanner,
+  editBanner,
+  deleteBanner,
+  statusUpdateBanner,
 };

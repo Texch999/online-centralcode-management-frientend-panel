@@ -1,23 +1,28 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
+import { useEffect } from "react";
 
-const SuccessPopup = ({
-  successPopupOpen,
-  setSuccessPopupOpen,
-  discription,
-}) => {
+const ErrorPopup = ({ errorPopupOpen, setErrorPopupOpen, discription }) => {
   const handleCancel = () => {
-    setSuccessPopupOpen(false);
+    setErrorPopupOpen(false);
   };
+  // useEffect(() => {
+  //   console.log("Error error popup open");
+  // });
   return (
-    <Modal show={successPopupOpen} centered className="confirm-popup">
+    <Modal show={errorPopupOpen} centered className="confirm-popup">
+      {console.log("Error error popup opened")}
       <Modal.Body>
         <div className="flex-end black-text4">
           <IoCloseSharp size={20} onClick={handleCancel} className="pointer" />
         </div>
         <center>
-          <img src={Images?.check} alt="Check_Mark" />
+          <img
+            src={Images?.error}
+            alt="Error_Mark"
+            style={{ width: "50px", height: "50px" }}
+          />
           <h5 className="black-text4 fw-600 mt-2 mb-3">{discription}</h5>
           {/* <div className="small-font black-text4">
             Lorem Ipsum is simply dummy text of the printing...
@@ -34,4 +39,4 @@ const SuccessPopup = ({
   );
 };
 
-export default SuccessPopup;
+export default ErrorPopup;

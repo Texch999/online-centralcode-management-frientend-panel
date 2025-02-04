@@ -88,9 +88,9 @@ function SubHeader() {
             label: "Create Promotions Type",
             path: "/create-promotion-type",
           },
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Offers", path: "/offers" },
+          // { label: "Sports Promotions", path: "/sports-promotions" },
+          // { label: "Casino Promotions", path: "/casino-promotions" },
+          // { label: "Offers", path: "/offers" },
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
@@ -361,9 +361,8 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${
-                activeIndex === index ? "grey-btn" : "balck-btn"
-              } br-0px flex-center w-100`}
+              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
+                } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>
