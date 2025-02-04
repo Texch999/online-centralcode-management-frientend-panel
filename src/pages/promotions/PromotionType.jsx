@@ -269,10 +269,6 @@ const PromotionType = () => {
         getPromotions();
         setErrorPopupOpen(false);
         setSuccessPopupOpen(true);
-
-        // setTimeout(() => {
-        //   getAction();
-        // }, 100);
       }
     } catch (error) {
       setLoading(false);

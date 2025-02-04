@@ -43,7 +43,7 @@ const Broadcasting = () => {
   const [selectedBroadcastStatus, setSelectedBroadcastStatus] = useState();
   const [broadcastBlockModal, setBroadcastBlockModal] = useState(false);
   const [selectedIdForEdit, setSelectedIdForEdit] = useState([]);
-
+  
   const [errors, setErrors] = useState({
     selectType: "",
     selectWebsites: "",
@@ -200,6 +200,18 @@ const Broadcasting = () => {
       setErrorPopupOpen(true);
     }
   };
+
+ 
+  const handleEditResult = (result) => {
+    if (result === "success") {
+      setErrorPopupOpen(false);
+      setSuccessPopupOpen(true);
+    } else {
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(true);
+    }
+  };
+  
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -407,7 +419,9 @@ const Broadcasting = () => {
         editBroadcastModel={"Edit Broadcast"}
         selectedIdForEdit={selectedIdForEdit}
         setSelectedIdForEdit={setSelectedIdForEdit}
+        setMessage={setMessage}
         onSubmit={getBroadCastingdata}
+        onSubmitResult={handleEditResult}
       />
     </div>
   );
