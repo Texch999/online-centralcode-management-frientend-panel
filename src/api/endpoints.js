@@ -5,7 +5,8 @@ const endpoints = {
   loginDirector: { method: "post", url: "/director/login" },
 
   addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
-  
+  addDirectorTeam: { method: "post", url: `/user/${userID}/directorEmployee` },
+
   createDirector: { method: "post", url: `/user/${userID}/create` },
 
   getRoles: { method: "get", url: `/user/${userID}/rolesList` },

@@ -50,7 +50,7 @@ function EditDirectorAdminPopup({ showEditModal, handleEditModalClose, directorI
 
     const GetAllCountries = () => {
 
-        getCountries({ limit: 10, offset: 0 }).then((response) => {
+        getCountries().then((response) => {
 
             if (response?.status === true) {
                 setCountryData(response?.data)

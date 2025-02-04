@@ -9,6 +9,9 @@ const loginDirector = (data) => {
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
+const addDirectorTeam = (data) => {
+  return apiRequest("addDirectorTeam", data);
+};
 const createDirector = (data) => {
   return apiRequest("createDirector", data);
 };
@@ -84,4 +87,5 @@ export {
   resetDirectorPassword,
   getDirectorDetailsById,
   getDirectorEmployees,
+  addDirectorTeam,
 };
