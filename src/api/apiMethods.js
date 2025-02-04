@@ -99,10 +99,10 @@ const createPromotionImages = (data) => {
 const statusPromotionsTypes = (id, data) => {
   return apiRequest("statusPromotionsTypes", data, id);
 };
-const deletePromotionsImages = (id) => {
-  return apiRequest("deletePromotionsImages", id);
+const deletePromotionsImages = (id, data) => {
+  console.log("data", id);
+  return apiRequest("deletePromotionsImages", data, id);
 };
-
 export const getLoggedInLogs = (params) => {
   return apiRequest("getLoggedInLogs", {}, params);
 };
@@ -189,10 +189,28 @@ const getDirectorDwnListById = (id, data) => {
 const updateDirectorDwnlnPswd = (id, data) => {
   return apiRequest("updateDirectorDwnlnPswd", data, id);
 };
-const unblockBlockDirectorDwnln=(id,data)=>{
+const unblockBlockDirectorDwnln = (id, data) => {
   return apiRequest("unblockBlockDirectorDwnln", data, id);
-}
+};
+const getBanner = () => {
+  return apiRequest("getBanner");
+};
+const createBanner = (data) => {
+  return apiRequest("createBanner", data);
+};
+const editBanner = (id, data) => {
+  return apiRequest("editBanner", data, id);
+};
+const deleteBanner = (id, data) => {
+  return apiRequest("deleteBanner", data, id);
+};
+// const statusBanner = (id, data) => {
+//   return apiRequest("statusBanner", data, id);
+// };
 
+const getDirectorAccessWebites = (params) => {
+  return apiRequest("getDirectorAccessWebites", {}, params);
+};
 export {
   loginUser,
   getAllSecurityQuestions,
@@ -246,4 +264,9 @@ export {
   getDirectorDwnListById,
   updateDirectorDwnlnPswd,
   unblockBlockDirectorDwnln,
+  getDirectorAccessWebites,
+  getBanner,
+  createBanner,
+  editBanner,
+  deleteBanner,
 };

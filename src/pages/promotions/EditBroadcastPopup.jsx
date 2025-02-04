@@ -15,7 +15,7 @@ const EditBroadcastPopup = ({
   editBroadcastModel,
   selectedIdForEdit,
   setSelectedIdForEdit,
-  CallbackFunction,
+  onSubmit,
 }) => {
   const [loading, setLoading] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -79,7 +79,7 @@ const EditBroadcastPopup = ({
         }, [2000]);
       }
     } catch (error) {
-      setMessage("An error occurred while updating.");
+      setMessage(error.message);
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
       setTimeout(() => {
@@ -87,7 +87,7 @@ const EditBroadcastPopup = ({
       }, [2000]);
     } finally {
       setLoading(false);
-      CallbackFunction();
+      onSubmit();
     }
   };
 

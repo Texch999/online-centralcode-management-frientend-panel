@@ -40,7 +40,7 @@ const endpoints = {
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID()}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/api/deletePromotionsImages/${id}`,
   },
 
   loginUser: { method: "post", url: "/master/login" },
@@ -185,24 +185,43 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID()}/create` },
   createBroadCasting: {
     method: "post",
-    url: `/user/${userID()}/api/broadcasting`,
+    url: `/user/${userID()}/broadcasting`,
   },
   getBroadCasting: {
     method: "get",
-    url: `/user/${userID()}/api/broadcasting`,
+    url: `/user/${userID()}/broadcasting`,
   },
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) =>
-      `/user/${userID()}/api/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
-  loginDirector: {
+
+  getBanner: {
+    method: "get",
+    url: `/user/${userID()}/api/get/banners`,
+  },
+  createBanner: {
     method: "post",
-    url: "/director/login",
+    url: `/user/${userID()}/api/create/banners`,
+  },
+  editBanner: {
+    method: "put",
+    url: (id) => `/user/${userID()}/api/banners/${id}`,
+  },
+  deleteBanner: {
+    method: "delete",
+    url: (id) => `/user/${userID()}/api/banners/${id}`,
+  },
+  getDirectorAccessWebites: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+    },
   },
 
   // loginDirector: { method: "post", url: "/director/login" },
@@ -253,6 +272,10 @@ const endpoints = {
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`
   },
   
+  // statusBanner: {
+  //   method: "put",
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
 };
 
 export default endpoints;
