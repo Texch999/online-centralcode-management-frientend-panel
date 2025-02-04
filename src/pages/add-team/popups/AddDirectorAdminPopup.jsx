@@ -16,6 +16,7 @@ import {
   createDirector,
   getAdminWebsites,
   getCountries,
+  getDirectorAccessWebites,
   getUserWebsites,
 } from "../../../api/apiMethods";
 import { adminRoles, directorDwnlns, Roles } from "../../../utils/enum";
@@ -45,6 +46,13 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const [downlineSharing, setDownlineSharing] = useState("");
   const [managementPassword, setManagementPassword] = useState("");
   const [roleId, setRoleId] = useState(null); // Store selected role ID
+  const [currentPage, setCurrentPage] = useState(null); // Store current
+  const itemsPerPage = 9;
+  const currentOffset = (currentPage - 1) * 11;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const roleOptions = [
     { value: "Accounts", label: "Accounts" },
@@ -60,6 +68,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
     { label: "Rental", value: "rental" },
   ];
   const [accountType, setAccountType] = useState(null);
+  const [directorSites, setDirectorSites] = useState([]);
   const [error, setError] = useState();
   const [countryData, setCountryData] = useState();
   const [selectedCountryId, setSelectedCountryId] = useState("");
@@ -70,6 +79,68 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
 
   console.log(roleId, "roleId");
   console.log(countryData, "countryData");
+
+  const handleDirectorDwnlnSA = (event) => {
+    event?.preventDefault();
+
+    const formData = {
+      type: roleId,
+      name,
+      login_name: loginName,
+      password,
+      confirm_password: confirmPassword,
+      parent_password: managementPassword,
+      country_id: selectedCountryId,
+      accessWebsites: [
+        {
+          admin_panel_id: 1,
+          user_paner_id: 1,
+          commission_type: accountType === "share" ? 2 : 1,
+          share: accountType === "share" ? commission : undefined,
+          rent_start_date: accountType === "rental" ? rentStartDate : undefined,
+          rent_expiry_date:
+            accountType === "rental" ? rentExpiryDate : undefined,
+          max_chips_rent: accountType === "rental" ? maxChipsRent : undefined,
+          rent_percentage:
+            accountType === "rental" ? rentPercentage : undefined,
+        },
+      ],
+    };
+    console.log(formData, "formData");
+    createDirector(formData)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response, "response from API");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Submission failed");
+      });
+  };
+
+  useEffect(() => {
+    handleDirectorDwnlnSA();
+  }, []);
+
+  const getAllDirectorWebsiteList = () => {
+    getDirectorAccessWebites()
+      .then((response) => {
+        if (response?.status) {
+          console.log(response, "dir websites");
+          setDirectorSites(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "API request failed");
+      });
+  };
+  useEffect(() => {
+    getAllDirectorWebsiteList();
+  }, []);
 
   const handleDirector = (event) => {
     event?.preventDefault();
@@ -167,18 +238,16 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
     GetAllUserWebsites();
   }, []);
 
-  const adminRoless =role_name === "director" ?
-  (
-    Object.entries(directorDwnlns).map(([value, label]) => ({
-      value: Number(value),
-      label, 
-    }))
-  ):(
-   Object.entries(adminRoles).map(([value, label]) => ({
-    value: Number(value), 
-    label, 
-  }))
-)
+  const adminRoless =
+    role_name === "director"
+      ? Object.entries(directorDwnlns).map(([value, label]) => ({
+          value: Number(value),
+          label,
+        }))
+      : Object.entries(adminRoles).map(([value, label]) => ({
+          value: Number(value),
+          label,
+        }));
 
   const handleRoleChange = (selectedOption) => {
     setRoleId(selectedOption.value);
@@ -384,7 +453,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
               <input
                 type="text"
                 className="small-font rounded all-none input-css w-100"
-                placeholder="Enter Password"
+                placeholder="select website"
               />
             </div>
           </div>
