@@ -224,7 +224,7 @@ const endpoints = {
     },
   },
 
-  // loginDirector: { method: "post", url: "/director/login" },
+  loginDirector: { method: "post", url: "/director/login" },
 
   getLoggedInLogs: {
     method: "get",
