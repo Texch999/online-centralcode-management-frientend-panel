@@ -46,6 +46,7 @@ const PrivacyPolicy = () => {
   const [isEditModal, setIsEditModal] = useState("");
   const [availablePrivacyWebsiteId, setAvailablePrivacyWebsiteId] =
     useState(null);
+  const[countriesData,setCountriesData]=useState([])
   const handleEditPrivacyModal = (id) => {
     setPrivacyPolicyId(id);
     setEditPrivacyPolicyModal(true);
@@ -86,6 +87,7 @@ const PrivacyPolicy = () => {
         console.log("Countries", response);
         const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
         setCountries(updatedCountries);
+        setCountriesData(response?.data)
       })
       .catch((error) => {
         setError(error?.message);
@@ -254,8 +256,8 @@ const PrivacyPolicy = () => {
         isEditModal={isEditModal}
         setIsEditModal={setIsEditModal}
         getPolicyPrivacyData={getPolicyPrivacyData}
-        setCountries={setCountries}
-        countries={countries}
+        setCountriesData={setCountriesData}
+        countriesData={countriesData}
         websites={websites}
         setWebsites={setWebsites}
       />

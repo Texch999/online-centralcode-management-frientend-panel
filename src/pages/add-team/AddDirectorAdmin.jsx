@@ -21,6 +21,7 @@ import {
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
 import { CgUnblock } from "react-icons/cg";
+import { CircleLoader } from 'react-spinners';
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -32,6 +33,7 @@ const AddDirectorAdmin = () => {
   const [dirDwnlnId, setDirDwnlnId] = useState(null);
   const [dirDwnlnBlockUnblockId, setDirDwnlnBlockUnblockId] = useState(null);
   const [statusId, setStatusId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const login_role_name = localStorage.getItem("role_name");
 
   const handleResetPswdDirDwn = (id) => {
@@ -46,7 +48,6 @@ const AddDirectorAdmin = () => {
   };
 
   const handleModalOpen = () => {
-    
     setShowModal(true);
   };
 
@@ -88,6 +89,7 @@ const AddDirectorAdmin = () => {
 
   // director sa list
   const getDirectorDwnSAList = () => {
+    setLoading(true);
     getDirectorDwnList()
       .then((response) => {
         if (response) {
@@ -100,6 +102,9 @@ const AddDirectorAdmin = () => {
       .catch((error) => {
         console.log(error, "error");
         setError(error?.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   useEffect(() => {
@@ -374,7 +379,16 @@ const AddDirectorAdmin = () => {
         </div>
       </div>
 
-      <Table data={TableData} columns={columns} itemsPerPage={7} />
+      {loading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>
+      ) : (
+        <Table data={TableData} columns={columns} itemsPerPage={7} />
+      )}
 
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
 

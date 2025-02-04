@@ -26,8 +26,8 @@ const AddPrivacyPolicyPopUp = ({
   isEditModal,
   setIsEditModal,
   getPolicyPrivacyData,
-  countries,
-  setCountries,
+  setCountriesData,
+  countriesData,
   websites,
   setWebsites,
 }) => {
@@ -55,7 +55,7 @@ const AddPrivacyPolicyPopUp = ({
     setSelectedStatus(selectOptionStatus);
   };
 
-  const countryOptions = countries.map((item) => ({
+  const countryOptions = countriesData.map((item) => ({
     value: item?.id,
     label: item?.name,
   }));
