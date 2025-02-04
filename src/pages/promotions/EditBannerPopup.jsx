@@ -6,23 +6,34 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 import { editBroadCasting } from "../../api/apiMethods";
+import SuccessPopup from "../popups/SuccessPopup";
+import ErrorPopup from "../popups/ErrorPopup";
 
-const EditBroadcastPopup = ({
+const EditBannerPopup = ({
   editBroadcast,
   setEditBroadcast,
   editBroadcastModel,
   selectedIdForEdit,
-  setMessage,
+  setSelectedIdForEdit,
   onSubmit,
-  onSubmitResult,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     type: null,
     website: null,
     location: null,
     message: "",
   });
+  useEffect(() => {
+    if (editBroadcast) {
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(false);
+    }
+  }, [editBroadcast]);
+
   useEffect(() => {
     if (selectedIdForEdit) {
       setFormData({
@@ -60,22 +71,29 @@ const EditBroadcastPopup = ({
       );
 
       if (response.status === 200) {
-        setLoading(false);
         setMessage(response.message);
-        onSubmitResult("success");
-        onSubmit();
-        setEditBroadcast(false);
+        setErrorPopupOpen(false);
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          handleClose();
+        }, [2000]);
       }
     } catch (error) {
-      setLoading(false);
       setMessage(error.message);
-      onSubmitResult("error");
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(true);
+      setTimeout(() => {
+        handleClose();
+      }, [2000]);
+    } finally {
+      setLoading(false);
       onSubmit();
-      setEditBroadcast(false);
     }
   };
 
   const handleClose = () => {
+    setSuccessPopupOpen(false);
+    setErrorPopupOpen(false);
     setEditBroadcast(false);
   };
 
@@ -180,8 +198,19 @@ const EditBroadcastPopup = ({
           </div>
         </div>
       </Modal.Body>
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={message}
+      />
+
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={message}
+      />
     </Modal>
   );
 };
 
-export default EditBroadcastPopup;
+export default EditBannerPopup;

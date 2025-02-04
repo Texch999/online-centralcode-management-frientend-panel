@@ -24,23 +24,43 @@ const endpoints = {
   },
   getPromotionsTypes: {
     method: "get",
-    url: `/user/${userID()}/api/getPromotionsTypes`,
-  },
-  getPromotionsImage: {
-    method: "get",
-    url: `/user/${userID()}/api/getPromotionsImages`,
-  },
-  createPromotionImages: {
-    method: "post",
-    url: `/user/${userID()}/api/createPromotionImages`,
+    url: `/user/${userID()}/promotionsTypes`,
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${userID()}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/promotionTypes/${id}`,
+  },
+  getPromotionsImage: {
+    method: "get",
+    url: `/user/${userID()}/promotionsImages`,
+  },
+  createPromotionImages: {
+    method: "post",
+    url: `/user/${userID()}/promotionImage`,
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID()}/api/deletePromotionsImages/${id}`,
+    url: (id) => `/user/${userID()}/promotionImage/${id}`,
+  },
+  getBanner: {
+    method: "get",
+    url: `/user/${userID()}/banners`,
+  },
+  createBanner: {
+    method: "post",
+    url: `/user/${userID()}/banner`,
+  },
+  editBanner: {
+    method: "put",
+    url: (id) => `/user/${userID()}/banner/${id}`,
+  },
+  deleteBanner: {
+    method: "delete",
+    url: (id) => `/user/${userID()}/banner/${id}`,
+  },
+  statusUpdateBanner: {
+    method: "put",
+    url: (id) => `/user/${userID()}/bannerStatus/${id}`,
   },
 
   loginUser: { method: "post", url: "/master/login" },
@@ -200,22 +220,6 @@ const endpoints = {
     url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
 
-  getBanner: {
-    method: "get",
-    url: `/user/${userID()}/api/get/banners`,
-  },
-  createBanner: {
-    method: "post",
-    url: `/user/${userID()}/api/create/banners`,
-  },
-  editBanner: {
-    method: "put",
-    url: (id) => `/user/${userID()}/api/banners/${id}`,
-  },
-  deleteBanner: {
-    method: "delete",
-    url: (id) => `/user/${userID()}/api/banners/${id}`,
-  },
   getDirectorAccessWebites: {
     method: "get",
     url: (params) => {
@@ -254,24 +258,24 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
-  // director created SA list 
-  getDirectorDwnList:{
+  // director created SA list
+  getDirectorDwnList: {
     method: "get",
-    url: `/user/${userID()}/directors`
+    url: `/user/${userID()}/directors`,
   },
   getDirectorDwnListById: {
     method: "get",
-    url: (id) => `/user/${userID()}/director/${id}`
+    url: (id) => `/user/${userID()}/director/${id}`,
   },
-  updateDirectorDwnlnPswd:{
+  updateDirectorDwnlnPswd: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`
+    url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`,
   },
-  unblockBlockDirectorDwnln:{
+  unblockBlockDirectorDwnln: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`
+    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
-  
+
   // statusBanner: {
   //   method: "put",
   //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
