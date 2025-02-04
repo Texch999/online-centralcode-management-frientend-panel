@@ -161,8 +161,7 @@ const DepositePopup = ({
                                     onChange={(option) => handleSelectChange("panelType", option)}
                                 />
                                 {selectedDepositDetails && (
-                                  
-                                        <div className="mt-1 p-2 border-none rounded input-css">
+                                    <div className="mt-1 p-2 border-none rounded input-css">
                                         <div className="d-flex justify-content-between small-font mb-1">
                                             <strong>Name</strong> <span className="text-end">{selectedDepositDetails.name}</span>
                                         </div>

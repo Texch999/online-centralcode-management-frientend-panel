@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import DepositePopup from "../popups/DepositePopup";
+import WithdrawPopup from "../popups/WithdrawPopup";
 
 function MyDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("All");
   const [depositePopup, setDepositePopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const handleSportClick = (sport) => {
     setActiveSport(sport);
   };
@@ -72,7 +74,7 @@ function MyDepositWithdraw() {
         <h6 className="d-flex yellow-font mb-0">My Deposit & Withdraw</h6>
         <div className="d-flex align-items-center gap-1">
           <button className={`me-3 dark-green-bg px-3`} onClick={() => setDepositePopup(true)}>Deposit</button>
-          <button className={`me-3 saffron-btn2 px-3`}> Withdraw</button>
+          <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
         </div>
       </div>
       <div className="w-100 flex-between mb-3 py-3 grey-bg2 rounded">
@@ -137,6 +139,10 @@ function MyDepositWithdraw() {
       <DepositePopup
         setDepositePopup={setDepositePopup}
         depositePopup={depositePopup}
+      />
+      <WithdrawPopup
+        setWithdrawPopup={setWithdrawPopup}
+        withdrawPopup={withdrawPopup}
       />
     </div>
   );

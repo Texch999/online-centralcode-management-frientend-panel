@@ -133,6 +133,7 @@ function SubHeader() {
       {
         label: "Wallet",
         options: [
+          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           { label: "Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
         ],
