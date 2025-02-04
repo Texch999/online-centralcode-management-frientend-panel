@@ -1,6 +1,6 @@
 const userID = () => localStorage.getItem("user_id");
 const endpoints = {
-  // loginUser: { method: "post", url: "/master/login" },
+  loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
   updateWebsite: {
     method: "put",
@@ -62,25 +62,9 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/bannerStatus/${id}`,
   },
-
-  loginUser: { method: "post", url: "/master/login" },
-  // addManagemnentTeam: { method: "post", url: "/employee" },
   addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
-  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
-  // getEmployees: ({ limit, offset }) => ({
-  //   method: "get",
-  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
-  // }),
-
-  // getEmployees: {
-  //   method: "get",
-  //   url: (params) => {
-  //     const query = new URLSearchParams(params).toString();
-  //     return `/user/${userID()}/employees?${query}`;
-  //   },
-  // },
   getEmployees: {
     method: "get",
     url: (params) => {
