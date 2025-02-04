@@ -1,4 +1,11 @@
-const userID = () => localStorage.getItem("user_id");
+const userID = () => {
+  const id = localStorage.getItem("user_id");
+  if (!id) {
+    console.error("User ID is not available.");
+    return null;
+  }
+  return id;
+};
 const endpoints = {
   // loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
@@ -17,7 +24,7 @@ const endpoints = {
       return `/user/${userID()}/website/websites?${query}`;
     },
   },
-  getAllCountires: { method: "get", url: `/user/${userID()}/countries` },
+  getAllCountires: { method: "get", url: () => `/user/${userID()}/countries` },
   blockAndUnblock: {
     method: "put",
     url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
@@ -255,7 +262,7 @@ const endpoints = {
     },
   },
   // director created SA list 
-  getDirectorDwnList:{
+  getDirectorDwnList: {
     method: "get",
     url: `/user/${userID()}/directors`
   },
@@ -263,15 +270,15 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/director/${id}`
   },
-  updateDirectorDwnlnPswd:{
+  updateDirectorDwnlnPswd: {
     method: "post",
     url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`
   },
-  unblockBlockDirectorDwnln:{
+  unblockBlockDirectorDwnln: {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`
   },
-  
+
   // statusBanner: {
   //   method: "put",
   //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
