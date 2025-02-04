@@ -53,11 +53,6 @@ const SandCBanner = () => {
     selectedPlace: "",
   });
 
-  const selectOptions = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
-  ];
   const selectOptionsType = [
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
@@ -137,17 +132,44 @@ const SandCBanner = () => {
       : String(selectWebsites?.value),
     page: selectedPage?.value,
     place: selectedPlace?.value,
+    start:startDT,
+    end:endDT
   };
   console.log("form data", formData);
 
   const handleCreateBanner = async () => {
+    let newErrors = {};
+
+    if (!selectType) {
+      newErrors.selectType = "Type is required.";
+    }
+
+    if (!selectWebsites) {
+      newErrors.selectWebsites = "Website is required.";
+    }
+    if (!selectedPage) {
+      newErrors.selectedPage = "Page is required.";
+    }
+    if (!selectedPlace) {
+      newErrors.selectedPlace = "Place is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     const formData = {
-      panel_type: activeBtn.value,
+      register_id: localStorage.getItem("user_id"),
+      userfor: activeBtn.value,
+      shedule: scheduleBtn.value,
       type: selectType?.value,
       website_id: Array.isArray(selectWebsites)
         ? selectWebsites.map((site) => String(site.value))
         : String(selectWebsites?.value),
-      location_type: selectedPage?.value,
+      page: selectedPage?.value,
+      place: selectedPlace?.value,
+      start:startDT,
+      end:endDT
     };
 
     console.log("form data", formData);
