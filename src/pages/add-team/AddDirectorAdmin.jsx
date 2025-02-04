@@ -11,28 +11,30 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
+import {
+  blockDirector,
+  getCountries,
+  getDirectors,
+  resetDirectorPassword,
+} from "../../api/apiMethods";
 import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 import {
- 
   getDirectorDwnList,
   getDirectorDwnListById,
- 
- 
   unblockBlockDirectorDwnln,
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
 import { CgUnblock } from "react-icons/cg";
-import { CircleLoader } from 'react-spinners';
+import { CircleLoader } from "react-spinners";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
   const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState()
+  const [showEditModal, setShowEditModal] = useState();
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); // Tracks user for reset or block actions
-  const [directorId, setDirectorId] = useState()
+  const [directorId, setDirectorId] = useState();
   const [directorDwnList, setDirectorDwnList] = useState([]);
   const [dirDwnlnId, setDirDwnlnId] = useState(null);
   const [dirDwnlnBlockUnblockId, setDirDwnlnBlockUnblockId] = useState(null);
@@ -56,12 +58,12 @@ const AddDirectorAdmin = () => {
   };
   // console.log(directorId, "directorId")
   const handleEditModalOpen = (id) => {
-    setDirectorId(id)
-    setShowEditModal(true)
-  }
+    setDirectorId(id);
+    setShowEditModal(true);
+  };
   const handleEditModalClose = () => {
-    setShowEditModal(false)
-  }
+    setShowEditModal(false);
+  };
   const handleModalClose = () => {
     setShowModal(false);
   };
@@ -97,6 +99,25 @@ const AddDirectorAdmin = () => {
   const handleNavigateUserDashboard = () => {
     navigate("/user-profile-dashboard");
   };
+
+  const [countryData, setCountryData] = useState([]);
+  const GetAllCountries = () => {
+    getCountries()
+      .then((response) => {
+        if (response?.status === true) {
+          setCountryData(response?.data);
+          console.log(response, "countries");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Not able to get Countries");
+      });
+  };
+  useEffect(() => {
+    GetAllCountries();
+  }, []);
 
   // director sa list
   const getDirectorDwnSAList = () => {
@@ -198,66 +219,71 @@ const AddDirectorAdmin = () => {
             </div>
           ),
         }))
-      : directorDwnList?.map((item) => ({
-          id: item.id, // Use the API id
-          role: item.type === 2 ? "Super Admin" : "", // Map 'type' to 'role', assuming '1' is Director, modify as needed
-          name: item.name, // Map 'login_name' to 'name'
-          loginname: item.login_name, // Assuming 'login_name' should also be used as 'loginname'
-          inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
-          // linkWebsites: item?.accessWebsites, // No website info provided, so leaving it empty
-          shareRent: [], // No shareRent info provided, so leaving it empty
-          billing: "0", // Assuming default value for billing
-          pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
-          dw: (
-            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-              D/W
-            </button>
-          ),
-          action: (
-            <div className="d-flex flex-center gap-3">
-              <SlPencil
-                size={18}
-                className="black-text pointer"
-                onClick={() => setShowModal(true)}
-              />
-              <MdLockReset
-                size={18}
-                className="black-text pointer"
-                onClick={() => handleResetPswdDirDwn(item?.id)}
-              />
-              {item?.status === 1 ? (
-                <CgUnblock
-                  size={20}
-                  className="green-font pointer"
-                  onClick={() =>
-                    handleBlockUnblockDirDwn(
-                      item?.id,
-                      item?.login_name,
-                      item?.status
-                    )
-                  }
-                />
-              ) : (
-                <MdBlockFlipped
+      : directorDwnList?.map((item) => {
+          const country = countryData?.find(
+            (c, index) => c?.id === item?.county
+          );
+          return {
+            id: item.id,
+            role: item.type === 2 ? "Super Admin" : "",
+            name: item.name,
+            loginname: item.login_name,
+            inUsed: country?.name,
+            linkWebsites: item?.accessWebsites?.map((item)=>item?.admin_panel_id),
+            shareRent: item?.accessWebsites?.map((item)=>item?.share),
+            billing: "0", // Assuming default value for billing
+            pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
+            dw: (
+              <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+                D/W
+              </button>
+            ),
+            action: (
+              <div className="d-flex flex-center gap-3">
+                <SlPencil
                   size={18}
-                  className="red-font pointer"
-                  onClick={() =>
-                    handleBlockUnblockDirDwn(
-                      item?.id,
-                      item?.login_name,
-                      item?.status
-                    )
-                  }
+                  className="black-text pointer"
+                  onClick={() => setShowModal(true)}
                 />
-              )}
-              <BsEye
-                size={18}
-                className="black-text pointer"
-                onClick={handleNavigateUserDashboard}
-              />
-            </div>
-          ),
-        }));
+                <MdLockReset
+                  size={18}
+                  className="black-text pointer"
+                  onClick={() => handleResetPswdDirDwn(item?.id)}
+                />
+                {item?.status === 1 ? (
+                  <CgUnblock
+                    size={20}
+                    className="green-font pointer"
+                    onClick={() =>
+                      handleBlockUnblockDirDwn(
+                        item?.id,
+                        item?.login_name,
+                        item?.status
+                      )
+                    }
+                  />
+                ) : (
+                  <MdBlockFlipped
+                    size={18}
+                    className="red-font pointer"
+                    onClick={() =>
+                      handleBlockUnblockDirDwn(
+                        item?.id,
+                        item?.login_name,
+                        item?.status
+                      )
+                    }
+                  />
+                )}
+                <BsEye
+                  size={18}
+                  className="black-text pointer"
+                  onClick={handleNavigateUserDashboard}
+                />
+              </div>
+            ),
+          };
+        });
   console.log(tableData, "tableData");
 
   const GetAllDirectors = () => {
@@ -266,7 +292,6 @@ const AddDirectorAdmin = () => {
         if (response.status === true) {
           console.log(response, "response from API");
           setTableData(response.directorsWithWebsites);
-
         } else {
           setError("Something Went Wrong");
         }
@@ -402,9 +427,17 @@ const AddDirectorAdmin = () => {
         <Table data={TableData} columns={columns} itemsPerPage={7} />
       )}
 
-      <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
-      <EditDirectorAdminPopup showEditModal={showEditModal} setShowEditModal={setShowEditModal} handleEditModalClose={handleEditModalClose} directorId={directorId} />
-
+      <AddDirectorAdminPopup
+        show={showModal}
+        handleClose={handleModalClose}
+        getDirectorDwnSAList={getDirectorDwnSAList}
+      />
+      <EditDirectorAdminPopup
+        showEditModal={showEditModal}
+        setShowEditModal={setShowEditModal}
+        handleEditModalClose={handleEditModalClose}
+        directorId={directorId}
+      />
 
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}

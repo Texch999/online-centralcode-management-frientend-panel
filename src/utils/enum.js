@@ -12,7 +12,7 @@ const adminRoles = Object.freeze({
   2: "SuperAdmin",
 });
 const directorDwnlns = Object.freeze({
-  1: "Super Admin",
+  2: "Super Admin",
 });
 const commissionTypes = Object.freeze({
   1: "Rent",

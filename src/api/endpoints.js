@@ -222,7 +222,7 @@ const endpoints = {
     url: (id) => `user/${userID()}/privacypolicies/${id}/websites`,
   },
 
-  createDirector: { method: "post", url: `/user/${userID()}/create` },
+  // createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   createBroadCasting: {
     method: "post",
