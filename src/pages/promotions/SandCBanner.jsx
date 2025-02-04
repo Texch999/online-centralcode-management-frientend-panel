@@ -16,16 +16,21 @@ import {
   editBanner,
   getBanner,
   getWebsitesList,
+  statusUpdateBanner,
 } from "../../api/apiMethods";
 import { imgUrl } from "../../api/baseUrl";
+import SuccessPopup from "../popups/SuccessPopup";
+import ErrorPopup from "../popups/ErrorPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+import EditBannerPopup from "./EditBannerPopup";
 
 const ACTIVE_BTNS = [
   { value: 1, label: "User" },
   { value: 2, label: "Admin" },
 ];
 const SHEDULE_BTNS = [
-  { value: 1, label: "Live" },
-  { value: 2, label: "Schedule" },
+  { value: "live", label: "Live" },
+  { value: "schedule", label: "Schedule" },
 ];
 
 const SandCBanner = () => {
@@ -43,21 +48,26 @@ const SandCBanner = () => {
   const [fullPoster, setFullPoster] = useState(false);
   const [fullPosterImage, setFullPosterImage] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
+  const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+
+  const [selectedBannerId, setSelectedBannerId] = useState(null);
+  const [selectedBannerStatus, setSelectedBannerStatus] = useState(null);
+  const [bannerBlockModal, setBannerBlockModal] = useState(false);
 
   const [errors, setErrors] = useState({
     selectType: "",
     selectWebsites: "",
     selectedPage: "",
     selectedPlace: "",
+    selectedFiles: "",
+    endDT: "",
   });
 
-  const selectOptions = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
-  ];
   const selectOptionsType = [
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
@@ -98,6 +108,113 @@ const SandCBanner = () => {
     setSelectedPlace(selected);
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    const maxSize = 2 * 1024 * 1024;
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+    let validFiles = [];
+    let errorMessages = [];
+
+    if (files.length > 5) {
+      setErrors((prev) => ({
+        ...prev,
+        selectedFiles: "You can only upload up to 5 images.",
+      }));
+      return;
+    }
+
+    files.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
+      } else if (file.size > maxSize) {
+        errorMessages.push("Each file should not exceed 2MB.");
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (errorMessages.length > 0) {
+      setErrors((prev) => ({
+        ...prev,
+        selectedFiles: errorMessages.join(" "),
+      }));
+      return;
+    }
+
+    setSelectedFiles(validFiles);
+    setErrors((prev) => ({ ...prev, selectedFiles: "" }));
+  };
+
+  const handleCreateBanner = async () => {
+    let newErrors = {};
+
+    if (!selectType) {
+      newErrors.selectType = "Type is required.";
+    }
+
+    if (!selectWebsites) {
+      newErrors.selectWebsites = "Website is required.";
+    }
+    if (!selectedPage) {
+      newErrors.selectedPage = "Page is required.";
+    }
+    if (!selectedPlace) {
+      newErrors.selectedPlace = "Place is required.";
+    }
+    if (selectedFiles.length === 0) {
+      newErrors.selectedFiles = "At least one image is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Create FormData to send files as binary (multipart/form-data)
+    const formData = new FormData();
+    formData.append("register_id", localStorage.getItem("user_id"));
+    formData.append("userfor", activeBtn.value);
+    formData.append("schedule", scheduleBtn.value);
+    formData.append("type", selectType?.value);
+    formData.append("page", selectedPage?.value);
+    formData.append("place", selectedPlace?.value);
+    formData.append("start", startDT);
+    formData.append("end", endDT);
+
+    if (Array.isArray(selectWebsites)) {
+      selectWebsites.forEach((site) =>
+        formData.append("website_id[]", site.value)
+      );
+    } else {
+      formData.append("website_id", selectWebsites?.value);
+    }
+
+    selectedFiles.forEach((file, index) => {
+      formData.append("image", file);
+    });
+
+    try {
+      const response = await createBanner(formData);
+      if (response.status === 200) {
+        setMessage(response.message);
+        setErrorPopupOpen(false);
+        setSelectType(null);
+        setSelectWebsites(null);
+        setSelectedPage(null);
+        setSelectedPlace(null);
+        setStartDT("");
+        setEndDT("");
+        setSelectedFiles([]);
+        getBanners();
+        setSuccessPopupOpen(true);
+      }
+    } catch (error) {
+      setMessage(error.message);
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(true);
+    }
+  };
 
   useEffect(() => {
     getBanners();
@@ -127,39 +244,6 @@ const SandCBanner = () => {
     }
   };
 
-  const formData = {
-    register_id: localStorage.getItem("user_id"),
-    userfor: activeBtn.value,
-    shedule: scheduleBtn.value,
-    type: selectType?.value,
-    website_id: Array.isArray(selectWebsites)
-      ? selectWebsites.map((site) => String(site.value))
-      : String(selectWebsites?.value),
-    page: selectedPage?.value,
-    place: selectedPlace?.value,
-  };
-  console.log("form data", formData);
-
-  const handleCreateBanner = async () => {
-    const formData = {
-      panel_type: activeBtn.value,
-      type: selectType?.value,
-      website_id: Array.isArray(selectWebsites)
-        ? selectWebsites.map((site) => String(site.value))
-        : String(selectWebsites?.value),
-      location_type: selectedPage?.value,
-    };
-
-    console.log("form data", formData);
-    try {
-      const response = await createBanner();
-      if (response.status === 200) {
-        setMessage(response.setMessage);
-      }
-    } catch (error) {
-      setMessage(error.setMessage);
-    }
-  };
   const handleEditBanners = async () => {
     try {
       const response = await editBanner();
@@ -186,16 +270,60 @@ const SandCBanner = () => {
     setFullPoster(!fullPoster);
   };
 
+  const handleEndDateChange = (e) => {
+    const selectedEndDT = e.target.value;
+
+    if (selectedEndDT < startDT) {
+      setErrors((prev) => ({
+        ...prev,
+        endDT: "End date cannot be before the start date.",
+      }));
+      setEndDT("");
+    } else {
+      setEndDT(selectedEndDT);
+      setErrors((prev) => ({ ...prev, endDT: "" }));
+    }
+  };
+
+  const handleBlockOrUnblock = (id, status) => {
+    setSelectedBannerId(id);
+    setSelectedBannerStatus(status);
+    setBannerBlockModal(true);
+  };
+
+  const BockOrUnblock = async () => {
+    try {
+      setLoading(true);
+      const response = await statusUpdateBanner(selectedBannerId);
+      if (response?.status === 200) {
+        setMessage(response?.message);
+        setLoading(false);
+        getBanners();
+        setErrorPopupOpen(false);
+        setSuccessPopupOpen(true);
+      }
+    } catch (error) {
+      setLoading(false);
+      setMessage(error?.message);
+      setErrorPopupOpen(true);
+    }
+  };
+
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
     { header: "Website", field: "website", width: "15%" },
     { header: "Poster Page", field: "posterPage", width: "15%" },
     { header: "Poster Location", field: "posterLocation", width: "15%" },
+    { header: "Schedule", field: "schedule", width: "15%" },
     {
       header: <div className="flex-center">Poster</div>,
       field: "Poster",
     },
+
+    { header: "Start", field: "start", width: "10%" },
+
+    { header: "End", field: "end", width: "10%" },
     {
       header: <div className="flex-center">Action</div>,
       field: "action",
@@ -230,6 +358,7 @@ const SandCBanner = () => {
     website: <div>{banner.website_id}</div>,
     posterPage: <div>{banner.page}</div>,
     posterLocation: <div>{banner.place}</div>,
+    schedule: <div>{banner.schedule}</div>,
     Poster: (
       <div className="flex-center">
         <div className="relative poster-img">
@@ -256,21 +385,37 @@ const SandCBanner = () => {
         </div>
       </div>
     ),
+    start: (
+      <div>
+        {new Intl.DateTimeFormat("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(new Date(banner.start))}
+      </div>
+    ),
+    end: (
+      <div>
+        {new Intl.DateTimeFormat("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(new Date(banner.end))}
+      </div>
+    ),
     action: (
       <div className="flex-center">
+        <MdBlockFlipped
+          style={{ color: banner.status === 1 ? "green" : "red" }}
+          size={18}
+          className="mx-3 pointer"
+          onClick={() => handleBlockOrUnblock(banner.id, banner.status)}
+        />
         <SlPencil
           size={18}
           className="pointer me-1"
           onClick={() => handleEditBanners(banner.id)}
         />
-        {/* <MdBlockFlipped
-          style={{ color: banner.status === 1 ? "green" : "red" }}
-          size={18}
-          className="mx-3 pointer"
-          // onClick={() =>
-          //   handleBlockAndUnblockBroadcasting(banner.id, banner.status)
-          // }
-        /> */}
         <FaRegTrashCan size={18} className="ms-1" />
       </div>
     ),
@@ -408,28 +553,53 @@ const SandCBanner = () => {
             className="input-css2"
             type="datetime-local"
             value={endDT}
-            onChange={(e) => setEndDT(e.target.value)}
+            onChange={handleEndDateChange}
           />
+          {errors.endDT && (
+            <span className="text-danger small-font">{errors.endDT}</span>
+          )}
         </div>
       </div>
 
-      <div className="w-50 d-flex small-font my-3">
+      <div className="w-50 d-flex small-font mt-3 mb-5">
         <div className="col-5 flex-column me-3">
           <label className="black-text4 mb-1">Upload Poster</label>
           <label htmlFor="poster">
-            <input type="file" style={{ display: "none" }} id="poster" />
+            <input
+              type="file"
+              id="poster"
+              multiple
+              accept="image/jpeg, image/png, image/gif, image/webp"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
             <div className="input-css2 flex-between">
-              <span>Select File</span> <MdOutlineFileUpload size={18} />
+              <span>Select Files (Max: 5)</span>{" "}
+              <MdOutlineFileUpload size={18} />
             </div>
           </label>
+
+          {selectedFiles.length > 0 && (
+            <ul className="mt-2">
+              {selectedFiles.map((file, index) => (
+                <li key={index}>{file.name}</li>
+              ))}
+            </ul>
+          )}
+          {errors.selectedFiles && (
+            <span className="text-danger small-font">
+              {errors.selectedFiles}
+            </span>
+          )}
         </div>
-        {/* <div className="col-3 flex-end me-3">
-          <div className="w-100 white-bg pointer yellow-font p-2 rounded dashed-border text-center">
-            Upload More
-          </div>
-        </div> */}
+
         <div className="col-4 flex-end me-3">
-          <button className="w-100 saffron-btn2">Submit</button>
+          <button
+            className="w-100 saffron-btn2"
+            onClick={() => handleCreateBanner()}
+          >
+            Submit
+          </button>
         </div>
       </div>
 
@@ -439,6 +609,36 @@ const SandCBanner = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={message}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={message}
+      />
+      <ConfirmationPopup
+        confirmationPopupOpen={bannerBlockModal}
+        setConfirmationPopupOpen={() => setBannerBlockModal(false)}
+        discription={`are you sure you want to ${
+          selectedBannerStatus === 1 ? "Block" : "UnBlock"
+        } this Banner`}
+        selectedId={selectedBannerId}
+        submitButton={selectedBannerStatus === 1 ? "Block" : "UnBlock"}
+        onSubmit={BockOrUnblock}
+      />
+      <EditBannerPopup
+        // editBroadcast={editBroadcast}
+        // setEditBroadcast={setEditBroadcast}
+        // editBroadcastModel={"Edit Broadcast"}
+        // selectedIdForEdit={selectedIdForEdit}
+        // setSelectedIdForEdit={setSelectedIdForEdit}
+        // setMessage={setMessage}
+        // onSubmit={getBroadCastingdata}
+        // onSubmitResult={handleEditResult}
       />
     </div>
   );
