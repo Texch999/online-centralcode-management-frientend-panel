@@ -14,11 +14,8 @@ import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
 import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 import {
- 
   getDirectorDwnList,
   getDirectorDwnListById,
- 
- 
   unblockBlockDirectorDwnln,
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
@@ -50,7 +47,6 @@ const AddDirectorAdmin = () => {
   };
 
   const handleModalOpen = () => {
-    
     setShowModal(true);
   };
   // console.log(directorId, "directorId")
@@ -154,105 +150,105 @@ const AddDirectorAdmin = () => {
   const TableData =
     role === "management"
       ? tableData?.map((user) => ({
-          id: user.id, // Use the API id
-          role: user.type === 1 ? "Director" : "Super Admin", // Map 'type' to 'role', assuming '1' is Director, modify as needed
-          name: user.login_name, // Map 'login_name' to 'name'
-          loginname: user.login_name, // Assuming 'login_name' should also be used as 'loginname'
-          inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
-          linkWebsites: [], // No website info provided, so leaving it empty
-          shareRent: [], // No shareRent info provided, so leaving it empty
-          billing: "0", // Assuming default value for billing
-          pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
-          dw: (
-            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-              D/W
-            </button>
-          ),
-          action: (
-            <div className="d-flex flex-center gap-3">
-              <SlPencil
-                size={18}
-                className="black-text pointer"
-                onClick={() => setShowModal(true)}
+        id: user.id, // Use the API id
+        role: user.type === 1 ? "Director" : "Super Admin", // Map 'type' to 'role', assuming '1' is Director, modify as needed
+        name: user.login_name, // Map 'login_name' to 'name'
+        loginname: user.login_name, // Assuming 'login_name' should also be used as 'loginname'
+        inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
+        linkWebsites: [], // No website info provided, so leaving it empty
+        shareRent: [], // No shareRent info provided, so leaving it empty
+        billing: "0", // Assuming default value for billing
+        pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
+        dw: (
+          <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+            D/W
+          </button>
+        ),
+        action: (
+          <div className="d-flex flex-center gap-3">
+            <SlPencil
+              size={18}
+              className="black-text pointer"
+              onClick={() => setShowModal(true)}
+            />
+            <MdLockReset
+              size={18}
+              className="black-text pointer"
+              onClick={() => handleResetPasswordOpen(user.id)}
+            />
+            <MdBlockFlipped
+              size={18}
+              className="black-text pointer"
+              onClick={() => handleBlockUserOpen(user.login_name)}
+            />
+            <BsEye
+              size={18}
+              className="black-text pointer"
+              onClick={handleNavigateUserDashboard}
+            />
+          </div>
+        ),
+      }))
+      : directorDwnList?.map((item) => ({
+        id: item.id, // Use the API id
+        role: item.type === 2 ? "Super Admin" : "", // Map 'type' to 'role', assuming '1' is Director, modify as needed
+        name: item.name, // Map 'login_name' to 'name'
+        loginname: item.login_name, // Assuming 'login_name' should also be used as 'loginname'
+        inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
+        // linkWebsites: item?.accessWebsites, // No website info provided, so leaving it empty
+        shareRent: [], // No shareRent info provided, so leaving it empty
+        billing: "0", // Assuming default value for billing
+        pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
+        dw: (
+          <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+            D/W
+          </button>
+        ),
+        action: (
+          <div className="d-flex flex-center gap-3">
+            <SlPencil
+              size={18}
+              className="black-text pointer"
+              onClick={() => setShowModal(true)}
+            />
+            <MdLockReset
+              size={18}
+              className="black-text pointer"
+              onClick={() => handleResetPswdDirDwn(item?.id)}
+            />
+            {item?.status === 1 ? (
+              <CgUnblock
+                size={20}
+                className="green-font pointer"
+                onClick={() =>
+                  handleBlockUnblockDirDwn(
+                    item?.id,
+                    item?.login_name,
+                    item?.status
+                  )
+                }
               />
-              <MdLockReset
-                size={18}
-                className="black-text pointer"
-                onClick={() => handleResetPasswordOpen(user.id)}
-              />
+            ) : (
               <MdBlockFlipped
                 size={18}
-                className="black-text pointer"
-                onClick={() => handleBlockUserOpen(user.login_name)}
+                className="red-font pointer"
+                onClick={() =>
+                  handleBlockUnblockDirDwn(
+                    item?.id,
+                    item?.login_name,
+                    item?.status
+                  )
+                }
               />
-              <BsEye
-                size={18}
-                className="black-text pointer"
-                onClick={handleNavigateUserDashboard}
-              />
-            </div>
-          ),
-        }))
-      : directorDwnList?.map((item) => ({
-          id: item.id, // Use the API id
-          role: item.type === 2 ? "Super Admin" : "", // Map 'type' to 'role', assuming '1' is Director, modify as needed
-          name: item.name, // Map 'login_name' to 'name'
-          loginname: item.login_name, // Assuming 'login_name' should also be used as 'loginname'
-          inUsed: "N/A", // You can modify this with relevant information, or leave as "N/A"
-          // linkWebsites: item?.accessWebsites, // No website info provided, so leaving it empty
-          shareRent: [], // No shareRent info provided, so leaving it empty
-          billing: "0", // Assuming default value for billing
-          pl: <div className="red-font">0</div>, // Assuming default value for profit/loss
-          dw: (
-            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-              D/W
-            </button>
-          ),
-          action: (
-            <div className="d-flex flex-center gap-3">
-              <SlPencil
-                size={18}
-                className="black-text pointer"
-                onClick={() => setShowModal(true)}
-              />
-              <MdLockReset
-                size={18}
-                className="black-text pointer"
-                onClick={() => handleResetPswdDirDwn(item?.id)}
-              />
-              {item?.status === 1 ? (
-                <CgUnblock
-                  size={20}
-                  className="green-font pointer"
-                  onClick={() =>
-                    handleBlockUnblockDirDwn(
-                      item?.id,
-                      item?.login_name,
-                      item?.status
-                    )
-                  }
-                />
-              ) : (
-                <MdBlockFlipped
-                  size={18}
-                  className="red-font pointer"
-                  onClick={() =>
-                    handleBlockUnblockDirDwn(
-                      item?.id,
-                      item?.login_name,
-                      item?.status
-                    )
-                  }
-                />
-              )}
-              <BsEye
-                size={18}
-                className="black-text pointer"
-                onClick={handleNavigateUserDashboard}
-              />
-            </div>
-          ),
-        }));
+            )}
+            <BsEye
+              size={18}
+              className="black-text pointer"
+              onClick={handleNavigateUserDashboard}
+            />
+          </div>
+        ),
+      }));
   console.log(tableData, "tableData");
 
   const GetAllDirectors = () => {
@@ -405,9 +401,8 @@ const AddDirectorAdmin = () => {
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
-        discription={`Are you sure you want to ${
-          statusId === 1 ? "Unblock" : "Block"
-        } ${selectedUser}?`}
+        discription={`Are you sure you want to ${statusId === 1 ? "Unblock" : "Block"
+          } ${selectedUser}?`}
         submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
         onSubmit={login_role_name === "director" ? blockUnblock : ""}
       />

@@ -61,6 +61,9 @@ const resetDirectorPassword = (id, data) => {
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
+const blockDirectorEmployee = (id, data) => {
+  return apiRequest("blockDirectorEmployee", data, id);
+};
 const blockDirector = (id, data) => {
   return apiRequest("blockDirector", data, id);
 };
@@ -68,8 +71,16 @@ const blockDirector = (id, data) => {
 const updateEmployeeByID = (id, data) => {
   return apiRequest("updateEmployeeByID", data, id);
 };
+// updateDirectorEmployeeByID
+const updateDirectorEmployeeByID = (id, data) => {
+  return apiRequest("updateDirectorEmployeeByID", data, id);
+};
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
+};
+
+const getDirectorEmployeeDetailsById = (id) => {
+  return apiRequest("getDirectorEmployeeDetailsById", null, id);
 };
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
@@ -219,6 +230,10 @@ const statusUpdateBanner = (id, data) => {
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
 };
+const resetDirectorEmployeePassword = (id, data) => {
+  return apiRequest("resetDirectorEmployeePassword", data, id);
+};
+
 export {
   loginUser,
   getAllSecurityQuestions,
@@ -281,4 +296,8 @@ export {
   editBanner,
   deleteBanner,
   statusUpdateBanner,
+  resetDirectorEmployeePassword,
+  blockDirectorEmployee,
+  getDirectorEmployeeDetailsById,
+  updateDirectorEmployeeByID,
 };
