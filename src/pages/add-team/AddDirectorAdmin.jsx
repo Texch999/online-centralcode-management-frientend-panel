@@ -11,12 +11,14 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
+import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 import {
-  blockDirector,
+ 
   getDirectorDwnList,
   getDirectorDwnListById,
-  getDirectors,
-  resetDirectorPassword,
+ 
+ 
   unblockBlockDirectorDwnln,
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
@@ -26,9 +28,11 @@ import { CircleLoader } from 'react-spinners';
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState()
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); // Tracks user for reset or block actions
+  const [directorId, setDirectorId] = useState()
   const [directorDwnList, setDirectorDwnList] = useState([]);
   const [dirDwnlnId, setDirDwnlnId] = useState(null);
   const [dirDwnlnBlockUnblockId, setDirDwnlnBlockUnblockId] = useState(null);
@@ -50,7 +54,14 @@ const AddDirectorAdmin = () => {
   const handleModalOpen = () => {
     setShowModal(true);
   };
-
+  // console.log(directorId, "directorId")
+  const handleEditModalOpen = (id) => {
+    setDirectorId(id)
+    setShowEditModal(true)
+  }
+  const handleEditModalClose = () => {
+    setShowEditModal(false)
+  }
   const handleModalClose = () => {
     setShowModal(false);
   };
@@ -254,7 +265,8 @@ const AddDirectorAdmin = () => {
       .then((response) => {
         if (response.status === true) {
           console.log(response, "response from API");
-          setTableData(response.data);
+          setTableData(response.directorsWithWebsites);
+
         } else {
           setError("Something Went Wrong");
         }
@@ -391,6 +403,8 @@ const AddDirectorAdmin = () => {
       )}
 
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
+      <EditDirectorAdminPopup showEditModal={showEditModal} setShowEditModal={setShowEditModal} handleEditModalClose={handleEditModalClose} directorId={directorId} />
+
 
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}

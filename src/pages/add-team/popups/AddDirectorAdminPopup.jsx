@@ -24,7 +24,6 @@ import { adminRoles, directorDwnlns, Roles } from "../../../utils/enum";
 const AddDirectorAdminModal = ({ show, handleClose }) => {
   const role = localStorage.getItem("role_code");
   const role_name = localStorage.getItem("role_name");
-
   const [activeForm, setActiveForm] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -45,43 +44,46 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const [extraChips, setExtraChips] = useState("");
   const [downlineSharing, setDownlineSharing] = useState("");
   const [managementPassword, setManagementPassword] = useState("");
-  const [roleId, setRoleId] = useState(null); // Store selected role ID
-
-  const roleOptions = [
-    { value: "Accounts", label: "Accounts" },
-    { value: "Designer", label: "Designer" },
-    { value: "Company Team", label: "Company Team" },
-  ];
-
+  const [roleId, setRoleId] = useState(null);
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
-  const adminWebsites = [{ label: "Brahma", value: "brahma" }];
   const accountTypes = [
     { label: "Share", value: "share" },
     { label: "Rental", value: "rental" },
   ];
   const [accountType, setAccountType] = useState(null);
   const [directorSites, setDirectorSites] = useState([]);
-  console.log(directorSites,"directorSites")
+  console.log(directorSites, "directorSites");
   const [error, setError] = useState();
   const [countryData, setCountryData] = useState();
   const [selectedCountryId, setSelectedCountryId] = useState("");
+  const [selectedCountryCode, setSelectedCountryCode] = useState("");
+
+  console.log(selectedCountryId, "selectedCountryId");
 
   const handleChange = (event) => {
-    setSelectedCountryId(event.target.value);
-  };
+    const selectedCode = event.target.value;
+    const selectedCountry = countryData?.find(
+      (country) => country.code === selectedCode
+    );
 
-  console.log(roleId, "roleId");
-  console.log(countryData, "countryData");
+    if (selectedCountry) {
+      setSelectedCountryId(selectedCountry.id);
+      setSelectedCountryCode(selectedCountry.code);
+    } else {
+      setSelectedCountryId("");
+      setSelectedCountryCode("");
+    }
+  };
 
   const handleDirectorDwnlnSA = (event) => {
     event?.preventDefault();
 
     const formData = {
       type: roleId,
-      name :name,
+      name: name,
       login_name: loginName,
-      password :password,
+      password: password,
       confirm_password: confirmPassword,
       parent_password: managementPassword,
       country_id: selectedCountryId,
@@ -136,6 +138,99 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
     getAllDirectorWebsiteList();
   }, []);
 
+  const [selectedAdminRoleIds, setSelectedAdminRoleIds] = useState([]);
+  console.log(selectedAdminRoleIds, "selectedAdminRoleIds");
+  console.log(roleId, "roleId");
+  console.log(countryData, "countryData");
+
+  const GetAllCountries = () => {
+    getCountries()
+      .then((response) => {
+        if (response?.status === true) {
+          setCountryData(response?.data);
+          console.log(response, "countries");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Not able to get Countries");
+      });
+  };
+  useEffect(() => {
+    GetAllCountries();
+  }, []);
+  const [adminWebsite, setAllAdminWebsite] = useState();
+  console.log(adminWebsite, "adminWebsite");
+  const GetAllAdminWebsites = () => {
+    getAdminWebsites()
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response.data, "AdminWebsites");
+          setAllAdminWebsite(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Not able to get Countries");
+      });
+  };
+  useEffect(() => {
+    GetAllAdminWebsites();
+  }, []);
+  const [userWebsite, setAllUserWebsite] = useState();
+  console.log(userWebsite, "userWebsite");
+
+  const GetAllUserWebsites = () => {
+    getUserWebsites()
+      .then((response) => {
+        if (response?.status === true) {
+          setAllUserWebsite(response.data);
+          console.log(response, "userWebsites");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Not able to get Countries");
+      });
+  };
+  useEffect(() => {
+    GetAllUserWebsites();
+  }, []);
+
+  const handleAdminRoleChange = (selectedOption) => {
+    console.log(selectedOption, "Selected Option");
+    const selectedId = selectedOption ? selectedOption.value : null;
+    console.log(selectedId, "Selected ID");
+    setSelectedAdminRoleIds(selectedId);
+  };
+
+  const adminRoleWebsites = adminWebsite?.map((site) => ({
+    value: site.id,
+    label: site.web_url,
+  }));
+  const userRoleWebsites = userWebsite?.map((site) => ({
+    value: site.id,
+    label: site.web_url,
+  }));
+
+  const [selectedUserId, setSelectedUserId] = useState(null); // Store selected website ID
+  const [checkedUrls, setCheckedUrls] = useState([]); // Track selected URLs
+
+  const handleCheckboxChange = (event, id, url) => {
+    // Toggle URL selection
+    if (event.target.checked) {
+      setCheckedUrls((prevUrls) => [...prevUrls, url]);
+      setSelectedUserId(id); // Update the selected User ID when checked
+    } else {
+      setCheckedUrls((prevUrls) =>
+        prevUrls.filter((url) => url !== event.target.value)
+      );
+      setSelectedUserId(null); // Reset the selected User ID when unchecked
+    }
+  };
   const handleDirector = (event) => {
     event?.preventDefault();
 
@@ -151,6 +246,8 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
         {
           admin_panel_id: 1,
           user_paner_id: 1,
+          // admin_panel_id: selectedAdminRoleIds,
+          // user_paner_id: selectedUserId,
           commission_type: accountType === "share" ? 2 : 1,
           share: accountType === "share" ? commission : undefined,
           rent_start_date: accountType === "rental" ? rentStartDate : undefined,
@@ -179,58 +276,10 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   useEffect(() => {
     handleDirector();
   }, []);
-
-  const GetAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        if (response?.status === true) {
-          setCountryData(response?.data);
-          console.log(response, "countries");
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Not able to get Countries");
-      });
-  };
   useEffect(() => {
-    GetAllCountries();
+    handleDirector();
   }, []);
 
-  const GetAllAdminWebsites = () => {
-    getAdminWebsites()
-      .then((response) => {
-        if (response?.status === true) {
-          console.log(response, "GetAllAdminWebsites");
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Not able to get Countries");
-      });
-  };
-  useEffect(() => {
-    GetAllAdminWebsites();
-  }, []);
-
-  const GetAllUserWebsites = () => {
-    getUserWebsites()
-      .then((response) => {
-        if (response?.status === true) {
-          console.log(response, "GetAllUserWebsites");
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Not able to get Countries");
-      });
-  };
-  useEffect(() => {
-    GetAllUserWebsites();
-  }, []);
 
   const adminRoless =
     role_name === "director"
@@ -265,18 +314,22 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             <MdOutlineClose />
           </Button>
         </div>
-        <div className="d-flex mb-3 px-3">
+        <div className="d-flex mb-3">
           <button
-            className={`btn ${
-              activeForm === 1 ? "btn-primary" : "btn-secondary"
+            className={`rounded w-25 mx-1 ${
+              activeForm === 1
+                ? "saffron-btn2"
+                : "black-text border-grey3 white-bg"
             }`}
             onClick={() => setActiveForm(1)}
           >
             Form 1
           </button>
           <button
-            className={`btn ms-3 ${
-              activeForm === 2 ? "btn-primary" : "btn-secondary"
+            className={`rounded w-25 mx-1 ${
+              activeForm === 2
+                ? "saffron-btn2"
+                : "black-text border-grey3 white-bg"
             }`}
             onClick={() => setActiveForm(2)}
           >
@@ -312,7 +365,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             </div>
           </div>
 
-          {/* Row 3: Website, Share, Rent */}
           <div className="row mb-3">
             <div className="col-md-6 position-relative">
               <label className="small-font">Role</label>
@@ -331,10 +383,8 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             <div className="col-md-6">
               <label className="small-font">Country</label>
               <select
-                type="text"
                 className="small-font rounded all-none input-css w-100"
-                placeholder="Enter"
-                value={selectedCountryId}
+                value={selectedCountryCode}
                 onChange={handleChange}
               >
                 <option value="">Select a country</option>
@@ -429,26 +479,87 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             <div className="col-md-12 position-relative">
               <label className="small-font">Admin Website</label>
               <div className="custom-select-wrapper">
-                <Select
+                {/* <Select
                   className="small-font"
-                  options={roleOptions}
+                  options={adminRoleWebsites}
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
                   menuPlacement="auto"
+                  onChange={handleAdminRoleChange}
+                /> */}
+                <Select
+                  className="small-font"
+                  options={adminRoleWebsites}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  onChange={handleAdminRoleChange}
                 />
               </div>
             </div>
           </div>
-
+          {/* <div className="row mb-3">
+            <div className="col-md-12 position-relative">
+              <label className="small-font">User Website</label>
+              <div className="d-flex input-css">
+                <input
+                  type="checkbox"
+                  className="me-2" />
+                <input
+                  type="text"
+                  value={userRoleWebsites}
+                  className="small-font rounded all-none  w-100"
+                  placeholder="Website Names"
+                  readOnly
+                /></div>
+            </div>
+          </div> */}
           <div className="row mb-3">
             <div className="col-md-12 position-relative">
               <label className="small-font">User Website</label>
-              <input
-                type="text"
-                className="small-font rounded all-none input-css w-100"
-                placeholder="select website"
-              />
+              <div className="d-flex input-css">
+                <input type="checkbox" className="me-2" />
+
+                <input
+                  type="text"
+                  value={userRoleWebsites}
+                  className="small-font rounded all-none  w-100"
+                  placeholder="Website Names"
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>Selected Website ID: {selectedUserId}</h3>
+            <div className="row mb-3">
+              {userWebsite?.map((website) => (
+                <div key={website.id} className="row mb-3">
+                  <div className="col-md-12 position-relative">
+                    <label className="small-font">User Website</label>
+                    <div className="d-flex input-css">
+                      <input
+                        type="checkbox"
+                        className="me-2"
+                        value={website.web_url} // Use URL as the value for the checkbox
+                        onChange={(e) =>
+                          handleCheckboxChange(e, website.id, website.web_url)
+                        }
+                        checked={checkedUrls.includes(website.web_url)} // Check if the URL is selected
+                      />
+                      <input
+                        type="text"
+                        className="small-font rounded all-none w-100"
+                        placeholder="Website URL"
+                        value={website.web_url}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="row mb-3">

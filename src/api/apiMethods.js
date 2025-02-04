@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
@@ -25,6 +24,10 @@ const loginDirector = (data) => {
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
+const addDirectorTeam = (data) => {
+  return apiRequest("addDirectorTeam", data);
+};
+
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
@@ -68,7 +71,13 @@ const updateEmployeeByID = (id, data) => {
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
 };
+const getDirectorDetailsById = (id) => {
+  return apiRequest("getDirectorDetailsById", null, id);
+};
 
+const getDirectorEmployees = (params) => {
+  return apiRequest("getDirectorEmployees", {}, params);
+};
 const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
@@ -100,7 +109,6 @@ const statusPromotionsTypes = (id, data) => {
   return apiRequest("statusPromotionsTypes", data, id);
 };
 const deletePromotionsImages = (id, data) => {
-  console.log("data", id);
   return apiRequest("deletePromotionsImages", data, id);
 };
 export const getLoggedInLogs = (params) => {
@@ -246,6 +254,9 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
+  getDirectorDetailsById,
+  getDirectorEmployees,
+  addDirectorTeam,
   getAvailableWebsites,
   getDirectorEmployeesLoginLogsList,
   getDirectorEmployeesLoginLogsByEmployeeId,

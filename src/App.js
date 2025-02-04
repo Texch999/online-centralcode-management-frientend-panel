@@ -111,6 +111,7 @@ import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
+import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -171,6 +172,7 @@ function App() {
               <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
               <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
+              <Route path="/director-team" element={<AddDirectorTeam />} />
               <Route
                 path="/user-profile-dashboard"
                 element={<UserProfileDashboard />}

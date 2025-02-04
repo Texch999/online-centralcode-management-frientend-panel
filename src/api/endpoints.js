@@ -1,6 +1,24 @@
 const userID = () => localStorage.getItem("user_id");
+
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
+  loginDirector: { method: "post", url: "/director/login" },
+
+  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+  addDirectorTeam: {
+    method: "post",
+    url: `/user/${userID()}/directorEmployee`,
+  },
+
+  createDirector: { method: "post", url: `/user/${userID()}/create` },
+
+  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+  getCountries: { method: "get", url: `/user/${userID()}/countries` },
+  getAdminWebsites: {
+    method: "get",
+    url: `/user/${userID()}/website/adminWebsites`,
+  },
+  // loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
   updateWebsite: {
     method: "put",
@@ -79,6 +97,13 @@ const endpoints = {
       return `/user/${userID()}/directors?${query}`;
     },
   },
+  getDirectorEmployees: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/directorEmployees?${query}`;
+    },
+  },
   resetEmployeePassword: {
     method: "post",
     url: (id) => `/user/${userID()}/employeeUpdatePassword/${id}`,
@@ -100,9 +125,17 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
+  updateDirectorByID: {
+    method: "post",
+    url: (id) => `/user/${userID()}/updateDirector/${id}`,
+  },
   getEmployeeDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/employee/${id}`,
+  },
+  getDirectorDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/${id}`,
   },
 
   //security questions
@@ -139,7 +172,6 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
-  // privacy policy
   getPrivacyPolicy: {
     method: "get",
     url: `/user/${userID()}/privacypolicies/`,
@@ -166,6 +198,7 @@ const endpoints = {
     method: "get",
     url: `/user/${userID()}/countries`,
   },
+
   getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
@@ -174,6 +207,7 @@ const endpoints = {
       return `/user/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
     },
   },
+
   getDirectorEmployeesLoginLogsByEmployeeId: {
     method: "get",
     url: (params) => {
@@ -181,12 +215,15 @@ const endpoints = {
       return `/user/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
     },
   },
-  // getWebsites: { method: "get", url: `user/${userID()}/website/websites` },
+  // getWebsites: { method: "get", url: `user/${userID()}/website/websites` },'
+
   getAvailableWebsites: {
     method: "get",
     url: (id) => `user/${userID()}/privacypolicies/${id}/websites`,
   },
+
   createDirector: { method: "post", url: `/user/${userID()}/create` },
+
   createBroadCasting: {
     method: "post",
     url: `/user/${userID()}/broadcasting`,
@@ -195,10 +232,12 @@ const endpoints = {
     method: "get",
     url: `/user/${userID()}/broadcasting`,
   },
+
   statusBroadcastUpdate: {
     method: "put",
     url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
   },
+
   editBroadCasting: {
     method: "put",
     url: (id) => `/user/${userID()}/broadcasting/${id}`,
@@ -273,7 +312,6 @@ const endpoints = {
   //   method: "put",
   //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
   // },
-  
 };
 
 export default endpoints;
