@@ -10,6 +10,7 @@ import { editBroadCasting } from "../../api/apiMethods";
 const EditBroadcastPopup = ({
   editBroadcast,
   setEditBroadcast,
+  websitesList,
   editBroadcastModel,
   selectedIdForEdit,
   setMessage,
@@ -38,11 +39,10 @@ const EditBroadcastPopup = ({
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
   ];
-
-  const selectOptionsWebsites = [
-    { value: 1, label: "WEBSITE 1" },
-    { value: 2, label: "WEBSITE 2" },
-  ];
+  const selectOptionsWebsites = websitesList?.map((item) => ({
+    value: Number(item?.id.slice(3, -3)),  // Slicing the ID correctly
+    label: item.web_name,
+  }));
 
   const selectOptionsLocations = [{ value: 1, label: "Home" }];
 
