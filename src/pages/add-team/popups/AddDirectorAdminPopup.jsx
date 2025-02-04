@@ -28,7 +28,6 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
-
   const [name, setName] = useState("");
   const [loginName, setLoginName] = useState("");
   const [password, setPassword] = useState("");
@@ -138,7 +137,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
     getAdminWebsites()
       .then((response) => {
         if (response?.status === true) {
-          console.log(response, "AdminWebsites");
+          console.log(response, "GetAllAdminWebsites");
         } else {
           setError("Something Went Wrong");
         }
@@ -155,7 +154,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
     getUserWebsites()
       .then((response) => {
         if (response?.status === true) {
-          console.log(response, "countries");
+          console.log(response, "GetAllUserWebsites");
         } else {
           setError("Something Went Wrong");
         }
@@ -171,18 +170,18 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
   const adminRoless =role_name === "director" ?
   (
     Object.entries(directorDwnlns).map(([value, label]) => ({
-      value: Number(value), // Role ID (number)
-      label, // Role name (string)
+      value: Number(value),
+      label, 
     }))
   ):(
    Object.entries(adminRoles).map(([value, label]) => ({
-    value: Number(value), // Role ID (number)
-    label, // Role name (string)
+    value: Number(value), 
+    label, 
   }))
 )
 
   const handleRoleChange = (selectedOption) => {
-    setRoleId(selectedOption.value); // Update role ID when the role is selected
+    setRoleId(selectedOption.value);
   };
   return (
     <Modal show={show} onHide={handleClose} centered size="md">
@@ -203,7 +202,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             <MdOutlineClose />
           </Button>
         </div>
-        <div className="d-flex mb-3">
+        <div className="d-flex mb-3 px-3">
           <button
             className={`btn ${
               activeForm === 1 ? "btn-primary" : "btn-secondary"
@@ -213,7 +212,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
             Form 1
           </button>
           <button
-            className={`btn ms-2 ${
+            className={`btn ms-3 ${
               activeForm === 2 ? "btn-primary" : "btn-secondary"
             }`}
             onClick={() => setActiveForm(2)}

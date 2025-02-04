@@ -406,9 +406,9 @@ const AddDirectorAdmin = () => {
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
         discription={`Are you sure you want to ${
-          statusId === 1 ? "Unblock" : "Block"
+          statusId === 2 ? "Unblock" : "Block"
         } ${selectedUser}?`}
-        submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
+        submitButton={`${statusId === 2 ? "Unblock" : "Block"}`}
         onSubmit={login_role_name === "director" ? blockUnblock : ""}
       />
     </div>

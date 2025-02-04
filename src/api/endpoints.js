@@ -271,11 +271,16 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`
   },
-  
-  // statusBanner: {
-  //   method: "put",
-  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
-  // },
+
+  getAdminWebsites: {
+    method: "get",
+    url: `/user/${userID()}/website/adminWebsites`,
+  },
+  getUserWebsites: {
+    method: "get",
+    url: `/user/${userID()}/website/userWebsites`,
+  },
+
 };
 
 export default endpoints;
