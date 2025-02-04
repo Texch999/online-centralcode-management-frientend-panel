@@ -1,5 +1,4 @@
-
-const userID = localStorage.getItem("user_id");
+const userID = () => localStorage.getItem("user_id");
 const endpoints = {
   // loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
@@ -219,7 +218,94 @@ const endpoints = {
   editBroadCasting: {
     method: "put",
     url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
-  }
-}
+  },
+
+  //DirectorAccountDetails
+
+  getDirectorAccountDetails :{
+    method: "get",
+    url: `/user/${userID}/directorAccount`,
+  },
+  postDirectorAccountDetails :{
+    method: "post",
+    url: `/user/${userID}/directorAccount`,
+  },
+  suspendDirectorAccountPaymentDetails:{
+    method:'patch',
+    url: (data) =>
+      `/user/${userID}/directorAccount/${data.id}/status/${data.status}`,
+  },
+  updateDirectorAccountDetails: {
+    method: "put",
+    url: (id) => `/user/${userID}/directorAccount/${id}`,
+  },
+  getDirectorAccountById: {
+    method: "get",
+    url: (id) => `/user/${userID}/directorAccount/${id}`,
+  },
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
+
+  getDirectorAccessWebites: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+    },
+  },
+
+  loginDirector: { method: "post", url: "/director/login" },
+
+  getLoggedInLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/loginLogs?${query}`;
+    },
+  },
+  getLoggedInLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/loginLogsById?${query}`;
+    },
+  },
+  getDirectorLoginLogs: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/getParentLoginLogs?${query}`;
+    },
+  },
+  getDirectorLoginLogsById: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/getParentLoginLogsById?${query}`;
+    },
+  },
+  // director created SA list
+  getDirectorDwnList: {
+    method: "get",
+    url: `/user/${userID()}/directors`,
+  },
+  getDirectorDwnListById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/${id}`,
+  },
+  updateDirectorDwnlnPswd: {
+    method: "post",
+    url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`,
+  },
+  unblockBlockDirectorDwnln: {
+    method: "post",
+    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
+  },
+
+  // statusBanner: {
+  //   method: "put",
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
+};
 
 export default endpoints;

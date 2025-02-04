@@ -194,18 +194,10 @@ const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
   return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
 };
 
-const getBroadCasting = () => {
-  return apiRequest("getBroadCasting");
-};
-const createBroadCasting = (data) => {
-  return apiRequest("createBroadCasting", data);
-};
-const editBroadCasting = (id, data) => {
-  return apiRequest("editBroadCasting", data, id);
-};
-const statusBroadCasting = (id, data) => {
-  return apiRequest("statusBroadcastUpdate", data, id);
-};
+
+
+
+
 const getDirectorDwnList = (data) => {
   return apiRequest("getDirectorDwnList", data);
 };
@@ -281,17 +273,6 @@ export {
   getDirectorEmployeesLoginLogsList,
   getDirectorEmployeesLoginLogsByEmployeeId,
   getAvailableWebsites,
-  getWebsitesList,
-  getAllCountires,
-  createWebsite,
-  updateWebsite,
-  getWebsiteDetails,
-  blockAndUnblock,
-  getBroadCasting,
-  createBroadCasting,
-  editBroadCasting,
-  statusBroadCasting,
-  createSecurityQuestions,
   getDirectorDwnList,
   getDirectorDwnListById,
   updateDirectorDwnlnPswd,
