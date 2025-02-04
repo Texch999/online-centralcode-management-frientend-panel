@@ -58,6 +58,13 @@ const updateEmployeeByID = (id, data) => {
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
 };
+const getDirectorDetailsById = (id) => {
+  return apiRequest("getDirectorDetailsById", null, id);
+};
+
+const getDirectorEmployees = (params) => {
+  return apiRequest("getDirectorEmployees", {}, params);
+};
 export {
   loginUser,
   addManagemnentTeam,
@@ -75,4 +82,6 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
+  getDirectorDetailsById,
+  getDirectorEmployees,
 };

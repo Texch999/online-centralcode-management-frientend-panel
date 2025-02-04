@@ -167,8 +167,10 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
       country_id: selectedCountryId,
       accessWebsites: [
         {
-          admin_panel_id: selectedAdminRoleIds,
-          user_paner_id: selectedUserId,
+          admin_panel_id: 1,
+          user_paner_id: 1,
+          // admin_panel_id: selectedAdminRoleIds,
+          // user_paner_id: selectedUserId,
           commission_type: accountType === "share" ? 2 : 1,
           share: accountType === "share" ? commission : undefined,
           rent_start_date: accountType === "rental" ? rentStartDate : undefined,
@@ -400,7 +402,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                 /></div>
             </div>
           </div> */}
-          {/* <div className="row mb-3">
+          <div className="row mb-3">
             <div className="col-md-12 position-relative">
               <label className="small-font">User Website</label>
               <div className="d-flex input-css">
@@ -415,7 +417,7 @@ const AddDirectorAdminModal = ({ show, handleClose }) => {
                   readOnly
                 /></div>
             </div>
-          </div> */}
+          </div>
           <div>
             <h3>Selected Website ID: {selectedUserId}</h3>
             <div className="row mb-3">

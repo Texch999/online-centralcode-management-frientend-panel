@@ -5,6 +5,7 @@ const endpoints = {
   loginDirector: { method: "post", url: "/director/login" },
 
   addManagemnentTeam: { method: "post", url: `/user/${userID}/employee` },
+  
   createDirector: { method: "post", url: `/user/${userID}/create` },
 
   getRoles: { method: "get", url: `/user/${userID}/rolesList` },
@@ -32,6 +33,13 @@ const endpoints = {
       return `/user/${userID}/directors?${query}`;
     },
   },
+  getDirectorEmployees:{
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID}/directorEmployees?${query}`;
+    },
+  },
   resetEmployeePassword: {
     method: "post",
     url: (id) => `/user/${userID}/employeeUpdatePassword/${id}`,
@@ -53,9 +61,17 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID}/employee/${id}`,
   },
+  updateDirectorByID: {
+    method: "post",
+    url: (id) => `/user/${userID}/updateDirector/${id}`,
+  },
   getEmployeeDetailsById: {
     method: "get",
     url: (id) => `/user/${userID}/employee/${id}`,
+  },
+  getDirectorDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID}/director/${id}`,
   },
 };
 

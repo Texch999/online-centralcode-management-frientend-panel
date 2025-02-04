@@ -12,18 +12,27 @@ import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
+import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState()
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); // Tracks user for reset or block actions
-
+  const [directorId, setDirectorId] = useState()
   const handleModalOpen = () => {
     setShowModal(true);
   };
-
+  console.log(directorId, "directorId")
+  const handleEditModalOpen = (id) => {
+    setDirectorId(id)
+    setShowEditModal(true)
+  }
+  const handleEditModalClose = () => {
+    setShowEditModal(false)
+  }
   const handleModalClose = () => {
     setShowModal(false);
   };
@@ -101,7 +110,7 @@ const AddDirectorAdmin = () => {
         <SlPencil
           size={18}
           className="black-text pointer"
-          onClick={() => setShowModal(true)}
+          onClick={() => handleEditModalOpen(user.id)}
         />
         <MdLockReset
           size={18}
@@ -128,7 +137,7 @@ const AddDirectorAdmin = () => {
       .then((response) => {
         if (response.status === true) {
           console.log(response, "response from API");
-          setTableData(response.data);
+          setTableData(response.directorsWithWebsites);
 
         } else {
           setError("Something Went Wrong");
@@ -187,7 +196,7 @@ const AddDirectorAdmin = () => {
         alert(error?.message || "Request failed");
       });
   };
-  
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -214,6 +223,8 @@ const AddDirectorAdmin = () => {
       <Table data={TableData} columns={columns} itemsPerPage={7} />
 
       <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
+      <EditDirectorAdminPopup showEditModal={showEditModal} setShowEditModal={setShowEditModal} handleEditModalClose={handleEditModalClose} directorId={directorId} />
+
 
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}

@@ -9,10 +9,8 @@ function ConfirmationPopup({
   setConfirmationPopupOpen,
   discription,
   submitButton,
-  blockAccountId,
   onSubmit
 }) {
-  console.log(blockAccountId, "blockAccountId");
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };

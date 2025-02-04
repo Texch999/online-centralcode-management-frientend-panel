@@ -102,6 +102,7 @@ function SubHeader() {
       {
         label: "Adding",
         options: [
+          { label: "Director Team", path: "/director-team" },
           { label: "Add Super Admin", path: "/director-admin" },
           { label: "View Downline List", path: "/downline-list" },
           { label: "Payment Details", path: "/payment-details" },

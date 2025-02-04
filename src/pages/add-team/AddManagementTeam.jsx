@@ -304,8 +304,6 @@ const AddManagementTeam = () => {
       <AddManagementPopup
         show={modalState.showAddModal}
         onClose={() => toggleModal("showAddModal", false)}
-        formData={formData}
-        setFormData={setFormData}
         onSubmit={handleFormSubmit}
       />
       <EditManagementPopup
