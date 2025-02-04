@@ -43,6 +43,7 @@ const SandCBanner = () => {
   const [fullPoster, setFullPoster] = useState(false);
   const [fullPosterImage, setFullPosterImage] = useState(false);
   const [editPoster, setEditPoster] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [message, setMessage] = useState("");
 
@@ -94,6 +95,40 @@ const SandCBanner = () => {
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
 
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+  
+    let validFiles = [];
+    let errors = [];
+  
+    files.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        errors.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
+      } else if (file.size > maxSize) {
+        errors.push("Each file should not exceed 2MB.");
+      } else {
+        validFiles.push(file);
+      }
+    });
+  
+    if (errors.length > 0) {
+      setMessage(errors.join(" "));
+      setErrors((prev) => ({ ...prev, images: errors.join(" ") }));
+      return;
+    }
+  
+    if (validFiles.length + selectedFiles.length > 5) {
+      setMessage("You can only upload up to 5 images.");
+      return;
+    }
+  
+    setSelectedFiles([...selectedFiles, ...validFiles]);
+    setErrors((prev) => ({ ...prev, images: "" }));
+  };
+  
+
   useEffect(() => {
     getBanners();
     getWebsites();
@@ -122,20 +157,20 @@ const SandCBanner = () => {
     }
   };
 
-  const formData = {
-    register_id: localStorage.getItem("user_id"),
-    userfor: activeBtn.value,
-    shedule: scheduleBtn.value,
-    type: selectType?.value,
-    website_id: Array.isArray(selectWebsites)
-      ? selectWebsites.map((site) => String(site.value))
-      : String(selectWebsites?.value),
-    page: selectedPage?.value,
-    place: selectedPlace?.value,
-    start:startDT,
-    end:endDT
-  };
-  console.log("form data", formData);
+  // const formData = {
+  //   register_id: localStorage.getItem("user_id"),
+  //   userfor: activeBtn.value,
+  //   shedule: scheduleBtn.value,
+  //   type: selectType?.value,
+  //   website_id: Array.isArray(selectWebsites)
+  //     ? selectWebsites.map((site) => String(site.value))
+  //     : String(selectWebsites?.value),
+  //   page: selectedPage?.value,
+  //   place: selectedPlace?.value,
+  //   start: startDT,
+  //   end: endDT,
+  // };
+  // console.log("form data", formData);
 
   const handleCreateBanner = async () => {
     let newErrors = {};
@@ -168,8 +203,8 @@ const SandCBanner = () => {
         : String(selectWebsites?.value),
       page: selectedPage?.value,
       place: selectedPlace?.value,
-      start:startDT,
-      end:endDT
+      start: startDT,
+      end: endDT,
     };
 
     console.log("form data", formData);
@@ -439,11 +474,32 @@ const SandCBanner = () => {
         <div className="col-5 flex-column me-3">
           <label className="black-text4 mb-1">Upload Poster</label>
           <label htmlFor="poster">
-            <input type="file" style={{ display: "none" }} id="poster" />
+            <input
+              type="file"
+              id="poster"
+              multiple
+              accept="image/jpeg, image/png, image/gif, image/webp"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
             <div className="input-css2 flex-between">
-              <span>Select File</span> <MdOutlineFileUpload size={18} />
+              <span>Select Files (Max: 5)</span>{" "}
+              <MdOutlineFileUpload size={18} />
             </div>
           </label>
+
+          {selectedFiles.length > 0 && (
+            <ul className="mt-2">
+              {selectedFiles.map((file, index) => (
+                <li key={index}>{file.name}</li>
+              ))}
+            </ul>
+          )}
+          {errors.selectedFiles && (
+            <span className="text-danger small-font">
+              {errors.selectedFiles}
+            </span>
+          )}
         </div>
         {/* <div className="col-3 flex-end me-3">
           <div className="w-100 white-bg pointer yellow-font p-2 rounded dashed-border text-center">
