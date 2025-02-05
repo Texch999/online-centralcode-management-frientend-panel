@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -43,7 +43,9 @@ const Broadcasting = () => {
   const [selectedBroadcastStatus, setSelectedBroadcastStatus] = useState();
   const [broadcastBlockModal, setBroadcastBlockModal] = useState(false);
   const [selectedIdForEdit, setSelectedIdForEdit] = useState([]);
-  
+
+  const hasFetched = useRef(false);
+
   const [errors, setErrors] = useState({
     selectType: "",
     selectWebsites: "",
@@ -55,9 +57,9 @@ const Broadcasting = () => {
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
   ];
- 
+
   const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id, 
+    value: item.id,
     label: item.web_name,
   }));
 
@@ -85,6 +87,8 @@ const Broadcasting = () => {
   };
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getWebsites();
     getBroadCastingdata();
   }, []);
