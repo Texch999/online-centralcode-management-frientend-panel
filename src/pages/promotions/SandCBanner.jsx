@@ -253,7 +253,6 @@ const SandCBanner = () => {
   };
 
   const handleEditBanners = (id) => {
-    console.log("id clicked", id);
     setSelectedBannerId(banners.find((item) => item.id === id));
     if (selectedBannerId) {
       setEditBanner(true);

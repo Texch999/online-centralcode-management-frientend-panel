@@ -181,6 +181,7 @@ const EditBannerPopup = ({
                       )?.label || ""
                     : ""
                 }
+                readOnly
               />
             </div>
 
@@ -197,6 +198,7 @@ const EditBannerPopup = ({
                       )?.label || ""
                     : ""
                 }
+                readOnly
               />
             </div>
 
