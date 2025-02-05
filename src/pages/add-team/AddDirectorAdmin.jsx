@@ -449,7 +449,7 @@ const AddDirectorAdmin = () => {
         }
       />
 
-      <ConfirmationPopup
+      <ationPopup
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
         discription={`Are you sure you want to ${

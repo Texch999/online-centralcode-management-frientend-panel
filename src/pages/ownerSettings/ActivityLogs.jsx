@@ -41,7 +41,6 @@ const ActivityLogs = () => {
 
     setErrors(newErrors);
 
-    // Return true if there are no errors
     return !newErrors.fromDate && !newErrors.toDate;
   };
   const getEmployeeAllLogs = (from, to) => {
@@ -109,6 +108,7 @@ const ActivityLogs = () => {
     setType(type);
     setActiveTab(tab);
   };
+
   useEffect(() => {
     if (userRole === "director") {
       if (activeTab === "employees") {
@@ -129,8 +129,6 @@ const ActivityLogs = () => {
       }
     }
   }, [activeTab, userRole]);
-
-
 
   const ACTIVITY_COLUMNS = [
 
@@ -230,19 +228,19 @@ const ActivityLogs = () => {
       {/* Tabs for filtering logs */}
       <div className="d-flex mb-3">
         <button
-          className={`tab-btn  ${activeTab === "employees" ? "active" : ""}`}
+          className={`tab-btn small-font  ${activeTab === "employees" ? "active" : ""}`}
           onClick={() => handleTabClick("employees", 0)}
         >
           Employees
         </button>
         <button
-          className={`tab-btn ${activeTab === "admins" ? "active" : ""}`}
+          className={`tab-btn small-font ${activeTab === "admins" ? "active" : ""}`}
           onClick={() => handleTabClick("admins", 2)}
         >
           Admins
         </button>
         {userRole !== "director" ? <button
-          className={`tab-btn ${activeTab === "directors" ? "active" : ""}`}
+          className={`tab-btn small-font ${activeTab === "directors" ? "active" : ""}`}
           onClick={() => handleTabClick("directors", 1)}
         >
           Directors
@@ -257,7 +255,10 @@ const ActivityLogs = () => {
               className="input-css2 small-font"
               value={fromDate}
               type="date"
-              onChange={(e) => setFromDate(e.target.value)}
+              onChange={(e) => {
+                setErrors("");
+                setFromDate(e.target.value)
+              }}
             />
             {errors.fromDate && <p className="text-danger small-font">{errors.fromDate}</p>}
           </div>
@@ -267,12 +268,13 @@ const ActivityLogs = () => {
             <input
               className="input-css2 small-font"
               value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
+              onChange={(e) => {
+                setErrors("");
+                setToDate(e.target.value)
+              }}
               type="date"
             />
-
           </div>
-
           <button
             className="align-self-end saffron-btn2 small-font pointer col-4"
             onClick={handleDataBetweenFromAndToDates}

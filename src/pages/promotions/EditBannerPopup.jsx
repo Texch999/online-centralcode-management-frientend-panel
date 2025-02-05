@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { FaSpinner } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
@@ -29,54 +30,49 @@ const EditBannerPopup = ({
     website_id: null,
     place: "",
     page: "",
-    image: [], // New image uploads
+    image: [],
     start: "",
     end: "",
-    existingImages: [], // Old images
+    existingImages: [],
   });
 
   useEffect(() => {
     if (selectedBannerId) {
       const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toISOString().slice(0, 16); // Convert to 'YYYY-MM-DDTHH:MM'
+        return date.toISOString().slice(0, 16);
       };
 
       setFormData({
         register_id: selectedBannerId.register_id || null,
         userfor: selectedBannerId.userfor || "",
         schedule: selectedBannerId.schedule || "",
-        type: selectedBannerId.type || null,
+        type: selectedBannerId.type || "",
         website_id: selectedBannerId.website_id || "",
         page: selectedBannerId.page || "",
         place: selectedBannerId.place || "",
         start: selectedBannerId.start ? formatDate(selectedBannerId.start) : "",
         end: selectedBannerId.end ? formatDate(selectedBannerId.end) : "",
         existingImages: selectedBannerId.image
-          ? JSON.parse(selectedBannerId.image)
+          ? Array.isArray(selectedBannerId.image)
+            ? selectedBannerId.image
+            : JSON.parse(selectedBannerId.image)
           : [],
+        image: [],
       });
     }
   }, [selectedBannerId]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setFormData({ ...formData, image: [...formData.image, ...files] });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      image: Array.isArray(prevFormData.image)
+        ? [...prevFormData.image, ...files]
+        : [...files],
+    }));
   };
 
-  const handleRemoveExistingImage = (index) => {
-    setFormData({
-      ...formData,
-      existingImages: formData.existingImages.filter((_, i) => i !== index),
-    });
-  };
-
-  const handleRemoveNewImage = (index) => {
-    setFormData({
-      ...formData,
-      image: formData.image.filter((_, i) => i !== index),
-    });
-  };
   const removeImage = (index, isNewImage = false) => {
     setFormData((prevFormData) => {
       if (isNewImage) {
@@ -107,10 +103,8 @@ const EditBannerPopup = ({
         formDataToSubmit.append(key, formDataWithoutImages[key]);
       });
 
-      // Append remaining existing images
       formDataToSubmit.append("existingImages", JSON.stringify(existingImages));
 
-      // Append new images
       image.forEach((img) => {
         formDataToSubmit.append("image", img);
       });
@@ -139,7 +133,7 @@ const EditBannerPopup = ({
   ];
 
   const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: Number(item?.id.slice(3, -3)), // Slicing the ID correctly
+    value: Number(item?.id.slice(3, -3)),
     label: item.web_name,
   }));
 
@@ -176,27 +170,18 @@ const EditBannerPopup = ({
               <label className="black-text4 small-font mb-1">
                 Sports/Casino
               </label>
-              <Select
-                className="small-font"
-                options={selectOptionsType}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-                onChange={(selected) =>
-                  setFormData({
-                    ...formData,
-                    type: selected ? selected.value : null,
-                  })
-                }
+              <input
+                className="all-none input-css2 small-font p-2 rounded"
+                type="text"
+                placeholder="Enter Sports/Casino"
                 value={
                   formData.type
                     ? selectOptionsType.find(
                         (option) => option.value === formData.type
-                      )
-                    : null
+                      )?.label || ""
+                    : ""
                 }
+                readOnly
               />
             </div>
 
@@ -213,6 +198,7 @@ const EditBannerPopup = ({
                       )?.label || ""
                     : ""
                 }
+                readOnly
               />
             </div>
 
@@ -223,7 +209,7 @@ const EditBannerPopup = ({
                 options={selectPages}
                 placeholder="Select"
                 styles={customStyles}
-                maxMenuHeight={120}
+                maxMenuHeight={100}
                 menuPlacement="auto"
                 classNamePrefix="custom-react-select"
                 onChange={(selected) =>
@@ -251,7 +237,7 @@ const EditBannerPopup = ({
                 options={selectPlace}
                 placeholder="Select"
                 styles={customStyles}
-                maxMenuHeight={120}
+                maxMenuHeight={100}
                 menuPlacement="auto"
                 classNamePrefix="custom-react-select"
                 onChange={(selected) =>
@@ -295,7 +281,6 @@ const EditBannerPopup = ({
             </div>
           </div>
 
-          {/* Display Existing Files */}
           <div className="d-flex w-100 mt-3 flex-column">
             <label className="black-text4 mb-1 small-font">
               Existing Files
@@ -308,21 +293,23 @@ const EditBannerPopup = ({
                       src={`${imgUrl}/${image}`}
                       alt={`preview-${idx}`}
                       className="img-thumbnail"
-                      style={{ width: "90px", height: "80px" }}
+                      style={{
+                        width: "90px",
+                        height: "80px",
+                        marginLeft: "5px",
+                      }}
                     />
-                    <button
-                      className="position-absolute top-0 end-0 btn btn-sm btn-danger"
+                    <MdCancel
+                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle "
+                      style={{ cursor: "pointer" }}
                       onClick={() => removeImage(idx, false)}
-                    >
-                      X
-                    </button>
+                    />
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Upload New Files */}
           <div className="d-flex w-100 mt-3 flex-column">
             <label className="black-text4 mb-1 small-font">
               Upload New Files
@@ -331,7 +318,7 @@ const EditBannerPopup = ({
               type="file"
               multiple
               onChange={handleImageChange}
-              className="form-control"
+              className="input-css2"
             />
             {formData.image?.length > 0 && (
               <div className="mt-2 d-flex">
@@ -341,24 +328,26 @@ const EditBannerPopup = ({
                       src={URL.createObjectURL(image)}
                       alt={`preview-${idx}`}
                       className="img-thumbnail"
-                      style={{ width: "90px", height: "80px" }}
+                      style={{
+                        width: "90px",
+                        height: "80px",
+                        marginLeft: "5px",
+                      }}
                     />
-                    <button
-                      className="position-absolute top-0 end-0 btn btn-sm btn-danger"
+                    <MdCancel
+                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle "
+                      style={{ cursor: "pointer" }}
                       onClick={() => removeImage(idx, true)}
-                    >
-                      X
-                    </button>
+                    />
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Update Button */}
-          <div className="d-flex w-100 mt-3">
+          <div className="d-flex w-100 mt-3 justify-content-center">
             <div
-              className="saffron-btn2 small-font pointer ms-2 w-100 mr-2"
+              className="saffron-btn2 small-font pointer ms-2 w-50 mr-2"
               onClick={handleSubmit}
             >
               {loading ? <FaSpinner className="spinner-circle" /> : "Update"}

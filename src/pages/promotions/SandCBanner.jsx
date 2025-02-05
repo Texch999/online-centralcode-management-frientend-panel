@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdBlockFlipped, MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
@@ -71,6 +71,8 @@ const SandCBanner = () => {
     selectedFiles: "",
     endDT: "",
   });
+
+  const hasFetched = useRef(false);
 
   const selectOptionsType = [
     { value: 1, label: "Sports" },
@@ -221,6 +223,8 @@ const SandCBanner = () => {
   };
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getBanners();
     getWebsites();
   }, []);
@@ -249,7 +253,6 @@ const SandCBanner = () => {
   };
 
   const handleEditBanners = (id) => {
-    console.log("id clicked", id);
     setSelectedBannerId(banners.find((item) => item.id === id));
     if (selectedBannerId) {
       setEditBanner(true);
@@ -395,11 +398,15 @@ const SandCBanner = () => {
                 <img
                   src={`${imgUrl}/${images[0]}`} // Access first image
                   alt="Banner"
-                  style={{ width: "200px", height: "150px" }}
+                  style={{ width: "200px", height: "150px", cursor: "pointer"}}
+                  onClick={() => {
+                    const images = JSON.parse(banner.image);
+                    handleFullScreen(images);
+                  }}
                 />
               );
             })()}
-          <TbArrowsDiagonal
+          {/* <TbArrowsDiagonal
             className="absolute zoom-out white-bg pointer"
             size={18}
             onClick={() => {
@@ -407,7 +414,7 @@ const SandCBanner = () => {
               handleFullScreen(images[0]);
             }}
             style={{ marginLeft: "-25px" }}
-          />
+          /> */}
         </div>
       </div>
     ),
@@ -439,13 +446,13 @@ const SandCBanner = () => {
         />
         <SlPencil
           size={18}
-          className="pointer me-1"
+          className="mx-3 pointer"
           onClick={() => handleEditBanners(banner.id)}
         />
 
         <FaRegTrashCan
           size={18}
-          className="pointer ms-2 delete"
+          className="mx-3 pointer"
           onClick={() => handleDeleteBannerConfirm(banner.id)}
         />
       </div>

@@ -93,27 +93,18 @@ const EditBroadcastPopup = ({
               <label className="black-text4 small-font mb-1">
                 Sports/Casino
               </label>
-              <Select
-                className="small-font"
-                options={selectOptionsType}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-                onChange={(selected) =>
-                  setFormData({
-                    ...formData,
-                    type: selected ? selected.value : null,
-                  })
-                }
+              <input
+                className="all-none input-css2 small-font p-2 rounded"
+                type="text"
+                placeholder="Enter type"
                 value={
                   formData.type
                     ? selectOptionsType.find(
                         (option) => option.value === formData.type
-                      )
+                      )?.label ||""
                     : null
                 }
+                readOnly 
               />
             </div>
 
@@ -130,6 +121,7 @@ const EditBroadcastPopup = ({
                       )?.label || ""
                     : ""
                 }
+                readOnly 
               />
             </div>
 
@@ -148,6 +140,7 @@ const EditBroadcastPopup = ({
                       )?.label || ""
                     : ""
                 }
+                readOnly 
               />
             </div>
           </div>

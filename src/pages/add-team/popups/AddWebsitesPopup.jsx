@@ -8,7 +8,7 @@ import { createWebsite, getWebsiteDetails, updateWebsite } from "../../../api/ap
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
 
-const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMode, websiteId, setEditMode }) => {
+const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMode, websiteId, setEditMode ,setWebsiteId}) => {
   const [formData, setFormData] = useState({
     deployType: null,
     panelType: null,
@@ -127,7 +127,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     } else if (
       !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/.test(formData.websiteURL)
     ) {
-      newErrors.websiteURL = "Invalid URL format. Must start with http:// or https://";
+      newErrors.websiteURL = "Invalid website URL, Please Enter Valid Website Url";
     }
 
     setErrors(newErrors);
@@ -149,6 +149,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
   const handleClose = () => {
     resetData();
     onHide();
+    setWebsiteId(null)
     setErrors({});
   };
 
@@ -189,6 +190,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
             setSuccessPopupOpen(true);
             setTimeout(() => {
               resetData()
+              setWebsiteId(null)
               setSuccessPopupOpen(false);
             }, 2000);
           } else {
