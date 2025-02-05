@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdLoop } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,11 +9,19 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
 import "../../add-team/style.css";
+import ConfirmationPopup from "../../popups/ConfirmationPopup";
+
 
 const UsersMatchPl = () => {
   const navigate = useNavigate();
   const { matchName, role, userDetails } = useParams();
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
 
+
+
+  const handleConfirmDeletePopupOpen = () => {
+    setShowConfirmPopup(true);
+  };
   const allOptions = [
     { value: "Option 1", label: "Option 1" },
     { value: "Option 2", label: "Option 2" },
@@ -77,7 +85,10 @@ const UsersMatchPl = () => {
           <div className="green-btn">settled</div>
           <div className="flex-between my-2 ">
             <SlPencil className="text-black font-20 pointer" />
-            <FaRegTrashCan className="text-black font-20 ms-3 pointer" />
+            <FaRegTrashCan 
+            className="text-black font-20 ms-3 pointer" 
+            onClick={handleConfirmDeletePopupOpen}
+/>
           </div>
         </div>
       ),
@@ -281,7 +292,7 @@ const UsersMatchPl = () => {
       >
         <IoIosArrowBack className="orange-clr fw-800 font-20 me-1" />
         <div>Match Wise P/L</div>
-        <div onClick={() => navigate(-2)}>
+        <div onClick={() => navigate(-1)}>
           <IoIosArrowForward className="mx-1" />
           {matchName}
         </div>
@@ -326,6 +337,12 @@ const UsersMatchPl = () => {
           itemsPerPage={3}
           footer={MATCHWISE_FOOTER}
         />
+            <ConfirmationPopup
+        confirmationPopupOpen={showConfirmPopup}
+        setConfirmationPopupOpen={setShowConfirmPopup}
+        discription="Are you sure you want to block this bet?"
+        submitButton="Block"
+      />
       </div>
     </div>
   );

@@ -9,11 +9,15 @@ import { BsEye } from "react-icons/bs";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+
 
 function SportsReport() {
   const navigate = useNavigate();
   const [activeSport, setActiveSport] = useState("All");
   const [activeRole, setActiveRole] = useState(false);
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+
   const { username } = useParams();
 
   const websiteOptions = [
@@ -48,6 +52,9 @@ function SportsReport() {
 
   const handleSportClick = (sport) => {
     setActiveSport(sport);
+  };
+  const handleConfirmDeletePopupOpen = () => {
+    setShowConfirmPopup(true);
   };
 
   const ADMIN_COLUMNS = [
@@ -151,8 +158,11 @@ function SportsReport() {
     ),
     status: (
       <div className="d-flex gap-3">
-          <SlPencil size={18} />
-          <FaRegTrashCan size={18} />
+        <SlPencil size={18} />
+        <FaRegTrashCan
+          size={18}
+          onClick={handleConfirmDeletePopupOpen}
+        />
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),
@@ -206,9 +216,8 @@ function SportsReport() {
         {SPORTS_BUTTONS?.map((sport, index) => (
           <div
             key={index}
-            className={`me-3 ${
-              activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-            }`}
+            className={`me-3 ${activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
+              }`}
             onClick={() => handleSportClick(sport)}
           >
             {sport}
@@ -275,6 +284,12 @@ function SportsReport() {
         footer={DIRECTOR_FOOTER}
         greyBackground="footer-bg"
         itemsPerPage={5}
+      />
+        <ConfirmationPopup
+        confirmationPopupOpen={showConfirmPopup}
+        setConfirmationPopupOpen={setShowConfirmPopup}
+        discription="Are you sure you want to block this report?"
+        submitButton="Block"
       />
     </div>
   );

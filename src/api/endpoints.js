@@ -224,8 +224,34 @@ const endpoints = {
   },
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/${id}`,
+    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
+
+  //DirectorAccountDetails
+
+  getDirectorAccountDetails :{
+    method: "get",
+    url: `/user/${userID()}/directorAccount`,
+  },
+  postDirectorAccountDetails :{
+    method: "post",
+    url: `/user/${userID()}/directorAccount`,
+  },
+  suspendDirectorAccountPaymentDetails:{
+    method:'patch',
+    url: (data) =>
+      `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
+  },
+  updateDirectorAccountDetails: {
+    method: "put",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  getDirectorAccountById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
 
   getDirectorAccessWebites: {
     method: "get",

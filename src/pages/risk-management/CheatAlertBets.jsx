@@ -8,16 +8,24 @@ import { SlPencil } from "react-icons/sl";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+
 
 function CheatAlertBets() {
   const [activeSport, setActiveSport] = useState("All");
   const [editBetPopupOpen, setEditBetPopupOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("cheats");
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+
   const handleSportClick = (sport) => {
     setActiveSport(sport);
   };
   const handleEditBetPopupOpen = () => {
     setEditBetPopupOpen(true);
+  };
+
+  const handleConfirmDeletePopupOpen = () => {
+    setShowConfirmPopup(true);
   };
   const handleChange = (selectedOption) => {
     setSelectedType(selectedOption?.value);
@@ -117,7 +125,11 @@ function CheatAlertBets() {
               size={18}
               onClick={handleEditBetPopupOpen}
             />
-            <FaRegTrashCan className="pointer" size={18} />
+            <FaRegTrashCan 
+            className="pointer" 
+            size={18} 
+            onClick={handleConfirmDeletePopupOpen}
+            />
           </div>
         </div>
       ),
@@ -467,6 +479,12 @@ function CheatAlertBets() {
       <EditBetPopup
         editBetPopupOpen={editBetPopupOpen}
         setEditBetPopupOpen={setEditBetPopupOpen}
+      />
+         <ConfirmationPopup
+        confirmationPopupOpen={showConfirmPopup}
+        setConfirmationPopupOpen={setShowConfirmPopup}
+        discription="Are you sure you want to block this bet?"
+        submitButton="Block"
       />
     </div>
   );
