@@ -282,6 +282,7 @@ const AddWibsites = () => {
         editMode={editMode}
         websiteId={websiteId}
         setEditMode={setEditMode}
+        setWebsiteId={setWebsiteId}
       />
 
       <ConfirmationPopup
