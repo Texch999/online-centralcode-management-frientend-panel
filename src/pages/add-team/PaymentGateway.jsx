@@ -343,7 +343,13 @@ const PaymentGateway = () => {
 
     action: (
       <div className="flex-center gap-2">
-        <SlPencil size={18} className="pointer me-2" onClick={() => handleEdit(item?.id)} />
+        {item?.status === 1 ? (
+          <SlPencil size={18} className="pointer me-2" onClick={() => handleEdit(item?.id)} />
+        ):(
+          <SlPencil size={18} className="pointer me-2 disabled"/>
+
+        )}
+        
         <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => handleStatus(item?.id, item?.status)} />
       </div>
     ),
