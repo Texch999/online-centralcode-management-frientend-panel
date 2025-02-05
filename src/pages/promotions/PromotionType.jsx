@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 import Table from "../../components/Table";
 import { MdBlockFlipped } from "react-icons/md";
@@ -42,7 +42,11 @@ const PromotionType = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ promotionType: "", image: "" });
 
+  const hasFetched = useRef(false);
+
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getPromotions();
     getPromotionsImages();
   }, []);
@@ -54,28 +58,32 @@ const PromotionType = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-  
+
     if (file) {
       const maxSize = 2 * 1024 * 1024;
-      const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-  
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+
       if (!allowedTypes.includes(file.type)) {
         setMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
         setErrorPopupOpen(true);
         return;
       }
-  
+
       if (file.size > maxSize) {
         setMessage("File size should not exceed 2MB.");
         setErrorPopupOpen(true);
         return;
       }
-  
+
       setSelectedFile(file);
       setErrors((prev) => ({ ...prev, image: "" }));
     }
   };
-  
 
   const getPromotions = async () => {
     try {
@@ -133,7 +141,7 @@ const PromotionType = () => {
     } catch (error) {
       setMessage(error?.message);
       setLoading(false);
-      setSelectedFile(null)
+      setSelectedFile(null);
       setErrorPopupOpen(true);
     }
   };
@@ -154,7 +162,6 @@ const PromotionType = () => {
   };
 
   const handleDeletePoster = (id) => {
-    console.log("sdmvnejfvne", id);
     setSelectedPromotionId(id);
     setPosterDeleteModal(true);
   };
@@ -227,13 +234,8 @@ const PromotionType = () => {
           <img
             src={`${imgUrl}/${promotionsImage.image}`}
             alt="Promotion"
-            style={{ width: "200px", height: "150px" }}
-          />
-          <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
+            style={{ width: "200px", height: "150px", cursor: "pointer" }}
             onClick={() => handleFullScreen(promotionsImage.image)}
-            style={{ marginLeft: "-25px" }}
           />
         </div>
       </div>
@@ -278,7 +280,6 @@ const PromotionType = () => {
   };
 
   const DeletePoster = async () => {
-    console.log("selectedPromotionId", selectedPromotionId);
     try {
       setLoading(true);
       const response = await deletePromotionsImages(selectedPromotionId);
@@ -288,13 +289,9 @@ const PromotionType = () => {
         getPromotionsImages();
         setErrorPopupOpen(false);
         setSuccessPopupOpen(true);
-
-        // setTimeout(() => {
-        //   getAction();
-        // }, 100);
       }
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
       setLoading(false);
       setMessage(error?.message);
       setErrorPopupOpen(true);

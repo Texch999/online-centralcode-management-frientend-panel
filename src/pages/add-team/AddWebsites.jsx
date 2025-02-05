@@ -29,6 +29,7 @@ const AddWibsites = () => {
   const [displayMsg, setDisplayeMsg] = useState("")
   const itemsPerPage = 9;
   const currentOffset = (currentPage - 1) * 11
+  const isInitialRender = useRef(true);
   const getAllWebsiteList = () => {
     const limit = itemsPerPage
     const offset = currentOffset
@@ -84,11 +85,15 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   }
-  const isInitialRender = useRef(true);
 
   useEffect(() => {
-    if ((isInitialRender.current) && (filterName === "")) {
-      isInitialRender.current = false; 
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      getCountries();
+      return;
+    }
+
+    if (filterName.trim() === "") {
       if (role === "management") {
         getAllWebsiteList();
       } else {
@@ -97,15 +102,7 @@ const AddWibsites = () => {
     }
   }, [filterName, role]);
 
-  // useEffect(() => {
-  //   if (filterName === "") {
-  //     if (role === "management") {
-  //       getAllWebsiteList();
-  //     } else {
-  //       getAllDirectorWebsiteList()
-  //     }
-  //   }
-  // }, [filterName,role])
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -132,27 +129,27 @@ const AddWibsites = () => {
     url: website.web_url.toLowerCase(),
     action: (
       <div className="flex-end gap-4">
-        {website.status === 1 ?
-          <div>
-            <SlPencil
-              size={18}
-              className={`pointer`}
-              onClick={() => {
-                setOnAddwebsitePopup(true)
-                setEditMode(true)
-                setWebsiteId(website?.id)
-              }}
-            />
-          </div>
-          : null}
+        <div>
+          <SlPencil
+            size={18}
+            className={`pointer ${website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={() => {
+              if (website.status === 1) {
+                setOnAddwebsitePopup(true);
+                setEditMode(true);
+                setWebsiteId(website?.id);
+              }
+            }}
+          />
+        </div>
 
         <MdBlockFlipped
           size={18}
           className={`pointer ${website.status === 1 ? "green-clr" : "dark-orange-clr"}`}
           onClick={() => {
-            setConfirmationPopupOpen(true)
-            setWebsiteId(website?.id)
-            setStatus(website?.status)
+            setConfirmationPopupOpen(true);
+            setWebsiteId(website?.id);
+            setStatus(website?.status);
           }}
         />
       </div>
@@ -252,12 +249,7 @@ const AddWibsites = () => {
           {role === "management" ? (
             <button
               className="rounded-pill input-pill blue-font small-font px-2"
-              onClick={
-                () => {
-                  getCountries();
-                  setOnAddwebsitePopup(true)
-                }}
-            >
+              onClick={() => setOnAddwebsitePopup(true)}>
               <FaPlus /> Add New Website{" "}
             </button>
           ) : (
@@ -303,6 +295,7 @@ const AddWibsites = () => {
         editMode={editMode}
         websiteId={websiteId}
         setEditMode={setEditMode}
+        setWebsiteId={setWebsiteId}
       />
 
       <ConfirmationPopup
@@ -310,7 +303,6 @@ const AddWibsites = () => {
         setConfirmationPopupOpen={setConfirmationPopupOpen}
         discription="Are you sure you want to block this website?"
         submitButton={status === 1 ? "Block" : "Unblock"}
-        websiteId={websiteId}
         onSubmit={handleBlockAndUnblock}
       />
       <SuccessPopup

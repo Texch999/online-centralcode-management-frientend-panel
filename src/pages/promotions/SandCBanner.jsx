@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdBlockFlipped, MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
@@ -59,6 +59,10 @@ const SandCBanner = () => {
   const [selectedBannerStatus, setSelectedBannerStatus] = useState(null);
   const [bannerBlockModal, setBannerBlockModal] = useState(false);
 
+  const [editBanner, setEditBanner] = useState(false);
+
+  const [bannerDeleteModal, setBannerDeleteModal] = useState(false);
+
   const [errors, setErrors] = useState({
     selectType: "",
     selectWebsites: "",
@@ -68,13 +72,15 @@ const SandCBanner = () => {
     endDT: "",
   });
 
+  const hasFetched = useRef(false);
+
   const selectOptionsType = [
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
   ];
   const selectPages = [
     { value: "home", label: "Home" },
-    { value: "discription", label: "Description" },
+    { value: "description", label: "Description" },
     { value: "wallet", label: "Wallet" },
     { value: "login", label: "Login" },
   ];
@@ -217,6 +223,8 @@ const SandCBanner = () => {
   };
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getBanners();
     getWebsites();
   }, []);
@@ -244,25 +252,47 @@ const SandCBanner = () => {
     }
   };
 
-  const handleEditBanners = async () => {
-    try {
-      const response = await editBanner();
-      if (response.status === 200) {
-        setMessage(response.setMessage);
-      }
-    } catch (error) {
-      setMessage(error.setMessage);
+  const handleEditBanners = (id) => {
+    console.log("id clicked", id);
+    setSelectedBannerId(banners.find((item) => item.id === id));
+    if (selectedBannerId) {
+      setEditBanner(true);
     }
   };
+
+  const handleEditResult = (result) => {
+    if (result === "success") {
+      setErrorPopupOpen(false);
+      setSuccessPopupOpen(true);
+    } else {
+      setSuccessPopupOpen(false);
+      setErrorPopupOpen(true);
+    }
+  };
+
+
   const handleDeleteBanners = async () => {
     try {
-      const response = await deleteBanner();
-      if (response.status === 200) {
-        setMessage(response.setMessage);
+      setLoading(true);
+      const response = await deleteBanner(selectedBannerId);
+      if (response?.status === 200) {
+        setMessage(response?.message);
+        setLoading(false);
+        getBanners();
+        setErrorPopupOpen(false);
+        setSuccessPopupOpen(true);
       }
     } catch (error) {
-      setMessage(error.setMessage);
+      console.log("error", error)
+      setLoading(false);
+      setMessage(error?.message);
+      setErrorPopupOpen(true);
     }
+  };
+
+  const handleDeleteBannerConfirm = (id) => {
+    setSelectedBannerId(id);
+    setBannerDeleteModal(true);
   };
 
   const handleFullScreen = (image) => {
@@ -368,12 +398,16 @@ const SandCBanner = () => {
               return (
                 <img
                   src={`${imgUrl}/${images[0]}`} // Access first image
-                  alt="Promotion"
-                  style={{ width: "200px", height: "150px" }}
+                  alt="Banner"
+                  style={{ width: "200px", height: "150px", cursor: "pointer"}}
+                  onClick={() => {
+                    const images = JSON.parse(banner.image);
+                    handleFullScreen(images);
+                  }}
                 />
               );
             })()}
-          <TbArrowsDiagonal
+          {/* <TbArrowsDiagonal
             className="absolute zoom-out white-bg pointer"
             size={18}
             onClick={() => {
@@ -381,7 +415,7 @@ const SandCBanner = () => {
               handleFullScreen(images[0]);
             }}
             style={{ marginLeft: "-25px" }}
-          />
+          /> */}
         </div>
       </div>
     ),
@@ -413,10 +447,15 @@ const SandCBanner = () => {
         />
         <SlPencil
           size={18}
-          className="pointer me-1"
+          className="mx-3 pointer"
           onClick={() => handleEditBanners(banner.id)}
         />
-        <FaRegTrashCan size={18} className="ms-1" />
+
+        <FaRegTrashCan
+          size={18}
+          className="mx-3 pointer"
+          onClick={() => handleDeleteBannerConfirm(banner.id)}
+        />
       </div>
     ),
   }));
@@ -425,10 +464,10 @@ const SandCBanner = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Sports/Casino Banners</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+        {/* <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
-        </div>
+        </div> */}
       </div>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -630,15 +669,24 @@ const SandCBanner = () => {
         submitButton={selectedBannerStatus === 1 ? "Block" : "UnBlock"}
         onSubmit={BockOrUnblock}
       />
+      <ConfirmationPopup
+        confirmationPopupOpen={bannerDeleteModal}
+        setConfirmationPopupOpen={() => setBannerDeleteModal(false)}
+        discription={"are you sure you want to delete this Banner"}
+        selectedId={selectedBannerId}
+        submitButton={"Delete"}
+        onSubmit={handleDeleteBanners}
+      />
       <EditBannerPopup
-        // editBroadcast={editBroadcast}
-        // setEditBroadcast={setEditBroadcast}
-        // editBroadcastModel={"Edit Broadcast"}
-        // selectedIdForEdit={selectedIdForEdit}
-        // setSelectedIdForEdit={setSelectedIdForEdit}
-        // setMessage={setMessage}
-        // onSubmit={getBroadCastingdata}
-        // onSubmitResult={handleEditResult}
+        editBanner={editBanner}
+        setEditBanner={setEditBanner}
+        editBannerModel={"Edit Banner"}
+        selectedBannerId={selectedBannerId}
+        setSelectedBannerId={setSelectedBannerId}
+        setMessage={setMessage}
+        websitesList={websitesList}
+        onSubmit={getBanners}
+        onSubmitResult={handleEditResult}
       />
     </div>
   );

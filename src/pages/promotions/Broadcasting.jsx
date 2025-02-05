@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSearch, FaSpinner } from "react-icons/fa";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -43,7 +43,9 @@ const Broadcasting = () => {
   const [selectedBroadcastStatus, setSelectedBroadcastStatus] = useState();
   const [broadcastBlockModal, setBroadcastBlockModal] = useState(false);
   const [selectedIdForEdit, setSelectedIdForEdit] = useState([]);
-  
+
+  const hasFetched = useRef(false);
+
   const [errors, setErrors] = useState({
     selectType: "",
     selectWebsites: "",
@@ -55,9 +57,9 @@ const Broadcasting = () => {
     { value: 1, label: "Sports" },
     { value: 2, label: "Casino" },
   ];
- 
+
   const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id, 
+    value: item.id,
     label: item.web_name,
   }));
 
@@ -85,6 +87,8 @@ const Broadcasting = () => {
   };
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getWebsites();
     getBroadCastingdata();
   }, []);
@@ -201,7 +205,6 @@ const Broadcasting = () => {
     }
   };
 
- 
   const handleEditResult = (result) => {
     if (result === "success") {
       setErrorPopupOpen(false);
@@ -211,7 +214,6 @@ const Broadcasting = () => {
       setErrorPopupOpen(true);
     }
   };
-  
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -281,10 +283,6 @@ const Broadcasting = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Broadcasting</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
-        </div>
       </div>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -419,6 +417,7 @@ const Broadcasting = () => {
         editBroadcastModel={"Edit Broadcast"}
         selectedIdForEdit={selectedIdForEdit}
         setSelectedIdForEdit={setSelectedIdForEdit}
+        websitesList={websitesList}
         setMessage={setMessage}
         onSubmit={getBroadCastingdata}
         onSubmitResult={handleEditResult}

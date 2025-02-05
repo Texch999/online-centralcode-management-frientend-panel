@@ -216,7 +216,7 @@ const getBanner = () => {
 const createBanner = (data) => {
   return apiRequest("createBanner", data);
 };
-const editBanner = (id, data) => {
+const editBannerApi = (id, data) => {
   return apiRequest("editBanner", data, id);
 };
 const deleteBanner = (id, data) => {
@@ -280,7 +280,7 @@ export {
   getDirectorAccessWebites,
   getBanner,
   createBanner,
-  editBanner,
+  editBannerApi,
   deleteBanner,
   statusUpdateBanner,
 };
