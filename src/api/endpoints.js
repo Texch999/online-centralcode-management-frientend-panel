@@ -19,7 +19,7 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
-  getCountries: { method: "get", url: `/user/${userID()}/countries` },
+  getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
   getAdminWebsites: {
     method: "get",
     url: `/user/${userID()}/website/adminWebsites`,
@@ -178,9 +178,10 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
+  //privacy
   getPrivacyPolicy: {
     method: "get",
-    url: `/user/${userID()}/privacypolicies/`,
+    url: () => `/user/${userID()}/privacypolicies/`,
   },
   getPrivacyPolicyById: {
     method: "get",
@@ -200,10 +201,10 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
-  getCountries: {
-    method: "get",
-    url: `/user/${userID()}/countries`,
-  },
+  // getCountries: {
+  //   method: "get",
+  //   url: `/user/${userID()}/countries`,
+  // },
 
   getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
   getDirectorEmployeesLoginLogsList: {
@@ -225,7 +226,7 @@ const endpoints = {
 
   getAvailableWebsites: {
     method: "get",
-    url: (id) => `user/${userID()}/privacypolicies/${id}/websites`,
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/websites`,
   },
 
   // createDirector: { method: "post", url: `/user/${userID()}/create` },
@@ -287,7 +288,6 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
-  // director created SA list 
   // director created SA list
   getDirectorDwnList: {
     method: "get",
@@ -319,6 +319,10 @@ const endpoints = {
   //   method: "put",
   //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
   // },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
 };
 
 export default endpoints;

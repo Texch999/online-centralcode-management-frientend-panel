@@ -219,6 +219,9 @@ const statusUpdateBanner = (id, data) => {
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
 };
+const addWebsiteToPrivacyPolicy = (id, data) => {
+  return apiRequest("addWebsiteToPrivacyPolicy", data, id);
+};
 export {
   loginUser,
   getAllSecurityQuestions,
@@ -281,4 +284,5 @@ export {
   editBannerApi,
   deleteBanner,
   statusUpdateBanner,
+  addWebsiteToPrivacyPolicy,
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -46,7 +46,8 @@ const PrivacyPolicy = () => {
   const [isEditModal, setIsEditModal] = useState("");
   const [availablePrivacyWebsiteId, setAvailablePrivacyWebsiteId] =
     useState(null);
-  const[countriesData,setCountriesData]=useState([])
+  const [countriesData, setCountriesData] = useState([]);
+  // const[selectedWebsiteid,setSelectedWebsiteid]=useState(null);
   const handleEditPrivacyModal = (id) => {
     setPrivacyPolicyId(id);
     setEditPrivacyPolicyModal(true);
@@ -81,24 +82,26 @@ const PrivacyPolicy = () => {
     setAvailablePrivacyWebsiteId(id);
   };
 
-  const getAllCountries = () => {
+  const getAllCountries = useCallback(() => {
     getCountries()
       .then((response) => {
         console.log("Countries", response);
         const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
         setCountries(updatedCountries);
-        setCountriesData(response?.data)
+        setCountriesData(response?.data);
       })
       .catch((error) => {
         setError(error?.message);
       });
-  };
+  });
 
   useEffect(() => {
     getAllCountries();
+    console.log("Countries12345678");
   }, []);
 
-  const getAllWebsites = () => {
+  const getAllWebsites = useCallback(() => {
+    if (websites.length > 0) return;
     getWebsites()
       .then((response) => {
         console.log("Websites", response.data);
@@ -107,10 +110,11 @@ const PrivacyPolicy = () => {
       .catch((error) => {
         setError(error?.message);
       });
-  };
+  });
   useEffect(() => {
     getAllWebsites();
   }, []);
+
   console.log(privacyList, "privacyList");
 
   const filteredData =
@@ -127,8 +131,11 @@ const PrivacyPolicy = () => {
   ];
 
   const REJECTION_DATA = filteredData.map((item, index) => {
+    const country = countries?.find(
+      (country) => country.id === item.country_id
+    );
     return {
-      country: <div>{item?.name}</div>,
+      country: <div>{country?.name}</div>,
       policyDetails: (
         <div
           className="saffron-btn2 w-20 pointer"
@@ -141,7 +148,9 @@ const PrivacyPolicy = () => {
           View
         </div>
       ),
-      showingWebsite: <div>{item?.web_name}</div>,
+      showingWebsite: item?.websites?.map((item) => (
+        <div className="d-flex flex-column">{item?.web_name}</div>
+      )),
       status: (
         <div
           className={`${
@@ -153,12 +162,18 @@ const PrivacyPolicy = () => {
       ),
       action: (
         <div className="large-font d-flex w-50 flex-between">
-          <span
-            className="mx-3 pointer"
-            onClick={() => hanldeWebsites(item?.id)}
-          >
-            <CgWebsite size={20} />
-          </span>
+          {item?.is_active === 2 ? (
+            <span className="mx-3 pointer disabled">
+              <CgWebsite size={20} />
+            </span>
+          ) : (
+            <span
+              className="mx-3 pointer"
+              onClick={() => hanldeWebsites(item?.id)}
+            >
+              <CgWebsite size={20} />
+            </span>
+          )}
           {item?.is_active === 2 ? (
             <span title="this action is denied" className="disabled">
               <SlPencil size={20} />
@@ -183,6 +198,7 @@ const PrivacyPolicy = () => {
   });
 
   const getPolicyPrivacyData = () => {
+    // if(privacyList.length > 0) return;
     setLoading(true);
     getPrivacyPolicy()
       .then((response) => {
@@ -281,6 +297,7 @@ const PrivacyPolicy = () => {
         selectWebsite={selectWebsite}
         setAvailablePrivacyWebsiteId={setAvailablePrivacyWebsiteId}
         availablePrivacyWebsiteId={availablePrivacyWebsiteId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
       />
       <ActiveInActiveModal
         privacyStatusId={privacyStatusId}
