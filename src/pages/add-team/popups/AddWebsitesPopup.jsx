@@ -127,7 +127,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     } else if (
       !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/.test(formData.websiteURL)
     ) {
-      newErrors.websiteURL = "Invalid URL format. Must start with http:// or https://";
+      newErrors.websiteURL = "Invalid website URL, Please Enter Valid Website Url";
     }
 
     setErrors(newErrors);
