@@ -201,7 +201,6 @@ const Broadcasting = () => {
     }
   };
 
- 
   const handleEditResult = (result) => {
     if (result === "success") {
       setErrorPopupOpen(false);
@@ -211,7 +210,6 @@ const Broadcasting = () => {
       setErrorPopupOpen(true);
     }
   };
-  
 
   const CASINO_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
@@ -281,10 +279,6 @@ const Broadcasting = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Broadcasting</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
-        </div>
       </div>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -419,6 +413,7 @@ const Broadcasting = () => {
         editBroadcastModel={"Edit Broadcast"}
         selectedIdForEdit={selectedIdForEdit}
         setSelectedIdForEdit={setSelectedIdForEdit}
+        websitesList={websitesList}
         setMessage={setMessage}
         onSubmit={getBroadCastingdata}
         onSubmitResult={handleEditResult}

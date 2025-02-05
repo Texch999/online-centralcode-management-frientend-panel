@@ -154,7 +154,6 @@ const PromotionType = () => {
   };
 
   const handleDeletePoster = (id) => {
-    console.log("sdmvnejfvne", id);
     setSelectedPromotionId(id);
     setPosterDeleteModal(true);
   };
@@ -278,7 +277,6 @@ const PromotionType = () => {
   };
 
   const DeletePoster = async () => {
-    console.log("selectedPromotionId", selectedPromotionId);
     try {
       setLoading(true);
       const response = await deletePromotionsImages(selectedPromotionId);
@@ -288,10 +286,6 @@ const PromotionType = () => {
         getPromotionsImages();
         setErrorPopupOpen(false);
         setSuccessPopupOpen(true);
-
-        // setTimeout(() => {
-        //   getAction();
-        // }, 100);
       }
     } catch (error) {
       console.log("error", error)
