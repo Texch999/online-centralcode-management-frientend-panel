@@ -228,19 +228,19 @@ const ActivityLogs = () => {
       {/* Tabs for filtering logs */}
       <div className="d-flex mb-3">
         <button
-          className={`tab-btn  ${activeTab === "employees" ? "active" : ""}`}
+          className={`tab-btn small-font  ${activeTab === "employees" ? "active" : ""}`}
           onClick={() => handleTabClick("employees", 0)}
         >
           Employees
         </button>
         <button
-          className={`tab-btn ${activeTab === "admins" ? "active" : ""}`}
+          className={`tab-btn small-font ${activeTab === "admins" ? "active" : ""}`}
           onClick={() => handleTabClick("admins", 2)}
         >
           Admins
         </button>
         {userRole !== "director" ? <button
-          className={`tab-btn ${activeTab === "directors" ? "active" : ""}`}
+          className={`tab-btn small-font ${activeTab === "directors" ? "active" : ""}`}
           onClick={() => handleTabClick("directors", 1)}
         >
           Directors

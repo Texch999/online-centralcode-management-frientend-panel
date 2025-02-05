@@ -426,7 +426,7 @@ const UserProfileDashboard = () => {
       {/* Tabs Section */}
       <div className="row py-3 px-3">
         <div className="col-7 p-0">
-          <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3">
+          <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3z">
             <button
               className={`small-font rounded p-2 w-25 ${
                 activeTab === "websitesLimit" && "saffron-btn"
