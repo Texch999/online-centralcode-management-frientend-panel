@@ -1,4 +1,11 @@
-const userID = () => localStorage.getItem("user_id");
+const userID = () => {
+  const id = localStorage.getItem("user_id");
+  if (!id) {
+    console.error("User ID is not available.");
+    return null;
+  }
+  return id;
+};
 const endpoints = {
   // loginUser: { method: "post", url: "/master/login" },
   createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
@@ -17,7 +24,7 @@ const endpoints = {
       return `/user/${userID()}/website/websites?${query}`;
     },
   },
-  getAllCountires: { method: "get", url: `/user/${userID()}/countries` },
+  getAllCountires: { method: "get", url: () => `/user/${userID()}/countries` },
   blockAndUnblock: {
     method: "put",
     url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
@@ -258,6 +265,7 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
+  // director created SA list 
   // director created SA list
   getDirectorDwnList: {
     method: "get",
