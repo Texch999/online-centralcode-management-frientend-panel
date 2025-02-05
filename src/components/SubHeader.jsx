@@ -113,7 +113,7 @@ function SubHeader() {
         label: "Live/Block",
         options: [
           { label: "Sports", path: "/live-block-sports" },
-          { label: "Casino", path: "//management-casino" },
+          { label: "Casino", path: "/management-casino" },
           { label: "Set Limits", path: "/set-limits" },
           { label: "In-active Users", path: "/inactive-users" },
           { label: "Bet Block Users", path: "/bet-block-users" },
@@ -357,8 +357,9 @@ function SubHeader() {
           key={index}
         >
           <Dropdown
-            onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
+            // onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
             className="w-100"
+            onClick={(isOpen) => handleDropdownToggle(index, isOpen)}
           >
             <Dropdown.Toggle
               variant="none"
