@@ -17,9 +17,6 @@ const AddManagementPopup = ({
   onClose,
   onSubmit,
   show,
-  mode,
-  isEdit,
-  managementData,
   editingRowId,
 }) => {
   const [showPassword, setShowPassword] = useState({
@@ -27,6 +24,8 @@ const AddManagementPopup = ({
     confirmPassword: false,
     managementPassword: false,
   });
+
+  const Role=localStorage.getItem("roleCode")
   console.log(editingRowId, "editingRowId");
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
@@ -100,49 +99,13 @@ const AddManagementPopup = ({
         setError(error?.message || "Login failed");
       });
   };
-  // const [employeeData, setEmployeeData] = useState();
-  // console.log(employeeData, "employeeData");
-
-  // const GetEmployementDetailsById = () => {
-  //   getEmployeeDetailsById(editingRowId)
-  //     .then((response) => {
-  //       console.log(response, "Full API Response");
-  //       if (response && response.userDeatils) {
-  //         console.log(response.userDeatils, "response123");
-  //         setEmployeeData(response.userDeatils);
-  //       } else {
-  //         setError("No employee data found");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("API Call Error:", error);
-  //       setError(error?.message || "Login failed");
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   GetEmployementDetailsById();
-  // }, [editingRowId]);
-
-
-  // useEffect(() => {
-  //   if (isEdit && employeeData) {
-  //     setValue("role", employeeData.role_id);
-  //     setValue("name", employeeData.name);
-  //     setValue("loginName", employeeData.login_name);
-  //     setValue("phoneNumber", employeeData.phone_no);
-  //     setValue("email", employeeData.email);
-  //     setSelectedRoleId(employeeData.role_id);
-  //   }
-  // }, [isEdit, employeeData, setValue]);
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <Modal.Body>
         <div className="d-flex justify-content-between align-items-center">
-          {mode === "edit" ? "Edit Management Team" : "Add Management Team"}
+        {Role === "management" ? <h6 className="yellow-font mb-0 py-2 border-bottom-grey">Add Management Team</h6> :<h5 className="yellow-font mb-0 py-2 border-bottom-grey">Add Director Team</h5>}
 
-          {/* <h6 className="mb-0 fw-600 black-font">Add Management Team</h6> */}
           <MdOutlineClose
             size={20}
             type="button"
@@ -157,25 +120,7 @@ const AddManagementPopup = ({
           <div className="row mb-3">
             <div className="col">
               <label className="small-font mb-1">Role</label>
-              {/* 
-                <Select
-                  className="small-font"
-                  options={roleOptions}
-                  value={roleOptions.find(
-                    (option) => option.value === selectedRoleId
-                  )}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                  onChange={(selectedOption) => {
-                    console.log("Selected Option:", selectedOption);
-                    setSelectedRoleId(selectedOption?.value);
-                    setValue("role", selectedOption?.value, {
-                      shouldValidate: true,
-                    });
-                  }}
-                /> */}
+             
               <Select
                 className="small-font"
                 options={roleOptions}

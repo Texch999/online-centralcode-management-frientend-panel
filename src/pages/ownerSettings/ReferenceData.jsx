@@ -227,7 +227,8 @@ const ReferenceData = () => {
               }
             }}
           >
-            <IoAddOutline className="large-font" /> Add new
+            <IoAddOutline className="font-25 fw-800" /> 
+            <span className="small-font mx-1">Add New</span>
           </div>
         </div>
       </div>

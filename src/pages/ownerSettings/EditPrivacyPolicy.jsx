@@ -22,8 +22,7 @@ const EditPrivacyPolicy = ({
   const [showPrivacyText, setShowPrivacyText] = useState({ description: "" });
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   console.log(showPrivacyText?.description, "showPrivacyText");
-  const [errorPopup,
-    setErrorPopup]=useState(false);
+  const [errorPopup, setErrorPopup] = useState(false);
 
   const getPolicyPrivacyDataById = () => {
     getPrivacyPolicyById(privacyPolicyId)
@@ -33,7 +32,7 @@ const EditPrivacyPolicy = ({
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true)
+        setErrorPopup(true);
         console.log("getPrivacyPolicy error", error);
       });
   };
@@ -53,13 +52,13 @@ const EditPrivacyPolicy = ({
           setSuccessPopupOpen(false);
         }, 1000);
         setEditPrivacyPolicyModal(false);
+        getPolicyPrivacyData();
         privacyPolicyId(null);
         setShowPrivacyText("");
-        getPolicyPrivacyData();
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true)
+        setErrorPopup(true);
         console.log(error, "errorrrr");
       });
   };

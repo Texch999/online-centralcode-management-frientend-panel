@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
@@ -25,6 +24,10 @@ const loginDirector = (data) => {
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
 };
+const addDirectorTeam = (data) => {
+  return apiRequest("addDirectorTeam", data);
+};
+
 const createDirector = (data) => {
   return apiRequest("createDirector", data);
 };
@@ -62,6 +65,14 @@ const updateEmployeeByID = (id, data) => {
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
 };
+const getDirectorDetailsById = (id) => {
+  return apiRequest("getDirectorDetailsById", null, id);
+};
+
+const getDirectorEmployees = (params) => {
+  return apiRequest("getDirectorEmployees", {}, params);
+};
+// const getWebsitesList = (params) => {
 const getDirectorAccountDetails = (data) => {
   return apiRequest("getDirectorAccountDetails");
 };
@@ -69,22 +80,19 @@ const getDirectorAccountDetails = (data) => {
 const postDirectorAccountDetails = (data) => {
   return apiRequest("postDirectorAccountDetails", data);
 };
-const suspendDirectorAccountPaymentDetails=(id,status)=>{
-  return apiRequest("suspendDirectorAccountPaymentDetails",id,{id,status});
+const suspendDirectorAccountPaymentDetails = (id, status) => {
+  return apiRequest("suspendDirectorAccountPaymentDetails", id, { id, status });
 };
-const updateDirectorAccountDetails=(id,data)=>{
-  return apiRequest("updateDirectorAccountDetails",data,id);
+const updateDirectorAccountDetails = (id, data) => {
+  return apiRequest("updateDirectorAccountDetails", data, id);
 };
-const getDirectorAccountById=(id,data) =>{
-  return apiRequest("getDirectorAccountById",data,id);
-}
-
+const getDirectorAccountById = (id, data) => {
+  return apiRequest("getDirectorAccountById", data, id);
+};
 
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
 };
-
-
 
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
@@ -119,7 +127,6 @@ const statusPromotionsTypes = (id, data) => {
   return apiRequest("statusPromotionsTypes", data, id);
 };
 const deletePromotionsImages = (id, data) => {
-  console.log("data", id);
   return apiRequest("deletePromotionsImages", data, id);
 };
 export const getBroadCasting = () => {
@@ -129,11 +136,11 @@ export const getBroadCasting = () => {
 export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
-export const editBroadCasting = (id,data) => {
-  return apiRequest("editBroadCasting",data,id);
+export const editBroadCasting = (id, data) => {
+  return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {
-  return apiRequest("statusBroadcastUpdate",data,id);
+  return apiRequest("statusBroadcastUpdate", data, id);
 };
 
 export const getLoggedInLogs = (params) => {
@@ -194,10 +201,6 @@ const getDirectorEmployeesLoginLogsByEmployeeId = (params) => {
   return apiRequest("getDirectorEmployeesLoginLogsByEmployeeId", {}, params);
 };
 
-
-
-
-
 const getDirectorDwnList = (data) => {
   return apiRequest("getDirectorDwnList", data);
 };
@@ -228,6 +231,9 @@ const statusUpdateBanner = (id, data) => {
 
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
+};
+const addWebsiteToPrivacyPolicy = (id, data) => {
+  return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
 export {
   loginUser,
@@ -270,6 +276,9 @@ export {
   getUserWebsites,
   blockDirector,
   resetDirectorPassword,
+  getDirectorDetailsById,
+  getDirectorEmployees,
+  addDirectorTeam,
   getDirectorEmployeesLoginLogsList,
   getDirectorEmployeesLoginLogsByEmployeeId,
   getAvailableWebsites,
@@ -283,4 +292,5 @@ export {
   editBannerApi,
   deleteBanner,
   statusUpdateBanner,
+  addWebsiteToPrivacyPolicy,
 };

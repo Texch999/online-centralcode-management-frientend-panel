@@ -21,7 +21,7 @@ function Login() {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState();
   console.log(loginData, "loginData");
-  const location = useLocation();  // Get the current pathname
+  const location = useLocation();
 
   const handleLogin = (data) => {
     const payload = {
@@ -32,11 +32,11 @@ function Login() {
 
     setLoading(true);
 
-    // const loginApiCall = location.pathname === "/director/login" ? loginDirector : loginUser;
+
     const loginApiCall = location.pathname === "/director/login" || !location.pathname ? loginDirector : loginUser;
 
 
-    loginApiCall(payload)  // Call the appropriate API function based on the pathname
+    loginApiCall(payload)
 
       .then((response) => {
         setLoading(false);

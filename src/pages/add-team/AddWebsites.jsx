@@ -9,6 +9,7 @@ import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 import { getAllCountires, getWebsitesList, blockAndUnblock, getDirectorAccessWebites } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
+import { controllers } from "chart.js";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
@@ -61,6 +62,7 @@ const AddWibsites = () => {
     })
       .then((response) => {
         if (response?.status) {
+          console.log(response, "dir websites")
           setDirectorSites(response.data);
         } else {
           setError("Something Went Wrong");
@@ -228,7 +230,6 @@ const AddWibsites = () => {
 
       });
   }
-
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
