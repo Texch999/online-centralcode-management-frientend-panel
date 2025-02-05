@@ -39,13 +39,15 @@ const AddManagementTeam = () => {
   }, []);
 
   const TableData = tableData.map((employee) => {
+    const role = Roles[Number(employee.role)] || "Unknown"; // Convert to number if necessary
+
     return {
       id: employee.id,
       name: employee.name,
       login_name: employee.login_name,
       phone_no: employee.phone_no,
       email: employee.email,
-      role: Roles[employee.role] || "Unknown",
+      role: employee.role,
       status: employee.status === 1 ? "green-clr" : "clr-red",
       statusColor: employee.status === 1 ? "green-clr" : "clr-red",
       created_date: new Date(employee.created_date).toLocaleString(),

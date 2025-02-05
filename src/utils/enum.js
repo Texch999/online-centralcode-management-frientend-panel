@@ -21,5 +21,4 @@ const directorEmployees = Object.freeze({
   3: "Designing team (Promotion)",
 });
 
-// Correct way to export both objects
 module.exports = { Roles, adminRoles, directorEmployees ,directorDwnlns};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaPlus, FaSearch } from 'react-icons/fa'
 import Table from '../../components/Table'
 import { MdBlockFlipped, MdLockReset } from 'react-icons/md'
@@ -19,6 +19,8 @@ function AddDirectorTeam() {
     const [confirmationPopup, setConfirmationPopup] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [directorEmployeeId, setdirectorEmployeeId] = useState()
+    const [isEditMode, setIsEditMode] = useState(false);
+
     console.log(selectedUser, "selectedUser")
     const handleBlockPopup = (id, name) => {
         setConfirmationPopup(true)
@@ -27,13 +29,15 @@ function AddDirectorTeam() {
     }
     const handleModalOpen = () => {
         setShowModal(true);
+        setIsEditMode(false)
     };
     // const handleEditModalOpen = (id) => {
     //     setdirectorEmployeeId(id)
     //     setShowEditModal(true)
     // }
     const handleEditModalOpen = (data) => {
-        setShowEditModal(true);
+        setIsEditMode(true)
+        setShowModal(true);
         setdirectorEmployeeId(data.id)
         setSelectedUser(data);
     };
@@ -76,8 +80,11 @@ function AddDirectorTeam() {
             width: "12%",
         },
     ];
+    const isFetching = useRef(false);
 
     const GetAllDirectorEmployees = () => {
+        if (isFetching.current) return; // Prevent multiple calls
+        isFetching.current = true;
         getDirectorEmployees({ limit: 10, offset: 0 }).then((response) => {
             if (response.status === true) {
                 console.log(response.data, "responseemployees")
@@ -88,26 +95,16 @@ function AddDirectorTeam() {
             }
         }).catch((error) => {
             console.log(error?.message || "Not able to get Countries");
-        })
+        }).finally(() => {
+            isFetching.current = false;
+        });
     }
-    useEffect(() => { GetAllDirectorEmployees() }, [])
-    const [employeeData, setEmployeeData] = useState()
-    console.log(employeeData, "employeeData")
-    const GetDirectorEmployeeByID = () => {
-        getDirectorEmployeeDetailsById(directorEmployeeId).then((response) => {
-            if (response) {
-                console.log(response, "responseemployeesdata")
-                setEmployeeData(response.userDeatils)
-            } else {
-                console.log("There Is Some Error")
+    // useEffect(() => { GetAllDirectorEmployees() }, [])
+    useEffect(() => {
+        if (!tableData) GetAllDirectorEmployees();
+    }, [tableData]);
 
-            }
-        }).catch((error) => {
-            console.log(error?.message || "Not able to get Countries");
-        })
-    }
-    useEffect(() => { GetDirectorEmployeeByID() }, [directorEmployeeId])
-    useEffect(() => { GetAllDirectorEmployees() }, [])
+
 
     const TableData = tableData?.map(user => ({
         id: user.id,
@@ -128,7 +125,6 @@ function AddDirectorTeam() {
                 <MdBlockFlipped size={18} className={`pointer ${user.status === 1 ? 'green-font' : user.status === 2 ? 'clr-red' : ''}`}
                     onClick={() => handleBlockPopup(user.id, user.name)} />
 
-                {/* <MdBlockFlipped size={18} className="black-text pointer" onClick={() => handleBlockPopup(user.id, user.name)} /> */}
             </div>
         ),
     }));
@@ -199,32 +195,13 @@ function AddDirectorTeam() {
             </div>
 
             <Table data={TableData} columns={columns} itemsPerPage={7} />
-            {/* Add New Director Popup */}
-            {showModal && (
-                <AddDirectorPopup
-                    show={showModal}
-                    handleClose={handleModalClose}
-                    refreshData={GetAllDirectorEmployees}
-                />
-            )}
+            <AddDirectorPopup
+                show={showModal}
+                onClose={handleModalClose}
+                isEditMode={isEditMode}
+                directorEmployeeId={directorEmployeeId}
 
-            {/* Edit Director Popup */}
-            {showEditModal && selectedUser && (
-                <AddDirectorPopup
-                    show={showEditModal}
-                    handleClose={handleEditModalClose}
-                    onClose={GetAllDirectorEmployees}
-                    editData={selectedUser} // Pass selected user data for editing
-                    fetchEmployeeById={GetDirectorEmployeeByID} // Pass function to fetch employee details
-                    employeeData={employeeData}
-                    directorEmployeeId={directorEmployeeId}
-                />
-            )}
-
-            {/* <AddDirectorPopup show={showModal} onClose={handleModalClose} /> */}
-            {/* <EditDirectorAdminPopup showEditModal={showEditModal} setShowEditModal={setShowEditModal} handleEditModalClose={handleEditModalClose} directorId={directorId} /> */}
-
-
+            />
             <ResetPasswordPopup
                 resetPasswordPopup={resetPasswordPopup}
                 setResetPasswordPopup={setResetPasswordPopup}

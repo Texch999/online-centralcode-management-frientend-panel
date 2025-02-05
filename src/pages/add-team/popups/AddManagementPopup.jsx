@@ -48,7 +48,7 @@ const AddManagementPopup = ({
     getRoles({ token })
       .then((response) => {
         if (
-          response?.message === "Roles Fetched Successfully." &&
+          response?.status === true &&
           response.data
         ) {
           const roles = response.data.map((role) => ({
