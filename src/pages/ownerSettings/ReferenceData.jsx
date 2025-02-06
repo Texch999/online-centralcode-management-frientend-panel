@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
@@ -29,7 +29,8 @@ const ReferenceData = () => {
   const [isEdit, setIsEdit] = useState("");
   const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
   const [errorPopup, setErrorPopup] = useState(false);
-
+  const dataFetched=useRef(false);
+  const dataFetchedRej=useRef(false);
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
@@ -52,6 +53,8 @@ const ReferenceData = () => {
       });
   };
   useEffect(() => {
+    if (dataFetched.current) return;
+    dataFetched.current = true;
     getSecurityQuestions();
   }, []);
 
@@ -73,6 +76,8 @@ const ReferenceData = () => {
       });
   };
   useEffect(() => {
+    if (dataFetchedRej.current) return;
+    dataFetchedRej.current = true;
     getRejReasons();
   }, []);
   console.log(rejReasonsData, "rejReasonsData");

@@ -140,7 +140,7 @@ const SelectWebsitePopUp = ({
               className="saffron-btn2 br-5 mx-2 pointer"
               onClick={addMultipleWebsitesToPrivacyPolicy}
             >
-              Add Website
+              {websites.some((site) => site.selected) ? "Add Website" : "Remove this privacy policy"}
             </div>
           </div>
         </div>
