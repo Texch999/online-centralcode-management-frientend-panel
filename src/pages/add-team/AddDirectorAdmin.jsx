@@ -11,7 +11,12 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { blockDirector, getDirectors, resetDirectorPassword } from "../../api/apiMethods";
+import {
+  blockDirector,
+  getCountries,
+  getDirectors,
+  resetDirectorPassword,
+} from "../../api/apiMethods";
 import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 import {
   getDirectorDwnList,
@@ -20,19 +25,21 @@ import {
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
 import { CgUnblock } from "react-icons/cg";
+import { CircleLoader } from "react-spinners";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
   const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState()
+  const [showEditModal, setShowEditModal] = useState();
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); // Tracks user for reset or block actions
-  const [directorId, setDirectorId] = useState()
+  const [directorId, setDirectorId] = useState();
   const [directorDwnList, setDirectorDwnList] = useState([]);
   const [dirDwnlnId, setDirDwnlnId] = useState(null);
   const [dirDwnlnBlockUnblockId, setDirDwnlnBlockUnblockId] = useState(null);
   const [statusId, setStatusId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const login_role_name = localStorage.getItem("role_name");
 
   const handleResetPswdDirDwn = (id) => {
@@ -51,12 +58,12 @@ const AddDirectorAdmin = () => {
   };
   // console.log(directorId, "directorId")
   const handleEditModalOpen = (id) => {
-    setDirectorId(id)
-    setShowEditModal(true)
-  }
+    setDirectorId(id);
+    setShowEditModal(true);
+  };
   const handleEditModalClose = () => {
-    setShowEditModal(false)
-  }
+    setShowEditModal(false);
+  };
   const handleModalClose = () => {
     setShowModal(false);
   };
@@ -93,8 +100,28 @@ const AddDirectorAdmin = () => {
     navigate("/user-profile-dashboard");
   };
 
+  const [countryData, setCountryData] = useState([]);
+  const GetAllCountries = () => {
+    getCountries()
+      .then((response) => {
+        if (response?.status === true) {
+          setCountryData(response?.data);
+          console.log(response, "countries");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Not able to get Countries");
+      });
+  };
+  useEffect(() => {
+    GetAllCountries();
+  }, []);
+
   // director sa list
   const getDirectorDwnSAList = () => {
+    setLoading(true);
     getDirectorDwnList()
       .then((response) => {
         if (response) {
@@ -107,6 +134,9 @@ const AddDirectorAdmin = () => {
       .catch((error) => {
         console.log(error, "error");
         setError(error?.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   useEffect(() => {
@@ -257,7 +287,6 @@ const AddDirectorAdmin = () => {
         if (response.status === true) {
           console.log(response, "response from API");
           setTableData(response.directorsWithWebsites);
-
         } else {
           setError("Something Went Wrong");
         }
@@ -382,11 +411,28 @@ const AddDirectorAdmin = () => {
         </div>
       </div>
 
-      <Table data={TableData} columns={columns} itemsPerPage={7} />
+      {loading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>
+      ) : (
+        <Table data={TableData} columns={columns} itemsPerPage={7} />
+      )}
 
-      <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
-      <EditDirectorAdminPopup showEditModal={showEditModal} setShowEditModal={setShowEditModal} handleEditModalClose={handleEditModalClose} directorId={directorId} />
-
+      <AddDirectorAdminPopup
+        show={showModal}
+        handleClose={handleModalClose}
+        getDirectorDwnSAList={getDirectorDwnSAList}
+      />
+      <EditDirectorAdminPopup
+        showEditModal={showEditModal}
+        setShowEditModal={setShowEditModal}
+        handleEditModalClose={handleEditModalClose}
+        directorId={directorId}
+      />
 
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
@@ -404,7 +450,7 @@ const AddDirectorAdmin = () => {
         discription={`Are you sure you want to ${statusId === 1 ? "Unblock" : "Block"
           } ${selectedUser}?`}
         submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
-        onSubmit={login_role_name === "director" ? blockUnblock : ""}
+        onSubmit={login_role_name === "director" ? "Unblock" : "block"}
       />
     </div>
   );

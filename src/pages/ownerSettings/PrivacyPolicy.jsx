@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -46,6 +46,8 @@ const PrivacyPolicy = () => {
   const [isEditModal, setIsEditModal] = useState("");
   const [availablePrivacyWebsiteId, setAvailablePrivacyWebsiteId] =
     useState(null);
+  const [countriesData, setCountriesData] = useState([]);
+  // const[selectedWebsiteid,setSelectedWebsiteid]=useState(null);
   const handleEditPrivacyModal = (id) => {
     setPrivacyPolicyId(id);
     setEditPrivacyPolicyModal(true);
@@ -64,6 +66,7 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.name,
   }));
+  console.log(countryOptions, "countryoptions");
 
   const websiteOptions = websites.map((item) => ({
     value: item?.id,
@@ -79,21 +82,26 @@ const PrivacyPolicy = () => {
     setAvailablePrivacyWebsiteId(id);
   };
 
-  const getAllCountries = () => {
+  const getAllCountries = useCallback(() => {
     getCountries()
       .then((response) => {
         console.log("Countries", response);
-        setCountries(response.data);
+        const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
+        setCountries(updatedCountries);
+        setCountriesData(response?.data);
       })
       .catch((error) => {
         setError(error?.message);
       });
-  };
+  });
+
   useEffect(() => {
     getAllCountries();
+    console.log("Countries12345678");
   }, []);
 
-  const getAllWebsites = () => {
+  const getAllWebsites = useCallback(() => {
+    if (websites.length > 0) return;
     getWebsites()
       .then((response) => {
         console.log("Websites", response.data);
@@ -102,17 +110,18 @@ const PrivacyPolicy = () => {
       .catch((error) => {
         setError(error?.message);
       });
-  };
+  });
   useEffect(() => {
     getAllWebsites();
   }, []);
+
   console.log(privacyList, "privacyList");
 
-  const filteredData = isSubmitted
-    ? selectedCountry
-      ? privacyList.filter((item) => item.website_id === selectedCountry.value)
-      : privacyList
-    : privacyList;
+  const filteredData =
+    selectedCountry && selectedCountry.value !== 0
+      ? privacyList.filter((item) => item.country_id === selectedCountry.value)
+      : privacyList;
+
   const REJECTION_COLUMNS = [
     { header: "Country", field: "country", width: "20%" },
     { header: "Policy Details", field: "policyDetails", width: "30%" },
@@ -122,12 +131,11 @@ const PrivacyPolicy = () => {
   ];
 
   const REJECTION_DATA = filteredData.map((item, index) => {
-    // const country = countries.find(
-    //   (country) => country?.id === item?.country_id
-    // );
-
+    const country = countries?.find(
+      (country) => country.id === item.country_id
+    );
     return {
-      country: <div>{item?.name}</div>,
+      country: <div>{country?.name}</div>,
       policyDetails: (
         <div
           className="saffron-btn2 w-20 pointer"
@@ -140,7 +148,9 @@ const PrivacyPolicy = () => {
           View
         </div>
       ),
-      showingWebsite: <div>{item?.web_name}</div>,
+      showingWebsite: item?.websites?.map((item) => (
+        <div className="d-flex flex-column">{item?.web_name}</div>
+      )),
       status: (
         <div
           className={`${
@@ -152,20 +162,32 @@ const PrivacyPolicy = () => {
       ),
       action: (
         <div className="large-font d-flex w-50 flex-between">
-          <span className="mx-3" onClick={() => hanldeWebsites(item?.id)}>
-            <CgWebsite size={20} />
-          </span>
           {item?.is_active === 2 ? (
-            <span title="this action is denied">
+            <span className="mx-3 pointer disabled">
+              <CgWebsite size={20} />
+            </span>
+          ) : (
+            <span
+              className="mx-3 pointer"
+              onClick={() => hanldeWebsites(item?.id)}
+            >
+              <CgWebsite size={20} />
+            </span>
+          )}
+          {item?.is_active === 2 ? (
+            <span title="this action is denied" className="disabled">
               <SlPencil size={20} />
             </span>
           ) : (
-            <span onClick={() => handleEditPrivacyModal(item?.id)}>
+            <span
+              onClick={() => handleEditPrivacyModal(item?.id)}
+              className="pointer"
+            >
               <SlPencil size={20} />
             </span>
           )}
           <span
-            className="ms-2"
+            className="ms-2 pointer"
             onClick={() => handleStatus(item?.id, item?.is_active)}
           >
             <FaRegTrashCan size={20} />
@@ -176,6 +198,7 @@ const PrivacyPolicy = () => {
   });
 
   const getPolicyPrivacyData = () => {
+    // if(privacyList.length > 0) return;
     setLoading(true);
     getPrivacyPolicy()
       .then((response) => {
@@ -198,28 +221,27 @@ const PrivacyPolicy = () => {
   return (
     <div>
       <div className="w-100 d-flex flex-between align-items-center mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Privacy Policy</h6>
-        <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
-          <Select
-            className="small-font w-100"
-            options={countryOptions}
-            placeholder="Select"
-            styles={customStyles}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-            classNamePrefix="custom-react-select"
-            onChange={(selectedOption) => {
-              setSelectedCountry(selectedOption);
-            }}
-          />
-          <div
-            className="w-50 saffron-btn2 small-font pointer"
-            onClick={() => setIsSubmitted(true)}
-          >
-            Submit
+        <div className="col-9 ">
+          <h6 className="yellow-font mb-0">Privacy Policy</h6>
+        </div>
+
+        <div className="d-flex col-3 gap-1 flex-between">
+          <div className="col-7 d-flex align-items-center gap-2">
+            <Select
+              className="small-font w-100"
+              options={countryOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+              onChange={(selectedOption) => {
+                setSelectedCountry(selectedOption);
+              }}
+            />
           </div>
           <button
-            className="col-1 flex-center align-items-center small-font pointer blue-font input-pill rounded w-25 py-2"
+            className="col-4 flex-center align-items-center small-font pointer blue-font input-pill rounded  py-2"
             onClick={handleAddPrivacyModal}
           >
             <IoAddOutline className="medium-font" />
@@ -250,8 +272,8 @@ const PrivacyPolicy = () => {
         isEditModal={isEditModal}
         setIsEditModal={setIsEditModal}
         getPolicyPrivacyData={getPolicyPrivacyData}
-        setCountries={setCountries}
-        countries={countries}
+        setCountriesData={setCountriesData}
+        countriesData={countriesData}
         websites={websites}
         setWebsites={setWebsites}
       />
@@ -275,6 +297,7 @@ const PrivacyPolicy = () => {
         selectWebsite={selectWebsite}
         setAvailablePrivacyWebsiteId={setAvailablePrivacyWebsiteId}
         availablePrivacyWebsiteId={availablePrivacyWebsiteId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
       />
       <ActiveInActiveModal
         privacyStatusId={privacyStatusId}

@@ -1,5 +1,11 @@
-const userID = () => localStorage.getItem("user_id");
-
+const userID = () => {
+  const id = localStorage.getItem("user_id");
+  if (!id) {
+    console.error("User ID is not available.");
+    return null;
+  }
+  return id;
+};
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
   loginDirector: { method: "post", url: "/director/login" },
@@ -13,13 +19,16 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
-  getCountries: { method: "get", url: `/user/${userID()}/countries` },
+  getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
   getAdminWebsites: {
     method: "get",
     url: `/user/${userID()}/website/adminWebsites`,
   },
-
-  createWebsite: { method: "post", url: `/user/${userID()}/website/website` },
+  // loginUser: { method: "post", url: "/master/login" },
+  createWebsite: {
+    method: "post",
+    url: () => `/user/${userID()}/website/website`,
+  },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -35,14 +44,14 @@ const endpoints = {
       return `/user/${userID()}/website/websites?${query}`;
     },
   },
-  getAllCountires: { method: "get", url: `/user/${userID()}/countries` },
+  getAllCountires: { method: "get", url: () => `/user/${userID()}/countries` },
   blockAndUnblock: {
     method: "put",
     url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
   },
   getPromotionsTypes: {
     method: "get",
-    url: `/user/${userID()}/promotionsTypes`,
+    url: () => `/user/${userID()}/promotionsTypes`,
   },
   statusPromotionsTypes: {
     method: "put",
@@ -50,11 +59,11 @@ const endpoints = {
   },
   getPromotionsImage: {
     method: "get",
-    url: `/user/${userID()}/promotionsImages`,
+    url: () => `/user/${userID()}/promotionsImages`,
   },
   createPromotionImages: {
     method: "post",
-    url: `/user/${userID()}/promotionImage`,
+    url: () => `/user/${userID()}/promotionImage`,
   },
   deletePromotionsImages: {
     method: "delete",
@@ -62,11 +71,11 @@ const endpoints = {
   },
   getBanner: {
     method: "get",
-    url: `/user/${userID()}/banners`,
+    url: () => `/user/${userID()}/banners`,
   },
   createBanner: {
     method: "post",
-    url: `/user/${userID()}/banner`,
+    url: () => `/user/${userID()}/banner`,
   },
   editBanner: {
     method: "put",
@@ -80,12 +89,20 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/bannerStatus/${id}`,
   },
-
-  // loginUser: { method: "post", url: "/master/login" },
-
   // addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
   // getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+
+  // loginUser: { method: "post", url: () => "/master/login" },
+  // // addManagemnentTeam: { method: "post", url: "/employee" },
+  // addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+
+  // getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
+  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
+  // getEmployees: ({ limit, offset }) => ({
+  //   method: "get",
+  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
+  // }),
 
   getEmployees: {
     method: "get",
@@ -159,11 +176,11 @@ const endpoints = {
 
   createSecurityQuestions: {
     method: "post",
-    url: `/user/${userID()}/secQuestion`,
+    url: () => `/user/${userID()}/secQuestion`,
   },
   getAllSecurityQuestions: {
     method: "get",
-    url: `/user/${userID()}/secQuestion/`,
+    url: () => `/user/${userID()}/secQuestion/`,
   },
   getSecQusetionsById: {
     method: "get",
@@ -176,11 +193,11 @@ const endpoints = {
 
   getAllRejectionReasons: {
     method: "get",
-    url: `/user/${userID()}/rejectionReasons/`,
+    url: () => `/user/${userID()}/rejectionReasons/`,
   },
   createRejReasons: {
     method: "post",
-    url: `/user/${userID()}/rejectionReasons/`,
+    url: () => `/user/${userID()}/rejectionReasons/`,
   },
   updateRejReasons: {
     method: "put",
@@ -190,9 +207,10 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
+  //privacy
   getPrivacyPolicy: {
     method: "get",
-    url: `/user/${userID()}/privacypolicies/`,
+    url: () => `/user/${userID()}/privacypolicies/`,
   },
   getPrivacyPolicyById: {
     method: "get",
@@ -200,7 +218,7 @@ const endpoints = {
   },
   createPrivacyPolicy: {
     method: "post",
-    url: `/user/${userID()}/privacypolicies/`,
+    url: () => `/user/${userID()}/privacypolicies/`,
   },
   updatePrivacyPolicyById: {
     method: "put",
@@ -212,11 +230,15 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
-  getCountries: {
-    method: "get",
-    url: `/user/${userID()}/countries`,
-  },
+  // getCountries: {
+  //   method: "get",
+  //   url: `/user/${userID()}/countries`,
+  // },
 
+  // getCountries: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/countries`,
+  // },
   getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
@@ -236,18 +258,18 @@ const endpoints = {
 
   getAvailableWebsites: {
     method: "get",
-    url: (id) => `user/${userID()}/privacypolicies/${id}/websites`,
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/websites`,
   },
 
-  createDirector: { method: "post", url: `/user/${userID()}/create` },
+  // createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   createBroadCasting: {
     method: "post",
-    url: `/user/${userID()}/broadcasting`,
+    url: () => `/user/${userID()}/broadcasting`,
   },
   getBroadCasting: {
     method: "get",
-    url: `/user/${userID()}/broadcasting`,
+    url: () => `/user/${userID()}/broadcasting`,
   },
 
   statusBroadcastUpdate: {
@@ -257,8 +279,34 @@ const endpoints = {
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/${id}`,
+    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
+
+  //DirectorAccountDetails
+
+  getDirectorAccountDetails: {
+    method: "get",
+    url: `/user/${userID()}/directorAccount`,
+  },
+  postDirectorAccountDetails: {
+    method: "post",
+    url: `/user/${userID()}/directorAccount`,
+  },
+  suspendDirectorAccountPaymentDetails: {
+    method: "patch",
+    url: (data) =>
+      `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
+  },
+  updateDirectorAccountDetails: {
+    method: "put",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  getDirectorAccountById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
 
   getDirectorAccessWebites: {
     method: "get",
@@ -268,7 +316,7 @@ const endpoints = {
     },
   },
 
-  loginDirector: { method: "post", url: "/director/login" },
+  loginDirector: { method: "post", url: () => "/director/login" },
 
   getLoggedInLogs: {
     method: "get",
@@ -301,7 +349,7 @@ const endpoints = {
 
   getDirectorDwnList: {
     method: "get",
-    url: `/user/${userID()}/directors`,
+    url: () => `/user/${userID()}/directors`,
   },
   getDirectorDwnListById: {
     method: "get",
@@ -314,6 +362,24 @@ const endpoints = {
   unblockBlockDirectorDwnln: {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
+  },
+
+  getAdminWebsites: {
+    method: "get",
+    url: `/user/${userID()}/website/adminWebsites`,
+  },
+  getUserWebsites: {
+    method: "get",
+    url: `/user/${userID()}/website/userWebsites`,
+  },
+
+  // statusBanner: {
+  //   method: "put",
+  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
+  // },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
   },
 };
 

@@ -2,12 +2,24 @@ import React, { useState } from "react";
 import Table from "../../components/Table";
 import { FiChevronRight } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
+import DepositWithdrawPopup from "../wallet/DepositWithdrawPopup";
+
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 
 function ClientRental() {
   const [rentalTickets, setRentalTickets] = useState(false);
+  const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
+    useState(false);
+  const [activeRole, setActiveRole] = useState(false);
+
+
+
+  const handleOpenUserDetails = () => {
+    setActiveRole(true);
+    setDepositWithdrawPopupOpen(true);
+  };
 
   const roleOptions = [
     { value: "Option 1", label: "Option 1" },
@@ -120,7 +132,7 @@ function ClientRental() {
     netBal: <div className="green-font">24000000</div>,
     icons: (
       <div className="flex-center large-font pointer">
-        <BsEye size={18} />{" "}
+        <BsEye size={18}  onClick={handleOpenUserDetails}/>{" "}
         <span className="active-btn-table small-font ms-2">Approved</span>
       </div>
     ),
@@ -220,7 +232,14 @@ function ClientRental() {
           greyBackground="footer-bg"
           itemsPerPage={5}
         />
+        
       )}
+         <DepositWithdrawPopup
+        depositWithdrawPopupOpen={depositWithdrawPopupOpen}
+        setDepositWithdrawPopupOpen={setDepositWithdrawPopupOpen}
+        userDetails="Srinivas - (Sp Rental: 100000) (Ca : 10%)"
+        userDetails2="Exp Rental - 31-01-2025"
+      />
     </div>
   );
 }

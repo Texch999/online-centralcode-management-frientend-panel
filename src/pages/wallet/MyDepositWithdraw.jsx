@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
+import DepositePopup from "../popups/DepositePopup";
+import WithdrawPopup from "../popups/WithdrawPopup";
 
 function MyDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("All");
+  const [depositePopup, setDepositePopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const handleSportClick = (sport) => {
     setActiveSport(sport);
   };
@@ -68,9 +72,9 @@ function MyDepositWithdraw() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">My Deposit & Withdraw</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
+        <div className="d-flex align-items-center gap-1">
+          <button className={`me-3 dark-green-bg px-3`} onClick={() => setDepositePopup(true)}>Deposit</button>
+          <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
         </div>
       </div>
       <div className="w-100 flex-between mb-3 py-3 grey-bg2 rounded">
@@ -104,9 +108,8 @@ function MyDepositWithdraw() {
           {SPORTS_BUTTONS?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 ${
-                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-              }`}
+              className={`me-3 ${activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
+                }`}
               onClick={() => handleSportClick(sport)}
             >
               {sport}
@@ -132,6 +135,14 @@ function MyDepositWithdraw() {
         data={MY_TRANSACTIONS_DATA}
         footer={MY_TRANSACTIONS_FOOTER}
         itemsPerPage={2}
+      />
+      <DepositePopup
+        setDepositePopup={setDepositePopup}
+        depositePopup={depositePopup}
+      />
+      <WithdrawPopup
+        setWithdrawPopup={setWithdrawPopup}
+        withdrawPopup={withdrawPopup}
       />
     </div>
   );
