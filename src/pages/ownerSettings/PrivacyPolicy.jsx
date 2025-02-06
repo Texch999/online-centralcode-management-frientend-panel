@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -25,7 +25,6 @@ const PrivacyPolicy = () => {
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [privacyList, setPrivacyList] = useState([]);
-  const [privacyListById, setPrivacyListById] = useState([]);
   const [error, setError] = useState("");
   const [countries, setCountries] = useState([]);
   const [showPrivacyText, setShowPrivacyText] = useState("");
@@ -34,20 +33,16 @@ const PrivacyPolicy = () => {
   const [editPrivacyPolicyModal, setEditPrivacyPolicyModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectWebsite, setSelectWebsite] = useState(false);
-  console.log(privacyPolicyId, "privacyPolicyId");
   const [activeInActivePopup, setActiveInActivePopup] = useState(false);
   const [statusId, setStatusId] = useState(null);
   const [privacyStatusId, setPrivacyStatusId] = useState("");
-  console.log(privacyStatusId, "privacyStatusId");
-  console.log(statusId, "statusId");
   const [errorPopup, setErrorPopup] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isEditModal, setIsEditModal] = useState("");
   const [availablePrivacyWebsiteId, setAvailablePrivacyWebsiteId] =
     useState(null);
   const [countriesData, setCountriesData] = useState([]);
-  // const[selectedWebsiteid,setSelectedWebsiteid]=useState(null);
+  const dataFetched = useRef(false);
   const handleEditPrivacyModal = (id) => {
     setPrivacyPolicyId(id);
     setEditPrivacyPolicyModal(true);
@@ -82,7 +77,7 @@ const PrivacyPolicy = () => {
     setAvailablePrivacyWebsiteId(id);
   };
 
-  const getAllCountries = useCallback(() => {
+  const getAllCountries = () => {
     getCountries()
       .then((response) => {
         console.log("Countries", response);
@@ -93,14 +88,14 @@ const PrivacyPolicy = () => {
       .catch((error) => {
         setError(error?.message);
       });
-  });
+  };
 
   useEffect(() => {
     getAllCountries();
     console.log("Countries12345678");
   }, []);
 
-  const getAllWebsites = useCallback(() => {
+  const getAllWebsites = () => {
     if (websites.length > 0) return;
     getWebsites()
       .then((response) => {
@@ -110,7 +105,7 @@ const PrivacyPolicy = () => {
       .catch((error) => {
         setError(error?.message);
       });
-  });
+  };
   useEffect(() => {
     getAllWebsites();
   }, []);
@@ -198,7 +193,6 @@ const PrivacyPolicy = () => {
   });
 
   const getPolicyPrivacyData = () => {
-    // if(privacyList.length > 0) return;
     setLoading(true);
     getPrivacyPolicy()
       .then((response) => {
@@ -215,6 +209,8 @@ const PrivacyPolicy = () => {
       });
   };
   useEffect(() => {
+    if (dataFetched.current) return;
+    dataFetched.current = true;
     getPolicyPrivacyData();
   }, []);
 

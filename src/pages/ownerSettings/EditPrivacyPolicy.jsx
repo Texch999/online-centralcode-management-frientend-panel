@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import {
   getPrivacyPolicyById,
@@ -23,6 +23,7 @@ const EditPrivacyPolicy = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   console.log(showPrivacyText?.description, "showPrivacyText");
   const [errorPopup, setErrorPopup] = useState(false);
+  const dataFetched = useRef(false);
 
   const getPolicyPrivacyDataById = () => {
     getPrivacyPolicyById(privacyPolicyId)
@@ -37,6 +38,8 @@ const EditPrivacyPolicy = ({
       });
   };
   useEffect(() => {
+    if (dataFetched.current) return;
+    dataFetched.current = true;
     getPolicyPrivacyDataById();
   }, [privacyPolicyId]);
 
