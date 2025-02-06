@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
@@ -108,7 +108,7 @@ const ActivityLogs = () => {
     setType(type);
     setActiveTab(tab);
   };
-
+ const isInitialRender = useRef(true);
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
