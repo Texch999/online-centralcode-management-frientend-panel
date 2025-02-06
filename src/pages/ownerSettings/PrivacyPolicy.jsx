@@ -11,7 +11,6 @@ import "../add-team/style.css";
 import {
   getCountries,
   getPrivacyPolicy,
-  getPrivacyPolicyById,
   getWebsites,
 } from "../../api/apiMethods";
 import EditPrivacyPolicy from "./EditPrivacyPolicy";
@@ -49,6 +48,7 @@ const PrivacyPolicy = () => {
   };
   const handleAddPrivacyModal = () => {
     setAddPrivacyModal(true);
+    getAllWebsites();
   };
 
   const handleStatus = (id, status) => {
@@ -61,17 +61,12 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.name,
   }));
-  console.log(countryOptions, "countryoptions");
 
   const websiteOptions = websites.map((item) => ({
     value: item?.id,
     label: item?.web_name,
   }));
 
-  const selectOptions = [
-    { value: "1", label: "Active" },
-    { value: "2", label: "In-Active" },
-  ];
   const hanldeWebsites = (id) => {
     setSelectWebsite(true);
     setAvailablePrivacyWebsiteId(id);
@@ -80,7 +75,6 @@ const PrivacyPolicy = () => {
   const getAllCountries = () => {
     getCountries()
       .then((response) => {
-        console.log("Countries", response);
         const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
         setCountries(updatedCountries);
         setCountriesData(response?.data);
@@ -90,27 +84,37 @@ const PrivacyPolicy = () => {
       });
   };
 
-  useEffect(() => {
-    getAllCountries();
-    console.log("Countries12345678");
-  }, []);
-
   const getAllWebsites = () => {
     if (websites.length > 0) return;
     getWebsites()
       .then((response) => {
-        console.log("Websites", response.data);
         setWebsites(response.data);
       })
       .catch((error) => {
         setError(error?.message);
       });
   };
-  useEffect(() => {
-    getAllWebsites();
-  }, []);
 
-  console.log(privacyList, "privacyList");
+  const getPolicyPrivacyData = () => {
+    setLoading(true);
+    getPrivacyPolicy()
+      .then((response) => {
+        setPrivacyList(response.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+        setErrorPopup(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (dataFetched.current) return;
+    dataFetched.current = true;
+    getPolicyPrivacyData();
+    getAllCountries();
+  }, []);
 
   const filteredData =
     selectedCountry && selectedCountry.value !== 0
@@ -125,7 +129,7 @@ const PrivacyPolicy = () => {
     { header: "Action", field: "action", width: "30%" },
   ];
 
-  const REJECTION_DATA = filteredData.map((item, index) => {
+  const DATA = filteredData.map((item, index) => {
     const country = countries?.find(
       (country) => country.id === item.country_id
     );
@@ -192,28 +196,6 @@ const PrivacyPolicy = () => {
     };
   });
 
-  const getPolicyPrivacyData = () => {
-    setLoading(true);
-    getPrivacyPolicy()
-      .then((response) => {
-        console.log("getPrivacyPolicy success", response);
-        setPrivacyList(response.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-        setErrorPopup(true);
-        console.log("getPrivacyPolicy error", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-  useEffect(() => {
-    if (dataFetched.current) return;
-    dataFetched.current = true;
-    getPolicyPrivacyData();
-  }, []);
-
   return (
     <div>
       <div className="w-100 d-flex flex-between align-items-center mb-3 mt-2">
@@ -254,11 +236,7 @@ const PrivacyPolicy = () => {
             </div>
           </div>
         ) : (
-          <Table
-            columns={REJECTION_COLUMNS}
-            data={REJECTION_DATA}
-            itemsPerPage={5}
-          />
+          <Table columns={REJECTION_COLUMNS} data={DATA} itemsPerPage={5} />
         )}
       </div>
 
