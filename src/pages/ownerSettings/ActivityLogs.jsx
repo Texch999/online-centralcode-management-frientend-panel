@@ -110,6 +110,11 @@ const ActivityLogs = () => {
   };
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
     if (userRole === "director") {
       if (activeTab === "employees") {
         getDirectorDownlineLoginLogsList()
