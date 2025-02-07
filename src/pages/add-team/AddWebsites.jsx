@@ -135,6 +135,7 @@ const AddWibsites = () => {
           <SlPencil
             size={18}
             className={`pointer ${website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+            style={website.status !== 1 ? { pointerEvents: "none" } : {}}
             onClick={() => {
               if (website.status === 1) {
                 setOnAddwebsitePopup(true);

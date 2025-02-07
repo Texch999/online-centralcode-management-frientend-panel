@@ -1,28 +1,34 @@
+
+
+
 import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
+import { getDirectorAccessWebites } from "../../api/apiMethods";
 
-const DepositePopup = ({
-    setDepositePopup,
-    depositePopup,
-}) => {
+const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
+    const [directorWebsitesList, setDirectorWebsitesList] = useState([])
     const [formData, setFormData] = useState({
-        deployType: null, // Will be set to the first payment type by default
-        panelType: null,
+        paymentType: null,
+        depositeDetails: null,
         city: "",
         websiteName: "",
         utr: "",
         cashHandoverName: "",
         description: "",
+        phoneNumber: "",
+        amount: null,
+        screenshot: null,
     });
+    const isInitialRender = useRef(true);
     const [errors, setErrors] = useState({});
-    const fileInputRef = useRef(null); // Reference to hidden input
+    const [error, setError] = useState("");
+    const fileInputRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
-
     const depositeDetails = [
         {
             label: "ICICI Bank",
@@ -57,25 +63,47 @@ const DepositePopup = ({
         { label: "UPI Option 2", value: "upi2" },
     ];
 
+    const getDirectorAccessedWebistesList = () => {
+        getDirectorAccessWebites()
+            .then((response) => {
+                if (response?.status === true) {
+                    setDirectorWebsitesList(response.data);
+                } else {
+                    setError("Something Went Wrong");
+                }
+            })
+            .catch((error) => {
+                setError(error?.message || "API request failed");
+            });
+    }
+
     useEffect(() => {
         if (PaymentType.length > 0) {
-            // Set the first payment type as default
             setFormData((prev) => ({
                 ...prev,
-                deployType: PaymentType[0],
+                paymentType: PaymentType[0],
             }));
         }
         if (depositeDetails.length > 0) {
             setFormData((prev) => ({
                 ...prev,
-                panelType: depositeDetails[0], // Set first option as default
+                depositeDetails: depositeDetails[0],
             }));
             setSelectedDepositDetails(depositeDetails[0].details);
         }
     }, []);
 
+    useEffect(() => {
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            getDirectorAccessedWebistesList();
+            return;
+        }
+
+    }, [])
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setErrors({ ...errors, [e.target.name]: "" });
     };
 
     const handleSelectChange = (field, option) => {
@@ -83,12 +111,12 @@ const DepositePopup = ({
             ...prev,
             [field]: option,
         }));
-        if (field === "deployType" && option) {
+        if (field === "paymentType" && option) {
             if (option.value === "neftrtgs") {
-                setFormData((prev) => ({ ...prev, utr: "" })); // Clear UTR if changing to NEFT/RTGS
+                setFormData((prev) => ({ ...prev, utr: "" }));
             }
         }
-        if (field === "panelType" && option) {
+        if (field === "depositeDetails" && option) {
             setSelectedDepositDetails(option.details);
         }
     };
@@ -97,41 +125,81 @@ const DepositePopup = ({
         const file = event.target.files[0];
         if (file) {
             setSelectedFile(file.name);
-            setFormData((prev) => ({ ...prev, websiteName: file }));
+            setFormData((prev) => ({ ...prev, screenshot: file }));
         }
     };
 
-    const handleSubmit = () => {
-        const payload = { ...formData };
-        // Handle form submission, send payload to server
-        console.log("Payload:", payload);
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.amount) newErrors.amount = "Amount is required";
+        if (!formData.paymentType) newErrors.paymentType = "Payment type is required";
+        if (formData.paymentType?.value === "neftrtgs" && !formData.utr) newErrors.utr = "UTR is required";
+        if (formData.paymentType?.value === "upi" && !formData.utr) newErrors.utr = "UTR is required";
+        if (formData.paymentType?.value === "cash" && !formData.cashHandoverName) newErrors.cashHandoverName = "Cash handover name is required";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
+    const handleSubmit = () => {
+        if (!validateForm()) return;
+        const payload = { ...formData };
+        console.log("Payload:", payload);
+    };
+    console.log(directorWebsitesList, "=====>directorWebsitesList")
     return (
         <div>
-            <Modal
-                show={depositePopup}
-                centered
-                className="confirm-popup"
-                size="md"
-            >
+            <Modal show={depositePopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
-                    {/* Header Section */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                        <h5 className="medium-font fw-600">Deposite</h5>
+                        <h5 className="medium-font fw-600">Deposit</h5>
                         <MdOutlineClose size={22} className="pointer" onClick={() => setDepositePopup(false)} />
                     </div>
-                    <div className="col">
+                    <div className="col mb-2">
                         <label className="small-font mb-1">Amount</label>
                         <input
-                            type="text"
-                            name="city"
+                            type="number"
+                            name="amount"
                             className="w-100 small-font rounded input-css all-none"
-                            placeholder="Enter"
-                            value={formData.city}
+                            placeholder="Enter Amount"
+                            value={formData.amount || ""}
                             onChange={handleChange}
                         />
-                        {errors.city && <p className="text-danger small-font">{errors.city}</p>}
+                        {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                    </div>
+                    <div className="col mb-2">
+                        <label className="small-font mb-1">Admin Panel</label>
+                        <Select
+                            className="small-font"
+                            options={directorWebsitesList.map((admin) => ({
+                                label: admin.admin_web_name,
+                                value: admin.admin_panel_id,
+                            }))}
+                            placeholder="Select Admin Website"
+                            styles={customStyles}
+                            value={selectedAdmin}
+                            onChange={(option) => {
+                                setSelectedAdmin(option);
+                                const selectedAdminData = directorWebsitesList.find(
+                                    (admin) => admin.admin_panel_id === option.value
+                                );
+                                setUserWebsites(selectedAdminData?.users || []);
+                            }}
+                        />
+                    </div>
+                    <div className="col mb-2">
+                        <label className="small-font mb-1">User Panel</label>
+                        <Select
+                            className="small-font"
+                            options={userWebsites.map((user) => ({
+                                label: user.user_web_name,
+                                value: user.website_access_id,
+                            }))}
+                            placeholder="Select User Website"
+                            styles={customStyles}
+                            onChange={(option) => {
+                                console.log("Selected User Website:", option);
+                            }}
+                        />
                     </div>
                     {/* Payment Type Dropdown */}
                     <div className="col mb-2">
@@ -141,24 +209,24 @@ const DepositePopup = ({
                             options={PaymentType}
                             placeholder="Select"
                             styles={customStyles}
-                            value={formData.deployType}
-                            onChange={(option) => handleSelectChange("deployType", option)}
+                            value={formData.paymentType}
+                            onChange={(option) => handleSelectChange("paymentType", option)}
                         />
+                        {errors.paymentType && <p className="text-danger small-font">{errors.paymentType}</p>}
                     </div>
 
-                    {/* Conditional Rendering Based on Payment Type */}
-                    {formData.deployType && formData.deployType.value === "neftrtgs" && (
+                    {/* NEFT/RTGS Section */}
+                    {formData.paymentType?.value === "neftrtgs" && (
                         <>
-                            {/* NEFT/RTGS Section */}
-                            <div className="col">
+                            <div className="col mb-2">
                                 <label className="small-font mb-1">Deposit Details</label>
                                 <Select
                                     className="small-font"
                                     options={depositeDetails}
                                     placeholder="Select"
                                     styles={customStyles}
-                                    value={formData.panelType}
-                                    onChange={(option) => handleSelectChange("panelType", option)}
+                                    value={formData.depositeDetails}
+                                    onChange={(option) => handleSelectChange("depositeDetails", option)}
                                 />
                                 {selectedDepositDetails && (
                                     <div className="mt-1 p-2 border-none rounded input-css">
@@ -177,7 +245,7 @@ const DepositePopup = ({
                                     </div>
                                 )}
                             </div>
-                            <div className="col">
+                            <div className="col mb-2">
                                 <label className="small-font mb-1">UTR/Transaction ID</label>
                                 <input
                                     type="text"
@@ -187,34 +255,15 @@ const DepositePopup = ({
                                     value={formData.utr}
                                     onChange={handleChange}
                                 />
-                            </div>
-                            <div className="col">
-                                <label className="small-font mb-1">Upload Payment Screenshot</label>
-                                <div
-                                    className="custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
-                                    onClick={() => fileInputRef.current.click()}
-                                >
-                                    <span className="small-font text-muted">
-                                        {selectedFile || "Select File"}
-                                    </span>
-                                    <VscCloudUpload size={16} className="text-muted" />
-                                </div>
-                                <input
-                                    type="file"
-                                    name="websiteName"
-                                    ref={fileInputRef}
-                                    className="d-none"
-                                    onChange={handleFileChange}
-                                    accept="image/*"
-                                />
+                                {errors.utr && <p className="text-danger small-font">{errors.utr}</p>}
                             </div>
                         </>
                     )}
 
-                    {formData.deployType && formData.deployType.value === "upi" && (
+                    {/* UPI Section */}
+                    {formData.paymentType?.value === "upi" && (
                         <>
-                            {/* UPI Section */}
-                            <div className="col">
+                            <div className="col mb-2">
                                 <label className="small-font mb-1">UPI ID</label>
                                 <Select
                                     className="small-font"
@@ -225,7 +274,7 @@ const DepositePopup = ({
                                     onChange={(option) => handleSelectChange("upi", option)}
                                 />
                             </div>
-                            <div className="col">
+                            <div className="col mb-2">
                                 <label className="small-font mb-1">UTR/Transaction ID</label>
                                 <input
                                     type="text"
@@ -235,34 +284,39 @@ const DepositePopup = ({
                                     value={formData.utr}
                                     onChange={handleChange}
                                 />
-                            </div>
-                            <div className="col">
-                                <label className="small-font mb-1">Upload Payment Screenshot</label>
-                                <div
-                                    className="custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
-                                    onClick={() => fileInputRef.current.click()}
-                                >
-                                    <span className="small-font text-muted">
-                                        {selectedFile || "Select File"}
-                                    </span>
-                                    <VscCloudUpload size={16} className="text-muted" />
-                                </div>
-                                <input
-                                    type="file"
-                                    name="websiteName"
-                                    ref={fileInputRef}
-                                    className="d-none"
-                                    onChange={handleFileChange}
-                                    accept="image/*"
-                                />
+                                {errors.utr && <p className="text-danger small-font">{errors.utr}</p>}
                             </div>
                         </>
                     )}
 
-                    {formData.deployType && formData.deployType.value === "cash" && (
+                    {/* File Upload for NEFT/RTGS and UPI */}
+                    {(formData.paymentType?.value === "neftrtgs" || formData.paymentType?.value === "upi") && (
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Upload Payment Screenshot</label>
+                            <div
+                                className="custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
+                                onClick={() => fileInputRef.current.click()}
+                            >
+                                <span className="small-font text-muted">
+                                    {selectedFile || "Select File"}
+                                </span>
+                                <VscCloudUpload size={16} className="text-muted" />
+                            </div>
+                            <input
+                                type="file"
+                                name="screenshot"
+                                ref={fileInputRef}
+                                className="d-none"
+                                onChange={handleFileChange}
+                                accept="image/*"
+                            />
+                        </div>
+                    )}
+
+                    {/* Cash Section */}
+                    {formData.paymentType?.value === "cash" && (
                         <>
-                            {/* Cash Section */}
-                            <div className="col">
+                            <div className="col mb-2">
                                 <label className="small-font mb-1">Cash Handover Name</label>
                                 <input
                                     type="text"
@@ -272,8 +326,20 @@ const DepositePopup = ({
                                     value={formData.cashHandoverName}
                                     onChange={handleChange}
                                 />
+                                {errors.cashHandoverName && <p className="text-danger small-font">{errors.cashHandoverName}</p>}
                             </div>
-                            <div className="col">
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">Phone Number</label>
+                                <input
+                                    type="text"
+                                    name="phoneNumber"
+                                    className="w-100 small-font rounded input-css all-none"
+                                    placeholder="Enter Phone Number"
+                                    value={formData.phoneNumber}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="col mb-2">
                                 <label className="small-font mb-1">Description</label>
                                 <input
                                     type="text"
@@ -288,10 +354,8 @@ const DepositePopup = ({
                     )}
 
                     {/* Submit Button */}
-                    <div className="mt-3 d-flex flex-row w-100 ">
-                        <button className="saffron-btn small-font rounded col"
-                            onClick={handleSubmit}
-                        >
+                    <div className="mt-3 d-flex flex-row w-100">
+                        <button className="saffron-btn small-font rounded col" onClick={handleSubmit}>
                             Submit
                         </button>
                     </div>

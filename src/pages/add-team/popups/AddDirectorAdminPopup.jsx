@@ -100,8 +100,8 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
     }
   };
 
-  const commissionMo=100-Number(commission);
-  const dwnlnShare=100-Number(downlineSharing);
+  const commissionMo = 100 - Number(commission);
+  const dwnlnShare = 100 - Number(downlineSharing);
 
   const handleDirectorDwnlnSA = (event) => {
     event?.preventDefault();
@@ -348,13 +348,13 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
   const adminRoless =
     role_name === "director"
       ? Object.entries(directorDwnlns).map(([value, label]) => ({
-          value: Number(value),
-          label,
-        }))
+        value: Number(value),
+        label,
+      }))
       : Object.entries(adminRoles).map(([value, label]) => ({
-          value: Number(value),
-          label,
-        }));
+        value: Number(value),
+        label,
+      }));
 
   const handleRoleChange = (selectedOption) => {
     setRoleId(selectedOption.value);
@@ -381,21 +381,19 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
           </div>
           <div className="d-flex mb-3">
             <button
-              className={`rounded w-25 mx-1 ${
-                activeForm === 1
+              className={`rounded w-25 mx-1 ${activeForm === 1
                   ? "saffron-btn2"
                   : "black-text border-grey3 white-bg"
-              }`}
+                }`}
               onClick={() => setActiveForm(1)}
             >
               Form 1
             </button>
             <button
-              className={`rounded w-25 mx-1 ${
-                activeForm === 2
+              className={`rounded w-25 mx-1 ${activeForm === 2
                   ? "saffron-btn2"
                   : "black-text border-grey3 white-bg"
-              }`}
+                }`}
               onClick={() => setActiveForm(2)}
             >
               Form 2
@@ -583,42 +581,42 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
                 </div> */}
                 <div className="d-flex input-css">
                   {role_name === "director"
-                    ? directorUserRoleWebsites.map((site) => (
-                        <div
-                          key={site.value}
-                          className="d-flex align-items-center mb-2"
-                        >
-                          <input
-                            type="checkbox"
-                            className="me-2"
-                            checked={selectedUserWebsiteIds.includes(
-                              site.value
-                            )}
-                            onChange={() =>
-                              handleUserWebsiteSelection(site.value)
-                            }
-                          />
-                          <label className="small-font">{site.label}</label>
-                        </div>
-                      ))
-                    : userRoleWebsites.map((site) => (
-                        <div
-                          key={site.value}
-                          className="d-flex align-items-center mb-2"
-                        >
-                          <input
-                            type="checkbox"
-                            className="me-2"
-                            checked={selectedUserWebsiteIds.includes(
-                              site.value
-                            )}
-                            onChange={() =>
-                              handleUserWebsiteSelection(site.value)
-                            }
-                          />
-                          <label className="small-font">{site.label}</label>
-                        </div>
-                      ))}
+                    ? directorUserRoleWebsites.length > 0 && directorUserRoleWebsites?.map((site) => (
+                      <div
+                        key={site?.value}
+                        className="d-flex align-items-center mb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          className="me-2"
+                          checked={selectedUserWebsiteIds.includes(
+                            site.value
+                          )}
+                          onChange={() =>
+                            handleUserWebsiteSelection(site.value)
+                          }
+                        />
+                        <label className="small-font">{site.label}</label>
+                      </div>
+                    ))
+                    : userRoleWebsites?.map((site) => (
+                      <div
+                        key={site.value}
+                        className="d-flex align-items-center mb-2"
+                      >
+                        <input
+                          type="checkbox"
+                          className="me-2"
+                          checked={selectedUserWebsiteIds.includes(
+                            site.value
+                          )}
+                          onChange={() =>
+                            handleUserWebsiteSelection(site.value)
+                          }
+                        />
+                        <label className="small-font">{site.label}</label>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
