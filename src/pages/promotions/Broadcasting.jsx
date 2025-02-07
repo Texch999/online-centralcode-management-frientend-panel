@@ -383,7 +383,7 @@ const Broadcasting = () => {
             className="saffron-btn2 small-font pointer ms-2 w-100"
             onClick={handleSubmit}
           >
-            {loading ? <FaSpinner className="spinner-circle" /> : "Submit"}
+            {loading ? "Loading..." : "Submit"}
           </div>
         </div>
       </div>

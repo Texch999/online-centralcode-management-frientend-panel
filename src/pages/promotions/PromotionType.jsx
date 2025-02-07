@@ -37,6 +37,7 @@ const PromotionType = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -61,6 +62,7 @@ const PromotionType = () => {
 
     if (file) {
       const maxSize = 2 * 1024 * 1024;
+
       const allowedTypes = [
         "image/jpeg",
         "image/png",
@@ -69,18 +71,17 @@ const PromotionType = () => {
       ];
 
       if (!allowedTypes.includes(file.type)) {
-        setMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
-        setErrorPopupOpen(true);
+        setErrorMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
         return;
       }
 
       if (file.size > maxSize) {
-        setMessage("File size should not exceed 2MB.");
-        setErrorPopupOpen(true);
+        setErrorMessage("File size should not exceed 2MB.");
         return;
       }
 
       setSelectedFile(file);
+      setErrorMessage("");
       setErrors((prev) => ({ ...prev, image: "" }));
     }
   };
@@ -392,6 +393,11 @@ const PromotionType = () => {
                       {errors.image}
                     </span>
                   )}
+                  {errorMessage && (
+                    <span className="text-danger small-font">
+                      {errorMessage}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -400,11 +406,7 @@ const PromotionType = () => {
                   className="saffron-btn2 pointer small-font"
                   onClick={handlePromotionsImages}
                 >
-                  {loading ? (
-                   "loading..."
-                  ) : (
-                    "Submit"
-                  )}
+                  {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
             </div>

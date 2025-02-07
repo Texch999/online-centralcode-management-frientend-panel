@@ -455,10 +455,6 @@ const SandCBanner = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Sports/Casino Banners</h6>
-        {/* <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
-        </div> */}
       </div>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -647,10 +643,10 @@ const SandCBanner = () => {
 
         <div className="w-100 align-self-end">
           <button
-            className="w-25 saffron-btn2 pointer small-font"
+            className="saffron-btn2 pointer small-font"
             onClick={() => handleCreateBanner()}
           >
-            {loading ? "loading..." : "Submit"}
+            {loading ? "Loading..." : "Submit"}
           </button>
         </div>
       </div>
