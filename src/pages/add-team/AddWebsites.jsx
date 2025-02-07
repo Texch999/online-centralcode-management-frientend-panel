@@ -10,6 +10,8 @@ import SuccessPopup from "../popups/SuccessPopup";
 import { getAllCountires, getWebsitesList, blockAndUnblock, getDirectorAccessWebites } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
 import { controllers } from "chart.js";
+import { useDispatch } from "react-redux";
+import { setAllCountries } from './../../redux/action';
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
@@ -31,6 +33,7 @@ const AddWibsites = () => {
   const itemsPerPage = 9;
   const currentOffset = (currentPage - 1) * 11
   const isInitialRender = useRef(true);
+  const dispatch =useDispatch();
   const getAllWebsiteList = () => {
     const limit = itemsPerPage
     const offset = currentOffset
@@ -79,6 +82,7 @@ const AddWibsites = () => {
       .then((response) => {
         if (response?.status === true) {
           setCountries(response.data);
+          dispatch(setAllCountries(response?.data))
         } else {
           setError("Something Went Wrong");
         }

@@ -19,6 +19,7 @@ import {
 } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useSelector } from "react-redux";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
@@ -43,6 +44,9 @@ const ReferenceData = () => {
   const handleStatusChange = (selectedOption) => {
     setSelectStatus(selectedOption?.value);
   };
+
+  const allCountries = useSelector((item) => item.allCountries);
+  console.log(allCountries,"allcountriessssssssss")
 
   const getSecurityQuestions = () => {
     setLoading(true);
@@ -195,14 +199,14 @@ const ReferenceData = () => {
       <hr className="my-3" />
 
       <div className="d-flex align-items-center justify-content-between">
-        <div className="col-7 fw-600">
+        <div className="col-9 fw-600">
           {activeBtn === "Rejection Reasons"
             ? "Rejection Reasons"
             : "Security Questions"}
         </div>
 
-        <div className="col-5 d-flex justify-content-between align-items-center">
-          <div className="col-5">
+        <div className="col-3 d-flex justify-content-between align-items-center">
+          <div className="col-7">
             <Select
               className="small-font"
               options={selectOptions}
@@ -220,7 +224,7 @@ const ReferenceData = () => {
           </div> */}
 
           <div
-            className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
+            className="bg-white small-font pointer col-4 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
             onClick={() => {
               if (activeBtn === "Rejection Reasons") {
                 setAddNewModalRejection(true);
@@ -233,7 +237,7 @@ const ReferenceData = () => {
               }
             }}
           >
-            <IoAddOutline className="font-25 fw-800" />
+            <IoAddOutline className="medium-font fw-800" />
             <span className="small-font mx-1">Add New</span>
           </div>
         </div>
