@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -16,6 +16,8 @@ function AddDirectorPopup({ onClose, onSubmit, show, isEditMode, directorEmploye
         parent_password: false,
     });
     const [error, setError] = useState(null);
+    const [selectedUrls, setSelectedUrls] = useState({}); // Track selected URLs dynamically
+
     const roleOptions = Object.entries(directorEmployees).map(([key, value]) => ({
         value: key,
         label: value,
@@ -52,56 +54,19 @@ function AddDirectorPopup({ onClose, onSubmit, show, isEditMode, directorEmploye
     const handleRoleChange = (selectedOption) => {
         setValue("role", selectedOption.value);
     };
-    // const onSubmitHandler = (data) => {
-    //     setError(null); // Reset previous error
 
-    //     if (isEditMode) {
-    //         updateDirectorDwnlnPswd(data)
-    //             .then((response) => {
-    //                 if (response?.status === true) {
-    //                     console.log("Director updated successfully", response);
-    //                     onSubmit(); // Callback to refresh parent state
-    //                     onClose(); // Close the modal after success
-    //                 } else {
-    //                     setError("Update failed");
-    //                 }
-    //             })
-    //             .catch((error) => {
-    //                 setError(error?.message || "Update failed");
-    //             });
-    //     } else {
-    //         addDirectorTeam(data)
-    //             .then((response) => {
-    //                 if (response?.status === true) {
-    //                     console.log("Director added successfully", response);
-    //                     onSubmit();
-    //                     onClose();
-    //                 } else {
-    //                     setError("Something went wrong");
-    //                 }
-    //             })
-    //             .catch((error) => {
-    //                 setError(error?.message || "Request failed");
-    //             });
-    //     }
-    // };
-
-    const [employeeData, setEmployeeData] = useState()
-
-
-    const GetDirectorEmployeeByID = () => {
-        getDirectorEmployeeDetailsById(directorEmployeeId).then((response) => {
-            if (response) {
-                console.log(response, "responseemployeesdata")
-                setEmployeeData(response.userDeatils)
+    const handleCheckboxChange = (userId) => {
+        setSelectedUrls((prevState) => {
+            const newState = { ...prevState };
+            // Toggle the URL of the selected user
+            if (newState[userId]) {
+                delete newState[userId];
             } else {
-                console.log("There Is Some Error")
-
+                newState[userId] = `https://user${userId}.com`; // or any other dynamic URL you want
             }
-        }).catch((error) => {
-            console.log(error?.message || "Not able to get employee data");
-        })
-    }
+            return newState;
+        });
+    };
 
     const onSubmitHandler = (data) => {
         console.log("clicked")
@@ -117,8 +82,6 @@ function AddDirectorPopup({ onClose, onSubmit, show, isEditMode, directorEmploye
                 setError(error?.message || "Login failed");
             });
     };
-    // useEffect(() => { onSubmitHandler() }, [])
-
 
     return (
         <Modal show={show} onHide={onClose} size="lg" centered>
@@ -169,13 +132,7 @@ function AddDirectorPopup({ onClose, onSubmit, show, isEditMode, directorEmploye
                             <label className="small-font mb-1">Phone Number</label>
                             <input
                                 type="text"
-                                {...register("phone_no", {
-                                    // required: "Phone Number is required",
-                                    // pattern: {
-                                    //     value: /^[0-9]{10}$/,
-                                    //     message: "Enter a valid 10-digit phone number",
-                                    // },
-                                })}
+                                {...register("phone_no", {})}
                                 className="small-font rounded all-none input-css w-100"
                                 placeholder="Enter"
                             />
@@ -243,6 +200,25 @@ function AddDirectorPopup({ onClose, onSubmit, show, isEditMode, directorEmploye
                         </div>
                     </div>
 
+                    {/* Example of selecting a user and toggling their URL */}
+                    <div className="row mb-3">
+                        <div className="col">
+                            <label className="small-font mb-1">Select User URL</label>
+                            <div>
+                                {Object.keys(directorEmployees).map((userId) => (
+                                    <div key={userId}>
+                                        <input
+                                            type="checkbox"
+                                            checked={!!selectedUrls[userId]}
+                                            onChange={() => handleCheckboxChange(userId)}
+                                        />
+                                        <span>User {userId}</span>
+                                        {selectedUrls[userId] && <div>{selectedUrls[userId]}</div>}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="row d-flex justify-content-center">
                         <div className="col-md-4">

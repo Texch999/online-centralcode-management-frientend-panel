@@ -758,3 +758,7 @@
 .custom-file-upload:hover {
   background: #e9ecef;
 }
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

@@ -3,7 +3,6 @@ import { Modal, Button } from "react-bootstrap";
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaCalendar,
   FaEye,
   FaEyeSlash,
   FaPlus,
@@ -17,10 +16,9 @@ import {
   createDirector,
   getAdminWebsites,
   getCountries,
-  getDirectorAccessWebites,
-  getUserWebsites,
+
 } from "../../../api/apiMethods";
-import { adminRoles, directorDwnlns, Roles } from "../../../utils/enum";
+import { adminRoles, commissionTypes } from "../../../utils/enum";
 import SuccessPopup from "../../popups/SuccessPopup";
 
 const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
@@ -34,56 +32,14 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
   const [loginName, setLoginName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [parentPassword, setParentPassword] = useState("");
-  const [country, setCountry] = useState(null);
-  const [commission, setCommission] = useState("");
-  const [rentStartDate, setRentStartDate] = useState("");
-  const [rentExpiryDate, setRentExpiryDate] = useState("");
-  const [maxChipsRent, setMaxChipsRent] = useState("");
-  const [rentPercentage, setRentPercentage] = useState("");
-  const [maxChipsMonthly, setMaxChipsMonthly] = useState("");
-  const [monthlyAmount, setMonthlyAmount] = useState("");
-  const [extraChips, setExtraChips] = useState("");
-  const [downlineSharing, setDownlineSharing] = useState("");
   const [managementPassword, setManagementPassword] = useState("");
   const [roleId, setRoleId] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [selectedAdminRoleIds, setSelectedAdminRoleIds] = useState(null);
-  const [selectedUserWebsiteIds, setSelectedUserWebsiteIds] = useState([]);
-  const [accountType, setAccountType] = useState(null);
-  const [directorSites, setDirectorSites] = useState([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
-  const [directorUserRoleWebsites, setDirectorUserRoleWebsites] = useState([]);
-  const [directorRoleWebsites, setDirectorRoleWebsites] = useState([]);
   const [error, setError] = useState();
   const [countryData, setCountryData] = useState();
-  const [selectedUserId, setSelectedUserId] = useState(null);
-  const [checkedUrls, setCheckedUrls] = useState([]);
-
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-
-  const handleUserWebsiteSelection = (websiteId) => {
-    setSelectedUserWebsiteIds((prevSelected) => {
-      if (prevSelected.includes(websiteId)) {
-        return prevSelected.filter((id) => id !== websiteId);
-      } else {
-        return [...prevSelected, websiteId];
-      }
-    });
-  };
-
-  const accountTypes = [
-    { label: "Share", value: "share" },
-    { label: "Rental", value: "rental" },
-  ];
-
-  const handleAdminRoleChange = (selectedOption) => {
-    console.log(selectedOption, "Selected Option");
-    const selectedId = selectedOption ? selectedOption.value : null;
-    console.log(selectedId, "Selected ID");
-    setSelectedAdminRoleIds(selectedId);
-  };
 
   const handleChange = (event) => {
     const selectedCode = event.target.value;
@@ -99,127 +55,6 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
       setSelectedCountryCode("");
     }
   };
-
-  const commissionMo=100-Number(commission);
-  const dwnlnShare=100-Number(downlineSharing);
-
-  const handleDirectorDwnlnSA = (event) => {
-    event?.preventDefault();
-    const formData = {
-      type: roleId,
-      name,
-      login_name: loginName,
-      password,
-      confirm_password: confirmPassword,
-      parent_password: managementPassword,
-      country_id: selectedCountryId,
-      accessWebsites: selectedUserWebsiteIds.map((id) => ({
-        admin_panel_id: selectedAdminRoleIds,
-        user_paner_id: id,
-        commission_type: accountType === "share" ? 2 : 1,
-        share: accountType === "share" ? commission : undefined,
-        rent_start_date: accountType === "rental" ? rentStartDate : undefined,
-        rent_expiry_date: accountType === "rental" ? rentExpiryDate : undefined,
-        max_chips_rent: accountType === "rental" ? maxChipsRent : undefined,
-        rent_percentage: accountType === "rental" ? rentPercentage : undefined,
-      })),
-    };
-
-    // const formData = {
-    //   type: roleId,
-    //   name,
-    //   login_name: loginName,
-    //   password,
-    //   confirm_password: confirmPassword,
-    //   parent_password: managementPassword,
-    //   country_id: selectedCountryId,
-    //   accessWebsites: [
-    //     {
-    //       admin_panel_id: selectedAdminRoleIds,
-    //       user_paner_id: 1,
-    //       commission_type: accountType === "share" ? 2 : 1,
-    //       share: accountType === "share" ? commission : undefined,
-    //       rent_start_date: accountType === "rental" ? rentStartDate : undefined,
-    //       rent_expiry_date:
-    //         accountType === "rental" ? rentExpiryDate : undefined,
-    //       max_chips_rent: accountType === "rental" ? maxChipsRent : undefined,
-    //       rent_percentage:
-    //         accountType === "rental" ? rentPercentage : undefined,
-    //     },
-    //   ],
-    // };
-    console.log(formData, "formData");
-    createDirector(formData)
-      .then((response) => {
-        if (response?.status === true) {
-          console.log(response, "response from API");
-          handleClose();
-          setRoleId("");
-          setName("");
-          setLoginName("");
-          setPassword("");
-          setConfirmPassword("");
-          setManagementPassword("");
-          setSelectedCountryId(null);
-          setAccountType("");
-          setCommission("");
-          setRentStartDate("");
-          setRentExpiryDate("");
-          setMaxChipsRent("");
-          setRentPercentage("");
-          getDirectorDwnSAList();
-          successPopupOpen(true);
-
-          setTimeout(() => {
-            setSuccessPopupOpen(false);
-          }, [1000]);
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Submission failed");
-      });
-  };
-
-  useEffect(() => {
-    handleDirectorDwnlnSA();
-  }, []);
-
-  const getAllDirectorWebsiteList = () => {
-    getDirectorAccessWebites()
-      .then((response) => {
-        if (response?.status) {
-          console.log(response, "dir websites");
-          setDirectorSites(response.data);
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "API request failed");
-      });
-  };
-  useEffect(() => {
-    getAllDirectorWebsiteList();
-  }, []);
-
-  useEffect(() => {
-    if (directorSites.length > 0) {
-      const directors = directorSites?.map((item) => ({
-        value: item?.admin_panel_id,
-        label: item?.admin_website_url,
-      }));
-      const users = directorSites
-        ?.flatMap((user) => user?.users || [])
-        ?.map((item) => ({
-          value: item?.user_panel,
-          label: item?.user_web_url,
-        }));
-      setDirectorRoleWebsites(directors);
-      setDirectorUserRoleWebsites(users);
-    }
-  }, [directorSites]);
 
   const GetAllCountries = () => {
     getCountries()
@@ -239,7 +74,9 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
     GetAllCountries();
   }, []);
   const [adminWebsite, setAllAdminWebsite] = useState();
+
   console.log(adminWebsite, "adminWebsite");
+
   const GetAllAdminWebsites = () => {
     getAdminWebsites()
       .then((response) => {
@@ -257,108 +94,130 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
   useEffect(() => {
     GetAllAdminWebsites();
   }, []);
-  const [userWebsite, setAllUserWebsite] = useState();
-  console.log(userWebsite, "userWebsite");
-
-  const GetAllUserWebsites = () => {
-    getUserWebsites()
-      .then((response) => {
-        if (response?.status === true) {
-          setAllUserWebsite(response.data);
-          console.log(response, "userWebsites");
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Not able to get Countries");
-      });
-  };
-  useEffect(() => {
-    GetAllUserWebsites();
-  }, []);
-
-  const adminRoleWebsites = adminWebsite?.map((site) => ({
-    value: site.id,
-    label: site.web_url,
-  }));
-  const userRoleWebsites = userWebsite?.map((site) => ({
-    value: site.id,
-    label: site.web_url,
-  }));
-
-  const handleCheckboxChange = (event, id, url) => {
-    // Toggle URL selection
-    if (event.target.checked) {
-      setCheckedUrls((prevUrls) => [...prevUrls, url]);
-      setSelectedUserId(id); // Update the selected User ID when checked
-    } else {
-      setCheckedUrls((prevUrls) =>
-        prevUrls.filter((url) => url !== event.target.value)
-      );
-      setSelectedUserId(null); // Reset the selected User ID when unchecked
-    }
-  };
-  const handleDirector = (event) => {
-    event?.preventDefault();
-
-    const formData = {
-      type: roleId,
-      name,
-      login_name: loginName,
-      password,
-      confirm_password: confirmPassword,
-      parent_password: managementPassword,
-      country_id: selectedCountryId,
-      accessWebsites: [
-        {
-          admin_panel_id: 1,
-          user_paner_id: 1,
-          // admin_panel_id: selectedAdminRoleIds,
-          // user_paner_id: selectedUserId,
-          commission_type: accountType === "share" ? 2 : 1,
-          share: accountType === "share" ? commission : undefined,
-          rent_start_date: accountType === "rental" ? rentStartDate : undefined,
-          rent_expiry_date:
-            accountType === "rental" ? rentExpiryDate : undefined,
-          max_chips_rent: accountType === "rental" ? maxChipsRent : undefined,
-          rent_percentage:
-            accountType === "rental" ? rentPercentage : undefined,
-        },
-      ],
-    };
-    console.log(formData, "formData");
-    createDirector(formData)
-      .then((response) => {
-        if (response?.status === true) {
-          console.log(response, "response from API");
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Submission failed");
-      });
-  };
-
-  useEffect(() => {
-    handleDirector();
-  }, []);
 
   const adminRoless =
-    role_name === "director"
-      ? Object.entries(directorDwnlns).map(([value, label]) => ({
-          value: Number(value),
-          label,
-        }))
-      : Object.entries(adminRoles).map(([value, label]) => ({
-          value: Number(value),
-          label,
-        }));
-
+    Object.entries(adminRoles).map(([value, label]) => ({
+      value: Number(value),
+      label,
+    }));
+  console.log(adminRoless, "adminRoless")
   const handleRoleChange = (selectedOption) => {
     setRoleId(selectedOption.value);
   };
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [userWebsites, setUserWebsites] = useState([]);
+  console.log(selectedAdmin, "selectedAdmin")
+
+  const handleAdminRoleChange = (selectedOption) => {
+    console.log("Selected Admin:", selectedOption);
+    setSelectedAdmin(selectedOption);
+    const adminData = adminWebsite.find((admin) => admin.id === selectedOption.value);
+    console.log("User Websites Found:", adminData?.userWebsites || []);
+    setUserWebsites(adminData?.userWebsites || []);
+  };
+
+  const [selectedWebsites, setSelectedWebsites] = useState({});
+  const [accountTypes, setAccountTypes] = useState({});
+
+  const commissionOptions = Object.entries(commissionTypes).map(([value, label]) => ({
+    value,
+    label,
+  }));
+
+  const [forms, setForms] = useState([{ id: 1, selectedWebsite: null, accountType: null }]);
+
+  const addAnotherForm = () => {
+    setForms([...forms, { id: forms.length + 1, selectedWebsite: null, accountType: null }]);
+  };
+
+  const [websiteDetails, setWebsiteDetails] = useState({});
+  const handleCheckboxChange = (id) => {
+    setSelectedWebsites((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+
+  const handleAccountTypeChange = (id, selectedOption) => {
+    setAccountTypes((prev) => ({
+      ...prev,
+      [id]: selectedOption.value,
+    }));
+  };
+  const handleInputChange = (id, field, value) => {
+    setWebsiteDetails((prevDetails) => ({
+      ...prevDetails,
+      [id]: {
+        ...prevDetails[id],
+        [field]: value,
+      },
+    }));
+  };
+  console.log(websiteDetails, "websiteDetails")
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!selectedAdmin) {
+      alert("Please select an Admin Website.");
+      return;
+    }
+
+    const selectedUserWebsites = userWebsites
+      .filter((site) => selectedWebsites[site.id])
+      .map((site) => {
+        const accotypeid = accountTypes[site.id];
+
+        let websiteData = {
+          admin_panel_id: selectedAdmin.value,
+          user_paner_id: site.id,
+          commission_type: accotypeid,
+        };
+
+        if (accotypeid === "2") {
+          websiteData.share = parseFloat(websiteDetails[site.id]?.share || 0);
+        }
+        if (accotypeid === "1") {
+          websiteData.rent_start_date = websiteDetails[site.id]?.rent_start_date || "";
+          // websiteData.rent_expiry_date = websiteDetails[site.id]?.rent_expiry_date || "";
+          websiteData.max_chips_rent = parseInt(websiteDetails[site.id]?.max_chips_rent || 0);
+          websiteData.rent_percentage = parseFloat(websiteDetails[site.id]?.rent_percentage || 0);
+          // websiteData.maxChipsMonthly = parseInt(websiteDetails[site.id]?.maxChipsMonthly || 0);
+          // websiteData.monthlyAmount = parseFloat(websiteDetails[site.id]?.monthlyAmount || 0);
+        }
+        return websiteData;
+      });
+
+    if (selectedUserWebsites.length === 0) {
+      alert("Please select at least one User Website.");
+      return;
+    }
+
+
+    // const type = selectedUserWebsites[0]?.commission_type || 1;
+
+    const finalData = {
+      type: roleId,
+      name: name,
+      login_name: loginName,
+      password: password,
+      confirm_password: confirmPassword,
+      parent_password: managementPassword,
+      country_id: selectedCountryId,
+      accessWebsites: selectedUserWebsites,
+    };
+    createDirector(finalData).then((response) => {
+      if (response.status === true) {
+        console.log(response, "response after clicking")
+      } else { console.log("something error happening") }
+    }).catch((error) => console.log(error))
+    console.log("Final Submitted Data:", finalData);
+    alert(JSON.stringify(finalData, null, 2));
+  };
+
+
   return (
     <div>
       <Modal show={show} onHide={handleClose} centered size="md">
@@ -379,35 +238,14 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
               <MdOutlineClose />
             </Button>
           </div>
-          <div className="d-flex mb-3">
-            <button
-              className={`rounded w-25 mx-1 ${
-                activeForm === 1
-                  ? "saffron-btn2"
-                  : "black-text border-grey3 white-bg"
-              }`}
-              onClick={() => setActiveForm(1)}
-            >
-              Form 1
-            </button>
-            <button
-              className={`rounded w-25 mx-1 ${
-                activeForm === 2
-                  ? "saffron-btn2"
-                  : "black-text border-grey3 white-bg"
-              }`}
-              onClick={() => setActiveForm(2)}
-            >
-              Form 2
-            </button>
-          </div>
+
           <form
             className="add-management-popup-form px-3"
             style={{ display: activeForm === 1 ? "block" : "none" }}
           >
             <div className="row mb-3">
               <div className="col-md-6">
-                <label className="small-font">Name</label>
+                <label className="small-font my-1">Name</label>
                 <input
                   type="text"
                   className="small-font rounded all-none input-css w-100"
@@ -418,7 +256,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="small-font">Login Name</label>
+                <label className="small-font my-1">Login Name</label>
                 <input
                   type="text"
                   className="small-font rounded all-none input-css w-100"
@@ -432,7 +270,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
 
             <div className="row mb-3">
               <div className="col-md-6 position-relative">
-                <label className="small-font">Role</label>
+                <label className="small-font my-1">Role</label>
                 <div className="custom-select-wrapper">
                   <Select
                     className="small-font"
@@ -446,7 +284,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
                 </div>
               </div>
               <div className="col-md-6">
-                <label className="small-font">Country</label>
+                <label className="small-font my-1">Country</label>
                 <select
                   className="small-font rounded all-none input-css w-100"
                   value={selectedCountryCode}
@@ -464,7 +302,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
 
             <div className="row mb-3">
               <div className="col-md-6 position-relative">
-                <label className="small-font">Password</label>
+                <label className="small-font my-1">Password</label>
                 <input
                   type={showPassword ? "text" : "password"}
                   className="small-font rounded all-none input-css w-100"
@@ -482,7 +320,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
                 </span>
               </div>
               <div className="col-md-6 position-relative">
-                <label className="small-font">Confirm Password</label>
+                <label className="small-font my-1">Confirm Password</label>
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   className="small-font rounded all-none input-css w-100"
@@ -505,7 +343,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
 
             <div className="row mb-3">
               <div className="col-md-6 position-relative">
-                <label className="small-font">Management Password</label>
+                <label className="small-font my-1">Management Password</label>
                 <input
                   type={showManagementPassword ? "text" : "password"}
                   className="small-font rounded all-none input-css w-100"
@@ -536,296 +374,208 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
               </div>
             </div>
           </form>
-          {/* Form 2 */}
           <form
             className="custom-form small-font p-3"
             style={{ display: activeForm === 2 ? "block" : "none" }}
-          >
-            {/* Row 3: Website, Share, Rent */}
-            <div className="row mb-3">
-              <div className="col-md-12 position-relative">
-                <label className="small-font">Admin Website</label>
-                <div className="custom-select-wrapper">
-                  <Select
-                    className="small-font"
-                    options={
-                      role_name === "director"
-                        ? directorRoleWebsites
-                        : adminRoleWebsites
-                    }
-                    placeholder="Select"
-                    styles={customStyles}
-                    maxMenuHeight={120}
-                    menuPlacement="auto"
-                    onChange={handleAdminRoleChange}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col-md-12 position-relative">
-                <label className="small-font">User Website</label>
-                {/* <div className="d-flex input-css">
-                  <input type="checkbox" className="me-2" />
-                  <input
-                    type="text"
-                    value={
-                      role_name === "director"
-                        ? directorUserRoleWebsites
-                            .map((site) => site.label)
-                            .join(", ")
-                        : userRoleWebsites
-                    }
-                    className="small-font rounded all-none w-100"
-                    placeholder="Website Names"
-                    readOnly
-                  />
-                </div> */}
-                <div className="d-flex input-css">
-                  {role_name === "director"
-                    ? directorUserRoleWebsites.map((site) => (
-                        <div
-                          key={site.value}
-                          className="d-flex align-items-center mb-2"
-                        >
-                          <input
-                            type="checkbox"
-                            className="me-2"
-                            checked={selectedUserWebsiteIds.includes(
-                              site.value
-                            )}
-                            onChange={() =>
-                              handleUserWebsiteSelection(site.value)
-                            }
-                          />
-                          <label className="small-font">{site.label}</label>
-                        </div>
-                      ))
-                    : userRoleWebsites.map((site) => (
-                        <div
-                          key={site.value}
-                          className="d-flex align-items-center mb-2"
-                        >
-                          <input
-                            type="checkbox"
-                            className="me-2"
-                            checked={selectedUserWebsiteIds.includes(
-                              site.value
-                            )}
-                            onChange={() =>
-                              handleUserWebsiteSelection(site.value)
-                            }
-                          />
-                          <label className="small-font">{site.label}</label>
-                        </div>
-                      ))}
-                </div>
-              </div>
-            </div>
-            {/* <div>
-            <h3>Selected Website ID: {selectedUserId}</h3>
-            <div className="row mb-3">
-              {userWebsite?.map((website) => (
-                <div key={website.id} className="row mb-3">
-                  <div className="col-md-12 position-relative">
-                    <label className="small-font">User Website</label>
-                    <div className="d-flex input-css">
-                      <input
-                        type="checkbox"
-                        className="me-2"
-                        value={website.web_url} // Use URL as the value for the checkbox
-                        onChange={(e) =>
-                          handleCheckboxChange(e, website.id, website.web_url)
-                        }
-                        checked={checkedUrls.includes(website.web_url)} // Check if the URL is selected
-                      />
-                      <input
-                        type="text"
-                        className="small-font rounded all-none w-100"
-                        placeholder="Website URL"
-                        value={website.web_url}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div> */}
-            <div className="row mb-3">
-              <div className="col-md-12 position-relative">
-                <label className="small-font">Account Type</label>
-                <div className="white-bg border-grey3">
-                  <Select
-                    className="small-font"
-                    options={accountTypes}
-                    placeholder="Select"
-                    styles={customStyles}
-                    maxMenuHeight={120}
-                    onChange={(selectedOption) =>
-                      setAccountType(selectedOption.value)
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-            {accountType === "share" && (
-              <>
-                {" "}
-                <div className="row mb-3">
-                  <div className="col-md-12 position-relative">
-                    <label className="small-font">Commission: M.O</label>
-                    <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
-                      <input
-                        className="small-font bg-none p-2"
-                        placeholder="Enter"
-                        value={commission}
-                        onChange={(e) => setCommission(e.target.value)}
-                      />
-                      <span>
-                        <b className="mx-1">{commissionMo}%</b>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-12 position-relative">
-                    <label className="small-font">Downline Sharing</label>
-                    <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
-                      <input
-                        className="small-font bg-none p-2"
-                        placeholder="Enter"
-                        value={downlineSharing}
-                        onChange={(e) => setDownlineSharing(e.target.value)}
-                      />
-                      <span>
-                        <b className="mx-1">= My Sharing  {dwnlnShare}%</b>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-            {accountType === "rental" && (
-              <>
-                {" "}
-                <div className="row mb-3">
-                  <div className="col-md-12 position-relative">
-                    <label className="small-font">Extra Chips</label>
-                    <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
-                      <input
-                        className="small-font bg-none p-2"
-                        placeholder="Enter"
-                        value={extraChips}
-                        onChange={(e) => setExtraChips(e.target.value)}
-                      />
-                      <span>
-                        <b>= (My Sharing 40%)</b>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-6">
-                    <label className="small-font">Start Date</label>
-                    <input
-                      type="date"
-                      className="small-font rounded all-none input-css w-100"
-                      placeholder="Enter"
-                      value={rentStartDate}
-                      onChange={(e) => setRentStartDate(e.target.value)}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="small-font">Expiry Date</label>
-                    <input
-                      type="date"
-                      className="small-font rounded all-none input-css w-100"
-                      placeholder="Enter"
-                      value={rentExpiryDate}
-                      onChange={(e) => setRentExpiryDate(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-6">
-                    <label className="small-font">Max Chips Monthly</label>
-                    <input
-                      type="text"
-                      className="small-font rounded all-none input-css w-100"
-                      placeholder="Enter"
-                      value={maxChipsMonthly}
-                      onChange={(e) => setMaxChipsMonthly(e.target.value)}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="small-font">Monthly Amount</label>
-                    <input
-                      type="text"
-                      className="small-font rounded all-none input-css w-100"
-                      placeholder="Enter"
-                      value={monthlyAmount}
-                      onChange={(e) => setMonthlyAmount(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-6">
-                    <label className="small-font">Max Chips Monthly</label>
-                    <input
-                      type="text"
-                      className="small-font rounded all-none input-css w-100"
-                      placeholder="Enter"
-                      value={maxChipsRent}
-                      onChange={(e) => setMaxChipsRent(e.target.value)}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="small-font">My Percentage</label>
-                    <input
-                      type="text"
-                      className="small-font rounded all-none input-css w-100"
-                      placeholder="Enter"
-                      value={rentPercentage}
-                      onChange={(e) => setRentPercentage(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
+            onSubmit={handleSubmit}>
 
-            <div className="mb-3">
-              <div className="custom-checkbox">
-                <input type="checkbox" id="website2" />
-                <label htmlFor="website2">www.casinocafe.com</label>
-              </div>
-              <div className="custom-checkbox">
-                <input type="checkbox" id="website3" />
-                <label htmlFor="website3">www.starsports247.com</label>
-              </div>
+            <div>
+              {forms.map((form, index) => (<>
+                <div key={form.id}  >
+                  <label className="small-font my-1">Admin Website</label>
+                  <div className="custom-select-wrapper">
+                    <Select
+                      className="small-font"
+                      placeholder="Select"
+                      options={adminWebsite?.map((admin) => ({
+                        value: admin.id,
+                        label: admin.web_name,
+                      }))}
+                      onChange={handleAdminRoleChange}
+                    />
+                  </div>
+                </div>
+
+                {/* User Websites */}
+                <div>
+                  <label className="small-font my-1">User Website</label>
+                  {userWebsites.length > 0 ? (
+                    userWebsites.map((userSite) => (
+                      <div key={userSite.id} className="my-2">
+                        <div className="d-flex input-css">
+                          <input
+                            type="checkbox"
+                            className="me-2"
+                            onChange={() => handleCheckboxChange(userSite.id)}
+                          />
+                          <input
+                            type="text"
+                            className="small-font rounded all-none w-100"
+                            value={userSite.web_url}
+                            readOnly
+                          />
+                        </div>
+                        {/* Account Type Dropdown */}
+                        {selectedWebsites[userSite.id] && (
+                          <div className="mt-2">
+                            <label className="small-font my-1">Account Type</label>
+                            <Select
+                              className="small-font"
+                              placeholder="Select Account Type"
+                              options={commissionOptions}
+                              styles={customStyles}
+                              maxMenuHeight={120}
+                              onChange={(selectedOption) =>
+                                handleAccountTypeChange(userSite.id, selectedOption)
+                              }
+                            />
+                          </div>
+                        )}
+                        {accountTypes[userSite.id] === "1" && (
+                          <>
+                            <div className="row my-2">
+                              <div className="col-md-12 position-relative">
+                                <label className="small-font my-1">Extra Chips</label>
+                                <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input className="small-font bg-none p-2" placeholder="Enter" onChange={(e) => handleInputChange(userSite.id, "extraChips", e.target.value)}
+                                  />
+                                  <span>
+                                    <b>= (My Sharing 40%)</b>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row mb-3">
+                              <div className="col-md-6">
+                                <label className="small-font my-1">Start Date</label>
+                                <input type="date" className="small-font rounded all-none input-css w-100"
+                                  onChange={(e) => handleInputChange(userSite.id, "rent_start_date", e.target.value)}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="small-font my-1">Expiry Date</label>
+                                <input type="date" className="small-font rounded all-none input-css w-100"
+                                  onChange={(e) => handleInputChange(userSite.id, "rent_expiry_date", e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="row mb-3">
+                              <div className="col-md-6">
+                                <label className="small-font my-1">Max Chips Monthly</label>
+                                <input type="text" className="small-font rounded all-none input-css w-100"
+                                  onChange={(e) => handleInputChange(userSite.id, "maxChipsMonthly", e.target.value)}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="small-font my-1">Monthly Amount</label>
+                                <input type="text" className="small-font rounded all-none input-css w-100"
+                                  onChange={(e) => handleInputChange(userSite.id, "monthlyAmount", e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className="row mb-3">
+                              <div className="col-md-6">
+                                <label className="small-font my-1">Max Chips Rent</label>
+                                <input type="text" className="small-font rounded all-none input-css w-100"
+                                  onChange={(e) => handleInputChange(userSite.id, "max_chips_rent", e.target.value)}
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <label className="small-font my-1">My Percentage</label>
+                                <input type="text" className="small-font rounded all-none input-css w-100"
+                                  onChange={(e) => handleInputChange(userSite.id, "rent_percentage", e.target.value)}
+                                />
+                              </div>
+                            </div>
+                          </>
+
+                        )}
+                        {accountTypes[userSite.id] === "2" && (
+                          <div className="my-2">
+                            <div className="col-md-12 position-relative">
+                              <label className="small-font my-1">Commission: M.O</label>
+                              <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                                <input
+                                  className="small-font bg-none p-2 w-75"
+                                  placeholder="Enter"
+                                  onChange={(e) => handleInputChange(userSite.id, "commissionMO", e.target.value)}
+
+                                />
+                                <span>
+                                  <b className="mx-1">%</b>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col-md-12 position-relative">
+                              <label className="small-font my-1">Downline Sharing</label>
+                              <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                                <input
+                                  className="small-font bg-none p-2 w-75"
+                                  placeholder="Enter"
+                                  onChange={(e) =>
+                                    handleInputChange(userSite.id, "share", e.target.value)
+                                  }
+                                />
+                                <span>
+                                  <b className="mx-1">= My Sharing</b>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        {accountTypes[userSite.id] === "3" && (
+                          <div className="my-2">
+                            <div className="col-md-12 position-relative">
+                              <label className="small-font my-1">Commission: M.O</label>
+                              <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                                <input
+                                  className="small-font bg-none p-2 w-75"
+                                  placeholder="Enter"
+                                  onChange={(e) => handleInputChange(userSite.id, "commissionMO", e.target.value)}
+
+                                />
+                                <span>
+                                  <b className="mx-1">%</b>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="col-md-12 position-relative">
+                              <label className="small-font my-1">Downline Sharing</label>
+                              <div className="white-bg border-grey3 d-flex justify-content-between align-items-center small-font">
+                                <input
+                                  className="small-font bg-none p-2 w-75"
+                                  placeholder="Enter"
+                                  onChange={(e) =>
+                                    handleInputChange(userSite.id, "downlineSharing", e.target.value)
+                                  }
+                                />
+                                <span>
+                                  <b className="mx-1">= My Sharing</b>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="small-font">No user websites available</p>
+                  )}
+                </div></>))}
+
             </div>
+
             <div className="text-center mb-3 w-100">
-              <button type="button" className="btn btn-outline-primary">
+              <button type="button" className="saffron-btn rounded-2 py-2" onClick={addAnotherForm} >
                 <FaPlus className="me-2" /> Add Another
               </button>
             </div>
+
             <div className="d-flex justify-content-between">
-              <button
-                type="button"
-                className="btn btn-warning"
-                onClick={() => setActiveForm(1)}
-              >
+              <button type="button" className="btn btn-warning" onClick={() => setActiveForm(1)}>
                 <FaArrowLeft /> Previous
               </button>
-              <button
-                type="submit"
-                className="btn btn-warning"
-                onClick={(event) =>
-                  role_name === "director"
-                    ? handleDirectorDwnlnSA(event)
-                    : handleDirector(event)
-                }
-              >
+              <button type="submit" className="btn btn-warning">
                 Submit <FaArrowRight />
               </button>
             </div>
