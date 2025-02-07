@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
@@ -51,27 +51,24 @@ const AddNewPopUp = ({
   const [rejReason, setRejReason] = useState("");
   const [rejReasonDescription, setRejReasonDescription] = useState("");
   const [secQnsByIdData, setSecQnsByIdData] = useState([]);
-  console.log(secQnsByIdData, "secQnsByIdData");
   const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
+  const [errorPopup, setErrorPopup] = useState(false);
   const selectOptions = [
     { value: 1, label: "Active" },
     { value: 2, label: "In-Active" },
   ];
 
-  const [errorPopup, setErrorPopup] = useState(false);
-  console.log(error, "error");
-
   const handleCloseRejReasons = () => {
     setAddNewModalRejection(false);
     reset();
-    getRejReasons();
+    // getRejReasons();
   };
 
   const handleCloseSecQns = () => {
     setAddNewModalSecurity(false);
     reset();
-    getSecurityQuestions();
+    // getSecurityQuestions();
   };
 
   useEffect(() => {
@@ -96,10 +93,6 @@ const AddNewPopUp = ({
   }, [isEdit, selectedRejReasonId, setValue]);
 
   const onSubmitRejReasons = (data) => {
-    // if (!data.status) {
-    //   setError({ status: { message: "Status is required" } });
-    //   return;
-    // }
     const payload = {
       reason: data.reason,
       description: data.description,
@@ -146,11 +139,6 @@ const AddNewPopUp = ({
   }, [isEdit, selectedQnsId, setValue]);
 
   const onSubmitSecQns = (data) => {
-    // if (!data.status) {
-    //   setError({ status: { message: "Status is required" } });
-    //   return;
-    // }
-
     const payload = {
       questions: data.securityQns,
       status: data.status?.value || null,
@@ -173,79 +161,11 @@ const AddNewPopUp = ({
       .catch((error) => {
         setErrorPopup(true);
         setError(error);
-        console.log("Error:", error?.message);
       });
   };
   return (
     <>
       {addNewModalRejection && (
-        // <Modal
-        //   show={addNewModalRejection}
-        //   size="md"
-        //   aria-labelledby="contained-modal-title-vcenter"
-        //   centered
-        // >
-        //   <Modal.Body>
-        //     <div className="d-flex w-100 flex-between">
-        //       <h6>{`${isEdit === true ? "Edit" : "Add"}`} Rejection Reasons</h6>
-        //       <IoCloseSharp
-        //         className="pointer"
-        //         onClick={() => setAddNewModalRejection(false)}
-        //       />
-        //     </div>
-
-        //     <div className="row mt-3 small-font">
-        //       <div className="col-4 flex-column">
-        //         <label className="black-text4 mb-1">Status</label>
-        //         <Select
-        //           className="small-font"
-        //           options={selectOptions}
-        //           placeholder="Select"
-        //           styles={customStyles}
-        //           maxMenuHeight={120}
-        //           menuPlacement="auto"
-        //           value={
-        //             selectOptions.find(
-        //               (option) => option.value === selectedStatus
-        //             ) || null
-        //           }
-        //           onChange={handleStatusChange}
-        //         />
-        //       </div>
-        //       <div className="col-8 flex-column ">
-        //         <label className="black-text4 mb-1">Reason</label>
-        //         <input
-        //           type="text"
-        //           placeholder="Enter"
-        //           className="all-none input-bg small-font p-2 rounded"
-        //           value={rejReason}
-        //           onChange={(e) => setRejReason(e.target.value)}
-        //         />
-        //       </div>
-
-        //       <div className="col-12 flex-column mt-3 ">
-        //         <label className="black-text4 mb-1">Description</label>
-        //         <textarea
-        //           placeholder="Enter"
-        //           className="all-none input-bg small-font p-2 rounded"
-        //           rows="4"
-        //           style={{ resize: "none" }}
-        //           value={rejReasonDescription}
-        //           onChange={(e) => setRejReasonDescription(e.target.value)}
-        //         ></textarea>
-        //       </div>
-        //       <div className="row">
-        //         <div className="col-8"></div>
-        //         <div
-        //           className="saffron-btn2 small-font pointer mt-4 col-4"
-        //           onClick={handlePostRejectionReasons}
-        //         >
-        //           {`${isEdit === true ? "Update" : "Create"}`}
-        //         </div>
-        //       </div>
-        //     </div>
-        //   </Modal.Body>
-        // </Modal>
         <Modal show={addNewModalRejection} size="md" centered>
           <Modal.Body>
             <div className="d-flex w-100 flex-between">
@@ -264,10 +184,6 @@ const AddNewPopUp = ({
                     options={selectOptions}
                     placeholder="Select"
                     styles={customStyles}
-                    // value={watch("status")}
-                    // onChange={(selectedOption) =>
-                    //   setValue("status", selectedOption)
-                    // }
                     value={watch("status") || null}
                     onChange={(selectedOption) =>
                       setValue("status", selectedOption, {
@@ -336,67 +252,6 @@ const AddNewPopUp = ({
       )}
 
       {addNewModalSecurity && (
-        // <div>
-        //   <Modal
-        //     show={addNewModalSecurity}
-        //     size="md"
-        //     aria-labelledby="contained-modal-title-vcenter"
-        //     centered
-        //   >
-        //     <Modal.Body>
-        //       <div className="d-flex w-100 flex-between">
-        //         <h6>
-        //           {`${isEdit === true ? "Edit" : "Add"}`}
-        //           Security Questions
-        //         </h6>
-        //         <IoCloseSharp
-        //           className="pointer"
-        //           onClick={() => setAddNewModalSecurity(false)}
-        //         />
-        //       </div>
-
-        //       <div className="row mt-3 small-font">
-        //         <div className="col-4 flex-column">
-        //           <label className="black-text4 mb-1">Status</label>
-        //           <Select
-        //             className="small-font"
-        //             options={selectOptions}
-        //             placeholder="Select"
-        //             styles={customStyles}
-        //             maxMenuHeight={120}
-        //             menuPlacement="auto"
-        //             value={
-        //               selectOptions.find(
-        //                 (option) => option.value === selectedStatus
-        //               ) || null
-        //             }
-        //             onChange={handleStatusChange}
-        //           />
-        //         </div>
-        //         <div className="col-8 flex-column ">
-        //           <label className="black-text4 mb-1">Questions</label>
-        //           <input
-        //             type="text"
-        //             placeholder="Enter"
-        //             className="all-none input-bg small-font p-2 rounded"
-        //             value={securityQns}
-        //             onChange={(e) => setSecurityQns(e.target.value)}
-        //           />
-        //         </div>
-        //         <div className="row">
-        //           <div className="col-8"></div>
-        //           <div
-        //             className="saffron-btn2 small-font pointer mt-4 col-4"
-        //             onClick={handleSecQuestionsSubmit}
-        //           >
-        //             {`${isEdit ? "Update" : "Create"}`}
-        //           </div>
-        //         </div>
-        //       </div>
-        //     </Modal.Body>
-        //   </Modal>
-        // </div>
-
         <Modal show={addNewModalSecurity} size="md" centered>
           <Modal.Body>
             <div className="d-flex w-100 flex-between">

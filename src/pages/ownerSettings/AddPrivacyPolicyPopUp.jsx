@@ -42,10 +42,8 @@ const AddPrivacyPolicyPopUp = ({
   } = useForm({ mode: "onChange" });
   const [values, setValues] = useState("");
   const [error, setError] = useState("");
-  // const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedWebsite, setSelectedWebsite] = useState("");
-  // const [websites, setWebsites] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [privacyData, setPrivacyData] = useState([]);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -95,7 +93,6 @@ const AddPrivacyPolicyPopUp = ({
       is_active: Number(data.status?.value),
       description: values,
     };
-    console.log(payload, "fghfgh");
     createPrivacyPolicy(payload)
       .then((response) => {
         setAddPrivacyModal();
@@ -106,12 +103,10 @@ const AddPrivacyPolicyPopUp = ({
         reset();
         setValues("");
         getPolicyPrivacyData();
-        console.log("response from API", response);
       })
       .catch((error) => {
         setError(error?.message);
         setErrorPopup(true);
-        console.log(error, "error from API", error);
       });
   };
 
@@ -217,19 +212,6 @@ const AddPrivacyPolicyPopUp = ({
 
               <div className="col-12 flex-column mt-3 mb-4 ">
                 <label className="black-text4 mb-1">Description</label>
-                {/* <textarea
-                  placeholder="Enter"
-                  className="all-none input-bg small-font p-2 rounded"
-                  rows="30"
-                  style={{ resize: "none" }}
-                  {...register("description", {
-                    required: "Description is required",
-                    minLength: {
-                      value: 300,
-                      message: "Description must be at least 100 characters",
-                    },
-                  })}
-                ></textarea> */}
                 <ReactQuill theme="snow" value={values} onChange={setValues} />
                 {errors.description && (
                   <p className="text-danger small-font">

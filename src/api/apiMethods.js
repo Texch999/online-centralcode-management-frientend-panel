@@ -250,6 +250,9 @@ const resetDirectorEmployeePassword = (id, data) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
+const managementPaymentDetails = (data) => {
+  return apiRequest("managementPaymentDetails", data);
+};
 export {
   loginUser,
   createSecurityQuestions,
@@ -312,4 +315,5 @@ export {
   getDirectorEmployeeDetailsById,
   updateDirectorEmployeeByID,
   addWebsiteToPrivacyPolicy,
+  managementPaymentDetails,
 };

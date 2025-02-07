@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import {
@@ -16,12 +16,11 @@ const SelectWebsitePopUp = ({
   availablePrivacyWebsiteId,
   getPolicyPrivacyData,
 }) => {
-  console.log(availablePrivacyWebsiteId, "availablePrivacyWebsiteId");
   const [websites, setWebsites] = useState([]);
   const [error, setError] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopup, setErrorPopup] = useState(false);
-
+  const dataFetched = useRef(false);
   const handleCheckboxChange = (id) => {
     console.log(id, "checked web id");
     setWebsites((prevWebsites) =>
@@ -35,7 +34,6 @@ const SelectWebsitePopUp = ({
     if (!availablePrivacyWebsiteId) return;
     getAvailableWebsites(availablePrivacyWebsiteId)
       .then((response) => {
-        console.log(response?.data, "availableWebsites");
         setWebsites(response?.data);
       })
       .catch((error) => {
@@ -44,11 +42,12 @@ const SelectWebsitePopUp = ({
         setTimeout(() => {
           setErrorPopup(false);
         }, [1500]);
-        console.log(error, "error");
       });
   };
   useEffect(() => {
     if (availablePrivacyWebsiteId) {
+      if (dataFetched.current) return;
+      dataFetched.current = true;
       availableWebsites();
     }
   }, [availablePrivacyWebsiteId]);
@@ -140,7 +139,9 @@ const SelectWebsitePopUp = ({
               className="saffron-btn2 br-5 mx-2 pointer"
               onClick={addMultipleWebsitesToPrivacyPolicy}
             >
-              Add Website
+              {websites.some((site) => site.selected)
+                ? "Add Website"
+                : "Remove this privacy policy"}
             </div>
           </div>
         </div>

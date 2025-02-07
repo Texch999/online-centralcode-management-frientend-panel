@@ -214,7 +214,10 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
-  getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
+  getWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {
@@ -338,6 +341,10 @@ const endpoints = {
   addWebsiteToPrivacyPolicy: {
     method: "post",
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
+  managementPaymentDetails: {
+    method: "get",
+    url: () => `/director/${userID()}/payments`,
   },
 };
 

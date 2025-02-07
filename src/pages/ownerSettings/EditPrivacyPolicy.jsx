@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import {
   getPrivacyPolicyById,
@@ -7,7 +7,6 @@ import {
 import SuccessPopup from "../popups/SuccessPopup";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import e from "cors";
 import ErrorPopup from "../popups/ErrorPopup";
 
 const EditPrivacyPolicy = ({
@@ -17,27 +16,29 @@ const EditPrivacyPolicy = ({
   privacyPolicyId,
   getPolicyPrivacyData,
 }) => {
-  console.log("privacyPolicyId", privacyPolicyId);
   const [error, setError] = useState("");
   const [showPrivacyText, setShowPrivacyText] = useState({ description: "" });
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   console.log(showPrivacyText?.description, "showPrivacyText");
   const [errorPopup, setErrorPopup] = useState(false);
+  const dataFetched = useRef(false);
 
   const getPolicyPrivacyDataById = () => {
     getPrivacyPolicyById(privacyPolicyId)
       .then((response) => {
-        console.log("ganaaaa========", response);
         setShowPrivacyText(response || { description: "" });
       })
       .catch((error) => {
         setError(error?.message);
         setErrorPopup(true);
-        console.log("getPrivacyPolicy error", error);
       });
   };
   useEffect(() => {
-    getPolicyPrivacyDataById();
+    if (privacyPolicyId) {
+      if (dataFetched.current) return;
+      dataFetched.current = true;
+      getPolicyPrivacyDataById();
+    }
   }, [privacyPolicyId]);
 
   const editPrivacyPolicy = () => {
@@ -46,7 +47,6 @@ const EditPrivacyPolicy = ({
     };
     updatePrivacyPolicyById(privacyPolicyId, payload)
       .then((response) => {
-        console.log(response, "responseeee");
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -59,7 +59,6 @@ const EditPrivacyPolicy = ({
       .catch((error) => {
         setError(error?.message);
         setErrorPopup(true);
-        console.log(error, "errorrrr");
       });
   };
   const hanldeChnage = (value) => {
@@ -78,13 +77,6 @@ const EditPrivacyPolicy = ({
         </Modal.Header>
         <Modal.Body>
           <div className="small-font w-100 d-flex flex-column col-12">
-            {/* <textarea
-              value={showPrivacyText?.description}
-              onChange={(e) => setShowPrivacyText(e.target.value)}
-              rows="30"
-              className="py-2 px-2"
-              placeholder="Enter Privacy Policy..."
-            /> */}
             <ReactQuill
               theme="snow"
               value={showPrivacyText?.description || ""}

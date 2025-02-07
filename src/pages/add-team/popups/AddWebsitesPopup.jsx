@@ -8,7 +8,7 @@ import { createWebsite, getWebsiteDetails, updateWebsite } from "../../../api/ap
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
 
-const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMode, websiteId, setEditMode ,setWebsiteId}) => {
+const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMode, websiteId, setEditMode, setWebsiteId }) => {
   const [formData, setFormData] = useState({
     deployType: null,
     panelType: null,
@@ -17,6 +17,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     city: "",
     websiteName: "",
     websiteURL: "",
+    ref_type: null
   });
   const userId = localStorage.getItem("user_id")
   const [errors, setErrors] = useState({});
@@ -27,6 +28,10 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
   const PanelOptions = [
     { value: 1, label: "Admin Panel" },
     { value: 2, label: "User Panel" },
+  ];
+  const refTypesOptions = [
+    { value: 1, label: "Ravana Admin" },
+    { value: 2, label: "Brahma Admin" },
   ];
   const DeployOptions = [
     { value: 1, label: "Company" },
@@ -105,6 +110,9 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     if (!formData.location) {
       newErrors.location = "Location is required.";
     }
+    if (!formData.ref_type) {
+      newErrors.ref_type = "Reference Type is required.";
+    }
 
     if (!formData.city.trim()) {
       newErrors.city = "City is required.";
@@ -127,7 +135,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     } else if (
       !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/.test(formData.websiteURL)
     ) {
-      newErrors.websiteURL = "Invalid website URL, Please Enter Valid Website Url";
+      newErrors.websiteURL = "Invalid website URL, Please Enter Valid Website Url Format";
     }
 
     setErrors(newErrors);
@@ -165,7 +173,8 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         prefix: "TXE",
         city: formData?.city,
         status: status,
-        created_by: formData.created_by
+        created_by: formData.created_by,
+        ref_type: formData.ref_type?.value
 
       } : {
         deploy_type: formData?.deployType?.value,
@@ -175,8 +184,10 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         location_id: formData?.location?.value,
         prefix: "TXE",
         city: formData?.city,
-        created_by: userId
+        created_by: userId,
+        ref_type: formData.ref_type?.value
       }
+      console.log(finalData, "==========>finalData")
       const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData)
       apiCall
         .then((response) => {
@@ -251,6 +262,19 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
 
             {/* Location Dropdown */}
             <div className="col-4">
+              <label className="small-font mb-1">Reference Type</label>
+              <Select
+                className="small-font"
+                options={refTypesOptions}
+                placeholder="Select"
+                styles={customStyles}
+                value={formData.ref_type}
+                onChange={(option) => handleSelectChange("ref_type", option)}
+              />
+
+              {errors.refTypes && <p className="text-danger small-font">{errors.refTypes}</p>}
+            </div>
+            <div className="col-4">
               <label className="small-font mb-1">Location</label>
               <Select
                 className="small-font"
@@ -263,10 +287,6 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
 
               {errors.location && <p className="text-danger small-font">{errors.location}</p>}
             </div>
-          </div>
-
-          {/* Text Inputs */}
-          <div className="row">
             <div className="col-4">
               <label className="small-font mb-1">City</label>
               <input
@@ -292,7 +312,6 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
               />
               {errors.websiteName && <p className="text-danger small-font">{errors.websiteName}</p>}
             </div>
-
             <div className="col-4">
               <label className="small-font mb-1">Website URL</label>
               <input
@@ -306,6 +325,10 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
               {errors.websiteURL && <p className="text-danger small-font">{errors.websiteURL}</p>}
             </div>
           </div>
+
+          {/* Text Inputs */}
+          {/* <div className="row">
+          </div> */}
           <div className="mt-3 d-flex flex-row w-100 justify-content-end">
             <button className="saffron-btn small-font rounded col-4" onClick={handleSubmit}>
               Submit

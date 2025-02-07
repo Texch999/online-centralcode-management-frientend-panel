@@ -238,7 +238,6 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
               <MdOutlineClose />
             </Button>
           </div>
-
           <form
             className="add-management-popup-form px-3"
             style={{ display: activeForm === 1 ? "block" : "none" }}

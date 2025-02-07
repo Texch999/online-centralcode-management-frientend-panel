@@ -16,16 +16,13 @@ const ActiveInActiveModal = ({
   setStatusId,
   getPolicyPrivacyData,
 }) => {
-  console.log(privacyStatusId, statusId, "idddd");
   const [errorPopup, setErrorPopup] = useState(false);
   const [error, setError] = useState("");
   const status_Id = statusId === 1 ? 2 : 1;
 
   const suspendStatus = () => {
-    console.log(statusId, "====>");
     privacyPolicyStatusUpdate(privacyStatusId, status_Id)
       .then((response) => {
-        console.log(response, "response statuusss");
         getPolicyPrivacyData();
         setPrivacyStatusId("");
         setStatusId("");
@@ -34,7 +31,6 @@ const ActiveInActiveModal = ({
       .catch((error) => {
         setError(error.message);
         setErrorPopup(true);
-        console.log(error, "error");
       });
   };
 
