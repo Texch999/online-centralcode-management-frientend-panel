@@ -235,6 +235,9 @@ const getDirectorAccessWebites = (params) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
+const managementPaymentDetails = (data) => {
+  return apiRequest("managementPaymentDetails", data);
+};
 export {
   loginUser,
   createSecurityQuestions,
@@ -293,4 +296,5 @@ export {
   deleteBanner,
   statusUpdateBanner,
   addWebsiteToPrivacyPolicy,
+  managementPaymentDetails,
 };

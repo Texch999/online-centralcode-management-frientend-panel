@@ -372,6 +372,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
   },
+  managementPaymentDetails: {
+    method: "get",
+    url: () => `/director/${userID()}/payments`,
+  },
 };
 
 export default endpoints;
