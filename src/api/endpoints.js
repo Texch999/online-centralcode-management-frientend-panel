@@ -94,27 +94,14 @@ const endpoints = {
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
 
   loginUser: { method: "post", url: () => "/master/login" },
-  // addManagemnentTeam: { method: "post", url: "/employee" },
   addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
   getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
-  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
-  // getEmployees: ({ limit, offset }) => ({
-  //   method: "get",
-  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
-  // }),
 
-  // getEmployees: {
-  //   method: "get",
-  //   url: (params) => {
-  //     const query = new URLSearchParams(params).toString();
-  //     return `/user/${userID()}/employees?${query}`;
-  //   },
-  // },
   getEmployees: {
     method: "get",
     url: (params) => {
-      const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
+      const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/employees?${query}`;
     },
   },
@@ -223,10 +210,10 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
-  // getCountries: {
-  //   method: "get",
-  //   url: `/user/${userID()}/countries`,
-  // },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
 
   getCountries: {
     method: "get",
@@ -248,14 +235,11 @@ const endpoints = {
       return `/user/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
     },
   },
-  // getWebsites: { method: "get", url: `user/${userID()}/website/websites` },'
 
   getAvailableWebsites: {
     method: "get",
     url: (id) => `/user/${userID()}/privacypolicies/${id}/websites`,
   },
-
-  // createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   createBroadCasting: {
     method: "post",
@@ -277,7 +261,6 @@ const endpoints = {
   },
 
   //DirectorAccountDetails
-
   getDirectorAccountDetails: {
     method: "get",
     url: `/user/${userID()}/directorAccount`,
@@ -299,8 +282,6 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
   },
-  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
-  // },
 
   getDirectorAccessWebites: {
     method: "get",
@@ -365,15 +346,6 @@ const endpoints = {
   getUserWebsites: {
     method: "get",
     url: `/user/${userID()}/website/userWebsites`,
-  },
-
-  // statusBanner: {
-  //   method: "put",
-  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
-  // },
-  addWebsiteToPrivacyPolicy: {
-    method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
   },
 };
 
