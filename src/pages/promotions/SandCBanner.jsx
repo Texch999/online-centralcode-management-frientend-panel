@@ -650,7 +650,7 @@ const SandCBanner = () => {
             className="w-25 saffron-btn2 pointer small-font"
             onClick={() => handleCreateBanner()}
           >
-            {loading ? <FaSpinner className="spinner-circle" /> : "Submit"}
+            {loading ? "loading..." : "Submit"}
           </button>
         </div>
       </div>

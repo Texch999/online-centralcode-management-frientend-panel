@@ -401,7 +401,7 @@ const PromotionType = () => {
                   onClick={handlePromotionsImages}
                 >
                   {loading ? (
-                    <FaSpinner className="spinner-circle" />
+                   "loading..."
                   ) : (
                     "Submit"
                   )}
