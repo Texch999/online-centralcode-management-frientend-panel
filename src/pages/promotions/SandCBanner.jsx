@@ -245,7 +245,6 @@ const SandCBanner = () => {
   const getWebsites = async () => {
     try {
       const response = await getWebsitesList();
-      console.log(response, "redlknoshc");
       if ((response.status = 200)) {
         setWebsitesList(response?.data);
       }
@@ -580,6 +579,8 @@ const SandCBanner = () => {
             type="datetime-local"
             value={endDT}
             onChange={handleEndDateChange}
+            disabled={!startDT}
+            min={startDT || ""}
           />
           {errors.endDT && (
             <span className="text-danger small-font">{errors.endDT}</span>
@@ -601,7 +602,7 @@ const SandCBanner = () => {
               type="file"
               id="poster"
               multiple
-              accept="image/jpeg, image/png, image/webp"
+              accept="image/*"
               style={{ display: "none" }}
               onChange={handleFileChange}
             />

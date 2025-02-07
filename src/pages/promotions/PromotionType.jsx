@@ -374,7 +374,7 @@ const PromotionType = () => {
                     type="file"
                     id="poster"
                     style={{ display: "none" }}
-                    accept="image/jpeg, image/png, image/webp"
+                    accept="image/*"
                     onChange={handleFileChange}
                   />
                   <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">

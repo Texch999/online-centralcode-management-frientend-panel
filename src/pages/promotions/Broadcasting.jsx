@@ -372,8 +372,8 @@ const Broadcasting = () => {
             style={{
               resize: "none",
               overflowY: "auto",
-              minHeight: "24px",
-              maxHeight: "96px",
+              minHeight: "30px",
+              maxHeight: "75px",
             }}
             value={textMessage}
             onChange={handleMessageChange}
