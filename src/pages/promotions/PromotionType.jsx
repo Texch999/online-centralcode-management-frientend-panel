@@ -301,7 +301,7 @@ const PromotionType = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Promotion Type</h6>
+        <h6 className="yellow-font mb-0">Promotion</h6>
       </div>
       <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -318,17 +318,19 @@ const PromotionType = () => {
       </div>
       {activeBtn === "Promotion Type" ? (
         <>
-          <Table
-            columns={PROMOTIONS_COLUMNS}
-            data={PROMOTIONS_DATA}
-            itemsPerPage={10}
-          />
+          <div className="my-3">
+            <Table
+              columns={PROMOTIONS_COLUMNS}
+              data={PROMOTIONS_DATA}
+              itemsPerPage={10}
+            />
+          </div>
         </>
       ) : (
         <>
-          <div className="d-flex my-3 small-font align-items-center justify-content-between">
+          <div className="d-flex my-4 small-font align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-3">
-              <div className="col-md-5 col-lg-9">
+              <div className="col-md-5 col-lg-9 fixed-width-field">
                 <label
                   htmlFor="promotionType"
                   className="black-text4 small-font mb-1 d-block"
@@ -337,7 +339,7 @@ const PromotionType = () => {
                 </label>
                 <Select
                   id="promotionType"
-                  className="small-font w-100"
+                  className="small-font fixed-select"
                   options={selectOptions}
                   placeholder="Select"
                   styles={customStyles}
@@ -347,16 +349,21 @@ const PromotionType = () => {
                   value={selectedOption}
                   onChange={handleSelectChange}
                 />
-                {errors.promotionType && (
-                  <span className="text-danger small-font">
-                    {errors.promotionType}
-                  </span>
-                )}
+                <div
+                  className="position-absolute"
+                  style={{ minHeight: "20px" }}
+                >
+                  {errors.promotionType && (
+                    <span className="text-danger small-font">
+                      {errors.promotionType}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div className="col-md-3 col-lg-5 px-0">
+              <div className="col-md-5 col-lg-9 fixed-width-field">
                 <label
-                  htmlFor="poster"
+                  htmlFor="promotionType"
                   className="black-text4 small-font mb-1 d-block"
                 >
                   Upload Poster
@@ -366,21 +373,31 @@ const PromotionType = () => {
                     type="file"
                     id="poster"
                     style={{ display: "none" }}
+                    accept="image/jpeg, image/png, image/webp"
                     onChange={handleFileChange}
                   />
-                  <div className="input-css2 small-font d-flex justify-content-between align-items-center pointer">
-                    {selectedFile ? selectedFile.name : "Upload"}
-                    <MdOutlineFileUpload className="grey-color medium-font" />
+                  <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+                    <span className="file-name">
+                      {selectedFile ? selectedFile.name : "Upload"}
+                    </span>
+                    <MdOutlineFileUpload className="grey-color medium-font upload-icon" />
                   </div>
                 </label>
-                {errors.image && (
-                  <span className="text-danger small-font">{errors.image}</span>
-                )}
+                <div
+                  className="position-absolute"
+                  style={{ minHeight: "20px" }}
+                >
+                  {errors.image && (
+                    <span className="text-danger small-font">
+                      {errors.image}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div className="col-md-2 col-lg-5 align-self-end">
+              <div className="w-100 align-self-end">
                 <button
-                  className="w-100 saffron-btn2 pointer small-font"
+                  className="saffron-btn2 pointer small-font"
                   onClick={handlePromotionsImages}
                 >
                   {loading ? (

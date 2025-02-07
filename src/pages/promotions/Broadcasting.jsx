@@ -229,7 +229,7 @@ const Broadcasting = () => {
       field: "broadcastingMessage",
       width: "40%",
     },
-    { header: "", field: "icons", width: "10%" },
+    { header: "Actions", field: "icons", width: "10%" },
   ];
 
   const filteredbroadCastingdata = broadCastingdata?.filter((item) => {
@@ -261,16 +261,16 @@ const Broadcasting = () => {
     broadcastingMessage: <div>{broadCast.message}</div>,
 
     icons: (
-      <div className="flex-center">
+      <div className="d-flex justify-content-spacebetween gap-2">
         <SlPencil
           size={18}
-          className="pointer me-1"
+          className="pointer"
           onClick={() => handleEditBroadcasting(broadCast.id)}
         />
         <MdBlockFlipped
           style={{ color: broadCast.status === 1 ? "green" : "red" }}
           size={18}
-          className="mx-3 pointer"
+          className="pointer"
           onClick={() =>
             handleBlockAndUnblockBroadcasting(broadCast.id, broadCast.status)
           }
@@ -301,7 +301,7 @@ const Broadcasting = () => {
       </div>
 
       <div className="d-flex w-60  mt-3">
-        <div className="col-3 flex-column me-3">
+        <div className="col-3 flex-column me-3 fixed-width-field1">
           <label className="black-text4 small-font mb-1">Sports/Casino</label>
           <Select
             className="small-font"
@@ -319,7 +319,7 @@ const Broadcasting = () => {
           )}
         </div>
 
-        <div className="col-3 flex-column me-3">
+        <div className="col-3 flex-column me-3 fixed-width-field1">
           <label className="black-text4 small-font mb-1">Websites</label>
           <Select
             className="small-font"
@@ -339,7 +339,7 @@ const Broadcasting = () => {
           )}
         </div>
 
-        <div className="col-3 flex-column me-3">
+        <div className="col-3 flex-column me-3 fixed-width-field1">
           <label className="black-text4 small-font mb-1">
             Broadcasting Location
           </label>
@@ -378,7 +378,7 @@ const Broadcasting = () => {
           )}
         </div>
 
-        <div className="col-2 flex-end">
+        <div className="col-2 mt-4">
           <div
             className="saffron-btn2 small-font pointer ms-2 w-100"
             onClick={handleSubmit}
@@ -388,7 +388,7 @@ const Broadcasting = () => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-3">
         <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={3} />
       </div>
       <SuccessPopup
