@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
@@ -11,6 +12,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     const [userWebsites, setUserWebsites] = useState([]);
+    const [depositDetails, setDepositDetails] = useState([]);
     const [paymentDetailsList, setPaymentDetailsList] = useState([]);
     const [formData, setFormData] = useState({
         paymentType: null,
@@ -31,10 +33,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     const [selectedFile, setSelectedFile] = useState(null);
 
     const PaymentType = [
-        { label: "NEFT/RTGS", value: "neftrtgs" },
-        { label: "UPI", value: "upi" },
-        { label: "QR Code", value: "qrcode" },
-        { label: "CASH", value: "cash" },
+        { label: "NEFT/RTGS", value: "neftrtgs", type: 1 },
+        { label: "UPI", value: "upi", type: 2 },
+        { label: "QR Code", value: "qrcode", type: 3 },
+        { label: "CASH", value: "cash", type: 4 },
     ];
 
     const getDirectorAccessedWebistesList = () => {
@@ -70,13 +72,42 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     };
 
     useEffect(() => {
-        if (PaymentType.length > 0) {
-            setFormData((prev) => ({
-                ...prev,
-                paymentType: PaymentType[0],
-            }));
+        if (formData.paymentType) {
+            const paymentTypeMap = {
+                neftrtgs: 1,
+                upi: 2,
+                qrcode: 3,
+            };
+
+            const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[formData.paymentType.value]);
+
+            if (filteredDetails.length > 0) {
+                const defaultDeposit = {
+                    label: filteredDetails[0].bank_name,
+                    value: filteredDetails[0].gateway_id,
+                    details: {
+                        bankName: filteredDetails[0].bank_name,
+                        accountNumber: filteredDetails[0].bank_acc_no,
+                        ifscCode: filteredDetails[0].bank_ifsc,
+                    },
+                };
+
+                setDepositDetails(filteredDetails);
+                setFormData((prev) => ({
+                    ...prev,
+                    depositeDetails: defaultDeposit,
+                }));
+
+                setSelectedDepositDetails(defaultDeposit.details);
+            } else {
+                setFormData((prev) => ({
+                    ...prev,
+                    depositeDetails: null,
+                }));
+                setSelectedDepositDetails({});
+            }
         }
-    }, []);
+    }, [formData.paymentType]);
 
     useEffect(() => {
         if (isInitialRender.current) {
@@ -99,17 +130,41 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
         }));
 
         if (field === "paymentType" && option) {
-            if (option.value === "neftrtgs") {
-                setFormData((prev) => ({ ...prev, utr: "" }));
-            }
+            if (option.value !== formData.paymentType?.value) {
+                const paymentTypeMap = {
+                    neftrtgs: 1, // NEFT/RTGS
+                    upi: 2,      // UPI
+                    qrcode: 3,   // QR Code
+                };
 
-            const paymentTypeMap = {
-                neftrtgs: 1, // NEFT/RTGS
-                upi: 2,      // UPI
-                qrcode: 3,     // QR Code
-            };
-            const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[option.value]);
-            setSelectedDepositDetails(filteredDetails[0] || {});
+                const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[option.value]);
+
+                if (filteredDetails.length > 0) {
+                    const defaultDeposit = {
+                        label: filteredDetails[0].bank_name,
+                        value: filteredDetails[0].gateway_id,
+                        details: {
+                            bankName: filteredDetails[0].bank_name,
+                            accountNumber: filteredDetails[0].bank_acc_no,
+                            ifscCode: filteredDetails[0].bank_ifsc,
+                        },
+                    };
+
+                    setDepositDetails(filteredDetails);
+                    setFormData((prev) => ({
+                        ...prev,
+                        depositeDetails: defaultDeposit,
+                    }));
+
+                    setSelectedDepositDetails(defaultDeposit.details);
+                } else {
+                    setFormData((prev) => ({
+                        ...prev,
+                        depositeDetails: null,
+                    }));
+                    setSelectedDepositDetails({});
+                }
+            }
         }
 
         if (field === "depositeDetails" && option) {
@@ -138,13 +193,26 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
 
     const handleSubmit = () => {
         if (!validateForm()) return;
+
+        // Transform formData into the desired payload format
         const payload = {
-            ...formData,
-            paymentDetails: selectedDepositDetails,
+            amount: parseFloat(formData.amount), // Ensure amount is a number
+            type: formData.paymentType.type, // Use the type from PaymentType
+            admin: selectedAdmin?.value || null, // Admin website ID
+            websiteid: formData.websiteName || null, // User website ID (if applicable)
+            transactionId: formData.utr || null, // UTR/Transaction ID for non-cash payments
+            slip: formData.screenshot || null, // File for non-cash payments
         };
+
+        // Include cash-specific fields if payment type is cash
+        if (formData.paymentType?.value === "cash") {
+            payload.handoverName = formData.cashHandoverName;
+            payload.description = formData.description;
+        }
+
         console.log("Payload:", payload);
     };
-    console.log(paymentDetailsList, "==============>paymentDetailsList")
+
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -196,7 +264,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                             placeholder="Select User Website"
                             styles={customStyles}
                             onChange={(option) => {
-                                console.log("Selected User Website:", option);
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    websiteName: option.value,
+                                }));
                             }}
                         />
                     </div>
@@ -238,13 +309,13 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                 {selectedDepositDetails && (
                                     <div className="mt-1 p-2 border-none rounded input-css">
                                         <div className="d-flex justify-content-between small-font mb-1">
-                                            <strong>Bank Name</strong> <span className="text-end">{selectedDepositDetails.bank_name}</span>
+                                            <strong>Bank Name</strong> <span className="text-end">{selectedDepositDetails.bankName}</span>
                                         </div>
                                         <div className="d-flex justify-content-between small-font mb-1">
-                                            <strong>Account Number</strong> <span className="text-end">{selectedDepositDetails.bank_acc_no}</span>
+                                            <strong>Account Number</strong> <span className="text-end">{selectedDepositDetails.accountNumber}</span>
                                         </div>
                                         <div className="d-flex justify-content-between small-font mb-1">
-                                            <strong>IFSC Code</strong> <span className="text-end">{selectedDepositDetails.bank_ifsc}</span>
+                                            <strong>IFSC Code</strong> <span className="text-end">{selectedDepositDetails.ifscCode}</span>
                                         </div>
                                     </div>
                                 )}
@@ -272,9 +343,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                     value={formData.depositeDetails}
                                     onChange={(option) => handleSelectChange("depositeDetails", option)}
                                 />
-
                             </div>
-
                         </>
                     )}
 
@@ -294,6 +363,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                             </div>
                         </>
                     )}
+
                     {/* File Upload for NEFT/RTGS and UPI */}
                     {(formData.paymentType?.value !== "cash") && (
                         <div>
