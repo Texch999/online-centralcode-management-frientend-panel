@@ -369,16 +369,27 @@ const Broadcasting = () => {
             placeholder="Enter"
             className="all-none input-css2 small-font p-2 rounded"
             rows="1"
-            style={{ resize: "none" }}
+            style={{
+              resize: "none",
+              overflowY: "auto",
+              minHeight: "24px",
+              maxHeight: "96px",
+            }}
             value={textMessage}
             onChange={handleMessageChange}
+            onInput={(e) => {
+              e.target.style.height = "auto";
+              e.target.style.height =
+                Math.min(e.target.scrollHeight, 96) + "px";
+            }}
           ></textarea>
+
           {errors.textMessage && (
             <span className="text-danger small-font">{errors.textMessage}</span>
           )}
         </div>
 
-        <div className="col-2 flex-end">
+        <div className="col-2 mt-4">
           <div
             className="saffron-btn2 small-font pointer ms-2 w-100"
             onClick={handleSubmit}
