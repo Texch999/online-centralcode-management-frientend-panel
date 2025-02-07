@@ -12,6 +12,8 @@ import { getDirectorAccessWebites } from "../../api/apiMethods";
 const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([])
+    const [selectedAdmin, setSelectedAdmin] = useState(null);
+    const [userWebsites, setUserWebsites] = useState([]);
     const [formData, setFormData] = useState({
         paymentType: null,
         depositeDetails: null,
