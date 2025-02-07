@@ -1,8 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan, FaSlash } from "react-icons/fa6";
 import AddNewPopUp from "./AddNewPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -22,31 +28,45 @@ const ReferenceData = () => {
   const [error, setError] = useState("");
   const [securityQuestions, setSecurityQuestions] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const [selectedQnsId, setSelectedSecQnsId] = useState(null);
   const [rejReasonsData, setRejReasonsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState("");
   const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
   const [errorPopup, setErrorPopup] = useState(false);
-  const dataFetched=useRef(false);
-  const dataFetchedRej=useRef(false);
+  const dataFetched = useRef(false);
+  const [selectStatus, setSelectStatus] = useState(null);
   const handleSportClick = (item) => {
     setActiveBtn(item);
+  };
+
+  const handleStatusChange = (selectedOption) => {
+    setSelectStatus(selectedOption?.value);
   };
 
   const getSecurityQuestions = () => {
     setLoading(true);
     getAllSecurityQuestions()
       .then((response) => {
-        console.log(response?.status, "get sec qns");
         setSecurityQuestions(response?.data);
       })
       .catch((error) => {
         setError(error?.message);
-        console.log(error, "get sec qns erorr occur");
-        const errorMessage = error?.response?.data?.error;
         setErrorPopup(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const getRejReasons = () => {
+    setLoading(true);
+    getAllRejectionReasons()
+      .then((response) => {
+        setRejReasonsData(response?.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
       })
       .finally(() => {
         setLoading(false);
@@ -55,34 +75,12 @@ const ReferenceData = () => {
   useEffect(() => {
     if (dataFetched.current) return;
     dataFetched.current = true;
+    getRejReasons();
     getSecurityQuestions();
   }, []);
 
-  console.log(selectedRejReasonId, "selectedRejReasonId");
-
-  const getRejReasons = () => {
-    setLoading(true);
-    getAllRejectionReasons()
-      .then((response) => {
-        console.log(response.status, "response get rej reasons");
-        setRejReasonsData(response?.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-        console.log("error occur");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-  useEffect(() => {
-    if (dataFetchedRej.current) return;
-    dataFetchedRej.current = true;
-    getRejReasons();
-  }, []);
-  console.log(rejReasonsData, "rejReasonsData");
-
   const selectOptions = [
+    { value: "0", label: "All" },
     { value: "1", label: "Active" },
     { value: "2", label: "In-Active" },
   ];
@@ -93,7 +91,13 @@ const ReferenceData = () => {
     { header: "Action", field: "action", width: "10%" },
   ];
 
-  const SECURITY_DATA = securityQuestions.map((item, index) => ({
+  const filteredSecurityQuestions = useMemo(() => {
+    return selectStatus && selectStatus !== "0"
+      ? securityQuestions.filter((item) => item.status === Number(selectStatus))
+      : securityQuestions;
+  }, [selectStatus, securityQuestions]);
+
+  const SECURITY_DATA = filteredSecurityQuestions.map((item, index) => ({
     questions: <div>{item?.questions}</div>,
     status:
       item?.status === 1 ? (
@@ -113,10 +117,6 @@ const ReferenceData = () => {
             }}
           />
         </span>
-
-        {/* <span className="ms-2" onClick={() => setShowDeleteModal(true)}>
-          <FaRegTrashCan size={18} />
-        </span> */}
       </div>
     ),
     resultDateTime: (
@@ -133,7 +133,14 @@ const ReferenceData = () => {
     { header: "Status", field: "status", width: "10%" },
     { header: "Action", field: "action", width: "10%" },
   ];
-  const REJECTION_DATA = rejReasonsData.map((item, index) => ({
+
+  const filteredrejReasonsData = useMemo(() => {
+    return selectStatus && selectStatus !== "0"
+      ? rejReasonsData.filter((item) => item.status === Number(selectStatus))
+      : rejReasonsData;
+  }, [selectStatus, rejReasonsData]);
+
+  const REJECTION_DATA = filteredrejReasonsData.map((item, index) => ({
     reason: <div>{item?.reason}</div>,
 
     discriptions: <div>{item?.description}</div>,
@@ -157,10 +164,6 @@ const ReferenceData = () => {
             }}
           />
         </span>
-
-        {/* <span className="ms-2">
-          <FaRegTrashCan size={18} />
-        </span> */}
       </div>
     ),
     tableNumber: <div className="green-font">T ID: 12345678943323</div>,
@@ -192,16 +195,13 @@ const ReferenceData = () => {
       <hr className="my-3" />
 
       <div className="d-flex align-items-center justify-content-between">
-        {/* Title Section */}
         <div className="col-7 fw-600">
           {activeBtn === "Rejection Reasons"
             ? "Rejection Reasons"
             : "Security Questions"}
         </div>
 
-        {/* Action Section */}
         <div className="col-5 d-flex justify-content-between align-items-center">
-          {/* Select Dropdown */}
           <div className="col-5">
             <Select
               className="small-font"
@@ -211,12 +211,13 @@ const ReferenceData = () => {
               maxMenuHeight={120}
               menuPlacement="auto"
               classNamePrefix="custom-react-select"
+              onChange={handleStatusChange}
             />
           </div>
 
-          <div className="saffron-btn2 small-font pointer col-3 mx-2">
+          {/* <div className="saffron-btn2 small-font pointer col-3 mx-2">
             Submit
-          </div>
+          </div> */}
 
           <div
             className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
@@ -232,7 +233,7 @@ const ReferenceData = () => {
               }
             }}
           >
-            <IoAddOutline className="font-25 fw-800" /> 
+            <IoAddOutline className="font-25 fw-800" />
             <span className="small-font mx-1">Add New</span>
           </div>
         </div>
