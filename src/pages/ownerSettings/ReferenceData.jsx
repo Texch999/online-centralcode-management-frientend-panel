@@ -219,10 +219,6 @@ const ReferenceData = () => {
             />
           </div>
 
-          {/* <div className="saffron-btn2 small-font pointer col-3 mx-2">
-            Submit
-          </div> */}
-
           <div
             className="bg-white small-font pointer col-4 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
             onClick={() => {

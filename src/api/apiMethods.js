@@ -235,6 +235,22 @@ const getDirectorAccessWebites = (params) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
+const getManagementPaymentDetails = (data) => {
+  return apiRequest("getManagementPaymentDetails", data);
+};
+const suspendManagementPaymentDetails = (id, data) => {
+  return apiRequest("suspendManagementPaymentDetails", data, id);
+};
+const getManagementPaymentDetailsById = (id, data) => {
+  return apiRequest("getManagementPaymentDetailsById", data, id);
+};
+const createManagementPaymentDetails = (data) => {
+  return apiRequest("createManagementPaymentDetails", data);
+};
+const updateManagementPaymentDetails=(id,data)=>{
+  return apiRequest("updateManagementPaymentDetails", data, id);
+}
+
 export {
   loginUser,
   createSecurityQuestions,
@@ -293,4 +309,9 @@ export {
   deleteBanner,
   statusUpdateBanner,
   addWebsiteToPrivacyPolicy,
+  getManagementPaymentDetails,
+  suspendManagementPaymentDetails,
+  getManagementPaymentDetailsById,
+  createManagementPaymentDetails,
+  updateManagementPaymentDetails,
 };

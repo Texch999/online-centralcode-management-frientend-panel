@@ -1,3 +1,5 @@
+import { getManagementPaymentDetails } from "./apiMethods";
+
 const userID = () => {
   const id = localStorage.getItem("user_id");
   if (!id) {
@@ -346,6 +348,28 @@ const endpoints = {
   getUserWebsites: {
     method: "get",
     url: `/user/${userID()}/website/userWebsites`,
+  },
+
+  // payment details in management
+  getManagementPaymentDetails: {
+    method: "get",
+    url:()=> `/user/${userID()}/paymentDetails`,
+  },
+  suspendManagementPaymentDetails: {
+    method: "post",
+    url: (id) => `/user/${userID()}/suspend/${id}`,
+  },
+  getManagementPaymentDetailsById:{
+    method: "get",
+    url: (id) => `/user/${userID()}/payment/${id}`,
+  },
+  createManagementPaymentDetails:{
+    method: "post",
+    url: () => `/user/${userID()}/create`,
+  },
+  updateManagementPaymentDetails:{
+    method: "post",
+    url: (id) => `/user/${userID()}/update/${id}`,
   },
 };
 

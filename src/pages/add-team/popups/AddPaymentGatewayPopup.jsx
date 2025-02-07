@@ -1,22 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
-import { postDirectorAccountDetails, updateDirectorAccountDetails } from "../../../api/apiMethods";
+import {
+  createManagementPaymentDetails,
+  getManagementPaymentDetailsById,
+  postDirectorAccountDetails,
+  updateDirectorAccountDetails,
+  updateManagementPaymentDetails,
+} from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
 
-const AddPaymentGatewayPopup = ({ 
-  show, 
-  onHide, 
-  data, 
-  getDirectorAccountData, 
-  editMode, 
-  setEditMode, 
-  editData 
+const AddPaymentGatewayPopup = ({
+  show,
+  onHide,
+  data,
+  getDirectorAccountData,
+  editMode,
+  setEditMode,
+  editData,
+  countries,
+  managementPaymentEdit,
+  setManagementPaymentEdit,
+  fetchManagementPaymentDetails,
+  managementPaymentEditId,
+  setManagementPaymentEditId,
 }) => {
   const [paymentMethod, setPaymentMethod] = useState("1");
   const [provider, setProvider] = useState("");
@@ -29,6 +41,12 @@ const AddPaymentGatewayPopup = ({
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [qrCode, setQrCode] = useState(null);
+  const [manPaymentData, setManPaymentData] = useState([]);
+  const dataFetchedById = useRef(false);
+  const role_code = localStorage.getItem("role_code");
+  console.log(paymentMethod, "paymentMethod");
+
+  console.log(managementPaymentEdit, "setManagementPaymentEdit");
 
   // Reset form when modal is closed
   useEffect(() => {
@@ -70,21 +88,19 @@ const AddPaymentGatewayPopup = ({
 
   const getSelectedPaymentMethod = () => {
     const selected = paymentMethodOptions.find(
-      option => option.value === paymentMethod
+      (option) => option.value === paymentMethod
     );
     return selected || null;
   };
 
   const getSelectedCountry = () => {
-    const selected = cOptions.find(
-      option => option.value === country
-    );
+    const selected = cOptions.find((option) => option.value === country);
     return selected || null;
   };
 
   const getSelectedProvider = () => {
     const selected = upiProviderOptions.find(
-      option => option.value === provider
+      (option) => option.value === provider
     );
     return selected || null;
   };
@@ -147,7 +163,6 @@ const AddPaymentGatewayPopup = ({
     }
 
     try {
-      
       await updateDirectorAccountDetails(editData.id, formData);
       setSuccessPopupOpen(true);
       setTimeout(() => {
@@ -156,7 +171,7 @@ const AddPaymentGatewayPopup = ({
       getDirectorAccountData();
       setEditMode(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setError(error?.message || "Error updating payment details");
       setErrorPopupOpen(true);
     }
@@ -205,13 +220,87 @@ const AddPaymentGatewayPopup = ({
     setQrCode(null);
   };
 
+  // managemnet paymnet details edit and post get apis ============================
+  const fetchManagementPaymentDetailsById = () => {
+    getManagementPaymentDetailsById(managementPaymentEditId)
+      .then((response) => {
+        console.log("response", response);
+        if (response.status === true) {
+          setManPaymentData(response?.data);
+          console.log(response.data, "success");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+        console.log(error?.message, "errorr");
+      });
+  };
+
+  useEffect(() => {
+    if (managementPaymentEditId) {
+      if (dataFetchedById.current) return;
+      dataFetchedById.current = true;
+      fetchManagementPaymentDetailsById();
+    }
+  }, [managementPaymentEditId]);
+
+  // add
+  const handleManagementPaymentAddEdit = async () => {
+    const formData = new FormData();
+    formData.append("gateway_type", parseInt(paymentMethod));
+
+    if (paymentMethod === "1") {
+      formData.append("bank_acc_no", accountNumber);
+      formData.append("bank_ifsc", bankIFSC);
+      formData.append("bank_name", bankName);
+      formData.append("country", country);
+    } else if (paymentMethod === "2") {
+      formData.append("upi_provider", provider);
+      formData.append("upi_provider_id", upiID);
+      formData.append("country", country);
+    } else if (paymentMethod === "3") {
+      formData.append("qr_code_image", qrCode);
+      formData.append("bank_name", bankName);
+    
+    }
+    console.log(formData, "formDataa");
+    try {
+      const response = managementPaymentEdit
+        ? await updateManagementPaymentDetails(
+            managementPaymentEditId,
+            formData
+          )
+        : await createManagementPaymentDetails(formData);
+      if (response.status === true) {
+        console.log(response, "handleManagementPaymentAddEdit");
+        onHide();
+        fetchManagementPaymentDetails();
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 5000);
+      }
+    } catch (error) {
+      setError(error?.message);
+      console.log(error?.message, "errorr");
+    }
+  };
+
+  // managemnet paymnet details edit and post get apis ============================
+
   return (
     <>
       <Modal centered show={show} onHide={onHide} size="md">
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">
-              {editMode ? "Edit Payment Gateway" : "Add Payment Gateway"}
+              {role_code === "management"
+                ? managementPaymentEdit
+                  ? "Edit Managemnt Payment Gateway"
+                  : "Add Managemnt Payment Gateway"
+                : editMode
+                ? "Edit Payment Gateway"
+                : "Add Payment Gateway"}
             </h5>
             <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
@@ -374,17 +463,31 @@ const AddPaymentGatewayPopup = ({
                   menuPlacement="auto"
                   options={cOptions}
                   value={getSelectedCountry()}
-                  onChange={(selected) => setCountry(selected ? selected.value : "")}
+                  onChange={(selected) =>
+                    setCountry(selected ? selected.value : "")
+                  }
                 />
               </div>
 
-              <div className={`col-4 ${paymentMethod === "3" ? "offset-8" : ""}`}>
+              <div
+                className={`col-4 ${paymentMethod === "3" ? "offset-8" : ""}`}
+              >
                 <button
                   type="button"
                   className="w-100 saffron-btn rounded small-font"
-                  onClick={handleSubmit}
+                  onClick={
+                    role_code === "management"
+                      ? handleManagementPaymentAddEdit
+                      : handleSubmit
+                  }
                 >
-                  {editMode ? "Update" : "Submit"}
+                  {role_code === "management"
+                    ? managementPaymentEdit
+                      ? "Update"
+                      : "Submit"
+                    : editMode
+                    ? "Update"
+                    : "Submit"}
                 </button>
               </div>
             </div>
@@ -396,9 +499,19 @@ const AddPaymentGatewayPopup = ({
                 <button
                   type="button"
                   className="w-100 saffron-btn rounded small-font"
-                  onClick={handleSubmit}
+                  onClick={
+                    role_code === "management"
+                      ? handleManagementPaymentAddEdit
+                      : handleSubmit
+                  }
                 >
-                  {editMode ? "Update" : "Submit"}
+                  {role_code === "management"
+                    ? managementPaymentEdit
+                      ? "Update"
+                      : "Submit"
+                    : editMode
+                    ? "Update"
+                    : "Submit"}
                 </button>
               </div>
             </div>
@@ -423,7 +536,6 @@ const AddPaymentGatewayPopup = ({
 AddPaymentGatewayPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
-  
 };
 
 export default AddPaymentGatewayPopup;
