@@ -7,8 +7,8 @@ const loginUser = (data) => {
 const createSecurityQuestions = (data) => {
   return apiRequest("createSecurityQuestions", data);
 };
-const getAllSecurityQuestions = (data) => {
-  return apiRequest("getAllSecurityQuestions", data);
+const getAllSecurityQuestions = (params) => {
+  return apiRequest("getAllSecurityQuestions", {}, params);
 };
 const updateSecurityQuestions = (id, data) => {
   return apiRequest("updateSecurityQuestions", data, id);
@@ -159,9 +159,14 @@ export const getDirectorLoginLogsById = (params) => {
 };
 
 // rejection reasons
-const getAllRejectionReasons = (data) => {
-  return apiRequest("getAllRejectionReasons", data);
+// const getAllRejectionReasons = (data) => {
+//   return apiRequest("getAllRejectionReasons", data);
+// };
+
+const getAllRejectionReasons = (params) => {
+  return apiRequest("getAllRejectionReasons", {}, params);
 };
+
 const createRejReasons = (data) => {
   return apiRequest("createRejReasons", data);
 };
@@ -172,8 +177,11 @@ const getRejReasonsById = (id, data) => {
   return apiRequest("getRejReasonsById", data, id);
 };
 //priavacy policy
-const getPrivacyPolicy = (data) => {
-  return apiRequest("getPrivacyPolicy", data);
+// const getPrivacyPolicy = (data) => {
+//   return apiRequest("getPrivacyPolicy", data);
+// };
+const getPrivacyPolicy = (params) => {
+  return apiRequest("getPrivacyPolicy", {}, params);
 };
 const getPrivacyPolicyById = (id, data) => {
   return apiRequest("getPrivacyPolicyById", data, id);
@@ -247,9 +255,9 @@ const getManagementPaymentDetailsById = (id, data) => {
 const createManagementPaymentDetails = (data) => {
   return apiRequest("createManagementPaymentDetails", data);
 };
-const updateManagementPaymentDetails=(id,data)=>{
+const updateManagementPaymentDetails = (id, data) => {
   return apiRequest("updateManagementPaymentDetails", data, id);
-}
+};
 
 export {
   loginUser,

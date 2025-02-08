@@ -160,10 +160,19 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
   },
+  // getAllSecurityQuestions: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/secQuestion/`,
+  // },
+
+
   getAllSecurityQuestions: {
     method: "get",
-    url: () => `/user/${userID()}/secQuestion/`,
-  },
+    url: (params) => {
+    const query = new URLSearchParams(params).toString();
+    return `/user/${userID()}/secQuestion/?${query}`
+  }
+},
   getSecQusetionsById: {
     method: "get",
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
@@ -173,9 +182,18 @@ const endpoints = {
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
   },
   //rejection reasons
+
+  // getAllRejectionReasons: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/rejectionReasons/`,
+  // },
+
   getAllRejectionReasons: {
     method: "get",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/rejectionReasons/?${query}`;
+    },
   },
   createRejReasons: {
     method: "post",
@@ -190,10 +208,17 @@ const endpoints = {
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
   //privacy
+  // getPrivacyPolicy: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/privacypolicies/`,
+  // },
   getPrivacyPolicy: {
     method: "get",
-    url: () => `/user/${userID()}/privacypolicies/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/privacypolicies/?${query}`;
   },
+},
   getPrivacyPolicyById: {
     method: "get",
     url: (id) => `/user/${userID()}/privacypolicies/${id}`,
@@ -221,7 +246,7 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/countries`,
   },
-  getWebsites: { method: "get", url: `/user/${userID()}/website/websites` },
+  getWebsites: { method: "get", url:()=> `/user/${userID()}/website/websites` },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {

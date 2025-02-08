@@ -19,6 +19,7 @@ import { CgWebsite } from "react-icons/cg";
 import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import ActiveInActiveModal from "../popups/ActiveInActiveModal";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useSearchParams } from "react-router-dom";
 
 const PrivacyPolicy = () => {
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
@@ -41,7 +42,17 @@ const PrivacyPolicy = () => {
   const [availablePrivacyWebsiteId, setAvailablePrivacyWebsiteId] =
     useState(null);
   const [countriesData, setCountriesData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
   const dataFetched = useRef(false);
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(intialpage);
+  const [totalRecords, setTotalRecords] = useState(null);
+
+  const itemsPerPage = 4;
+  const currentOffset = (currentPage - 1) * itemsPerPage;
+  const page = currentOffset;
+  const pageSize = itemsPerPage;
+
   const handleEditPrivacyModal = (id) => {
     setPrivacyPolicyId(id);
     setEditPrivacyPolicyModal(true);
@@ -50,6 +61,16 @@ const PrivacyPolicy = () => {
     setAddPrivacyModal(true);
     getAllWebsites();
   };
+
+  const totalFetchs=4;
+  const currentOffst=(currentPage -1 )*totalFetchs;
+  const pages = currentOffst;
+  const pagsizes = totalFetchs
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    getPolicyPrivacyData();
+  }
 
   const handleStatus = (id, status) => {
     setActiveInActivePopup(true);
@@ -97,7 +118,7 @@ const PrivacyPolicy = () => {
 
   const getPolicyPrivacyData = () => {
     setLoading(true);
-    getPrivacyPolicy()
+    getPrivacyPolicy({ page, pageSize})
       .then((response) => {
         setPrivacyList(response.data);
       })
@@ -236,7 +257,9 @@ const PrivacyPolicy = () => {
             </div>
           </div>
         ) : (
-          <Table columns={REJECTION_COLUMNS} data={DATA} itemsPerPage={5} />
+          <Table columns={REJECTION_COLUMNS} data={DATA} itemsPerPage={itemsPerPage}
+          totalRecords={totalRecords}
+          onPageChange={handlePageChange}/>
         )}
       </div>
 
@@ -288,8 +311,8 @@ const PrivacyPolicy = () => {
       />
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </div>
   );

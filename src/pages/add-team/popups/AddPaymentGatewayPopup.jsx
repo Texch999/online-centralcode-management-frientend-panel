@@ -42,7 +42,6 @@ const AddPaymentGatewayPopup = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [manPaymentData, setManPaymentData] = useState([]);
-  const dataFetchedById = useRef(false);
   const role_code = localStorage.getItem("role_code");
   console.log(paymentMethod, "paymentMethod");
 
@@ -76,9 +75,9 @@ const AddPaymentGatewayPopup = ({
   ];
 
   const upiProviderOptions = [
-    { value: "GooglePay", label: "Google Pay" },
-    { value: "PhonePe", label: "PhonePe" },
-    { value: "Paytm", label: "Paytm" },
+    { value: 1, label: "Google Pay" },
+    { value: 2, label: "PhonePe" },
+    { value: 3, label: "Paytm" },
   ];
 
   const cOptions = data.map((item) => ({
@@ -238,8 +237,6 @@ const AddPaymentGatewayPopup = ({
 
   useEffect(() => {
     if (managementPaymentEditId) {
-      if (dataFetchedById.current) return;
-      dataFetchedById.current = true;
       fetchManagementPaymentDetailsById();
     }
   }, [managementPaymentEditId]);
@@ -250,18 +247,23 @@ const AddPaymentGatewayPopup = ({
     formData.append("gateway_type", parseInt(paymentMethod));
 
     if (paymentMethod === "1") {
-      formData.append("bank_acc_no", accountNumber);
-      formData.append("bank_ifsc", bankIFSC);
-      formData.append("bank_name", bankName);
+      formData.append(
+        "bank_acc_no",
+        accountNumber || manPaymentData?.bank_acc_no
+      );
+      formData.append("bank_ifsc", bankIFSC || manPaymentData?.bank_ifsc);
+      formData.append("bank_name", bankName || manPaymentData?.bank_name);
       formData.append("country", country);
     } else if (paymentMethod === "2") {
-      formData.append("upi_provider", provider);
-      formData.append("upi_provider_id", upiID);
+      formData.append("upi_provider", provider || manPaymentData?.upi_provider);
+      formData.append(
+        "upi_provider_id",
+        upiID || manPaymentData?.upi_provider_id
+      );
       formData.append("country", country);
     } else if (paymentMethod === "3") {
       formData.append("qr_code_image", qrCode);
-      formData.append("bank_name", bankName);
-    
+      formData.append("bank_name", bankName || manPaymentData?.bank_name);
     }
     console.log(formData, "formDataa");
     try {
@@ -336,7 +338,14 @@ const AddPaymentGatewayPopup = ({
                     styles={customStyles}
                     maxMenuHeight={120}
                     menuPlacement="auto"
-                    value={getSelectedProvider()}
+                    // value={getSelectedProvider()}
+                    value={
+                      upiProviderOptions.find(
+                        (option) =>
+                          option.value ===
+                          (provider || manPaymentData?.upi_provider)
+                      ) || null
+                    }
                     onChange={(selected) => setProvider(selected.value)}
                   />
                 </div>
@@ -350,7 +359,7 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    value={upiID}
+                    value={upiID || manPaymentData?.upi_provider_id}
                     onChange={(e) => setUpiID(e.target.value)}
                   />
                 </div>
@@ -368,7 +377,7 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    value={bankName}
+                    value={bankName || manPaymentData?.bank_name}
                     onChange={(e) => setBankName(e.target.value)}
                   />
                 </div>
@@ -410,7 +419,7 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    value={accountNumber}
+                    value={accountNumber || manPaymentData?.bank_acc_no}
                     onChange={(e) => setAccountNumber(e.target.value)}
                   />
                 </div>
@@ -424,7 +433,7 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    value={bankIFSC}
+                    value={bankIFSC || manPaymentData?.bank_ifsc}
                     onChange={(e) => setBankIFSC(e.target.value)}
                   />
                 </div>
@@ -444,7 +453,7 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    value={bankName}
+                    value={bankName || manPaymentData?.bank_name}
                     onChange={(e) => setBankName(e.target.value)}
                   />
                 </div>
@@ -462,7 +471,10 @@ const AddPaymentGatewayPopup = ({
                   maxMenuHeight={120}
                   menuPlacement="auto"
                   options={cOptions}
-                  value={getSelectedCountry()}
+                  // value={getSelectedCountry()}
+                  value={cOptions.find(
+                    (item) => item.value === (country || manPaymentData?.country?.toString()) 
+                  ) || null}
                   onChange={(selected) =>
                     setCountry(selected ? selected.value : "")
                   }

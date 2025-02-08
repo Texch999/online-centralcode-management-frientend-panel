@@ -20,6 +20,7 @@ import {
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 const ReferenceData = () => {
   const [activeBtn, setActiveBtn] = useState("Rejection Reasons");
@@ -35,8 +36,17 @@ const ReferenceData = () => {
   const [isEdit, setIsEdit] = useState("");
   const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
   const [errorPopup, setErrorPopup] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const dataFetched = useRef(false);
-  const [selectStatus, setSelectStatus] = useState(null);
+  const [selectStatus, setSelectStatus] = useState(
+    searchParams.get("status") || "0"
+  );
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [totalRecordsSecQns, setTotalRecordsSecQns] = useState(null);
+
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  console.log(intialpage);
+  const [currentPage, setCurrentPage] = useState(intialpage);
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
@@ -45,14 +55,31 @@ const ReferenceData = () => {
     setSelectStatus(selectedOption?.value);
   };
 
-  const allCountries = useSelector((item) => item.allCountries);
-  console.log(allCountries,"allcountriessssssssss")
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    if (activeBtn === "Rejection Reasons") {
+      getRejReasons();
+    } else {
+      getSecurityQuestions();
+    }
+  };
+
+  const itemsPerPage = 4;
+  const currentOffset = (currentPage - 1) * itemsPerPage;
+  const page = currentOffset;
+  const pageSize = itemsPerPage;
+
+  // "totalCount": 5,
+  //       "totalPages": 1,
+  //       "currentPage": 1,
+  //       "pageSize": 10
 
   const getSecurityQuestions = () => {
     setLoading(true);
-    getAllSecurityQuestions()
+    getAllSecurityQuestions({ page, pageSize, status })
       .then((response) => {
         setSecurityQuestions(response?.data);
+        setTotalRecordsSecQns(response.meta?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
@@ -62,12 +89,25 @@ const ReferenceData = () => {
         setLoading(false);
       });
   };
+  const status = selectStatus;
+
+  const handleSubmit = () => {
+    if (activeBtn === "Rejection Reasons") {
+      getRejReasons();
+      setCurrentPage(1);
+    } else {
+      setCurrentPage(1);
+      getSecurityQuestions();
+    }
+  };
 
   const getRejReasons = () => {
     setLoading(true);
-    getAllRejectionReasons()
+    // setSearchParams({ status: selectStatus, page: currentPage });
+    getAllRejectionReasons({ page, pageSize, status })
       .then((response) => {
         setRejReasonsData(response?.data);
+        setTotalRecords(response.meta?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
@@ -95,13 +135,13 @@ const ReferenceData = () => {
     { header: "Action", field: "action", width: "10%" },
   ];
 
-  const filteredSecurityQuestions = useMemo(() => {
-    return selectStatus && selectStatus !== "0"
-      ? securityQuestions.filter((item) => item.status === Number(selectStatus))
-      : securityQuestions;
-  }, [selectStatus, securityQuestions]);
+  // const filteredSecurityQuestions = useMemo(() => {
+  //   return selectStatus && selectStatus !== "0"
+  //     ? securityQuestions.filter((item) => item.status === Number(selectStatus))
+  //     : securityQuestions;
+  // }, [selectStatus, securityQuestions]);
 
-  const SECURITY_DATA = filteredSecurityQuestions.map((item, index) => ({
+  const SECURITY_DATA = securityQuestions.map((item, index) => ({
     questions: <div>{item?.questions}</div>,
     status:
       item?.status === 1 ? (
@@ -138,13 +178,13 @@ const ReferenceData = () => {
     { header: "Action", field: "action", width: "10%" },
   ];
 
-  const filteredrejReasonsData = useMemo(() => {
-    return selectStatus && selectStatus !== "0"
-      ? rejReasonsData.filter((item) => item.status === Number(selectStatus))
-      : rejReasonsData;
-  }, [selectStatus, rejReasonsData]);
+  // const filteredrejReasonsData = useMemo(() => {
+  //   return selectStatus && selectStatus !== "0"
+  //     ? rejReasonsData.filter((item) => item.status === Number(selectStatus))
+  //     : rejReasonsData;
+  // }, [selectStatus, rejReasonsData]);
 
-  const REJECTION_DATA = filteredrejReasonsData.map((item, index) => ({
+  const REJECTION_DATA = rejReasonsData.map((item, index) => ({
     reason: <div>{item?.reason}</div>,
 
     discriptions: <div>{item?.description}</div>,
@@ -199,14 +239,14 @@ const ReferenceData = () => {
       <hr className="my-3" />
 
       <div className="d-flex align-items-center justify-content-between">
-        <div className="col-9 fw-600">
+        <div className="col-5 fw-600">
           {activeBtn === "Rejection Reasons"
             ? "Rejection Reasons"
             : "Security Questions"}
         </div>
 
-        <div className="col-3 d-flex justify-content-between align-items-center">
-          <div className="col-7">
+        <div className="col-5 d-flex justify-content-between align-items-center">
+          <div className="col-5">
             <Select
               className="small-font"
               options={selectOptions}
@@ -215,12 +255,19 @@ const ReferenceData = () => {
               maxMenuHeight={120}
               menuPlacement="auto"
               classNamePrefix="custom-react-select"
+              value={selectOptions.find((opt) => opt.value === setSelectStatus)}
               onChange={handleStatusChange}
             />
           </div>
+          <div
+            className="saffron-btn2 small-font pointer col-3 mx-2"
+            onClick={handleSubmit}
+          >
+            Submit
+          </div>
 
           <div
-            className="bg-white small-font pointer col-4 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
+            className="bg-white small-font pointer col-3 p-2 blue-font grey-border rounded d-flex justify-content-center align-items-center"
             onClick={() => {
               if (activeBtn === "Rejection Reasons") {
                 setAddNewModalRejection(true);
@@ -252,7 +299,9 @@ const ReferenceData = () => {
             <Table
               columns={REJECTION_COLUMNS}
               data={REJECTION_DATA}
-              itemsPerPage={4}
+              itemsPerPage={itemsPerPage}
+              totalRecords={totalRecords}
+              onPageChange={handlePageChange}
             />
           )
         ) : loading ? (
@@ -266,7 +315,9 @@ const ReferenceData = () => {
           <Table
             columns={SECURITY_COLUMNS}
             data={SECURITY_DATA}
-            itemsPerPage={4}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecordsSecQns}
+            onPageChange={handlePageChange}
           />
         )}
       </div>
@@ -288,8 +339,8 @@ const ReferenceData = () => {
       />
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </div>
   );

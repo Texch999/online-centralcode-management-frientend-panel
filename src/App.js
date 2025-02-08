@@ -112,6 +112,7 @@ import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
+import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -303,6 +304,7 @@ function App() {
                 path="/white-label-setting"
                 element={<WhiteLabelSetting />}
               />
+              <Route path="/offline-payment-modes" element={<OfflinePaymentModes/>}/>
             </Routes>
           </div>
         </div>

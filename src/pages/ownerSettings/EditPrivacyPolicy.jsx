@@ -35,8 +35,8 @@ const EditPrivacyPolicy = ({
   };
   useEffect(() => {
     if (privacyPolicyId) {
-      if (dataFetched.current) return;
-      dataFetched.current = true;
+      // if (dataFetched.current) return;
+      // dataFetched.current = true;
       getPolicyPrivacyDataById();
     }
   }, [privacyPolicyId]);
@@ -101,8 +101,8 @@ const EditPrivacyPolicy = ({
       />
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </div>
   );

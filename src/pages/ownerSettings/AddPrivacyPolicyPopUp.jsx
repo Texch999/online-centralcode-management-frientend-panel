@@ -87,6 +87,7 @@ const AddPrivacyPolicyPopUp = ({
       });
       return;
     }
+
     const payload = {
       country_id: data.country?.value,
       website_id: data.website?.value,
@@ -95,7 +96,7 @@ const AddPrivacyPolicyPopUp = ({
     };
     createPrivacyPolicy(payload)
       .then((response) => {
-        setAddPrivacyModal();
+        setAddPrivacyModal(false);
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -106,7 +107,14 @@ const AddPrivacyPolicyPopUp = ({
       })
       .catch((error) => {
         setError(error?.message);
+        setAddPrivacyModal(false);
         setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 3000);
+        reset();
+        setValues("");
+        getPolicyPrivacyData();
       });
   };
 
@@ -233,6 +241,7 @@ const AddPrivacyPolicyPopUp = ({
                     Create
                   </button>
                 </div>
+                
               </div>
             </div>
           </form>
@@ -246,8 +255,8 @@ const AddPrivacyPolicyPopUp = ({
       />
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </>
   );

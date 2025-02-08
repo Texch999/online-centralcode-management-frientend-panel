@@ -18,6 +18,7 @@ import {
 } from "../../../src/api/apiMethods";
 import moment from "moment";
 import { CircleLoader } from "react-spinners";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const PaymentGateway = () => {
   const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false);
@@ -41,6 +42,7 @@ const PaymentGateway = () => {
   const [searchInput, setSearchInput] = useState("");
   const [managementPaymentEditId, setManagementPaymentEditId] = useState(null);
   const [managementPaymentEdit, setManagementPaymentEdit] = useState(false);
+  const [errorPopup,setErrorPopup]=useState(false);
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -95,6 +97,10 @@ const PaymentGateway = () => {
       }
     } catch (error) {
       setError(error?.message);
+      setErrorPopup(true);
+      setTimeout(()=>{
+        setErrorPopup(false);
+      },[2000]);
       console.log("getManagementPaymentDetails error", error);
     } finally {
       setLoading(false);
@@ -403,7 +409,10 @@ const PaymentGateway = () => {
       {role_code === "management" ? (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
-          onHide={() => setOnAddPaymentGateway(false)}
+          onHide={() => {
+            setOnAddPaymentGateway(false);
+            setManagementPaymentEditId(false);
+          }}
           data={countries}
           managementPaymentEdit={managementPaymentEdit}
           setManagementPaymentEdit={setManagementPaymentEdit}
@@ -449,6 +458,11 @@ const PaymentGateway = () => {
           onSubmit={suspendStatus}
         />
       )}
+
+      <ErrorPopup    
+      discription={error}
+      errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}/>
     </div>
   );
 };
