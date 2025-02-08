@@ -23,6 +23,10 @@ const endpoints = {
 
   getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
   getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
+  getCurrencies: {
+    method: "get",
+    url: () => `/user/${userID()}/countries/currency-name`,
+  },
 
   createWebsite: {
     method: "post",

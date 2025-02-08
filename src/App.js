@@ -112,6 +112,7 @@ import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
+import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -173,6 +174,10 @@ function App() {
               <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route path="/director-team" element={<AddDirectorTeam />} />
+              <Route
+                path="/director-admin/addnewdirector"
+                element={<AddNewDirectorSuperAdmin />}
+              />
               <Route
                 path="/user-profile-dashboard"
                 element={<UserProfileDashboard />}

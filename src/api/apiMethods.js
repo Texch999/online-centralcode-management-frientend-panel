@@ -104,7 +104,10 @@ const getDirectorAccountById = (id, data) => {
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
 };
-
+// getCurrencies
+const getCurrencies = (data) => {
+  return apiRequest("getCurrencies", data);
+};
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
@@ -316,4 +319,5 @@ export {
   updateDirectorEmployeeByID,
   addWebsiteToPrivacyPolicy,
   managementPaymentDetails,
+  getCurrencies,
 };
