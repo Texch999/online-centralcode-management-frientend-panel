@@ -26,7 +26,7 @@ const FullPosterPopUp = ({ fullPoster, setFullPoster, fullPosterImage }) => {
     <Modal
       show={fullPoster}
       centered
-      size="sm"
+      size="lg"
       onHide={() => setFullPoster(false)}
     >
       <div className="position-relative d-flex align-items-center justify-content-center">

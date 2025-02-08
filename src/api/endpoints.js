@@ -226,7 +226,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
+      return `/director/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
     },
   },
 
@@ -234,7 +234,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
+      return `/director/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
     },
   },
 

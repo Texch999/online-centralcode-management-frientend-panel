@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaSpinner } from "react-icons/fa";
 import { MdBlockFlipped, MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
 import { Images } from "../../images";
@@ -199,7 +199,7 @@ const SandCBanner = () => {
     selectedFiles.forEach((file, index) => {
       formData.append("image", file);
     });
-
+    setLoading(true);
     try {
       const response = await createBanner(formData);
       if (response.status === 200) {
@@ -211,12 +211,14 @@ const SandCBanner = () => {
         setSelectedPlace(null);
         setStartDT("");
         setEndDT("");
+        setLoading(false);
         setSelectedFiles([]);
         getBanners();
         setSuccessPopupOpen(true);
       }
     } catch (error) {
       setMessage(error.message);
+      setLoading(false);
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
     }
@@ -243,7 +245,6 @@ const SandCBanner = () => {
   const getWebsites = async () => {
     try {
       const response = await getWebsitesList();
-      console.log(response, "redlknoshc");
       if ((response.status = 200)) {
         setWebsitesList(response?.data);
       }
@@ -269,7 +270,6 @@ const SandCBanner = () => {
     }
   };
 
-
   const handleDeleteBanners = async () => {
     try {
       setLoading(true);
@@ -282,7 +282,7 @@ const SandCBanner = () => {
         setSuccessPopupOpen(true);
       }
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
       setLoading(false);
       setMessage(error?.message);
       setErrorPopupOpen(true);
@@ -393,12 +393,12 @@ const SandCBanner = () => {
         <div className="relative poster-img">
           {banner.image &&
             (() => {
-              const images = JSON.parse(banner.image); // Convert JSON string to array
+              const images = JSON.parse(banner.image);
               return (
                 <img
-                  src={`${imgUrl}/${images[0]}`} // Access first image
+                  src={`${imgUrl}/${images[0]}`}
                   alt="Banner"
-                  style={{ width: "200px", height: "150px", cursor: "pointer"}}
+                  style={{ width: "200px", height: "150px", cursor: "pointer" }}
                   onClick={() => {
                     const images = JSON.parse(banner.image);
                     handleFullScreen(images);
@@ -406,15 +406,6 @@ const SandCBanner = () => {
                 />
               );
             })()}
-          {/* <TbArrowsDiagonal
-            className="absolute zoom-out white-bg pointer"
-            size={18}
-            onClick={() => {
-              const images = JSON.parse(banner.image);
-              handleFullScreen(images[0]);
-            }}
-            style={{ marginLeft: "-25px" }}
-          /> */}
         </div>
       </div>
     ),
@@ -463,10 +454,6 @@ const SandCBanner = () => {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Sports/Casino Banners</h6>
-        {/* <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
-        </div> */}
       </div>
       <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -500,7 +487,7 @@ const SandCBanner = () => {
       </div>
 
       <div className="w-100 d-flex small-font">
-        <div className="col-3 flex-column me-3">
+        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 small-font mb-1">Sports/Casino</label>
           <Select
             className="small-font"
@@ -517,7 +504,7 @@ const SandCBanner = () => {
             <span className="text-danger small-font">{errors.selectType}</span>
           )}
         </div>
-        <div className="col-3 flex-column me-3">
+        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 small-font mb-1">Websites</label>
           <Select
             className="small-font"
@@ -537,7 +524,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column me-3">
+        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Poster Page</label>
           <Select
             className="small-font"
@@ -556,7 +543,7 @@ const SandCBanner = () => {
             </span>
           )}
         </div>
-        <div className="col flex-column me-3">
+        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Poster Location</label>
           <Select
             className="small-font"
@@ -575,7 +562,7 @@ const SandCBanner = () => {
             </span>
           )}
         </div>
-        <div className="col flex-column me-3">
+        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Start Date & Time</label>
           <input
             className="input-css2"
@@ -585,13 +572,15 @@ const SandCBanner = () => {
           />
         </div>
 
-        <div className="col flex-column">
+        <div className="col flex-column fixed-width-field1">
           <label className="black-text4 mb-1">End Date & Time</label>
           <input
             className="input-css2"
             type="datetime-local"
             value={endDT}
             onChange={handleEndDateChange}
+            disabled={!startDT}
+            min={startDT || ""}
           />
           {errors.endDT && (
             <span className="text-danger small-font">{errors.endDT}</span>
@@ -599,44 +588,66 @@ const SandCBanner = () => {
         </div>
       </div>
 
-      <div className="w-50 d-flex small-font mt-3 mb-5">
-        <div className="col-5 flex-column me-3">
-          <label className="black-text4 mb-1">Upload Poster</label>
-          <label htmlFor="poster">
+      <div className="d-flex small-font mt-3 mb-5 gap-3">
+        <div className="col-md-3 col-lg-5  fixed-width-field">
+          <label
+            htmlFor="poster"
+            className="black-text4 small-font mb-1 d-block"
+          >
+            Upload Poster
+          </label>
+
+          <label htmlFor="poster" className="d-block">
             <input
               type="file"
               id="poster"
               multiple
-              accept="image/jpeg, image/png, image/gif, image/webp"
+              accept="image/*"
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
-            <div className="input-css2 flex-between">
-              <span>Select Files (Max: 5)</span>{" "}
+
+            <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+              <span className="file-name">
+                {selectedFiles.length === 0 ? (
+                  "Select Files (Max: 5)"
+                ) : selectedFiles.length === 1 ? (
+                  selectedFiles[0].name.length > 10 ? (
+                    selectedFiles[0].name.substring(0, 10) + "..."
+                  ) : (
+                    selectedFiles[0].name
+                  )
+                ) : (
+                  <>
+                    {selectedFiles[0].name.length > 10
+                      ? selectedFiles[0].name.substring(0, 10) + "..."
+                      : selectedFiles[0].name}{" "}
+                    +{selectedFiles.length - 1} more
+                  </>
+                )}
+              </span>
               <MdOutlineFileUpload size={18} />
             </div>
           </label>
 
-          {selectedFiles.length > 0 && (
-            <ul className="mt-2">
-              {selectedFiles.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
-          )}
-          {errors.selectedFiles && (
-            <span className="text-danger small-font">
-              {errors.selectedFiles}
-            </span>
+          {errors?.selectedFiles && (
+            <div
+              className="position-absolute w-100"
+              style={{ minHeight: "20px" }}
+            >
+              <span className="text-danger small-font">
+                {errors.selectedFiles}
+              </span>
+            </div>
           )}
         </div>
 
-        <div className="col-4 flex-end me-3">
+        <div className="w-100 align-self-end">
           <button
-            className="w-100 saffron-btn2"
+            className="saffron-btn2 pointer small-font"
             onClick={() => handleCreateBanner()}
           >
-            Submit
+            {loading ? "Loading..." : "Submit"}
           </button>
         </div>
       </div>

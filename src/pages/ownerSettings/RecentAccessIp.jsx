@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -10,6 +10,7 @@ import { getDirectorEmployeesLoginLogsByEmployeeId, getDirectorLoginLogsById, ge
 const RecentAccessIp = () => {
   const [activeRow, setActiveRow] = useState(null);
   const { userId, userActivity } = useParams();
+const isInitialRender=useRef(true)
   const location = useLocation();
   const { activeTab } = location.state || {};
   const decodedUserId = decodeURIComponent(userId);
@@ -137,7 +138,12 @@ const RecentAccessIp = () => {
       </div>
     ),
   }));
+ 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     if (userRole === "director") {
       if (activeTab === "employees") {
         getDirectorEmplyessLogsById()
