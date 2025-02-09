@@ -3,7 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { loginDirector, loginUser } from "../api/apiMethods";
+import {
+  loginDirector,
+  loginDirectorEmployee,
+  loginManagement,
+  loginUser,
+} from "../api/apiMethods";
 
 function Login() {
   const {
@@ -23,6 +28,46 @@ function Login() {
   console.log(loginData, "loginData");
   const location = useLocation();
 
+  // const handleLogin = (data) => {
+  //   const payload = {
+  //     login_name: data?.username,
+  //     password: data?.password,
+  //   };
+  //   console.log(payload, "payload");
+
+  //   setLoading(true);
+
+  //   const loginApiCall =
+  //     location.pathname === "/director/login" || !location.pathname
+  //       ? loginDirector
+  //       : loginManagement;
+
+  //   loginApiCall(payload)
+  //     .then((response) => {
+  //       setLoading(false);
+
+  //       if (response?.status === true) {
+  //         console.log(response, "response from API");
+  //         setLoginData(response);
+  //         localStorage.setItem("jwt_token", response?.token);
+  //         localStorage?.setItem("isLoggedIn", true);
+  //         localStorage.setItem("emp_role_id", response?.user?.role?.role_id);
+  //         localStorage.setItem("role_name", response?.user?.role?.role_name);
+  //         localStorage.setItem("role_code", response?.user?.role?.role_name);
+  //         localStorage.setItem("user_id", response?.user?.id);
+  //         navigate("/");
+  //         setError("");
+  //       } else {
+  //         setError("Something Went Wrong");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoading(false);
+  //       setError(error?.message || "Login failed");
+  //     });
+
+  //   setTimeout(() => setError(""), 2000);
+  // };
   const handleLogin = (data) => {
     const payload = {
       login_name: data?.username,
@@ -32,12 +77,17 @@ function Login() {
 
     setLoading(true);
 
+    let loginApiCall;
 
-    const loginApiCall = location.pathname === "/director/login" || !location.pathname ? loginDirector : loginUser;
-
+    if (location.pathname === "/director/login" || !location.pathname) {
+      loginApiCall = loginDirector;
+    } else if (location.pathname === "/director/employee/login") {
+      loginApiCall = loginDirectorEmployee;
+    } else {
+      loginApiCall = loginManagement;
+    }
 
     loginApiCall(payload)
-
       .then((response) => {
         setLoading(false);
 
@@ -168,8 +218,9 @@ function Login() {
               )}
 
               <button
-                className={`orange-btn mt-4 w-100 ${!isValid || loading ? "disabled-btn" : ""
-                  }`}
+                className={`orange-btn mt-4 w-100 ${
+                  !isValid || loading ? "disabled-btn" : ""
+                }`}
                 type="submit"
                 disabled={!isValid || loading}
               >

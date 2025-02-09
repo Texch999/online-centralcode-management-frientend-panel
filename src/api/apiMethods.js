@@ -1,7 +1,7 @@
 import apiRequest from "./apiRequest";
 
-const loginUser = (data) => {
-  return apiRequest("loginUser", data);
+const loginManagement = (data) => {
+  return apiRequest("loginManagement", data);
 };
 // security Questions
 const createSecurityQuestions = (data) => {
@@ -20,6 +20,9 @@ const getSecQusetionsById = (id, data) => {
 // manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
+};
+const loginDirectorEmployee = (data) => {
+  return apiRequest("loginDirectorEmployee", data);
 };
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
@@ -257,7 +260,7 @@ const managementPaymentDetails = (data) => {
   return apiRequest("managementPaymentDetails", data);
 };
 export {
-  loginUser,
+  loginManagement,
   createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
@@ -320,4 +323,5 @@ export {
   addWebsiteToPrivacyPolicy,
   managementPaymentDetails,
   getCurrencies,
+  loginDirectorEmployee,
 };

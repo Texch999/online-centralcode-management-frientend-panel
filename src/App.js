@@ -125,7 +125,8 @@ function App() {
 
   const showLoginPage =
     location.pathname === "/master/login" ||
-    location.pathname === "/director/login";
+    location.pathname === "/director/login" ||
+    location.pathname === "/director/employee/login";
 
   return (
     <div>

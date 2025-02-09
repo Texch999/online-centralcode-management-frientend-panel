@@ -7,8 +7,9 @@ const userID = () => {
   return id;
 };
 const endpoints = {
-  loginUser: { method: "post", url: "/master/login" },
+  loginManagement: { method: "post", url: "/master/login" },
   loginDirector: { method: "post", url: "/director/login" },
+  loginDirectorEmployee: { method: "post", url: "/director/employee/login" },
 
   addManagemnentTeam: {
     method: "post",
@@ -16,7 +17,7 @@ const endpoints = {
   },
   addDirectorTeam: {
     method: "post",
-    url: () => `/user/${userID()}/directorEmployee`,
+    url: () => `/director/${userID()}/createEmployee`,
   },
 
   createDirector: { method: "post", url: () => `/user/${userID()}/director` },
@@ -106,11 +107,12 @@ const endpoints = {
       return `/user/${userID()}/directors?${query}`;
     },
   },
+  // endpoint: http://localhost:901rest2/0.1/director/1/employees?limit=10?offset=0
   getDirectorEmployees: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/directorEmployees?${query}`;
+      return `/director/${userID()}/employees?${query}`;
     },
   },
   resetEmployeePassword: {
@@ -123,8 +125,9 @@ const endpoints = {
   },
   resetDirectorEmployeePassword: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorEmployeeUpdatePassword/${id}`,
+    url: (id) => `/director/${userID()}/employeeUpdatePassword/${id}`,
   },
+
   blockEmploye: {
     method: "post",
     url: (id) => `/user/${userID()}/employeeBlockUnblock/${id}`,
@@ -133,9 +136,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/status`,
   },
+
   blockDirectorEmployee: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorEmployeeBlockUnblock/${id}`,
+    url: (id) => `/director/${userID()}/employeeBlockUnblock/${id}`,
   },
   updateEmployeeByID: {
     method: "post",
@@ -145,17 +149,20 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/updateDirector/${id}`,
   },
+  // endpoint: http://localhost:901rest2/0.1/director/1/updateEmployee/Abcd1234
+
   updateDirectorEmployeeByID: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorEmployee/${id}`,
+    url: (id) => `/director/${userID()}/updateEmployee/${id}`,
   },
   getEmployeeDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
+  // http://localhost:901rest2/0.1/director/1/employee/Abcd1234
   getDirectorEmployeeDetailsById: {
     method: "get",
-    url: (id) => `/user/${userID()}/directorEmployee/${id}`,
+    url: (id) => `/director/${userID()}/employee/${id}`,
   },
   getDirectorDetailsById: {
     method: "get",
