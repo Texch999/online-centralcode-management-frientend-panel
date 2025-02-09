@@ -27,7 +27,7 @@ const AddNewOfflinePaymentModal = ({
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const allCountries = useSelector((item) => item?.allCountries);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [imgName, setImgName] = useState(null);
@@ -35,16 +35,23 @@ const AddNewOfflinePaymentModal = ({
   const [msg, setMsg] = useState("");
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [paymentModesDataById, setPaymentModesDataById] = useState([]);
-   const dataFetched = useRef(false);
-   const role_code = localStorage.getItem("role_code");
+  const role_code = localStorage.getItem("role_code");
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    setError,
+    trigger,
     formState: { errors, isValid },
     reset,
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      currency: "",
+      avil_modes: "",
+    },
+  });
 
   const currencyOptions = allCountries?.map((item) => ({
     value: item?.id,
@@ -80,18 +87,31 @@ const AddNewOfflinePaymentModal = ({
         // }
       })
       .catch((error) => {
-        setError(error?.message);
+        setErrorMsg(error?.message);
         console.log(error);
       });
   };
   useEffect(() => {
-    if (role_code === "management") {
-      if (dataFetched.current) return;
-      dataFetched.current = true;
+    if (role_code === "management" && editId) {
       getPaymentModesById();
     }
   }, [editId]);
   const postPaymentModes = async (data) => {
+    if (!data.currency) {
+      setError("currency", { type: "manual", message: "Currency is required" });
+      return;
+    }
+    if (!data.avil_modes) {
+      setError("avil_modes", {
+        type: "manual",
+        message: "Payment Type is required",
+      });
+      return;
+    }
+    if (!image) {
+      setError("image", { type: "manual", message: "Image is required" });
+      return;
+    }
     const formData = new FormData();
     formData.append("currency", data.currency);
     formData.append("name", data.name);
@@ -117,7 +137,7 @@ const AddNewOfflinePaymentModal = ({
         console.log("error");
       }
     } catch (error) {
-      setError(error?.message);
+      setErrorMsg(error?.message);
       console.log("erorr catch", error?.message);
       setShowAddModal(false);
       setErrorPopupOpen(true);
@@ -161,10 +181,12 @@ const AddNewOfflinePaymentModal = ({
                   styles={customStyles}
                   maxMenuHeight={120}
                   menuPlacement="auto"
-                  // onChange={(option) => setSelectedCurrency(option.value)}
-                  onChange={(option) =>
-                    setValue("currency", Number(option.value))
-                  }
+                  onChange={(option) => {
+                    setValue("currency", Number(option.value), {
+                      shouldValidate: true,
+                    });
+                    trigger("currency");
+                  }}
                 />
                 {errors.currency && (
                   <p className="text-danger small-font">
@@ -181,11 +203,12 @@ const AddNewOfflinePaymentModal = ({
                   styles={customStyles}
                   maxMenuHeight={120}
                   menuPlacement="auto"
-                  // value={typeOptions.find((type) => type?.value === selectedType)}
-                  // onChange={(option) => setSelectedType(option.value)}
-                  onChange={(option) =>
-                    setValue("avil_modes", Number(option.value))
-                  }
+                  onChange={(option) => {
+                    setValue("avil_modes", Number(option.value), {
+                      shouldValidate: true,
+                    });
+                    trigger("avil_modes");
+                  }}
                 />
                 {errors.avil_modes && (
                   <p className="text-danger small-font">
@@ -202,7 +225,6 @@ const AddNewOfflinePaymentModal = ({
                   type="text"
                   className="w-100 small-font rounded input-css all-none"
                   placeholder="Enter"
-                  // onChange={(e) => setName(e.target.value)}
                   {...register("name", { required: "Name is required" })}
                 />
                 {errors.name && (
@@ -273,7 +295,7 @@ const AddNewOfflinePaymentModal = ({
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
         setErrorPopupOpen={setErrorPopupOpen}
-        discription={error}
+        discription={errorMsg}
       />
     </>
   );

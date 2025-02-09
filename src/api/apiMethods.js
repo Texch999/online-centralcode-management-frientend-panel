@@ -266,7 +266,7 @@ const getManagementOfflinePaymentModes = (data) => {
   return apiRequest("getManagementOfflinePaymentModes", data);
 };
 const suspenManagementOfflinePaymentModes = (id, status) => {
-  return apiRequest("suspenManagementOfflinePaymentModes", id, { status, id });
+  return apiRequest("suspenManagementOfflinePaymentModes", id, { id,status });
 };
 const getManagementOfflinePaymentModeById = (id, data) => {
   return apiRequest("getManagementOfflinePaymentModeById", data, id);

@@ -121,7 +121,6 @@ const OfflinePaymentModes = () => {
       });
   };
 
-  
 
   const columns = [
     { header: "Country", field: "country", width: "10%" },
@@ -142,7 +141,6 @@ const OfflinePaymentModes = () => {
       currency: getCurrencyName(item?.currency),
       name: <div>{item?.name}</div>,
       type: <div>{typeOptions[item?.avil_modes]}</div>,
-
       image: <img src={item?.image} className="w-50 h-5vh" loading="lazy" />,
       status:
         item?.status === 1 ? (
@@ -154,7 +152,7 @@ const OfflinePaymentModes = () => {
       action: (
         <div className="d-flex gap-2">
           {/* {item?.status === 1 ? ( */}
-          <span title="this gateway is inactivated you can't updated it!">
+          <span >
             <SlPencil
               size={20}
               className="me-2 pointer"

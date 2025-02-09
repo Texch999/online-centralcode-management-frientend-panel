@@ -413,7 +413,7 @@ const endpoints = {
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
-    url: (data) => `/user/${userID()}/offlinePaymentMode/${data?.id}/status/${data?.status}`,
+    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   }
 };
 

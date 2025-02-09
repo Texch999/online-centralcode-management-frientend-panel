@@ -35,8 +35,6 @@ const EditPrivacyPolicy = ({
   };
   useEffect(() => {
     if (privacyPolicyId) {
-      // if (dataFetched.current) return;
-      // dataFetched.current = true;
       getPolicyPrivacyDataById();
     }
   }, [privacyPolicyId]);
