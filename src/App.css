@@ -760,8 +760,8 @@
 }
 
 .fixed-width-field {
-  max-width: 9.375rem; /* 150px */
-  min-width: 6.25rem;  /* 100px */
+  max-width: 12.5rem; /* 200px */
+  min-width: 9.375rem;  /* 150px */
   width: 100%;
 }
 
