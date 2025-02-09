@@ -109,6 +109,12 @@ export const updateWebsite = (id, data) =>
 export const getWebsiteDetails = (id, data) =>
   apiRequest("getWebsiteDetails", data, id);
 
+export const getAdminWebsiteDetails = () =>
+  apiRequest("getAdminWebsiteDetails");
+
+export const getUserWebsiteDetails = () =>
+  apiRequest("getUserWebsiteDetails");
+
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
