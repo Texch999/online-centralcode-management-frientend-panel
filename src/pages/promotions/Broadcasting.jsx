@@ -67,7 +67,7 @@ const Broadcasting = () => {
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
-    setErrors((pre) => ({ ...pre, selectType }));
+    setErrors((pre) => ({ ...pre, selectType: "" }));
   };
 
   const handleSelectWebsites = (selected) => {
