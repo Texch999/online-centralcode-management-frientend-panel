@@ -51,6 +51,8 @@ const ReferenceData = () => {
     setActiveBtn(item);
   };
 
+  const role_code = localStorage.getItem("role_code");
+
   const handleStatusChange = (selectedOption) => {
     setSelectStatus(selectedOption?.value);
   };
@@ -69,10 +71,6 @@ const ReferenceData = () => {
   const page = currentOffset;
   const pageSize = itemsPerPage;
 
-  // "totalCount": 5,
-  //       "totalPages": 1,
-  //       "currentPage": 1,
-  //       "pageSize": 10
 
   const getSecurityQuestions = () => {
     setLoading(true);
@@ -117,10 +115,12 @@ const ReferenceData = () => {
       });
   };
   useEffect(() => {
-    if (dataFetched.current) return;
-    dataFetched.current = true;
-    getRejReasons();
-    getSecurityQuestions();
+    if (role_code === "management") {
+      if (dataFetched.current) return;
+      dataFetched.current = true;
+      getRejReasons();
+      getSecurityQuestions();
+    }
   }, []);
 
   const selectOptions = [
@@ -135,11 +135,6 @@ const ReferenceData = () => {
     { header: "Action", field: "action", width: "10%" },
   ];
 
-  // const filteredSecurityQuestions = useMemo(() => {
-  //   return selectStatus && selectStatus !== "0"
-  //     ? securityQuestions.filter((item) => item.status === Number(selectStatus))
-  //     : securityQuestions;
-  // }, [selectStatus, securityQuestions]);
 
   const SECURITY_DATA = securityQuestions.map((item, index) => ({
     questions: <div>{item?.questions}</div>,
@@ -178,11 +173,6 @@ const ReferenceData = () => {
     { header: "Action", field: "action", width: "10%" },
   ];
 
-  // const filteredrejReasonsData = useMemo(() => {
-  //   return selectStatus && selectStatus !== "0"
-  //     ? rejReasonsData.filter((item) => item.status === Number(selectStatus))
-  //     : rejReasonsData;
-  // }, [selectStatus, rejReasonsData]);
 
   const REJECTION_DATA = rejReasonsData.map((item, index) => ({
     reason: <div>{item?.reason}</div>,

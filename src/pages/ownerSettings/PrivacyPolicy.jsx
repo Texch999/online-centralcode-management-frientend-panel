@@ -48,6 +48,8 @@ const PrivacyPolicy = () => {
   const [currentPage, setCurrentPage] = useState(intialpage);
   const [totalRecords, setTotalRecords] = useState(null);
 
+  const role_code = localStorage.getItem("role_code");
+
   const itemsPerPage = 4;
   const currentOffset = (currentPage - 1) * itemsPerPage;
   const page = currentOffset;
@@ -62,15 +64,15 @@ const PrivacyPolicy = () => {
     getAllWebsites();
   };
 
-  const totalFetchs=4;
-  const currentOffst=(currentPage -1 )*totalFetchs;
+  const totalFetchs = 4;
+  const currentOffst = (currentPage - 1) * totalFetchs;
   const pages = currentOffst;
-  const pagsizes = totalFetchs
+  const pagsizes = totalFetchs;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
     getPolicyPrivacyData();
-  }
+  };
 
   const handleStatus = (id, status) => {
     setActiveInActivePopup(true);
@@ -118,7 +120,7 @@ const PrivacyPolicy = () => {
 
   const getPolicyPrivacyData = () => {
     setLoading(true);
-    getPrivacyPolicy({ page, pageSize})
+    getPrivacyPolicy({ page, pageSize })
       .then((response) => {
         setPrivacyList(response.data);
       })
@@ -131,10 +133,12 @@ const PrivacyPolicy = () => {
       });
   };
   useEffect(() => {
-    if (dataFetched.current) return;
-    dataFetched.current = true;
-    getPolicyPrivacyData();
-    getAllCountries();
+    if (role_code === "management") {
+      if (dataFetched.current) return;
+      dataFetched.current = true;
+      getPolicyPrivacyData();
+      getAllCountries();
+    }
   }, []);
 
   const filteredData =
@@ -257,9 +261,13 @@ const PrivacyPolicy = () => {
             </div>
           </div>
         ) : (
-          <Table columns={REJECTION_COLUMNS} data={DATA} itemsPerPage={itemsPerPage}
-          totalRecords={totalRecords}
-          onPageChange={handlePageChange}/>
+          <Table
+            columns={REJECTION_COLUMNS}
+            data={DATA}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
+          />
         )}
       </div>
 

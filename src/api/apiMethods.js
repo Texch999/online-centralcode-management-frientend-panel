@@ -1,3 +1,4 @@
+import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
@@ -258,6 +259,18 @@ const createManagementPaymentDetails = (data) => {
 const updateManagementPaymentDetails = (id, data) => {
   return apiRequest("updateManagementPaymentDetails", data, id);
 };
+const createManagementOfflinePaymentModes = (data) => {
+  return apiRequest("createManagementOfflinePaymentModes", data);
+};
+const getManagementOfflinePaymentModes = (data) => {
+  return apiRequest("getManagementOfflinePaymentModes", data);
+};
+const suspenManagementOfflinePaymentModes = (id, status) => {
+  return apiRequest("suspenManagementOfflinePaymentModes", id, { status, id });
+};
+const getManagementOfflinePaymentModeById = (id, data) => {
+  return apiRequest("getManagementOfflinePaymentModeById", data, id);
+};
 
 export {
   loginUser,
@@ -322,4 +335,8 @@ export {
   getManagementPaymentDetailsById,
   createManagementPaymentDetails,
   updateManagementPaymentDetails,
+  createManagementOfflinePaymentModes,
+  getManagementOfflinePaymentModes,
+  suspenManagementOfflinePaymentModes,
+  getManagementOfflinePaymentModeById,
 };

@@ -165,14 +165,13 @@ const endpoints = {
   //   url: () => `/user/${userID()}/secQuestion/`,
   // },
 
-
   getAllSecurityQuestions: {
     method: "get",
     url: (params) => {
-    const query = new URLSearchParams(params).toString();
-    return `/user/${userID()}/secQuestion/?${query}`
-  }
-},
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/secQuestion/?${query}`;
+    },
+  },
   getSecQusetionsById: {
     method: "get",
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
@@ -217,8 +216,8 @@ const endpoints = {
     url: (params) => {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/privacypolicies/?${query}`;
+    },
   },
-},
   getPrivacyPolicyById: {
     method: "get",
     url: (id) => `/user/${userID()}/privacypolicies/${id}`,
@@ -246,7 +245,10 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/countries`,
   },
-  getWebsites: { method: "get", url:()=> `/user/${userID()}/website/websites` },
+  getWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {
@@ -378,24 +380,41 @@ const endpoints = {
   // payment details in management
   getManagementPaymentDetails: {
     method: "get",
-    url:()=> `/user/${userID()}/paymentDetails`,
+    url: () => `/user/${userID()}/paymentDetails`,
   },
   suspendManagementPaymentDetails: {
     method: "post",
     url: (id) => `/user/${userID()}/suspend/${id}`,
   },
-  getManagementPaymentDetailsById:{
+  getManagementPaymentDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/payment/${id}`,
   },
-  createManagementPaymentDetails:{
+  createManagementPaymentDetails: {
     method: "post",
     url: () => `/user/${userID()}/create`,
   },
-  updateManagementPaymentDetails:{
+  updateManagementPaymentDetails: {
     method: "post",
     url: (id) => `/user/${userID()}/update/${id}`,
   },
+  //offline payment modes
+  createManagementOfflinePaymentModes: {
+    method: "post",
+    url: () => `/user/${userID()}/offlinePaymentMode`,
+  },
+  getManagementOfflinePaymentModes: {
+    method: "get",
+    url: () => `/user/${userID()}/totalOfflinePaymentModes`,
+  },
+  getManagementOfflinePaymentModeById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+  },
+  suspenManagementOfflinePaymentModes: {
+    method: "patch",
+    url: (data) => `/user/${userID()}/offlinePaymentMode/${data?.id}/status/${data?.status}`,
+  }
 };
 
 export default endpoints;
