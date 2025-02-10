@@ -8,6 +8,7 @@ import { Images } from "../../images";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getDirectorAccountDetails, getCountries, suspendDirectorAccountPaymentDetails, getDirectorAccountById } from '../../../src/api/apiMethods'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -22,7 +23,7 @@ const PaymentGateway = () => {
   const [statusId, setStatusId] = useState(null);
   const [editMode, setEditMode] = useState(false)
   const [editData, setEditData] = useState('');
-
+  const navigate = useNavigate()
 
 
 
@@ -345,11 +346,11 @@ const PaymentGateway = () => {
       <div className="flex-center gap-2">
         {item?.status === 1 ? (
           <SlPencil size={18} className="pointer me-2" onClick={() => handleEdit(item?.id)} />
-        ):(
-          <SlPencil size={18} className="pointer me-2 disabled"/>
+        ) : (
+          <SlPencil size={18} className="pointer me-2 disabled" />
 
         )}
-        
+
         <RiDeleteBinLine size={18} className="pointer ms-1" onClick={() => handleStatus(item?.id, item?.status)} />
       </div>
     ),
@@ -367,7 +368,11 @@ const PaymentGateway = () => {
             <input className="small-font all-none" placeholder="Search..." />
           </div>
 
-          <button className="rounded-pill input-pill blue-font small-font px-2" onClick={() => setOnAddPaymentGateway(true)}>
+          <button className="rounded-pill input-pill blue-font small-font px-2"
+
+            //  onClick={() => setOnAddPaymentGateway(true)}
+            onClick={() => navigate("/addnew-payments")}
+          >
             <FaPlus /> Add New Gateway{" "}
           </button>
         </div>
