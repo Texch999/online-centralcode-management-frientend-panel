@@ -182,6 +182,7 @@ const AddPrivacyPolicyPopUp = ({
                       onChange={(val) => field.onChange(val)}
                     />
                   )}
+
                 />
                 {errors.website && (
                   <p className="text-danger small-font">
@@ -195,6 +196,7 @@ const AddPrivacyPolicyPopUp = ({
                 <Controller
                   name="status"
                   control={control}
+                  defaultValue={null}
                   rules={{ required: "Status is required" }}
                   render={({ field }) => (
                     <Select

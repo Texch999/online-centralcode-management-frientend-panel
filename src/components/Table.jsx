@@ -20,7 +20,7 @@ function Table({
   const prevPage = useRef(currentPage);
   const totalPages = Math.max(Math.ceil(totalRecords / itemsPerPage));
   const hasData = data.length > 0;
-
+  console.log(totalRecords, itemsPerPage, "=====>");
   useEffect(() => {
     setCurrentPage(pageFromParams);
   }, [pageFromParams]);

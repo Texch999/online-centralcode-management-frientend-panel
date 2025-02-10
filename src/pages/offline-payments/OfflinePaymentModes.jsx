@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import ConfirmationPopup from "./../popups/ConfirmationPopup";
+import { imgUrl } from "../../api/baseUrl";
 
 const OfflinePaymentModes = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -25,16 +26,18 @@ const OfflinePaymentModes = () => {
   const [error, setError] = useState("");
   const role_code = localStorage.getItem("role_code");
   const dataFetched = useRef(false);
-  const [allCountries, setAllCountries] = useState([]);
+  const [countries, setCountries] = useState([]);
   // const allCountries = useSelector((item) => item?.allCountries);
   const [searchInput, setSearchInput] = useState("");
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [offlinePaymnetModeId, setOfflinePaymentModeId] = useState(null);
   const [statusId, setStatusId] = useState(null);
   const [editId, setEditId] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(null);
   const hanldeAddModal = () => {
     setShowAddModal(true);
     setIsEdit(false);
+    setEditId(null);
   };
   const handleEditModal = (id) => {
     setEditId(id);
@@ -53,7 +56,7 @@ const OfflinePaymentModes = () => {
     getAllCountires()
       .then((response) => {
         if (response?.status === true) {
-          setAllCountries(response?.data);
+          setCountries(response?.data);
         } else {
           setError("Something Went Wrong");
         }
@@ -64,12 +67,12 @@ const OfflinePaymentModes = () => {
   };
 
   const getCountryName = (id) => {
-    const country = allCountries.find((c) => c.id === id);
+    const country = countries.find((c) => c.id === id);
     console.log(country);
     return country ? country.name : "Unknown";
   };
   const getCurrencyName = (id) => {
-    const currency = allCountries.find((c) => c.id === id);
+    const currency = countries.find((c) => c.id === id);
     console.log(currency);
     return currency ? currency.currency_name : "Unknown";
   };
@@ -81,6 +84,7 @@ const OfflinePaymentModes = () => {
         console.log("response", response);
         if (response.status === true) {
           setPaymentModes(response.data);
+          setTotalRecords(response?.data.length);
           console.log(response.data, "success");
         } else {
           console.log(response.message, "error");
@@ -151,13 +155,20 @@ const OfflinePaymentModes = () => {
       width: "10%",
     },
   ];
+
   const data = filteredManOfflinePayments?.map((item) => {
     return {
       country: getCountryName(item?.country_id),
       currency: getCurrencyName(item?.currency),
       name: <div>{item?.name}</div>,
       type: <div>{typeOptions[item?.avil_modes]}</div>,
-      image: <img src={item?.image} className="w-50 h-5vh" loading="lazy" />,
+      image: (
+        <img
+          src={`${imgUrl}/offlinepaymentsMode/${item?.image}`}
+          className="w-70 h-7vh"
+          loading="lazy"
+        />
+      ),
       status:
         item?.status === 1 ? (
           <span className="green-btn badge py-2 px-3">Active</span>
@@ -167,19 +178,19 @@ const OfflinePaymentModes = () => {
 
       action: (
         <div className="d-flex gap-2">
-          {/* {item?.status === 1 ? ( */}
-          <span>
-            <SlPencil
-              size={20}
-              className="me-2 pointer"
-              onClick={() => handleEditModal(item?.id)}
-            />
-          </span>
-          {/* ) : (
+          {item?.status === 1 ? (
+            <span>
+              <SlPencil
+                size={20}
+                className="me-2 pointer"
+                onClick={() => handleEditModal(item?.id)}
+              />
+            </span>
+          ) : (
             <span title="this gateway is inactivated you can't updated it!">
               <SlPencil size={20} className="me-2 pointer" />
             </span>
-          )} */}
+          )}
 
           <span>
             <RiDeleteBinLine
@@ -192,7 +203,10 @@ const OfflinePaymentModes = () => {
       ),
     };
   });
-
+  const handlePageChange = () => {
+    console.log("page changed");
+  };
+  console.log(totalRecords, "======>handlePageChange");
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -230,7 +244,13 @@ const OfflinePaymentModes = () => {
             </div>
           </div>
         ) : (
-          <Table data={data} columns={columns} itemsPerPage={4} />
+          <Table
+            data={data}
+            columns={columns}
+            itemsPerPage={6}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
+          />
         )}
       </div>
 
@@ -241,6 +261,8 @@ const OfflinePaymentModes = () => {
         setIsEdit={setIsEdit}
         editId={editId}
         setEditId={setEditId}
+        countries={countries}
+        getAllManPaymentModes={getAllManPaymentModes}
       />
       <ConfirmationPopup
         confirmationPopupOpen={confirmationModal}
