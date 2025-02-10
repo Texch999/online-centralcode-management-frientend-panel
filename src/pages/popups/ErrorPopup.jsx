@@ -23,12 +23,12 @@ const ErrorPopup = ({ errorPopupOpen, setErrorPopupOpen, discription }) => {
             alt="Error_Mark"
             style={{ width: "50px", height: "50px" }}
           />
-          <h5 className="black-text4 fw-600 mt-2 mb-3">{discription}</h5>
+          <h5 className="black-text4 fw-600 mt-3 mb-3">{discription}</h5>
           {/* <div className="small-font black-text4">
             Lorem Ipsum is simply dummy text of the printing...
           </div> */}
           <button
-            className="w-50 black-text2 border p-2 rounded white-bg mt-4 mb-3 medium-font"
+            className="w-50 black-text2 border p-2 saffron-btn rounded white-bg mt-4 mb-3 medium-font"
             onClick={handleCancel}
           >
             OK

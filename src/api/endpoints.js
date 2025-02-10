@@ -1,3 +1,5 @@
+import { getManagementPaymentDetails } from "./apiMethods";
+
 const userID = () => {
   const id = localStorage.getItem("user_id");
   if (!id) {
@@ -25,7 +27,10 @@ const endpoints = {
     url: `/user/${userID()}/website/adminWebsites`,
   },
   // loginUser: { method: "post", url: "/master/login" },
-  createWebsite: { method: "post", url: () => `/user/${userID()}/website/website` },
+  createWebsite: {
+    method: "post",
+    url: () => `/user/${userID()}/website/website`,
+  },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -101,17 +106,10 @@ const endpoints = {
   //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
   // }),
 
-  // getEmployees: {
-  //   method: "get",
-  //   url: (params) => {
-  //     const query = new URLSearchParams(params).toString();
-  //     return `/user/${userID()}/employees?${query}`;
-  //   },
-  // },
   getEmployees: {
     method: "get",
     url: (params) => {
-      const query = new URLSearchParams(params).toString(); // Dynamically build the query with parameters
+      const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/employees?${query}`;
     },
   },
@@ -168,9 +166,17 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
   },
+  // getAllSecurityQuestions: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/secQuestion/`,
+  // },
+
   getAllSecurityQuestions: {
     method: "get",
-    url: () => `/user/${userID()}/secQuestion/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/secQuestion/?${query}`;
+    },
   },
   getSecQusetionsById: {
     method: "get",
@@ -181,9 +187,18 @@ const endpoints = {
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
   },
   //rejection reasons
+
+  // getAllRejectionReasons: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/rejectionReasons/`,
+  // },
+
   getAllRejectionReasons: {
     method: "get",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/rejectionReasons/?${query}`;
+    },
   },
   createRejReasons: {
     method: "post",
@@ -198,9 +213,16 @@ const endpoints = {
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
   //privacy
+  // getPrivacyPolicy: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/privacypolicies/`,
+  // },
   getPrivacyPolicy: {
     method: "get",
-    url: () => `/user/${userID()}/privacypolicies/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/privacypolicies/?${query}`;
+    },
   },
   getPrivacyPolicyById: {
     method: "get",
@@ -220,16 +242,19 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
-  // getCountries: {
-  //   method: "get",
-  //   url: `/user/${userID()}/countries`,
-  // },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
 
   getCountries: {
     method: "get",
     url: () => `/user/${userID()}/countries`,
   },
-  getWebsites: { method: "get", url: () => `/user/${userID()}/website/websites` },
+  getWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {
@@ -245,14 +270,11 @@ const endpoints = {
       return `/director/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
     },
   },
-  // getWebsites: { method: "get", url: `user/${userID()}/website/websites` },'
 
   getAvailableWebsites: {
     method: "get",
     url: (id) => `/user/${userID()}/privacypolicies/${id}/websites`,
   },
-
-  // createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   createBroadCasting: {
     method: "post",
@@ -274,7 +296,6 @@ const endpoints = {
   },
 
   //DirectorAccountDetails
-
   getDirectorAccountDetails: {
     method: "get",
     url: () => `/user/${userID()}/directorAccount`,
@@ -296,8 +317,6 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
   },
-  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
-  // },
 
   getDirectorAccessWebites: {
     method: "get",
@@ -364,13 +383,47 @@ const endpoints = {
     url: () => `/user/${userID()}/website/userWebsites`,
   },
 
-  // statusBanner: {
-  //   method: "put",
-  //   url: (id) => `/user/${userID()}/broadcasting/${id}`,
-  // },
-  addWebsiteToPrivacyPolicy: {
+  // payment details in management
+  getManagementPaymentDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/paymentDetails`,
+  },
+  suspendManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+    url: (id) => `/user/${userID()}/suspend/${id}`,
+  },
+  getManagementPaymentDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/payment/${id}`,
+  },
+  createManagementPaymentDetails: {
+    method: "post",
+    url: () => `/user/${userID()}/create`,
+  },
+  updateManagementPaymentDetails: {
+    method: "post",
+    url: (id) => `/user/${userID()}/update/${id}`,
+  },
+  //offline payment modes
+  createManagementOfflinePaymentModes: {
+    method: "post",
+    url: () => `/user/${userID()}/offlinePaymentMode`,
+  },
+  getManagementOfflinePaymentModes: {
+    method: "get",
+    url: () => `/user/${userID()}/totalOfflinePaymentModes`,
+  },
+  getManagementOfflinePaymentModeById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+  },
+  suspenManagementOfflinePaymentModes: {
+    method: "patch",
+    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+  },
+  updateManagementOfflinePaymentDetails:{
+    method: "put",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
   },
   managementPaymentDetails: {
     method: "get",

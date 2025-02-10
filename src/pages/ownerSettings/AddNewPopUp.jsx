@@ -54,6 +54,7 @@ const AddNewPopUp = ({
   const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
   const [errorPopup, setErrorPopup] = useState(false);
+ 
   const selectOptions = [
     { value: 1, label: "Active" },
     { value: 2, label: "In-Active" },
@@ -319,8 +320,8 @@ const AddNewPopUp = ({
       )}
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
 
       <SuccessPopup

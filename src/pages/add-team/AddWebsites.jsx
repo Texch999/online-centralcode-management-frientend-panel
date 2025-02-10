@@ -7,7 +7,12 @@ import { FaPlus } from "react-icons/fa6";
 import AddWebsitesPopup from "./popups/AddWebsitesPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
-import { getAllCountires, getWebsitesList, blockAndUnblock, getDirectorAccessWebites } from "../../api/apiMethods";
+import {
+  getAllCountires,
+  getWebsitesList,
+  blockAndUnblock,
+  getDirectorAccessWebites,
+} from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
 
@@ -15,23 +20,23 @@ const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
   const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
-  const [error, setError] = useState("")
-  const [websites, setWebsite] = useState([])
-  const [directorSites, setDirectorSites] = useState([])
-  const [countries, setCountries] = useState([])
-  const [editMode, setEditMode] = useState(false)
+  const [error, setError] = useState("");
+  const [websites, setWebsite] = useState([]);
+  const [directorSites, setDirectorSites] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [editMode, setEditMode] = useState(false);
   const [websiteId, setWebsiteId] = useState(null);
   const [status, setStatus] = useState(null);
   const [filterName, setFilterName] = useState("");
-  const [openSuccessPopup, setOpenSuccessPopup] = useState(false)
-  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
-  const [displayMsg, setDisplayeMsg] = useState("")
-  const [totalRecords, setTotalRecords] = useState(null)
+  const [openSuccessPopup, setOpenSuccessPopup] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [displayMsg, setDisplayeMsg] = useState("");
+  const [totalRecords, setTotalRecords] = useState(null);
   const itemsPerPage = 9;
   const isInitialRender = useRef(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || 1)
-  const [currentPage, setCurrentPage] = useState(page)
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
       limit,
@@ -41,7 +46,7 @@ const AddWibsites = () => {
       .then((response) => {
         if (response?.status) {
           setWebsite(response.data);
-          setTotalRecords(response.totalCount)
+          setTotalRecords(response.totalCount);
         } else {
           setError("Something Went Wrong");
           setWebsite([]);
@@ -61,7 +66,7 @@ const AddWibsites = () => {
       .then((response) => {
         if (response?.status) {
           setDirectorSites(response.data);
-          setTotalRecords(response.totalCount)
+          setTotalRecords(response.totalCount);
         } else {
           setError("Something Went Wrong");
           setDirectorSites([]);
@@ -84,7 +89,7 @@ const AddWibsites = () => {
       .catch((error) => {
         setError(error?.message || "API request failed");
       });
-  }
+  };
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -94,8 +99,8 @@ const AddWibsites = () => {
     }
 
     if (filterName.trim() === "") {
-      const limit = itemsPerPage
-      const offset = (currentPage - 1) * itemsPerPage
+      const limit = itemsPerPage;
+      const offset = (currentPage - 1) * itemsPerPage;
       if (role === "management") {
         getAllWebsiteList(limit, offset);
       } else {
@@ -126,20 +131,35 @@ const AddWibsites = () => {
   ];
   const getLocationName = (locationId) => {
     const country = countries.find((country) => country.id === locationId);
-    return country?.name.charAt(0).toUpperCase() + country?.name.slice(1)
+    return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
   const data = websites.map((website) => ({
     type: website?.deploy_type === 1 ? "Comapny" : "White Lable",
-    admin: <div> {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${website?.panel_type === 1 ? "Admin" : "User"} )`}</div>,
+    admin: (
+      <div>
+        {" "}
+        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${
+          website?.panel_type === 1 ? "Admin" : "User"
+        } )`}
+      </div>
+    ),
     websiteName: website?.web_name,
-    location: <div>{`${website.city.charAt(0).toUpperCase() + website.city.slice(1)}, ${getLocationName(website?.location_id)}`} </div>,
+    location: (
+      <div>
+        {`${
+          website.city.charAt(0).toUpperCase() + website.city.slice(1)
+        }, ${getLocationName(website?.location_id)}`}{" "}
+      </div>
+    ),
     url: website.web_url.toLowerCase(),
     action: (
       <div className="flex-end gap-4">
         <div>
           <SlPencil
             size={18}
-            className={`pointer ${website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`pointer ${
+              website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             style={website.status !== 1 ? { pointerEvents: "none" } : {}}
             onClick={() => {
               if (website.status === 1) {
@@ -153,7 +173,9 @@ const AddWibsites = () => {
 
         <MdBlockFlipped
           size={18}
-          className={`pointer ${website.status === 1 ? "green-clr" : "dark-orange-clr"}`}
+          className={`pointer ${
+            website.status === 1 ? "green-clr" : "dark-orange-clr"
+          }`}
           onClick={() => {
             setConfirmationPopupOpen(true);
             setWebsiteId(website?.id);
@@ -204,7 +226,6 @@ const AddWibsites = () => {
 
   // ));
 
-
   const directorswebsitedata = directorSites.flatMap((site) =>
     site.admin_websites.map((adminPanel) => ({
       type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
@@ -224,9 +245,9 @@ const AddWibsites = () => {
     if (e.key === "Enter") {
       if (role === "management") {
         setError(null);
-        getAllWebsiteList()
+        getAllWebsiteList();
       } else {
-        getAllDirectorWebsiteList()
+        getAllDirectorWebsiteList();
       }
     }
   };
@@ -234,29 +255,27 @@ const AddWibsites = () => {
     blockAndUnblock(websiteId)
       .then((response) => {
         if (response?.status === true) {
-          getAllWebsiteList()
-          setOpenSuccessPopup(true)
-          setDisplayeMsg(response.message)
+          getAllWebsiteList();
+          setOpenSuccessPopup(true);
+          setDisplayeMsg(response.message);
           setTimeout(() => {
             setError(response?.message);
             setConfirmationPopupOpen(false);
-            setOpenSuccessPopup(false)
+            setOpenSuccessPopup(false);
           }, 2000);
-
         } else {
           setError("Something Went Wrong");
         }
       })
       .catch((error) => {
         setError(error?.message || "API request failed");
-        setErrorPopupOpen(true)
-        setDisplayeMsg(error?.message)
+        setErrorPopupOpen(true);
+        setDisplayeMsg(error?.message);
         setTimeout(() => {
-          setErrorPopupOpen(false)
+          setErrorPopupOpen(false);
         }, 2000);
-
       });
-  }
+  };
 
   return (
     <div>
@@ -269,8 +288,7 @@ const AddWibsites = () => {
             <input
               className="small-font all-none"
               placeholder="Search..."
-              onChange={(e) =>
-                setFilterName(e.target.value.trim())}
+              onChange={(e) => setFilterName(e.target.value.trim())}
               onKeyDown={handleFiltration}
             />
           </div>
@@ -278,7 +296,8 @@ const AddWibsites = () => {
           {role === "management" ? (
             <button
               className="rounded-pill input-pill blue-font small-font px-2"
-              onClick={() => setOnAddwebsitePopup(true)}>
+              onClick={() => setOnAddwebsitePopup(true)}
+            >
               <FaPlus /> Add New Website{" "}
             </button>
           ) : (
@@ -287,23 +306,27 @@ const AddWibsites = () => {
         </div>
       </div>
 
-      {
-        role === "management" ? (
-          <div className="mt-2">
-            <Table data={data} columns={columns} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} totalRecords={totalRecords} />
-          </div>
-        ) : (
-          <div className="mt-2">
-            <Table
-              data={directorswebsitedata}
-              columns={directorswebsitecolumns}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              totalRecords={totalRecords}
-            />
-          </div>
-        )
-      }
+      {role === "management" ? (
+        <div className="mt-2">
+          <Table
+            data={data}
+            columns={columns}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
+        </div>
+      ) : (
+        <div className="mt-2">
+          <Table
+            data={directorswebsitedata}
+            columns={directorswebsitecolumns}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
+        </div>
+      )}
 
       <AddWebsitesPopup
         show={onAddwebsitePopup}
@@ -333,7 +356,7 @@ const AddWibsites = () => {
         setErrorPopupOpen={setErrorPopupOpen}
         discription={displayMsg}
       />
-    </div >
+    </div>
   );
 };
 
