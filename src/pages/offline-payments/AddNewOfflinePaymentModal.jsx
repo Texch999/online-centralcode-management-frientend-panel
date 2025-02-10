@@ -71,15 +71,10 @@ const AddNewOfflinePaymentModal = ({
         console.log("response", response);
         setPaymnetEditId(response?.id);
         setName(response?.name || "");
-        setSelectedCurrency(
-          currencyOptions.find(
-            (option) => option.value === response?.currency
-          ) || null
-        );
-        setSelectedType(
-          typeOptions.find((option) => option.value === response?.avil_modes) ||
-            null
-        );
+        setSelectedCurrency(response?.currency);
+
+        setSelectedType(response?.avil_modes);
+
         setImage(response?.image || "");
         setImgName(response?.image || "");
       })
@@ -119,11 +114,14 @@ const AddNewOfflinePaymentModal = ({
   const postEditPaymentModes = async () => {
     if (!validateForm()) return;
     const formData = new FormData();
-    formData.append("currency", selectedCurrency.value);
+    formData.append("currency", selectedCurrency || selectedCurrency.value);
     formData.append("name", name);
     formData.append("image", image);
-    formData.append("avil_modes", selectedType.value);
-    console.log("Final Payload:", Object.fromEntries(formData.entries()));
+    formData.append("avil_modes", selectedType || selectedType.value);
+    console.log(
+      "Final Payload cretae:",
+      Object.fromEntries(formData.entries())
+    );
     setMsg("");
     try {
       const response = isEdit
@@ -282,7 +280,7 @@ const AddNewOfflinePaymentModal = ({
                   htmlFor="image"
                   className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                 >
-                  <span className="small-font">
+                  <span className="small-font text-ellipsis">
                     {imgName ? imgName : "Upload Image"}
                   </span>
                   <AiOutlineCloudUpload size={20} />

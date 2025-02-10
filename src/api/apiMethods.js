@@ -262,8 +262,8 @@ const updateManagementPaymentDetails = (id, data) => {
 const createManagementOfflinePaymentModes = (data) => {
   return apiRequest("createManagementOfflinePaymentModes", data);
 };
-const getManagementOfflinePaymentModes = (data) => {
-  return apiRequest("getManagementOfflinePaymentModes", data);
+const getManagementOfflinePaymentModes = (params) => {
+  return apiRequest("getManagementOfflinePaymentModes",{}, params);
 };
 const suspenManagementOfflinePaymentModes = (id, status) => {
   return apiRequest("suspenManagementOfflinePaymentModes", id, { id,status });

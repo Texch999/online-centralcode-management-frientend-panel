@@ -17,6 +17,7 @@ import { IoClose } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import ConfirmationPopup from "./../popups/ConfirmationPopup";
 import { imgUrl } from "../../api/baseUrl";
+import { useSearchParams } from "react-router-dom";
 
 const OfflinePaymentModes = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -34,6 +35,15 @@ const OfflinePaymentModes = () => {
   const [statusId, setStatusId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [totalRecords, setTotalRecords] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(intialpage);
+
+  const itemsPerPage = 4;
+  const currentOffset = (currentPage - 1) * itemsPerPage;
+  const page = intialpage;
+  const pageSize = itemsPerPage;
+
   const hanldeAddModal = () => {
     setShowAddModal(true);
     setIsEdit(false);
@@ -79,12 +89,12 @@ const OfflinePaymentModes = () => {
 
   const getAllManPaymentModes = () => {
     setLoading(true);
-    getManagementOfflinePaymentModes()
+    getManagementOfflinePaymentModes({ page, pageSize })
       .then((response) => {
         console.log("response", response);
         if (response.status === true) {
           setPaymentModes(response.data);
-          setTotalRecords(response?.data.length);
+          setTotalRecords(response?.totalCount);
           console.log(response.data, "success");
         } else {
           console.log(response.message, "error");
@@ -143,12 +153,12 @@ const OfflinePaymentModes = () => {
   };
 
   const columns = [
-    { header: "Country", field: "country", width: "10%" },
+    { header: "Country", field: "country", width: "15%" },
     { header: "Currency ", field: "currency", width: "10%" },
-    { header: "Name", field: "name", width: "20%" },
+    { header: "Name", field: "name", width: "15%" },
     { header: "Image", field: "image", width: "15%" },
-    { header: "type", field: "type", width: "15%" },
-    { header: "Status", field: "status", width: "10%" },
+    { header: "type", field: "type", width: "10%" },
+    { header: <div className="">Status</div>, field: "status", width: "12%" },
     {
       header: <div className="">Actions</div>,
       field: "action",
@@ -177,24 +187,24 @@ const OfflinePaymentModes = () => {
         ),
 
       action: (
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-2 my-1">
           {item?.status === 1 ? (
             <span>
               <SlPencil
-                size={20}
-                className="me-2 pointer"
+                size={22}
+                className="me-2 pointer font-20"
                 onClick={() => handleEditModal(item?.id)}
               />
             </span>
           ) : (
             <span title="this gateway is inactivated you can't updated it!">
-              <SlPencil size={20} className="me-2 pointer" />
+              <SlPencil size={22} className="me-2 pointer disabled" />
             </span>
           )}
 
           <span>
             <RiDeleteBinLine
-              size={18}
+              size={22}
               className="pointer ms-1"
               onClick={() => handleManagementSuspend(item?.id, item.status)}
             />
@@ -203,8 +213,9 @@ const OfflinePaymentModes = () => {
       ),
     };
   });
-  const handlePageChange = () => {
-    console.log("page changed");
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    getAllManPaymentModes();
   };
   console.log(totalRecords, "======>handlePageChange");
   return (

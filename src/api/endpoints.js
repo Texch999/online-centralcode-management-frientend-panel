@@ -411,7 +411,11 @@ const endpoints = {
   },
   getManagementOfflinePaymentModes: {
     method: "get",
-    url: () => `/user/${userID()}/totalOfflinePaymentModes`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
+    },
+    // url: () => `/user/${userID()}/totalOfflinePaymentModes`,
   },
   getManagementOfflinePaymentModeById: {
     method: "get",

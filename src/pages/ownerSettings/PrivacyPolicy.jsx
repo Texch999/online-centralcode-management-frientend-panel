@@ -52,7 +52,7 @@ const PrivacyPolicy = () => {
 
   const itemsPerPage = 4;
   const currentOffset = (currentPage - 1) * itemsPerPage;
-  const page = currentOffset;
+  const page = intialpage;
   const pageSize = itemsPerPage;
 
   const handleEditPrivacyModal = (id) => {
