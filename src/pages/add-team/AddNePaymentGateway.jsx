@@ -142,9 +142,9 @@ const AddNePaymentGateway = () => {
                                 }}
                               >
                                 <img
-                                  onClick={() =>
-                                    setAddPaymentGatewayModal(true)
-                                  }
+                                //   onClick={() =>
+                                //     setAddPaymentGatewayModal(true)
+                                //   }
                                   src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
                                   alt={card.name}
                                   className="w-60 h-100"
