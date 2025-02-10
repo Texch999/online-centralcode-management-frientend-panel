@@ -72,6 +72,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
               websiteName: data?.web_name || "",
               websiteURL: data?.web_url || "",
               created_by: data?.created_by || null,
+              ref_type: data?.ref_type || null,
             });
             setStatus(data?.status)
             setApiError("");
@@ -90,7 +91,8 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         city: "",
         websiteName: "",
         websiteURL: "",
-        created_by: null
+        created_by: null,
+        ref_type: null
       });
     }
   }, [editMode, websiteId]);
@@ -151,6 +153,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
       city: "",
       websiteName: "",
       websiteURL: "",
+      ref_type: null
     });
   };
 
@@ -187,7 +190,6 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         created_by: userId,
         ref_type: formData.ref_type?.value
       }
-      console.log(finalData, "==========>finalData")
       const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData)
       apiCall
         .then((response) => {

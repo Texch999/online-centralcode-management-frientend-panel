@@ -155,8 +155,8 @@ const SelectWebsitePopUp = ({
 
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </div>
   );

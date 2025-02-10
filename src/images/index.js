@@ -49,5 +49,7 @@ export const Images = {
   TourScheduleClock: "/assets/tour_schedule.png",
   LiveImagePoster: "/assets/liveblock-live-image-poster.png",
   VideoPlayIcon: "/assets/video_play.png",
-  error: "/assets/error.png"
+  error: "/assets/error.png",
+  phonepe: "/assets/phonepe.png",
+  nodatafound: "/assets/nodatafound.png",
 };
