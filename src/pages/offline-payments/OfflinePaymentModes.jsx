@@ -136,8 +136,10 @@ const OfflinePaymentModes = () => {
     );
   });
 
+  const status_id = statusId === 1 ? 2 : 1;
+
   const suspendStatus = () => {
-    suspenManagementOfflinePaymentModes(offlinePaymnetModeId, statusId)
+    suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         console.log(response);
         if (response.status === true) {

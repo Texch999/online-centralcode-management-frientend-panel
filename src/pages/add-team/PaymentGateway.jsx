@@ -99,10 +99,10 @@ const PaymentGateway = () => {
       }
     } catch (error) {
       setError(error?.message);
-      setErrorPopup(true);
-      setTimeout(() => {
-        setErrorPopup(false);
-      }, [2000]);
+      // setErrorPopup(true);
+      // setTimeout(() => {
+      //   setErrorPopup(false);
+      // }, [2000]);
       console.log("getManagementPaymentDetails error", error);
     } finally {
       setLoading(false);
@@ -383,7 +383,7 @@ const PaymentGateway = () => {
               navigate("/addnew-payments");
             }}
           >
-            <FaPlus /> Add New Gateway{" "}
+            <FaPlus /> Add New Gateway
           </button>
         </div>
       </div>
