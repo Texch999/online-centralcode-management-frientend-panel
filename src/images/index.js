@@ -51,4 +51,5 @@ export const Images = {
   VideoPlayIcon: "/assets/video_play.png",
   error: "/assets/error.png",
   phonepe: "/assets/phonepe.png",
+  nodatafound: "/assets/nodatafound.png",
 };
