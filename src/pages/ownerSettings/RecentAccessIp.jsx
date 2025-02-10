@@ -1,6 +1,6 @@
 
-import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiChevronRight } from "react-icons/fi";
@@ -10,11 +10,17 @@ import { getDirectorEmployeesLoginLogsByEmployeeId, getDirectorLoginLogsById, ge
 const RecentAccessIp = () => {
   const [activeRow, setActiveRow] = useState(null);
   const { userId, userActivity } = useParams();
+  const isInitialRender = useRef(true)
   const location = useLocation();
-  const { activeTab } = location.state || {};
   const decodedUserId = decodeURIComponent(userId);
   const decodedUserActivity = decodeURIComponent(userActivity);
+  const itemsPerPage = 6
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1)
+  const [currentPage, setCurrentPage] = useState(page)
+  const [totalRecords, setTotalaRecords] = useState(null)
   const userRole = localStorage.getItem("role_code");
+  const activeTab = localStorage.getItem("activeTab");
   const ACTIVITY_COLUMNS = [
     { header: "Prod", field: "prod", width: "10%" },
     { header: "First Date/Time", field: "firstDateTime", width: "20%" },
@@ -26,15 +32,16 @@ const RecentAccessIp = () => {
   ];
   const [logData, setLogsData] = useState([])
   const [error, setError] = useState("")
-  const getAllLogsById = () => {
+  const getAllLogsById = (limit, offset) => {
     getLoggedInLogsById({
       id: decodedUserId,
-      limit: 10,
-      offset: 0,
+      limit,
+      offset,
     })
       .then((response) => {
         if (response?.status) {
           setLogsData(response.data);
+          setTotalaRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
         }
@@ -44,15 +51,16 @@ const RecentAccessIp = () => {
         setError(error?.message || "API request failed");
       });
   }
-  const getDirectorLogsById = () => {
+  const getDirectorLogsById = (limit, offset) => {
     getDirectorLoginLogsById({
       id: decodedUserId,
-      limit: 10,
-      offset: 0,
+      limit,
+      offset,
     })
       .then((response) => {
         if (response?.status) {
           setLogsData(response.data);
+          setTotalaRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
         }
@@ -62,15 +70,16 @@ const RecentAccessIp = () => {
         setError(error?.message || "API request failed");
       });
   }
-  const getDirectorEmplyessLogsById = () => {
+  const getDirectorEmplyessLogsById = (limit, offset) => {
     getDirectorEmployeesLoginLogsByEmployeeId({
       id: decodedUserId,
-      limit: 10,
-      offset: 0,
+      limit,
+      offset,
     })
       .then((response) => {
         if (response?.status) {
           setLogsData(response.data);
+          setTotalaRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
         }
@@ -137,22 +146,48 @@ const RecentAccessIp = () => {
       </div>
     ),
   }));
+
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    const limit = itemsPerPage
+    const offset = (currentPage - 1) * itemsPerPage
     if (userRole === "director") {
       if (activeTab === "employees") {
-        getDirectorEmplyessLogsById()
+        getDirectorEmplyessLogsById(limit, offset)
       } else if (activeTab === "admins") {
         console.log("Integrated Soon")
       }
     } else {
       if (activeTab === "employees") {
-        getAllLogsById()
+        getAllLogsById(limit, offset)
       } else {
-        getDirectorLogsById()
+        getDirectorLogsById(limit, offset)
       }
     }
 
   }, [])
+
+  const handlePageChange = ({ limit, offset }) => {
+    if (userRole === "director") {
+      if (activeTab === "employees") {
+        getDirectorEmplyessLogsById(limit, offset,)
+        console.log("hello i am not here")
+      } else if (activeTab === "admins") {
+        console.log("Integrated Soon")
+      }
+    } else {
+
+      if (activeTab === "employees") {
+
+        getAllLogsById(limit, offset,)
+      } else {
+        getDirectorLogsById(limit, offset,)
+      }
+    }
+  };
   return (
     <div>
       <div className="mt-2">
@@ -168,7 +203,9 @@ const RecentAccessIp = () => {
         <Table
           columns={ACTIVITY_COLUMNS}
           data={ACTIVITY_DATA}
-          itemsPerPage={5}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          totalRecords={totalRecords}
         />
       </div>
     </div>

@@ -72,9 +72,13 @@ function MyDepositWithdraw() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">My Deposit & Withdraw</h6>
-        <div className="d-flex align-items-center gap-1">
+        {/* <div className="d-flex align-items-center gap-1">
           <button className={`me-3 dark-green-bg px-3`} onClick={() => setDepositePopup(true)}>Deposit</button>
           <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
+        </div> */}
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
+          <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
       <div className="w-100 flex-between mb-3 py-3 grey-bg2 rounded">

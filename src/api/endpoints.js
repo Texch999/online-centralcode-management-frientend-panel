@@ -96,9 +96,15 @@ const endpoints = {
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
 
   loginUser: { method: "post", url: () => "/master/login" },
+  // addManagemnentTeam: { method: "post", url: "/employee" },
   addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
   getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
+  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
+  // getEmployees: ({ limit, offset }) => ({
+  //   method: "get",
+  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
+  // }),
 
   getEmployees: {
     method: "get",
@@ -253,7 +259,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
+      return `/director/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
     },
   },
 
@@ -261,7 +267,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
+      return `/director/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
     },
   },
 
@@ -292,14 +298,14 @@ const endpoints = {
   //DirectorAccountDetails
   getDirectorAccountDetails: {
     method: "get",
-    url: `/user/${userID()}/directorAccount`,
+    url: () => `/user/${userID()}/directorAccount`,
   },
   postDirectorAccountDetails: {
     method: "post",
-    url: `/user/${userID()}/directorAccount`,
+    url: () => `/user/${userID()}/directorAccount`,
   },
   suspendDirectorAccountPaymentDetails: {
-    method: "patch",
+    method: 'patch',
     url: (data) =>
       `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
   },
@@ -326,14 +332,14 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogs?${query}`;
+      return `/loginLogs?${query}`;
     },
   },
   getLoggedInLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogsById?${query}`;
+      return `/loginLogsById?${query}`;
     },
   },
   getDirectorLoginLogs: {
@@ -370,11 +376,11 @@ const endpoints = {
 
   getAdminWebsites: {
     method: "get",
-    url: `/user/${userID()}/website/adminWebsites`,
+    url: () => `/user/${userID()}/website/adminWebsites`,
   },
   getUserWebsites: {
     method: "get",
-    url: `/user/${userID()}/website/userWebsites`,
+    url: () => `/user/${userID()}/website/userWebsites`,
   },
 
   // payment details in management
@@ -418,6 +424,10 @@ const endpoints = {
   updateManagementOfflinePaymentDetails:{
     method: "put",
     url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+  },
+  managementPaymentDetails: {
+    method: "get",
+    url: () => `/director/${userID()}/payments`,
   },
 };
 

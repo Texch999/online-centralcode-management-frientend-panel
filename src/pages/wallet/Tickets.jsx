@@ -3,10 +3,13 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import DepositWithdrawPopup from "./DepositWithdrawPopup";
-
+import DepositePopup from "../popups/DepositePopup";
+import WithdrawPopup from "../popups/WithdrawPopup";
 function Tickets() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
     useState(false);
+  const [depositePopup, setDepositePopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const handleDepositWithdrawPopupOpen = () => {
     setDepositWithdrawPopupOpen(true);
   };
@@ -137,6 +140,10 @@ function Tickets() {
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
+        <div className="d-flex align-items-center gap-1">
+          <button className={`me-3 dark-green-bg px-3`} onClick={() => setDepositePopup(true)}>Deposit</button>
+          <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
+        </div>
       </div>
       <div className="grey-bg2 d-flex w-100 py-3 rounded">
         <div className="col-3 px-3">
@@ -189,6 +196,14 @@ function Tickets() {
       <DepositWithdrawPopup
         depositWithdrawPopupOpen={depositWithdrawPopupOpen}
         setDepositWithdrawPopupOpen={setDepositWithdrawPopupOpen}
+      />
+      <DepositePopup
+        setDepositePopup={setDepositePopup}
+        depositePopup={depositePopup}
+      />
+      <WithdrawPopup
+        setWithdrawPopup={setWithdrawPopup}
+        withdrawPopup={withdrawPopup}
       />
     </div>
   );

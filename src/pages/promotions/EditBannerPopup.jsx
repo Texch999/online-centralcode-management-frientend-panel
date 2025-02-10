@@ -350,7 +350,7 @@ const EditBannerPopup = ({
               className="saffron-btn2 small-font pointer ms-2 w-50 mr-2"
               onClick={handleSubmit}
             >
-              {loading ? <FaSpinner className="spinner-circle" /> : "Update"}
+              {loading ? "Loading...": "Update"}
             </div>
           </div>
         </div>

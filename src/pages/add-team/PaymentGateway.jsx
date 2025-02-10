@@ -19,8 +19,10 @@ import {
 import moment from "moment";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useNavigate } from "react-router-dom";
 
 const PaymentGateway = () => {
+  const navigate = useNavigate();
   const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false);
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,7 +44,7 @@ const PaymentGateway = () => {
   const [searchInput, setSearchInput] = useState("");
   const [managementPaymentEditId, setManagementPaymentEditId] = useState(null);
   const [managementPaymentEdit, setManagementPaymentEdit] = useState(false);
-  const [errorPopup,setErrorPopup]=useState(false);
+  const [errorPopup, setErrorPopup] = useState(false);
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -98,9 +100,9 @@ const PaymentGateway = () => {
     } catch (error) {
       setError(error?.message);
       setErrorPopup(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         setErrorPopup(false);
-      },[2000]);
+      }, [2000]);
       console.log("getManagementPaymentDetails error", error);
     } finally {
       setLoading(false);
@@ -378,6 +380,7 @@ const PaymentGateway = () => {
             onClick={() => {
               setOnAddPaymentGateway(true);
               setManagementPaymentEdit(false);
+              navigate("/addnew-payments");
             }}
           >
             <FaPlus /> Add New Gateway{" "}
@@ -459,10 +462,11 @@ const PaymentGateway = () => {
         />
       )}
 
-      <ErrorPopup    
-      discription={error}
-      errorPopupOpen={errorPopup}
-        setErrorPopupOpen={setErrorPopup}/>
+      <ErrorPopup
+        discription={error}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
+      />
     </div>
   );
 };

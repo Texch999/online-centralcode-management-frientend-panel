@@ -15,6 +15,7 @@ import {
   deletePromotionsImages,
   getPromotionsImage,
   getPromotionsTypes,
+  getWebsitesList,
   statusPromotionsTypes,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
@@ -37,10 +38,19 @@ const PromotionType = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({ promotionType: "", image: "" });
+  const [errors, setErrors] = useState({
+    promotionType: "",
+    image: "",
+    selectWebsites: "",
+    selectUserWebsites: "",
+  });
+  const [websitesList, setWebsitesList] = useState([]);
+  const [selectWebsites, setSelectWebsites] = useState(null);
+  const [selectUserWebsites, setSelectUserWebsites] = useState(null);
 
   const hasFetched = useRef(false);
 
@@ -49,11 +59,36 @@ const PromotionType = () => {
     hasFetched.current = true;
     getPromotions();
     getPromotionsImages();
+    getWebsites();
   }, []);
+
+  const getWebsites = async () => {
+    try {
+      const response = await getWebsitesList();
+      if ((response.status = 200)) {
+        setWebsitesList(response?.data);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const selectOptionsWebsites = websitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
 
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
     setErrors((prev) => ({ ...prev, promotionType: "" }));
+  };
+  const handleSelectWebsites = (selected) => {
+    setSelectWebsites(selected);
+    setErrors((prev) => ({ ...prev, selectWebsites: "" }));
+  };
+  const handleSelectUserWebsites = (selected) => {
+    setSelectUserWebsites(selected);
+    setErrors((prev) => ({ ...prev, selectUserWebsites: "" }));
   };
 
   const handleFileChange = (event) => {
@@ -61,6 +96,7 @@ const PromotionType = () => {
 
     if (file) {
       const maxSize = 2 * 1024 * 1024;
+
       const allowedTypes = [
         "image/jpeg",
         "image/png",
@@ -69,18 +105,17 @@ const PromotionType = () => {
       ];
 
       if (!allowedTypes.includes(file.type)) {
-        setMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
-        setErrorPopupOpen(true);
+        setErrorMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
         return;
       }
 
       if (file.size > maxSize) {
-        setMessage("File size should not exceed 2MB.");
-        setErrorPopupOpen(true);
+        setErrorMessage("File size should not exceed 2MB.");
         return;
       }
 
       setSelectedFile(file);
+      setErrorMessage("");
       setErrors((prev) => ({ ...prev, image: "" }));
     }
   };
@@ -106,11 +141,20 @@ const PromotionType = () => {
     }
   };
 
+  
+  console.log("")
+
   const handlePromotionsImages = async () => {
     let newErrors = {};
 
     if (!selectedOption) {
-      newErrors.promotionType = "Promotion Type is required.";
+      newErrors.promotionType = "Thisis required.";
+    }
+    if (!selectWebsites) {
+      newErrors.selectWebsites = "This isrequired.";
+    }
+    if (!selectUserWebsites) {
+      newErrors.selectUserWebsites = "This is required.";
     }
 
     if (!selectedFile) {
@@ -124,6 +168,8 @@ const PromotionType = () => {
 
     const formData = new FormData();
     formData.append("promotionsId", selectedOption.value);
+    formData.append("adminWebsite", selectWebsites.value);
+    formData.append("userWebsite", selectUserWebsites.value);
     formData.append("image", selectedFile);
 
     try {
@@ -232,7 +278,7 @@ const PromotionType = () => {
       <div className="flex-center">
         <div className="relative poster-img">
           <img
-            src={`${imgUrl}/${promotionsImage.image}`}
+            src={`${imgUrl}/promotionsImages/${promotionsImage.image}`}
             alt="Promotion"
             style={{ width: "200px", height: "150px", cursor: "pointer" }}
             onClick={() => handleFullScreen(promotionsImage.image)}
@@ -301,7 +347,7 @@ const PromotionType = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Promotion Type</h6>
+        <h6 className="yellow-font mb-0">Promotion</h6>
       </div>
       <div className="d-flex small-font">
         {ACTIVE_BTNS?.map((item, index) => (
@@ -318,17 +364,19 @@ const PromotionType = () => {
       </div>
       {activeBtn === "Promotion Type" ? (
         <>
-          <Table
-            columns={PROMOTIONS_COLUMNS}
-            data={PROMOTIONS_DATA}
-            itemsPerPage={10}
-          />
+          <div className="my-3">
+            <Table
+              columns={PROMOTIONS_COLUMNS}
+              data={PROMOTIONS_DATA}
+              itemsPerPage={10}
+            />
+          </div>
         </>
       ) : (
         <>
-          <div className="d-flex my-3 small-font align-items-center justify-content-between">
+          <div className="d-flex my-4 small-font align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-3">
-              <div className="col-md-5 col-lg-9">
+              <div className="col fixed-width-field">
                 <label
                   htmlFor="promotionType"
                   className="black-text4 small-font mb-1 d-block"
@@ -337,7 +385,7 @@ const PromotionType = () => {
                 </label>
                 <Select
                   id="promotionType"
-                  className="small-font w-100"
+                  className="small-font fixed-select"
                   options={selectOptions}
                   placeholder="Select"
                   styles={customStyles}
@@ -347,16 +395,82 @@ const PromotionType = () => {
                   value={selectedOption}
                   onChange={handleSelectChange}
                 />
-                {errors.promotionType && (
-                  <span className="text-danger small-font">
-                    {errors.promotionType}
-                  </span>
-                )}
+                <div
+                  className="position-absolute"
+                  style={{ minHeight: "20px" }}
+                >
+                  {errors.promotionType && (
+                    <span className="text-danger small-font">
+                      {errors.promotionType}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div className="col-md-3 col-lg-5 px-0">
+              <div className="col fixed-width-field">
                 <label
-                  htmlFor="poster"
+                  htmlFor="Websites"
+                  className="black-text4 small-font mb-1 d-block"
+                >
+                  Admin Websites
+                </label>
+                <Select
+                  id="Websites"
+                  className="small-font fixed-select"
+                  options={selectOptionsWebsites}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  classNamePrefix="custom-react-select"
+                  value={selectWebsites}
+                  onChange={handleSelectWebsites}
+                />
+                <div
+                  className="position-absolute"
+                  style={{ minHeight: "20px" }}
+                >
+                  {errors.selectWebsites && (
+                    <span className="text-danger small-font">
+                      {errors.selectWebsites}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="col fixed-width-field">
+                <label
+                  htmlFor="WebsitesUser"
+                  className="black-text4 small-font mb-1 d-block"
+                >
+                  User Websites
+                </label>
+                <Select
+                  id="Websites"
+                  className="small-font fixed-select"
+                  options={selectOptionsWebsites}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  classNamePrefix="custom-react-select"
+                  value={selectUserWebsites}
+                  onChange={handleSelectUserWebsites}
+                />
+                <div
+                  className="position-absolute"
+                  style={{ minHeight: "20px" }}
+                >
+                  {errors.selectUserWebsites && (
+                    <span className="text-danger small-font">
+                      {errors.selectUserWebsites}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="col fixed-width-field">
+                <label
+                  htmlFor="promotionType"
                   className="black-text4 small-font mb-1 d-block"
                 >
                   Upload Poster
@@ -366,28 +480,39 @@ const PromotionType = () => {
                     type="file"
                     id="poster"
                     style={{ display: "none" }}
+                    accept="image/*"
                     onChange={handleFileChange}
                   />
-                  <div className="input-css2 small-font d-flex justify-content-between align-items-center pointer">
-                    {selectedFile ? selectedFile.name : "Upload"}
-                    <MdOutlineFileUpload className="grey-color medium-font" />
+                  <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+                    <span className="file-name">
+                      {selectedFile ? selectedFile.name : "Upload"}
+                    </span>
+                    <MdOutlineFileUpload className="grey-color medium-font upload-icon" />
                   </div>
                 </label>
-                {errors.image && (
-                  <span className="text-danger small-font">{errors.image}</span>
-                )}
+                <div
+                  className="position-absolute"
+                  style={{ minHeight: "20px" }}
+                >
+                  {errors.image && (
+                    <span className="text-danger small-font">
+                      {errors.image}
+                    </span>
+                  )}
+                  {errorMessage && (
+                    <span className="text-danger small-font">
+                      {errorMessage}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              <div className="col-md-2 col-lg-5 align-self-end">
+              <div className="w-100 align-self-end">
                 <button
-                  className="w-100 saffron-btn2 pointer small-font"
+                  className="saffron-btn2 pointer small-font"
                   onClick={handlePromotionsImages}
                 >
-                  {loading ? (
-                    <FaSpinner className="spinner-circle" />
-                  ) : (
-                    "Submit"
-                  )}
+                  {loading ? "Loading..." : "Submit"}
                 </button>
               </div>
             </div>
@@ -415,6 +540,7 @@ const PromotionType = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
+        path={"promotionsImages"}
       />
       <ConfirmationPopup
         confirmationPopupOpen={promotionDeleteModal}

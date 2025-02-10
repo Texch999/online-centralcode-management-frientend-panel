@@ -710,7 +710,8 @@
 .border-grey3 {
   border: 1.2px solid #00000033;
 }
-.border-bottom-grey{
+
+.border-bottom-grey {
   border-bottom: 2px solid #00000033;
 }
 
@@ -733,8 +734,8 @@
 }
 
 .dark-green-bg {
-  background: #28A745 !important;
-  border: 1px solid #28A745 !important;
+  background: #28a745 !important;
+  border: 1px solid #28a745 !important;
   outline: none !important;
   color: #ffffff !important;
   font-weight: 500 !important;
@@ -750,7 +751,7 @@
   height: 38px;
   display: flex;
   align-items: center;
-  border:none;
+  border: none;
 
   /* Light border */
 }
@@ -759,3 +760,63 @@
   background: #e9ecef;
 }
 
+.fixed-width-field {
+  max-width: 12.5rem;
+  /* 200px */
+  min-width: 9.375rem;
+  /* 150px */
+  width: 100%;
+}
+
+.fixed-width-field1 {
+  max-width: 11.25rem;
+  /* 180px */
+  min-width: 6.25rem;
+  /* 100px */
+  width: 100%;
+}
+
+.fixed-select {
+  max-width: 100%;
+}
+
+.input-css3.fixed-upload {
+  max-width: 9.375rem;
+  /* 150px */
+  min-width: 6.25rem;
+  /* 100px */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0.125rem solid #e0e0e0;
+  /* 2px */
+  outline: none;
+  color: #727272;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.35rem;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.upload-icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  /* 20px */
+}
+
+.tag-bg {
+  background-color: #39426B;
+}
+
+.white-clr {
+  color: "#ffffff";
+}
