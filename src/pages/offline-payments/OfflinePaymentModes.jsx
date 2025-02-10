@@ -5,6 +5,7 @@ import { SlPencil } from "react-icons/sl";
 import { Images } from "../../images";
 import AddNewOfflinePaymentModal from "./AddNewOfflinePaymentModal";
 import {
+  getAllCountires,
   getManagementOfflinePaymentModeById,
   getManagementOfflinePaymentModes,
   suspenManagementOfflinePaymentModes,
@@ -24,7 +25,8 @@ const OfflinePaymentModes = () => {
   const [error, setError] = useState("");
   const role_code = localStorage.getItem("role_code");
   const dataFetched = useRef(false);
-  const allCountries = useSelector((item) => item?.allCountries);
+  const [allCountries, setAllCountries] = useState([]);
+  // const allCountries = useSelector((item) => item?.allCountries);
   const [searchInput, setSearchInput] = useState("");
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [offlinePaymnetModeId, setOfflinePaymentModeId] = useState(null);
@@ -45,6 +47,20 @@ const OfflinePaymentModes = () => {
     2: "UPI",
     3: "QR Code",
     4: "Cash",
+  };
+
+  const getAllCountries = () => {
+    getAllCountires()
+      .then((response) => {
+        if (response?.status === true) {
+          setAllCountries(response?.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "API request failed");
+      });
   };
 
   const getCountryName = (id) => {
@@ -82,6 +98,7 @@ const OfflinePaymentModes = () => {
       if (dataFetched.current) return;
       dataFetched.current = true;
       getAllManPaymentModes();
+      getAllCountries();
     }
   }, []);
 
@@ -121,7 +138,6 @@ const OfflinePaymentModes = () => {
       });
   };
 
-
   const columns = [
     { header: "Country", field: "country", width: "10%" },
     { header: "Currency ", field: "currency", width: "10%" },
@@ -152,7 +168,7 @@ const OfflinePaymentModes = () => {
       action: (
         <div className="d-flex gap-2">
           {/* {item?.status === 1 ? ( */}
-          <span >
+          <span>
             <SlPencil
               size={20}
               className="me-2 pointer"
@@ -214,7 +230,7 @@ const OfflinePaymentModes = () => {
             </div>
           </div>
         ) : (
-          <Table data={data} columns={columns} itemsPerPage={6} />
+          <Table data={data} columns={columns} itemsPerPage={4} />
         )}
       </div>
 

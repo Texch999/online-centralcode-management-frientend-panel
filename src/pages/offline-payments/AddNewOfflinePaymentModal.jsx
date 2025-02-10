@@ -10,6 +10,7 @@ import {
   createManagementOfflinePaymentModes,
   createPaymentModesInManagement,
   getManagementOfflinePaymentModeById,
+  updateManagementOfflinePaymentDetails,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "./../popups/ErrorPopup";
@@ -23,7 +24,7 @@ const AddNewOfflinePaymentModal = ({
   editId,
   setEditId,
 }) => {
-  console.log(editId, "editId");
+  console.log(isEdit, "isEdit");
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const allCountries = useSelector((item) => item?.allCountries);
@@ -36,22 +37,6 @@ const AddNewOfflinePaymentModal = ({
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [paymentModesDataById, setPaymentModesDataById] = useState([]);
   const role_code = localStorage.getItem("role_code");
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    setError,
-    trigger,
-    formState: { errors, isValid },
-    reset,
-  } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      currency: "",
-      avil_modes: "",
-    },
-  });
 
   const currencyOptions = allCountries?.map((item) => ({
     value: item?.id,
@@ -71,7 +56,6 @@ const AddNewOfflinePaymentModal = ({
     if (file) {
       setImage(file);
       setImgName(file.name);
-      setValue("image", file);
     }
   };
 
@@ -79,12 +63,12 @@ const AddNewOfflinePaymentModal = ({
     getManagementOfflinePaymentModeById(editId)
       .then((response) => {
         console.log("response", response);
-        // if (response.status === true) {
-        setPaymentModesDataById(response);
-        console.log(response.data, "success");
-        // } else {
-        //   console.log(response.message, "error");
-        // }
+        if (response.status === true) {
+          setPaymentModesDataById(response);
+          console.log(response.data, "success");
+        } else {
+          console.log(response.message, "error");
+        }
       })
       .catch((error) => {
         setErrorMsg(error?.message);
@@ -92,36 +76,32 @@ const AddNewOfflinePaymentModal = ({
       });
   };
   useEffect(() => {
-    if (role_code === "management" && editId) {
+    if (role_code === "management" && editId && isEdit) {
       getPaymentModesById();
     }
-  }, [editId]);
-  const postPaymentModes = async (data) => {
-    if (!data.currency) {
-      setError("currency", { type: "manual", message: "Currency is required" });
-      return;
+  }, [editId, isEdit]);
+
+  useEffect(() => {
+    if (role_code === "management" && isEdit && editId) {
+      getPaymentModesById();
     }
-    if (!data.avil_modes) {
-      setError("avil_modes", {
-        type: "manual",
-        message: "Payment Type is required",
-      });
-      return;
-    }
-    if (!image) {
-      setError("image", { type: "manual", message: "Image is required" });
-      return;
-    }
+  }, [editId, isEdit]);
+
+  const postEditPaymentModes = async () => {
     const formData = new FormData();
-    formData.append("currency", data.currency);
-    formData.append("name", data.name);
-    formData.append("image", data.image);
-    formData.append("avil_modes", data.avil_modes);
+    formData.append("currency", selectedCurrency);
+    formData.append("name", name);
+    formData.append("image", image);
+    formData.append("avil_modes", selectedType);
     console.log("Final Payload:", Object.fromEntries(formData.entries()));
-    setError("");
     setMsg("");
     try {
-      const response = await createManagementOfflinePaymentModes(formData);
+      const response = isEdit
+        ? await updateManagementOfflinePaymentDetails(
+            paymentModesDataById?.id,
+            formData
+          )
+        : await createManagementOfflinePaymentModes(formData);
       if (response.status === true) {
         console.log("resposne successs", response);
         setMsg(response?.message);
@@ -130,7 +110,6 @@ const AddNewOfflinePaymentModal = ({
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, [2000]);
-        reset();
         setImage(null);
         setImgName(null);
       } else {
@@ -144,7 +123,6 @@ const AddNewOfflinePaymentModal = ({
       setTimeout(() => {
         setErrorPopupOpen(false);
       }, [2000]);
-      reset();
       setImage(null);
       setImgName(null);
     }
@@ -170,120 +148,90 @@ const AddNewOfflinePaymentModal = ({
             />
           </div>
 
-          <form onSubmit={handleSubmit(postPaymentModes)}>
-            <div className="row mb-3">
-              <div className="col-6">
-                <label className="small-font mb-1">Select Currency</label>
-                <Select
-                  className="small-font"
-                  options={currencyOptions}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                  onChange={(option) => {
-                    setValue("currency", Number(option.value), {
-                      shouldValidate: true,
-                    });
-                    trigger("currency");
-                  }}
-                />
-                {errors.currency && (
-                  <p className="text-danger small-font">
-                    {errors?.currency?.message}
-                  </p>
+          <div className="row mb-3">
+            <div className="col-6">
+              <label className="small-font mb-1">Select Currency</label>
+              <Select
+                className="small-font"
+                options={currencyOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                value={currencyOptions.find(
+                  (option) => option.value === selectedCurrency
+                )} 
+                onChange={(option) => setSelectedCurrency(option.value)}
+                
+              />
+            </div>
+            <div className="col-6">
+              <label className="small-font mb-1">Select Type</label>
+              <Select
+                className="small-font"
+                options={typeOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                value={typeOptions.find(
+                  (option) => option.value === selectedType
                 )}
-              </div>
-              <div className="col-6">
-                <label className="small-font mb-1">Select Type</label>
-                <Select
-                  className="small-font"
-                  options={typeOptions}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                  onChange={(option) => {
-                    setValue("avil_modes", Number(option.value), {
-                      shouldValidate: true,
-                    });
-                    trigger("avil_modes");
-                  }}
-                />
-                {errors.avil_modes && (
-                  <p className="text-danger small-font">
-                    {errors?.avil_modes?.message}
-                  </p>
-                )}
-              </div>
+                onChange={(option) => setSelectedType(option.value)}
+              />
+            </div>
+          </div>
+
+          <div className="row my-3">
+            <div className="col-6">
+              <label className="small-font mb-1">Name</label>
+              <input
+                type="text"
+                className="w-100 small-font rounded input-css all-none"
+                placeholder="Enter"
+                value={name || paymentModesDataById?.name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
 
-            <div className="row my-3">
-              <div className="col-6">
-                <label className="small-font mb-1">Name</label>
+            <div className="col-6">
+              <label className="small-font mb-1">Upload Image</label>
+              <div className="input-group">
                 <input
-                  type="text"
+                  id="image"
+                  type="file"
+                  accept="image/*"
                   className="w-100 small-font rounded input-css all-none"
-                  placeholder="Enter"
-                  {...register("name", { required: "Name is required" })}
+                  style={{ display: "none" }}
+                  onChange={handleImageUpload}
                 />
-                {errors.name && (
-                  <p className="text-danger small-font">
-                    {errors?.name?.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="col-6">
-                <label className="small-font mb-1">Upload Image</label>
-                <div className="input-group">
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    className="w-100 small-font rounded input-css all-none"
-                    style={{ display: "none" }}
-                    onChange={handleImageUpload}
-                    // onChange={(e) => {
-                    //   setImage(e.target.files[0]);
-                    //   const file = e.target.files[0];
-                    //   if (file) {
-                    //     setImgName(file?.name);
-                    //   }
-                    // }}
-                  />
-                  <label
-                    htmlFor="image"
-                    className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
-                  >
-                    <span className="small-font">
-                      {imgName ? imgName : "Upload Image"}
-                    </span>
-                    <AiOutlineCloudUpload size={20} />
-                  </label>
-                </div>
-              </div>
-              {errors.image && (
-                <p className="text-danger small-font">{errors.image.message}</p>
-              )}
-            </div>
-
-            <div className="d-flex flex-end">
-              <div className="col-5 my-3">
-                <button
-                  type="submit"
-                  disabled={!isValid}
-                  className="w-100 saffron-btn rounded small-font"
-                  style={{
-                    opacity: isValid ? 1 : 0.5,
-                    pointerEvents: isValid ? "auto" : "none",
-                  }}
+                <label
+                  htmlFor="image"
+                  className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                 >
-                  {`${isEdit ? "Update" : "Submit"}`}
-                </button>
+                  <span className="small-font">
+                    {imgName ? imgName  || paymentModesDataById?.image : "Upload Image"}
+                  </span>
+                  <AiOutlineCloudUpload size={20} />
+                </label>
               </div>
             </div>
-          </form>
+            {/* {errors.image && (
+              <p className="text-danger small-font">{errors.image.message}</p>
+            )} */}
+          </div>
+
+          <div className="d-flex flex-end">
+            <div className="col-5 my-3">
+              <button
+                type="submit"
+                className="w-100 saffron-btn rounded small-font"
+                onClick={postEditPaymentModes}
+              >
+                {`${isEdit ? "Update" : "Submit"}`}
+              </button>
+            </div>
+          </div>
         </Modal.Body>
       </Modal>
 

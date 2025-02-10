@@ -271,6 +271,9 @@ const suspenManagementOfflinePaymentModes = (id, status) => {
 const getManagementOfflinePaymentModeById = (id, data) => {
   return apiRequest("getManagementOfflinePaymentModeById", data, id);
 };
+const updateManagementOfflinePaymentDetails=(id,data)=>{
+  return apiRequest("updateManagementOfflinePaymentDetails",data,id);
+};
 
 export {
   loginUser,
@@ -339,4 +342,5 @@ export {
   getManagementOfflinePaymentModes,
   suspenManagementOfflinePaymentModes,
   getManagementOfflinePaymentModeById,
+  updateManagementOfflinePaymentDetails,
 };

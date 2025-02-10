@@ -414,7 +414,11 @@ const endpoints = {
   suspenManagementOfflinePaymentModes: {
     method: "patch",
     url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
-  }
+  },
+  updateManagementOfflinePaymentDetails:{
+    method: "put",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+  },
 };
 
 export default endpoints;
