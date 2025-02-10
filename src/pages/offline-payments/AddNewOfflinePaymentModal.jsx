@@ -194,9 +194,11 @@ const AddNewOfflinePaymentModal = ({
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
-                value={currencyOptions.find(
-                  (option) => option.value === selectedCurrency
-                )}
+                value={
+                  currencyOptions.find(
+                    (option) => option.value === selectedCurrency
+                  ) || selectedCurrency
+                }
                 // value={selectedCurrency}
                 onChange={(option) => {
                   setSelectedCurrency(option.value);
@@ -219,9 +221,10 @@ const AddNewOfflinePaymentModal = ({
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
-                value={typeOptions.find(
-                  (option) => option.value === selectedType
-                )}
+                value={
+                  typeOptions.find((option) => option.value === selectedType) ||
+                  selectedType
+                }
                 // value={selectedType}
                 onChange={(option) => {
                   setSelectedType(option.value);
