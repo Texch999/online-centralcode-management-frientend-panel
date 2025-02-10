@@ -378,8 +378,8 @@ const PaymentGateway = () => {
           <button
             className="rounded-pill input-pill blue-font small-font px-2"
             onClick={() => {
-              setOnAddPaymentGateway(true);
-              setManagementPaymentEdit(false);
+              // setOnAddPaymentGateway(true);
+              // setManagementPaymentEdit(false);
               navigate("/addnew-payments");
             }}
           >
