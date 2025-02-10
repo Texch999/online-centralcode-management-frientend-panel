@@ -99,7 +99,7 @@ const SandCBanner = () => {
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
-    setErrors((pre) => ({ ...pre, selectType }));
+    setErrors((pre) => ({ ...pre, selectType: "" }));
   };
 
   const handleSelectWebsites = (selected) => {
@@ -158,7 +158,6 @@ const SandCBanner = () => {
     if (!selectType) {
       newErrors.selectType = "Type is required.";
     }
-
     if (!selectWebsites) {
       newErrors.selectWebsites = "Website is required.";
     }
@@ -177,7 +176,6 @@ const SandCBanner = () => {
       return;
     }
 
-    // Create FormData to send files as binary (multipart/form-data)
     const formData = new FormData();
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
@@ -185,8 +183,14 @@ const SandCBanner = () => {
     formData.append("type", selectType?.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
-    formData.append("start", startDT);
-    formData.append("end", endDT);
+
+    // Only append `start` and `end` if they have values
+    if (startDT) {
+      formData.append("start", startDT);
+    }
+    if (endDT) {
+      formData.append("end", endDT);
+    }
 
     if (Array.isArray(selectWebsites)) {
       selectWebsites.forEach((site) =>
@@ -196,9 +200,10 @@ const SandCBanner = () => {
       formData.append("website_id", selectWebsites?.value);
     }
 
-    selectedFiles.forEach((file, index) => {
+    selectedFiles.forEach((file) => {
       formData.append("image", file);
     });
+
     setLoading(true);
     try {
       const response = await createBanner(formData);
@@ -396,7 +401,7 @@ const SandCBanner = () => {
               const images = JSON.parse(banner.image);
               return (
                 <img
-                  src={`${imgUrl}/${images[0]}`}
+                  src={`${imgUrl}/uploadBanner/${images[0]}`}
                   alt="Banner"
                   style={{ width: "200px", height: "150px", cursor: "pointer" }}
                   onClick={() => {
@@ -488,7 +493,7 @@ const SandCBanner = () => {
 
       <div className="w-100 d-flex small-font">
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 small-font mb-1">Sports/Casino</label>
+          <label className="black-text4 mb-1">Sports/Casino</label>
           <Select
             className="small-font"
             options={selectOptionsType}
@@ -505,7 +510,7 @@ const SandCBanner = () => {
           )}
         </div>
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 small-font mb-1">Websites</label>
+          <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
             options={selectOptionsWebsites}
@@ -589,7 +594,7 @@ const SandCBanner = () => {
       </div>
 
       <div className="d-flex small-font mt-3 mb-5 gap-3">
-        <div className="col-md-3 col-lg-5  fixed-width-field">
+        <div className="col-md-3 col-lg-5  fixed-width-field1">
           <label
             htmlFor="poster"
             className="black-text4 small-font mb-1 d-block"
@@ -658,6 +663,7 @@ const SandCBanner = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
+        path={"uploadBanner"}
       />
       <SuccessPopup
         successPopupOpen={successPopupOpen}

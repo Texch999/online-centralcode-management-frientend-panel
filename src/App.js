@@ -113,14 +113,15 @@ import SetLimits from "./pages/live-block/SetLimits";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
 import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
+import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
 
-  const PrivateRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/director/login" />;
-  };
-  const path = window.location.pathname;
+  // const PrivateRoute = ({ children }) => {
+  //   return isLoggedIn ? children : <Navigate to="/director/login" />;
+  // };
+  // const path = window.location.pathname;
   const location = useLocation();
 
   const showLoginPage =
@@ -308,6 +309,10 @@ function App() {
               <Route
                 path="/white-label-setting"
                 element={<WhiteLabelSetting />}
+              />
+              <Route
+                path="/addnew-payments"
+                element={<AddNePaymentGateway />}
               />
             </Routes>
           </div>

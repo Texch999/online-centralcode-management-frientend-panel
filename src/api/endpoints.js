@@ -303,14 +303,14 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogs?${query}`;
+      return `/loginLogs?${query}`;
     },
   },
   getLoggedInLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogsById?${query}`;
+      return `/loginLogsById?${query}`;
     },
   },
   getDirectorLoginLogs: {

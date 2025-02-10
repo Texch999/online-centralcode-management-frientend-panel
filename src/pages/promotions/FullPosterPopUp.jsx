@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import { imgUrl } from "../../api/baseUrl";
 import { FaForward } from "react-icons/fa6";
 
-const FullPosterPopUp = ({ fullPoster, setFullPoster, fullPosterImage }) => {
+const FullPosterPopUp = ({ fullPoster, setFullPoster, fullPosterImage, path }) => {
   console.log("fullPosterImage", fullPosterImage);
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = Array.isArray(fullPosterImage) ? fullPosterImage : [fullPosterImage];
@@ -39,7 +39,7 @@ const FullPosterPopUp = ({ fullPoster, setFullPoster, fullPosterImage }) => {
           />
         )}
         <img
-          src={`${imgUrl}/${images[currentIndex]}`}
+          src={`${imgUrl}/${path}/${images[currentIndex]}`}
           alt="Full Poster"
           className="promotion-poster"
           style={{ maxHeight: '80vh', maxWidth: '100%' }} // Adjust image size

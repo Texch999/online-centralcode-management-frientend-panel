@@ -9,11 +9,10 @@ import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 import { getAllCountires, getWebsitesList, blockAndUnblock, getDirectorAccessWebites } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
-import { controllers } from "chart.js";
+import { useSearchParams } from "react-router-dom";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
-  const userId = localStorage.getItem("user_id");
   const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [error, setError] = useState("")
@@ -21,28 +20,28 @@ const AddWibsites = () => {
   const [directorSites, setDirectorSites] = useState([])
   const [countries, setCountries] = useState([])
   const [editMode, setEditMode] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1);
   const [websiteId, setWebsiteId] = useState(null);
   const [status, setStatus] = useState(null);
   const [filterName, setFilterName] = useState("");
   const [openSuccessPopup, setOpenSuccessPopup] = useState(false)
   const [errorPopupOpen, setErrorPopupOpen] = useState(false)
   const [displayMsg, setDisplayeMsg] = useState("")
+  const [totalRecords, setTotalRecords] = useState(null)
   const itemsPerPage = 9;
-  const currentOffset = (currentPage - 1) * 11
   const isInitialRender = useRef(true);
-  const getAllWebsiteList = () => {
-    const limit = itemsPerPage
-    const offset = currentOffset
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1)
+  const [currentPage, setCurrentPage] = useState(page)
+  const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
-      limit: 11,
+      limit,
       offset,
       web_name: filterName,
     })
       .then((response) => {
         if (response?.status) {
-          // const data = [...response.data].reverse();
           setWebsite(response.data);
+          setTotalRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
           setWebsite([]);
@@ -53,17 +52,16 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
-  const getAllDirectorWebsiteList = () => {
-    const offset = currentOffset
+  const getAllDirectorWebsiteList = (limit, offset) => {
     getDirectorAccessWebites({
-      limit: 11,
+      limit,
       offset,
       adminWebName: filterName,
     })
       .then((response) => {
         if (response?.status) {
-          console.log(response, "dir websites")
           setDirectorSites(response.data);
+          setTotalRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
           setDirectorSites([]);
@@ -96,21 +94,27 @@ const AddWibsites = () => {
     }
 
     if (filterName.trim() === "") {
+      const limit = itemsPerPage
+      const offset = (currentPage - 1) * itemsPerPage
       if (role === "management") {
-        getAllWebsiteList();
+        getAllWebsiteList(limit, offset);
       } else {
-        getAllDirectorWebsiteList();
+        getAllDirectorWebsiteList(offset, offset);
       }
     }
   }, [filterName, role]);
 
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = ({ limit, offset }) => {
+    if (role === "management") {
+      getAllWebsiteList(limit, offset);
+    } else {
+      getAllDirectorWebsiteList(limit, offset);
+    }
   };
 
   const columns = [
     { header: "Type", field: "type", width: "15%" },
+    { header: "Admin Name", field: "admin", width: "25%" },
     { header: "Website Name", field: "websiteName", width: "25%" },
     { header: "Location", field: "location", width: "20%" },
     { header: "URL", field: "url", width: "20%" },
@@ -126,6 +130,7 @@ const AddWibsites = () => {
   };
   const data = websites.map((website) => ({
     type: website?.deploy_type === 1 ? "Comapny" : "White Lable",
+    admin: <div> {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${website?.panel_type === 1 ? "Admin" : "User"} )`}</div>,
     websiteName: website?.web_name,
     location: <div>{`${website.city.charAt(0).toUpperCase() + website.city.slice(1)}, ${getLocationName(website?.location_id)}`} </div>,
     url: website.web_url.toLowerCase(),
@@ -167,33 +172,54 @@ const AddWibsites = () => {
     // { header: "Action", field: "action", width: "20%" },
   ];
 
-  const directorswebsitedata = directorSites.map((adminPanel) => ({
-    type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
-    admin: adminPanel.admin_web_name,
-    websiteName: adminPanel.users.map(user => (
-      <div key={user.website_access_id}>{user.user_web_name}</div>
-    )),
-    location: adminPanel.users.map(user => (
-      <div key={user.website_access_id}>{user.user_web_city}</div>
-    )),
+  // const directorswebsitedata = directorSites.map((item) => (
 
-    url: adminPanel.users.map(user => (
-      <div key={user.website_access_id}>
-        {user.user_web_url}
-      </div>
-    )),
-    // action: (
-    //   <div className="d-flex gap-3">
-    //     <SlPencil size={18} className="pointer" />
-    //     <MdBlockFlipped
-    //       size={18}
-    //       className="pointer"
-    //       onClick={() => setConfirmationPopupOpen(true)}
-    //     />
-    //   </div>
-    // ),
-  }));
+  //   item?.admin_websites.map((adminPanel) => ({
 
+  //     type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
+  //     admin: adminPanel.admin_web_name,
+  //     websiteName: adminPanel.users.map(user => (
+  //       <div key={user.website_access_id}>{console.log(adminPanel, "=====>item")}{user.user_web_name}</div>
+  //     )),
+  //     location: adminPanel.users.map(user => (
+  //       <div key={user.website_access_id}>{user.user_web_city}</div>
+  //     )),
+
+  //     url: adminPanel.users.map(user => (
+  //       <div key={user.website_access_id}>
+  //         {user.user_web_url}
+  //       </div>
+  //     )),
+  //     // action: (
+  //     //   <div className="d-flex gap-3">
+  //     //     <SlPencil size={18} className="pointer" />
+  //     //     <MdBlockFlipped
+  //     //       size={18}
+  //     //       className="pointer"
+  //     //       onClick={() => setConfirmationPopupOpen(true)}
+  //     //     />
+  //     //   </div>
+  //     // ),
+  //   }))
+
+  // ));
+
+
+  const directorswebsitedata = directorSites.flatMap((site) =>
+    site.admin_websites.map((adminPanel) => ({
+      type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
+      admin: adminPanel.admin_web_name,
+      websiteName: adminPanel.users.map((user) => (
+        <div key={user.website_access_id}>{user.user_web_name}</div>
+      )),
+      location: adminPanel.users.map((user) => (
+        <div key={user.website_access_id}>{user.user_web_city}</div>
+      )),
+      url: adminPanel.users.map((user) => (
+        <div key={user.website_access_id}>{user.user_web_url}</div>
+      )),
+    }))
+  );
   const handleFiltration = async (e) => {
     if (e.key === "Enter") {
       if (role === "management") {
@@ -231,6 +257,7 @@ const AddWibsites = () => {
 
       });
   }
+
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -263,7 +290,7 @@ const AddWibsites = () => {
       {
         role === "management" ? (
           <div className="mt-2">
-            <Table data={data} columns={columns} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />
+            <Table data={data} columns={columns} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} totalRecords={totalRecords} />
           </div>
         ) : (
           <div className="mt-2">
@@ -271,6 +298,8 @@ const AddWibsites = () => {
               data={directorswebsitedata}
               columns={directorswebsitecolumns}
               itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              totalRecords={totalRecords}
             />
           </div>
         )
