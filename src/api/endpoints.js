@@ -421,13 +421,17 @@ const endpoints = {
     method: "patch",
     url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   },
-  updateManagementOfflinePaymentDetails:{
+  updateManagementOfflinePaymentDetails: {
     method: "put",
     url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
   },
   managementPaymentDetails: {
     method: "get",
     url: () => `/director/${userID()}/payments`,
+  },
+  ownersAvailablePaymentsModes: {
+    method: "get",
+    url: () => `/user/${userID()}/offlinePaymentModes`,
   },
 };
 
