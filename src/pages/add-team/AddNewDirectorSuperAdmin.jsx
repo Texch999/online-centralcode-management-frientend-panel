@@ -15,10 +15,13 @@ import {
   getAdminWebsites,
   getCountries,
   getCurrencies,
+  getDirectorDetailsById,
 } from "../../api/apiMethods";
 import { adminRoles, commissionTypes } from "../../utils/enum";
 import { customStyles } from "../../components/ReactSelectStyles";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Images } from "../../images";
+import { IoIosArrowDown } from "react-icons/io";
 
 function AddNewDirectorSuperAdmin() {
   const navigate = useNavigate();
@@ -44,21 +47,10 @@ function AddNewDirectorSuperAdmin() {
 
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
-  const handleChange = (event) => {
-    const selectedCode = event.target.value;
-    const selectedCountry = countryData?.find(
-      (country) => country.code === selectedCode
-    );
-
-    if (selectedCountry) {
-      setSelectedCountryId(selectedCountry.id);
-      setSelectedCountryCode(selectedCountry.code);
-    } else {
-      setSelectedCountryId("");
-      setSelectedCountryCode("");
-    }
-  };
-
+  const location = useLocation();
+  const mode = location.state?.mode || "add";
+  const userId = location.state?.userId || null;
+  console.log(userId, "userId");
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -118,16 +110,15 @@ function AddNewDirectorSuperAdmin() {
     label,
   }));
   console.log(adminRoless, "adminRoless");
-  const handleRoleChange = (selectedOption) => {
-    setRoleId(selectedOption.value);
-  };
+
   const [selectedAdmin, setSelectedAdmin] = useState(null);
   const [userWebsites, setUserWebsites] = useState([]);
-  console.log(selectedAdmin, "selectedAdmin");
+  console.log(userWebsites, "userWebsites");
 
   const handleAdminRoleChange = (selectedOption) => {
     console.log("Selected Admin:", selectedOption);
     setSelectedAdmin(selectedOption);
+
     const adminData = adminWebsite.find(
       (admin) => admin.id === selectedOption.value
     );
@@ -138,12 +129,22 @@ function AddNewDirectorSuperAdmin() {
   const [selectedWebsites, setSelectedWebsites] = useState({});
   const [accountTypes, setAccountTypes] = useState({});
 
+  // const commissionOptions = Object.entries(commissionTypes).map(
+  //   ([value, label]) => ({
+  //     value,
+  //     label,
+  //   })
+  // );
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
-      value,
+      value: Number(value), // Ensure value is a number
       label,
     })
   );
+  const [comm, setComm] = useState(
+    commissionOptions.map((option) => option.value)
+  );
+
   const [forms, setForms] = useState([
     {
       id: 1,
@@ -157,26 +158,15 @@ function AddNewDirectorSuperAdmin() {
     setForms((prevForms) => [
       ...prevForms,
       {
-        id: prevForms.length + 1, // Unique ID for the new form
-        adminWebsite: null, // Only Admin Website should be visible
-        userWebsites: [], // Ensure User Websites are empty
-        selectedWebsites: {}, // No selected user websites
-        accountTypes: {}, // No account types selected
-        showFullForm: false, // This controls visibility of other fields
+        id: prevForms.length + 1,
+        adminWebsite: null,
+        userWebsites: [],
+        selectedWebsites: {},
+        accountTypes: {},
+        showFullForm: false,
       },
     ]);
   };
-
-  // const [forms, setForms] = useState([
-  //   { id: 1, selectedWebsite: null, accountType: null },
-  // ]);
-
-  // const addAnotherForm = () => {
-  //   setForms([
-  //     ...forms,
-  //     { id: forms.length + 1, selectedWebsite: null, accountType: null },
-  //   ]);
-  // };
 
   const [websiteDetails, setWebsiteDetails] = useState({});
   const handleCheckboxChange = (id) => {
@@ -186,12 +176,13 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
-  const handleAccountTypeChange = (id, selectedOption) => {
+  const handleAccountTypeChange = (siteId, selectedOption) => {
     setAccountTypes((prev) => ({
       ...prev,
-      [id]: selectedOption.value,
+      [siteId]: selectedOption ? selectedOption.value : "",
     }));
   };
+
   const handleInputChange = (id, field, value) => {
     setWebsiteDetails((prevDetails) => ({
       ...prevDetails,
@@ -294,6 +285,123 @@ function AddNewDirectorSuperAdmin() {
     console.log(selectedCurrency, "selectedCurrency");
   };
 
+  const [individualDirectorData, setIndividualDirectorData] = useState();
+  const [selectedRole, setSelectedRole] = useState("");
+
+  console.log(individualDirectorData, "individualDirectorData");
+
+  const getDirectorDetailsByID = () => {
+    getDirectorDetailsById(userId)
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response, "responsegetdirectordetialbyid");
+          setIndividualDirectorData(response.data);
+        } else {
+          console.log("Something error happening");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+  useEffect(() => {
+    getDirectorDetailsByID();
+  }, [userId]);
+
+  const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
+    id,
+    name,
+  }));
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
+
+  useEffect(() => {
+    if (mode === "edit" && individualDirectorData) {
+      setName(individualDirectorData.login_name || "");
+      setLoginName(individualDirectorData.login_name || "");
+      setSelectedCountryCode(individualDirectorData.county || "");
+      setSelectedRole(individualDirectorData.type || "");
+      setSelectedCurrencyCode(individualDirectorData.currency_id || "");
+      setComm(
+        individualDirectorData.accessWebsites?.map(
+          (item) => item?.commission_type
+        )
+      );
+      setPassword("");
+      setConfirmPassword("");
+      setManagementPassword("");
+
+      if (individualDirectorData.accessWebsites.length > 0) {
+        setSelectedAdmin({
+          value: individualDirectorData.accessWebsites[0]?.admin_panel_id || "",
+          label:
+            individualDirectorData.accessWebsites[0]?.admin_panel_name || "",
+        });
+      }
+
+      const mappedWebsites = individualDirectorData.accessWebsites.map(
+        (site) => ({
+          id: site.user_panel_id,
+          web_url: site.user_panel_url,
+          admin_panel_id: site.admin_panel_id,
+          commission_type: site.commission_type || "",
+          rent_start_date: site.rent_start_date,
+          rent_expiry_date: site.rent_expiry_date,
+          downline_comm: site.downline_comm,
+          caschip_values: site.caschip_values,
+          monthly_amount: site.monthly_amount,
+          max_chips_monthly: site.max_chips_monthly,
+          extra_chips_percentage: site.extra_chips_percentage,
+          chip_percentage: site.chip_percentage,
+          share: site.share,
+        })
+      );
+
+      setUserWebsites(mappedWebsites);
+
+      const selectedSites = {};
+      mappedWebsites.forEach((site) => {
+        selectedSites[site.id] = true;
+      });
+      setSelectedWebsites(selectedSites);
+
+      const mappedAccountTypes = {};
+      mappedWebsites.forEach((site) => {
+        mappedAccountTypes[site.id] = site.commission_type
+          ? site.commission_type.toString()
+          : "";
+      });
+      console.log("Mapped Account Types:", mappedAccountTypes);
+      setAccountTypes(mappedAccountTypes);
+    }
+  }, [mode, individualDirectorData]);
+
+  console.log("userWebsites State: ", userWebsites);
+  console.log("selectedWebsites State: ", selectedWebsites);
+  console.log("accountTypes State: ", accountTypes);
+
+  // const handleEditChange = (index, key, value) => {
+  //   const updatedWebsites = [...userWebsites];
+  //   console.log(updatedWebsites, "updatedWebsites");
+  //   updatedWebsites[index] = { ...updatedWebsites[index], [key]: value };
+  //   setUserWebsites(updatedWebsites);
+  // };
+  // const handleEditChange = (index, key, value) => {
+  //   setUserWebsites((prevWebsites) => {
+  //     const updatedWebsites = [...prevWebsites];
+  //     updatedWebsites[index] = { ...updatedWebsites[index], [key]: value };
+  //     return updatedWebsites;
+  //   });
+  // };
+  const handleEditChange = (adminPanelId, commissionType, key, value) => {
+    setUserWebsites((prevWebsites) =>
+      prevWebsites.map((site) =>
+        site.admin_panel_id === adminPanelId &&
+        site.commission_type === commissionType
+          ? { ...site, [key]: value }
+          : site
+      )
+    );
+  };
   return (
     <>
       <div>
@@ -305,7 +413,11 @@ function AddNewDirectorSuperAdmin() {
           >
             <FaArrowLeft /> Go Back
           </button>
-          <h5 className="yellow-font">Add Director & Super Admin</h5>
+          {mode === "edit" ? (
+            <h5 className="yellow-font">Edit Director & Super Admin</h5>
+          ) : (
+            <h5 className="yellow-font">Add Director & Super Admin</h5>
+          )}
         </div>
 
         <div className="d-flex w-100 my-2 align-items-center">
@@ -333,18 +445,25 @@ function AddNewDirectorSuperAdmin() {
           </div>{" "}
           <div className="col-1 p-1">
             <label className="small-font my-1">Role</label>
-            <div className="custom-select-wrapper">
-              <Select
-                className="small-font"
-                options={adminRoless}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                onChange={handleRoleChange}
-              />
-            </div>
-          </div>{" "}
+            <select
+              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+              value={selectedRole}
+              onChange={handleRoleChange}
+            >
+              <option value="">Select</option>
+              {adminRolesArray.length > 0 ? (
+                adminRolesArray.map((role, index) => (
+                  <option key={index} value={role.id}>
+                    {role.name}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  No roles available
+                </option>
+              )}
+            </select>
+          </div>
           <div className="col-1 p-1">
             <label className="small-font my-1">Country</label>
             <select
@@ -362,7 +481,6 @@ function AddNewDirectorSuperAdmin() {
           </div>
           <div className="col-1 p-1">
             <label className="small-font my-1">Currency</label>
-            {/* currencyData */}
             <select
               className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
               value={selectedCurrencyCode}
@@ -376,43 +494,50 @@ function AddNewDirectorSuperAdmin() {
               ))}
             </select>
           </div>{" "}
-          <div className="p-1 col position-relative">
-            <label className="small-font my-1">Password</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-              placeholder="Enter"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span
-              className="position-absolute"
-              style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-              onClick={() => togglePasswordVisibility(setShowPassword)}
-            >
-              {showPassword ? <FaEye /> : <FaEyeSlash />}
-            </span>
-          </div>
-          <div className="p-1 col position-relative">
-            <label className="small-font my-1">Confirm Password</label>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-              placeholder="Enter"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <span
-              className="position-absolute"
-              style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-              onClick={() => togglePasswordVisibility(setShowConfirmPassword)}
-            >
-              {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
-              {/* {showConfirmPassword ? <FaEye /> : <FaEyeSlash />} */}
-            </span>
-          </div>
+          {mode === "edit" ? null : (
+            <>
+              {" "}
+              <div className="p-1 col position-relative">
+                <label className="small-font my-1">Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                  placeholder="Enter"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="position-absolute"
+                  style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
+                  onClick={() => togglePasswordVisibility(setShowPassword)}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
+              <div className="p-1 col position-relative">
+                <label className="small-font my-1">Confirm Password</label>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                  placeholder="Enter"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="position-absolute"
+                  style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
+                  onClick={() =>
+                    togglePasswordVisibility(setShowConfirmPassword)
+                  }
+                >
+                  {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                  {/* {showConfirmPassword ? <FaEye /> : <FaEyeSlash />} */}
+                </span>
+              </div>
+            </>
+          )}
           <div className="p-1 col position-relative">
             <label className="small-font my-1">Management Password</label>
             <input
@@ -431,7 +556,6 @@ function AddNewDirectorSuperAdmin() {
               }
             >
               {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
-              {/* {showConfirmPassword ? <FaEye /> : <FaEyeSlash />} */}
             </span>
           </div>
         </div>
@@ -452,6 +576,7 @@ function AddNewDirectorSuperAdmin() {
                         value: admin.id,
                         label: admin.web_name,
                       }))}
+                      value={selectedAdmin}
                       onChange={(selectedAdmin) =>
                         handleAdminRoleChange(selectedAdmin)
                       }
@@ -481,9 +606,6 @@ function AddNewDirectorSuperAdmin() {
                         {/* Account Type Dropdown */}
                         {selectedWebsites[userSite.id] && (
                           <div className="col-1 my-1">
-                            {/* <label className="small-font my-1">
-                              Account Type
-                            </label> */}
                             <Select
                               className="small-font white-bg"
                               placeholder="Account Type"
@@ -493,26 +615,33 @@ function AddNewDirectorSuperAdmin() {
                               onChange={(selectedOption) =>
                                 handleAccountTypeChange(
                                   userSite.id,
-                                  selectedOption
+                                  selectedOption.value
                                 )
+                              }
+                              value={
+                                commissionOptions.find(
+                                  (option) =>
+                                    option.value === userSite.commission_type // Use `userSite.commission_type`
+                                ) || null
                               }
                             />
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "1" && (
-                          <div className="col-9">
+                        {console.log(
+                          userSite,
+                          "====>accountTypes[userSite.commission_type] === 1"
+                        )}
+                        {/* {userSite.commission_type === 1 && (
+                          <div className="col-9" key={index}>
                             <div className="row">
-                              {" "}
                               <div className="col">
-                                {/* <label className="small-font my-1">
-                                  Start Date
-                                </label> */}
                                 <input
                                   type="date"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userSite.rent_start_date || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      index,
                                       "rent_start_date",
                                       e.target.value
                                     )
@@ -520,16 +649,14 @@ function AddNewDirectorSuperAdmin() {
                                 />
                               </div>
                               <div className="col">
-                                {/* <label className="small-font my-1">
-                                  Monthly Amount
-                                </label> */}
                                 <input
                                   type="text"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
                                   placeholder="Monthly Amnt"
+                                  value={userSite.monthly_amount || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      index,
                                       "monthly_amount",
                                       e.target.value
                                     )
@@ -537,16 +664,14 @@ function AddNewDirectorSuperAdmin() {
                                 />
                               </div>
                               <div className="col">
-                                {/* <label className="small-font my-1">
-                                  Max Chips Monthly
-                                </label> */}
                                 <input
                                   type="text"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
                                   placeholder="Max Chips Monthly"
+                                  value={userSite.max_chips_monthly || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      index,
                                       "max_chips_monthly",
                                       e.target.value
                                     )
@@ -554,16 +679,14 @@ function AddNewDirectorSuperAdmin() {
                                 />
                               </div>
                               <div className="col">
-                                {/* <label className="small-font my-1">
-                                  My Percentage
-                                </label> */}
                                 <input
                                   type="text"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
                                   placeholder="Chip %"
+                                  value={userSite.chip_percentage || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      index,
                                       "chip_percentage",
                                       e.target.value
                                     )
@@ -571,38 +694,139 @@ function AddNewDirectorSuperAdmin() {
                                 />
                               </div>
                               <div className="col">
-                                {/* <label className="small-font my-1">
-                                  Extra Chips
-                                </label> */}
                                 <div className="white-bg rounded small-font">
                                   <input
                                     className="small-font white-bg rounded border-grey3 p-2 w-100"
                                     placeholder="Extra Chip %"
+                                    value={
+                                      userSite.extra_chips_percentage || ""
+                                    }
                                     onChange={(e) =>
-                                      handleInputChange(
-                                        userSite.id,
+                                      handleEditChange(
+                                        index,
                                         "extra_chips_percentage",
                                         e.target.value
                                       )
                                     }
                                   />
-                                  {/* <span>
-                                    <b>= (My Sharing 40%)</b>
-                                  </span> */}
                                 </div>
                               </div>
                               <div className="col-3">
-                                {/* <label className="small-font my-1">
-                                  Max Chips Rent
-                                </label> */}
                                 <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                   <input
                                     type="text"
                                     className="small-font bg-none p-2 w-75"
                                     placeholder="Commission(%)"
+                                    value={userSite.share || ""}
                                     onChange={(e) =>
-                                      handleInputChange(
-                                        userSite.id,
+                                      handleEditChange(
+                                        index,
+                                        "share",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Comm.. 1%</b>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )} */}
+                        {userSite.commission_type === 1 && (
+                          <div className="col-9">
+                            <div className="row">
+                              <div className="col">
+                                <input
+                                  type="date"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userSite.rent_start_date || ""}
+                                  onChange={(e) =>
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
+                                      "rent_start_date",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="col">
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  placeholder="Monthly Amnt"
+                                  value={userSite.monthly_amount || ""}
+                                  onChange={(e) =>
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
+                                      "monthly_amount",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="col">
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  placeholder="Max Chips Monthly"
+                                  value={userSite.max_chips_monthly || ""}
+                                  onChange={(e) =>
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
+                                      "max_chips_monthly",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="col">
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  placeholder="Chip %"
+                                  value={userSite.chip_percentage || ""}
+                                  onChange={(e) =>
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
+                                      "chip_percentage",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="col">
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  placeholder="Extra Chip %"
+                                  value={userSite.extra_chips_percentage || ""}
+                                  onChange={(e) =>
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
+                                      "extra_chips_percentage",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="col-3">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    type="text"
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Commission(%)"
+                                    value={userSite.share || ""}
+                                    onChange={(e) =>
+                                      handleEditChange(
+                                        userSite.admin_panel_id,
+                                        userSite.commission_type,
                                         "share",
                                         e.target.value
                                       )
@@ -616,7 +840,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "2" && (
+                        {userSite.commission_type === 2 && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
                               {/* <label className="small-font my-1">
@@ -627,12 +851,14 @@ function AddNewDirectorSuperAdmin() {
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Downline Sharing"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "downline_comm",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.downline_comm}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Share 10%</b>
@@ -648,12 +874,14 @@ function AddNewDirectorSuperAdmin() {
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Enter Commission: M.0"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "share",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.share}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Comm.. 1%</b>
@@ -669,12 +897,14 @@ function AddNewDirectorSuperAdmin() {
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Casino Chip Value"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "caschip_values",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.caschip_values}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b className="mx-1">Cas. Chip Val 20</b>
@@ -683,7 +913,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "3" && (
+                        {userSite.commission_type === 3 && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
                               {/* <label className="small-font my-1">
@@ -694,12 +924,14 @@ function AddNewDirectorSuperAdmin() {
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Downline Sharing"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "downline_comm",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.downline_comm}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Share 10%</b>
@@ -715,12 +947,14 @@ function AddNewDirectorSuperAdmin() {
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Enter Commission: M.0"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "share",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.share}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Comm.. 1%</b>
@@ -736,12 +970,14 @@ function AddNewDirectorSuperAdmin() {
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Casino Chip Value"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "caschip_values",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.caschip_values}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b className="mx-1">Cas. Chip Val 20</b>
