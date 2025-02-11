@@ -841,3 +841,11 @@ button.cst-btn:hover {
 .white-clr {
   color: "#ffffff";
 }
+.border-danger {
+  border: 1px solid red !important;
+}
+
+.error {
+  color: rgb(237, 53, 53) !important;
+  font-size: 0.875rem; /* Small text for error messages */
+}
