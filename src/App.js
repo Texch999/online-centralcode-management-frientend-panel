@@ -115,9 +115,6 @@ import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
 import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
 import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
-import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
-import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
-import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
 import EditNewDirector from "./pages/EditNewDirector";
 
 function App() {
