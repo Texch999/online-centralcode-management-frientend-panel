@@ -13,7 +13,7 @@ import {
   updateSecurityQuestions,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import ErrorPopup from "../popups/ErrorPopup";
 
 const AddNewPopUp = ({
@@ -36,9 +36,10 @@ const AddNewPopUp = ({
     setValue,
     watch,
     reset,
+    control,
     formState: { errors, isValid },
   } = useForm({
-    mode: "onChange",
+    mode: "onTouched",
   });
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [securityQns, setSecurityQns] = useState("");
@@ -54,6 +55,7 @@ const AddNewPopUp = ({
   const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
   const [errorPopup, setErrorPopup] = useState(false);
+
   const selectOptions = [
     { value: 1, label: "Active" },
     { value: 2, label: "In-Active" },
@@ -92,11 +94,13 @@ const AddNewPopUp = ({
     }
   }, [isEdit, selectedRejReasonId, setValue]);
 
+  const watchStatus = watch("status");
+
   const onSubmitRejReasons = (data) => {
     const payload = {
       reason: data.reason,
       description: data.description,
-      status: data.status?.value || null,
+      status: Number(data.status?.value),
     };
 
     const response = isEdit
@@ -180,20 +184,33 @@ const AddNewPopUp = ({
               <div className="row mt-3 small-font">
                 <div className="col-4 flex-column">
                   <label className="black-text4 mb-1">Status</label>
-                  <Select
-                    options={selectOptions}
-                    placeholder="Select"
-                    styles={customStyles}
-                    value={watch("status") || null}
-                    onChange={(selectedOption) =>
-                      setValue("status", selectedOption, {
-                        shouldValidate: true,
-                      })
-                    }
+                  <Controller
+                    name="status"
+                    control={control}
+                    defaultValue={null}
+                    rules={{ required: "Status is required" }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={selectOptions}
+                        placeholder="Select"
+                        styles={customStyles}
+                        // value={watch("status") || null}
+                        // onChange={(selectedOption) =>
+                        //   setValue("status", selectedOption, {
+                        //     shouldValidate: true,
+                        //   })}
+
+                        value={selectOptions.find(
+                          (option) => option.value === field.value
+                        )}
+                        onChange={(val) => field.onChange(val)}
+                      />
+                    )}
                   />
-                  {errors.status && (
+                  {errors?.status && (
                     <p className="text-danger small-font">
-                      {errors.status.message}
+                      {errors?.status?.message}
                     </p>
                   )}
                 </div>
@@ -319,8 +336,8 @@ const AddNewPopUp = ({
       )}
       <ErrorPopup
         discription={error}
-        errorPopup={errorPopup}
-        setErrorPopup={setErrorPopup}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
 
       <SuccessPopup

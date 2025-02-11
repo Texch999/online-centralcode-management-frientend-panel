@@ -1,3 +1,4 @@
+import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginUser = (data) => {
@@ -7,8 +8,8 @@ const loginUser = (data) => {
 const createSecurityQuestions = (data) => {
   return apiRequest("createSecurityQuestions", data);
 };
-const getAllSecurityQuestions = (data) => {
-  return apiRequest("getAllSecurityQuestions", data);
+const getAllSecurityQuestions = (params) => {
+  return apiRequest("getAllSecurityQuestions", {}, params);
 };
 const updateSecurityQuestions = (id, data) => {
   return apiRequest("updateSecurityQuestions", data, id);
@@ -120,6 +121,12 @@ export const updateWebsite = (id, data) =>
 export const getWebsiteDetails = (id, data) =>
   apiRequest("getWebsiteDetails", data, id);
 
+export const getAdminWebsiteDetails = () =>
+  apiRequest("getAdminWebsiteDetails");
+
+export const getUserWebsiteDetails = () =>
+  apiRequest("getUserWebsiteDetails");
+
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
@@ -148,6 +155,7 @@ export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
 export const editBroadCasting = (id, data) => {
+  console.log(id,"id")
   return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {
@@ -170,9 +178,14 @@ export const getDirectorLoginLogsById = (params) => {
 };
 
 // rejection reasons
-const getAllRejectionReasons = (data) => {
-  return apiRequest("getAllRejectionReasons", data);
+// const getAllRejectionReasons = (data) => {
+//   return apiRequest("getAllRejectionReasons", data);
+// };
+
+const getAllRejectionReasons = (params) => {
+  return apiRequest("getAllRejectionReasons", {}, params);
 };
+
 const createRejReasons = (data) => {
   return apiRequest("createRejReasons", data);
 };
@@ -183,8 +196,11 @@ const getRejReasonsById = (id, data) => {
   return apiRequest("getRejReasonsById", data, id);
 };
 //priavacy policy
-const getPrivacyPolicy = (data) => {
-  return apiRequest("getPrivacyPolicy", data);
+// const getPrivacyPolicy = (data) => {
+//   return apiRequest("getPrivacyPolicy", data);
+// };
+const getPrivacyPolicy = (params) => {
+  return apiRequest("getPrivacyPolicy", {}, params);
 };
 const getPrivacyPolicyById = (id, data) => {
   return apiRequest("getPrivacyPolicyById", data, id);
@@ -250,8 +266,45 @@ const resetDirectorEmployeePassword = (id, data) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
+const getManagementPaymentDetails = (data) => {
+  return apiRequest("getManagementPaymentDetails", data);
+};
+const suspendManagementPaymentDetails = (id, data) => {
+  return apiRequest("suspendManagementPaymentDetails", data, id);
+};
+const getManagementPaymentDetailsById = (id, data) => {
+  return apiRequest("getManagementPaymentDetailsById", data, id);
+};
+const createManagementPaymentDetails = (data) => {
+  return apiRequest("createManagementPaymentDetails", data);
+};
+const updateManagementPaymentDetails = (id, data) => {
+  return apiRequest("updateManagementPaymentDetails", data, id);
+};
+const createManagementOfflinePaymentModes = (data) => {
+  return apiRequest("createManagementOfflinePaymentModes", data);
+};
+const getManagementOfflinePaymentModes = (params) => {
+  return apiRequest("getManagementOfflinePaymentModes",{}, params);
+};
+const suspenManagementOfflinePaymentModes = (id, status) => {
+  return apiRequest("suspenManagementOfflinePaymentModes", id, { id,status });
+};
+const getManagementOfflinePaymentModeById = (id, data) => {
+  return apiRequest("getManagementOfflinePaymentModeById", data, id);
+};
+const updateManagementOfflinePaymentDetails=(id,data)=>{
+  return apiRequest("updateManagementOfflinePaymentDetails",data,id);
+};
+
 const managementPaymentDetails = (data) => {
   return apiRequest("managementPaymentDetails", data);
+};
+const ownersAvailablePaymentsModes = (data) => {
+  return apiRequest("ownersAvailablePaymentsModes", data);
+};
+const DirectorUpLinePaymentDetails = (data) => {
+  return apiRequest("DirectorUpLinePaymentDetails", data);
 };
 export {
   loginUser,
@@ -315,5 +368,17 @@ export {
   getDirectorEmployeeDetailsById,
   updateDirectorEmployeeByID,
   addWebsiteToPrivacyPolicy,
+  getManagementPaymentDetails,
+  suspendManagementPaymentDetails,
+  getManagementPaymentDetailsById,
+  createManagementPaymentDetails,
+  updateManagementPaymentDetails,
+  createManagementOfflinePaymentModes,
+  getManagementOfflinePaymentModes,
+  suspenManagementOfflinePaymentModes,
+  getManagementOfflinePaymentModeById,
+  updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
+  ownersAvailablePaymentsModes,
+  DirectorUpLinePaymentDetails,
 };

@@ -36,6 +36,14 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/website/websiteby/${id}`,
   },
+  getAdminWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/adminWebsites`,
+  },
+  getUserWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/userWebsites`,
+  },
   getWebsitesList: {
     method: "get",
     url: (params) => {
@@ -53,7 +61,7 @@ const endpoints = {
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${userID()}/promotionTypes/${id}`,
+    url: (id) => `/user/${userID()}/promotionTypes/${id}/status`,
   },
   getPromotionsImage: {
     method: "get",
@@ -85,7 +93,7 @@ const endpoints = {
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/bannerStatus/${id}`,
+    url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
 
   getEmployees: {
@@ -162,9 +170,17 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
   },
+  // getAllSecurityQuestions: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/secQuestion/`,
+  // },
+
   getAllSecurityQuestions: {
     method: "get",
-    url: () => `/user/${userID()}/secQuestion/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/secQuestion/?${query}`;
+    },
   },
   getSecQusetionsById: {
     method: "get",
@@ -177,7 +193,10 @@ const endpoints = {
 
   getAllRejectionReasons: {
     method: "get",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/rejectionReasons/?${query}`;
+    },
   },
   createRejReasons: {
     method: "post",
@@ -191,10 +210,12 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
-
   getPrivacyPolicy: {
     method: "get",
-    url: () => `/user/${userID()}/privacypolicies/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/privacypolicies/?${query}`;
+    },
   },
   getPrivacyPolicyById: {
     method: "get",
@@ -218,11 +239,15 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
   },
+  getWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
+      return `/director/${userID()}/directorEmployeeloginLogsbyDirector?${query}`;
     },
   },
 
@@ -230,7 +255,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
+      return `/director/${userID()}/DirectorEmploginLogsbyEmployeeId?${query}`;
     },
   },
 
@@ -245,7 +270,7 @@ const endpoints = {
   },
   getBroadCasting: {
     method: "get",
-    url: () => `/user/${userID()}/broadcasting`,
+    url: () => `/user/${userID()}/broadcastings`,
   },
 
   statusBroadcastUpdate: {
@@ -255,7 +280,7 @@ const endpoints = {
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
 
   getDirectorAccountDetails: {
@@ -292,14 +317,14 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogs?${query}`;
+      return `/loginLogs?${query}`;
     },
   },
   getLoggedInLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/loginLogsById?${query}`;
+      return `/loginLogsById?${query}`;
     },
   },
   getDirectorLoginLogs: {
@@ -338,14 +363,68 @@ const endpoints = {
     url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
-  addWebsiteToPrivacyPolicy: {
+  // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
+  getManagementPaymentDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/paymentDetails`,
+  },
+  suspendManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+    url: (id) => `/user/${userID()}/suspend/${id}`,
+  },
+  getManagementPaymentDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/payment/${id}`,
+  },
+  createManagementPaymentDetails: {
+    method: "post",
+    url: () => `/user/${userID()}/create`,
+  },
+  updateManagementPaymentDetails: {
+    method: "post",
+    url: (id) => `/user/${userID()}/update/${id}`,
+  },
+  //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+  createManagementOfflinePaymentModes: {
+    method: "post",
+    url: () => `/user/${userID()}/offlinePaymentMode`,
+  },
+  getManagementOfflinePaymentModes: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
+    },
+  },
+  getManagementOfflinePaymentModeById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+  },
+  suspenManagementOfflinePaymentModes: {
+    method: "patch",
+    url: (data) =>
+      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+  },
+  updateManagementOfflinePaymentDetails: {
+    method: "put",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
   },
   managementPaymentDetails: {
     method: "get",
     url: () => `/director/${userID()}/payments`,
   },
+  ownersAvailablePaymentsModes: {
+    method: "get",
+    url: () => `/user/${userID()}/offlinePaymentModes`,
+  },
+  DirectorUpLinePaymentDetails: {
+    method: "get",
+    url: () => `/director/${userID()}/payments`,
+  },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+    },
 };
 
 export default endpoints;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Table from "../../components/Table";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
 import { getDirectorLoginLogs, getLoggedInLogs, getDirectorEmployeesLoginLogsList } from "../../api/apiMethods";
@@ -15,12 +15,16 @@ const ActivityLogs = () => {
   const [fromDate, setFromDate] = useState(new Date().toISOString().split("T")[0]);
   const [toDate, setToDate] = useState(new Date().toISOString().split("T")[0]);
   const userRole = localStorage.getItem("role_code");
+  const itemsPerPage = 9;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1)
+  const [currentPage, setCurrentPage] = useState(page)
+  const [totalRecords, setTotalaRecords] = useState(null)
   const handleMatchClick = (userActivity, id) => {
     const encodedUserId = encodeURIComponent(id);
     const encodedUserActivity = encodeURIComponent(userActivity);
-    navigation(`/userActivity/${encodedUserId}/${encodedUserActivity}`, {
-      state: { activeTab }
-    });
+    localStorage.setItem("activeTab", activeTab)
+    navigation(`/userActivity/${encodedUserId}/${encodedUserActivity}`);
   };
   const [errors, setErrors] = useState({ fromDate: "", toDate: "" });
 
@@ -43,16 +47,17 @@ const ActivityLogs = () => {
 
     return !newErrors.fromDate && !newErrors.toDate;
   };
-  const getEmployeeAllLogs = (from, to) => {
+  const getEmployeeAllLogs = (limit, offset, fromDate, toDate) => {
     getLoggedInLogs({
-      limit: 10,
-      offset: 0,
-      fromDate: from,
-      toDate: to
+      limit,
+      offset,
+      fromDate,
+      toDate
     })
       .then((response) => {
         if (response?.status) {
           setLogsData(response.data);
+          setTotalaRecords(response?.totalCount)
         } else {
           setError("Something Went Wrong");
         }
@@ -62,18 +67,19 @@ const ActivityLogs = () => {
         setError(error?.message || "API request failed");
       });
   };
-  const getDownlineLogs = (from, to) => {
+  const getDownlineLogs = (limit, offset, fromDate, toDate) => {
     getDirectorLoginLogs({
-      limit: 10,
-      offset: 0,
+      limit,
+      offset,
       id: user_id,
       type: type,
-      fromDate: from,
-      toDate: to
+      fromDate,
+      toDate
     })
       .then((response) => {
         if (response?.status) {
           setLogsData(response.data);
+          setTotalaRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
         }
@@ -83,17 +89,18 @@ const ActivityLogs = () => {
         setError(error?.message || "API request failed");
       });
   };
-  const getDirectorDownlineLoginLogsList = (from, to) => {
+  const getDirectorDownlineLoginLogsList = (limit, offset, fromDate, toDate) => {
     getDirectorEmployeesLoginLogsList({
-      limit: 10,
-      offset: 0,
+      limit,
+      offset,
       id: user_id,
-      fromDate: from,
-      toDate: to
+      fromDate,
+      toDate
     })
       .then((response) => {
         if (response?.status) {
           setLogsData(response.data);
+          setTotalaRecords(response.totalCount)
         } else {
           setError("Something Went Wrong");
         }
@@ -108,16 +115,18 @@ const ActivityLogs = () => {
     setType(type);
     setActiveTab(tab);
   };
- const isInitialRender = useRef(true);
+  const isInitialRender = useRef(true);
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
       return;
     }
+    const limit = itemsPerPage
+    const offset = (currentPage - 1) * itemsPerPage
 
     if (userRole === "director") {
       if (activeTab === "employees") {
-        getDirectorDownlineLoginLogsList()
+        getDirectorDownlineLoginLogsList(limit, offset)
       } else if (activeTab === "admins") {
         console.log("Integrated Soon")
         setLogsData([]);
@@ -125,11 +134,11 @@ const ActivityLogs = () => {
     } else {
       if (userRole === "management") {
         if (activeTab === "employees") {
-          getEmployeeAllLogs();
+          getEmployeeAllLogs(limit, offset);
         } else if (activeTab === "directors") {
-          getDownlineLogs();
+          getDownlineLogs(limit, offset);
         } else if (activeTab === "admins") {
-          getDownlineLogs();
+          getDownlineLogs(limit, offset);
         }
       }
     }
@@ -205,22 +214,41 @@ const ActivityLogs = () => {
       </div>
     ),
   }));
+  const handlePageChange = ({ limit, offset }) => {
+    if (userRole === "management") {
+      if (activeTab === "employees") {
+        getEmployeeAllLogs(limit, offset,);
+      } else if (activeTab === "directors") {
+        getDownlineLogs(limit, offset,);
+      } else if (activeTab === "admins") {
+        getDownlineLogs(limit, offset);
+      }
+    } else {
+      if (activeTab === "employees") {
+        getDirectorDownlineLoginLogsList(limit, offset)
+      } else if (activeTab === "admins") {
+        console.log("Integrated Soon")
+      }
+    }
+  };
   const handleDataBetweenFromAndToDates = () => {
+    const limit = itemsPerPage
+    const offset = (currentPage - 1) * itemsPerPage
     if (validateDates()) {
       if (userRole === "director") {
         if (activeTab === "employees") {
-          getDirectorDownlineLoginLogsList(fromDate, toDate)
+          getDirectorDownlineLoginLogsList(limit, offset, fromDate, toDate)
         } else if (activeTab === "admins") {
           console.log("Integrated Soon")
         }
       } else {
         if (userRole === "management") {
           if (activeTab === "employees") {
-            getEmployeeAllLogs(fromDate, toDate);
+            getEmployeeAllLogs(limit, offset, fromDate, toDate);
           } else if (activeTab === "directors") {
-            getDownlineLogs(fromDate, toDate);
+            getDownlineLogs(limit, offset, fromDate, toDate);
           } else if (activeTab === "admins") {
-            getDownlineLogs(fromDate, toDate);
+            getDownlineLogs(limit, offset, fromDate, toDate);
           }
         }
       }
@@ -295,7 +323,9 @@ const ActivityLogs = () => {
         <Table
           columns={ACTIVITY_COLUMNS}
           data={ACTIVITY_DATA}
-          itemsPerPage={4}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          totalRecords={totalRecords}
         />
       </div>
     </div>
