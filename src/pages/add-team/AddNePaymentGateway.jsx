@@ -1,364 +1,188 @@
-import React, { useState, useEffect } from "react";
-import { SlPencil } from "react-icons/sl";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { FaSearch } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-import Table from "../../components/Table";
-import { Images } from "../../images";
-import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { getDirectorAccountDetails, getCountries, suspendDirectorAccountPaymentDetails, getDirectorAccountById } from '../../../src/api/apiMethods'
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useRef } from "react";
+import { ownersAvailablePaymentsModes } from "../../../src/api/apiMethods";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
+import NoDataFound from "./NoDataFound ";
+import { useSelector } from "react-redux";
+import { imgUrl } from "../../api/baseUrl";
+import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
 
 const AddNePaymentGateway = () => {
-    const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false)
-    const [onBlockPopup, setOnBlockPopup] = useState(false)
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [accountList, setAccountList] = useState([]);
-    const [countries, setCountries] = useState([]);
-    const [paymentId, setPaymentId] = useState(null);
-    const [statusId, setStatusId] = useState(null);
-    const [editMode, setEditMode] = useState(false)
-    const [editData, setEditData] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState("1");
-    const getDirectorAccountData = () => {
-        setLoading(true);
-        getDirectorAccountDetails()
-            .then((response) => {
-                console.log("getDirectorAccountDetails success", response.data);
-                setAccountList(response.data);
-            })
-            .catch((error) => {
-                setError(error?.message);
-                console.log("getDirectorAccountDetails error", error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
-    useEffect(() => {
-        getDirectorAccountData();
-    }, []);
+  const [error, setError] = useState(null);
+  const [selectedCountryId, setSelectedCountryId] = useState(107);
+  const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [paymentModes, setPaymentModes] = useState([]);
+  const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
+  const modes = [
+    { title: "Bank Transfer", mode: 1 },
+    { title: "E-Wallets", mode: 2 },
+    { title: "QR Codes", mode: 3 },
+    { title: "Cash", mode: 4 },
+    { title: "Payment Gateway", mode: 5 },
+  ];
+  const tabNames = ["Offline Payment Modes", "Payment Gateway"];
 
-    const gatewayTypeMap = {
-        1: "NEFT/RTGS",
-        2: "UPI",
-        3: "QR Code"
-    };
-
-
-    const getCountry = () => {
-        setLoading(true);
-        getCountries()
-            .then((response) => {
-                // console.log("getCountries success", response.data);
-                setCountries(response.data);
-            })
-            .catch((error) => {
-                setError(error?.message);
-                // console.log("getCountries error", error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
-    useEffect(() => {
-        getCountry();
-    }, []);
-
-    const getCountryName = (id) => {
-        const country = countries.find((c) => c.id === id);
-        return country ? country.name : "Unknown";
-    };
-
-    // Function to get currency dynamically
-    const getCurrencySymbol = (id) => {
-        const country = countries.find((c) => c.id === id);
-        return country ? `${country.currency_symbol} ${country.currency_name}` : "N/A";
-    };
-
-    const formatDate = (isoDate) => {
-        if (!isoDate) return "N/A"; // Handle null or undefined dates
-        const date = new Date(isoDate);
-        return date.toLocaleDateString("en-GB"); // Formats to "DD-MM-YYYY"
-    };
-
-
-    const handleStatus = (id, status) => {
-        //onsole.log(id,status);
-        setOnBlockPopup(true);
-        setPaymentId(id);
-        setStatusId(status);
-
+  const getOwnersPaymentModes = () => {
+    setLoading(true);
+    ownersAvailablePaymentsModes()
+      .then((response) => {
+        console.log("getDirectorAccountDetails success", response.data);
+        setPaymentModes(response.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+        console.log("getDirectorAccountDetails error", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  const initialRendering = useRef(true);
+  useEffect(() => {
+    if (initialRendering) {
+      initialRendering.current = false;
     }
-    const status_id = statusId === 1 ? 2 : 1;
+    getOwnersPaymentModes();
+  }, []);
 
-    const suspendStatus = () => {
-        suspendDirectorAccountPaymentDetails(paymentId, status_id)
-            .then((response) => {
-                // Call getDirectorAccountData to refresh the list
-                getDirectorAccountData();
-                setOnBlockPopup(false);
-            })
-            .catch((error) => {
-                setError(error.message)
-                console.log(error);
-                // Optional: Add error handling or show an error message
-            });
-    };
-    const [selectedTab, setSelectedTab] = useState("All Methods");
-    const getSelectedPaymentMethod = () => {
-        const selected = paymentMethodOptions.find(
-            option => option.value === paymentMethod
-        );
-        return selected || null;
-    };
-    const paymentMethodOptions = [
-        { value: "1", label: "NEFT/RTGS" },
-        { value: "2", label: "UPI" },
-        { value: "3", label: "QR Code" },
-    ];
-    const tabNames = [
-        "All Methods",
-        "Recommended Methods",
-        "Bank Transfer",
-        "Payment Gateway",
-        "e-Wallet",
-    ];
-    const cards = [
-        { id: 1, image: Images.phonepe, tag: "Tag 1" },
-        { id: 2, image: Images.phonepe, tag: "Tag 2" },
-        { id: 3, image: Images.phonepe, tag: "Tag 3" },
-        { id: 4, image: Images.phonepe, tag: "Tag 4" },
-        { id: 5, image: Images.phonepe, tag: "Tag 5" },
-        { id: 6, image: Images.phonepe, tag: "Tag 6" },
-        { id: 7, image: Images.phonepe, tag: "Tag 7" },
-    ];
+  const allCountries = useSelector((item) => item?.allCountries);
 
+  const formattedCountries = allCountries.map((country) => ({
+    value: country.id,
+    label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
+  }));
+  const filteredPaymentModes = paymentModes.filter(
+    (mode) => mode.country_id === selectedCountryId
+  );
+  const hasNoRecords = filteredPaymentModes.length === 0;
+  return (
+    <div>
+      <div className="row justify-content-between align-items-center mb-3 mt-2">
+        <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
+      </div>
 
-    return (
-        <div>
-            <div className="row justify-content-between align-items-center mb-3 mt-2">
-                <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
+      <div className="mt-2 min-h-screen bg-white rounded-md ms-3 ps-2">
+        <div className="row mb-3">
+          <div className="col-3">
+            <label htmlFor="paymentMethod" className="medium-font mb-1">
+              Currency
+            </label>
+            <Select
+              className="small-font text-capitalize"
+              options={formattedCountries}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={300}
+              menuPlacement="auto"
+              value={formattedCountries.find(
+                (option) => option.value === selectedCountryId
+              )}
+              onChange={(selected) => setSelectedCountryId(selected.value)}
+              formatOptionLabel={(option) => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    textTransform: "text-capitalize",
+                  }}
+                >
+                  <span>{option.label.split(" - ")[0]}</span>
+                  <span>{option.label.split(" - ")[1]}</span>
+                </div>
+              )}
+            />
+          </div>
+        </div>
 
-                {/* <div className="col-6 d-flex justify-content-end gap-3 medium-font">
-                    <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
-                        <FaSearch size={16} className="grey-clr me-2" />
-                        <input className="small-font all-none" placeholder="Search..." />
-                    </div>
-
-                    <button className="rounded-pill input-pill blue-font small-font px-2" onClick={() => setOnAddPaymentGateway(true)}>
-                        <FaPlus /> Add New Gateway{" "}
-                    </button>
-                </div> */}
+        {hasNoRecords ? (
+          <NoDataFound />
+        ) : (
+          <>
+            <div className="d-flex justify-content-start ms-3">
+              <div className="row mb-2 gap-2">
+                {tabNames.map((tabName, index) => (
+                  <div
+                    key={index}
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
+                      selectedTab === index ? "saffron-btn2 " : ""
+                    }`}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSelectedTab(index)}
+                  >
+                    {tabName}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="mt-2 bg-white rounded-md ms-3 ps-2 rounded">
-                <div className="row mb-3 ">
-                    <div className="col-4">
-                        <label htmlFor="paymentMethod" className="medium-font mb-1">
-                            Currency
-                        </label>
-                        <Select
-                            className="small-font"
-                            options={paymentMethodOptions}
-                            placeholder="Select"
-                            styles={customStyles}
-                            maxMenuHeight={120}
-                            menuPlacement="auto"
-                            value={getSelectedPaymentMethod()}
-                            onChange={(selected) => setPaymentMethod(selected.value)}
-                            isDisabled={editMode}
-                        />
-                    </div>
-                </div>
-
-                <div className="d-flex justify-content-start ms-2">
-                    <div className="row mb-2 col-9 gap-2">
-                        {tabNames.map((tabName, index) => (
-                            <div
-                                key={index}
-                                className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === tabName ? "saffron-btn2 " : ""
-                                    }`}
-                                style={{ cursor: "pointer" }}
-                                onClick={() => setSelectedTab(tabName)}
-                            >
-                                {tabName}
+            {modes
+              .filter(({ mode }) =>
+                selectedTab === 0 ? mode !== 5 : mode === 5
+              )
+              .map(({ title, mode }) => {
+                const filteredPayments = filteredPaymentModes?.filter(
+                  (card) => card.avil_modes === mode
+                );
+                return (
+                  filteredPayments.length > 0 && (
+                    <div className="mb-3" key={mode}>
+                      <h1 className="large-font fw-600">{title}</h1>
+                      <div className="row g-1">
+                        {filteredPayments.map((card) => (
+                          <div key={card.id} className="col-2">
+                            <div className="card h-100">
+                              <div
+                                className="card-img-top d-flex align-items-center justify-content-center"
+                                style={{
+                                  height: "80%",
+                                  overflow: "hidden",
+                                  backgroundColor: "#F5F7FF",
+                                }}
+                              >
+                                <img
+                                //   onClick={() =>
+                                //     setAddPaymentGatewayModal(true)
+                                //   }
+                                  src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
+                                  alt={card.name}
+                                  className="w-60 h-100"
+                                  style={{
+                                    objectFit: "contain",
+                                    objectPosition: "center",
+                                  }}
+                                />
+                              </div>
+                              <div
+                                className="card-body d-flex align-items-center justify-content-center tag-bg"
+                                style={{
+                                  height: "20%",
+                                  color: "#fff",
+                                }}
+                              >
+                                <span className="text-center large-font">
+                                  {card.name}
+                                </span>
+                              </div>
                             </div>
+                          </div>
                         ))}
+                      </div>
                     </div>
-                </div>
-                <hr />
-                <div className="mb-3">
-                    <h1 className="large-font fw-600">Recommended Methods</h1>
-                    <div className="row g-1">
-                        {cards.map((card) => (
-                            <div key={card.id} className="col-2">
-                                <div className="card h-100">
-                                    <div
-                                        className="card-img-top d-flex align-items-center justify-content-center"
-                                        style={{
-                                            height: "80%",
-                                            overflow: "hidden",
-                                            backgroundColor: "#F5F7FF"
-                                        }}
+                  )
+                );
+              })}
+          </>
+        )}
+      </div>
 
-                                    >
-                                        <img
-                                            src={card.image}
-                                            alt={`Card ${card.id}`}
-                                            className="w-60 h-100"
-                                            style={{ objectFit: "contain", objectPosition: "center" }}
-                                        />
-                                    </div>
-                                    <div
-                                        className="card-body d-flex align-items-center justify-content-center tag-bg"
-                                        style={{
-                                            height: "20%",
-                                            color: "#fff"
-                                        }}
-                                    >
-                                        <span className="text-center large-font">{card.tag}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <h1 className="large-font fw-600">Bank Transfer</h1>
-                    <div className="row g-1">
-                        {cards.map((card) => (
-                            <div key={card.id} className="col-2">
-                                <div className="card h-100">
-                                    <div
-                                        className="card-img-top d-flex align-items-center justify-content-center"
-                                        style={{
-                                            height: "80%",
-                                            overflow: "hidden",
-                                            backgroundColor: "#F5F7FF"
-                                        }}
-                                    >
-                                        <img
-                                            src={card.image}
-                                            alt={`Card ${card.id}`}
-                                            className="w-60 h-100"
-                                            style={{ objectFit: "contain", objectPosition: "center" }}
-                                        />
-                                    </div>
-                                    <div
-                                        className="card-body d-flex align-items-center justify-content-center tag-bg"
-                                        style={{
-                                            height: "20%",
-                                            color: "#fff"
-                                        }}
-                                    >
-                                        <span className="text-center large-font">{card.tag}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <h1 className="large-font fw-600">E-Wallets</h1>
-                    <div className="row g-1">
-                        {cards.map((card) => (
-                            <div key={card.id} className="col-2">
-                                <div className="card h-100">
-                                    <div
-                                        className="card-img-top d-flex align-items-center justify-content-center"
-                                        style={{
-                                            height: "80%",
-                                            overflow: "hidden",
-                                            backgroundColor: "#F5F7FF"
-                                        }}
-                                    >
-                                        <img
-                                            src={card.image}
-                                            alt={`Card ${card.id}`}
-                                            className="w-60 h-100"
-                                            style={{ objectFit: "contain", objectPosition: "center" }}
-                                        />
-                                    </div>
-                                    <div
-                                        className="card-body d-flex align-items-center justify-content-center tag-bg"
-                                        style={{
-                                            height: "20%",
-                                            color: "#fff"
-                                        }}
-                                    >
-                                        <span className="text-center large-font">{card.tag}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="mb-3">
-                    <h1 className="large-font fw-600">Payment Gateway</h1>
-                    <div className="row g-1">
-                        {cards.map((card) => (
-                            <div key={card.id} className="col-2">
-                                <div className="card h-100">
-                                    <div
-                                        className="card-img-top d-flex align-items-center justify-content-center"
-                                        style={{
-                                            height: "80%",
-                                            overflow: "hidden",
-                                            backgroundColor: "#F5F7FF"
-                                        }}
-                                    >
-                                        <img
-                                            src={card.image}
-                                            alt={`Card ${card.id}`}
-                                            className="w-60 h-100"
-                                            style={{ objectFit: "contain", objectPosition: "center" }}
-                                        />
-                                    </div>
-                                    <div
-                                        className="card-body d-flex align-items-center justify-content-center tag-bg"
-                                        style={{
-                                            height: "20%",
-                                            color: "#fff"
-                                        }}
-                                    >
-                                        <span className="text-center large-font">{card.tag}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            <AddPaymentGatewayPopup
-                show={onAddPaymentGateway}
-                onHide={() => {
-                    setOnAddPaymentGateway(false);
-                    setEditMode(false);
-
-                }}
-                data={countries}
-                getDirectorAccountData={getDirectorAccountData}
-                editMode={editMode}
-                editData={editData}
-                setEditMode={setEditMode}
-            />
-
-            <ConfirmationPopup
-                confirmationPopupOpen={onBlockPopup}
-                setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-                discription={`are you sure you want to ${statusId === 1 ? "In-Active" : "Active"} this Gateway?`}
-                submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
-                onSubmit={suspendStatus}
-            />
-
-        </div >
-    );
+      <AddPaymentGatewayPopup
+        show={AddPaymentGatewayModal}
+        onHide={() => setAddPaymentGatewayModal(false)}
+      />
+    </div>
+  );
 };
 
 export default AddNePaymentGateway;

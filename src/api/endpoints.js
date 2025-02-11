@@ -1,3 +1,5 @@
+import { getManagementPaymentDetails } from "./apiMethods";
+
 const userID = () => {
   const id = localStorage.getItem("user_id");
   if (!id) {
@@ -29,6 +31,11 @@ const endpoints = {
     url: () => `/user/${userID()}/countries/currency-name`,
   },
 
+  createWebsite: {
+    method: "post",
+    url: () => `/user/${userID()}/website/website`,
+  },
+  // loginUser: { method: "post", url: "/master/login" },
   createWebsite: {
     method: "post",
     url: () => `/user/${userID()}/website/website`,
@@ -92,6 +99,19 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/bannerStatus/${id}`,
   },
+
+  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+
+  loginUser: { method: "post", url: () => "/master/login" },
+  // addManagemnentTeam: { method: "post", url: "/employee" },
+  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+
+  getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
+  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
+  // getEmployees: ({ limit, offset }) => ({
+  //   method: "get",
+  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
+  // }),
 
   getEmployees: {
     method: "get",
@@ -173,9 +193,17 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
   },
+  // getAllSecurityQuestions: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/secQuestion/`,
+  // },
+
   getAllSecurityQuestions: {
     method: "get",
-    url: () => `/user/${userID()}/secQuestion/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/secQuestion/?${query}`;
+    },
   },
   getSecQusetionsById: {
     method: "get",
@@ -185,10 +213,19 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
   },
+  //rejection reasons
+
+  // getAllRejectionReasons: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/rejectionReasons/`,
+  // },
 
   getAllRejectionReasons: {
     method: "get",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/rejectionReasons/?${query}`;
+    },
   },
   createRejReasons: {
     method: "post",
@@ -203,9 +240,17 @@ const endpoints = {
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
 
+  //privacy
+  // getPrivacyPolicy: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/privacypolicies/`,
+  // },
   getPrivacyPolicy: {
     method: "get",
-    url: () => `/user/${userID()}/privacypolicies/`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/privacypolicies/?${query}`;
+    },
   },
   getPrivacyPolicyById: {
     method: "get",
@@ -225,6 +270,15 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
+
+  getCountries: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
@@ -269,6 +323,7 @@ const endpoints = {
     url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
   },
 
+  //DirectorAccountDetails
   getDirectorAccountDetails: {
     method: "get",
     url: () => `/user/${userID()}/directorAccount`,
@@ -349,13 +404,59 @@ const endpoints = {
     url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
-  addWebsiteToPrivacyPolicy: {
+  // payment details in management
+  getManagementPaymentDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/paymentDetails`,
+  },
+  suspendManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+    url: (id) => `/user/${userID()}/suspend/${id}`,
+  },
+  getManagementPaymentDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/payment/${id}`,
+  },
+  createManagementPaymentDetails: {
+    method: "post",
+    url: () => `/user/${userID()}/create`,
+  },
+  updateManagementPaymentDetails: {
+    method: "post",
+    url: (id) => `/user/${userID()}/update/${id}`,
+  },
+  //offline payment modes
+  createManagementOfflinePaymentModes: {
+    method: "post",
+    url: () => `/user/${userID()}/offlinePaymentMode`,
+  },
+  getManagementOfflinePaymentModes: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
+    },
+    // url: () => `/user/${userID()}/totalOfflinePaymentModes`,
+  },
+  getManagementOfflinePaymentModeById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+  },
+  suspenManagementOfflinePaymentModes: {
+    method: "patch",
+    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+  },
+  updateManagementOfflinePaymentDetails: {
+    method: "put",
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
   },
   managementPaymentDetails: {
     method: "get",
     url: () => `/director/${userID()}/payments`,
+  },
+  ownersAvailablePaymentsModes: {
+    method: "get",
+    url: () => `/user/${userID()}/offlinePaymentModes`,
   },
 };
 
