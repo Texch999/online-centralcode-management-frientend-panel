@@ -281,6 +281,9 @@ const managementPaymentDetails = (data) => {
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
+const DirectorUpLinePaymentDetails = (data) => {
+  return apiRequest("DirectorUpLinePaymentDetails", data);
+};
 export {
   loginUser,
   createSecurityQuestions,
@@ -351,4 +354,5 @@ export {
   updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
   ownersAvailablePaymentsModes,
+  DirectorUpLinePaymentDetails,
 };

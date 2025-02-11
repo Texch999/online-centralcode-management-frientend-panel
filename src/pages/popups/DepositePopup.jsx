@@ -6,7 +6,7 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
 import { getDirectorAccessWebites, managementPaymentDetails } from "../../api/apiMethods";
-
+import { Images } from "../../images";
 const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
@@ -172,11 +172,13 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
         }
     };
 
+    const [previewImage, setPreviewImage] = useState(null);
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setSelectedFile(file.name);
-            setFormData((prev) => ({ ...prev, screenshot: file }));
+            setSelectedFile(file.name); // Store file name
+            setPreviewImage(URL.createObjectURL(file)); // Create a preview URL
         }
     };
 
@@ -196,12 +198,12 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
 
         // Transform formData into the desired payload format
         const payload = {
-            amount: parseFloat(formData.amount), // Ensure amount is a number
-            type: formData.paymentType.type, // Use the type from PaymentType
-            admin: selectedAdmin?.value || null, // Admin website ID
-            websiteid: formData.websiteName || null, // User website ID (if applicable)
-            transactionId: formData.utr || null, // UTR/Transaction ID for non-cash payments
-            slip: formData.screenshot || null, // File for non-cash payments
+            amount: parseFloat(formData.amount),
+            type: formData.paymentType.type,
+            admin: selectedAdmin?.value || null,
+            websiteid: formData.websiteName || null,
+            transactionId: formData.utr || null,
+            slip: formData.screenshot || null,
         };
 
         // Include cash-specific fields if payment type is cash
@@ -218,14 +220,73 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                        <h5 className="medium-font fw-600">Deposit</h5>
-                        <MdOutlineClose size={22} className="pointer" onClick={() => setDepositePopup(false)} />
+                        {/* Image on the left */}
+                        <img
+                            src={Images?.phonepe}
+                            alt="Icon"
+                            className="me-3"
+                            style={{ width: "50px", height: "50px" }}
+                        />
+
+                        {/* Content in the center */}
+                        <div className="d-flex justify-content-end flex-grow-1">
+                            {/* Left-aligned text */}
+                            <div className="d-flex flex-column text-end">
+                                <h5 className="small-font fw-600 mb-0">Deposite in USD</h5>
+                                <p className="small-font text-secondary mb-0">{`Rudhira- Super Admin (Share-10%)`}</p>
+                            </div>
+                        </div>
+                        {/* Close icon on the far right */}
+                        <div>
+                            <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositePopup(false)} />
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="row ">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Admin Panel</label>
+                            <Select
+                                className="small-font"
+                                options={directorWebsitesList.map((admin) => ({
+                                    label: admin.admin_web_name,
+                                    value: admin.admin_panel_id,
+                                }))}
+                                placeholder="Select Admin Website"
+                                styles={customStyles}
+                                value={selectedAdmin}
+                                onChange={(option) => {
+                                    setSelectedAdmin(option);
+                                    const selectedAdminData = directorWebsitesList.find(
+                                        (admin) => admin.admin_panel_id === option.value
+                                    );
+                                    setUserWebsites(selectedAdminData?.users || []);
+                                }}
+                            />
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">User Panel</label>
+                            <Select
+                                className="small-font"
+                                options={userWebsites.map((user) => ({
+                                    label: user.user_web_name,
+                                    value: user.website_access_id,
+                                }))}
+                                placeholder="Select User Website"
+                                styles={customStyles}
+                                onChange={(option) => {
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        websiteName: option.value,
+                                    }));
+                                }}
+                            />
+                        </div>
                     </div>
                     <div className="col mb-2">
-                        <label className="small-font mb-1">Amount</label>
+                        <label className="small-font mb-1">Currency</label>
                         <input
-                            type="number"
-                            name="amount"
+                            type="text"
+                            name="currency"
                             className="w-100 small-font rounded input-css all-none"
                             placeholder="Enter Amount"
                             value={formData.amount || ""}
@@ -234,45 +295,72 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                         {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                     </div>
                     <div className="col mb-2">
-                        <label className="small-font mb-1">Admin Panel</label>
-                        <Select
-                            className="small-font"
-                            options={directorWebsitesList.map((admin) => ({
-                                label: admin.admin_web_name,
-                                value: admin.admin_panel_id,
-                            }))}
-                            placeholder="Select Admin Website"
-                            styles={customStyles}
-                            value={selectedAdmin}
-                            onChange={(option) => {
-                                setSelectedAdmin(option);
-                                const selectedAdminData = directorWebsitesList.find(
-                                    (admin) => admin.admin_panel_id === option.value
-                                );
-                                setUserWebsites(selectedAdminData?.users || []);
-                            }}
+                        <label className="small-font mb-1">UPI ID</label>
+                        <input
+                            type="text"
+                            name="upi"
+                            className="w-100 small-font rounded input-css all-none"
+                            placeholder="Enter "
+                            value={formData.amount || ""}
+                            onChange={handleChange}
                         />
+                        {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                     </div>
-                    <div className="col mb-2">
-                        <label className="small-font mb-1">User Panel</label>
-                        <Select
-                            className="small-font"
-                            options={userWebsites.map((user) => ({
-                                label: user.user_web_name,
-                                value: user.website_access_id,
-                            }))}
-                            placeholder="Select User Website"
-                            styles={customStyles}
-                            onChange={(option) => {
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    websiteName: option.value,
-                                }));
-                            }}
-                        />
+                    <div className="row">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Wallet Chips Balance - USD</label>
+                            <input
+                                type="availableChips"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Total Chips - USD</label>
+                            <input
+                                type="availableChips"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
                     </div>
+                    <div className="row">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Chips - USD</label>
+                            <input
+                                type="chipsNeed"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Paid Amount (10%) - USD</label>
+                            <input
+                                type="availableChips"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                    </div>
+
                     {/* Payment Type Dropdown */}
-                    <div className="col mb-2">
+                    {/* <div className="col mb-2">
                         <label className="small-font mb-1">Payment Type</label>
                         <Select
                             className="small-font"
@@ -283,7 +371,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                             onChange={(option) => handleSelectChange("paymentType", option)}
                         />
                         {errors.paymentType && <p className="text-danger small-font">{errors.paymentType}</p>}
-                    </div>
+                    </div> */}
 
                     {/* NEFT/RTGS Section */}
                     {formData.paymentType?.value === "neftrtgs" && (
@@ -390,6 +478,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                     </span>
                                     <VscCloudUpload size={16} className="text-muted" />
                                 </div>
+
+                                {/* Hidden File Input */}
                                 <input
                                     type="file"
                                     name="screenshot"
@@ -398,6 +488,18 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                     onChange={handleFileChange}
                                     accept="image/*"
                                 />
+
+                                {/* Display Uploaded Image Preview */}
+                                {previewImage && (
+                                    <div className="mt-2">
+                                        <img
+                                            src={previewImage}
+                                            alt="Uploaded Screenshot"
+                                            className="img-fluid rounded"
+                                            style={{ maxWidth: "100px", maxHeight: "100px" }}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
