@@ -379,7 +379,7 @@ function AddNewDirectorSuperAdmin() {
             {errors?.loginName && (
               <span className="x-small-font error">{errors?.loginName}</span>
             )}
-          </div>{" "}
+          </div>
           <div className="col-1 p-1">
             <label className="small-font my-1">Role</label>
             <select
@@ -404,20 +404,6 @@ function AddNewDirectorSuperAdmin() {
               <span className="x-small-font error">{errors?.selectedRole}</span>
             )}
           </div>
-          {/* <div className="col-1 p-1">
-            <label className="small-font my-1">Role</label>
-            <div className="custom-select-wrapper">
-              <Select
-                className="small-font"
-                options={adminRoless}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                onChange={handleRoleChange}
-              />
-            </div>
-          </div>{" "} */}
           <div className="col-1 p-1">
             <label className="small-font my-1">Country</label>
             <select
@@ -457,10 +443,9 @@ function AddNewDirectorSuperAdmin() {
                 {errors?.selectedCurrencyCode}
               </span>
             )}
-          </div>{" "}
+          </div>
           {mode === "edit" ? null : (
             <>
-              {" "}
               <div className="p-1 col position-relative">
                 <label className="small-font my-1">Password</label>
                 <input
@@ -607,7 +592,6 @@ function AddNewDirectorSuperAdmin() {
                         {accountTypes[userSite.id] === "1" && (
                           <div className="col-9">
                             <div className="row">
-                              {" "}
                               <div className="col">
                                 <input
                                   type="date"
