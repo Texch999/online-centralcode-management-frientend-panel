@@ -12,7 +12,7 @@ const AddNePaymentGateway = () => {
   const [selectedCountryId, setSelectedCountryId] = useState(107);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
   const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
   const modes = [
