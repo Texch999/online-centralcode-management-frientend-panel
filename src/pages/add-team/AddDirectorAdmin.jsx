@@ -203,21 +203,21 @@ const AddDirectorAdmin = () => {
               className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
               onClick={() => user.status !== 2 && setShowModal(true)}
             />
-        
+
             {/* Reset Password button (disabled when status === 2) */}
             <MdLockReset
               size={18}
               className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
               onClick={() => user.status !== 2 && handleResetPasswordOpen(user.id)}
             />
-        
+
             {/* Block/Unblock button (always enabled) */}
             <MdBlockFlipped
               size={18}
               className={user.status === 2 ? "clr-red" : "green-clr"}
               onClick={() => handleBlockUserOpen(user.login_name, user.id)}
             />
-        
+
             {/* View button (always enabled) */}
             <BsEye
               size={18}
@@ -226,7 +226,7 @@ const AddDirectorAdmin = () => {
             />
           </div>
         ),
-        
+
       }))
       : directorDwnList?.map((item) => ({
         id: item.id,
@@ -395,7 +395,7 @@ const AddDirectorAdmin = () => {
           </div>
           <button
             className="small-font rounded-pill input-pill blue-font px-3 py-1"
-            onClick={handleModalOpen}
+            onClick={() => navigate("/director-admin/addnewdirector")}
           >
             <FaPlus className="me-2" />
             Add New
@@ -442,8 +442,8 @@ const AddDirectorAdmin = () => {
         discription={`Are you sure you want to ${statusId === 1 ? "Unblock" : "Block"
           } ${selectedUser}?`}
         submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
-        // onSubmit={login_role_name === "director" ? "Unblock" : "block"}
-        onSubmit={() => blockUnblock()} // Ensure this is a function
+
+        onSubmit={() => blockUnblock()}
 
       />
     </div>

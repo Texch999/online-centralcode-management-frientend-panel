@@ -1,8 +1,8 @@
 import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
-const loginUser = (data) => {
-  return apiRequest("loginUser", data);
+const loginManagement = (data) => {
+  return apiRequest("loginManagement", data);
 };
 // security Questions
 const createSecurityQuestions = (data) => {
@@ -21,6 +21,9 @@ const getSecQusetionsById = (id, data) => {
 // manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
+};
+const loginDirectorEmployee = (data) => {
+  return apiRequest("loginDirectorEmployee", data);
 };
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
@@ -105,7 +108,10 @@ const getDirectorAccountById = (id, data) => {
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
 };
-
+// getCurrencies
+const getCurrencies = (data) => {
+  return apiRequest("getCurrencies", data);
+};
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
@@ -307,7 +313,7 @@ const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
 export {
-  loginUser,
+  loginManagement,
   createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
@@ -381,4 +387,6 @@ export {
   managementPaymentDetails,
   ownersAvailablePaymentsModes,
   DirectorUpLinePaymentDetails,
+  getCurrencies,
+  loginDirectorEmployee,
 };
