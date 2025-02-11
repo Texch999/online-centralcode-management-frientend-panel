@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ownersAvailablePaymentsModes } from "../../../src/api/apiMethods";
+import { DirectorUpLinePaymentDetails, ownersAvailablePaymentsModes } from "../../../src/api/apiMethods";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import NoDataFound from "./NoDataFound ";
 import { useSelector } from "react-redux";
 import { imgUrl } from "../../api/baseUrl";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
+import { useLocation } from "react-router-dom";
+import DepositePopup from "../popups/DepositePopup";
+import WithdrawPopup from "../popups/WithdrawPopup";
 
 const AddNePaymentGateway = () => {
   const [error, setError] = useState(null);
@@ -15,6 +18,12 @@ const AddNePaymentGateway = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
   const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
+  const userRole = localStorage.getItem("role_code")
+  const [depositePopup, setDepositePopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
+  const [addpaymentId, setAddPaymentId] = useState();
+  const [countryId, setCountryId] = useState(null);
+  const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -23,13 +32,29 @@ const AddNePaymentGateway = () => {
     { title: "Payment Gateway", mode: 5 },
   ];
   const tabNames = ["Offline Payment Modes", "Payment Gateway"];
+  const location = useLocation();
+  const { actionType } = location.state || {};
+
+  console.log(paymentModes, "paymentModes");
+  const handleAddModal = (id, country, available_id) => {
+    setAddPaymentId(id);
+    setCountryId(country);
+    setAddPaymentGatewayModal(true);
+    setAvailablePaymentModeId(available_id);
+  };
 
   const getOwnersPaymentModes = () => {
     setLoading(true);
-    ownersAvailablePaymentsModes()
+
+    const fetchPaymentModes =
+      userRole === "director"
+        ? DirectorUpLinePaymentDetails()
+        : ownersAvailablePaymentsModes();
+
+    fetchPaymentModes
       .then((response) => {
-        console.log("getDirectorAccountDetails success", response.data);
-        setPaymentModes(response.data);
+        console.log("getDirectorAccountDetails success", response?.data);
+        setPaymentModes(response?.data);
       })
       .catch((error) => {
         setError(error?.message);
@@ -57,6 +82,8 @@ const AddNePaymentGateway = () => {
     (mode) => mode.country_id === selectedCountryId
   );
   const hasNoRecords = filteredPaymentModes.length === 0;
+  console.log(actionType, "=====>")
+  console.log(addpaymentId, "=====>available_id");
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -95,7 +122,6 @@ const AddNePaymentGateway = () => {
             />
           </div>
         </div>
-
         {hasNoRecords ? (
           <NoDataFound />
         ) : (
@@ -105,9 +131,8 @@ const AddNePaymentGateway = () => {
                 {tabNames.map((tabName, index) => (
                   <div
                     key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
-                      selectedTab === index ? "saffron-btn2 " : ""
-                    }`}
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                      }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => setSelectedTab(index)}
                   >
@@ -130,6 +155,7 @@ const AddNePaymentGateway = () => {
                     <div className="mb-3" key={mode}>
                       <h1 className="large-font fw-600">{title}</h1>
                       <div className="row g-1">
+                        {console.log(filteredPayments, "payment")}
                         {filteredPayments.map((card) => (
                           <div key={card.id} className="col-2">
                             <div className="card h-100">
@@ -142,9 +168,16 @@ const AddNePaymentGateway = () => {
                                 }}
                               >
                                 <img
-                                //   onClick={() =>
-                                //     setAddPaymentGatewayModal(true)
-                                //   }
+                                  //   onClick={() =>
+                                  //     setAddPaymentGatewayModal(true)
+                                  //   }
+                                  onClick={() =>
+                                    handleAddModal(
+                                      card?.id,
+                                      card?.country_id,
+                                      card?.avil_modes
+                                    )
+                                  }
                                   src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
                                   alt={card.name}
                                   className="w-60 h-100"
@@ -153,6 +186,7 @@ const AddNePaymentGateway = () => {
                                     objectPosition: "center",
                                   }}
                                 />
+                                {console.log(card, "card detals")}
                               </div>
                               <div
                                 className="card-body d-flex align-items-center justify-content-center tag-bg"
@@ -180,7 +214,24 @@ const AddNePaymentGateway = () => {
       <AddPaymentGatewayPopup
         show={AddPaymentGatewayModal}
         onHide={() => setAddPaymentGatewayModal(false)}
+        addpaymentId={addpaymentId}
+        setAddPaymentId={setAddPaymentId}
+        countryId={countryId}
+        setCountryId={setCountryId}
+        availablePaymentModeId={availablePaymentModeId}
+        setAvailablePaymentModeId={setAvailablePaymentModeId}
       />
+      {actionType === "Deposit" ? <DepositePopup
+        setDepositePopup={setDepositePopup}
+        depositePopup={depositePopup}
+
+      /> :
+        <WithdrawPopup
+          setWithdrawPopup={setWithdrawPopup}
+          withdrawPopup={withdrawPopup}
+        />
+
+      }
     </div>
   );
 };
