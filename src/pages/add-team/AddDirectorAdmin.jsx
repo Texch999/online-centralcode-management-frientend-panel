@@ -21,7 +21,6 @@ import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 import {
   getDirectorDwnList,
   getDirectorDwnListById,
-  unblockBlockDirectorDwnln,
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
 import { CgUnblock } from "react-icons/cg";
@@ -275,7 +274,7 @@ const AddDirectorAdmin = () => {
                   }`}
                   onClick={() =>
                     user.status !== 2 &&
-                    navigate(`/director-admin/addnewdirector`, {
+                    navigate(`/director-admin/editDirector`, {
                       state: { userId: user.id, mode: "edit" },
                     })
                   }
@@ -478,7 +477,6 @@ const AddDirectorAdmin = () => {
                 state: { mode: "add" },
               })
             }
-            // onClick={() => navigate("/director-admin/addnewdirector")}
           >
             <FaPlus className="me-2" />
             Add New

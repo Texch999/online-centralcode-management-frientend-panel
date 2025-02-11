@@ -36,10 +36,10 @@ const endpoints = {
     url: () => `/user/${userID()}/website/website`,
   },
   // loginUser: { method: "post", url: "/master/login" },
-  createWebsite: {
-    method: "post",
-    url: () => `/user/${userID()}/website/website`,
-  },
+  // createWebsite: {
+  //   method: "post",
+  //   url: () => `/user/${userID()}/website/website`,
+  // },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -165,9 +165,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
+  // {{baseUrl}}/user/1/director/Abcd7222
   updateDirectorByID: {
     method: "post",
-    url: (id) => `/user/${userID()}/updateDirector/${id}`,
+    url: (id) => `/user/${userID()}/director/${id}`,
   },
   // endpoint: http://localhost:901rest2/0.1/director/1/updateEmployee/Abcd1234
 
@@ -275,10 +276,10 @@ const endpoints = {
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
   },
 
-  getCountries: {
-    method: "get",
-    url: () => `/user/${userID()}/website/websites`,
-  },
+  // getCountries: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/website/websites`,
+  // },
   getWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,

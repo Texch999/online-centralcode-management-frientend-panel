@@ -115,6 +115,7 @@ import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
 import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
+import EditNewDirector from "./pages/EditNewDirector";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -180,6 +181,10 @@ function App() {
               <Route
                 path="/director-admin/addnewdirector"
                 element={<AddNewDirectorSuperAdmin />}
+              />
+              <Route
+                path="/director-admin/editDirector"
+                element={<EditNewDirector />}
               />
               <Route
                 path="/user-profile-dashboard"
@@ -311,7 +316,10 @@ function App() {
                 path="/white-label-setting"
                 element={<WhiteLabelSetting />}
               />
-              <Route path="/offline-payment-modes" element={<OfflinePaymentModes/>}/>
+              <Route
+                path="/offline-payment-modes"
+                element={<OfflinePaymentModes />}
+              />
               <Route
                 path="/addnew-payments"
                 element={<AddNePaymentGateway />}
