@@ -21,6 +21,9 @@ const AddNePaymentGateway = () => {
   const userRole = localStorage.getItem("role_code")
   const [depositePopup, setDepositePopup] = useState(false);
   const [withdrawPopup, setWithdrawPopup] = useState(false);
+  const [addpaymentId, setAddPaymentId] = useState();
+  const [countryId, setCountryId] = useState(null);
+  const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -31,6 +34,15 @@ const AddNePaymentGateway = () => {
   const tabNames = ["Offline Payment Modes", "Payment Gateway"];
   const location = useLocation();
   const { actionType } = location.state || {};
+
+  console.log(paymentModes, "paymentModes");
+  const handleAddModal = (id, country, available_id) => {
+    setAddPaymentId(id);
+    setCountryId(country);
+    setAddPaymentGatewayModal(true);
+    setAvailablePaymentModeId(available_id);
+  };
+
   const getOwnersPaymentModes = () => {
     setLoading(true);
 
@@ -71,6 +83,7 @@ const AddNePaymentGateway = () => {
   );
   const hasNoRecords = filteredPaymentModes.length === 0;
   console.log(actionType, "=====>")
+  console.log(addpaymentId, "=====>available_id");
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -142,6 +155,7 @@ const AddNePaymentGateway = () => {
                     <div className="mb-3" key={mode}>
                       <h1 className="large-font fw-600">{title}</h1>
                       <div className="row g-1">
+                        {console.log(filteredPayments, "payment")}
                         {filteredPayments.map((card) => (
                           <div key={card.id} className="col-2">
                             <div className="card h-100">
@@ -157,6 +171,13 @@ const AddNePaymentGateway = () => {
                                   //   onClick={() =>
                                   //     setAddPaymentGatewayModal(true)
                                   //   }
+                                  onClick={() =>
+                                    handleAddModal(
+                                      card?.id,
+                                      card?.country_id,
+                                      card?.avil_modes
+                                    )
+                                  }
                                   src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
                                   alt={card.name}
                                   className="w-60 h-100"
@@ -165,6 +186,7 @@ const AddNePaymentGateway = () => {
                                     objectPosition: "center",
                                   }}
                                 />
+                                {console.log(card, "card detals")}
                               </div>
                               <div
                                 className="card-body d-flex align-items-center justify-content-center tag-bg"
@@ -192,6 +214,12 @@ const AddNePaymentGateway = () => {
       <AddPaymentGatewayPopup
         show={AddPaymentGatewayModal}
         onHide={() => setAddPaymentGatewayModal(false)}
+        addpaymentId={addpaymentId}
+        setAddPaymentId={setAddPaymentId}
+        countryId={countryId}
+        setCountryId={setCountryId}
+        availablePaymentModeId={availablePaymentModeId}
+        setAvailablePaymentModeId={setAvailablePaymentModeId}
       />
       {actionType === "Deposit" ? <DepositePopup
         setDepositePopup={setDepositePopup}
@@ -202,7 +230,7 @@ const AddNePaymentGateway = () => {
           setWithdrawPopup={setWithdrawPopup}
           withdrawPopup={withdrawPopup}
         />
-        
+
       }
     </div>
   );
