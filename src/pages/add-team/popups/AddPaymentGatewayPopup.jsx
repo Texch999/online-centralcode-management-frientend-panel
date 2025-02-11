@@ -460,7 +460,7 @@ const AddPaymentGatewayPopup = ({
                   menuPlacement="auto"
                   options={cOptions}
                   // value={getSelectedCountry()}
-                  value={cOptions.find(
+                  value={cOptions?.find(
                     (item) => item.value === (country || manPaymentData?.country?.toString()) 
                   ) || null}
                   onChange={(selected) =>
