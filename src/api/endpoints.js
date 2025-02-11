@@ -1,5 +1,3 @@
-import { getManagementPaymentDetails } from "./apiMethods";
-
 const userID = () => {
   const id = localStorage.getItem("user_id");
   if (!id) {
@@ -305,7 +303,7 @@ const endpoints = {
     url: () => `/user/${userID()}/directorAccount`,
   },
   suspendDirectorAccountPaymentDetails: {
-    method: 'patch',
+    method: "patch",
     url: (data) =>
       `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
   },
@@ -383,7 +381,7 @@ const endpoints = {
     url: () => `/user/${userID()}/website/userWebsites`,
   },
 
-  // payment details in management
+  // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
     url: () => `/user/${userID()}/paymentDetails`,
@@ -404,7 +402,7 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/update/${id}`,
   },
-  //offline payment modes
+  //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
   createManagementOfflinePaymentModes: {
     method: "post",
     url: () => `/user/${userID()}/offlinePaymentMode`,
@@ -415,7 +413,6 @@ const endpoints = {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
     },
-    // url: () => `/user/${userID()}/totalOfflinePaymentModes`,
   },
   getManagementOfflinePaymentModeById: {
     method: "get",
@@ -423,7 +420,8 @@ const endpoints = {
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
-    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+    url: (data) =>
+      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   },
   updateManagementOfflinePaymentDetails: {
     method: "put",

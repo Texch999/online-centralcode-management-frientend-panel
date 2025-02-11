@@ -15,6 +15,9 @@ const AddNePaymentGateway = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [paymentModes, setPaymentModes] = useState([]);
   const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
+  const [addpaymentId, setAddPaymentId] = useState(null);
+  const [countryId, setCountryId] = useState(null);
+  const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -23,6 +26,14 @@ const AddNePaymentGateway = () => {
     { title: "Payment Gateway", mode: 5 },
   ];
   const tabNames = ["Offline Payment Modes", "Payment Gateway"];
+
+  console.log(paymentModes, "paymentModes");
+  const handleAddModal = (id, country, available_id) => {
+    setAddPaymentId(id);
+    setCountryId(country);
+    setAddPaymentGatewayModal(true);
+    setAvailablePaymentModeId(available_id);
+  };
 
   const getOwnersPaymentModes = () => {
     setLoading(true);
@@ -142,9 +153,13 @@ const AddNePaymentGateway = () => {
                                 }}
                               >
                                 <img
-                                //   onClick={() =>
-                                //     setAddPaymentGatewayModal(true)
-                                //   }
+                                  onClick={() =>
+                                    handleAddModal(
+                                      card?.id,
+                                      card?.country_id,
+                                      card?.avil_modes
+                                    )
+                                  }
                                   src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
                                   alt={card.name}
                                   className="w-60 h-100"
@@ -180,6 +195,12 @@ const AddNePaymentGateway = () => {
       <AddPaymentGatewayPopup
         show={AddPaymentGatewayModal}
         onHide={() => setAddPaymentGatewayModal(false)}
+        addpaymentId={addpaymentId}
+        setAddPaymentId={setAddPaymentId}
+        countryId={countryId}
+        setCountryId={setCountryId}
+        availablePaymentModeId={availablePaymentModeId}
+        setAvailablePaymentModeId={setAvailablePaymentModeId}
       />
     </div>
   );
