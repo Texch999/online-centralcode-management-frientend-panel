@@ -80,7 +80,7 @@ const AddPaymentGatewayPopup = ({
     { value: 3, label: "Paytm" },
   ];
 
-  const cOptions = data.map((item) => ({
+  const cOptions = data?.map((item) => ({
     value: item?.id.toString(),
     label: item?.name,
   }));
@@ -88,18 +88,6 @@ const AddPaymentGatewayPopup = ({
   const getSelectedPaymentMethod = () => {
     const selected = paymentMethodOptions.find(
       (option) => option.value === paymentMethod
-    );
-    return selected || null;
-  };
-
-  const getSelectedCountry = () => {
-    const selected = cOptions.find((option) => option.value === country);
-    return selected || null;
-  };
-
-  const getSelectedProvider = () => {
-    const selected = upiProviderOptions.find(
-      (option) => option.value === provider
     );
     return selected || null;
   };
