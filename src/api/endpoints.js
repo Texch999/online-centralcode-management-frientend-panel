@@ -1,5 +1,3 @@
-import { getManagementPaymentDetails } from "./apiMethods";
-
 const userID = () => {
   const id = localStorage.getItem("user_id");
   if (!id) {
@@ -48,6 +46,14 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/website/websiteby/${id}`,
   },
+  getAdminWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/adminWebsites`,
+  },
+  getUserWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/userWebsites`,
+  },
   getWebsitesList: {
     method: "get",
     url: (params) => {
@@ -65,7 +71,7 @@ const endpoints = {
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${userID()}/promotionTypes/${id}`,
+    url: (id) => `/user/${userID()}/promotionTypes/${id}/status`,
   },
   getPromotionsImage: {
     method: "get",
@@ -97,7 +103,7 @@ const endpoints = {
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/bannerStatus/${id}`,
+    url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
@@ -311,7 +317,7 @@ const endpoints = {
   },
   getBroadCasting: {
     method: "get",
-    url: () => `/user/${userID()}/broadcasting`,
+    url: () => `/user/${userID()}/broadcastings`,
   },
 
   statusBroadcastUpdate: {
@@ -321,7 +327,7 @@ const endpoints = {
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
 
   //DirectorAccountDetails
@@ -405,7 +411,7 @@ const endpoints = {
     url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
-  // payment details in management
+  // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
     url: () => `/user/${userID()}/paymentDetails`,
@@ -426,7 +432,7 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/update/${id}`,
   },
-  //offline payment modes
+  //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
   createManagementOfflinePaymentModes: {
     method: "post",
     url: () => `/user/${userID()}/offlinePaymentMode`,
@@ -437,7 +443,6 @@ const endpoints = {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
     },
-    // url: () => `/user/${userID()}/totalOfflinePaymentModes`,
   },
   getManagementOfflinePaymentModeById: {
     method: "get",
@@ -445,7 +450,8 @@ const endpoints = {
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
-    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+    url: (data) =>
+      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   },
   updateManagementOfflinePaymentDetails: {
     method: "put",
@@ -458,6 +464,10 @@ const endpoints = {
   ownersAvailablePaymentsModes: {
     method: "get",
     url: () => `/user/${userID()}/offlinePaymentModes`,
+  },
+  DirectorUpLinePaymentDetails: {
+    method: "get",
+    url: () => `/director/${userID()}/payments`,
   },
 };
 

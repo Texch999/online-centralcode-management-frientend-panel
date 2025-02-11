@@ -13,8 +13,10 @@ import "../add-team/style.css";
 import {
   createPromotionImages,
   deletePromotionsImages,
+  getAdminWebsiteDetails,
   getPromotionsImage,
   getPromotionsTypes,
+  getUserWebsiteDetails,
   getWebsitesList,
   statusPromotionsTypes,
 } from "../../api/apiMethods";
@@ -49,6 +51,7 @@ const PromotionType = () => {
     selectUserWebsites: "",
   });
   const [websitesList, setWebsitesList] = useState([]);
+  const [userWebsitesList, setUserWebsitesList] = useState([]);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectUserWebsites, setSelectUserWebsites] = useState(null);
 
@@ -60,11 +63,12 @@ const PromotionType = () => {
     getPromotions();
     getPromotionsImages();
     getWebsites();
+    getuserWebsites();
   }, []);
 
   const getWebsites = async () => {
     try {
-      const response = await getWebsitesList();
+      const response = await getAdminWebsiteDetails();
       if ((response.status = 200)) {
         setWebsitesList(response?.data);
       }
@@ -72,8 +76,22 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
+  const getuserWebsites = async () => {
+    try {
+      const response = await getUserWebsiteDetails();
+      if ((response.status = 200)) {
+        setUserWebsitesList(response?.data);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   const selectOptionsWebsites = websitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
+  const selectOptionsUserWebsites = userWebsitesList?.map((item) => ({
     value: item.id,
     label: item.web_name,
   }));
@@ -140,9 +158,6 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
-
-  
-  console.log("")
 
   const handlePromotionsImages = async () => {
     let newErrors = {};
@@ -447,7 +462,7 @@ const PromotionType = () => {
                 <Select
                   id="Websites"
                   className="small-font fixed-select"
-                  options={selectOptionsWebsites}
+                  options={selectOptionsUserWebsites}
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
