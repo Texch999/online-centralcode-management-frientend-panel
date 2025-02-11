@@ -12,10 +12,10 @@ const AddNePaymentGateway = () => {
   const [selectedCountryId, setSelectedCountryId] = useState(107);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
   const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
-  const [addpaymentId, setAddPaymentId] = useState(null);
+  const [addpaymentId, setAddPaymentId] = useState();
   const [countryId, setCountryId] = useState(null);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const modes = [
@@ -68,6 +68,7 @@ const AddNePaymentGateway = () => {
     (mode) => mode.country_id === selectedCountryId
   );
   const hasNoRecords = filteredPaymentModes.length === 0;
+  console.log(addpaymentId, "=====>available_id");
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -141,6 +142,7 @@ const AddNePaymentGateway = () => {
                     <div className="mb-3" key={mode}>
                       <h1 className="large-font fw-600">{title}</h1>
                       <div className="row g-1">
+                        {console.log(filteredPayments, "payment")}
                         {filteredPayments.map((card) => (
                           <div key={card.id} className="col-2">
                             <div className="card h-100">
@@ -168,6 +170,7 @@ const AddNePaymentGateway = () => {
                                     objectPosition: "center",
                                   }}
                                 />
+                                {console.log(card, "card detals")}
                               </div>
                               <div
                                 className="card-body d-flex align-items-center justify-content-center tag-bg"

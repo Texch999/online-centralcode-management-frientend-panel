@@ -24,22 +24,12 @@ const AddPaymentGatewayPopup = ({
   setCountryId,
   availablePaymentModeId,
   setAvailablePaymentModeId,
-
-  //ganga
-  data,
-  getDirectorAccountData,
-  editMode,
-  setEditMode,
-  editData,
-  countries,
   managementPaymentEdit,
   setManagementPaymentEdit,
   fetchManagementPaymentDetails,
   managementPaymentEditId,
   setManagementPaymentEditId,
 }) => {
-  const [paymentMethod, setPaymentMethod] = useState("1");
-  const [provider, setProvider] = useState("");
   const [upiID, setUpiID] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [bankIFSC, setBankIFSC] = useState("");
@@ -51,182 +41,11 @@ const AddPaymentGatewayPopup = ({
   const [qrCode, setQrCode] = useState(null);
   const [manPaymentData, setManPaymentData] = useState([]);
   const role_code = localStorage.getItem("role_code");
-  console.log(paymentMethod, "paymentMethod");
-
-  console.log(managementPaymentEdit, "setManagementPaymentEdit");
-
-  // Reset form when modal is closed
-  // useEffect(() => {
-  //   if (!show) {
-  //     reset();
-  //   }
-  // }, [show]);
-
-  // Initialize form data when in edit mode
-  // useEffect(() => {
-  //   if (editMode && editData) {
-  //     console.log("Editing data:", editData); // Debug log
-  //     setPaymentMethod(editData.gateway_type.toString());
-  //     setProvider(editData.upi_provider || "");
-  //     setUpiID(editData.upi_provider_id || "");
-  //     setAccountNumber(editData.bank_acc_no || "");
-  //     setBankIFSC(editData.bank_ifsc || "");
-  //     setBankName(editData.bank_name || "");
-  //     setCountry(editData.country?.toString() || "");
-  //   }
-  // }, [editMode, editData]);
-
-  const paymentMethodOptions = [
-    { value: "1", label: "NEFT" },
-    { value: "2", label: "UPI" },
-    { value: "3", label: "QR Code" },
-    { value: "3", label: "Other" },
-  ];
-
-  const upiProviderOptions = [
-    { value: 1, label: "Google Pay" },
-    { value: 2, label: "PhonePe" },
-    { value: 3, label: "Paytm" },
-  ];
-
-  // const cOptions = data.map((item) => ({
-  //   value: item?.id.toString(),
-  //   label: item?.name,
-  // }));
-
-  // const getSelectedPaymentMethod = () => {
-  //   const selected = paymentMethodOptions.find(
-  //     (option) => option.value === paymentMethod
-  //   );
-  //   return selected || null;
-  // };
-
-  // const getSelectedCountry = () => {
-  //   const selected = cOptions.find((option) => option.value === country);
-  //   return selected || null;
-  // };
-
-  // const getSelectedProvider = () => {
-  //   const selected = upiProviderOptions.find(
-  //     (option) => option.value === provider
-  //   );
-  //   return selected || null;
-  // };
-
+  const [details, setDetails] = useState("");
+  const [accHolderName, setAccHolderName] = useState("");
   const handleQrCodeChange = (e) => {
     setQrCode(e.target.files[0]);
   };
-
-  // const handleSubmit = async () => {
-  //   // Validation
-  //   if (paymentMethod === "2") {
-  //     if (!provider || !upiID || !country) {
-  //       alert("Please fill in all fields before submitting.");
-  //       return;
-  //     }
-  //   } else if (paymentMethod === "3") {
-  //     if (!bankName || (!qrCode && !editMode)) {
-  //       alert("Please fill in all fields before submitting.");
-  //       return;
-  //     }
-  //   } else {
-  //     if (!accountNumber || !bankIFSC || !bankName || !country) {
-  //       alert("Please fill in all fields before submitting.");
-  //       return;
-  //     }
-  //   }
-
-  //   try {
-  //     if (editMode) {
-  //       await updateDetails();
-  //     } else {
-  //       await addDirectorAccountDetails();
-  //     }
-  //     onHide();
-  //   } catch (err) {
-  //     setError(err?.message || "Error adding payment details");
-  //     console.error("Error submitting form:", err);
-  //   }
-  // };
-
-  // const updateDetails = async () => {
-  //   const formData = new FormData();
-  //   formData.append("gateway_type", parseInt(paymentMethod));
-  //   formData.append("director_id", 1);
-
-  //   if (paymentMethod === "1") {
-  //     formData.append("bank_acc_no", accountNumber);
-  //     formData.append("bank_ifsc", bankIFSC);
-  //     formData.append("bank_name", bankName);
-  //     formData.append("country", country);
-  //   } else if (paymentMethod === "2") {
-  //     formData.append("upi_provider", provider);
-  //     formData.append("upi_provider_id", upiID);
-  //     formData.append("country", country);
-  //   } else if (paymentMethod === "3") {
-  //     if (qrCode) {
-  //       formData.append("qr_code_image", qrCode);
-  //     }
-  //     formData.append("bank_name", bankName);
-  //   }
-
-  //   try {
-  //     await updateDirectorAccountDetails(editData.id, formData);
-  //     setSuccessPopupOpen(true);
-  //     setTimeout(() => {
-  //       setSuccessPopupOpen(false);
-  //     }, 5000);
-  //     getDirectorAccountData();
-  //     setEditMode(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //     setError(error?.message || "Error updating payment details");
-  //     setErrorPopupOpen(true);
-  //   }
-  // };
-
-  // const addDirectorAccountDetails = async () => {
-  //   const formData = new FormData();
-  //   formData.append("gateway_type", parseInt(paymentMethod));
-  //   formData.append("director_id", 1);
-
-  //   if (paymentMethod === "1") {
-  //     formData.append("bank_acc_no", accountNumber);
-  //     formData.append("bank_ifsc", bankIFSC);
-  //     formData.append("bank_name", bankName);
-  //     formData.append("country", country);
-  //   } else if (paymentMethod === "2") {
-  //     formData.append("upi_provider", provider);
-  //     formData.append("upi_provider_id", upiID);
-  //     formData.append("country", country);
-  //   } else if (paymentMethod === "3") {
-  //     formData.append("qr_code_image", qrCode);
-  //     formData.append("bank_name", bankName);
-  //   }
-
-  //   try {
-  //     await postDirectorAccountDetails(formData);
-  //     setSuccessPopupOpen(true);
-  //     setTimeout(() => {
-  //       setSuccessPopupOpen(false);
-  //     }, 5000);
-  //     getDirectorAccountData();
-  //   } catch (error) {
-  //     setError(error?.message || "Error adding payment details");
-  //     setErrorPopupOpen(true);
-  //   }
-  // };
-
-  // const reset = () => {
-  //   setPaymentMethod("1");
-  //   setProvider("");
-  //   setUpiID("");
-  //   setAccountNumber("");
-  //   setBankIFSC("");
-  //   setBankName("");
-  //   setCountry("");
-  //   setQrCode(null);
-  // };
 
   // managemnet paymnet details edit and post get apis ============================
 
@@ -236,7 +55,14 @@ const AddPaymentGatewayPopup = ({
         console.log("response", response);
         if (response.status === true) {
           setManPaymentData(response?.data);
-          console.log(response.data, "success");
+          setAccHolderName(response?.data?.acc_hold_name || "");
+          setAccountNumber(response?.data?.bank_acc_no || "");
+          setBankIFSC(response?.data?.bank_ifsc || "");
+          setBankName(response?.data?.bank_name || "");
+          setUpiID(response?.data?.upi_id || "");
+          setDetails(response?.data?.others_details || "");
+          setQrCode(response?.data?.qr_code_image || null);
+          console.log(response?.data?.gateway_type, "success");
         }
       })
       .catch((error) => {
@@ -246,41 +72,42 @@ const AddPaymentGatewayPopup = ({
   };
 
   useEffect(() => {
-    if (managementPaymentEditId) {
+    if (managementPaymentEditId && managementPaymentEdit) {
       fetchManagementPaymentDetailsById();
     }
-  }, [managementPaymentEditId]);
+  }, [managementPaymentEditId && managementPaymentEdit]);
 
   const handleManagementPaymentAddEdit = async () => {
-    const formData = new FormData();
-    formData.append("gateway_type", parseInt(paymentMethod));
+    const pay_id = managementPaymentEditId
+      ? manPaymentData?.id
+      : addpaymentId.slice(3, -3);
+    const requestData = {
+      payment_mode_id: Number(pay_id),
+      acc_hold_name: accHolderName,
+    };
 
-    if (paymentMethod === "1") {
-      formData.append(
-        "bank_acc_no",
-        accountNumber || manPaymentData?.bank_acc_no
-      );
-      formData.append("bank_ifsc", bankIFSC || manPaymentData?.bank_ifsc);
-      formData.append("bank_name", bankName || manPaymentData?.bank_name);
-      formData.append("country", country);
-    } else if (paymentMethod === "2") {
-      formData.append("upi_provider", provider || manPaymentData?.upi_provider);
-      formData.append(
-        "upi_provider_id",
-        upiID || manPaymentData?.upi_provider_id
-      );
-      formData.append("country", country);
-    } else if (paymentMethod === "3") {
-      formData.append("qr_code_image", qrCode);
-      formData.append("bank_name", bankName || manPaymentData?.bank_name);
+    if (availablePaymentModeId === 1) {
+      requestData.bank_acc_no = accountNumber;
+      requestData.bank_ifsc = bankIFSC;
+      requestData.bank_name = bankName;
+    } else if (availablePaymentModeId === 2) {
+      requestData.upi_id = upiID;
+    } else if (availablePaymentModeId === 3) {
+      requestData.bank_name = bankName;
+    } else if (availablePaymentModeId === 4) {
+      requestData.details = details;
     }
-    console.log(formData, "formDataa");
+
+    const formData = new FormData();
+    formData.append("body", JSON.stringify(requestData));
+
+    if (availablePaymentModeId === 3 && qrCode) {
+      formData.append("qr_code_image", qrCode);
+    }
+
     try {
       const response = managementPaymentEdit
-        ? await updateManagementPaymentDetails(
-            managementPaymentEditId,
-            formData
-          )
+        ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
         : await createManagementPaymentDetails(formData);
       if (response.status === true) {
         console.log(response, "handleManagementPaymentAddEdit");
@@ -298,33 +125,27 @@ const AddPaymentGatewayPopup = ({
   };
 
   // managemnet paymnet details edit and post get apis ============================
-
+  console.log(availablePaymentModeId, "===>availablePaymentModeId");
   return (
     <>
       <Modal centered show={show} onHide={onHide} size="md">
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">
-              {role_code === "management"
-                ? managementPaymentEdit
-                  ? "Edit Managemnt Payment Gateway"
-                  : "Add Managemnt Payment Gateway"
-                : editMode
-                ? "Edit Payment Gateway"
-                : "Add Payment Gateway"}
+              {managementPaymentEdit ? "Edit" : "Add"} Managemnt Payment Gateway
             </h5>
             <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
 
           <div className="row mb-3">
             <div className="col-6">
-              <label className="small-font mb-1">Bank Holder Name</label>
+              <label className="small-font mb-1">Account Holder Name</label>
               <input
                 type="text"
                 className="w-100 small-font rounded input-css all-none"
                 placeholder="Enter"
-                // value={bankName || manPaymentData?.bank_name}
-                // onChange={(e) => setBankName(e.target.value)}
+                value={accHolderName}
+                onChange={(e) => setAccHolderName(e.target.value)}
               />
             </div>
             {availablePaymentModeId === 1 && (
@@ -335,8 +156,8 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    // value={accountNumber || manPaymentData?.bank_acc_no}
-                    // onChange={(e) => setAccountNumber(e.target.value)}
+                    value={accountNumber}
+                    onChange={(e) => setAccountNumber(e.target.value)}
                   />
                 </div>
 
@@ -346,8 +167,8 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    // value={bankIFSC || manPaymentData?.bank_ifsc}
-                    // onChange={(e) => setBankIFSC(e.target.value)}
+                    value={bankIFSC}
+                    onChange={(e) => setBankIFSC(e.target.value)}
                   />
                 </div>
 
@@ -357,8 +178,8 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    // value={bankName || manPaymentData?.bank_name}
-                    // onChange={(e) => setBankName(e.target.value)}
+                    value={bankName}
+                    onChange={(e) => setBankName(e.target.value)}
                   />
                 </div>
               </>
@@ -372,8 +193,8 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    // value={upiID || manPaymentData?.upi_provider_id}
-                    // onChange={(e) => setUpiID(e.target.value)}
+                    value={upiID}
+                    onChange={(e) => setUpiID(e.target.value)}
                   />
                 </div>
               </>
@@ -387,8 +208,8 @@ const AddPaymentGatewayPopup = ({
                     type="text"
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
-                    // value={bankName || manPaymentData?.bank_name}
-                    // onChange={(e) => setBankName(e.target.value)}
+                    value={bankName}
+                    onChange={(e) => setBankName(e.target.value)}
                   />
                 </div>
 
@@ -400,8 +221,9 @@ const AddPaymentGatewayPopup = ({
                     <input
                       id="qrCode"
                       type="file"
+                      accept="image/*"
                       className="w-100 small-font rounded input-css all-none"
-                      // onChange={handleQrCodeChange}
+                      onChange={handleQrCodeChange}
                       style={{ display: "none" }}
                     />
                     <label
@@ -420,13 +242,16 @@ const AddPaymentGatewayPopup = ({
 
             {availablePaymentModeId === 4 && (
               <>
-                <div className="col-6">
+                <div className="col-12 my-2">
                   <label className="small-font mb-1">Details</label>
                   <textarea
                     type="text"
+                    rows={6}
                     className="w-100 small-font rounded input-css
                     all-none"
                     placeholder="Enter"
+                    value={details}
+                    onChange={(e) => setDetails(e.target.value)}
                   ></textarea>
                 </div>
               </>
@@ -438,19 +263,9 @@ const AddPaymentGatewayPopup = ({
               <button
                 type="button"
                 className="w-100 saffron-btn rounded small-font"
-                // onClick={
-                //   role_code === "management"
-                //     ? handleManagementPaymentAddEdit
-                //     : handleSubmit
-                // }
+                onClick={handleManagementPaymentAddEdit}
               >
-                {role_code === "management"
-                  ? managementPaymentEdit
-                    ? "Update"
-                    : "Submit"
-                  : editMode
-                  ? "Update"
-                  : "Submit"}
+                {managementPaymentEdit ? "Update" : "Submit"}
               </button>
             </div>
           </div>
@@ -460,7 +275,11 @@ const AddPaymentGatewayPopup = ({
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={editMode ? "Successfully updated!" : "Successfully added!"}
+        discription={
+          managementPaymentEdit
+            ? "Successfully updated!"
+            : "Successfully added!"
+        }
       />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
@@ -469,11 +288,6 @@ const AddPaymentGatewayPopup = ({
       />
     </>
   );
-};
-
-AddPaymentGatewayPopup.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func.isRequired,
 };
 
 export default AddPaymentGatewayPopup;
