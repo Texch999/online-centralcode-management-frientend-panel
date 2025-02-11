@@ -274,7 +274,7 @@ const AddDirectorAdmin = () => {
                   }`}
                   onClick={() =>
                     user.status !== 2 &&
-                    navigate(`/director-admin/editDirector`, {
+                    navigate(`/director-admin/editDirector/`, {
                       state: { userId: user.id, mode: "edit" },
                     })
                   }

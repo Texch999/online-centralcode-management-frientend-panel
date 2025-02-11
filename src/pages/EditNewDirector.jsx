@@ -20,10 +20,12 @@ import {
 } from "../api/apiMethods";
 import { adminRoles, commissionTypes } from "../utils/enum";
 import { customStyles } from "../components/ReactSelectStyles";
+import SuccessPopup from "./popups/SuccessPopup";
 
 function EditNewDirector() {
   const navigate = useNavigate();
 
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
@@ -224,7 +226,10 @@ function EditNewDirector() {
     updateDirectorByID(userId, payload)
       .then((response) => {
         if (response.status === true) {
-          console.log(response, "RESPONSEFROMUPDATINGDIRECTOR");
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            navigate("/director-admin");
+          }, 2000);
         } else {
           console.log("Something error");
         }
@@ -513,7 +518,7 @@ function EditNewDirector() {
       </div>
       <div>
         <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET </h3>
-        <form className="custom-form small-font p-3" onSubmit={handleSubmit}>
+        <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             {forms.map((form, index) => (
               <>
@@ -855,12 +860,22 @@ function EditNewDirector() {
           </div>
 
           <div className="d-flex justify-content-end">
-            <button type="submit" className="btn btn-warning">
-              Update Details <FaArrowRight />
+            <button
+              className="saffron-btn rounded"
+              type="button"
+              onClick={handleSubmit}
+            >
+              Update Details
             </button>
           </div>
         </form>
-        <ConfirmationPopup />
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          // loginName
+          // discription="Updated Director SuccessFully"
+          discription={`updated ${selectedRole}  ${loginName} Successfully `}
+        />{" "}
       </div>
     </>
   );
