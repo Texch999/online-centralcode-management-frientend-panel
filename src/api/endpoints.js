@@ -290,7 +290,7 @@ const endpoints = {
   },
   getBroadCasting: {
     method: "get",
-    url: () => `/user/${userID()}/broadcasting`,
+    url: () => `/user/${userID()}/broadcastings`,
   },
 
   statusBroadcastUpdate: {
@@ -300,7 +300,7 @@ const endpoints = {
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
 
   //DirectorAccountDetails
@@ -313,7 +313,7 @@ const endpoints = {
     url: () => `/user/${userID()}/directorAccount`,
   },
   suspendDirectorAccountPaymentDetails: {
-    method: 'patch',
+    method: "patch",
     url: (data) =>
       `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
   },
@@ -431,7 +431,8 @@ const endpoints = {
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
-    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+    url: (data) =>
+      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   },
   updateManagementOfflinePaymentDetails: {
     method: "put",

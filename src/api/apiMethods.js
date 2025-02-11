@@ -144,6 +144,7 @@ export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
 export const editBroadCasting = (id, data) => {
+  console.log(id,"id")
   return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {
