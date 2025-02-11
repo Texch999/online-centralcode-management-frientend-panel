@@ -39,6 +39,14 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/website/websiteby/${id}`,
   },
+  getAdminWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/adminWebsites`,
+  },
+  getUserWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/userWebsites`,
+  },
   getWebsitesList: {
     method: "get",
     url: (params) => {
@@ -57,7 +65,7 @@ const endpoints = {
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${userID()}/promotionTypes/${id}`,
+    url: (id) => `/user/${userID()}/promotionTypes/${id}/status`,
   },
   getPromotionsImage: {
     method: "get",
@@ -89,7 +97,7 @@ const endpoints = {
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/bannerStatus/${id}`,
+    url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
   addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
