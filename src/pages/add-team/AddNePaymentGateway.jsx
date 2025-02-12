@@ -39,8 +39,8 @@ const AddNePaymentGateway = () => {
     setLoading(true);
     ownersAvailablePaymentsModes()
       .then((response) => {
-        console.log("getDirectorAccountDetails success", response.data);
-        setPaymentModes(response.data);
+        console.log("getDirectorAccountDetails success", response?.data);
+        setPaymentModes(response?.data);
       })
       .catch((error) => {
         setError(error?.message);

@@ -19,8 +19,9 @@ import {
 import moment from "moment";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
+import { offset } from "@popperjs/core";
 
 const PaymentGateway = () => {
   const navigate = useNavigate();
@@ -84,12 +85,25 @@ const PaymentGateway = () => {
   };
   // get all
 
+  const itemsPerPage = 4;
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    setSearchParams({ page: page });
+  };
+
   const fetchManagementPaymentDetails = async () => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails();
+      const response = await getManagementPaymentDetails({ limit, offset });
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
+        setTotalRecords(response?.meta?.totalCount);
       }
     } catch (error) {
       setError(error?.message);
@@ -401,7 +415,9 @@ const PaymentGateway = () => {
                 : transformedData
             }
             columns={columns}
-            itemsPerPage={6}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={onPageChange}
           />
         )}
       </div>

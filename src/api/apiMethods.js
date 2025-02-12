@@ -244,8 +244,8 @@ const getDirectorAccessWebites = (params) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
-const getManagementPaymentDetails = (data) => {
-  return apiRequest("getManagementPaymentDetails", data);
+const getManagementPaymentDetails = (params) => {
+  return apiRequest("getManagementPaymentDetails", {}, params);
 };
 const suspendManagementPaymentDetails = (id, data) => {
   return apiRequest("suspendManagementPaymentDetails", data, id);
@@ -263,16 +263,16 @@ const createManagementOfflinePaymentModes = (data) => {
   return apiRequest("createManagementOfflinePaymentModes", data);
 };
 const getManagementOfflinePaymentModes = (params) => {
-  return apiRequest("getManagementOfflinePaymentModes",{}, params);
+  return apiRequest("getManagementOfflinePaymentModes", {}, params);
 };
 const suspenManagementOfflinePaymentModes = (id, status) => {
-  return apiRequest("suspenManagementOfflinePaymentModes", id, { id,status });
+  return apiRequest("suspenManagementOfflinePaymentModes", id, { id, status });
 };
 const getManagementOfflinePaymentModeById = (id, data) => {
   return apiRequest("getManagementOfflinePaymentModeById", data, id);
 };
-const updateManagementOfflinePaymentDetails=(id,data)=>{
-  return apiRequest("updateManagementOfflinePaymentDetails",data,id);
+const updateManagementOfflinePaymentDetails = (id, data) => {
+  return apiRequest("updateManagementOfflinePaymentDetails", data, id);
 };
 
 const managementPaymentDetails = (data) => {
