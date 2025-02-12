@@ -100,6 +100,7 @@ function Login() {
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
           localStorage.setItem("user_id", response?.user?.id);
+          console.log(response, "========>response login ")
           navigate("/");
           setError("");
         } else {

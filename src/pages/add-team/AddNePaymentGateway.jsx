@@ -24,6 +24,7 @@ const AddNePaymentGateway = () => {
   const [addpaymentId, setAddPaymentId] = useState();
   const [countryId, setCountryId] = useState(null);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState(null);
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -53,7 +54,6 @@ const AddNePaymentGateway = () => {
 
     fetchPaymentModes
       .then((response) => {
-        console.log("getDirectorAccountDetails success", response?.data);
         setPaymentModes(response?.data);
       })
       .catch((error) => {
@@ -82,15 +82,21 @@ const AddNePaymentGateway = () => {
     (mode) => mode.country_id === selectedCountryId
   );
   const hasNoRecords = filteredPaymentModes.length === 0;
-  console.log(actionType, "=====>")
-  console.log(addpaymentId, "=====>available_id");
+  const handleDepositAndWithdraw = (paymentDetails) => {
+    if (actionType === "Deposit") {
+      setDepositePopup(true)
+      setSelectedPayment(paymentDetails)
+    } else {
+      setWithdrawPopup(true)
+      setSelectedPayment(paymentDetails)
+    }
+  }
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
         <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
       </div>
-
-      <div className="mt-2 min-h-screen bg-white rounded-md ms-3 ps-2">
+      <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
         <div className="row mb-3">
           <div className="col-3">
             <label htmlFor="paymentMethod" className="medium-font mb-1">
@@ -155,7 +161,6 @@ const AddNePaymentGateway = () => {
                     <div className="mb-3" key={mode}>
                       <h1 className="large-font fw-600">{title}</h1>
                       <div className="row g-1">
-                        {console.log(filteredPayments, "payment")}
                         {filteredPayments.map((card) => (
                           <div key={card.id} className="col-2">
                             <div className="card h-100">
@@ -168,25 +173,23 @@ const AddNePaymentGateway = () => {
                                 }}
                               >
                                 <img
-                                  //   onClick={() =>
-                                  //     setAddPaymentGatewayModal(true)
-                                  //   }
-                                  onClick={() =>
-                                    handleAddModal(
-                                      card?.id,
-                                      card?.country_id,
-                                      card?.avil_modes
-                                    )
-                                  }
+                                  onClick={() => {
+                                    if (userRole === "director") {
+                                      actionType === "Deposit" || "Withdraw"
+                                        ? handleDepositAndWithdraw(card)
+                                        : handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+                                    } else {
+                                      handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+                                    }
+                                  }}
                                   src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
-                                  alt={card.name}
+                                  alt={card?.name}
                                   className="w-60 h-100"
                                   style={{
                                     objectFit: "contain",
                                     objectPosition: "center",
                                   }}
                                 />
-                                {console.log(card, "card detals")}
                               </div>
                               <div
                                 className="card-body d-flex align-items-center justify-content-center tag-bg"
@@ -224,13 +227,15 @@ const AddNePaymentGateway = () => {
       {actionType === "Deposit" ? <DepositePopup
         setDepositePopup={setDepositePopup}
         depositePopup={depositePopup}
-
+        actionType={actionType}
+        selectedPayment={selectedPayment}
       /> :
         <WithdrawPopup
           setWithdrawPopup={setWithdrawPopup}
           withdrawPopup={withdrawPopup}
+          actionType={actionType}
+          selectedPayment={selectedPayment}
         />
-
       }
     </div>
   );

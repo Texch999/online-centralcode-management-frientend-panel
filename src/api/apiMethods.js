@@ -284,8 +284,8 @@ const resetDirectorEmployeePassword = (id, data) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
-const getManagementPaymentDetails = (data) => {
-  return apiRequest("getManagementPaymentDetails", data);
+const getManagementPaymentDetails = (params) => {
+  return apiRequest("getManagementPaymentDetails", {}, params);
 };
 const suspendManagementPaymentDetails = (id, data) => {
   return apiRequest("suspendManagementPaymentDetails", data, id);

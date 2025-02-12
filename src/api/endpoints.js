@@ -408,6 +408,12 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
+
+
+  getUserWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/userWebsites`,
+  },
   getAdminWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/all-admin/websites`,
@@ -416,7 +422,11 @@ const endpoints = {
   // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
-    url: () => `/user/${userID()}/paymentDetails`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/paymentDetails?${query}`;
+    },
+    // url: () => `/user/${userID()}/paymentDetails`,
   },
   suspendManagementPaymentDetails: {
     method: "post",
@@ -474,7 +484,7 @@ const endpoints = {
   addWebsiteToPrivacyPolicy: {
     method: "post",
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
-    },
+  },
 };
 
 export default endpoints;
