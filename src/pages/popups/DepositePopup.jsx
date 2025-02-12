@@ -5,15 +5,13 @@ import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
-import { getDirectorAccessWebites, managementPaymentDetails } from "../../api/apiMethods";
+import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
 import { Images } from "../../images";
 const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPayment }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     const [userWebsites, setUserWebsites] = useState([]);
-    const [depositDetails, setDepositDetails] = useState([]);
-    const [paymentDetailsList, setPaymentDetailsList] = useState([]);
     const [formData, setFormData] = useState({
         paymentType: null,
         depositeDetails: null,
@@ -31,13 +29,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     const [error, setError] = useState("");
     const fileInputRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
-const userName=localStorage.getItem("role_code")
-    const PaymentType = [
-        { label: "NEFT/RTGS", value: "neftrtgs", type: 1 },
-        { label: "UPI", value: "upi", type: 2 },
-        { label: "QR Code", value: "qrcode", type: 3 },
-        { label: "CASH", value: "cash", type: 4 },
-    ];
+    const userName = localStorage.getItem("user_name")
+    const userRole = localStorage.getItem("role_code")
+    const [directorSites, setDirectorSites] = useState([])
+
 
     const getDirectorAccessedWebistesList = () => {
         getDirectorAccessWebites()
@@ -52,12 +47,11 @@ const userName=localStorage.getItem("role_code")
                 setError(error?.message || "API request failed");
             });
     };
-
-    const paymentsDetailsList = () => {
-        managementPaymentDetails()
+    const getDirectorSitesList = () => {
+        getDirectorSites()
             .then((response) => {
                 if (response?.status === true) {
-                    setPaymentDetailsList(response.data);
+                    setDirectorSites(response.data);
                 } else {
                     setError("Something Went Wrong");
                 }
@@ -66,56 +60,13 @@ const userName=localStorage.getItem("role_code")
                 setError(error?.message || "API request failed");
             });
     };
-
-    const getFilteredPaymentDetails = (paymentType) => {
-        return paymentDetailsList.filter((detail) => detail.gateway_type === paymentType);
-    };
-
-    useEffect(() => {
-        if (formData.paymentType) {
-            const paymentTypeMap = {
-                neftrtgs: 1,
-                upi: 2,
-                qrcode: 3,
-            };
-
-            const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[formData.paymentType.value]);
-
-            if (filteredDetails.length > 0) {
-                const defaultDeposit = {
-                    label: filteredDetails[0].bank_name,
-                    value: filteredDetails[0].gateway_id,
-                    details: {
-                        bankName: filteredDetails[0].bank_name,
-                        accountNumber: filteredDetails[0].bank_acc_no,
-                        ifscCode: filteredDetails[0].bank_ifsc,
-                    },
-                };
-
-                setDepositDetails(filteredDetails);
-                setFormData((prev) => ({
-                    ...prev,
-                    depositeDetails: defaultDeposit,
-                }));
-
-                setSelectedDepositDetails(defaultDeposit.details);
-            } else {
-                setFormData((prev) => ({
-                    ...prev,
-                    depositeDetails: null,
-                }));
-                setSelectedDepositDetails({});
-            }
-        }
-    }, [formData.paymentType]);
-
     useEffect(() => {
         if (isInitialRender.current) {
             isInitialRender.current = false;
-            getDirectorAccessedWebistesList();
-            paymentsDetailsList();
             return;
         }
+        getDirectorAccessedWebistesList();
+        getDirectorSitesList();
     }, []);
 
     const handleChange = (e) => {
@@ -123,62 +74,13 @@ const userName=localStorage.getItem("role_code")
         setErrors({ ...errors, [e.target.name]: "" });
     };
 
-    const handleSelectChange = (field, option) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: option,
-        }));
-
-        if (field === "paymentType" && option) {
-            if (option.value !== formData.paymentType?.value) {
-                const paymentTypeMap = {
-                    neftrtgs: 1, // NEFT/RTGS
-                    upi: 2,      // UPI
-                    qrcode: 3,   // QR Code
-                };
-
-                const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[option.value]);
-
-                if (filteredDetails.length > 0) {
-                    const defaultDeposit = {
-                        label: filteredDetails[0].bank_name,
-                        value: filteredDetails[0].gateway_id,
-                        details: {
-                            bankName: filteredDetails[0].bank_name,
-                            accountNumber: filteredDetails[0].bank_acc_no,
-                            ifscCode: filteredDetails[0].bank_ifsc,
-                        },
-                    };
-
-                    setDepositDetails(filteredDetails);
-                    setFormData((prev) => ({
-                        ...prev,
-                        depositeDetails: defaultDeposit,
-                    }));
-
-                    setSelectedDepositDetails(defaultDeposit.details);
-                } else {
-                    setFormData((prev) => ({
-                        ...prev,
-                        depositeDetails: null,
-                    }));
-                    setSelectedDepositDetails({});
-                }
-            }
-        }
-
-        if (field === "depositeDetails" && option) {
-            setSelectedDepositDetails(option.details);
-        }
-    };
-
     const [previewImage, setPreviewImage] = useState(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setSelectedFile(file.name); // Store file name
-            setPreviewImage(URL.createObjectURL(file)); // Create a preview URL
+            setSelectedFile(file.name);
+            setPreviewImage(URL.createObjectURL(file));
         }
     };
 
@@ -212,8 +114,12 @@ const userName=localStorage.getItem("role_code")
             payload.description = formData.description;
         }
 
-        console.log("Payload:", payload);
     };
+    const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
+    function getWebsiteDetailsByUserId(selectedUserId) {
+        console.log(selectedUserId, "=====>selectedUserId")
+        return directorSites.filter(item => item.user_paner_id === selectedUserId);
+    }
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -232,7 +138,7 @@ const userName=localStorage.getItem("role_code")
                             {/* Left-aligned text */}
                             <div className="d-flex flex-column text-end">
                                 <h5 className="small-font fw-600 mb-0 green-font">{actionType} in USD</h5>
-                                <p className="small-font text-secondary mb-0">{`Rudhira- Super Admin (Share-10%)`}</p>
+                                <p className="medium-font text-secondary mb-0">{`${userName} - ${userRole} (Share-10%)`}</p>
                             </div>
                         </div>
                         {/* Close icon on the far right */}
@@ -246,7 +152,7 @@ const userName=localStorage.getItem("role_code")
                             <label className="small-font mb-1">Admin Panel</label>
                             <Select
                                 className="small-font"
-                                options={directorWebsitesList.map((admin) => ({
+                                options={adminWebsitesList.map((admin) => ({
                                     label: admin.admin_web_name,
                                     value: admin.admin_panel_id,
                                 }))}
@@ -255,7 +161,7 @@ const userName=localStorage.getItem("role_code")
                                 value={selectedAdmin}
                                 onChange={(option) => {
                                     setSelectedAdmin(option);
-                                    const selectedAdminData = directorWebsitesList.find(
+                                    const selectedAdminData = adminWebsitesList.find(
                                         (admin) => admin.admin_panel_id === option.value
                                     );
                                     setUserWebsites(selectedAdminData?.users || []);
@@ -277,6 +183,7 @@ const userName=localStorage.getItem("role_code")
                                         ...prev,
                                         websiteName: option.value,
                                     }));
+                                    getWebsiteDetailsByUserId(option.value)
                                 }}
                             />
                         </div>

@@ -96,9 +96,9 @@ const AddDirectorAdmin = () => {
   };
 
   const navigate = useNavigate();
-
-  const handleNavigateUserDashboard = () => {
-    navigate("/user-profile-dashboard");
+  const handleNavigateUserDashboard = (id) => {
+    navigate(`/user-profile-dashboard/${id}`);
+    
   };
 
   const [countryData, setCountryData] = useState([]);
@@ -177,6 +177,8 @@ const AddDirectorAdmin = () => {
   ];
   const [error, setError] = useState();
   const [tableData, setTableData] = useState();
+
+  
   const TableData =
     role === "management"
       ? tableData?.map((user) => {

@@ -194,38 +194,6 @@ const AddWibsites = () => {
     // { header: "Action", field: "action", width: "20%" },
   ];
 
-  // const directorswebsitedata = directorSites.map((item) => (
-
-  //   item?.admin_websites.map((adminPanel) => ({
-
-  //     type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
-  //     admin: adminPanel.admin_web_name,
-  //     websiteName: adminPanel.users.map(user => (
-  //       <div key={user.website_access_id}>{console.log(adminPanel, "=====>item")}{user.user_web_name}</div>
-  //     )),
-  //     location: adminPanel.users.map(user => (
-  //       <div key={user.website_access_id}>{user.user_web_city}</div>
-  //     )),
-
-  //     url: adminPanel.users.map(user => (
-  //       <div key={user.website_access_id}>
-  //         {user.user_web_url}
-  //       </div>
-  //     )),
-  //     // action: (
-  //     //   <div className="d-flex gap-3">
-  //     //     <SlPencil size={18} className="pointer" />
-  //     //     <MdBlockFlipped
-  //     //       size={18}
-  //     //       className="pointer"
-  //     //       onClick={() => setConfirmationPopupOpen(true)}
-  //     //     />
-  //     //   </div>
-  //     // ),
-  //   }))
-
-  // ));
-
   const directorswebsitedata = directorSites.flatMap((site) =>
     site.admin_websites.map((adminPanel) => ({
       type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",

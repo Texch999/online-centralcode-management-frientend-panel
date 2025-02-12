@@ -86,7 +86,7 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
-
+console.log("websitesList",websitesList)
   const selectOptionsWebsites = websitesList?.map((item) => ({
     value: item.id,
     label: item.web_name,
@@ -206,11 +206,15 @@ const PromotionType = () => {
       setErrorPopupOpen(true);
     }
   };
+  console.log(promotionsTypes, "promotionsTypes")
 
-  const selectOptions = promotionsTypes?.map((item) => ({
+  const selectOptions = promotionsTypes
+  ?.filter((item) => item.status === 1) 
+  .map((item) => ({
     value: item.id,
     label: item.promotionsType,
   }));
+
 
   const handleSportClick = (item) => {
     setActiveBtn(item);

@@ -187,7 +187,7 @@ function App() {
                 element={<EditNewDirector />}
               />
               <Route
-                path="/user-profile-dashboard"
+                path="/user-profile-dashboard/:id"
                 element={<UserProfileDashboard />}
               />
               <Route path="/downline-list" element={<DownlineList />} />
