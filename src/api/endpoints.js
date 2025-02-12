@@ -8,7 +8,6 @@ const userID = () => {
 };
 const endpoints = {
   loginUser: { method: "post", url: "/master/login" },
-  loginDirector: { method: "post", url: "/director/login" },
 
   addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
   addDirectorTeam: {
@@ -19,7 +18,6 @@ const endpoints = {
   createDirector: { method: "post", url: `/user/${userID()}/create` },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
-  getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
   getAdminWebsites: {
     method: "get",
     url: `/user/${userID()}/website/adminWebsites`,
@@ -97,15 +95,11 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
-  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
-  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
 
-  loginUser: { method: "post", url: () => "/master/login" },
   // addManagemnentTeam: { method: "post", url: "/employee" },
-  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+  
 
-  getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
   // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
   // getEmployees: ({ limit, offset }) => ({
   //   method: "get",
@@ -380,10 +374,7 @@ const endpoints = {
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
 
-  getAdminWebsites: {
-    method: "get",
-    url: () => `/user/${userID()}/website/adminWebsites`,
-  },
+  
   getUserWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/userWebsites`,
