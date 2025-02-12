@@ -268,7 +268,10 @@ const AddPaymentGatewayPopup = ({
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
                     value={upiID}
-                    onChange={(e) => setUpiID(e.target.value)}
+                    onChange={(e) => {setUpiID(e.target.value)
+                      
+
+                    }}
                   />
                   {validationErrors.upiID && (
                     <p className="text-danger small-font">

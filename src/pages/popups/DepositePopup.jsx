@@ -6,8 +6,8 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
 import { getDirectorAccessWebites, managementPaymentDetails } from "../../api/apiMethods";
-
-const DepositePopup = ({ setDepositePopup, depositePopup }) => {
+import { Images } from "../../images";
+const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPayment }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
@@ -31,7 +31,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
     const [error, setError] = useState("");
     const fileInputRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
-
+const userName=localStorage.getItem("role_code")
     const PaymentType = [
         { label: "NEFT/RTGS", value: "neftrtgs", type: 1 },
         { label: "UPI", value: "upi", type: 2 },
@@ -172,11 +172,13 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
         }
     };
 
+    const [previewImage, setPreviewImage] = useState(null);
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setSelectedFile(file.name);
-            setFormData((prev) => ({ ...prev, screenshot: file }));
+            setSelectedFile(file.name); // Store file name
+            setPreviewImage(URL.createObjectURL(file)); // Create a preview URL
         }
     };
 
@@ -196,12 +198,12 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
 
         // Transform formData into the desired payload format
         const payload = {
-            amount: parseFloat(formData.amount), // Ensure amount is a number
-            type: formData.paymentType.type, // Use the type from PaymentType
-            admin: selectedAdmin?.value || null, // Admin website ID
-            websiteid: formData.websiteName || null, // User website ID (if applicable)
-            transactionId: formData.utr || null, // UTR/Transaction ID for non-cash payments
-            slip: formData.screenshot || null, // File for non-cash payments
+            amount: parseFloat(formData.amount),
+            type: formData.paymentType.type,
+            admin: selectedAdmin?.value || null,
+            websiteid: formData.websiteName || null,
+            transactionId: formData.utr || null,
+            slip: formData.screenshot || null,
         };
 
         // Include cash-specific fields if payment type is cash
@@ -212,20 +214,78 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
 
         console.log("Payload:", payload);
     };
-
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                        <h5 className="medium-font fw-600">Deposit</h5>
-                        <MdOutlineClose size={22} className="pointer" onClick={() => setDepositePopup(false)} />
+                        {/* Image on the left */}
+                        <img
+                            src={Images?.phonepe}
+                            alt="Icon"
+                            className="me-3"
+                            style={{ width: "50px", height: "50px" }}
+                        />
+
+                        {/* Content in the center */}
+                        <div className="d-flex justify-content-end flex-grow-1">
+                            {/* Left-aligned text */}
+                            <div className="d-flex flex-column text-end">
+                                <h5 className="small-font fw-600 mb-0 green-font">{actionType} in USD</h5>
+                                <p className="small-font text-secondary mb-0">{`Rudhira- Super Admin (Share-10%)`}</p>
+                            </div>
+                        </div>
+                        {/* Close icon on the far right */}
+                        <div>
+                            <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositePopup(false)} />
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="row ">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Admin Panel</label>
+                            <Select
+                                className="small-font"
+                                options={directorWebsitesList.map((admin) => ({
+                                    label: admin.admin_web_name,
+                                    value: admin.admin_panel_id,
+                                }))}
+                                placeholder="Select Admin Website"
+                                styles={customStyles}
+                                value={selectedAdmin}
+                                onChange={(option) => {
+                                    setSelectedAdmin(option);
+                                    const selectedAdminData = directorWebsitesList.find(
+                                        (admin) => admin.admin_panel_id === option.value
+                                    );
+                                    setUserWebsites(selectedAdminData?.users || []);
+                                }}
+                            />
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">User Panel</label>
+                            <Select
+                                className="small-font"
+                                options={userWebsites.map((user) => ({
+                                    label: user.user_web_name,
+                                    value: user.website_access_id,
+                                }))}
+                                placeholder="Select User Website"
+                                styles={customStyles}
+                                onChange={(option) => {
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        websiteName: option.value,
+                                    }));
+                                }}
+                            />
+                        </div>
                     </div>
                     <div className="col mb-2">
-                        <label className="small-font mb-1">Amount</label>
+                        <label className="small-font mb-1">Currency</label>
                         <input
-                            type="number"
-                            name="amount"
+                            type="text"
+                            name="currency"
                             className="w-100 small-font rounded input-css all-none"
                             placeholder="Enter Amount"
                             value={formData.amount || ""}
@@ -233,89 +293,35 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                         />
                         {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                     </div>
-                    <div className="col mb-2">
-                        <label className="small-font mb-1">Admin Panel</label>
-                        <Select
-                            className="small-font"
-                            options={directorWebsitesList.map((admin) => ({
-                                label: admin.admin_web_name,
-                                value: admin.admin_panel_id,
-                            }))}
-                            placeholder="Select Admin Website"
-                            styles={customStyles}
-                            value={selectedAdmin}
-                            onChange={(option) => {
-                                setSelectedAdmin(option);
-                                const selectedAdminData = directorWebsitesList.find(
-                                    (admin) => admin.admin_panel_id === option.value
-                                );
-                                setUserWebsites(selectedAdminData?.users || []);
-                            }}
-                        />
-                    </div>
-                    <div className="col mb-2">
-                        <label className="small-font mb-1">User Panel</label>
-                        <Select
-                            className="small-font"
-                            options={userWebsites.map((user) => ({
-                                label: user.user_web_name,
-                                value: user.website_access_id,
-                            }))}
-                            placeholder="Select User Website"
-                            styles={customStyles}
-                            onChange={(option) => {
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    websiteName: option.value,
-                                }));
-                            }}
-                        />
-                    </div>
-                    {/* Payment Type Dropdown */}
-                    <div className="col mb-2">
-                        <label className="small-font mb-1">Payment Type</label>
-                        <Select
-                            className="small-font"
-                            options={PaymentType}
-                            placeholder="Select"
-                            styles={customStyles}
-                            value={formData.paymentType}
-                            onChange={(option) => handleSelectChange("paymentType", option)}
-                        />
-                        {errors.paymentType && <p className="text-danger small-font">{errors.paymentType}</p>}
-                    </div>
 
                     {/* NEFT/RTGS Section */}
-                    {formData.paymentType?.value === "neftrtgs" && (
+                    {selectedPayment?.avil_modes === 1 && (
                         <>
                             <div className="col mb-2">
-                                <label className="small-font mb-1">Deposit Details</label>
-                                <Select
-                                    className="small-font"
-                                    options={getFilteredPaymentDetails(1).map((detail) => ({
-                                        label: detail.bank_name,
-                                        value: detail.gateway_id,
-                                        details: {
-                                            bankName: detail.bank_name,
-                                            accountNumber: detail.bank_acc_no,
-                                            ifscCode: detail.bank_ifsc,
-                                        },
-                                    }))}
-                                    placeholder="Select Bank"
-                                    styles={customStyles}
-                                    value={formData.depositeDetails}
-                                    onChange={(option) => handleSelectChange("depositeDetails", option)}
+                                <label className="small-font mb-1">Bank Transfer</label>
+                                <input
+                                    type="text"
+                                    name="upi"
+                                    className="w-100 small-font rounded input-css all-none"
+                                    placeholder="Enter "
+                                    value={selectedPayment?.name || ""}
+                                    onChange={handleChange}
                                 />
+                                {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+
                                 {selectedDepositDetails && (
                                     <div className="mt-1 p-2 border-none rounded input-css">
                                         <div className="d-flex justify-content-between small-font mb-1">
-                                            <strong>Bank Name</strong> <span className="text-end">{selectedDepositDetails.bankName}</span>
+                                            <strong>Account Holder Name</strong> <span className="text-end">{selectedPayment.acc_hold_name}</span>
                                         </div>
                                         <div className="d-flex justify-content-between small-font mb-1">
-                                            <strong>Account Number</strong> <span className="text-end">{selectedDepositDetails.accountNumber}</span>
+                                            <strong>Bank Name</strong> <span className="text-end">{selectedPayment.bank_name}</span>
                                         </div>
                                         <div className="d-flex justify-content-between small-font mb-1">
-                                            <strong>IFSC Code</strong> <span className="text-end">{selectedDepositDetails.ifscCode}</span>
+                                            <strong>Account Number</strong> <span className="text-end">{selectedPayment.bank_acc_no}</span>
+                                        </div>
+                                        <div className="d-flex justify-content-between small-font mb-1">
+                                            <strong>IFSC Code</strong> <span className="text-end">{selectedPayment.bank_ifsc}</span>
                                         </div>
                                     </div>
                                 )}
@@ -324,48 +330,76 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                     )}
 
                     {/* UPI Section */}
-                    {formData.paymentType?.value === "upi" && (
+                    {selectedPayment?.avil_modes === 2 && (
                         <>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">UPI ID</label>
-                                <Select
-                                    className="small-font"
-                                    options={getFilteredPaymentDetails(2).map((detail) => ({
-                                        label: detail.upi_provider_id,
-                                        value: detail.gateway_id,
-                                        details: {
-                                            upiProvider: detail.upi_provider,
-                                            upiId: detail.upi_provider_id,
-                                        },
-                                    }))}
-                                    placeholder="Select UPI"
-                                    styles={customStyles}
-                                    value={formData.depositeDetails}
-                                    onChange={(option) => handleSelectChange("depositeDetails", option)}
+                                <input
+                                    type="text"
+                                    name="upi"
+                                    className="w-100 small-font rounded input-css all-none"
+                                    placeholder="Enter "
+                                    value={selectedPayment?.upi_provider_id || ""}
+                                    onChange={handleChange}
                                 />
+                                {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                             </div>
                         </>
                     )}
-
-                    {formData.paymentType?.value === "qrcode" && (
-                        <>
-                            <div className="col mb-2">
-                                <label className="small-font mb-1">QR Code</label>
-                                {selectedDepositDetails?.qr_code_image ? (
-                                    <img
-                                        src={selectedDepositDetails.qr_code_image}
-                                        alt="QR Code"
-                                        className="w-100"
-                                    />
-                                ) : (
-                                    <p className="text-muted small-font">No QR Code available.</p>
-                                )}
-                            </div>
-                        </>
-                    )}
-
+                    <div className="row">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Wallet Chips Balance - USD</label>
+                            <input
+                                type="availableChips"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Total Chips - USD</label>
+                            <input
+                                type="availableChips"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Chips - USD</label>
+                            <input
+                                type="chipsNeed"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Paid Amount (10%) - USD</label>
+                            <input
+                                type="availableChips"
+                                name="upi"
+                                className="w-100 small-font rounded input-css all-none"
+                                placeholder="Enter "
+                                value={formData.amount || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+                    </div>
                     {/* File Upload for NEFT/RTGS and UPI */}
-                    {(formData.paymentType?.value !== "cash") && (
+                    {(selectedPayment?.avil_modes !== 4) && (
                         <div>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">UTR/Transaction ID</label>
@@ -390,6 +424,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                     </span>
                                     <VscCloudUpload size={16} className="text-muted" />
                                 </div>
+
+                                {/* Hidden File Input */}
                                 <input
                                     type="file"
                                     name="screenshot"
@@ -398,12 +434,22 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                     onChange={handleFileChange}
                                     accept="image/*"
                                 />
+
+                                {/* Display Uploaded Image Preview */}
+                                {previewImage && (
+                                    <div className="mt-2">
+                                        <img
+                                            src={previewImage}
+                                            alt="Uploaded Screenshot"
+                                            className="img-fluid rounded"
+                                            style={{ maxWidth: "100px", maxHeight: "100px" }}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
-
-                    {/* Cash Section */}
-                    {formData.paymentType?.value === "cash" && (
+                    {selectedPayment?.avil_modes === 4 && (
                         <>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">Cash Handover Name</label>
@@ -438,6 +484,23 @@ const DepositePopup = ({ setDepositePopup, depositePopup }) => {
                                     value={formData.description}
                                     onChange={handleChange}
                                 />
+                            </div>
+                        </>
+                    )}
+                    {/* Cash Section */}
+                    {selectedPayment?.avil_modes === 3 && (
+                        <>
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">QR Code</label>
+                                {selectedPayment?.qr_code_image ? (
+                                    <img
+                                        src={selectedPayment.qr_code_image}
+                                        alt="QR Code"
+                                        className="w-100"
+                                    />
+                                ) : (
+                                    <p className="text-muted small-font">No QR Code available.</p>
+                                )}
                             </div>
                         </>
                     )}

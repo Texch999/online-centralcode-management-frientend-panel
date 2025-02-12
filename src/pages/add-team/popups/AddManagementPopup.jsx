@@ -13,19 +13,14 @@ import {
 import "../style.css";
 import "../../../App.css";
 
-const AddManagementPopup = ({
-  onClose,
-  onSubmit,
-  show,
-  editingRowId,
-}) => {
+const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
     managementPassword: false,
   });
 
-  const Role=localStorage.getItem("roleCode")
+  const Role = localStorage.getItem("roleCode");
   console.log(editingRowId, "editingRowId");
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
@@ -47,10 +42,7 @@ const AddManagementPopup = ({
   useEffect(() => {
     getRoles({ token })
       .then((response) => {
-        if (
-          response?.message === "Roles Fetched Successfully." &&
-          response.data
-        ) {
+        if (response?.status === true && response.data) {
           const roles = response.data.map((role) => ({
             value: role.role,
             label: role.name,
@@ -104,7 +96,15 @@ const AddManagementPopup = ({
     <Modal show={show} onHide={onClose} size="lg" centered>
       <Modal.Body>
         <div className="d-flex justify-content-between align-items-center">
-        {Role === "management" ? <h6 className="yellow-font mb-0 py-2 border-bottom-grey">Add Management Team</h6> :<h5 className="yellow-font mb-0 py-2 border-bottom-grey">Add Director Team</h5>}
+          {Role === "management" ? (
+            <h6 className="yellow-font mb-0 py-2 border-bottom-grey">
+              Add Management Team
+            </h6>
+          ) : (
+            <h5 className="yellow-font mb-0 py-2 border-bottom-grey">
+              Add Director Team
+            </h5>
+          )}
 
           <MdOutlineClose
             size={20}
@@ -120,7 +120,7 @@ const AddManagementPopup = ({
           <div className="row mb-3">
             <div className="col">
               <label className="small-font mb-1">Role</label>
-             
+
               <Select
                 className="small-font"
                 options={roleOptions}

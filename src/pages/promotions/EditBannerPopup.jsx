@@ -51,8 +51,12 @@ const EditBannerPopup = ({
         website_id: selectedBannerId.website_id || "",
         page: selectedBannerId.page || "",
         place: selectedBannerId.place || "",
-        start: selectedBannerId.start ? formatDate(selectedBannerId.start) : "",
-        end: selectedBannerId.end ? formatDate(selectedBannerId.end) : "",
+        ...(selectedBannerId.start
+          ? { start: formatDate(selectedBannerId.start) }
+          : {}),
+        ...(selectedBannerId.end
+          ? { end: formatDate(selectedBannerId.end) }
+          : {}),
         existingImages: selectedBannerId.image
           ? Array.isArray(selectedBannerId.image)
             ? selectedBannerId.image
@@ -290,7 +294,7 @@ const EditBannerPopup = ({
                 {formData.existingImages.map((image, idx) => (
                   <div key={idx} className="position-relative">
                     <img
-                      src={`${imgUrl}/${image}`}
+                      src={`${imgUrl}/uploadBanner/${image}`}
                       alt={`preview-${idx}`}
                       className="img-thumbnail"
                       style={{
@@ -350,7 +354,7 @@ const EditBannerPopup = ({
               className="saffron-btn2 small-font pointer ms-2 w-50 mr-2"
               onClick={handleSubmit}
             >
-              {loading ? "Loading...": "Update"}
+              {loading ? "Loading..." : "Update"}
             </div>
           </div>
         </div>

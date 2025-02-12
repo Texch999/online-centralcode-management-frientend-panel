@@ -5,14 +5,18 @@ import { BsEye } from "react-icons/bs";
 import DepositWithdrawPopup from "./DepositWithdrawPopup";
 import DepositePopup from "../popups/DepositePopup";
 import WithdrawPopup from "../popups/WithdrawPopup";
+import { useNavigate } from "react-router-dom";
 function Tickets() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
     useState(false);
+  const userRole = localStorage.getItem("role_code");
   const [depositePopup, setDepositePopup] = useState(false);
   const [withdrawPopup, setWithdrawPopup] = useState(false);
   const handleDepositWithdrawPopupOpen = () => {
     setDepositWithdrawPopupOpen(true);
   };
+
+  const navigate = useNavigate()
   const TICKETS_COLUMNS = [
     { header: "SNo", field: "serialNo" },
     { header: "Date & Time", field: "dateTime" },
@@ -131,19 +135,33 @@ function Tickets() {
       ),
     },
   ];
-
+  const handleDeposit = (action) => {
+    navigate("/addnew-payments", {
+      state: { actionType: action }, // Pass data here
+    });
+  }
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">Tickets</h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
-        </div>
-        <div className="d-flex align-items-center gap-1">
-          <button className={`me-3 dark-green-bg px-3`} onClick={() => setDepositePopup(true)}>Deposit</button>
-          <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
-        </div>
+        {userRole !== "management" ?
+          //search input 
+          <div className="d-flex align-items-center gap-1">
+            <button className={`me-3 dark-green-bg px-3`} onClick={() => handleDeposit("Deposit")
+              // setDepositePopup(true
+            }>Deposit</button>
+            <button className={`me-3 saffron-btn2 px-3`} onClick={() =>
+              //  setWithdrawPopup(true)
+              handleDeposit("Withdraw")
+            } > Withdraw</button>
+          </div>
+          :
+          // deposit and withdraw buttons
+          <div className="input-pill d-flex align-items-center rounded-pill px-2">
+            <FaSearch size={16} className="grey-clr me-2" />
+            <input className="small-font all-none" placeholder="Search..." />
+          </div>}
+
       </div>
       <div className="grey-bg2 d-flex w-100 py-3 rounded">
         <div className="col-3 px-3">
@@ -192,7 +210,7 @@ function Tickets() {
           <button className="w-100 saffron-btn2 small-font">Submit</button>
         </div>
       </div>
-      <Table columns={TICKETS_COLUMNS} data={TICKETS_DATA} itemsPerPage={2} />
+      <Table columns={TICKETS_COLUMNS} data={TICKETS_DATA} itemsPerPage={2} totalRecords={20} />
       <DepositWithdrawPopup
         depositWithdrawPopupOpen={depositWithdrawPopupOpen}
         setDepositWithdrawPopupOpen={setDepositWithdrawPopupOpen}
@@ -205,7 +223,7 @@ function Tickets() {
         setWithdrawPopup={setWithdrawPopup}
         withdrawPopup={withdrawPopup}
       />
-    </div>
+    </div >
   );
 }
 

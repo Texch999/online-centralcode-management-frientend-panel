@@ -1,8 +1,8 @@
 import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
-const loginUser = (data) => {
-  return apiRequest("loginUser", data);
+const loginManagement = (data) => {
+  return apiRequest("loginManagement", data);
 };
 // security Questions
 const createSecurityQuestions = (data) => {
@@ -21,6 +21,9 @@ const getSecQusetionsById = (id, data) => {
 // manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
+};
+const loginDirectorEmployee = (data) => {
+  return apiRequest("loginDirectorEmployee", data);
 };
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
@@ -56,6 +59,9 @@ const resetDirectorPassword = (id, data) => {
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
+const blockDirectorEmployee = (id, data) => {
+  return apiRequest("blockDirectorEmployee", data, id);
+};
 const blockDirector = (id, data) => {
   return apiRequest("blockDirector", data, id);
 };
@@ -63,8 +69,20 @@ const blockDirector = (id, data) => {
 const updateEmployeeByID = (id, data) => {
   return apiRequest("updateEmployeeByID", data, id);
 };
+const updateDirectorByID = (id, data) => {
+  return apiRequest("updateDirectorByID", data, id);
+};
+
+// updateDirectorEmployeeByID
+const updateDirectorEmployeeByID = (id, data) => {
+  return apiRequest("updateDirectorEmployeeByID", data, id);
+};
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
+};
+
+const getDirectorEmployeeDetailsById = (id) => {
+  return apiRequest("getDirectorEmployeeDetailsById", null, id);
 };
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
@@ -94,7 +112,10 @@ const getDirectorAccountById = (id, data) => {
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
 };
-
+// getCurrencies
+const getCurrencies = (data) => {
+  return apiRequest("getCurrencies", data);
+};
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
@@ -109,6 +130,12 @@ export const updateWebsite = (id, data) =>
 
 export const getWebsiteDetails = (id, data) =>
   apiRequest("getWebsiteDetails", data, id);
+
+export const getAdminWebsiteDetails = () =>
+  apiRequest("getAdminWebsiteDetails");
+
+export const getUserWebsiteDetails = () =>
+  apiRequest("getUserWebsiteDetails");
 
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
@@ -138,6 +165,7 @@ export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
 export const editBroadCasting = (id, data) => {
+  console.log(id,"id")
   return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {
@@ -241,6 +269,10 @@ const statusUpdateBanner = (id, data) => {
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
 };
+const resetDirectorEmployeePassword = (id, data) => {
+  return apiRequest("resetDirectorEmployeePassword", data, id);
+};
+
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
@@ -281,8 +313,11 @@ const managementPaymentDetails = (data) => {
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
+const DirectorUpLinePaymentDetails = (data) => {
+  return apiRequest("DirectorUpLinePaymentDetails", data);
+};
 export {
-  loginUser,
+  loginManagement,
   createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
@@ -338,6 +373,10 @@ export {
   editBannerApi,
   deleteBanner,
   statusUpdateBanner,
+  resetDirectorEmployeePassword,
+  blockDirectorEmployee,
+  getDirectorEmployeeDetailsById,
+  updateDirectorEmployeeByID,
   addWebsiteToPrivacyPolicy,
   getManagementPaymentDetails,
   suspendManagementPaymentDetails,
@@ -350,5 +389,9 @@ export {
   getManagementOfflinePaymentModeById,
   updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
+  getCurrencies,
+  loginDirectorEmployee,
   ownersAvailablePaymentsModes,
+  updateDirectorByID,
+  DirectorUpLinePaymentDetails,
 };

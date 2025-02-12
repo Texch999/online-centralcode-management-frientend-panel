@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ownersAvailablePaymentsModes } from "../../../src/api/apiMethods";
+import { DirectorUpLinePaymentDetails, ownersAvailablePaymentsModes } from "../../../src/api/apiMethods";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import NoDataFound from "./NoDataFound ";
 import { useSelector } from "react-redux";
 import { imgUrl } from "../../api/baseUrl";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
+import { useLocation } from "react-router-dom";
+import DepositePopup from "../popups/DepositePopup";
+import WithdrawPopup from "../popups/WithdrawPopup";
 
 const AddNePaymentGateway = () => {
   const [error, setError] = useState(null);
@@ -15,9 +18,13 @@ const AddNePaymentGateway = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
   const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
+  const userRole = localStorage.getItem("role_code")
+  const [depositePopup, setDepositePopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const [addpaymentId, setAddPaymentId] = useState();
   const [countryId, setCountryId] = useState(null);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState(null);
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -26,6 +33,8 @@ const AddNePaymentGateway = () => {
     { title: "Payment Gateway", mode: 5 },
   ];
   const tabNames = ["Offline Payment Modes", "Payment Gateway"];
+  const location = useLocation();
+  const { actionType } = location.state || {};
 
   console.log(paymentModes, "paymentModes");
   const handleAddModal = (id, country, available_id) => {
@@ -37,9 +46,14 @@ const AddNePaymentGateway = () => {
 
   const getOwnersPaymentModes = () => {
     setLoading(true);
-    ownersAvailablePaymentsModes()
+
+    const fetchPaymentModes =
+      userRole === "director"
+        ? DirectorUpLinePaymentDetails()
+        : ownersAvailablePaymentsModes();
+
+    fetchPaymentModes
       .then((response) => {
-        console.log("getDirectorAccountDetails success", response?.data);
         setPaymentModes(response?.data);
       })
       .catch((error) => {
@@ -68,14 +82,21 @@ const AddNePaymentGateway = () => {
     (mode) => mode.country_id === selectedCountryId
   );
   const hasNoRecords = filteredPaymentModes.length === 0;
-  console.log(addpaymentId, "=====>available_id");
+  const handleDepositAndWithdraw = (paymentDetails) => {
+    if (actionType === "Deposit") {
+      setDepositePopup(true)
+      setSelectedPayment(paymentDetails)
+    } else {
+      setWithdrawPopup(true)
+      setSelectedPayment(paymentDetails)
+    }
+  }
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
         <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
       </div>
-
-      <div className="mt-2 min-h-screen bg-white rounded-md ms-3 ps-2">
+      <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
         <div className="row mb-3">
           <div className="col-3">
             <label htmlFor="paymentMethod" className="medium-font mb-1">
@@ -107,7 +128,6 @@ const AddNePaymentGateway = () => {
             />
           </div>
         </div>
-
         {hasNoRecords ? (
           <NoDataFound />
         ) : (
@@ -117,9 +137,8 @@ const AddNePaymentGateway = () => {
                 {tabNames.map((tabName, index) => (
                   <div
                     key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
-                      selectedTab === index ? "saffron-btn2 " : ""
-                    }`}
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                      }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => setSelectedTab(index)}
                   >
@@ -142,7 +161,6 @@ const AddNePaymentGateway = () => {
                     <div className="mb-3" key={mode}>
                       <h1 className="large-font fw-600">{title}</h1>
                       <div className="row g-1">
-                        {console.log(filteredPayments, "payment")}
                         {filteredPayments.map((card) => (
                           <div key={card.id} className="col-2">
                             <div className="card h-100">
@@ -155,22 +173,23 @@ const AddNePaymentGateway = () => {
                                 }}
                               >
                                 <img
-                                  onClick={() =>
-                                    handleAddModal(
-                                      card?.id,
-                                      card?.country_id,
-                                      card?.avil_modes
-                                    )
-                                  }
+                                  onClick={() => {
+                                    if (userRole === "director") {
+                                      actionType === "Deposit" || "Withdraw"
+                                        ? handleDepositAndWithdraw(card)
+                                        : handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+                                    } else {
+                                      handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+                                    }
+                                  }}
                                   src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
-                                  alt={card.name}
+                                  alt={card?.name}
                                   className="w-60 h-100"
                                   style={{
                                     objectFit: "contain",
                                     objectPosition: "center",
                                   }}
                                 />
-                                {console.log(card, "card detals")}
                               </div>
                               <div
                                 className="card-body d-flex align-items-center justify-content-center tag-bg"
@@ -205,6 +224,19 @@ const AddNePaymentGateway = () => {
         availablePaymentModeId={availablePaymentModeId}
         setAvailablePaymentModeId={setAvailablePaymentModeId}
       />
+      {actionType === "Deposit" ? <DepositePopup
+        setDepositePopup={setDepositePopup}
+        depositePopup={depositePopup}
+        actionType={actionType}
+        selectedPayment={selectedPayment}
+      /> :
+        <WithdrawPopup
+          setWithdrawPopup={setWithdrawPopup}
+          withdrawPopup={withdrawPopup}
+          actionType={actionType}
+          selectedPayment={selectedPayment}
+        />
+      }
     </div>
   );
 };

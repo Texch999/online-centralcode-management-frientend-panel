@@ -1,4 +1,4 @@
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
@@ -23,6 +23,7 @@ function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const countriesDataFetched = useRef(false);
+  const userRole = localStorage.getItem("role_code")
   const [error, setError] = useState("");
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
@@ -38,8 +39,17 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+    if (userRole === "management") {
+      localStorage.clear();
+      navigate("/master/login");
+    } else if (userRole === "director") {
+      localStorage.clear();
+      navigate("/director/login");
+    }
+
+
+    // window.location.reload();
+
   };
   const dispatch = useDispatch()
   const isDashboard = window?.location?.pathname === "/";
@@ -56,7 +66,7 @@ function Header() {
         setError(error?.message || "API request failed");
       });
   };
-  useEffect (() => {
+  useEffect(() => {
     if (countriesDataFetched.current) return;
     countriesDataFetched.current = true;
     getAllCountries();
