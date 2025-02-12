@@ -19,9 +19,6 @@ const AddPaymentGatewayPopup = ({
   show,
   onHide,
   addpaymentId,
-  setAddPaymentId,
-  countryId,
-  setCountryId,
   availablePaymentModeId,
   setAvailablePaymentModeId,
   managementPaymentEdit,
@@ -49,7 +46,6 @@ const AddPaymentGatewayPopup = ({
     setQrCode(file);
     setQrName(file?.name);
   };
-
   const [validationErrors, setValidationErrors] = useState({});
 
   // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
@@ -87,36 +83,58 @@ const AddPaymentGatewayPopup = ({
   const handleManagementPaymentAddEdit = async () => {
     let errors = {};
 
-    // ✅ Common validation for all modes
-    if (!accHolderName.trim())
+    if (!accHolderName.trim()) {
       errors.accHolderName = "Account Holder Name is required.";
-
-    // ✅ Mode-specific validation
-    if (availablePaymentModeId === 1) {
-      // Bank Transfer
-      if (!accountNumber.trim())
-        errors.accountNumber = "Bank Account Number is required.";
-      if (!bankIFSC.trim()) errors.bankIFSC = "Bank IFSC is required.";
-      if (!bankName.trim()) errors.bankName = "Bank Name is required.";
-    } else if (availablePaymentModeId === 2) {
-      // UPI
-      if (!upiID.trim()) errors.upiID = "UPI ID is required.";
-    } else if (availablePaymentModeId === 3) {
-      // QR Code
-      if (!bankName.trim()) errors.bankName = "Bank Name is required.";
-      if (!qrCode) errors.qrCode = "QR Code Image is required.";
-    } else if (availablePaymentModeId === 4) {
-      // Other Details
-      if (!details.trim()) errors.details = "Details are required.";
+    } else if (!/^[a-zA-Z0-9 ]*$/.test(accHolderName)) {
+      errors.accHolderName =
+        "Account Holder Name can only contain letters, numbers, and spaces.";
     }
 
-    // ✅ If errors exist, prevent submission
+    if (availablePaymentModeId === 1) {
+      if (!accountNumber.trim()) {
+        errors.accountNumber = "Bank Account Number is required.";
+      } else if (!/^\d{8,34}$/.test(accountNumber)) {
+        errors.accountNumber = "Bank Account Number must be 8-34 digits long.";
+      }
+      if (!bankIFSC.trim()) {
+        errors.bankIFSC = "Bank IFSC is required.";
+      } else if (!/^[A-Za-z0-9]{11,15}$/.test(bankIFSC)) {
+        errors.bankIFSC = "Bank IFSC must be 11-15 characters.";
+      }
+
+      if (!bankName.trim()) {
+        errors.bankName = "Bank Name is required.";
+      } else if (!/^[a-zA-Z0-9 ]*$/.test(bankName)) {
+        errors.bankName =
+          "Bank Name can only contain letters, numbers, and spaces.";
+      }
+    } else if (availablePaymentModeId === 2) {
+      if (!upiID.trim()) {
+        errors.upiID = "UPI ID is required.";
+      } else if (!/^[a-zA-Z0-9@]*$/.test(upiID)) {
+        errors.upiID = "UPI ID can only contain letters, numbers, and '@'.";
+      }
+    } else if (availablePaymentModeId === 3) {
+      if (!bankName.trim()) {
+        errors.bankName = "Bank Name is required.";
+      } else if (!/^[a-zA-Z0-9 ]*$/.test(bankName)) {
+        errors.bankName =
+          "Bank Name can only contain letters, numbers, and spaces.";
+      }
+      if (!qrCode) errors.qrCode = "QR Code Image is required.";
+    } else if (availablePaymentModeId === 4) {
+      if (!details.trim()) {
+        errors.details = "Details are required.";
+      } else if (!/^[a-zA-Z0-9 ]*$/.test(details)) {
+        errors.details =
+          "Details can only contain letters, numbers, and spaces.";
+      }
+    }
+
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
       return;
     }
-
-    // ✅ Clear previous errors before proceeding
     setValidationErrors({});
 
     const pay_id = updateId ? manPaymentData?.id : addpaymentId.slice(3, -3);
@@ -208,7 +226,10 @@ const AddPaymentGatewayPopup = ({
                     value={accountNumber}
                     onChange={(e) => {
                       setAccountNumber(e.target.value);
-                      setValidationErrors((prev) => ({ ...prev, accountNumber: "" }));
+                      setValidationErrors((prev) => ({
+                        ...prev,
+                        accountNumber: "",
+                      }));
                     }}
                   />
                   {validationErrors.accountNumber && (
@@ -227,7 +248,10 @@ const AddPaymentGatewayPopup = ({
                     value={bankIFSC}
                     onChange={(e) => {
                       setBankIFSC(e.target.value);
-                      setValidationErrors((prev) => ({ ...prev, bankIFSC: "" }));
+                      setValidationErrors((prev) => ({
+                        ...prev,
+                        bankIFSC: "",
+                      }));
                     }}
                   />
                   {validationErrors.bankIFSC && (
@@ -246,8 +270,10 @@ const AddPaymentGatewayPopup = ({
                     value={bankName}
                     onChange={(e) => {
                       setBankName(e.target.value);
-                      setValidationErrors((prev) => ({ ...prev, bankIFSC: "" }));
-                      
+                      setValidationErrors((prev) => ({
+                        ...prev,
+                        bankIFSC: "",
+                      }));
                     }}
                   />
                   {validationErrors.bankName && (
@@ -268,9 +294,8 @@ const AddPaymentGatewayPopup = ({
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
                     value={upiID}
-                    onChange={(e) => {setUpiID(e.target.value)
-                      
-
+                    onChange={(e) => {
+                      setUpiID(e.target.value);
                     }}
                   />
                   {validationErrors.upiID && (

@@ -191,7 +191,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/secQuestion/?${query}`;
+      return `/user/${userID()}/secQuestions/?${query}`;
     },
   },
   getSecQusetionsById: {
@@ -212,15 +212,15 @@ const endpoints = {
   },
   createRejReasons: {
     method: "post",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: () => `/user/${userID()}/rejectionReason/`,
   },
   updateRejReasons: {
     method: "put",
-    url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
+    url: (id) => `/user/${userID()}/rejectionReason/${id}`,
   },
   getRejReasonsById: {
     method: "get",
-    url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
+    url: (id) => `/user/${userID()}/rejectionReason/${id}`,
   },
   getPrivacyPolicy: {
     method: "get",
@@ -379,8 +379,6 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
-
-
   getUserWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/userWebsites`,

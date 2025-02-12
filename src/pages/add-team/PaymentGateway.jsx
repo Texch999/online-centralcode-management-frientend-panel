@@ -4,7 +4,6 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import Table from "../../components/Table";
-import { Images } from "../../images";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import {
@@ -14,14 +13,12 @@ import {
   getDirectorAccountById,
   getManagementPaymentDetails,
   suspendManagementPaymentDetails,
-  getManagementPaymentDetailsById,
 } from "../../../src/api/apiMethods";
 import moment from "moment";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
-import { offset } from "@popperjs/core";
 
 const PaymentGateway = () => {
   const navigate = useNavigate();
@@ -48,6 +45,15 @@ const PaymentGateway = () => {
   const [managementPaymentEdit, setManagementPaymentEdit] = useState(false);
   const [errorPopup, setErrorPopup] = useState(false);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
+  const itemsPerPage = 4;
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const [currentLimit, setCurrentLimit] = useState(4);
+  const [currentOffset, setCurrentOffset] = useState(0);
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -56,7 +62,6 @@ const PaymentGateway = () => {
     4: "Cash",
   };
 
-  // Function to get currency dynamically
   const getCurrencySymbol = (id) => {
     const country = countries.find((c) => c.id === id);
     return country
@@ -83,21 +88,9 @@ const PaymentGateway = () => {
     setOnAddPaymentGateway(true);
     setAvailablePaymentModeId(gateway_type);
   };
+
   // get all
-
-  const itemsPerPage = 4;
-  const [totalRecords, setTotalRecords] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(page);
-  const limit = itemsPerPage;
-  const offset = (currentPage - 1) * itemsPerPage;
-  const onPageChange = (page) => {
-    setCurrentPage(page);
-    setSearchParams({ page: page });
-  };
-
-  const fetchManagementPaymentDetails = async () => {
+  const fetchManagementPaymentDetails = async (limit, offset) => {
     setLoading(true);
     try {
       const response = await getManagementPaymentDetails({ limit, offset });
@@ -106,7 +99,12 @@ const PaymentGateway = () => {
         setTotalRecords(response?.meta?.totalCount);
       }
     } catch (error) {
+      console.log(error?.message);
       setError(error?.message);
+      setErrorPopup(true);
+      setTimeout(() => {
+        setErrorPopup(false);
+      }, [2000]);
     } finally {
       setLoading(false);
     }
@@ -115,24 +113,36 @@ const PaymentGateway = () => {
     if (role_code === "management") {
       if (paymentDetailsDataFetched.current) return;
       paymentDetailsDataFetched.current = true;
-      fetchManagementPaymentDetails();
+      fetchManagementPaymentDetails(limit, offset);
     }
   }, []);
+  const onPageChange = ({ limit, offset }) => {
+    setCurrentLimit(limit);
+    setCurrentOffset(offset);
+    if (role_code === "management") {
+      fetchManagementPaymentDetails(limit, offset);
+    }
+  };
 
   //suspend api
-
   const suspendManPaymnet = () => {
     suspendManagementPaymentDetails(suspendManagementPaymentId)
       .then((response) => {
-        console.log("payment suspend success", response);
         if (response?.status === true) {
-          fetchManagementPaymentDetails();
+          fetchManagementPaymentDetails(currentLimit, currentOffset);
           setSuspendPayment(false);
           setSuspendManagementPaymentId(null);
           setSuspendManagementPaymentStatus(null);
         }
       })
-      .catch((error) => setError(error?.message));
+      .catch((error) => {
+        setError(error?.message);
+        setSuspendPayment(false);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, [2000]);
+      });
   };
 
   const filteredPayments = managementPaymentDetails.filter((item) => {
@@ -177,6 +187,7 @@ const PaymentGateway = () => {
                 src={`${imgUrl}/mngPayDetails/${item?.qr_code_image}`}
                 alt="QR Code"
                 className="w-30 h-7vh me-2"
+                loading="lazy"
               />
               <span className="fw-bold">{item?.bank_name}</span>
             </div>
@@ -462,6 +473,12 @@ const PaymentGateway = () => {
           onSubmit={suspendStatus}
         />
       )}
+
+      <ErrorPopup
+        discription={error}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
+      />
     </div>
   );
 };
