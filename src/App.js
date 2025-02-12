@@ -114,19 +114,22 @@ import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
 import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
+import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
+import EditNewDirector from "./pages/EditNewDirector";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
 
-  const PrivateRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/director/login" />;
-  };
-  const path = window.location.pathname;
+  // const PrivateRoute = ({ children }) => {
+  //   return isLoggedIn ? children : <Navigate to="/director/login" />;
+  // };
+  // const path = window.location.pathname;
   const location = useLocation();
 
   const showLoginPage =
     location.pathname === "/master/login" ||
-    location.pathname === "/director/login";
+    location.pathname === "/director/login" ||
+    location.pathname === "/director/employee/login";
 
   return (
     <div>
@@ -175,6 +178,14 @@ function App() {
               <Route path="/management-team" element={<AddManagementTeam />} />
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route path="/director-team" element={<AddDirectorTeam />} />
+              <Route
+                path="/director-admin/addnewdirector"
+                element={<AddNewDirectorSuperAdmin />}
+              />
+              <Route
+                path="/director-admin/editDirector"
+                element={<EditNewDirector />}
+              />
               <Route
                 path="/user-profile-dashboard"
                 element={<UserProfileDashboard />}
@@ -305,7 +316,10 @@ function App() {
                 path="/white-label-setting"
                 element={<WhiteLabelSetting />}
               />
-              <Route path="/offline-payment-modes" element={<OfflinePaymentModes/>}/>
+              <Route
+                path="/offline-payment-modes"
+                element={<OfflinePaymentModes />}
+              />
               <Route
                 path="/addnew-payments"
                 element={<AddNePaymentGateway />}
