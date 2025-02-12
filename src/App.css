@@ -7,7 +7,7 @@
 }
 
 .white-bg {
-  background: #ffffff;
+  background: #ffffff !important;
 }
 
 .login-box-shadow {
@@ -603,6 +603,9 @@
 .border-left2 {
   border-right: 2px solid #aeaeae;
 }
+.border-left3 {
+  border-left: 2px solid #aeaeae;
+}
 
 .grey-bg4 {
   background: #aeaeae !important;
@@ -708,7 +711,7 @@
 }
 
 .border-grey3 {
-  border: 1.2px solid #00000033;
+  border: 1.2px solid #00000033 !important;
 }
 
 .border-bottom-grey {
@@ -758,6 +761,24 @@
 
 .custom-file-upload:hover {
   background: #e9ecef;
+}
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.cst-btn {
+  transition: all 0.3s ease-in-out;
+  width: 15%;
+  background: white !important;
+  border: 1.2px solid #00000033 !important;
+  border-radius: 20px;
+  color: #ffa310 !important;
+  padding: 0.5rem !important;
+}
+
+button.cst-btn:hover {
+  background: #ffa310 !important;
+  color: white !important;
 }
 
 .fixed-width-field {

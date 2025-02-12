@@ -1,8 +1,8 @@
 import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
-const loginUser = (data) => {
-  return apiRequest("loginUser", data);
+const loginManagement = (data) => {
+  return apiRequest("loginManagement", data);
 };
 // security Questions
 const createSecurityQuestions = (data) => {
@@ -21,6 +21,9 @@ const getSecQusetionsById = (id, data) => {
 // manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
+};
+const loginDirectorEmployee = (data) => {
+  return apiRequest("loginDirectorEmployee", data);
 };
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
@@ -56,6 +59,9 @@ const resetDirectorPassword = (id, data) => {
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
+const blockDirectorEmployee = (id, data) => {
+  return apiRequest("blockDirectorEmployee", data, id);
+};
 const blockDirector = (id, data) => {
   return apiRequest("blockDirector", data, id);
 };
@@ -63,12 +69,23 @@ const blockDirector = (id, data) => {
 const updateEmployeeByID = (id, data) => {
   return apiRequest("updateEmployeeByID", data, id);
 };
+// updateDirectorEmployeeByID
+const updateDirectorEmployeeByID = (id, data) => {
+  return apiRequest("updateDirectorEmployeeByID", data, id);
+};
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
+};
+
+const getDirectorEmployeeDetailsById = (id) => {
+  return apiRequest("getDirectorEmployeeDetailsById", null, id);
 };
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
 };
+const resetDirectorPasswordInProfile = (id,data) => {
+  return apiRequest("resetDirectorPasswordInProfile", data, id);
+}
 
 const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
@@ -91,10 +108,17 @@ const getDirectorAccountById = (id, data) => {
   return apiRequest("getDirectorAccountById", data, id);
 };
 
+const updateDirectorProfileDetails=(id, data) => {
+  return apiRequest("updateDirectorProfileDetails", data, id);
+};
+
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
 };
-
+// getCurrencies
+const getCurrencies = (data) => {
+  return apiRequest("getCurrencies", data);
+};
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
@@ -158,6 +182,7 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
+
 
 // rejection reasons
 // const getAllRejectionReasons = (data) => {
@@ -241,6 +266,10 @@ const statusUpdateBanner = (id, data) => {
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
 };
+const resetDirectorEmployeePassword = (id, data) => {
+  return apiRequest("resetDirectorEmployeePassword", data, id);
+};
+
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
@@ -282,7 +311,7 @@ const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
 export {
-  loginUser,
+  loginManagement,
   createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
@@ -297,6 +326,7 @@ export {
   getPrivacyPolicy,
   getWebsites,
   getPrivacyPolicyById,
+  updateDirectorProfileDetails,
   createPrivacyPolicy,
   updatePrivacyPolicyById,
   privacyPolicyStatusUpdate,
@@ -338,6 +368,10 @@ export {
   editBannerApi,
   deleteBanner,
   statusUpdateBanner,
+  resetDirectorEmployeePassword,
+  blockDirectorEmployee,
+  getDirectorEmployeeDetailsById,
+  updateDirectorEmployeeByID,
   addWebsiteToPrivacyPolicy,
   getManagementPaymentDetails,
   suspendManagementPaymentDetails,
@@ -351,4 +385,7 @@ export {
   updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
   ownersAvailablePaymentsModes,
+  getCurrencies,
+  loginDirectorEmployee,
+  resetDirectorPasswordInProfile
 };

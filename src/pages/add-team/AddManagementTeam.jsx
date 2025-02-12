@@ -22,7 +22,7 @@ const AddManagementTeam = () => {
   const GetEmployee = () => {
     getEmployees({ limit: 10, offset: 0 })
       .then((response) => {
-        if (response?.message === "Employees fetched successfully.") {
+        if (response?.status === true) {
           console.log(response, "response from API");
           setTableData(response.data);
         } else {
@@ -37,15 +37,17 @@ const AddManagementTeam = () => {
   useEffect(() => {
     GetEmployee();
   }, []);
-
+  console.log(tableData, "tableData")
   const TableData = tableData.map((employee) => {
+    const role = Roles[Number(employee.role)] || "Unknown";
+
     return {
       id: employee.id,
       name: employee.name,
       login_name: employee.login_name,
       phone_no: employee.phone_no,
       email: employee.email,
-      role: Roles[employee.role] || "Unknown",
+      role: employee.role,
       status: employee.status === 1 ? "green-clr" : "clr-red",
       statusColor: employee.status === 1 ? "green-clr" : "clr-red",
       created_date: new Date(employee.created_date).toLocaleString(),
@@ -53,9 +55,7 @@ const AddManagementTeam = () => {
     };
   });
 
-  console.log(TableData);
 
-  console.log(TableData, "TableData");
 
   const [modalState, setModalState] = useState({
     showAddModal: false,
@@ -219,7 +219,7 @@ const AddManagementTeam = () => {
       />
     ),
   }));
-  // Handle form submission
+
   const onEmployeePasswordSubmit = (data) => {
     if (!resetPasswordId) {
       alert("Invalid ID");
@@ -238,7 +238,7 @@ const AddManagementTeam = () => {
           setTimeout(() => {
             setResetPasswordPopup(false);
           }, 1000);
-          // setShowSuccessPopup(true);
+
         } else {
           alert("Something went wrong");
         }
@@ -251,7 +251,6 @@ const AddManagementTeam = () => {
     tableData.find((row) => row.id === modalState.blockAccountId)?.status
   const blockAccountId = modalState.blockAccountId
 
-
   const onEmployeeBlockSubmit = () => {
     const requestData = {
       status: status,
@@ -261,7 +260,7 @@ const AddManagementTeam = () => {
         if (response.status === true) {
           console.log(response, "response")
           setTimeout(() => {
-            // setConfirmationPopupOpen(false);
+
           }, 1000);
         } else {
           alert("Something went wrong");
@@ -271,9 +270,7 @@ const AddManagementTeam = () => {
         console.log(error?.message || "Request failed");
       });
   };
-  useEffect(() => {
-    onEmployeeBlockSubmit();
-  }, []);
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -337,7 +334,6 @@ const AddManagementTeam = () => {
         onSubmit={onEmployeeBlockSubmit}
       />
 
-      {/* Delete Account Modal */}
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isDeletePopupVisible}
         setConfirmationPopupOpen={(value) =>
@@ -347,7 +343,6 @@ const AddManagementTeam = () => {
         submitButton={"Delete"}
         onSubmit={handleDeleteAccount}
       />
-      {/* Reset Password Modal */}
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={setResetPasswordPopup}
@@ -358,6 +353,36 @@ const AddManagementTeam = () => {
   );
 };
 
+// const ActionButtons = ({
+//   rowId,
+//   onEdit,
+//   onBlock,
+//   onResetPassword,
+//   onDelete,
+//   status,
+//   handleEditShow,
+// }) => {
+
+//   return (
+//     <div className="d-flex gap-3 flex-center">
+//       <SlPencil
+//         size={18}
+//         className="pointer black-text"
+//         onClick={() => handleEditShow(rowId)}
+//       />
+//       <MdLockReset
+//         size={18}
+//         className="pointer black-text"
+//         onClick={() => onResetPassword(rowId)}
+//       />
+//       <MdBlockFlipped
+//         size={18}
+
+//         onClick={() => onBlock(rowId)}
+//       />
+//     </div>
+//   );
+// };
 const ActionButtons = ({
   rowId,
   onEdit,
@@ -368,6 +393,7 @@ const ActionButtons = ({
   handleEditShow,
 }) => {
   const blockIconColor = status === "green-clr" ? "green-clr" : "clr-red";
+
   return (
     <div className="d-flex gap-3 flex-center">
       <SlPencil
@@ -382,7 +408,7 @@ const ActionButtons = ({
       />
       <MdBlockFlipped
         size={18}
-        className={blockIconColor === "green-clr" ? "green-clr" : "clr-red"}
+        className={`pointer ${blockIconColor}`} // Applying dynamic color class
         onClick={() => onBlock(rowId)}
       />
     </div>

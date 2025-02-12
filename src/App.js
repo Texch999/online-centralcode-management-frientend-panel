@@ -114,6 +114,7 @@ import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
 import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
+import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -126,7 +127,8 @@ function App() {
 
   const showLoginPage =
     location.pathname === "/master/login" ||
-    location.pathname === "/director/login";
+    location.pathname === "/director/login" ||
+    location.pathname === "/director/employee/login";
 
   return (
     <div>
@@ -176,7 +178,11 @@ function App() {
               <Route path="/director-admin" element={<AddDirectorAdmin />} />
               <Route path="/director-team" element={<AddDirectorTeam />} />
               <Route
-                path="/user-profile-dashboard"
+                path="/director-admin/addnewdirector"
+                element={<AddNewDirectorSuperAdmin />}
+              />
+              <Route
+                path="/user-profile-dashboard/:id"
                 element={<UserProfileDashboard />}
               />
               <Route path="/downline-list" element={<DownlineList />} />

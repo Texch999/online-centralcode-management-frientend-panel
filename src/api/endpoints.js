@@ -9,22 +9,31 @@ const userID = () => {
   return id;
 };
 const endpoints = {
-  loginUser: { method: "post", url: "/master/login" },
+  loginManagement: { method: "post", url: "/master/login" },
   loginDirector: { method: "post", url: "/director/login" },
+  loginDirectorEmployee: { method: "post", url: "/director/employee/login" },
 
-  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+  addManagemnentTeam: {
+    method: "post",
+    url: () => `/user/${userID()}/employee`,
+  },
   addDirectorTeam: {
     method: "post",
-    url: `/user/${userID()}/directorEmployee`,
+    url: () => `/director/${userID()}/createEmployee`,
   },
 
-  createDirector: { method: "post", url: `/user/${userID()}/create` },
+  createDirector: { method: "post", url: () => `/user/${userID()}/director` },
 
-  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+  getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
   getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
-  getAdminWebsites: {
+  getCurrencies: {
     method: "get",
-    url: `/user/${userID()}/website/adminWebsites`,
+    url: () => `/user/${userID()}/countries/currency-name`,
+  },
+
+  createWebsite: {
+    method: "post",
+    url: () => `/user/${userID()}/website/website`,
   },
   // loginUser: { method: "post", url: "/master/login" },
   createWebsite: {
@@ -46,7 +55,6 @@ const endpoints = {
       return `/user/${userID()}/website/websites?${query}`;
     },
   },
-  getAllCountires: { method: "get", url: () => `/user/${userID()}/countries` },
   blockAndUnblock: {
     method: "put",
     url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
@@ -91,7 +99,6 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/bannerStatus/${id}`,
   },
-  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
 
@@ -120,11 +127,12 @@ const endpoints = {
       return `/user/${userID()}/directors?${query}`;
     },
   },
+  // endpoint: http://localhost:901rest2/0.1/director/1/employees?limit=10?offset=0
   getDirectorEmployees: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/directorEmployees?${query}`;
+      return `/director/${userID()}/employees?${query}`;
     },
   },
   resetEmployeePassword: {
@@ -133,17 +141,26 @@ const endpoints = {
   },
   resetDirectorPassword: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`,
+    url: (id) => `/user/${userID()}/director/${id}/newPassword`,
   },
+  resetDirectorEmployeePassword: {
+    method: "post",
+    url: (id) => `/director/${userID()}/employeeUpdatePassword/${id}`,
+  },
+
   blockEmploye: {
     method: "post",
     url: (id) => `/user/${userID()}/employeeBlockUnblock/${id}`,
   },
   blockDirector: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
+    url: (id) => `/user/${userID()}/director/${id}/status`,
   },
 
+  blockDirectorEmployee: {
+    method: "post",
+    url: (id) => `/director/${userID()}/employeeBlockUnblock/${id}`,
+  },
   updateEmployeeByID: {
     method: "post",
     url: (id) => `/user/${userID()}/employee/${id}`,
@@ -152,16 +169,26 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/updateDirector/${id}`,
   },
+  // endpoint: http://localhost:901rest2/0.1/director/1/updateEmployee/Abcd1234
+
+  updateDirectorEmployeeByID: {
+    method: "post",
+    url: (id) => `/director/${userID()}/updateEmployee/${id}`,
+  },
   getEmployeeDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/employee/${id}`,
+  },
+  // http://localhost:901rest2/0.1/director/1/employee/Abcd1234
+  getDirectorEmployeeDetailsById: {
+    method: "get",
+    url: (id) => `/director/${userID()}/employee/${id}`,
   },
   getDirectorDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/director/${id}`,
   },
 
-  //security questions
   createSecurityQuestions: {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
@@ -247,10 +274,7 @@ const endpoints = {
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
   },
 
-  getCountries: {
-    method: "get",
-    url: () => `/user/${userID()}/countries`,
-  },
+
   getWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
@@ -305,9 +329,14 @@ const endpoints = {
     url: () => `/user/${userID()}/directorAccount`,
   },
   suspendDirectorAccountPaymentDetails: {
-    method: 'patch',
+    method: "patch",
     url: (data) =>
       `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
+  },
+
+  updateDirectorProfileDetails: {
+    method: "put",
+    url: (id) => `/user/${userID()}/directorProfileUpdate/${id}`,
   },
   updateDirectorAccountDetails: {
     method: "put",
@@ -325,8 +354,6 @@ const endpoints = {
       return `/user/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
     },
   },
-
-  loginDirector: { method: "post", url: () => "/director/login" },
 
   getLoggedInLogs: {
     method: "get",
@@ -356,7 +383,13 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
-  // director created SA list
+
+  
+  resetDirectorPasswordInProfile: {
+    method: "post",
+    url: (id) => `/user/${userID()}/directorProfileResetPassword/${id}`,
+  },
+
   getDirectorDwnList: {
     method: "get",
     url: () => `/user/${userID()}/directors`,
@@ -373,14 +406,9 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
-
   getAdminWebsites: {
     method: "get",
-    url: () => `/user/${userID()}/website/adminWebsites`,
-  },
-  getUserWebsites: {
-    method: "get",
-    url: () => `/user/${userID()}/website/userWebsites`,
+    url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
   // payment details in management
