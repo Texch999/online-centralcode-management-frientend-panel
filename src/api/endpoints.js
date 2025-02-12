@@ -33,6 +33,11 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/website/website`,
   },
+  // loginUser: { method: "post", url: "/master/login" },
+  createWebsite: {
+    method: "post",
+    url: () => `/user/${userID()}/website/website`,
+  },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -100,6 +105,19 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
+
+  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+
+  loginUser: { method: "post", url: () => "/master/login" },
+  // addManagemnentTeam: { method: "post", url: "/employee" },
+  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+
+  getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
+  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
+  // getEmployees: ({ limit, offset }) => ({
+  //   method: "get",
+  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
+  // }),
 
   getEmployees: {
     method: "get",
@@ -317,6 +335,11 @@ const endpoints = {
     url: (data) =>
       `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
   },
+
+  updateDirectorProfileDetails: {
+    method: "put",
+    url: (id) => `/user/${userID()}/directorProfileUpdate/${id}`,
+  },
   updateDirectorAccountDetails: {
     method: "put",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
@@ -361,6 +384,12 @@ const endpoints = {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
+  },
+
+  
+  resetDirectorPasswordInProfile: {
+    method: "post",
+    url: (id) => `/user/${userID()}/directorProfileResetPassword/${id}`,
   },
 
   getDirectorDwnList: {

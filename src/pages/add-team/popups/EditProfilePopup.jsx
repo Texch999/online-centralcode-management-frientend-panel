@@ -1,47 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdOutlineClose } from "react-icons/md";
+import { updateDirectorProfileDetails } from "../../../api/apiMethods";
+import SuccessPopup from "../../popups/SuccessPopup";
 
-const EditProfilePopup = ({ show, onHide }) => {
+
+
+const EditProfilePopup = ({ show, onHide, data }) => {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [description, setDesciption] = useState("");
 
+
+
+  // Populate form when data changes
+  useEffect(() => {
+    if (data) {
+      console.log("Editing data:", data); // Debug log
+      setName(data.name || "");
+      setPhoneNumber(data.phone_no || "");
+      setProfilePhoto(null); // Reset file input
+    }
+  }, [data]);
+
+  // Handle profile photo change
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
+    console.log(file, 987968765465)
     if (file) {
       setProfilePhoto(file);
     }
   };
 
-  const handleSubmit = () => {
-    if (name === "" || phoneNumber === "" || profilePhoto === "") {
+  // Submit form
+  const handleSubmit = async () => {
+
+    if (!name || !phoneNumber) {
       alert("Please fill in all fields before submitting.");
       return;
     }
 
-    setName("");
-    setPhoneNumber("");
-    setProfilePhoto(null);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("phone_no", phoneNumber);
+    if (profilePhoto) {
+      formData.append("photo", profilePhoto);
+    }
 
-    onHide();
+    try {
+      console.log(data.id, formData)
+      const response = await updateDirectorProfileDetails(data.id, formData);
+      setDesciption(response.message)
+      setShowSuccessPopup(true);
+      onHide(); // Close modal after success
+    } catch (error) {
+      console.log(formData)
+      alert("Failed to update profile: " + (error.message || "Unknown error"));
+    }
   };
 
   return (
+    <>
     <Modal centered show={show} onHide={onHide} size="md">
       <Modal.Body className="p-3">
         <div className="d-flex justify-content-between align-items-center mb-2">
-          <h5 className="small-font fw-600">Edit profile</h5>
+          <h5 className="small-font fw-600">Edit Profile</h5>
           <MdOutlineClose size={22} onClick={onHide} className="pointer" />
         </div>
 
         <div className="row d-flex mb-3">
           {/* Name Field */}
           <div className="col-4">
-            <label htmlFor="name" className="small-font fw-400 mb-1">
-              Name
-            </label>
+            <label htmlFor="name" className="small-font fw-400 mb-1">Name</label>
             <input
               id="name"
               type="text"
@@ -54,9 +87,7 @@ const EditProfilePopup = ({ show, onHide }) => {
 
           {/* Phone Number Field */}
           <div className="col-4">
-            <label htmlFor="phoneNumber" className="small-font fw-400 mb-1">
-              Phone Number
-            </label>
+            <label htmlFor="phoneNumber" className="small-font fw-400 mb-1">Phone Number</label>
             <input
               id="phoneNumber"
               type="text"
@@ -69,9 +100,7 @@ const EditProfilePopup = ({ show, onHide }) => {
 
           {/* Profile Photo Upload Field */}
           <div className="col-4">
-            <label htmlFor="profilePhoto" className="small-font fw-400 mb-1">
-              Upload Profile Photo
-            </label>
+            <label htmlFor="profilePhoto" className="small-font fw-400 mb-1">Upload Profile Photo</label>
             <div className="input-group">
               <input
                 id="profilePhoto"
@@ -79,7 +108,6 @@ const EditProfilePopup = ({ show, onHide }) => {
                 className="form-control all-none"
                 onChange={handleProfilePhotoChange}
                 style={{ display: "none" }}
-                value={profilePhoto}
               />
               <label
                 htmlFor="profilePhoto"
@@ -90,8 +118,10 @@ const EditProfilePopup = ({ show, onHide }) => {
               </label>
             </div>
           </div>
+
+          {/* Submit Button */}
           <div className="row d-flex align-items-center justify-content-end m-0 p-0">
-            <div className="col-4 pointer mt-3 ">
+            <div className="col-4 pointer mt-3">
               <button
                 type="button"
                 className="saffron-btn2 rounded w-100 small-font"
@@ -102,9 +132,20 @@ const EditProfilePopup = ({ show, onHide }) => {
             </div>
           </div>
         </div>
+       
       </Modal.Body>
+    
     </Modal>
+      <SuccessPopup
+      successPopupOpen={showSuccessPopup}
+      // onHide={() => setShowSuccessPopup(false)}
+      setSuccessPopupOpen={() => setShowSuccessPopup(false)}
+      discription={description}
+    />
+    </>
   );
+
 };
 
 export default EditProfilePopup;
+
