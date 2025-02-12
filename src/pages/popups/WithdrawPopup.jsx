@@ -7,6 +7,8 @@ import { customStyles } from "../../components/ReactSelectStyles";
 const WithdrawPopup = ({
     setWithdrawPopup,
     withdrawPopup,
+    actionType,
+    selectedPayment
 }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [formData, setFormData] = useState({
@@ -173,23 +175,23 @@ const WithdrawPopup = ({
                             <div className="row">
                                 <div className="col">
                                     <label className="small-font mb-1">Name</label>
-                                    <input type="text" name="name"  placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.name}  />
+                                    <input type="text" name="name" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.name} />
                                 </div>
 
                                 <div className="col">
                                     <label className="small-font mb-1">Bank Name</label>
-                                    <input type="text" name="bankName" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.bankName}  />
+                                    <input type="text" name="bankName" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.bankName} />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
                                     <label className="small-font mb-1">Account Number</label>
-                                    <input type="text" name="accountNumber" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.accountNumber}  />
+                                    <input type="text" name="accountNumber" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.accountNumber} />
                                 </div>
 
                                 <div className="col">
                                     <label className="small-font mb-1">IFSC Code</label>
-                                    <input type="text" name="ifscCode" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.ifscCode}  />
+                                    <input type="text" name="ifscCode" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.ifscCode} />
                                 </div>
                             </div>
                         </>

@@ -1,8 +1,8 @@
 import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
-const loginUser = (data) => {
-  return apiRequest("loginUser", data);
+const loginManagement = (data) => {
+  return apiRequest("loginManagement", data);
 };
 // security Questions
 const createSecurityQuestions = (data) => {
@@ -21,6 +21,9 @@ const getSecQusetionsById = (id, data) => {
 // manage team
 const loginDirector = (data) => {
   return apiRequest("loginDirector", data);
+};
+const loginDirectorEmployee = (data) => {
+  return apiRequest("loginDirectorEmployee", data);
 };
 const addManagemnentTeam = (data) => {
   return apiRequest("addManagemnentTeam", data);
@@ -56,6 +59,9 @@ const resetDirectorPassword = (id, data) => {
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
+const blockDirectorEmployee = (id, data) => {
+  return apiRequest("blockDirectorEmployee", data, id);
+};
 const blockDirector = (id, data) => {
   return apiRequest("blockDirector", data, id);
 };
@@ -63,8 +69,20 @@ const blockDirector = (id, data) => {
 const updateEmployeeByID = (id, data) => {
   return apiRequest("updateEmployeeByID", data, id);
 };
+const updateDirectorByID = (id, data) => {
+  return apiRequest("updateDirectorByID", data, id);
+};
+
+// updateDirectorEmployeeByID
+const updateDirectorEmployeeByID = (id, data) => {
+  return apiRequest("updateDirectorEmployeeByID", data, id);
+};
 const getEmployeeDetailsById = (id) => {
   return apiRequest("getEmployeeDetailsById", null, id);
+};
+
+const getDirectorEmployeeDetailsById = (id) => {
+  return apiRequest("getDirectorEmployeeDetailsById", null, id);
 };
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
@@ -94,7 +112,10 @@ const getDirectorAccountById = (id, data) => {
 const getCountries = (data) => {
   return apiRequest("getCountries", data);
 };
-
+// getCurrencies
+const getCurrencies = (data) => {
+  return apiRequest("getCurrencies", data);
+};
 export const getWebsitesList = (params) => {
   return apiRequest("getWebsitesList", {}, params);
 };
@@ -248,11 +269,15 @@ const statusUpdateBanner = (id, data) => {
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
 };
+const resetDirectorEmployeePassword = (id, data) => {
+  return apiRequest("resetDirectorEmployeePassword", data, id);
+};
+
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
-const getManagementPaymentDetails = (data) => {
-  return apiRequest("getManagementPaymentDetails", data);
+const getManagementPaymentDetails = (params) => {
+  return apiRequest("getManagementPaymentDetails", {}, params);
 };
 const suspendManagementPaymentDetails = (id, data) => {
   return apiRequest("suspendManagementPaymentDetails", data, id);
@@ -270,16 +295,16 @@ const createManagementOfflinePaymentModes = (data) => {
   return apiRequest("createManagementOfflinePaymentModes", data);
 };
 const getManagementOfflinePaymentModes = (params) => {
-  return apiRequest("getManagementOfflinePaymentModes",{}, params);
+  return apiRequest("getManagementOfflinePaymentModes", {}, params);
 };
 const suspenManagementOfflinePaymentModes = (id, status) => {
-  return apiRequest("suspenManagementOfflinePaymentModes", id, { id,status });
+  return apiRequest("suspenManagementOfflinePaymentModes", id, { id, status });
 };
 const getManagementOfflinePaymentModeById = (id, data) => {
   return apiRequest("getManagementOfflinePaymentModeById", data, id);
 };
-const updateManagementOfflinePaymentDetails=(id,data)=>{
-  return apiRequest("updateManagementOfflinePaymentDetails",data,id);
+const updateManagementOfflinePaymentDetails = (id, data) => {
+  return apiRequest("updateManagementOfflinePaymentDetails", data, id);
 };
 
 const managementPaymentDetails = (data) => {
@@ -292,7 +317,7 @@ const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
 export {
-  loginUser,
+  loginManagement,
   createSecurityQuestions,
   getAllSecurityQuestions,
   updateSecurityQuestions,
@@ -348,6 +373,10 @@ export {
   editBannerApi,
   deleteBanner,
   statusUpdateBanner,
+  resetDirectorEmployeePassword,
+  blockDirectorEmployee,
+  getDirectorEmployeeDetailsById,
+  updateDirectorEmployeeByID,
   addWebsiteToPrivacyPolicy,
   getManagementPaymentDetails,
   suspendManagementPaymentDetails,
@@ -360,6 +389,9 @@ export {
   getManagementOfflinePaymentModeById,
   updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
+  getCurrencies,
+  loginDirectorEmployee,
   ownersAvailablePaymentsModes,
+  updateDirectorByID,
   DirectorUpLinePaymentDetails,
 };
