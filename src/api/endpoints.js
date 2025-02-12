@@ -386,7 +386,7 @@ const endpoints = {
     },
   },
 
-  
+
   resetDirectorPasswordInProfile: {
     method: "post",
     url: (id) => `/user/${userID()}/directorProfileResetPassword/${id}`,
@@ -484,6 +484,10 @@ const endpoints = {
   addWebsiteToPrivacyPolicy: {
     method: "post",
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
+  getDirectorSites: {
+    method: "get",
+    url: () => `/director/${userID()}/details/${userID()}`,
   },
 };
 

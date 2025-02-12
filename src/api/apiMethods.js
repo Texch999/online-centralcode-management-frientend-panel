@@ -324,6 +324,9 @@ const ownersAvailablePaymentsModes = (data) => {
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
+const getDirectorSites = (data) => {
+  return apiRequest("getDirectorSites", data);
+};
 export {
   loginManagement,
   createSecurityQuestions,
@@ -404,4 +407,5 @@ export {
   resetDirectorPasswordInProfile,
   updateDirectorByID,
   DirectorUpLinePaymentDetails,
+  getDirectorSites,
 };
