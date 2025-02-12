@@ -43,18 +43,24 @@ const AddPaymentGatewayPopup = ({
   const role_code = localStorage.getItem("role_code");
   const [details, setDetails] = useState("");
   const [accHolderName, setAccHolderName] = useState("");
+  const [qrName, setQrName] = useState("");
   const handleQrCodeChange = (e) => {
-    setQrCode(e.target.files[0]);
+    const file = e.target.files[0];
+    setQrCode(file);
+    setQrName(file?.name);
   };
 
-  // managemnet paymnet details edit and post get apis ============================
+  const [validationErrors, setValidationErrors] = useState({});
 
+  // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
+  const [updateId, setUpdateId] = useState(null);
   const fetchManagementPaymentDetailsById = () => {
     getManagementPaymentDetailsById(managementPaymentEditId)
       .then((response) => {
         console.log("response", response);
         if (response.status === true) {
           setManPaymentData(response?.data);
+          setUpdateId(response?.data?.payment_mode_id);
           setAccHolderName(response?.data?.acc_hold_name || "");
           setAccountNumber(response?.data?.bank_acc_no || "");
           setBankIFSC(response?.data?.bank_ifsc || "");
@@ -62,6 +68,7 @@ const AddPaymentGatewayPopup = ({
           setUpiID(response?.data?.upi_id || "");
           setDetails(response?.data?.others_details || "");
           setQrCode(response?.data?.qr_code_image || null);
+          setQrName(response?.data?.qr_code_image || "");
           console.log(response?.data?.gateway_type, "success");
         }
       })
@@ -78,9 +85,41 @@ const AddPaymentGatewayPopup = ({
   }, [managementPaymentEditId && managementPaymentEdit]);
 
   const handleManagementPaymentAddEdit = async () => {
-    const pay_id = managementPaymentEditId
-      ? manPaymentData?.id
-      : addpaymentId.slice(3, -3);
+    let errors = {};
+
+    // ✅ Common validation for all modes
+    if (!accHolderName.trim())
+      errors.accHolderName = "Account Holder Name is required.";
+
+    // ✅ Mode-specific validation
+    if (availablePaymentModeId === 1) {
+      // Bank Transfer
+      if (!accountNumber.trim())
+        errors.accountNumber = "Bank Account Number is required.";
+      if (!bankIFSC.trim()) errors.bankIFSC = "Bank IFSC is required.";
+      if (!bankName.trim()) errors.bankName = "Bank Name is required.";
+    } else if (availablePaymentModeId === 2) {
+      // UPI
+      if (!upiID.trim()) errors.upiID = "UPI ID is required.";
+    } else if (availablePaymentModeId === 3) {
+      // QR Code
+      if (!bankName.trim()) errors.bankName = "Bank Name is required.";
+      if (!qrCode) errors.qrCode = "QR Code Image is required.";
+    } else if (availablePaymentModeId === 4) {
+      // Other Details
+      if (!details.trim()) errors.details = "Details are required.";
+    }
+
+    // ✅ If errors exist, prevent submission
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    // ✅ Clear previous errors before proceeding
+    setValidationErrors({});
+
+    const pay_id = updateId ? manPaymentData?.id : addpaymentId.slice(3, -3);
     const requestData = {
       payment_mode_id: Number(pay_id),
       acc_hold_name: accHolderName,
@@ -123,8 +162,7 @@ const AddPaymentGatewayPopup = ({
       console.log(error?.message, "errorr");
     }
   };
-
-  // managemnet paymnet details edit and post get apis ============================
+  // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
   console.log(availablePaymentModeId, "===>availablePaymentModeId");
   return (
     <>
@@ -147,6 +185,11 @@ const AddPaymentGatewayPopup = ({
                 value={accHolderName}
                 onChange={(e) => setAccHolderName(e.target.value)}
               />
+              {validationErrors.accHolderName && (
+                <p className="text-danger small-font">
+                  {validationErrors.accHolderName}
+                </p>
+              )}
             </div>
             {availablePaymentModeId === 1 && (
               <>
@@ -159,6 +202,11 @@ const AddPaymentGatewayPopup = ({
                     value={accountNumber}
                     onChange={(e) => setAccountNumber(e.target.value)}
                   />
+                  {validationErrors.accountNumber && (
+                    <p className="text-danger small-font">
+                      {validationErrors.accountNumber}
+                    </p>
+                  )}
                 </div>
 
                 <div className="col-6">
@@ -170,6 +218,11 @@ const AddPaymentGatewayPopup = ({
                     value={bankIFSC}
                     onChange={(e) => setBankIFSC(e.target.value)}
                   />
+                  {validationErrors.bankIFSC && (
+                    <p className="text-danger small-font">
+                      {validationErrors.bankIFSC}
+                    </p>
+                  )}
                 </div>
 
                 <div className="col-6">
@@ -181,6 +234,11 @@ const AddPaymentGatewayPopup = ({
                     value={bankName}
                     onChange={(e) => setBankName(e.target.value)}
                   />
+                  {validationErrors.bankName && (
+                    <p className="text-danger small-font">
+                      {validationErrors.bankName}
+                    </p>
+                  )}
                 </div>
               </>
             )}
@@ -196,6 +254,11 @@ const AddPaymentGatewayPopup = ({
                     value={upiID}
                     onChange={(e) => setUpiID(e.target.value)}
                   />
+                  {validationErrors.upiID && (
+                    <p className="text-danger small-font">
+                      {validationErrors.upiID}
+                    </p>
+                  )}
                 </div>
               </>
             )}
@@ -211,6 +274,11 @@ const AddPaymentGatewayPopup = ({
                     value={bankName}
                     onChange={(e) => setBankName(e.target.value)}
                   />
+                  {validationErrors.bankName && (
+                    <p className="text-danger small-font">
+                      {validationErrors.bankName}
+                    </p>
+                  )}
                 </div>
 
                 <div className="col-6">
@@ -231,11 +299,16 @@ const AddPaymentGatewayPopup = ({
                       className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                     >
                       <span className="small-font">
-                        {qrCode ? qrCode.name : "Upload"}
+                        {qrCode ? qrName : "Upload"}
                       </span>
                       <AiOutlineCloudUpload size={20} />
                     </label>
                   </div>
+                  {validationErrors.qrCode && (
+                    <p className="text-danger small-font">
+                      {validationErrors.qrCode}
+                    </p>
+                  )}
                 </div>
               </>
             )}
@@ -254,6 +327,11 @@ const AddPaymentGatewayPopup = ({
                     onChange={(e) => setDetails(e.target.value)}
                   ></textarea>
                 </div>
+                {validationErrors.details && (
+                  <p className="text-danger small-font">
+                    {validationErrors.details}
+                  </p>
+                )}
               </>
             )}
           </div>

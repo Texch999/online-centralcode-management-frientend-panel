@@ -393,7 +393,11 @@ const endpoints = {
   // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
-    url: () => `/user/${userID()}/paymentDetails`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/paymentDetails?${query}`;
+    },
+    // url: () => `/user/${userID()}/paymentDetails`,
   },
   suspendManagementPaymentDetails: {
     method: "post",
