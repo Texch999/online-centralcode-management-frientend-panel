@@ -7,21 +7,25 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import Select from "react-select";
+
+import { useLocation, useNavigate } from "react-router-dom";
+import { MdBlock } from "react-icons/md";
+import ConfirmationPopup from "./popups/ConfirmationPopup";
 import {
-  createDirector,
   getAdminWebsites,
   getCountries,
   getCurrencies,
   getDirectorDetailsById,
-} from "../../api/apiMethods";
-import { adminRoles, commissionTypes } from "../../utils/enum";
-import { customStyles } from "../../components/ReactSelectStyles";
-import { useLocation, useNavigate } from "react-router-dom";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
-import SuccessPopup from "../popups/SuccessPopup";
+  updateDirectorByID,
+} from "../api/apiMethods";
+import { adminRoles, commissionTypes } from "../utils/enum";
+import { customStyles } from "../components/ReactSelectStyles";
+import SuccessPopup from "./popups/SuccessPopup";
 
-function AddNewDirectorSuperAdmin() {
+function EditNewDirector() {
   const navigate = useNavigate();
+
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
@@ -30,18 +34,16 @@ function AddNewDirectorSuperAdmin() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [managementPassword, setManagementPassword] = useState("");
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
+  const [error, setError] = useState();
   const [countryData, setCountryData] = useState();
   const [currencyData, setCurrencyData] = useState();
-
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId || null;
-
   console.log(userId, "userId");
   const GetAllCountries = () => {
     getCountries()
@@ -50,11 +52,11 @@ function AddNewDirectorSuperAdmin() {
           setCountryData(response?.data);
           console.log(response, "countries");
         } else {
-          setErrors("Something Went Wrong");
+          setError("Something Went Wrong");
         }
       })
       .catch((error) => {
-        setErrors(error?.message || "Not able to get Countries");
+        setError(error?.message || "Not able to get Countries");
       });
   };
   const GetAllCurrencies = () => {
@@ -64,11 +66,11 @@ function AddNewDirectorSuperAdmin() {
           setCurrencyData(response?.data);
           console.log(response, "countries");
         } else {
-          setErrors("Something Went Wrong");
+          setError("Something Went Wrong");
         }
       })
       .catch((error) => {
-        setErrors(error?.message || "Not able to get Countries");
+        setError(error?.message || "Not able to get Countries");
       });
   };
   const [adminWebsite, setAllAdminWebsite] = useState();
@@ -82,11 +84,11 @@ function AddNewDirectorSuperAdmin() {
           console.log(response.data, "AdminWebsites");
           setAllAdminWebsite(response.data);
         } else {
-          setErrors("Something Went Wrong");
+          setError("Something Went Wrong");
         }
       })
       .catch((error) => {
-        setErrors(error?.message || "Not able to get Countries");
+        setError(error?.message || "Not able to get Countries");
       });
   };
   console.log(currencyData, "currencyData");
@@ -123,9 +125,12 @@ function AddNewDirectorSuperAdmin() {
 
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
-      value,
+      value: Number(value),
       label,
     })
+  );
+  const [comm, setComm] = useState(
+    commissionOptions.map((option) => option.value)
   );
 
   const [forms, setForms] = useState([
@@ -159,12 +164,13 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
-  const handleAccountTypeChange = (id, selectedOption) => {
+  const handleAccountTypeChange = (siteId, selectedOption) => {
     setAccountTypes((prev) => ({
       ...prev,
-      [id]: selectedOption.value,
+      [siteId]: selectedOption ? selectedOption.value : "",
     }));
   };
+
   const handleInputChange = (id, field, value) => {
     setWebsiteDetails((prevDetails) => ({
       ...prevDetails,
@@ -176,88 +182,59 @@ function AddNewDirectorSuperAdmin() {
   };
   console.log(websiteDetails, "websiteDetails");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    if (!selectedAdmin) {
-      alert("Please select an Admin Website.");
-      return;
-    }
-
-    const selectedUserWebsites = userWebsites
-      .filter((site) => selectedWebsites[site.id])
-      .map((site) => {
-        const accotypeid = accountTypes[site.id];
-        let websiteData = {
-          admin_panel_id: selectedAdmin.value,
-          user_paner_id: site.id,
-          commission_type: accotypeid,
+  const formattedPayload = userWebsites
+    .map((site) => {
+      if (site.commission_type === 1) {
+        return {
+          id: site.id,
+          user_paner_id: site.user_paner_id,
+          admin_panel_id: site.admin_panel_id,
+          commission_type: site.commission_type,
+          extra_chips_percentage: site.extra_chips_percentage,
         };
-        if (accotypeid === "2") {
-          websiteData.share = parseFloat(websiteDetails[site.id]?.share || 0);
-          websiteData.caschip_values = parseFloat(
-            websiteDetails[site.id]?.caschip_values || 0
-          );
-          websiteData.downline_comm = parseFloat(
-            websiteDetails[site.id]?.downline_comm || 0
-          );
-        }
-        if (accotypeid === "1") {
-          websiteData.rent_start_date =
-            websiteDetails[site.id]?.rent_start_date || "";
-          websiteData.monthly_amount = parseInt(
-            websiteDetails[site.id]?.monthly_amount || 0
-          );
-          websiteData.chip_percentage = parseFloat(
-            websiteDetails[site.id]?.chip_percentage || 0
-          );
-          websiteData.max_chips_monthly = parseInt(
-            websiteDetails[site.id]?.max_chips_monthly || 0
-          );
-          websiteData.extra_chips_percentage = parseFloat(
-            websiteDetails[site.id]?.extra_chips_percentage || 0
-          );
-          websiteData.share = parseFloat(websiteDetails[site.id]?.share || 0);
-        }
-        return websiteData;
-      });
+      } else if (site.commission_type === 2) {
+        return {
+          id: site.id,
+          user_paner_id: site.user_paner_id,
 
-    if (selectedUserWebsites.length === 0) {
-      alert("Please select at least one User Website.");
-      return;
-    }
+          admin_panel_id: site.admin_panel_id,
+          commission_type: site.commission_type,
+          downline_comm: site.downline_comm,
+          share: site.share,
+          caschip_values: site.caschip_values,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
 
-    const finalData = {
-      type: selectedRole,
+  console.log("Formatted Payload:", formattedPayload);
+
+  const handleSubmit = () => {
+    const payload = {
       name,
       login_name: loginName,
-      password,
-      confirm_password: confirmPassword,
-      parent_password: managementPassword,
       country_id: selectedCountryCode,
+
+      parent_password: managementPassword,
+
       currency_id: selectedCurrencyCode,
-      accessWebsites: selectedUserWebsites,
+      accessWebsites: formattedPayload,
     };
 
-    createDirector(finalData)
+    console.log("Final Payload:", payload);
+    updateDirectorByID(userId, payload)
       .then((response) => {
         if (response.status === true) {
-          console.log("Response after clicking", response);
           setSuccessPopupOpen(true);
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
         } else {
-          console.log("Something went wrong");
+          console.log("Something error");
         }
       })
       .catch((error) => console.log(error));
-
-    console.log("Final Submitted Data:", finalData);
   };
 
   const handleCountryChange = (event) => {
@@ -274,7 +251,7 @@ function AddNewDirectorSuperAdmin() {
 
   const [individualDirectorData, setIndividualDirectorData] = useState();
   const [selectedRole, setSelectedRole] = useState("");
-  console.log(selectedRole, "selectedRole");
+
   console.log(individualDirectorData, "individualDirectorData");
 
   const getDirectorDetailsByID = () => {
@@ -301,40 +278,86 @@ function AddNewDirectorSuperAdmin() {
     setSelectedRole(event.target.value);
   };
 
-  const [errors, setErrors] = useState();
-  const validateForm = () => {
-    let newErrors = {};
+  useEffect(() => {
+    if (mode === "edit" && individualDirectorData) {
+      setName(individualDirectorData.login_name || "");
+      setLoginName(individualDirectorData.login_name || "");
+      setSelectedCountryCode(individualDirectorData.county || "");
+      setSelectedRole(individualDirectorData.type || "");
+      setSelectedCurrencyCode(individualDirectorData.currency_id || "");
+      setComm(
+        individualDirectorData.accessWebsites?.map(
+          (item) => item?.commission_type
+        )
+      );
+      setPassword("");
+      setConfirmPassword("");
+      setManagementPassword("");
 
-    if (!name.trim()) newErrors.name = "Name is required.";
-    if (!loginName.trim()) newErrors.loginName = "Login Name is required.";
-    if (!selectedRole) newErrors.selectedRole = "Role selection is required.";
-    if (!selectedCountryCode)
-      newErrors.selectedCountryCode = "Country is required.";
-    if (!selectedCurrencyCode)
-      newErrors.selectedCurrencyCode = "Currency is required.";
-
-    if (mode !== "edit") {
-      if (!password) {
-        newErrors.password = "Password is required.";
-      } else if (password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters.";
+      if (individualDirectorData.accessWebsites.length > 0) {
+        setSelectedAdmin({
+          value: individualDirectorData.accessWebsites[0]?.admin_panel_id || "",
+          label:
+            individualDirectorData.accessWebsites[0]?.admin_panel_name || "",
+        });
       }
 
-      if (!confirmPassword) {
-        newErrors.confirmPassword = "Confirm Password is required.";
-      } else if (confirmPassword !== password) {
-        newErrors.confirmPassword = "Passwords do not match.";
-      }
-    }
+      const mappedWebsites = individualDirectorData.accessWebsites.map(
+        (site) => {
+          const websiteData = {
+            id: site.website_access_id,
+            user_paner_id: site.user_paner_id,
+            web_url: site.user_panel_url,
+            admin_panel_id: site.admin_panel_id,
+            commission_type: site.commission_type || "",
+            rent_start_date: site.rent_start_date,
+            rent_expiry_date: site.rent_expiry_date,
+            chip_percentage: site.chip_percentage,
+            max_chips_monthly: site.max_chips_monthly,
+          };
 
-    if (!managementPassword) {
-      newErrors.managementPassword = "Management Password is required.";
-    }
+          if (site.commission_type === 1) {
+            websiteData.extra_chips_percentage = site.extra_chips_percentage;
+          } else if (site.commission_type === 2) {
+            websiteData.downline_comm = site.downline_comm;
+            websiteData.share = site.share;
+            websiteData.caschip_values = site.caschip_values;
+          }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+          return websiteData;
+        }
+      );
+
+      setUserWebsites(mappedWebsites);
+
+      const selectedSites = {};
+      mappedWebsites.forEach((site) => {
+        selectedSites[site.id] = true;
+      });
+      setSelectedWebsites(selectedSites);
+
+      const mappedAccountTypes = {};
+      mappedWebsites.forEach((site) => {
+        mappedAccountTypes[site.id] = site.commission_type
+          ? site.commission_type.toString()
+          : "";
+      });
+
+      console.log("Mapped Account Types:", mappedAccountTypes);
+      setAccountTypes(mappedAccountTypes);
+    }
+  }, [mode, individualDirectorData]);
+
+  const handleEditChange = (adminPanelId, commissionType, key, value) => {
+    setUserWebsites((prevWebsites) =>
+      prevWebsites.map((site) =>
+        site.admin_panel_id === adminPanelId &&
+        site.commission_type === commissionType
+          ? { ...site, [key]: value }
+          : site
+      )
+    );
   };
-
   return (
     <>
       <div>
@@ -364,7 +387,6 @@ function AddNewDirectorSuperAdmin() {
               onChange={(e) => setName(e.target.value)}
               required
             />
-            {errors?.name && <span className="error">{errors?.name}</span>}
           </div>
           <div className="col p-1">
             <label className="small-font my-1">Login Name</label>
@@ -376,10 +398,7 @@ function AddNewDirectorSuperAdmin() {
               onChange={(e) => setLoginName(e.target.value)}
               required
             />
-            {errors?.loginName && (
-              <span className="x-small-font error">{errors?.loginName}</span>
-            )}
-          </div>
+          </div>{" "}
           <div className="col-1 p-1">
             <label className="small-font my-1">Role</label>
             <select
@@ -400,9 +419,6 @@ function AddNewDirectorSuperAdmin() {
                 </option>
               )}
             </select>
-            {errors?.selectedRole && (
-              <span className="x-small-font error">{errors?.selectedRole}</span>
-            )}
           </div>
           <div className="col-1 p-1">
             <label className="small-font my-1">Country</label>
@@ -418,11 +434,6 @@ function AddNewDirectorSuperAdmin() {
                 </option>
               ))}
             </select>
-            {errors?.selectedCountryCode && (
-              <span className="x-small-font error">
-                {errors?.selectedCountryCode}
-              </span>
-            )}
           </div>
           <div className="col-1 p-1">
             <label className="small-font my-1">Currency</label>
@@ -438,14 +449,10 @@ function AddNewDirectorSuperAdmin() {
                 </option>
               ))}
             </select>
-            {errors?.selectedCurrencyCode && (
-              <span className="x-small-font error">
-                {errors?.selectedCurrencyCode}
-              </span>
-            )}
-          </div>
+          </div>{" "}
           {mode === "edit" ? null : (
             <>
+              {" "}
               <div className="p-1 col position-relative">
                 <label className="small-font my-1">Password</label>
                 <input
@@ -463,9 +470,6 @@ function AddNewDirectorSuperAdmin() {
                 >
                   {showPassword ? <FaEye /> : <FaEyeSlash />}
                 </span>
-                {errors?.password && (
-                  <span className="x-small-font error">{errors?.password}</span>
-                )}
               </div>
               <div className="p-1 col position-relative">
                 <label className="small-font my-1">Confirm Password</label>
@@ -487,11 +491,6 @@ function AddNewDirectorSuperAdmin() {
                   {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                   {/* {showConfirmPassword ? <FaEye /> : <FaEyeSlash />} */}
                 </span>
-                {errors?.confirmPassword && (
-                  <span className="x-small-font error">
-                    {errors?.confirmPassword}
-                  </span>
-                )}
               </div>
             </>
           )}
@@ -514,57 +513,61 @@ function AddNewDirectorSuperAdmin() {
             >
               {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
             </span>
-            {errors?.managementPassword && (
-              <span className="x-small-font error">
-                {errors?.managementPassword}
-              </span>
-            )}
           </div>
         </div>
       </div>
       <div>
         <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET </h3>
-        <form className="custom-form small-font p-3" onSubmit={handleSubmit}>
+        <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             {forms.map((form, index) => (
               <>
-                <div key={form.id} className="col-1">
+                <div key={form.id} className="w-20">
                   <label className="small-font my-1">Admin Website</label>
-                  <div className="custom-select-wrapper">
-                    <Select
-                      className="small-font"
-                      placeholder="Select"
-                      options={adminWebsite?.map((admin) => ({
-                        value: admin.id,
-                        label: admin.web_name,
-                      }))}
-                      value={selectedAdmin}
-                      onChange={(selectedAdmin) =>
-                        handleAdminRoleChange(selectedAdmin)
-                      }
+                  <div className="d-flex align-items-center">
+                    <div className="custom-select-wrapper">
+                      <Select
+                        className="small-font"
+                        placeholder="Select"
+                        options={adminWebsite?.map((admin) => ({
+                          value: admin.id,
+                          label: admin.web_name,
+                        }))}
+                        value={selectedAdmin}
+                        onChange={(selectedAdmin) =>
+                          handleAdminRoleChange(selectedAdmin)
+                        }
+                      />
+                    </div>
+                    <MdBlock
+                      className={form.status === 1 ? "clr-red" : "green-clr"}
                     />
                   </div>
                 </div>
-
                 {/* User Websites */}
-                <div className="col-11">
+                <div className="col-12">
                   <label className="small-font my-1">User Website</label>
                   {userWebsites.length > 0 ? (
                     userWebsites.map((userSite) => (
                       <div key={userSite.id} className="w-100 row">
                         <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
-                          <input
-                            type="checkbox"
-                            className="me-2"
-                            onChange={() => handleCheckboxChange(userSite.id)}
-                          />
+                          {mode === "edit" ? null : (
+                            <input
+                              type="checkbox"
+                              className="me-2"
+                              onChange={() => handleCheckboxChange(userSite.id)}
+                            />
+                          )}
+
                           <input
                             type="text"
                             className="small-font rounded all-none w-100"
                             value={userSite.web_url}
                             readOnly
                           />
+                          <MdBlock className="green-clr large-font" />
                         </div>
+                        {/* Account Type Dropdown */}
                         {selectedWebsites[userSite.id] && (
                           <div className="col-1 my-1">
                             <Select
@@ -576,29 +579,30 @@ function AddNewDirectorSuperAdmin() {
                               onChange={(selectedOption) =>
                                 handleAccountTypeChange(
                                   userSite.id,
-                                  selectedOption
+                                  selectedOption.value
                                 )
                               }
                               value={
-                                commissionOptions.filter((option) =>
-                                  accountTypes[userSite.id]?.includes(
-                                    option.value
-                                  )
-                                ) || []
+                                commissionOptions.find(
+                                  (option) =>
+                                    option.value === userSite.commission_type
+                                ) || null
                               }
                             />
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "1" && (
+                        {userSite.commission_type === 1 && (
                           <div className="col-9">
                             <div className="row">
                               <div className="col">
                                 <input
                                   type="date"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userSite.rent_start_date || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "rent_start_date",
                                       e.target.value
                                     )
@@ -610,9 +614,11 @@ function AddNewDirectorSuperAdmin() {
                                   type="text"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
                                   placeholder="Monthly Amnt"
+                                  value={userSite.monthly_amount || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "monthly_amount",
                                       e.target.value
                                     )
@@ -624,9 +630,11 @@ function AddNewDirectorSuperAdmin() {
                                   type="text"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
                                   placeholder="Max Chips Monthly"
+                                  value={userSite.max_chips_monthly || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "max_chips_monthly",
                                       e.target.value
                                     )
@@ -638,9 +646,11 @@ function AddNewDirectorSuperAdmin() {
                                   type="text"
                                   className="small-font white-bg rounded border-grey3 p-2 w-100"
                                   placeholder="Chip %"
+                                  value={userSite.chip_percentage || ""}
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "chip_percentage",
                                       e.target.value
                                     )
@@ -648,19 +658,20 @@ function AddNewDirectorSuperAdmin() {
                                 />
                               </div>
                               <div className="col">
-                                <div className="white-bg rounded small-font">
-                                  <input
-                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                    placeholder="Extra Chip %"
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        userSite.id,
-                                        "extra_chips_percentage",
-                                        e.target.value
-                                      )
-                                    }
-                                  />
-                                </div>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  placeholder="Extra Chip %"
+                                  value={userSite.extra_chips_percentage || ""}
+                                  onChange={(e) =>
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
+                                      "extra_chips_percentage",
+                                      e.target.value
+                                    )
+                                  }
+                                />
                               </div>
                               <div className="col-3">
                                 <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -668,9 +679,11 @@ function AddNewDirectorSuperAdmin() {
                                     type="text"
                                     className="small-font bg-none p-2 w-75"
                                     placeholder="Commission(%)"
+                                    value={userSite.share || ""}
                                     onChange={(e) =>
-                                      handleInputChange(
-                                        userSite.id,
+                                      handleEditChange(
+                                        userSite.admin_panel_id,
+                                        userSite.commission_type,
                                         "share",
                                         e.target.value
                                       )
@@ -684,20 +697,25 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "2" && (
+                        {userSite.commission_type === 2 && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
+                              {/* <label className="small-font my-1">
+                            Downline Sharing
+                          </label> */}
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                 <input
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Downline Sharing"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "downline_comm",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.downline_comm}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Share 10%</b>
@@ -705,17 +723,22 @@ function AddNewDirectorSuperAdmin() {
                               </div>
                             </div>
                             <div className="col position-relative mx-1">
+                              {/* <label className="small-font my-1">
+                            Commission: M.O
+                          </label> */}
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                 <input
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Enter Commission: M.0"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "share",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.share}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Comm.. 1%</b>
@@ -723,17 +746,22 @@ function AddNewDirectorSuperAdmin() {
                               </div>
                             </div>
                             <div className="col position-relative mx-1">
+                              {/* <label className="small-font my-1">
+                            Commission: M.O
+                          </label> */}
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                 <input
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Casino Chip Value"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "caschip_values",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.caschip_values}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b className="mx-1">Cas. Chip Val 20</b>
@@ -742,20 +770,25 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "3" && (
+                        {userSite.commission_type === 3 && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
+                              {/* <label className="small-font my-1">
+                            Downline Sharing
+                          </label> */}
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                 <input
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Downline Sharing"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "downline_comm",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.downline_comm}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Share 10%</b>
@@ -763,17 +796,22 @@ function AddNewDirectorSuperAdmin() {
                               </div>
                             </div>
                             <div className="col position-relative mx-1">
+                              {/* <label className="small-font my-1">
+                            Commission: M.O
+                          </label> */}
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                 <input
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Enter Commission: M.0"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "share",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.share}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b>My Comm.. 1%</b>
@@ -781,17 +819,22 @@ function AddNewDirectorSuperAdmin() {
                               </div>
                             </div>
                             <div className="col position-relative mx-1">
+                              {/* <label className="small-font my-1">
+                            Commission: M.O
+                          </label> */}
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                 <input
                                   className="small-font bg-none p-2 w-75"
                                   placeholder="Casino Chip Value"
                                   onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
+                                    handleEditChange(
+                                      userSite.admin_panel_id,
+                                      userSite.commission_type,
                                       "caschip_values",
                                       e.target.value
                                     )
                                   }
+                                  value={userSite?.caschip_values}
                                 />
                                 <span className="small-font text-center border-left3 px-1">
                                   <b className="mx-1">Cas. Chip Val 20</b>
@@ -817,19 +860,25 @@ function AddNewDirectorSuperAdmin() {
           </div>
 
           <div className="d-flex justify-content-end">
-            <button type="submit" className="btn btn-warning">
-              Submit <FaArrowRight />
+            <button
+              className="saffron-btn rounded"
+              type="button"
+              onClick={handleSubmit}
+            >
+              Update Details
             </button>
           </div>
         </form>
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription="Added Director SuccessFully"
-        />
+          // loginName
+          // discription="Updated Director SuccessFully"
+          discription={`updated ${selectedRole}  ${loginName} Successfully `}
+        />{" "}
       </div>
     </>
   );
 }
 
-export default AddNewDirectorSuperAdmin;
+export default EditNewDirector;

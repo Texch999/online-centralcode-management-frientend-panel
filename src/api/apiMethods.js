@@ -69,6 +69,10 @@ const blockDirector = (id, data) => {
 const updateEmployeeByID = (id, data) => {
   return apiRequest("updateEmployeeByID", data, id);
 };
+const updateDirectorByID = (id, data) => {
+  return apiRequest("updateDirectorByID", data, id);
+};
+
 // updateDirectorEmployeeByID
 const updateDirectorEmployeeByID = (id, data) => {
   return apiRequest("updateDirectorEmployeeByID", data, id);
@@ -134,6 +138,12 @@ export const updateWebsite = (id, data) =>
 export const getWebsiteDetails = (id, data) =>
   apiRequest("getWebsiteDetails", data, id);
 
+export const getAdminWebsiteDetails = () =>
+  apiRequest("getAdminWebsiteDetails");
+
+export const getUserWebsiteDetails = () =>
+  apiRequest("getUserWebsiteDetails");
+
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
@@ -162,6 +172,7 @@ export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
 export const editBroadCasting = (id, data) => {
+  console.log(id,"id")
   return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {
@@ -292,16 +303,16 @@ const createManagementOfflinePaymentModes = (data) => {
   return apiRequest("createManagementOfflinePaymentModes", data);
 };
 const getManagementOfflinePaymentModes = (params) => {
-  return apiRequest("getManagementOfflinePaymentModes",{}, params);
+  return apiRequest("getManagementOfflinePaymentModes", {}, params);
 };
 const suspenManagementOfflinePaymentModes = (id, status) => {
-  return apiRequest("suspenManagementOfflinePaymentModes", id, { id,status });
+  return apiRequest("suspenManagementOfflinePaymentModes", id, { id, status });
 };
 const getManagementOfflinePaymentModeById = (id, data) => {
   return apiRequest("getManagementOfflinePaymentModeById", data, id);
 };
-const updateManagementOfflinePaymentDetails=(id,data)=>{
-  return apiRequest("updateManagementOfflinePaymentDetails",data,id);
+const updateManagementOfflinePaymentDetails = (id, data) => {
+  return apiRequest("updateManagementOfflinePaymentDetails", data, id);
 };
 
 const managementPaymentDetails = (data) => {
@@ -309,6 +320,9 @@ const managementPaymentDetails = (data) => {
 };
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
+};
+const DirectorUpLinePaymentDetails = (data) => {
+  return apiRequest("DirectorUpLinePaymentDetails", data);
 };
 export {
   loginManagement,
@@ -387,5 +401,7 @@ export {
   ownersAvailablePaymentsModes,
   getCurrencies,
   loginDirectorEmployee,
-  resetDirectorPasswordInProfile
+  resetDirectorPasswordInProfile,
+  updateDirectorByID,
+  DirectorUpLinePaymentDetails,
 };

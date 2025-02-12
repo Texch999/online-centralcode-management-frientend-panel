@@ -1,5 +1,3 @@
-import { getManagementPaymentDetails } from "./apiMethods";
-
 const userID = () => {
   const id = localStorage.getItem("user_id");
   if (!id) {
@@ -48,6 +46,14 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/website/websiteby/${id}`,
   },
+  getAdminWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/adminWebsites`,
+  },
+  getUserWebsiteDetails: {
+    method: "get",
+    url: () => `/user/${userID()}/website/userWebsites`,
+  },
   getWebsitesList: {
     method: "get",
     url: (params) => {
@@ -65,7 +71,7 @@ const endpoints = {
   },
   statusPromotionsTypes: {
     method: "put",
-    url: (id) => `/user/${userID()}/promotionTypes/${id}`,
+    url: (id) => `/user/${userID()}/promotionTypes/${id}/status`,
   },
   getPromotionsImage: {
     method: "get",
@@ -97,7 +103,7 @@ const endpoints = {
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/bannerStatus/${id}`,
+    url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
 
   getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
@@ -165,9 +171,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
+  // {{baseUrl}}/user/1/director/Abcd7222
   updateDirectorByID: {
     method: "post",
-    url: (id) => `/user/${userID()}/updateDirector/${id}`,
+    url: (id) => `/user/${userID()}/director/${id}`,
   },
   // endpoint: http://localhost:901rest2/0.1/director/1/updateEmployee/Abcd1234
 
@@ -213,12 +220,6 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
   },
-  //rejection reasons
-
-  // getAllRejectionReasons: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/rejectionReasons/`,
-  // },
 
   getAllRejectionReasons: {
     method: "get",
@@ -239,11 +240,6 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
   },
-  //privacy
-  // getPrivacyPolicy: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/privacypolicies/`,
-  // },
   getPrivacyPolicy: {
     method: "get",
     url: (params) => {
@@ -274,7 +270,14 @@ const endpoints = {
     url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
   },
 
-
+  // getCountries: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/website/websites`,
+  // },
+  getWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
@@ -306,7 +309,7 @@ const endpoints = {
   },
   getBroadCasting: {
     method: "get",
-    url: () => `/user/${userID()}/broadcasting`,
+    url: () => `/user/${userID()}/broadcastings`,
   },
 
   statusBroadcastUpdate: {
@@ -316,10 +319,9 @@ const endpoints = {
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID}/api/statusPromotionsTypes/${id}`,
+    url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
 
-  //DirectorAccountDetails
   getDirectorAccountDetails: {
     method: "get",
     url: () => `/user/${userID()}/directorAccount`,
@@ -411,7 +413,7 @@ const endpoints = {
     url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
-  // payment details in management
+  // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
     url: () => `/user/${userID()}/paymentDetails`,
@@ -432,7 +434,7 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/update/${id}`,
   },
-  //offline payment modes
+  //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
   createManagementOfflinePaymentModes: {
     method: "post",
     url: () => `/user/${userID()}/offlinePaymentMode`,
@@ -443,7 +445,6 @@ const endpoints = {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
     },
-    // url: () => `/user/${userID()}/totalOfflinePaymentModes`,
   },
   getManagementOfflinePaymentModeById: {
     method: "get",
@@ -451,7 +452,8 @@ const endpoints = {
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
-    url: (data) => `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+    url: (data) =>
+      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   },
   updateManagementOfflinePaymentDetails: {
     method: "put",
@@ -465,6 +467,14 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/offlinePaymentModes`,
   },
+  DirectorUpLinePaymentDetails: {
+    method: "get",
+    url: () => `/director/${userID()}/payments`,
+  },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+    },
 };
 
 export default endpoints;

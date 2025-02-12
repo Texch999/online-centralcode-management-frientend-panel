@@ -21,11 +21,11 @@ import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
 import {
   getDirectorDwnList,
   getDirectorDwnListById,
-  unblockBlockDirectorDwnln,
   updateDirectorDwnlnPswd,
 } from "../../api/apiMethods";
 import { CgUnblock } from "react-icons/cg";
 import { CircleLoader } from "react-spinners";
+import { commissionTypes } from "../../utils/enum";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -82,7 +82,7 @@ const AddDirectorAdmin = () => {
 
   const handleBlockUserOpen = (user, id) => {
     setSelectedUser(user);
-    setSelectedDirectorId(id)
+    setSelectedDirectorId(id);
     setConfirmationPopup(true);
   };
 
@@ -119,7 +119,6 @@ const AddDirectorAdmin = () => {
   useEffect(() => {
     GetAllCountries();
   }, []);
-
 
   const getDirectorDwnSAList = () => {
     setLoading(true);
@@ -182,114 +181,194 @@ const AddDirectorAdmin = () => {
   
   const TableData =
     role === "management"
-      ? tableData?.map((user) => ({
-        id: user.id,
-        role: user.type === 1 ? "Director" : "Super Admin",
-        name: user.name,
-        loginname: user.login_name,
-        inUsed: "N/A",
-        linkWebsites: [],
-        shareRent: [],
-        billing: "0",
-        pl: <div className="red-font">0</div>,
-        dw: (
-          <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-            D/W
-          </button>
-        ),
-        action: (
-          <div className="d-flex flex-center gap-3">
-            {/* Edit button (disabled when status === 2) */}
-            <SlPencil
-              size={18}
-              className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
-              onClick={() => user.status !== 2 && setShowModal(true)}
-            />
+      ? tableData?.map((user) => {
+          const linkWebsites = user.accessWebsites.map((website) => ({
+            name: website.user_panel_name,
+            url: website.user_panel_url,
+            adminPanel: website.admin_panel_name,
+            adminUrl: website.admin_panel_url,
+          }));
 
-            {/* Reset Password button (disabled when status === 2) */}
-            <MdLockReset
-              size={18}
-              className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
-              onClick={() => user.status !== 2 && handleResetPasswordOpen(user.id)}
-            />
+          const shareRent = user.accessWebsites.map((website) => ({
+            commissionType: website.commission_type,
+            monthlyAmount: website.monthly_amount || "N/A",
+            maxChipsMonthly: website.max_chips_monthly || "N/A",
+            extraChipsPercentage: website.extra_chips_percentage || "N/A",
+            chipPercentage: website.chip_percentage || "N/A",
+            share: website.share,
+          }));
 
-            {/* Block/Unblock button (always enabled) */}
-            <MdBlockFlipped
-              size={18}
-              className={user.status === 2 ? "clr-red" : "green-clr"}
-              onClick={() => handleBlockUserOpen(user.login_name, user.id)}
-            />
+          return {
+            id: user.id,
+            role: user.type === 1 ? "Director" : "Super Admin",
+            name: user.name,
+            loginname: user.login_name,
+            inUsed: (
+              <div
+                className={` ${user.status === 1 ? "green-clr" : "clr-red"}`}
+              >
+                {" "}
+                {user.status === 1 ? "Active" : "InActive"}
+              </div>
+            ),
+            linkWebsites: (
+              <span className="d-flex flex-column">
+                {linkWebsites.map((website, index) => (
+                  <span key={index}>
+                    <a
+                      className="yellow-font"
+                      href={website.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {website.url}
+                    </a>{" "}
+                    (Admin:{" "}
+                    <a
+                      href={website.adminUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {website.adminPanel}
+                    </a>
+                    )
+                  </span>
+                ))}
+              </span>
+            ),
+            shareRent: (
+              <span className="d-flex flex-column">
+                {shareRent.map((type, index) => (
+                  <span key={index}>
+                    <span className="green-clr">
+                      {commissionTypes[type.commissionType] || "Unknown"}{" "}
+                    </span>
+                    {/* Correct way to access the enum */}
+                    {type.share ? `, Share: ${type.share}%` : ""}
+                  </span>
+                ))}
+              </span>
+            ),
 
-            {/* View button (always enabled) */}
-            <BsEye
-              size={18}
-              className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
-              onClick={()=>handleNavigateUserDashboard(user?.id)}
-            />
-          </div>
-        ),
+            // shareRent: (
+            //   <span className="d-flex flex-column">
+            //     {shareRent.map((type, index) => (
+            //       <span key={index}>
+            //         {commissionTypes[type] || ""}
+            //         {/* {`Type: ${rent.commissionType}, Share: ${rent.share}%`} */}
+            //       </span>
+            //     ))}
+            //   </span>
+            // ),
+            billing: "0",
+            pl: <div className="red-font">0</div>,
+            dw: (
+              <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+                D/W
+              </button>
+            ),
+            action: (
+              <div className="d-flex flex-center gap-3">
+                <SlPencil
+                  size={18}
+                  className={`black-text pointer ${
+                    user.status === 2 ? "disabled" : ""
+                  }`}
+                  onClick={() =>
+                    user.status !== 2 &&
+                    navigate(`/director-admin/editDirector/`, {
+                      state: { userId: user.id, mode: "edit" },
+                    })
+                  }
+                />
 
-      }))
+                <MdLockReset
+                  size={18}
+                  className={`black-text pointer ${
+                    user.status === 2 ? "disabled" : ""
+                  }`}
+                  onClick={() =>
+                    user.status !== 2 && handleResetPasswordOpen(user.id)
+                  }
+                />
+
+                <MdBlockFlipped
+                  size={18}
+                  className={user.status === 2 ? "clr-red" : "green-clr"}
+                  onClick={() => handleBlockUserOpen(user.login_name, user.id)}
+                />
+
+                <BsEye
+                  size={18}
+                  className={`black-text pointer ${
+                    user.status === 2 ? "disabled" : ""
+                  }`}
+                  onClick={handleNavigateUserDashboard}
+                />
+              </div>
+            ),
+          };
+        })
       : directorDwnList?.map((item) => ({
-        id: item.id,
-        role: item.type === 2 ? "Super Admin" : "",
-        name: item.name,
-        loginname: item.login_name,
-        inUsed: "N/A",
+          id: item.id,
+          role: item.type === 2 ? "Super Admin" : "",
+          name: item.name,
+          loginname: item.login_name,
+          inUsed: "N/A",
 
-        shareRent: [],
-        billing: "0",
-        pl: <div className="red-font">0</div>,
-        dw: (
-          <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-            D/W
-          </button>
-        ),
-        action: (
-          <div className="d-flex flex-center gap-3">
-            <SlPencil
-              size={18}
-              className="black-text pointer"
-              onClick={() => setShowModal(true)}
-            />
-            <MdLockReset
-              size={18}
-              className="black-text pointer"
-              onClick={() => handleResetPswdDirDwn(item?.id)}
-            />
-            {item?.status === 1 ? (
-              <CgUnblock
-                size={20}
-                className="green-font pointer"
-                onClick={() =>
-                  handleBlockUnblockDirDwn(
-                    item?.id,
-                    item?.login_name,
-                    item?.status
-                  )
-                }
-              />
-            ) : (
-              <MdBlockFlipped
+          shareRent: [],
+          billing: "0",
+          pl: <div className="red-font">0</div>,
+          dw: (
+            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+              D/W
+            </button>
+          ),
+          action: (
+            <div className="d-flex flex-center gap-3">
+              <SlPencil
                 size={18}
-                className="red-font pointer"
-                onClick={() =>
-                  handleBlockUnblockDirDwn(
-                    item?.id,
-                    item?.login_name,
-                    item?.status
-                  )
-                }
+                className="black-text pointer"
+                onClick={() => setShowModal(true)}
               />
-            )}
-            <BsEye
-              size={18}
-              className="black-text pointer"
-              onClick={handleNavigateUserDashboard}
-            />
-          </div>
-        ),
-      }));
+              <MdLockReset
+                size={18}
+                className="black-text pointer"
+                onClick={() => handleResetPswdDirDwn(item?.id)}
+              />
+              {item?.status === 1 ? (
+                <CgUnblock
+                  size={20}
+                  className="green-font pointer"
+                  onClick={() =>
+                    handleBlockUnblockDirDwn(
+                      item?.id,
+                      item?.login_name,
+                      item?.status
+                    )
+                  }
+                />
+              ) : (
+                <MdBlockFlipped
+                  size={18}
+                  className="red-font pointer"
+                  onClick={() =>
+                    handleBlockUnblockDirDwn(
+                      item?.id,
+                      item?.login_name,
+                      item?.status
+                    )
+                  }
+                />
+              )}
+              <BsEye
+                size={18}
+                className="black-text pointer"
+                onClick={handleNavigateUserDashboard}
+              />
+            </div>
+          ),
+        }));
   console.log(tableData, "tableData");
 
   const GetAllDirectors = () => {
@@ -328,7 +407,6 @@ const AddDirectorAdmin = () => {
           setTimeout(() => {
             setResetPasswordPopup(false);
           }, 1000);
-
         } else {
           alert("Something went wrong");
         }
@@ -337,7 +415,6 @@ const AddDirectorAdmin = () => {
         alert(error?.message || "Request failed");
       });
   };
-
 
   const resetPasswordDwnln = (data) => {
     if (!dirDwnlnId) {
@@ -397,7 +474,11 @@ const AddDirectorAdmin = () => {
           </div>
           <button
             className="small-font rounded-pill input-pill blue-font px-3 py-1"
-            onClick={() => navigate("/director-admin/addnewdirector")}
+            onClick={() =>
+              navigate("/director-admin/addnewdirector", {
+                state: { mode: "add" },
+              })
+            }
           >
             <FaPlus className="me-2" />
             Add New
@@ -441,12 +522,11 @@ const AddDirectorAdmin = () => {
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
-        discription={`Are you sure you want to ${statusId === 1 ? "Unblock" : "Block"
-          } ${selectedUser}?`}
+        discription={`Are you sure you want to ${
+          statusId === 1 ? "Unblock" : "Block"
+        } ${selectedUser}?`}
         submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
-
         onSubmit={() => blockUnblock()}
-
       />
     </div>
   );

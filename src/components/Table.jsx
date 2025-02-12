@@ -20,7 +20,6 @@ function Table({
   const prevPage = useRef(currentPage);
   const totalPages = Math.max(Math.ceil(totalRecords / itemsPerPage));
   const hasData = data.length > 0;
-  console.log(totalRecords, itemsPerPage, "=====>");
   useEffect(() => {
     setCurrentPage(pageFromParams);
   }, [pageFromParams]);
@@ -77,9 +76,8 @@ function Table({
                     <td
                       key={colIndex}
                       style={{ width: column.width }}
-                      className={`${
-                        rowColor ? rowColor(row) : "black-text"
-                      } align-top small-font ${customPadding}`}
+                      className={`${rowColor ? rowColor(row) : "black-text"
+                        } align-top small-font ${customPadding}`}
                     >
                       {row[column.field]}
                     </td>
@@ -121,9 +119,8 @@ function Table({
           <div className="d-flex">
             {/* Previous Button */}
             <div
-              className={`chat-img flex-center black-text2 me-1 br-3px cursor-pointer ${
-                currentPage > 1 ? "grey-bg black-border" : "border"
-              }`}
+              className={`chat-img flex-center black-text2 me-1 br-3px cursor-pointer ${currentPage > 1 ? "grey-bg black-border" : "border"
+                }`}
               onClick={
                 currentPage > 1 ? () => handlePageChange(currentPage - 1) : null
               }
@@ -139,9 +136,8 @@ function Table({
               <div
                 key={pageNumber}
                 onClick={() => handlePageChange(pageNumber)}
-                className={`chat-img flex-center small-font black-text2 mx-1 br-3px cursor-pointer ${
-                  currentPage === pageNumber ? "grey-bg black-border" : "border"
-                }`}
+                className={`chat-img flex-center small-font black-text2 mx-1 br-3px cursor-pointer ${currentPage === pageNumber ? "grey-bg black-border" : "border"
+                  }`}
               >
                 {pageNumber}
               </div>
@@ -149,9 +145,8 @@ function Table({
 
             {/* Next Button */}
             <div
-              className={`chat-img flex-center black-text2 ms-1 br-3px cursor-pointer ${
-                currentPage < totalPages ? "grey-bg black-border" : "border"
-              }`}
+              className={`chat-img flex-center black-text2 ms-1 br-3px cursor-pointer ${currentPage < totalPages ? "grey-bg black-border" : "border"
+                }`}
               onClick={
                 currentPage < totalPages
                   ? () => handlePageChange(currentPage + 1)

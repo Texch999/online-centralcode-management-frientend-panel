@@ -20,6 +20,7 @@ import moment from "moment";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useNavigate } from "react-router-dom";
+import { imgUrl } from "../../api/baseUrl";
 
 const PaymentGateway = () => {
   const navigate = useNavigate();
@@ -45,11 +46,13 @@ const PaymentGateway = () => {
   const [managementPaymentEditId, setManagementPaymentEditId] = useState(null);
   const [managementPaymentEdit, setManagementPaymentEdit] = useState(false);
   const [errorPopup, setErrorPopup] = useState(false);
+  const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
     2: "UPI",
     3: "QR Code",
+    4: "Cash",
   };
 
   // Function to get currency dynamically
@@ -58,12 +61,6 @@ const PaymentGateway = () => {
     return country
       ? `${country.currency_symbol} ${country.currency_name}`
       : "N/A";
-  };
-
-  const formatDate = (isoDate) => {
-    if (!isoDate) return "N/A"; // Handle null or undefined dates
-    const date = new Date(isoDate);
-    return date.toLocaleDateString("en-GB"); // Formats to "DD-MM-YYYY"
   };
 
   const getCountryName = (id) => {
@@ -79,40 +76,33 @@ const PaymentGateway = () => {
     setSuspendManagementPaymentStatus(status);
   };
 
-  const handleEditManagePayment = (id) => {
+  const handleEditManagePayment = (id, gateway_type) => {
     setManagementPaymentEditId(id);
     setManagementPaymentEdit(true);
     setOnAddPaymentGateway(true);
+    setAvailablePaymentModeId(gateway_type);
   };
-
-  //get by id
-
   // get all
 
   const fetchManagementPaymentDetails = async () => {
     setLoading(true);
     try {
       const response = await getManagementPaymentDetails();
-      console.log("getManagementPaymentDetails success", response);
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
       }
     } catch (error) {
       setError(error?.message);
-      // setErrorPopup(true);
-      // setTimeout(() => {
-      //   setErrorPopup(false);
-      // }, [2000]);
-      console.log("getManagementPaymentDetails error", error);
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    if (paymentDetailsDataFetched.current) return;
-    if (role_code !== "management") return;
-    paymentDetailsDataFetched.current = true;
-    fetchManagementPaymentDetails();
+    if (role_code === "management") {
+      if (paymentDetailsDataFetched.current) return;
+      paymentDetailsDataFetched.current = true;
+      fetchManagementPaymentDetails();
+    }
   }, []);
 
   //suspend api
@@ -134,15 +124,17 @@ const PaymentGateway = () => {
   const filteredPayments = managementPaymentDetails.filter((item) => {
     const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
     const bankName = item?.bank_name?.toLowerCase();
-    const upiProviderId = item?.upi_provider_id?.toLowerCase();
+    const upiProviderId = item?.upi_id?.toLowerCase();
     const countryName = getCountryName(item?.country)?.toLowerCase();
+    const accholder = item?.accholder?.toLowerCase();
     const searchTerm = searchInput.toLowerCase();
 
     return (
       gatewayName?.includes(searchTerm) ||
       bankName?.includes(searchTerm) ||
       upiProviderId?.includes(searchTerm) ||
-      countryName?.includes(searchTerm)
+      countryName?.includes(searchTerm) ||
+      accholder?.includes(searchTerm)
     );
   });
 
@@ -153,7 +145,7 @@ const PaymentGateway = () => {
         case 1:
           return (
             <div className="d-flex flex-column align-items-start">
-              <span className="fw-bold">{item?.bank_name}</span>
+              <span className="">bank_name: {item?.bank_name}</span>
               <span>Acc No: {item?.bank_acc_no}</span>
               <span>IFSC: {item?.bank_ifsc}</span>
             </div>
@@ -161,27 +153,30 @@ const PaymentGateway = () => {
         case 2:
           return (
             <div className="d-flex align-items-center">
-              <span className="fw-bold">{item?.upi_provider_id}</span>
+              <span className="fw-bold">{item?.upi_id}</span>
             </div>
           );
         case 3:
           return (
             <div className="d-flex align-items-center">
               <img
-                src={item?.qr_code_image}
+                src={`${imgUrl}/mngPayDetails/${item?.qr_code_image}`}
                 alt="QR Code"
-                className="w-25 h-25 me-2"
+                className="w-30 h-7vh me-2"
               />
               <span className="fw-bold">{item?.bank_name}</span>
             </div>
           );
+        case 4:
+          return <div className="fw-bold">{item?.acc_hold_name}</div>;
         default:
           return <span className="text-muted">N/A</span>;
       }
     })(),
+    accholder: item?.acc_hold_name,
     lastUpdated: moment(item?.updated_date).format("DD-MM-YYYY"),
-    country: getCountryName(item?.country),
-    currency: getCurrencySymbol(item?.country),
+    country: getCountryName(item?.currency_id),
+    currency: getCurrencySymbol(item?.currency_id),
     status:
       item?.status === 1 ? (
         <span className="green-btn badge py-2 px-3">Active</span>
@@ -192,18 +187,20 @@ const PaymentGateway = () => {
       <div className="flex-center gap-2">
         {item?.status === 1 ? (
           <SlPencil
-            size={18}
+            size={20}
             className="pointer me-2"
-            onClick={() => handleEditManagePayment(item?.id)}
+            onClick={() =>
+              handleEditManagePayment(item?.id, item?.gateway_type)
+            }
           />
         ) : (
           <span title="this gateway is inactivated you can't updated it!">
-            <SlPencil size={18} className="me-2 disabled" />
+            <SlPencil size={20} className="me-2 disabled" />
           </span>
         )}
 
         <RiDeleteBinLine
-          size={18}
+          size={20}
           className="pointer ms-1"
           onClick={() => handleManagementSuspend(item?.id, item.status)}
         />
@@ -297,6 +294,7 @@ const PaymentGateway = () => {
   const columns = [
     { header: "Gateway Name", field: "gatewayName", width: "15%" },
     { header: "Payment Details", field: "paymentDetails", width: "25%" },
+    { header: "Acc Holder Name", field: "accholder", width: "15%" },
     { header: "Last Updated", field: "lastUpdated", width: "15%" },
     { header: "Country", field: "country", width: "10%" },
     { header: "Currency", field: "currency", width: "10%" },
@@ -325,9 +323,10 @@ const PaymentGateway = () => {
       ) : (
         item.upi_provider || "N/A"
       ),
-    lastUpdated: formatDate(item.updated_date),
-    country: getCountryName(item.country), // Function to map country code to name
-    currency: getCurrencySymbol(item.country), // Function to get currency symbol
+    accholder: item?.acc_hold_name,
+    lastUpdated: moment(item.updated_date),
+    country: getCountryName(item.country),
+    currency: getCurrencySymbol(item.country),
     status: (
       <span className="badge py-2 px-3">
         {item?.status === 1 ? (
@@ -344,7 +343,7 @@ const PaymentGateway = () => {
           <SlPencil
             size={18}
             className="pointer me-2"
-            onClick={() => handleEdit(item?.id)}
+            onClick={() => handleEdit(item?.id, item.gateway_type)}
           />
         ) : (
           <SlPencil size={18} className="pointer me-2 disabled" />
@@ -378,8 +377,6 @@ const PaymentGateway = () => {
           <button
             className="rounded-pill input-pill blue-font small-font px-2"
             onClick={() => {
-              // setOnAddPaymentGateway(true);
-              // setManagementPaymentEdit(false);
               navigate("/addnew-payments");
             }}
           >
@@ -409,7 +406,7 @@ const PaymentGateway = () => {
         )}
       </div>
 
-      {role_code === "management" ? (
+      {role_code === "management" && (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
           onHide={() => {
@@ -422,19 +419,7 @@ const PaymentGateway = () => {
           fetchManagementPaymentDetails={fetchManagementPaymentDetails}
           managementPaymentEditId={managementPaymentEditId}
           setManagementPaymentEditId={setManagementPaymentEditId}
-        />
-      ) : (
-        <AddPaymentGatewayPopup
-          show={onAddPaymentGateway}
-          onHide={() => {
-            setOnAddPaymentGateway(false);
-            setEditMode(false);
-          }}
-          data={countries}
-          getDirectorAccountData={getDirectorAccountData}
-          editMode={editMode}
-          editData={editData}
-          setEditMode={setEditMode}
+          availablePaymentModeId={availablePaymentModeId}
         />
       )}
 
@@ -461,12 +446,6 @@ const PaymentGateway = () => {
           onSubmit={suspendStatus}
         />
       )}
-
-      <ErrorPopup
-        discription={error}
-        errorPopupOpen={errorPopup}
-        setErrorPopupOpen={setErrorPopup}
-      />
     </div>
   );
 };
