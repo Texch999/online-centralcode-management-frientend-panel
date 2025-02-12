@@ -306,7 +306,7 @@ const endpoints = {
 
   getDirectorAccountDetails: {
     method: "get",
-    url: () => `/user/${userID()}/directorAccount`,
+    url: () => `/user/${userID()}/directorAccounts`,
   },
   postDirectorAccountDetails: {
     method: "post",
