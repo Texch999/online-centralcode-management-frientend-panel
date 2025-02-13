@@ -96,7 +96,7 @@ const getDirectorEmployees = (params) => {
 };
 // const getWebsitesList = (params) => {
 const getDirectorAccountDetails = (data) => {
-  return apiRequest("getDirectorAccountDetails");
+  return apiRequest("getDirectorAccountDetails",data);
 };
 
 const postDirectorAccountDetails = (data) => {
@@ -148,12 +148,13 @@ export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
 //VijayaLakshmi
-const getPromotionsTypes = () => {
-  return apiRequest("getPromotionsTypes");
+const getPromotionsTypes = (params) => {
+  console.log("params",params)
+  return apiRequest("getPromotionsTypes", {}, params);
 };
-
-const getPromotionsImage = () => {
-  return apiRequest("getPromotionsImage");
+const getPromotionsImage = (params) => {
+  console.log("params",params)
+  return apiRequest("getPromotionsImage", {}, params);
 };
 const createPromotionImages = (data) => {
   return apiRequest("createPromotionImages", data);
@@ -164,8 +165,8 @@ const statusPromotionsTypes = (id, data) => {
 const deletePromotionsImages = (id, data) => {
   return apiRequest("deletePromotionsImages", data, id);
 };
-export const getBroadCasting = () => {
-  return apiRequest("getBroadCasting");
+export const getBroadCasting = (params) => {
+  return apiRequest("getBroadCasting", {}, params);
 };
 
 export const createBroadCasting = (data) => {
@@ -261,6 +262,10 @@ const unblockBlockDirectorDwnln = (id, data) => {
 const getBanner = () => {
   return apiRequest("getBanner");
 };
+ const getBannerByUserId = (params) => {
+  return apiRequest("getBannerByUserId", {}, params);
+};
+
 const createBanner = (data) => {
   return apiRequest("createBanner", data);
 };
@@ -323,6 +328,9 @@ const ownersAvailablePaymentsModes = (data) => {
 };
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
+};
+const getDirectorSites = (data) => {
+  return apiRequest("getDirectorSites", data);
 };
 export {
   loginManagement,
@@ -404,4 +412,6 @@ export {
   resetDirectorPasswordInProfile,
   updateDirectorByID,
   DirectorUpLinePaymentDetails,
+  getBannerByUserId,
+  getDirectorSites,
 };

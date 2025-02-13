@@ -88,13 +88,11 @@ const AddNewPopUp = ({
         setValue("description", response.description);
         setValue(
           "status",
-          selectOptions.find((opt) => opt.value === response.status)
+          selectOptions.find((opt) => opt.value === response?.status)
         );
       });
     }
   }, [isEdit, selectedRejReasonId, setValue]);
-
-  const watchStatus = watch("status");
 
   const onSubmitRejReasons = (data) => {
     const payload = {
@@ -117,9 +115,13 @@ const AddNewPopUp = ({
         getRejReasons();
         setAddNewModalRejection(false);
       })
-      .catch((error) => console.error("Error:", error?.message));
-    setError(error?.message);
-    setErrorPopup(true);
+      .catch((error) => {
+        setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 1000);
+      });
   };
 
   // sec qns
@@ -163,8 +165,11 @@ const AddNewPopUp = ({
         setAddNewModalSecurity(false);
       })
       .catch((error) => {
+        setError(error?.message);
         setErrorPopup(true);
-        setError(error);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 1000);
       });
   };
   return (
@@ -182,7 +187,7 @@ const AddNewPopUp = ({
 
             <form onSubmit={handleSubmit(onSubmitRejReasons)}>
               <div className="row mt-3 small-font">
-                <div className="col-4 flex-column">
+                {/* <div className="col-4 flex-column">
                   <label className="black-text4 mb-1">Status</label>
                   <Controller
                     name="status"
@@ -211,6 +216,25 @@ const AddNewPopUp = ({
                   {errors?.status && (
                     <p className="text-danger small-font">
                       {errors?.status?.message}
+                    </p>
+                  )}
+                </div> */}
+                <div className="col-4 flex-column">
+                  <label className="black-text4 mb-1">Status</label>
+                  <Select
+                    options={selectOptions}
+                    placeholder="Select"
+                    styles={customStyles}
+                    value={watch("status") || null}
+                    onChange={(selectedOption) =>
+                      setValue("status", selectedOption, {
+                        shouldValidate: true,
+                      })
+                    }
+                  />
+                  {errors.status && (
+                    <p className="text-danger small-font">
+                      {errors.status.message}
                     </p>
                   )}
                 </div>

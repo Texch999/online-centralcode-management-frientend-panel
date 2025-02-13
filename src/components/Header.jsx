@@ -13,7 +13,7 @@ import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { ImUserPlus } from "react-icons/im";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
-import { getAllCountires } from "../api/apiMethods";
+import { getCountries } from "../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../redux/action";
 function Header() {
@@ -54,7 +54,7 @@ function Header() {
   const dispatch = useDispatch()
   const isDashboard = window?.location?.pathname === "/";
   const getAllCountries = () => {
-    getAllCountires()
+    getCountries ()
       .then((response) => {
         if (response?.status === true) {
           dispatch(setAllCountries(response?.data));

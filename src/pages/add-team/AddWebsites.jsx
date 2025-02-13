@@ -15,6 +15,7 @@ import {
 } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
@@ -23,7 +24,7 @@ const AddWibsites = () => {
   const [error, setError] = useState("");
   const [websites, setWebsite] = useState([]);
   const [directorSites, setDirectorSites] = useState([]);
-  const [countries, setCountries] = useState([]);
+
   const [editMode, setEditMode] = useState(false);
   const [websiteId, setWebsiteId] = useState(null);
   const [status, setStatus] = useState(null);
@@ -37,6 +38,8 @@ const AddWibsites = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
+  const allCountries = useSelector((item) => item?.allCountries);
+  // const [countries, setCountries] = useState(allCountries);
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
       limit,
@@ -77,27 +80,26 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
-  const getCountries = () => {
-    getAllCountires()
-      .then((response) => {
-        if (response?.status === true) {
-          setCountries(response.data);
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "API request failed");
-      });
-  };
+  // const getCountries = () => {
+  //   getAllCountires()
+  //     .then((response) => {
+  //       if (response?.status === true) {
+  //         setCountries(response.data);
+  //       } else {
+  //         setError("Something Went Wrong");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message || "API request failed");
+  //     });
+  // };
 
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
-      getCountries();
       return;
     }
-
+    // getCountries();
     if (filterName.trim() === "") {
       const limit = itemsPerPage;
       const offset = (currentPage - 1) * itemsPerPage;
@@ -130,7 +132,7 @@ const AddWibsites = () => {
     },
   ];
   const getLocationName = (locationId) => {
-    const country = countries.find((country) => country.id === locationId);
+    const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
   const data = websites.map((website) => ({
@@ -138,17 +140,15 @@ const AddWibsites = () => {
     admin: (
       <div>
         {" "}
-        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${
-          website?.panel_type === 1 ? "Admin" : "User"
-        } )`}
+        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${website?.panel_type === 1 ? "Admin" : "User"
+          } )`}
       </div>
     ),
     websiteName: website?.web_name,
     location: (
       <div>
-        {`${
-          website.city.charAt(0).toUpperCase() + website.city.slice(1)
-        }, ${getLocationName(website?.location_id)}`}{" "}
+        {`${website.city.charAt(0).toUpperCase() + website.city.slice(1)
+          }, ${getLocationName(website?.location_id)}`}{" "}
       </div>
     ),
     url: website.web_url.toLowerCase(),
@@ -157,9 +157,8 @@ const AddWibsites = () => {
         <div>
           <SlPencil
             size={18}
-            className={`pointer ${
-              website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`pointer ${website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             style={website.status !== 1 ? { pointerEvents: "none" } : {}}
             onClick={() => {
               if (website.status === 1) {
@@ -173,9 +172,8 @@ const AddWibsites = () => {
 
         <MdBlockFlipped
           size={18}
-          className={`pointer ${
-            website.status === 1 ? "green-clr" : "dark-orange-clr"
-          }`}
+          className={`pointer ${website.status === 1 ? "green-clr" : "dark-orange-clr"
+            }`}
           onClick={() => {
             setConfirmationPopupOpen(true);
             setWebsiteId(website?.id);
@@ -194,47 +192,15 @@ const AddWibsites = () => {
     // { header: "Action", field: "action", width: "20%" },
   ];
 
-  // const directorswebsitedata = directorSites.map((item) => (
-
-  //   item?.admin_websites.map((adminPanel) => ({
-
-  //     type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
-  //     admin: adminPanel.admin_web_name,
-  //     websiteName: adminPanel.users.map(user => (
-  //       <div key={user.website_access_id}>{console.log(adminPanel, "=====>item")}{user.user_web_name}</div>
-  //     )),
-  //     location: adminPanel.users.map(user => (
-  //       <div key={user.website_access_id}>{user.user_web_city}</div>
-  //     )),
-
-  //     url: adminPanel.users.map(user => (
-  //       <div key={user.website_access_id}>
-  //         {user.user_web_url}
-  //       </div>
-  //     )),
-  //     // action: (
-  //     //   <div className="d-flex gap-3">
-  //     //     <SlPencil size={18} className="pointer" />
-  //     //     <MdBlockFlipped
-  //     //       size={18}
-  //     //       className="pointer"
-  //     //       onClick={() => setConfirmationPopupOpen(true)}
-  //     //     />
-  //     //   </div>
-  //     // ),
-  //   }))
-
-  // ));
-
   const directorswebsitedata = directorSites.flatMap((site) =>
     site.admin_websites.map((adminPanel) => ({
       type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
-      admin: adminPanel.admin_web_name,
+      admin: <div className="text-capitalize"> {adminPanel.admin_web_name}</div>,
       websiteName: adminPanel.users.map((user) => (
-        <div key={user.website_access_id}>{user.user_web_name}</div>
+        <div key={user.website_access_id} className="text-capitalize">{user.user_web_name}</div>
       )),
       location: adminPanel.users.map((user) => (
-        <div key={user.website_access_id}>{user.user_web_city}</div>
+        <div key={user.website_access_id} className="text-capitalize">{user.user_web_city}</div>
       )),
       url: adminPanel.users.map((user) => (
         <div key={user.website_access_id}>{user.user_web_url}</div>
@@ -276,7 +242,6 @@ const AddWibsites = () => {
         }, 2000);
       });
   };
-
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -331,7 +296,7 @@ const AddWibsites = () => {
       <AddWebsitesPopup
         show={onAddwebsitePopup}
         onHide={() => setOnAddwebsitePopup(false)}
-        countries={countries}
+        countries={allCountries}
         getWebsitesCallback={getAllWebsiteList}
         editMode={editMode}
         websiteId={websiteId}

@@ -603,6 +603,7 @@
 .border-left2 {
   border-right: 2px solid #aeaeae;
 }
+
 .border-left3 {
   border-left: 2px solid #aeaeae;
 }
@@ -762,10 +763,12 @@
 .custom-file-upload:hover {
   background: #e9ecef;
 }
+
 .disabled {
   opacity: 0.5;
   pointer-events: none;
 }
+
 .cst-btn {
   transition: all 0.3s ease-in-out;
   width: 15%;
@@ -841,11 +844,17 @@ button.cst-btn:hover {
 .white-clr {
   color: "#ffffff";
 }
+
 .border-danger {
   border: 1px solid red !important;
 }
 
 .error {
   color: rgb(237, 53, 53) !important;
-  font-size: 0.875rem; /* Small text for error messages */
+  font-size: 0.875rem;
+  /* Small text for error messages */
+}
+
+.input-border {
+  border: 1px solid rgb(0, 0, 0, 0.2)
 }

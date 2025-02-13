@@ -100,6 +100,7 @@ function Login() {
           localStorage.setItem("role_name", response?.user?.role?.role_name);
           localStorage.setItem("role_code", response?.user?.role?.role_name);
           localStorage.setItem("user_id", response?.user?.id);
+          localStorage.setItem("user_name", response?.user?.name);
           console.log(response, "========>response login ")
           navigate("/");
           setError("");
@@ -150,7 +151,7 @@ function Login() {
                     required: "Username is required",
                     pattern: {
                       value: /^[a-zA-Z0-9 ]*$/,
-                      message: "Username can only contain letters, spaces and numbers",
+                      message: "Username can only contain letters and spaces",
                     },
                     minLength: {
                       value: 5,

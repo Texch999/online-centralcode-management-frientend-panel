@@ -17,6 +17,7 @@ import ErrorPopup from "../popups/ErrorPopup";
 import EditBroadcastPopup from "./EditBroadcastPopup";
 import { MdBlockFlipped } from "react-icons/md";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { useSearchParams } from "react-router-dom";
 
 const ACTIVE_BTNS = [
   { value: 1, label: "User Broadcasting" },
@@ -24,7 +25,6 @@ const ACTIVE_BTNS = [
 ];
 
 const Broadcasting = () => {
-  const [activeBtn, setActiveBtn] = useState(ACTIVE_BTNS[0]);
   const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectLocations, setSelectLocations] = useState(null);
@@ -43,6 +43,47 @@ const Broadcasting = () => {
   const [selectedBroadcastStatus, setSelectedBroadcastStatus] = useState();
   const [broadcastBlockModal, setBroadcastBlockModal] = useState(false);
   const [selectedIdForEdit, setSelectedIdForEdit] = useState([]);
+
+  const [activeBtn, setActiveBtn] = useState(() => {
+    const storedBtn = localStorage.getItem("activeBtn");
+    if (storedBtn) {
+      try {
+        const parsedBtn = JSON.parse(storedBtn);
+        return (
+          ACTIVE_BTNS.find((btn) => btn.value === parsedBtn.value) ||
+          ACTIVE_BTNS[0]
+        );
+      } catch (error) {
+        console.error("Error parsing stored activeBtn:", error);
+        return ACTIVE_BTNS[0];
+      }
+    }
+    return ACTIVE_BTNS[0];
+  });
+
+  useEffect(() => {
+      localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
+      getBroadCastingdata();
+    }, [activeBtn]);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page"));
+  const currentPage = page || 1;
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const [totalRecords, setTotalRecords] = useState("");
+
+  const handleButtonClick = (btn) => {
+    setSelectType(null);
+    setSelectWebsites(null);
+    setSelectLocations(null);
+    setTextMessage("");
+    setActiveBtn(btn);
+    setBroadCastingdata([]);
+    localStorage.setItem("activeBtn", JSON.stringify(btn));
+  };
 
   const hasFetched = useRef(false);
 
@@ -71,7 +112,6 @@ const Broadcasting = () => {
   };
 
   const handleSelectWebsites = (selected) => {
-    console.log("Selected Website:", selected);
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
   };
@@ -105,11 +145,12 @@ const Broadcasting = () => {
     }
   };
   const getBroadCastingdata = async () => {
+    const id = activeBtn.value;
     try {
-      const response = await getBroadCasting();
-      console.log(response, "redlknoshc");
+      const response = await getBroadCasting({ id, limit, offset });
       if ((response.status = 200)) {
-        setBroadCastingdata(response.retData.data);
+        setBroadCastingdata(response.broadcasting);
+        setTotalRecords(response.totalRecords);
       }
     } catch (error) {
       console.log("error", error);
@@ -165,10 +206,10 @@ const Broadcasting = () => {
     } catch (error) {
       setLoading(false);
       setMessage(error?.message);
-      setSelectType(null);
-      setSelectWebsites(null);
-      setSelectLocations(null);
-      setTextMessage("");
+      // setSelectType(null);
+      // setSelectWebsites(null);
+      // setSelectLocations(null);
+      // setTextMessage("");
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
     }
@@ -232,20 +273,20 @@ const Broadcasting = () => {
     { header: "", field: "icons", width: "10%" },
   ];
 
-  const filteredbroadCastingdata = broadCastingdata?.filter((item) => {
-    const activedbutton = activeBtn.value;
-    if (activedbutton === 1) {
-      return item.panel_type === 1;
-    } else if (activedbutton === 2) {
-      return item.panel_type === 2;
-    }
+  // const filteredbroadCastingdata = broadCastingdata?.filter((item) => {
+  //   const activedbutton = activeBtn.value;
+  //   if (activedbutton === 1) {
+  //     return item.panel_type === 1;
+  //   } else if (activedbutton === 2) {
+  //     return item.panel_type === 2;
+  //   }
 
-    return false;
-  });
+  //   return false;
+  // });
 
-  useEffect(() => {}, [filteredbroadCastingdata, activeBtn]);
+  // useEffect(() => {}, [filteredbroadCastingdata, activeBtn]);
 
-  const CASINO_DATA = filteredbroadCastingdata?.map((broadCast) => ({
+  const CASINO_DATA = broadCastingdata?.map((broadCast) => ({
     dateTime: (
       <div>
         {new Intl.DateTimeFormat("en-GB", {
@@ -279,6 +320,10 @@ const Broadcasting = () => {
     ),
   }));
 
+  const handlePageChange = ({ limit, offset }) => {
+    getBroadCastingdata(limit, offset);
+  };
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -293,7 +338,7 @@ const Broadcasting = () => {
                 ? "saffron-btn2"
                 : "white-btn2 pointer"
             }`}
-            onClick={() => setActiveBtn(item)}
+            onClick={() => handleButtonClick(item)}
           >
             {item.label}
           </div>
@@ -394,13 +439,19 @@ const Broadcasting = () => {
             className="saffron-btn2 small-font pointer ms-2 w-100"
             onClick={handleSubmit}
           >
-            {loading ? <FaSpinner className="spinner-circle" /> : "Submit"}
+            {loading ? "Loading..." : "Submit"}
           </div>
         </div>
       </div>
 
       <div className="mt-4">
-        <Table columns={CASINO_COLUMNS} data={CASINO_DATA} itemsPerPage={3} />
+        <Table
+          columns={CASINO_COLUMNS}
+          data={CASINO_DATA}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          totalRecords={totalRecords}
+        />
       </div>
       <SuccessPopup
         successPopupOpen={successPopupOpen}

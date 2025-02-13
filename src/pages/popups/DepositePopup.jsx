@@ -5,15 +5,14 @@ import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
-import { getDirectorAccessWebites, managementPaymentDetails } from "../../api/apiMethods";
+import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
 import { Images } from "../../images";
+import { MdContentCopy } from "react-icons/md";
 const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPayment }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     const [userWebsites, setUserWebsites] = useState([]);
-    const [depositDetails, setDepositDetails] = useState([]);
-    const [paymentDetailsList, setPaymentDetailsList] = useState([]);
     const [formData, setFormData] = useState({
         paymentType: null,
         depositeDetails: null,
@@ -31,13 +30,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     const [error, setError] = useState("");
     const fileInputRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
-const userName=localStorage.getItem("role_code")
-    const PaymentType = [
-        { label: "NEFT/RTGS", value: "neftrtgs", type: 1 },
-        { label: "UPI", value: "upi", type: 2 },
-        { label: "QR Code", value: "qrcode", type: 3 },
-        { label: "CASH", value: "cash", type: 4 },
-    ];
+    const userName = localStorage.getItem("user_name")
+    const userRole = localStorage.getItem("role_code")
+    const [directorSites, setDirectorSites] = useState([])
+
 
     const getDirectorAccessedWebistesList = () => {
         getDirectorAccessWebites()
@@ -52,12 +48,11 @@ const userName=localStorage.getItem("role_code")
                 setError(error?.message || "API request failed");
             });
     };
-
-    const paymentsDetailsList = () => {
-        managementPaymentDetails()
+    const getDirectorSitesList = () => {
+        getDirectorSites()
             .then((response) => {
                 if (response?.status === true) {
-                    setPaymentDetailsList(response.data);
+                    setDirectorSites(response.data);
                 } else {
                     setError("Something Went Wrong");
                 }
@@ -66,56 +61,13 @@ const userName=localStorage.getItem("role_code")
                 setError(error?.message || "API request failed");
             });
     };
-
-    const getFilteredPaymentDetails = (paymentType) => {
-        return paymentDetailsList.filter((detail) => detail.gateway_type === paymentType);
-    };
-
-    useEffect(() => {
-        if (formData.paymentType) {
-            const paymentTypeMap = {
-                neftrtgs: 1,
-                upi: 2,
-                qrcode: 3,
-            };
-
-            const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[formData.paymentType.value]);
-
-            if (filteredDetails.length > 0) {
-                const defaultDeposit = {
-                    label: filteredDetails[0].bank_name,
-                    value: filteredDetails[0].gateway_id,
-                    details: {
-                        bankName: filteredDetails[0].bank_name,
-                        accountNumber: filteredDetails[0].bank_acc_no,
-                        ifscCode: filteredDetails[0].bank_ifsc,
-                    },
-                };
-
-                setDepositDetails(filteredDetails);
-                setFormData((prev) => ({
-                    ...prev,
-                    depositeDetails: defaultDeposit,
-                }));
-
-                setSelectedDepositDetails(defaultDeposit.details);
-            } else {
-                setFormData((prev) => ({
-                    ...prev,
-                    depositeDetails: null,
-                }));
-                setSelectedDepositDetails({});
-            }
-        }
-    }, [formData.paymentType]);
-
     useEffect(() => {
         if (isInitialRender.current) {
             isInitialRender.current = false;
-            getDirectorAccessedWebistesList();
-            paymentsDetailsList();
             return;
         }
+        getDirectorAccessedWebistesList();
+        getDirectorSitesList();
     }, []);
 
     const handleChange = (e) => {
@@ -123,62 +75,13 @@ const userName=localStorage.getItem("role_code")
         setErrors({ ...errors, [e.target.name]: "" });
     };
 
-    const handleSelectChange = (field, option) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: option,
-        }));
-
-        if (field === "paymentType" && option) {
-            if (option.value !== formData.paymentType?.value) {
-                const paymentTypeMap = {
-                    neftrtgs: 1, // NEFT/RTGS
-                    upi: 2,      // UPI
-                    qrcode: 3,   // QR Code
-                };
-
-                const filteredDetails = getFilteredPaymentDetails(paymentTypeMap[option.value]);
-
-                if (filteredDetails.length > 0) {
-                    const defaultDeposit = {
-                        label: filteredDetails[0].bank_name,
-                        value: filteredDetails[0].gateway_id,
-                        details: {
-                            bankName: filteredDetails[0].bank_name,
-                            accountNumber: filteredDetails[0].bank_acc_no,
-                            ifscCode: filteredDetails[0].bank_ifsc,
-                        },
-                    };
-
-                    setDepositDetails(filteredDetails);
-                    setFormData((prev) => ({
-                        ...prev,
-                        depositeDetails: defaultDeposit,
-                    }));
-
-                    setSelectedDepositDetails(defaultDeposit.details);
-                } else {
-                    setFormData((prev) => ({
-                        ...prev,
-                        depositeDetails: null,
-                    }));
-                    setSelectedDepositDetails({});
-                }
-            }
-        }
-
-        if (field === "depositeDetails" && option) {
-            setSelectedDepositDetails(option.details);
-        }
-    };
-
     const [previewImage, setPreviewImage] = useState(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setSelectedFile(file.name); // Store file name
-            setPreviewImage(URL.createObjectURL(file)); // Create a preview URL
+            setSelectedFile(file.name);
+            setPreviewImage(URL.createObjectURL(file));
         }
     };
 
@@ -211,9 +114,13 @@ const userName=localStorage.getItem("role_code")
             payload.handoverName = formData.cashHandoverName;
             payload.description = formData.description;
         }
-
-        console.log("Payload:", payload);
     };
+    const [selectedWebDetails, setSelectedWebDetails] = useState(null)
+    const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
+    function getWebsiteDetailsByUserId(selectedUserId) {
+        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
+        setSelectedWebDetails(...WebUserDetails)
+    }
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -227,15 +134,12 @@ const userName=localStorage.getItem("role_code")
                             style={{ width: "50px", height: "50px" }}
                         />
 
-                        {/* Content in the center */}
                         <div className="d-flex justify-content-end flex-grow-1">
-                            {/* Left-aligned text */}
                             <div className="d-flex flex-column text-end">
-                                <h5 className="small-font fw-600 mb-0 green-font">{actionType} in USD</h5>
-                                <p className="small-font text-secondary mb-0">{`Rudhira- Super Admin (Share-10%)`}</p>
+                                <h5 className="medium-font fw-600 mb-0 green-font">{actionType} in {selectedWebDetails?.currencyName || ""}</h5>
+                                <p className="medium-font text-secondary mb-0">{`${userName} - ${userRole} (Share-${selectedWebDetails?.share || null}%)`}</p>
                             </div>
                         </div>
-                        {/* Close icon on the far right */}
                         <div>
                             <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositePopup(false)} />
                         </div>
@@ -245,8 +149,8 @@ const userName=localStorage.getItem("role_code")
                         <div className="col mb-2">
                             <label className="small-font mb-1">Admin Panel</label>
                             <Select
-                                className="small-font"
-                                options={directorWebsitesList.map((admin) => ({
+                                className="small-font white-bg input-border rounded"
+                                options={adminWebsitesList.map((admin) => ({
                                     label: admin.admin_web_name,
                                     value: admin.admin_panel_id,
                                 }))}
@@ -255,7 +159,7 @@ const userName=localStorage.getItem("role_code")
                                 value={selectedAdmin}
                                 onChange={(option) => {
                                     setSelectedAdmin(option);
-                                    const selectedAdminData = directorWebsitesList.find(
+                                    const selectedAdminData = adminWebsitesList.find(
                                         (admin) => admin.admin_panel_id === option.value
                                     );
                                     setUserWebsites(selectedAdminData?.users || []);
@@ -265,7 +169,7 @@ const userName=localStorage.getItem("role_code")
                         <div className="col mb-2">
                             <label className="small-font mb-1">User Panel</label>
                             <Select
-                                className="small-font"
+                                className="small-font white-bg input-border rounded"
                                 options={userWebsites.map((user) => ({
                                     label: user.user_web_name,
                                     value: user.website_access_id,
@@ -277,6 +181,7 @@ const userName=localStorage.getItem("role_code")
                                         ...prev,
                                         websiteName: option.value,
                                     }));
+                                    getWebsiteDetailsByUserId(option.value)
                                 }}
                             />
                         </div>
@@ -286,9 +191,9 @@ const userName=localStorage.getItem("role_code")
                         <input
                             type="text"
                             name="currency"
-                            className="w-100 small-font rounded input-css all-none"
+                            className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
                             placeholder="Enter Amount"
-                            value={formData.amount || ""}
+                            value={selectedWebDetails?.currencyName || ""}
                             onChange={handleChange}
                         />
                         {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
@@ -302,7 +207,7 @@ const userName=localStorage.getItem("role_code")
                                 <input
                                     type="text"
                                     name="upi"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter "
                                     value={selectedPayment?.name || ""}
                                     onChange={handleChange}
@@ -310,7 +215,7 @@ const userName=localStorage.getItem("role_code")
                                 {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
 
                                 {selectedDepositDetails && (
-                                    <div className="mt-1 p-2 border-none rounded input-css">
+                                    <div className="mt-1 p-2  rounded input-css white-bg input-border">
                                         <div className="d-flex justify-content-between small-font mb-1">
                                             <strong>Account Holder Name</strong> <span className="text-end">{selectedPayment.acc_hold_name}</span>
                                         </div>
@@ -334,25 +239,34 @@ const userName=localStorage.getItem("role_code")
                         <>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">UPI ID</label>
-                                <input
-                                    type="text"
-                                    name="upi"
-                                    className="w-100 small-font rounded input-css all-none"
-                                    placeholder="Enter "
-                                    value={selectedPayment?.upi_provider_id || ""}
-                                    onChange={handleChange}
-                                />
+                                <div className="position-relative">
+                                    <input
+                                        type="text"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border pe-5" // Extra padding for the icon
+                                        placeholder="Enter"
+                                        value={selectedPayment?.upi_provider_id || ""}
+                                        onChange={handleChange}
+                                        readOnly // Prevent accidental editing
+                                    />
+                                    <MdContentCopy
+                                        size={18}
+                                        className="position-absolute text-muted"
+                                        style={{ top: "50%", right: "10px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                        onClick={() => navigator.clipboard.writeText(selectedPayment?.upi_provider_id || "")}
+                                    />
+                                </div>
                                 {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                             </div>
                         </>
                     )}
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Wallet Chips Balance - USD</label>
+                            <label className="small-font mb-1">Wallet Chips Balance -  {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="availableChips"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -360,11 +274,11 @@ const userName=localStorage.getItem("role_code")
                             {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                         </div>
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Total Chips - USD</label>
+                            <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="availableChips"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -374,11 +288,11 @@ const userName=localStorage.getItem("role_code")
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Chips - USD</label>
+                            <label className="small-font mb-1">Enter Chips -  {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="chipsNeed"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -386,11 +300,11 @@ const userName=localStorage.getItem("role_code")
                             {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                         </div>
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Paid Amount (10%) - USD</label>
+                            <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="availableChips"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -406,7 +320,7 @@ const userName=localStorage.getItem("role_code")
                                 <input
                                     type="text"
                                     name="utr"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter"
                                     value={formData.utr}
                                     onChange={handleChange}
@@ -416,7 +330,7 @@ const userName=localStorage.getItem("role_code")
                             <div className="col mb-2">
                                 <label className="small-font mb-1">Upload Payment Screenshot</label>
                                 <div
-                                    className="custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
+                                    className="white-bg input-border custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
                                     onClick={() => fileInputRef.current.click()}
                                 >
                                     <span className="small-font text-muted">
@@ -430,7 +344,7 @@ const userName=localStorage.getItem("role_code")
                                     type="file"
                                     name="screenshot"
                                     ref={fileInputRef}
-                                    className="d-none"
+                                    className="d-none "
                                     onChange={handleFileChange}
                                     accept="image/*"
                                 />
@@ -456,7 +370,7 @@ const userName=localStorage.getItem("role_code")
                                 <input
                                     type="text"
                                     name="cashHandoverName"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Name"
                                     value={formData.cashHandoverName}
                                     onChange={handleChange}
@@ -468,7 +382,7 @@ const userName=localStorage.getItem("role_code")
                                 <input
                                     type="text"
                                     name="phoneNumber"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Phone Number"
                                     value={formData.phoneNumber}
                                     onChange={handleChange}
@@ -479,7 +393,7 @@ const userName=localStorage.getItem("role_code")
                                 <input
                                     type="text"
                                     name="description"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Description"
                                     value={formData.description}
                                     onChange={handleChange}
