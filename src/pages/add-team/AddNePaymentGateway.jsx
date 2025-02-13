@@ -288,6 +288,8 @@ const AddNePaymentGateway = () => {
   const location = useLocation();
   const { actionType } = location.state || {};
 
+  console.log(paymentModes, "paymentModes");
+
   const handleAddModal = (id, country, available_id) => {
     setAddPaymentId(id);
     setCountryId(country);
