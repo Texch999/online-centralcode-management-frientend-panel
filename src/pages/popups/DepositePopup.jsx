@@ -7,6 +7,7 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
 import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
 import { Images } from "../../images";
+import { MdContentCopy } from "react-icons/md";
 const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPayment }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
@@ -113,12 +114,12 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
             payload.handoverName = formData.cashHandoverName;
             payload.description = formData.description;
         }
-
     };
+    const [selectedWebDetails, setSelectedWebDetails] = useState(null)
     const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
     function getWebsiteDetailsByUserId(selectedUserId) {
-        console.log(selectedUserId, "=====>selectedUserId")
-        return directorSites.filter(item => item.user_paner_id === selectedUserId);
+        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
+        setSelectedWebDetails(...WebUserDetails)
     }
     return (
         <div>
@@ -133,15 +134,12 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             style={{ width: "50px", height: "50px" }}
                         />
 
-                        {/* Content in the center */}
                         <div className="d-flex justify-content-end flex-grow-1">
-                            {/* Left-aligned text */}
                             <div className="d-flex flex-column text-end">
-                                <h5 className="small-font fw-600 mb-0 green-font">{actionType} in USD</h5>
-                                <p className="medium-font text-secondary mb-0">{`${userName} - ${userRole} (Share-10%)`}</p>
+                                <h5 className="medium-font fw-600 mb-0 green-font">{actionType} in {selectedWebDetails?.currencyName || ""}</h5>
+                                <p className="medium-font text-secondary mb-0">{`${userName} - ${userRole} (Share-${selectedWebDetails?.share || null}%)`}</p>
                             </div>
                         </div>
-                        {/* Close icon on the far right */}
                         <div>
                             <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositePopup(false)} />
                         </div>
@@ -151,7 +149,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <div className="col mb-2">
                             <label className="small-font mb-1">Admin Panel</label>
                             <Select
-                                className="small-font"
+                                className="small-font white-bg input-border rounded"
                                 options={adminWebsitesList.map((admin) => ({
                                     label: admin.admin_web_name,
                                     value: admin.admin_panel_id,
@@ -171,7 +169,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <div className="col mb-2">
                             <label className="small-font mb-1">User Panel</label>
                             <Select
-                                className="small-font"
+                                className="small-font white-bg input-border rounded"
                                 options={userWebsites.map((user) => ({
                                     label: user.user_web_name,
                                     value: user.website_access_id,
@@ -193,9 +191,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <input
                             type="text"
                             name="currency"
-                            className="w-100 small-font rounded input-css all-none"
+                            className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
                             placeholder="Enter Amount"
-                            value={formData.amount || ""}
+                            value={selectedWebDetails?.currencyName || ""}
                             onChange={handleChange}
                         />
                         {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
@@ -209,7 +207,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <input
                                     type="text"
                                     name="upi"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter "
                                     value={selectedPayment?.name || ""}
                                     onChange={handleChange}
@@ -217,7 +215,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
 
                                 {selectedDepositDetails && (
-                                    <div className="mt-1 p-2 border-none rounded input-css">
+                                    <div className="mt-1 p-2  rounded input-css white-bg input-border">
                                         <div className="d-flex justify-content-between small-font mb-1">
                                             <strong>Account Holder Name</strong> <span className="text-end">{selectedPayment.acc_hold_name}</span>
                                         </div>
@@ -241,25 +239,34 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">UPI ID</label>
-                                <input
-                                    type="text"
-                                    name="upi"
-                                    className="w-100 small-font rounded input-css all-none"
-                                    placeholder="Enter "
-                                    value={selectedPayment?.upi_provider_id || ""}
-                                    onChange={handleChange}
-                                />
+                                <div className="position-relative">
+                                    <input
+                                        type="text"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border pe-5" // Extra padding for the icon
+                                        placeholder="Enter"
+                                        value={selectedPayment?.upi_provider_id || ""}
+                                        onChange={handleChange}
+                                        readOnly // Prevent accidental editing
+                                    />
+                                    <MdContentCopy
+                                        size={18}
+                                        className="position-absolute text-muted"
+                                        style={{ top: "50%", right: "10px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                        onClick={() => navigator.clipboard.writeText(selectedPayment?.upi_provider_id || "")}
+                                    />
+                                </div>
                                 {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                             </div>
                         </>
                     )}
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Wallet Chips Balance - USD</label>
+                            <label className="small-font mb-1">Wallet Chips Balance -  {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="availableChips"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -267,11 +274,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                         </div>
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Total Chips - USD</label>
+                            <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="availableChips"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -281,11 +288,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Chips - USD</label>
+                            <label className="small-font mb-1">Enter Chips -  {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="chipsNeed"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -293,11 +300,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                         </div>
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Paid Amount (10%) - USD</label>
+                            <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="availableChips"
                                 name="upi"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
                                 value={formData.amount || ""}
                                 onChange={handleChange}
@@ -313,7 +320,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <input
                                     type="text"
                                     name="utr"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter"
                                     value={formData.utr}
                                     onChange={handleChange}
@@ -323,7 +330,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             <div className="col mb-2">
                                 <label className="small-font mb-1">Upload Payment Screenshot</label>
                                 <div
-                                    className="custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
+                                    className="white-bg input-border custom-file-upload w-100 d-flex align-items-center justify-content-between rounded input-css px-3"
                                     onClick={() => fileInputRef.current.click()}
                                 >
                                     <span className="small-font text-muted">
@@ -337,7 +344,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     type="file"
                                     name="screenshot"
                                     ref={fileInputRef}
-                                    className="d-none"
+                                    className="d-none "
                                     onChange={handleFileChange}
                                     accept="image/*"
                                 />
@@ -363,7 +370,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <input
                                     type="text"
                                     name="cashHandoverName"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Name"
                                     value={formData.cashHandoverName}
                                     onChange={handleChange}
@@ -375,7 +382,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <input
                                     type="text"
                                     name="phoneNumber"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Phone Number"
                                     value={formData.phoneNumber}
                                     onChange={handleChange}
@@ -386,7 +393,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <input
                                     type="text"
                                     name="description"
-                                    className="w-100 small-font rounded input-css all-none"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Description"
                                     value={formData.description}
                                     onChange={handleChange}
