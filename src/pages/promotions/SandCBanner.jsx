@@ -15,6 +15,7 @@ import {
   deleteBanner,
   editBanner,
   getBanner,
+  getBannerByUserId,
   getWebsitesList,
   statusUpdateBanner,
 } from "../../api/apiMethods";
@@ -23,6 +24,7 @@ import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import EditBannerPopup from "./EditBannerPopup";
+import { useSearchParams } from "react-router-dom";
 
 const ACTIVE_BTNS = [
   { value: 1, label: "User" },
@@ -34,7 +36,7 @@ const SHEDULE_BTNS = [
 ];
 
 const SandCBanner = () => {
-  const [activeBtn, setActiveBtn] = useState(ACTIVE_BTNS[0]);
+  // const [activeBtn, setActiveBtn] = useState(ACTIVE_BTNS[0]);
   const [scheduleBtn, setScheduleBtn] = useState(SHEDULE_BTNS[0]);
   const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
@@ -52,6 +54,8 @@ const SandCBanner = () => {
 
   const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
+
+  const [totalRecords, setTotalRecords] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
 
@@ -60,8 +64,47 @@ const SandCBanner = () => {
   const [bannerBlockModal, setBannerBlockModal] = useState(false);
 
   const [editBanner, setEditBanner] = useState(false);
-
   const [bannerDeleteModal, setBannerDeleteModal] = useState(false);
+  const [activeBtn, setActiveBtn] = useState(() => {
+    const storedBtn = localStorage.getItem("activeBtn");
+    if (storedBtn) {
+      try {
+        const parsedBtn = JSON.parse(storedBtn);
+        return (
+          ACTIVE_BTNS.find((btn) => btn.value === parsedBtn.value) ||
+          ACTIVE_BTNS[0]
+        );
+      } catch (error) {
+        console.error("Error parsing stored activeBtn:", error);
+        return ACTIVE_BTNS[0];
+      }
+    }
+    return ACTIVE_BTNS[0];
+  });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page"));
+  const currentPage = page || 1;
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+
+  const handleButtonClick = (btn) => {
+    setSelectType(null);
+    setSelectWebsites(null);
+    setSelectedPage(null);
+    setSelectedPlace(null);
+    setStartDT("");
+    setEndDT("");
+    setSelectedFiles([]);
+    setActiveBtn(btn);
+    localStorage.setItem("activeBtn", JSON.stringify(btn));
+  };
+
+  useEffect(() => {
+    localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
+    getBanners();
+  }, [activeBtn]);
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -232,15 +275,18 @@ const SandCBanner = () => {
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-    getBanners();
+    getBanners(limit, offset);
     getWebsites();
   }, []);
 
   const getBanners = async () => {
+    console.log(limit, offset, "yurstyxkutg")
+    const id= activeBtn.value;
     try {
-      const response = await getBanner();
+      const response = await getBannerByUserId({id, limit, offset});
       if (response.status === 200) {
-        setBanners(response.banners);
+        setBanners(response.banner);
+        setTotalRecords(response.totalRecords);
       }
     } catch (error) {
       setMessage(error.setMessage);
@@ -365,20 +411,7 @@ const SandCBanner = () => {
     },
   ];
 
-  const filteredbannerdata = banners?.filter((item) => {
-    const activedbutton = activeBtn.value;
-    if (activedbutton === 1) {
-      return item.userfor === 1;
-    } else if (activedbutton === 2) {
-      return item.userfor === 2;
-    }
-
-    return false;
-  });
-
-  useEffect(() => {}, [filteredbannerdata, activeBtn]);
-
-  const CRICKET_DATA = filteredbannerdata?.map((banner) => ({
+  const CRICKET_DATA = banners?.map((banner) => ({
     dateTime: (
       <div>
         {new Intl.DateTimeFormat("en-GB", {
@@ -455,6 +488,10 @@ const SandCBanner = () => {
     ),
   }));
 
+  const handlePageChange = ({ limit, offset }) => {
+    getBanners(limit, offset);
+  };
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -469,7 +506,7 @@ const SandCBanner = () => {
                 ? "saffron-btn2"
                 : "white-btn2 pointer"
             }`}
-            onClick={() => setActiveBtn(item)}
+            onClick={() => handleButtonClick(item)}
           >
             {item.label}
           </div>
@@ -657,7 +694,13 @@ const SandCBanner = () => {
         </div>
       </div>
 
-      <Table columns={CRICKET_COLUMNS} data={CRICKET_DATA} itemsPerPage={2} />
+      <Table
+        columns={CRICKET_COLUMNS}
+        data={CRICKET_DATA}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+        totalRecords={totalRecords}
+      />
       <FullPosterPopUp
         setFullPoster={setFullPoster}
         fullPoster={fullPoster}
