@@ -23,10 +23,15 @@ import {
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
 import { imgUrl } from "../../api/baseUrl";
+import { useSearchParams } from "react-router-dom";
 
 const PromotionType = () => {
-  const [activeBtn, setActiveBtn] = useState("Promotion Type");
+  const [activeBtn, setActiveBtn] = useState(
+    localStorage.getItem("activeBtn") || "Promotion Type"
+  );
   const [fullPoster, setFullPoster] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const [fullPosterImage, setFullPosterImage] = useState(false);
   const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
   const [posterDeleteModal, setPosterDeleteModal] = useState(false);
@@ -44,6 +49,9 @@ const PromotionType = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [totalRecords, setTotalRecords] = useState("");
+  const [promotionsImgTotalRecords, setpromotionsImgTotalRecords] =
+    useState("");
   const [errors, setErrors] = useState({
     promotionType: "",
     image: "",
@@ -55,16 +63,28 @@ const PromotionType = () => {
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectUserWebsites, setSelectUserWebsites] = useState(null);
 
+  const page = parseInt(searchParams.get("page"));
+  const currentPage = page || 1;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+
   const hasFetched = useRef(false);
 
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-    getPromotions();
-    getPromotionsImages();
+
+    getPromotions(limit, offset);
+    getPromotionsImages(limit, offset);
     getWebsites();
     getuserWebsites();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("activeBtn", activeBtn);
+  }, [activeBtn]);
 
   const getWebsites = async () => {
     try {
@@ -86,7 +106,7 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
-console.log("websitesList",websitesList)
+
   const selectOptionsWebsites = websitesList?.map((item) => ({
     value: item.id,
     label: item.web_name,
@@ -138,21 +158,23 @@ console.log("websitesList",websitesList)
     }
   };
 
-  const getPromotions = async () => {
+  const getPromotions = async (limit, offset) => {
     try {
-      const response = await getPromotionsTypes();
+      const response = await getPromotionsTypes({ limit, offset });
       if ((response.status = 200)) {
         setPromotionsTypes(response.promotionsTypes);
+        setTotalRecords(response.totalRecords);
       }
     } catch (error) {
       console.log("error", error);
     }
   };
-  const getPromotionsImages = async () => {
+  const getPromotionsImages = async (limit, offset) => {
     try {
-      const response = await getPromotionsImage();
+      const response = await getPromotionsImage({ limit, offset });
       if ((response.status = 200)) {
         setPromotionsIMages(response.promotionsImages);
+        setpromotionsImgTotalRecords(response.totalRecords);
       }
     } catch (error) {
       console.log("error", error);
@@ -195,6 +217,8 @@ console.log("websitesList",websitesList)
         setMessage(response.message);
         setSelectedFile(null);
         setSelectedOption(null);
+        setSelectWebsites(null);
+        setSelectUserWebsites(null);
         getPromotionsImages();
         setErrors({});
         setSuccessPopupOpen(true);
@@ -206,17 +230,19 @@ console.log("websitesList",websitesList)
       setErrorPopupOpen(true);
     }
   };
-  console.log(promotionsTypes, "promotionsTypes")
 
   const selectOptions = promotionsTypes
-  ?.filter((item) => item.status === 1) 
-  .map((item) => ({
-    value: item.id,
-    label: item.promotionsType,
-  }));
-
+    ?.filter((item) => item.status === 1)
+    .map((item) => ({
+      value: item.id,
+      label: item.promotionsType,
+    }));
 
   const handleSportClick = (item) => {
+    setSelectWebsites(null);
+    setSelectUserWebsites(null);
+    setSelectedFile(null);
+    setSelectedOption(null);
     setActiveBtn(item);
   };
 
@@ -356,10 +382,16 @@ console.log("websitesList",websitesList)
         setSuccessPopupOpen(true);
       }
     } catch (error) {
-      console.log("error", error);
       setLoading(false);
       setMessage(error?.message);
       setErrorPopupOpen(true);
+    }
+  };
+  const handlePageChange = ({ limit, offset }) => {
+    if (activeBtn === "Promotion Type") {
+      getPromotions(limit, offset);
+    } else {
+      getPromotionsImages(limit, offset);
     }
   };
 
@@ -387,7 +419,9 @@ console.log("websitesList",websitesList)
             <Table
               columns={PROMOTIONS_COLUMNS}
               data={PROMOTIONS_DATA}
-              itemsPerPage={10}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              totalRecords={totalRecords}
             />
           </div>
         </>
@@ -549,7 +583,9 @@ console.log("websitesList",websitesList)
           <Table
             columns={PROMOTIONSIMAGES_COLUMNS}
             data={PROMOTIONSIMAGES_DATA}
-            itemsPerPage={2}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={promotionsImgTotalRecords}
           />
         </>
       )}

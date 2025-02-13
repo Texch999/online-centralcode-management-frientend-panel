@@ -300,9 +300,11 @@ const AddNePaymentGateway = () => {
     setLoading(true);
     let fetchPaymentModes;
     if (userRole === "director") {
-      if (actionType === "Withdraw" || actionType === "Deposit") {
+      if (actionType === "Withdraw") {
         fetchPaymentModes = DirectorUpLinePaymentDetails();
         console.log("DirectorUpLinePaymentDetails");
+      } else if (actionType === "Deposit") {
+        fetchPaymentModes = DirectorUpLinePaymentDetails();
       } else {
         fetchPaymentModes = ownersAvailablePaymentsModes();
         console.log("ownersAvailablePaymentsModes");
@@ -325,10 +327,6 @@ const AddNePaymentGateway = () => {
   };
 
   useEffect(() => {
-    if (initialRendering.current) {
-      initialRendering.current = false;
-      return;
-    }
     getOwnersPaymentModes();
   }, []);
 
@@ -387,8 +385,38 @@ const AddNePaymentGateway = () => {
             />
           </div>
         </div>
-        {hasNoRecords ? (
-          <NoDataFound />
+
+        {role_code === "management" ? (
+          <AddPaymentGatewayPopup
+            show={AddPaymentGatewayModal}
+            onHide={() => setAddPaymentGatewayModal(false)}
+            addpaymentId={addpaymentId}
+            setAddPaymentId={setAddPaymentId}
+            countryId={countryId}
+            setCountryId={setCountryId}
+            availablePaymentModeId={availablePaymentModeId}
+            setAvailablePaymentModeId={setAvailablePaymentModeId}
+          />
+        ) : (
+          <AddPaymentGatewayPopup
+            show={AddPaymentGatewayModal}
+            onHide={() => setAddPaymentGatewayModal(false)}
+            addpaymentId={addpaymentId}
+            setAddPaymentId={setAddPaymentId}
+            countryId={countryId}
+            setCountryId={setCountryId}
+            availablePaymentModeId={availablePaymentModeId}
+            setAvailablePaymentModeId={setAvailablePaymentModeId}
+          />
+        )}
+
+        {actionType === "Deposit" ? (
+          <DepositePopup
+            setDepositePopup={setDepositePopup}
+            depositePopup={depositePopup}
+            actionType={actionType}
+            selectedPayment={selectedPayment}
+          />
         ) : (
           <>
             <div className="d-flex justify-content-start ms-3">
@@ -421,29 +449,16 @@ const AddNePaymentGateway = () => {
         )}
       </div>
 
-      {role_code === "management" ? (
-        <AddPaymentGatewayPopup
-          show={AddPaymentGatewayModal}
-          onHide={() => setAddPaymentGatewayModal(false)}
-          addpaymentId={addpaymentId}
-          setAddPaymentId={setAddPaymentId}
-          countryId={countryId}
-          setCountryId={setCountryId}
-          availablePaymentModeId={availablePaymentModeId}
-          setAvailablePaymentModeId={setAvailablePaymentModeId}
-        />
-      ) : (
-        <AddPaymentGatewayPopup
-          show={AddPaymentGatewayModal}
-          onHide={() => setAddPaymentGatewayModal(false)}
-          addpaymentId={addpaymentId}
-          setAddPaymentId={setAddPaymentId}
-          countryId={countryId}
-          setCountryId={setCountryId}
-          availablePaymentModeId={availablePaymentModeId}
-          setAvailablePaymentModeId={setAvailablePaymentModeId}
-        />
-      )}
+      <AddPaymentGatewayPopup
+        show={AddPaymentGatewayModal}
+        onHide={() => setAddPaymentGatewayModal(false)}
+        addpaymentId={addpaymentId}
+        setAddPaymentId={setAddPaymentId}
+        countryId={countryId}
+        setCountryId={setCountryId}
+        availablePaymentModeId={availablePaymentModeId}
+        setAvailablePaymentModeId={setAvailablePaymentModeId}
+      />
 
       {actionType === "Deposit" ? (
         <DepositePopup
