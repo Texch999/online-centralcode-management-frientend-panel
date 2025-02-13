@@ -178,8 +178,6 @@ const PaymentGateway = () => {
   });
 
   const managementPaymentData = filteredPayments
-    .slice()
-    .sort((a, b) => new Date(b.updated_date) - new Date(a.updated_date))
     .map((item, index) => ({
       gatewayName: gatewayTypeMap[item?.gateway_type],
       paymentDetails: (() => {
