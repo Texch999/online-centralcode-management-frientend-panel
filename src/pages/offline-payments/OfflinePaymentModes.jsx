@@ -112,8 +112,6 @@ const OfflinePaymentModes = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      console.log(page);
-      console.log(pageSize);
       getAllManPaymentModes(page, pageSize);
       getAllCountries();
     }

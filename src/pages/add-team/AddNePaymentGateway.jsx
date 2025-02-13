@@ -287,8 +287,7 @@ const AddNePaymentGateway = () => {
   const tabNames = ["Offline Payment Modes", "Payment Gateway"];
   const location = useLocation();
   const { actionType } = location.state || {};
-
-  console.log(paymentModes, "paymentModes");
+  const role_code = localStorage.getItem("role_code");
 
   const handleAddModal = (id, country, available_id) => {
     setAddPaymentId(id);
@@ -299,9 +298,7 @@ const AddNePaymentGateway = () => {
 
   const getOwnersPaymentModes = () => {
     setLoading(true);
-
     let fetchPaymentModes;
-
     if (userRole === "director") {
       if (actionType === "Withdraw" || actionType === "Deposit") {
         fetchPaymentModes = DirectorUpLinePaymentDetails();
@@ -328,7 +325,10 @@ const AddNePaymentGateway = () => {
   };
 
   useEffect(() => {
-    
+    if (initialRendering.current) {
+      initialRendering.current = false;
+      return;
+    }
     getOwnersPaymentModes();
   }, []);
 
@@ -421,16 +421,29 @@ const AddNePaymentGateway = () => {
         )}
       </div>
 
-      <AddPaymentGatewayPopup
-        show={AddPaymentGatewayModal}
-        onHide={() => setAddPaymentGatewayModal(false)}
-        addpaymentId={addpaymentId}
-        setAddPaymentId={setAddPaymentId}
-        countryId={countryId}
-        setCountryId={setCountryId}
-        availablePaymentModeId={availablePaymentModeId}
-        setAvailablePaymentModeId={setAvailablePaymentModeId}
-      />
+      {role_code === "management" ? (
+        <AddPaymentGatewayPopup
+          show={AddPaymentGatewayModal}
+          onHide={() => setAddPaymentGatewayModal(false)}
+          addpaymentId={addpaymentId}
+          setAddPaymentId={setAddPaymentId}
+          countryId={countryId}
+          setCountryId={setCountryId}
+          availablePaymentModeId={availablePaymentModeId}
+          setAvailablePaymentModeId={setAvailablePaymentModeId}
+        />
+      ) : (
+        <AddPaymentGatewayPopup
+          show={AddPaymentGatewayModal}
+          onHide={() => setAddPaymentGatewayModal(false)}
+          addpaymentId={addpaymentId}
+          setAddPaymentId={setAddPaymentId}
+          countryId={countryId}
+          setCountryId={setCountryId}
+          availablePaymentModeId={availablePaymentModeId}
+          setAvailablePaymentModeId={setAvailablePaymentModeId}
+        />
+      )}
 
       {actionType === "Deposit" ? (
         <DepositePopup
