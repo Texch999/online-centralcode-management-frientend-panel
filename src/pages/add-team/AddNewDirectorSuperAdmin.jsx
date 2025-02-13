@@ -17,7 +17,6 @@ import {
 import { adminRoles, commissionTypes } from "../../utils/enum";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { useLocation, useNavigate } from "react-router-dom";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 
 function AddNewDirectorSuperAdmin() {
