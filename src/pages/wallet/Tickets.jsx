@@ -147,8 +147,9 @@ function Tickets() {
         {userRole !== "management" ?
           //search input 
           <div className="d-flex align-items-center gap-1">
-            <button className={`me-3 dark-green-bg px-3`} onClick={() => handleDeposit("Deposit")
-              // setDepositePopup(true
+            <button className={`me-3 dark-green-bg px-3`} onClick={() => 
+            // handleDeposit("Deposit")
+              setDepositePopup(true)
             }>Deposit</button>
             <button className={`me-3 saffron-btn2 px-3`} onClick={() =>
               //  setWithdrawPopup(true)
