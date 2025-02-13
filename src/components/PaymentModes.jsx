@@ -12,9 +12,13 @@ const PaymentModes = ({
 }) => {
   const handleModelActions = (card) => {
     if (userRole === "director") {
-      actionType === "Deposit" || "Withdraw"
-        ? handleDepositAndWithdraw(card)
-        : handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+      if (actionType === "Deposit") {
+        handleDepositAndWithdraw(card);
+      } else if (actionType === "Withdraw") {
+        handleDepositAndWithdraw(card);
+      } else {
+        handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+      }
     } else {
       handleAddModal(card?.id, card?.country_id, card?.avil_modes);
     }
