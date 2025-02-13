@@ -152,8 +152,8 @@ function Tickets() {
               setDepositePopup(true)
             }>Deposit</button>
             <button className={`me-3 saffron-btn2 px-3`} onClick={() =>
-              //  setWithdrawPopup(true)
-              handleDeposit("Withdraw")
+               setWithdrawPopup(true)
+              // handleDeposit("Withdraw")
             } > Withdraw</button>
           </div>
           :
