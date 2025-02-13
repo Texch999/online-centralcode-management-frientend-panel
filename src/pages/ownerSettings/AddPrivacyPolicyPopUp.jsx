@@ -90,7 +90,7 @@ const AddPrivacyPolicyPopUp = ({
 
     const payload = {
       country_id: data.country?.value,
-      website_id: data.website?.value,
+      // website_id: data.website?.value,
       is_active: Number(data.status?.value),
       description: values,
     };
@@ -134,7 +134,7 @@ const AddPrivacyPolicyPopUp = ({
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row mt-3 small-font">
-              <div className="col-4 flex-column">
+              <div className="col-6 flex-column">
                 <label className="black-text4 mb-1">Country</label>
                 <Controller
                   name="country"
@@ -162,7 +162,7 @@ const AddPrivacyPolicyPopUp = ({
                 )}
               </div>
 
-              <div className="col-4 flex-column">
+              {/* <div className="col-4 flex-column">
                 <label className="black-text4 mb-1">Showing Websites</label>
                 <Controller
                   name="website"
@@ -189,9 +189,9 @@ const AddPrivacyPolicyPopUp = ({
                     {errors.website.message}
                   </p>
                 )}
-              </div>
+              </div> */}
 
-              <div className="col-4 flex-column">
+              <div className="col-6 flex-column">
                 <label className="black-text4 mb-1">Status</label>
                 <Controller
                   name="status"
