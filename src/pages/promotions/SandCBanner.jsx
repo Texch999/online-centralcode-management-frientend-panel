@@ -104,6 +104,8 @@ const SandCBanner = () => {
   useEffect(() => {
     localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
     getBanners();
+    setBanners([]);
+    setTotalRecords("");
   }, [activeBtn]);
 
   const [errors, setErrors] = useState({
@@ -275,15 +277,14 @@ const SandCBanner = () => {
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-    getBanners(limit, offset);
+    getBanners();
     getWebsites();
   }, []);
 
   const getBanners = async () => {
-    console.log(limit, offset, "yurstyxkutg")
-    const id= activeBtn.value;
+    const id = activeBtn.value;
     try {
-      const response = await getBannerByUserId({id, limit, offset});
+      const response = await getBannerByUserId({ id, limit, offset });
       if (response.status === 200) {
         setBanners(response.banner);
         setTotalRecords(response.totalRecords);
