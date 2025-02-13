@@ -335,9 +335,11 @@ const AddNePaymentGateway = () => {
     if (actionType === "Deposit") {
       setDepositePopup(true)
       setSelectedPayment(paymentDetails)
-    } else {
+    } else if (actionType === "Withdraw") {
       setWithdrawPopup(true)
       setSelectedPayment(paymentDetails)
+    } else {
+      setAddPaymentGatewayModal(true);
     }
   }
   return (
