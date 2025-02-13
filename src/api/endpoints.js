@@ -422,7 +422,7 @@ const endpoints = {
 
   resetDirectorPasswordInProfile: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorProfileResetPassword/${id}`,
+    url: (id) => `/director/${userID()}/directorProfileResetPassword/${id}`,
   },
 
   getDirectorDwnList: {

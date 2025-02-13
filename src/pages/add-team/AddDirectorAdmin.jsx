@@ -34,7 +34,6 @@ const AddDirectorAdmin = () => {
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
   const [directorId, setDirectorId] = useState();
   const [directorDwnList, setDirectorDwnList] = useState([]);
   const [dirDwnlnId, setDirDwnlnId] = useState(null);
@@ -98,7 +97,7 @@ const AddDirectorAdmin = () => {
   const navigate = useNavigate();
   const handleNavigateUserDashboard = (id) => {
     navigate(`/user-profile-dashboard/${id}`);
-    
+
   };
 
   const [countryData, setCountryData] = useState([]);
@@ -178,145 +177,88 @@ const AddDirectorAdmin = () => {
   const [error, setError] = useState();
   const [tableData, setTableData] = useState();
 
-  
+
   const TableData =
     role === "management"
       ? tableData?.map((user) => {
-          const linkWebsites = user.accessWebsites.map((website) => ({
-            name: website.user_panel_name,
-            url: website.user_panel_url,
-            adminPanel: website.admin_panel_name,
-            adminUrl: website.admin_panel_url,
-          }));
+        const linkWebsites = user.accessWebsites.map((website) => ({
+          name: website.user_panel_name,
+          url: website.user_panel_url,
+          adminPanel: website.admin_panel_name,
+          adminUrl: website.admin_panel_url,
+        }));
 
-          const shareRent = user.accessWebsites.map((website) => ({
-            commissionType: website.commission_type,
-            monthlyAmount: website.monthly_amount || "N/A",
-            maxChipsMonthly: website.max_chips_monthly || "N/A",
-            extraChipsPercentage: website.extra_chips_percentage || "N/A",
-            chipPercentage: website.chip_percentage || "N/A",
-            share: website.share,
-          }));
+        const shareRent = user.accessWebsites.map((website) => ({
+          commissionType: website.commission_type,
+          monthlyAmount: website.monthly_amount || "N/A",
+          maxChipsMonthly: website.max_chips_monthly || "N/A",
+          extraChipsPercentage: website.extra_chips_percentage || "N/A",
+          chipPercentage: website.chip_percentage || "N/A",
+          share: website.share,
+        }));
 
-          return {
-            id: user.id,
-            role: user.type === 1 ? "Director" : "Super Admin",
-            name: user.name,
-            loginname: user.login_name,
-            inUsed: (
-              <div
-                className={` ${user.status === 1 ? "green-clr" : "clr-red"}`}
-              >
-                {" "}
-                {user.status === 1 ? "Active" : "InActive"}
-              </div>
-            ),
-            linkWebsites: (
-              <span className="d-flex flex-column">
-                {linkWebsites.map((website, index) => (
-                  <span key={index}>
-                    <a
-                      className="yellow-font"
-                      href={website.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {website.url}
-                    </a>{" "}
-                    (Admin:{" "}
-                    <a
-                      href={website.adminUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {website.adminPanel}
-                    </a>
-                    )
+        return {
+          id: user.id,
+          role: user.type === 1 ? "Director" : "Super Admin",
+          name: user.name,
+          loginname: user.login_name,
+          inUsed: (
+            <div
+              className={` ${user.status === 1 ? "green-clr" : "clr-red"}`}
+            >
+              {" "}
+              {user.status === 1 ? "Active" : "InActive"}
+            </div>
+          ),
+          linkWebsites: (
+            <span className="d-flex flex-column">
+              {linkWebsites.map((website, index) => (
+                <span key={index}>
+                  <a
+                    className="yellow-font"
+                    href={website.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {website.url}
+                  </a>{" "}
+                  (Admin:{" "}
+                  <a
+                    href={website.adminUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {website.adminPanel}
+                  </a>
+                  )
+                </span>
+              ))}
+            </span>
+          ),
+          shareRent: (
+            <span className="d-flex flex-column">
+              {shareRent.map((type, index) => (
+                <span key={index}>
+                  <span className="green-clr">
+                    {commissionTypes[type.commissionType] || "Unknown"}{" "}
                   </span>
-                ))}
-              </span>
-            ),
-            shareRent: (
-              <span className="d-flex flex-column">
-                {shareRent.map((type, index) => (
-                  <span key={index}>
-                    <span className="green-clr">
-                      {commissionTypes[type.commissionType] || "Unknown"}{" "}
-                    </span>
-                    {/* Correct way to access the enum */}
-                    {type.share ? `, Share: ${type.share}%` : ""}
-                  </span>
-                ))}
-              </span>
-            ),
+                  {/* Correct way to access the enum */}
+                  {type.share ? `, Share: ${type.share}%` : ""}
+                </span>
+              ))}
+            </span>
+          ),
 
-            // shareRent: (
-            //   <span className="d-flex flex-column">
-            //     {shareRent.map((type, index) => (
-            //       <span key={index}>
-            //         {commissionTypes[type] || ""}
-            //         {/* {`Type: ${rent.commissionType}, Share: ${rent.share}%`} */}
-            //       </span>
-            //     ))}
-            //   </span>
-            // ),
-            billing: "0",
-            pl: <div className="red-font">0</div>,
-            dw: (
-              <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-                D/W
-              </button>
-            ),
-            action: (
-              <div className="d-flex flex-center gap-3">
-                <SlPencil
-                  size={18}
-                  className={`black-text pointer ${
-                    user.status === 2 ? "disabled" : ""
-                  }`}
-                  onClick={() =>
-                    user.status !== 2 &&
-                    navigate(`/director-admin/editDirector/`, {
-                      state: { userId: user.id, mode: "edit" },
-                    })
-                  }
-                />
-
-                <MdLockReset
-                  size={18}
-                  className={`black-text pointer ${
-                    user.status === 2 ? "disabled" : ""
-                  }`}
-                  onClick={() =>
-                    user.status !== 2 && handleResetPasswordOpen(user.id)
-                  }
-                />
-
-                <MdBlockFlipped
-                  size={18}
-                  className={user.status === 2 ? "clr-red" : "green-clr"}
-                  onClick={() => handleBlockUserOpen(user.login_name, user.id)}
-                />
-
-                <BsEye
-                  size={18}
-                  className={`black-text pointer ${
-                    user.status === 2 ? "disabled" : ""
-                  }`}
-                  onClick={handleNavigateUserDashboard}
-                />
-              </div>
-            ),
-          };
-        })
-      : directorDwnList?.map((item) => ({
-          id: item.id,
-          role: item.type === 2 ? "Super Admin" : "",
-          name: item.name,
-          loginname: item.login_name,
-          inUsed: "N/A",
-
-          shareRent: [],
+          // shareRent: (
+          //   <span className="d-flex flex-column">
+          //     {shareRent.map((type, index) => (
+          //       <span key={index}>
+          //         {commissionTypes[type] || ""}
+          //         {/* {`Type: ${rent.commissionType}, Share: ${rent.share}%`} */}
+          //       </span>
+          //     ))}
+          //   </span>
+          // ),
           billing: "0",
           pl: <div className="red-font">0</div>,
           dw: (
@@ -328,47 +270,101 @@ const AddDirectorAdmin = () => {
             <div className="d-flex flex-center gap-3">
               <SlPencil
                 size={18}
-                className="black-text pointer"
-                onClick={() => setShowModal(true)}
+                className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+                  }`}
+                onClick={() =>
+                  user.status !== 2 &&
+                  navigate(`/director-admin/editDirector/`, {
+                    state: { userId: user.id, mode: "edit" },
+                  })
+                }
               />
+
               <MdLockReset
                 size={18}
-                className="black-text pointer"
-                onClick={() => handleResetPswdDirDwn(item?.id)}
+                className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+                  }`}
+                onClick={() =>
+                  user.status !== 2 && handleResetPasswordOpen(user.id)
+                }
               />
-              {item?.status === 1 ? (
-                <CgUnblock
-                  size={20}
-                  className="green-font pointer"
-                  onClick={() =>
-                    handleBlockUnblockDirDwn(
-                      item?.id,
-                      item?.login_name,
-                      item?.status
-                    )
-                  }
-                />
-              ) : (
-                <MdBlockFlipped
-                  size={18}
-                  className="red-font pointer"
-                  onClick={() =>
-                    handleBlockUnblockDirDwn(
-                      item?.id,
-                      item?.login_name,
-                      item?.status
-                    )
-                  }
-                />
-              )}
+
+              <MdBlockFlipped
+                size={18}
+                className={user.status === 2 ? "clr-red" : "green-clr"}
+                onClick={() => handleBlockUserOpen(user.login_name, user.id)}
+              />
+
               <BsEye
                 size={18}
-                className="black-text pointer"
-                onClick={handleNavigateUserDashboard}
+                className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+                  }`}
+                onClick={() => handleNavigateUserDashboard(user?.id)}
               />
             </div>
           ),
-        }));
+        };
+      })
+      : directorDwnList?.map((item) => ({
+        id: item.id,
+        role: item.type === 2 ? "Super Admin" : "",
+        name: item.name,
+        loginname: item.login_name,
+        inUsed: "N/A",
+
+        shareRent: [],
+        billing: "0",
+        pl: <div className="red-font">0</div>,
+        dw: (
+          <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+            D/W
+          </button>
+        ),
+        action: (
+          <div className="d-flex flex-center gap-3">
+            <SlPencil
+              size={18}
+              className="black-text pointer"
+              onClick={() => setShowModal(true)}
+            />
+            <MdLockReset
+              size={18}
+              className="black-text pointer"
+              onClick={() => handleResetPswdDirDwn(item?.id)}
+            />
+            {item?.status === 1 ? (
+              <CgUnblock
+                size={20}
+                className="green-font pointer"
+                onClick={() =>
+                  handleBlockUnblockDirDwn(
+                    item?.id,
+                    item?.login_name,
+                    item?.status
+                  )
+                }
+              />
+            ) : (
+              <MdBlockFlipped
+                size={18}
+                className="red-font pointer"
+                onClick={() =>
+                  handleBlockUnblockDirDwn(
+                    item?.id,
+                    item?.login_name,
+                    item?.status
+                  )
+                }
+              />
+            )}
+            <BsEye
+              size={18}
+              className="black-text pointer"
+              onClick={() => handleNavigateUserDashboard(item?.id)}
+            />
+          </div>
+        ),
+      }));
   console.log(tableData, "tableData");
 
   const GetAllDirectors = () => {
@@ -522,9 +518,8 @@ const AddDirectorAdmin = () => {
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
-        discription={`Are you sure you want to ${
-          statusId === 1 ? "Unblock" : "Block"
-        } ${selectedUser}?`}
+        discription={`Are you sure you want to ${statusId === 1 ? "Unblock" : "Block"
+          } ${selectedUser}?`}
         submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
         onSubmit={() => blockUnblock()}
       />
