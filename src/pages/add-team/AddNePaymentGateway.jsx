@@ -303,152 +303,153 @@ const AddNePaymentGateway = () => {
     let fetchPaymentModes;
 
     if (userRole === "director") {
-      if (actionType === "Withdraw" || actionType === "Deposit") {
+      if (actionType === "Withdraw") {
         fetchPaymentModes = DirectorUpLinePaymentDetails();
         console.log("DirectorUpLinePaymentDetails");
+      } else if (actionType === "Deposit"){
+        fetchPaymentModes = DirectorUpLinePaymentDetails();
       } else {
-        fetchPaymentModes = ownersAvailablePaymentsModes();
-        console.log("ownersAvailablePaymentsModes");
-      }
-    } else {
       fetchPaymentModes = ownersAvailablePaymentsModes();
+      console.log("ownersAvailablePaymentsModes");
     }
+  } else {
+    fetchPaymentModes = ownersAvailablePaymentsModes();
+}
 
-    fetchPaymentModes
-      .then((response) => {
-        setPaymentModes(response?.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-        console.log("getDirectorAccountDetails error", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+fetchPaymentModes
+  .then((response) => {
+    setPaymentModes(response?.data);
+  })
+  .catch((error) => {
+    setError(error?.message);
+    console.log("getDirectorAccountDetails error", error);
+  })
+  .finally(() => {
+    setLoading(false);
+  });
   };
 
-  useEffect(() => {
-    
-    getOwnersPaymentModes();
-  }, []);
+useEffect(() => {
 
-  const allCountries = useSelector((item) => item?.allCountries);
-  const formattedCountries = allCountries.map((country) => ({
-    value: country.id,
-    label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
-  }));
-  const filteredPaymentModes = paymentModes.filter(
-    (mode) => mode.country_id === selectedCountryId
-  );
-  const hasNoRecords = filteredPaymentModes.length === 0;
-  const handleDepositAndWithdraw = (paymentDetails) => {
-    if (actionType === "Deposit") {
-      setDepositePopup(true);
-      setSelectedPayment(paymentDetails);
-    } else {
-      setWithdrawPopup(true);
-      setSelectedPayment(paymentDetails);
-    }
-  };
-  return (
-    <div>
-      <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
-      </div>
-      <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
-        <div className="row mb-3">
-          <div className="col-3">
-            <label htmlFor="paymentMethod" className="medium-font mb-1">
-              Currency
-            </label>
-            <Select
-              className="small-font text-capitalize"
-              options={formattedCountries}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={300}
-              menuPlacement="auto"
-              value={formattedCountries.find(
-                (option) => option.value === selectedCountryId
-              )}
-              onChange={(selected) => setSelectedCountryId(selected.value)}
-              formatOptionLabel={(option) => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    textTransform: "text-capitalize",
-                  }}
-                >
-                  <span>{option.label.split(" - ")[0]}</span>
-                  <span>{option.label.split(" - ")[1]}</span>
-                </div>
-              )}
-            />
-          </div>
-        </div>
-        {hasNoRecords ? (
-          <NoDataFound />
-        ) : (
-          <>
-            <div className="d-flex justify-content-start ms-3">
-              <div className="row mb-2 gap-2">
-                {tabNames.map((tabName, index) => (
-                  <div
-                    key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
-                      selectedTab === index ? "saffron-btn2 " : ""
-                    }`}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setSelectedTab(index)}
-                  >
-                    {tabName}
-                  </div>
-                ))}
+  getOwnersPaymentModes();
+}, []);
+
+const allCountries = useSelector((item) => item?.allCountries);
+const formattedCountries = allCountries.map((country) => ({
+  value: country.id,
+  label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
+}));
+const filteredPaymentModes = paymentModes.filter(
+  (mode) => mode.country_id === selectedCountryId
+);
+const hasNoRecords = filteredPaymentModes.length === 0;
+const handleDepositAndWithdraw = (paymentDetails) => {
+  if (actionType === "Deposit") {
+    setDepositePopup(true);
+    setSelectedPayment(paymentDetails);
+  } else {
+    setWithdrawPopup(true);
+    setSelectedPayment(paymentDetails);
+  }
+};
+return (
+  <div>
+    <div className="row justify-content-between align-items-center mb-3 mt-2">
+      <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
+    </div>
+    <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
+      <div className="row mb-3">
+        <div className="col-3">
+          <label htmlFor="paymentMethod" className="medium-font mb-1">
+            Currency
+          </label>
+          <Select
+            className="small-font text-capitalize"
+            options={formattedCountries}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={300}
+            menuPlacement="auto"
+            value={formattedCountries.find(
+              (option) => option.value === selectedCountryId
+            )}
+            onChange={(selected) => setSelectedCountryId(selected.value)}
+            formatOptionLabel={(option) => (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  textTransform: "text-capitalize",
+                }}
+              >
+                <span>{option.label.split(" - ")[0]}</span>
+                <span>{option.label.split(" - ")[1]}</span>
               </div>
-            </div>
-
-            <PaymentModes
-              modes={modes}
-              filteredPaymentModes={filteredPaymentModes}
-              userRole={userRole}
-              actionType={actionType}
-              handleDepositAndWithdraw={handleDepositAndWithdraw}
-              handleAddModal={handleAddModal}
-              selectedTab={selectedTab}
-            />
-          </>
-        )}
+            )}
+          />
+        </div>
       </div>
-
-      <AddPaymentGatewayPopup
-        show={AddPaymentGatewayModal}
-        onHide={() => setAddPaymentGatewayModal(false)}
-        addpaymentId={addpaymentId}
-        setAddPaymentId={setAddPaymentId}
-        countryId={countryId}
-        setCountryId={setCountryId}
-        availablePaymentModeId={availablePaymentModeId}
-        setAvailablePaymentModeId={setAvailablePaymentModeId}
-      />
-
-      {actionType === "Deposit" ? (
-        <DepositePopup
-          setDepositePopup={setDepositePopup}
-          depositePopup={depositePopup}
-          actionType={actionType}
-          selectedPayment={selectedPayment}
-        />
+      {hasNoRecords ? (
+        <NoDataFound />
       ) : (
-        <WithdrawPopup
-          setWithdrawPopup={setWithdrawPopup}
-          withdrawPopup={withdrawPopup}
-          actionType={actionType}
-          selectedPayment={selectedPayment}
-        />
+        <>
+          <div className="d-flex justify-content-start ms-3">
+            <div className="row mb-2 gap-2">
+              {tabNames.map((tabName, index) => (
+                <div
+                  key={index}
+                  className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                    }`}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setSelectedTab(index)}
+                >
+                  {tabName}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <PaymentModes
+            modes={modes}
+            filteredPaymentModes={filteredPaymentModes}
+            userRole={userRole}
+            actionType={actionType}
+            handleDepositAndWithdraw={handleDepositAndWithdraw}
+            handleAddModal={handleAddModal}
+            selectedTab={selectedTab}
+          />
+        </>
       )}
     </div>
-  );
+
+    <AddPaymentGatewayPopup
+      show={AddPaymentGatewayModal}
+      onHide={() => setAddPaymentGatewayModal(false)}
+      addpaymentId={addpaymentId}
+      setAddPaymentId={setAddPaymentId}
+      countryId={countryId}
+      setCountryId={setCountryId}
+      availablePaymentModeId={availablePaymentModeId}
+      setAvailablePaymentModeId={setAvailablePaymentModeId}
+    />
+
+    {actionType === "Deposit" ? (
+      <DepositePopup
+        setDepositePopup={setDepositePopup}
+        depositePopup={depositePopup}
+        actionType={actionType}
+        selectedPayment={selectedPayment}
+      />
+    ) : (
+      <WithdrawPopup
+        setWithdrawPopup={setWithdrawPopup}
+        withdrawPopup={withdrawPopup}
+        actionType={actionType}
+        selectedPayment={selectedPayment}
+      />
+    )}
+  </div>
+);
 };
 
 export default AddNePaymentGateway;
