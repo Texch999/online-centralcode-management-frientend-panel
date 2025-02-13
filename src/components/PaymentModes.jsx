@@ -10,16 +10,19 @@ const PaymentModes = ({
   handleAddModal,
   selectedTab,
 }) => {
-
   const handleModelActions = (card) => {
     if (userRole === "director") {
-      actionType === "Deposit" || "Withdraw"
-        ? handleDepositAndWithdraw(card)
-        : handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+      if (actionType === "Deposit") {
+        handleDepositAndWithdraw(card);
+      } else if (actionType === "Withdraw") {
+        handleDepositAndWithdraw(card);
+      } else {
+        handleAddModal(card?.id, card?.country_id, card?.avil_modes);
+      }
     } else {
       handleAddModal(card?.id, card?.country_id, card?.avil_modes);
     }
-  }
+  };
 
   return (
     <>
@@ -46,9 +49,7 @@ const PaymentModes = ({
                           }}
                         >
                           <img
-                            onClick={() =>
-                              handleModelActions(card)
-                            }
+                            onClick={() => handleModelActions(card)}
                             src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
                             alt={card?.name}
                             className="w-60 h-100 text-nowrap"

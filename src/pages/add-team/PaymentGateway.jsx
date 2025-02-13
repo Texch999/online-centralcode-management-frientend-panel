@@ -4,7 +4,6 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import Table from "../../components/Table";
-import { Images } from "../../images";
 import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import {
@@ -14,14 +13,12 @@ import {
   getDirectorAccountById,
   getManagementPaymentDetails,
   suspendManagementPaymentDetails,
-  getManagementPaymentDetailsById,
 } from "../../../src/api/apiMethods";
 import moment from "moment";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
-import { offset } from "@popperjs/core";
 
 const PaymentGateway = () => {
   const navigate = useNavigate();
@@ -33,7 +30,7 @@ const PaymentGateway = () => {
   const [countries, setCountries] = useState([]);
   const [paymentId, setPaymentId] = useState(null);
   const [statusId, setStatusId] = useState(null);
-  const [editMode, setEditMode] = useState(false);
+  const [dirEditMode, setDirEditMode] = useState(false);
   const [editData, setEditData] = useState("");
   const [managementPaymentDetails, setManagementPaymentDetails] = useState([]);
   const paymentDetailsDataFetched = useRef(false);
@@ -48,6 +45,17 @@ const PaymentGateway = () => {
   const [managementPaymentEdit, setManagementPaymentEdit] = useState(false);
   const [errorPopup, setErrorPopup] = useState(false);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
+  const [dirEditId, setDirEditId] = useState(null);
+  const [dirGatewayId, setDirGatewayId] = useState(null);
+  const itemsPerPage = 4;
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const [currentLimit, setCurrentLimit] = useState(4);
+  const [currentOffset, setCurrentOffset] = useState(0);
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -56,7 +64,6 @@ const PaymentGateway = () => {
     4: "Cash",
   };
 
-  // Function to get currency dynamically
   const getCurrencySymbol = (id) => {
     const country = countries.find((c) => c.id === id);
     return country
@@ -68,6 +75,21 @@ const PaymentGateway = () => {
     const country = countries.find((c) => c.id === id);
     return country ? country.name : "Unknown";
   };
+
+  const columns = [
+    { header: "Gateway Name", field: "gatewayName", width: "15%" },
+    { header: "Payment Details", field: "paymentDetails", width: "25%" },
+    { header: "Acc Holder Name", field: "accholder", width: "15%" },
+    { header: "Last Updated", field: "lastUpdated", width: "15%" },
+    { header: "Country", field: "country", width: "10%" },
+    { header: "Currency", field: "currency", width: "10%" },
+    { header: "Status", field: "status", width: "10%" },
+    {
+      header: <div className="text-center">Actions</div>,
+      field: "action",
+      width: "7%",
+    },
+  ];
 
   // management payment details =========================== management payment details =========================
 
@@ -83,21 +105,9 @@ const PaymentGateway = () => {
     setOnAddPaymentGateway(true);
     setAvailablePaymentModeId(gateway_type);
   };
+
   // get all
-
-  const itemsPerPage = 4;
-  const [totalRecords, setTotalRecords] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(page);
-  const limit = itemsPerPage;
-  const offset = (currentPage - 1) * itemsPerPage;
-  const onPageChange = (page) => {
-    setCurrentPage(page);
-    setSearchParams({ page: page });
-  };
-
-  const fetchManagementPaymentDetails = async () => {
+  const fetchManagementPaymentDetails = async (limit, offset) => {
     setLoading(true);
     try {
       const response = await getManagementPaymentDetails({ limit, offset });
@@ -106,7 +116,12 @@ const PaymentGateway = () => {
         setTotalRecords(response?.meta?.totalCount);
       }
     } catch (error) {
+      console.log(error?.message);
       setError(error?.message);
+      setErrorPopup(true);
+      setTimeout(() => {
+        setErrorPopup(false);
+      }, [2000]);
     } finally {
       setLoading(false);
     }
@@ -115,24 +130,36 @@ const PaymentGateway = () => {
     if (role_code === "management") {
       if (paymentDetailsDataFetched.current) return;
       paymentDetailsDataFetched.current = true;
-      fetchManagementPaymentDetails();
+      fetchManagementPaymentDetails(limit, offset);
     }
   }, []);
+  const onPageChange = ({ limit, offset }) => {
+    setCurrentLimit(limit);
+    setCurrentOffset(offset);
+    if (role_code === "management") {
+      fetchManagementPaymentDetails(limit, offset);
+    }
+  };
 
   //suspend api
-
   const suspendManPaymnet = () => {
     suspendManagementPaymentDetails(suspendManagementPaymentId)
       .then((response) => {
-        console.log("payment suspend success", response);
         if (response?.status === true) {
-          fetchManagementPaymentDetails();
+          fetchManagementPaymentDetails(currentLimit, currentOffset);
           setSuspendPayment(false);
           setSuspendManagementPaymentId(null);
           setSuspendManagementPaymentStatus(null);
         }
       })
-      .catch((error) => setError(error?.message));
+      .catch((error) => {
+        setError(error?.message);
+        setSuspendPayment(false);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, [2000]);
+      });
   };
 
   const filteredPayments = managementPaymentDetails.filter((item) => {
@@ -177,6 +204,7 @@ const PaymentGateway = () => {
                 src={`${imgUrl}/mngPayDetails/${item?.qr_code_image}`}
                 alt="QR Code"
                 className="w-30 h-7vh me-2"
+                loading="lazy"
               />
               <span className="fw-bold">{item?.bank_name}</span>
             </div>
@@ -224,25 +252,32 @@ const PaymentGateway = () => {
 
   // management payment details =================== management payment details====================
 
-  const handleEdit = async (id) => {
-    try {
-      setEditMode(true);
-      const response = await getDirectorAccountById(id);
+  // const handleDirectorEdit = async (id) => {
+  //   try {
+  //     setEditMode(true);
+  //     // const response = await getDirectorAccountById(id);
 
-      console.log("getDirectorAccountById success", response);
+  //     console.log("getDirectorAccountById success", response);
 
-      setEditData(response);
+  //     setEditData(response);
 
-      // Use a callback function to ensure the latest state is logged
-      // setEditData(prevState => {
-      //   console.log(prevState, "Updated editData");
-      //   return response;
-      // });
-      console.log(editData);
-      setOnAddPaymentGateway(true);
-    } catch (error) {
-      console.error("Error fetching director account:", error);
-    }
+  //     // Use a callback function to ensure the latest state is logged
+  //     // setEditData(prevState => {
+  //     //   console.log(prevState, "Updated editData");
+  //     //   return response;
+  //     // });
+  //     console.log(editData);
+  //     setOnAddPaymentGateway(true);
+  //   } catch (error) {
+  //     console.error("Error fetching director account:", error);
+  //   }
+  // };
+
+  const handleDirectorEdit = (id, gateway_id) => {
+    setOnAddPaymentGateway(true);
+    setDirEditId(id);
+    setDirGatewayId(gateway_id);
+    setDirEditMode(true);
   };
 
   const getDirectorAccountData = () => {
@@ -261,7 +296,11 @@ const PaymentGateway = () => {
       });
   };
   useEffect(() => {
-    getDirectorAccountData();
+    if (role_code !== "management") {
+      if (paymentDetailsDataFetched.current) return;
+      paymentDetailsDataFetched.current = true;
+      getDirectorAccountData();
+    }
   }, []);
 
   const getCountry = () => {
@@ -284,7 +323,6 @@ const PaymentGateway = () => {
   }, []);
 
   const handleStatus = (id, status) => {
-    //onsole.log(id,status);
     setOnBlockPopup(true);
     setPaymentId(id);
     setStatusId(status);
@@ -294,59 +332,64 @@ const PaymentGateway = () => {
   const suspendStatus = () => {
     suspendDirectorAccountPaymentDetails(paymentId, status_id)
       .then((response) => {
-        // Call getDirectorAccountData to refresh the list
         getDirectorAccountData();
         setOnBlockPopup(false);
       })
       .catch((error) => {
         setError(error.message);
-        console.log(error);
-        // Optional: Add error handling or show an error message
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, [2000]);
       });
   };
 
-  const columns = [
-    { header: "Gateway Name", field: "gatewayName", width: "15%" },
-    { header: "Payment Details", field: "paymentDetails", width: "25%" },
-    { header: "Acc Holder Name", field: "accholder", width: "15%" },
-    { header: "Last Updated", field: "lastUpdated", width: "15%" },
-    { header: "Country", field: "country", width: "10%" },
-    { header: "Currency", field: "currency", width: "10%" },
-    { header: "Status", field: "status", width: "10%" },
-    {
-      header: <div className="text-center">Actions</div>,
-      field: "action",
-      width: "7%",
-    },
-  ];
-
   const transformedData = accountList.map((item) => ({
-    gatewayName: gatewayTypeMap[item.gateway_type] || "NA",
-    paymentDetails:
-      item.gateway_type === 1 ? (
-        `${item.bank_name} \n A/C No: ${item.bank_acc_no} \n IFSC: ${item.bank_ifsc}`
-      ) : item.qr_code_image ? (
-        <div className="d-flex align-items-center">
-          <img
-            src={item.qr_code_image}
-            alt="QR Code"
-            className="w-10 h-10 me-2"
-          />
-          {item.bank_name}
-        </div>
-      ) : (
-        item.upi_provider || "N/A"
-      ),
+    gatewayName: gatewayTypeMap[item.gateway_type],
+    paymentDetails: (() => {
+      switch (item?.gateway_type) {
+        case 1:
+          return (
+            <div className="d-flex flex-column align-items-start">
+              <span className="">bank_name: {item?.bank_name}</span>
+              <span>Acc No: {item?.bank_acc_no}</span>
+              <span>IFSC: {item?.bank_ifsc}</span>
+            </div>
+          );
+        case 2:
+          return (
+            <div className="d-flex align-items-center">
+              <span className="fw-bold">{item?.upi_id}</span>
+            </div>
+          );
+        case 3:
+          return (
+            <div className="d-flex align-items-center">
+              <img
+                src={`${imgUrl}/mngPayDetails/${item?.qr_code_image}`}
+                alt="QR Code"
+                className="w-30 h-7vh me-2"
+                loading="lazy"
+              />
+              <span className="fw-bold">{item?.bank_name}</span>
+            </div>
+          );
+        case 4:
+          return <div className="fw-bold">{item?.acc_hold_name}</div>;
+        default:
+          return <span className="text-muted">N/A</span>;
+      }
+    })(),
     accholder: item?.acc_hold_name,
-    lastUpdated: moment(item.updated_date),
-    country: getCountryName(item.country),
-    currency: getCurrencySymbol(item.country),
+    lastUpdated: moment(item?.updated_date).format("DD-MM-YYYY"),
+    country: getCountryName(item.currency_id),
+    currency: getCurrencySymbol(item.currency_id),
     status: (
-      <span className="badge py-2 px-3">
+      <span className="">
         {item?.status === 1 ? (
-          <div className="green-btn w-fill">Active</div>
+          <div className="green-btn badge py-2 px-3">Active</div>
         ) : (
-          <div className="red-btn w-fill">In-Active</div>
+          <div className="red-btn badge py-2 px-3">In-Active</div>
         )}
       </span>
     ),
@@ -357,7 +400,7 @@ const PaymentGateway = () => {
           <SlPencil
             size={18}
             className="pointer me-2"
-            onClick={() => handleEdit(item?.id, item.gateway_type)}
+            onClick={() => handleDirectorEdit(item?.id, item.gateway_type)}
           />
         ) : (
           <SlPencil size={18} className="pointer me-2 disabled" />
@@ -422,7 +465,7 @@ const PaymentGateway = () => {
         )}
       </div>
 
-      {role_code === "management" && (
+      {role_code === "management" ? (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
           onHide={() => {
@@ -436,6 +479,21 @@ const PaymentGateway = () => {
           managementPaymentEditId={managementPaymentEditId}
           setManagementPaymentEditId={setManagementPaymentEditId}
           availablePaymentModeId={availablePaymentModeId}
+        />
+      ) : (
+        <AddPaymentGatewayPopup
+          show={onAddPaymentGateway}
+          onHide={() => {
+            setOnAddPaymentGateway(false);
+            setDirEditMode(false);
+          }}
+          dirEditId={dirEditId}
+          setDirEditId={setDirEditId}
+          dirGatewayId={dirGatewayId}
+          setDirGatewayId={setDirGatewayId}
+          dirEditMode={dirEditMode}
+          setDirEditMode={setDirEditMode}
+          getDirectorAccountData={getDirectorAccountData}
         />
       )}
 
@@ -462,6 +520,12 @@ const PaymentGateway = () => {
           onSubmit={suspendStatus}
         />
       )}
+
+      <ErrorPopup
+        discription={error}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
+      />
     </div>
   );
 };

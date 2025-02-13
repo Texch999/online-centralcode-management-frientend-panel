@@ -235,7 +235,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/secQuestion/?${query}`;
+      return `/user/${userID()}/secQuestions/?${query}`;
     },
   },
   getSecQusetionsById: {
@@ -256,15 +256,15 @@ const endpoints = {
   },
   createRejReasons: {
     method: "post",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: () => `/user/${userID()}/rejectionReason/`,
   },
   updateRejReasons: {
     method: "put",
-    url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
+    url: (id) => `/user/${userID()}/rejectionReason/${id}`,
   },
   getRejReasonsById: {
     method: "get",
-    url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
+    url: (id) => `/user/${userID()}/rejectionReason/${id}`,
   },
   getPrivacyPolicy: {
     method: "get",
@@ -354,32 +354,33 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
+  // dir payment methods
 
   getDirectorAccountDetails: {
     method: "get",
-    url: () => `/user/${userID()}/directorAccount`,
+    url: () => `/director/${userID()}/directorAccounts`,
   },
   postDirectorAccountDetails: {
     method: "post",
-    url: () => `/user/${userID()}/directorAccount`,
+    url: () => `/director/${userID()}/directorAccount`,
   },
   suspendDirectorAccountPaymentDetails: {
     method: "patch",
     url: (data) =>
-      `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
+      `/director/${userID()}/directorAccount/${data.id}/status/${data.status}`,
   },
 
   updateDirectorProfileDetails: {
     method: "put",
-    url: (id) => `/user/${userID()}/directorProfileUpdate/${id}`,
+    url: (id) => `/director/${userID()}/directorProfileUpdate/${id}`,
   },
   updateDirectorAccountDetails: {
     method: "put",
-    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+    url: (id) => `/director/${userID()}/directorAccount/${id}`,
   },
   getDirectorAccountById: {
     method: "get",
-    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+    url: (id) => `/director/${userID()}/directorAccount/${id}`,
   },
 
   getDirectorAccessWebites: {
@@ -394,14 +395,14 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/loginLogs?${query}`;
+      return `/user/${userID()}/loginLogs?${query}`;
     },
   },
   getLoggedInLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/loginLogsById?${query}`;
+      return `/user/${userID()}/loginLogsById?${query}`;
     },
   },
   getDirectorLoginLogs: {
@@ -418,7 +419,6 @@ const endpoints = {
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
   },
-
 
   resetDirectorPasswordInProfile: {
     method: "post",
@@ -441,7 +441,6 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
-
   getUserWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/userWebsites`,

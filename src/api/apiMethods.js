@@ -96,7 +96,7 @@ const getDirectorEmployees = (params) => {
 };
 // const getWebsitesList = (params) => {
 const getDirectorAccountDetails = (data) => {
-  return apiRequest("getDirectorAccountDetails");
+  return apiRequest("getDirectorAccountDetails",data);
 };
 
 const postDirectorAccountDetails = (data) => {
