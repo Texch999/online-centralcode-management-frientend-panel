@@ -25,17 +25,35 @@ import ErrorPopup from "../popups/ErrorPopup";
 import { imgUrl } from "../../api/baseUrl";
 import { useSearchParams } from "react-router-dom";
 
+const ACTIVE_BTNS = [
+  { value: 1, label: "Promotion Type" },
+  { value: 2, label: "Poster Templates" },
+];
+
 const PromotionType = () => {
-  const [activeBtn, setActiveBtn] = useState(
-    localStorage.getItem("activeBtn") || "Promotion Type"
-  );
+  const [activeBtn, setActiveBtn] = useState(() => {
+    const storedBtn = localStorage.getItem("activeBtn");
+    if (storedBtn) {
+      try {
+        const parsedBtn = JSON.parse(storedBtn);
+        return (
+          ACTIVE_BTNS.find((btn) => btn.value === parsedBtn.value) ||
+          ACTIVE_BTNS[0]
+        );
+      } catch (error) {
+        console.error("Error parsing stored activeBtn:", error);
+        return ACTIVE_BTNS[0];
+      }
+    }
+    return ACTIVE_BTNS[0];
+  });
   const [fullPoster, setFullPoster] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [fullPosterImage, setFullPosterImage] = useState(false);
   const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
   const [posterDeleteModal, setPosterDeleteModal] = useState(false);
-  const ACTIVE_BTNS = ["Promotion Type", "Poster Templates"];
+
   const [promotionsTypes, setPromotionsTypes] = useState([]);
   const [selectedPromotionId, setSelectedPromotionId] = useState(null);
   const [selectedPromotionStatus, setSelectedPromotionStatus] = useState(null);
@@ -63,7 +81,7 @@ const PromotionType = () => {
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectUserWebsites, setSelectUserWebsites] = useState(null);
 
-  const page = parseInt(searchParams.get("page"));
+  const [page, setPage] = useState(parseInt(searchParams.get("page")));
   const currentPage = page || 1;
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
@@ -76,14 +94,14 @@ const PromotionType = () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    getPromotions(limit, offset);
-    getPromotionsImages(limit, offset);
+    getPromotions();
+    getPromotionsImages();
     getWebsites();
     getuserWebsites();
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("activeBtn", activeBtn);
+    localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
   }, [activeBtn]);
 
   const getWebsites = async () => {
@@ -158,7 +176,7 @@ const PromotionType = () => {
     }
   };
 
-  const getPromotions = async (limit, offset) => {
+  const getPromotions = async () => {
     try {
       const response = await getPromotionsTypes({ limit, offset });
       if ((response.status = 200)) {
@@ -169,7 +187,7 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
-  const getPromotionsImages = async (limit, offset) => {
+  const getPromotionsImages = async () => {
     try {
       const response = await getPromotionsImage({ limit, offset });
       if ((response.status = 200)) {
@@ -243,7 +261,10 @@ const PromotionType = () => {
     setSelectUserWebsites(null);
     setSelectedFile(null);
     setSelectedOption(null);
+    getPromotions();
+    getPromotionsImages();
     setActiveBtn(item);
+    localStorage.setItem("activeBtn", JSON.stringify(item));
   };
 
   const handleBlockOrUnblock = (id, status) => {
@@ -387,12 +408,10 @@ const PromotionType = () => {
       setErrorPopupOpen(true);
     }
   };
+
   const handlePageChange = ({ limit, offset }) => {
-    if (activeBtn === "Promotion Type") {
-      getPromotions(limit, offset);
-    } else {
-      getPromotionsImages(limit, offset);
-    }
+    getPromotions(limit, offset);
+    getPromotionsImages(limit, offset);
   };
 
   return (
@@ -400,20 +419,22 @@ const PromotionType = () => {
       <div className="flex-between mb-3 mt-2">
         <h6 className="yellow-font mb-0">Promotion</h6>
       </div>
-      <div className="d-flex small-font">
+      <div className="d-flex col small-font">
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
-              activeBtn === item ? "saffron-btn2" : "white-btn2 pointer"
+              activeBtn?.value === item.value
+                ? "saffron-btn2"
+                : "white-btn2 pointer"
             }`}
             onClick={() => handleSportClick(item)}
           >
-            {item}
+            {item.label}
           </div>
         ))}
       </div>
-      {activeBtn === "Promotion Type" ? (
+      {activeBtn.value === 1 ? (
         <>
           <div className="my-3">
             <Table
@@ -569,7 +590,7 @@ const PromotionType = () => {
                 </button>
               </div>
             </div>
-            <div className="input-pill d-flex align-items-center rounded-pill px-2">
+            {/* <div className="input-pill d-flex align-items-center rounded-pill px-2">
               <FaSearch size={16} className="grey-clr me-2" />
               <input
                 className="small-font all-none"
@@ -577,7 +598,7 @@ const PromotionType = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </div>
+            </div> */}
           </div>
 
           <Table

@@ -81,6 +81,7 @@ const Broadcasting = () => {
     setSelectLocations(null);
     setTextMessage("");
     setActiveBtn(btn);
+    setBroadCastingdata([]);
     localStorage.setItem("activeBtn", JSON.stringify(btn));
   };
 
@@ -148,7 +149,7 @@ const Broadcasting = () => {
     try {
       const response = await getBroadCasting({ id, limit, offset });
       if ((response.status = 200)) {
-        setBroadCastingdata(response.broadcastingData);
+        setBroadCastingdata(response.broadcasting);
         setTotalRecords(response.totalRecords);
       }
     } catch (error) {
@@ -205,10 +206,10 @@ const Broadcasting = () => {
     } catch (error) {
       setLoading(false);
       setMessage(error?.message);
-      setSelectType(null);
-      setSelectWebsites(null);
-      setSelectLocations(null);
-      setTextMessage("");
+      // setSelectType(null);
+      // setSelectWebsites(null);
+      // setSelectLocations(null);
+      // setTextMessage("");
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
     }
@@ -438,7 +439,7 @@ const Broadcasting = () => {
             className="saffron-btn2 small-font pointer ms-2 w-100"
             onClick={handleSubmit}
           >
-            {loading ? <FaSpinner className="spinner-circle" /> : "Submit"}
+            {loading ? "Loading..." : "Submit"}
           </div>
         </div>
       </div>
