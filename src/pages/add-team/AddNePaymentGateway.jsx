@@ -300,10 +300,19 @@ const AddNePaymentGateway = () => {
   const getOwnersPaymentModes = () => {
     setLoading(true);
 
-    const fetchPaymentModes = ownersAvailablePaymentsModes();
-    // userRole === "director"
-    // ? DirectorUpLinePaymentDetails()
-    // : ownersAvailablePaymentsModes();
+    let fetchPaymentModes;
+
+    if (userRole === "director") {
+      if (actionType === "Withdraw" || actionType === "Deposit") {
+        fetchPaymentModes = DirectorUpLinePaymentDetails();
+        console.log("DirectorUpLinePaymentDetails");
+      } else {
+        fetchPaymentModes = ownersAvailablePaymentsModes();
+        console.log("ownersAvailablePaymentsModes");
+      }
+    } else {
+      fetchPaymentModes = ownersAvailablePaymentsModes();
+    }
 
     fetchPaymentModes
       .then((response) => {
@@ -319,13 +328,9 @@ const AddNePaymentGateway = () => {
   };
 
   useEffect(() => {
-    if (initialRendering.current) {
-      initialRendering.current = false;
-      return;
-    }
+    
     getOwnersPaymentModes();
   }, []);
-
 
   const allCountries = useSelector((item) => item?.allCountries);
   const formattedCountries = allCountries.map((country) => ({
