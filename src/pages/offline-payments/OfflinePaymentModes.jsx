@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { SlPencil } from "react-icons/sl";
-import { Images } from "../../images";
 import AddNewOfflinePaymentModal from "./AddNewOfflinePaymentModal";
 import {
   getAllCountires,
-  getManagementOfflinePaymentModeById,
+  getCountries,
   getManagementOfflinePaymentModes,
   suspenManagementOfflinePaymentModes,
 } from "../../api/apiMethods";
 import { useRef } from "react";
 import { CircleLoader } from "react-spinners";
-import { useSelector } from "react-redux";
-import { IoClose } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import ConfirmationPopup from "./../popups/ConfirmationPopup";
 import { imgUrl } from "../../api/baseUrl";
 import { useSearchParams } from "react-router-dom";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const OfflinePaymentModes = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -28,21 +26,22 @@ const OfflinePaymentModes = () => {
   const role_code = localStorage.getItem("role_code");
   const dataFetched = useRef(false);
   const [countries, setCountries] = useState([]);
-  // const allCountries = useSelector((item) => item?.allCountries);
   const [searchInput, setSearchInput] = useState("");
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [offlinePaymnetModeId, setOfflinePaymentModeId] = useState(null);
   const [statusId, setStatusId] = useState(null);
   const [editId, setEditId] = useState(null);
+  const itemsPerPage = 4;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const intialpage = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(intialpage);
-
-  const itemsPerPage = 4;
-  const currentOffset = (currentPage - 1) * itemsPerPage;
-  const page = intialpage;
+  const page = currentPage;
   const pageSize = itemsPerPage;
+  const [currentLimit, setCurrentLimit] = useState(4);
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const [errorPopup, setErrorPopup] = useState(false);
+  const status_id = statusId === 1 ? 2 : 1;
 
   const hanldeAddModal = () => {
     setShowAddModal(true);
@@ -63,7 +62,7 @@ const OfflinePaymentModes = () => {
   };
 
   const getAllCountries = () => {
-    getAllCountires()
+    getCountries()
       .then((response) => {
         if (response?.status === true) {
           setCountries(response?.data);
@@ -87,21 +86,23 @@ const OfflinePaymentModes = () => {
     return currency ? currency.currency_name : "Unknown";
   };
 
-  const getAllManPaymentModes = () => {
+  const getAllManPaymentModes = (page, pageSize) => {
     setLoading(true);
     getManagementOfflinePaymentModes({ page, pageSize })
       .then((response) => {
-        console.log("response", response);
         if (response.status === true) {
           setPaymentModes(response.data);
           setTotalRecords(response?.totalCount);
-          console.log(response.data, "success");
         } else {
-          console.log(response.message, "error");
+          setError(response?.message);
         }
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -111,10 +112,20 @@ const OfflinePaymentModes = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      getAllManPaymentModes();
+      console.log(page);
+      console.log(pageSize);
+      getAllManPaymentModes(page, pageSize);
       getAllCountries();
     }
   }, []);
+
+  const handlePageChange = ({ limit, offset }) => {
+    setCurrentLimit(limit);
+    setCurrentOffset(offset);
+    if (role_code === "management") {
+      getAllManPaymentModes(intialpage, pageSize);
+    }
+  };
 
   const handleManagementSuspend = (id, status) => {
     setConfirmationModal(true);
@@ -136,13 +147,12 @@ const OfflinePaymentModes = () => {
     );
   });
 
-  const status_id = statusId === 1 ? 2 : 1;
-
   const suspendStatus = () => {
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         console.log(response);
         if (response.status === true) {
+          getAllManPaymentModes(currentLimit, currentOffset);
           console.log(response, "Suspended");
         } else {
           console.log(response.message);
@@ -150,7 +160,12 @@ const OfflinePaymentModes = () => {
       })
       .catch((error) => {
         setError(error?.message);
-        console.log(error);
+        setConfirmationModal(false);
+        setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        });
       });
   };
 
@@ -215,11 +230,7 @@ const OfflinePaymentModes = () => {
       ),
     };
   });
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    getAllManPaymentModes();
-  };
-  console.log(totalRecords, "======>handlePageChange");
+
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -236,7 +247,6 @@ const OfflinePaymentModes = () => {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
             />
-            {/* <IoClose size={16} className="grey-clr me-2" onClick={}/> */}
           </div>
 
           <button
@@ -285,6 +295,11 @@ const OfflinePaymentModes = () => {
         } this Payment Mode?`}
         submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
         onSubmit={suspendStatus}
+      />
+      <ErrorPopup
+        discription={error}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </div>
   );
