@@ -62,7 +62,11 @@ const endpoints = {
   },
   getPromotionsTypes: {
     method: "get",
-    url: () => `/user/${userID()}/promotionsTypes`,
+    url: (params) => {
+      console.log("params",params)
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/promotionsTypes?${query}`;
+    },
   },
   statusPromotionsTypes: {
     method: "put",
@@ -70,7 +74,11 @@ const endpoints = {
   },
   getPromotionsImage: {
     method: "get",
-    url: () => `/user/${userID()}/promotionsImages`,
+    url: (params) => {
+      console.log("params",params)
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/promotionsImages?${query}`;
+    },
   },
   createPromotionImages: {
     method: "post",
@@ -84,6 +92,24 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/banners`,
   },
+  // getBannerByUserId: {
+  //   method: "get",
+  //   url: (id) => `/user/${userID()}/banners/user/${id}`,
+  // },
+
+  getBannerByUserId: {
+    method: "get",
+    url: (params) => {
+      console.log("params", params);
+      
+      const { id, ...filteredParams } = params;
+      
+      const query = new URLSearchParams(filteredParams).toString();
+      
+      return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
+    },
+  },
+  
   createBanner: {
     method: "post",
     url: () => `/user/${userID()}/banner`,
@@ -291,8 +317,15 @@ const endpoints = {
   },
   getBroadCasting: {
     method: "get",
-    url: () => `/user/${userID()}/broadcastings`,
+    url: (params) => {
+      console.log("params", params);
+      const { id, ...filteredParams } = params;
+      
+      const query = new URLSearchParams(filteredParams).toString();
+      
+      return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
   },
+},
 
   statusBroadcastUpdate: {
     method: "put",
@@ -379,7 +412,6 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
-
 
   getUserWebsites: {
     method: "get",
