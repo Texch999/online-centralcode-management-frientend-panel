@@ -245,7 +245,6 @@
 
 // export default AddNePaymentGateway;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import {
   DirectorUpLinePaymentDetails,
@@ -299,7 +298,7 @@ const AddNePaymentGateway = () => {
   const getOwnersPaymentModes = () => {
     setLoading(true);
 
-    const fetchPaymentModes = DirectorUpLinePaymentDetails();
+    const fetchPaymentModes = ownersAvailablePaymentsModes();
     // userRole === "director"
     // ? DirectorUpLinePaymentDetails()
     // : ownersAvailablePaymentsModes();
@@ -324,6 +323,7 @@ const AddNePaymentGateway = () => {
     }
     getOwnersPaymentModes();
   }, []);
+
 
   const allCountries = useSelector((item) => item?.allCountries);
   const formattedCountries = allCountries.map((country) => ({
