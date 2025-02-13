@@ -87,6 +87,9 @@ const getDirectorEmployeeDetailsById = (id) => {
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
 };
+const resetDirectorPasswordInProfile = (id,data) => {
+  return apiRequest("resetDirectorPasswordInProfile", data, id);
+}
 
 const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
@@ -107,6 +110,10 @@ const updateDirectorAccountDetails = (id, data) => {
 };
 const getDirectorAccountById = (id, data) => {
   return apiRequest("getDirectorAccountById", data, id);
+};
+
+const updateDirectorProfileDetails=(id, data) => {
+  return apiRequest("updateDirectorProfileDetails", data, id);
 };
 
 const getCountries = (data) => {
@@ -187,6 +194,7 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
+
 
 // rejection reasons
 // const getAllRejectionReasons = (data) => {
@@ -321,6 +329,9 @@ const ownersAvailablePaymentsModes = (data) => {
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
+const getDirectorSites = (data) => {
+  return apiRequest("getDirectorSites", data);
+};
 export {
   loginManagement,
   createSecurityQuestions,
@@ -337,6 +348,7 @@ export {
   getPrivacyPolicy,
   getWebsites,
   getPrivacyPolicyById,
+  updateDirectorProfileDetails,
   createPrivacyPolicy,
   updatePrivacyPolicyById,
   privacyPolicyStatusUpdate,
@@ -394,10 +406,12 @@ export {
   getManagementOfflinePaymentModeById,
   updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
+  ownersAvailablePaymentsModes,
   getCurrencies,
   loginDirectorEmployee,
-  ownersAvailablePaymentsModes,
+  resetDirectorPasswordInProfile,
   updateDirectorByID,
   DirectorUpLinePaymentDetails,
   getBannerByUserId,
+  getDirectorSites,
 };

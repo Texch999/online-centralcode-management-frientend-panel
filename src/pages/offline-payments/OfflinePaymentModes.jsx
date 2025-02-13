@@ -223,7 +223,7 @@ const OfflinePaymentModes = () => {
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0">
+        <h6 className="col-2 yellow-font medium-font mb-0 white-space">
           Offline Payment Modes
         </h6>
 
@@ -260,7 +260,7 @@ const OfflinePaymentModes = () => {
           <Table
             data={data}
             columns={columns}
-            itemsPerPage={6}
+            itemsPerPage={itemsPerPage}
             totalRecords={totalRecords}
             onPageChange={handlePageChange}
           />

@@ -183,7 +183,13 @@ const AddPaymentGatewayPopup = ({
                 className="w-100 small-font rounded input-css all-none"
                 placeholder="Enter"
                 value={accHolderName}
-                onChange={(e) => setAccHolderName(e.target.value)}
+                onChange={(e) => {
+                  setAccHolderName(e.target.value);
+                  setValidationErrors((prev) => ({
+                    ...prev,
+                    accHolderName: "",
+                  }));
+                }}
               />
               {validationErrors.accHolderName && (
                 <p className="text-danger small-font">
@@ -200,7 +206,10 @@ const AddPaymentGatewayPopup = ({
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
                     value={accountNumber}
-                    onChange={(e) => setAccountNumber(e.target.value)}
+                    onChange={(e) => {
+                      setAccountNumber(e.target.value);
+                      setValidationErrors((prev) => ({ ...prev, accountNumber: "" }));
+                    }}
                   />
                   {validationErrors.accountNumber && (
                     <p className="text-danger small-font">
@@ -216,7 +225,10 @@ const AddPaymentGatewayPopup = ({
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
                     value={bankIFSC}
-                    onChange={(e) => setBankIFSC(e.target.value)}
+                    onChange={(e) => {
+                      setBankIFSC(e.target.value);
+                      setValidationErrors((prev) => ({ ...prev, bankIFSC: "" }));
+                    }}
                   />
                   {validationErrors.bankIFSC && (
                     <p className="text-danger small-font">
@@ -232,7 +244,11 @@ const AddPaymentGatewayPopup = ({
                     className="w-100 small-font rounded input-css all-none"
                     placeholder="Enter"
                     value={bankName}
-                    onChange={(e) => setBankName(e.target.value)}
+                    onChange={(e) => {
+                      setBankName(e.target.value);
+                      setValidationErrors((prev) => ({ ...prev, bankIFSC: "" }));
+                      
+                    }}
                   />
                   {validationErrors.bankName && (
                     <p className="text-danger small-font">

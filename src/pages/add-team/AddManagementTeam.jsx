@@ -57,11 +57,6 @@ const AddManagementTeam = () => {
 
 
 
-
-
-
-
-
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
