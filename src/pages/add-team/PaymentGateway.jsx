@@ -385,11 +385,11 @@ const PaymentGateway = () => {
     country: getCountryName(item.currency_id),
     currency: getCurrencySymbol(item.currency_id),
     status: (
-      <span className="badge py-2 px-3">
+      <span className="">
         {item?.status === 1 ? (
-          <div className="green-btn w-fill">Active</div>
+          <div className="green-btn badge py-2 px-3">Active</div>
         ) : (
-          <div className="red-btn w-fill">In-Active</div>
+          <div className="red-btn badge py-2 px-3">In-Active</div>
         )}
       </span>
     ),
