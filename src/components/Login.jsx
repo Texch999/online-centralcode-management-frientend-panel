@@ -149,8 +149,8 @@ function Login() {
                   {...register("username", {
                     required: "Username is required",
                     pattern: {
-                      value: /^[a-zA-Z ]*$/,
-                      message: "Username can only contain letters and spaces",
+                      value: /^[a-zA-Z0-9 ]*$/,
+                      message: "Username can only contain letters, spaces and numbers",
                     },
                     minLength: {
                       value: 5,

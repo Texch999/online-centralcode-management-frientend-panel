@@ -18,10 +18,8 @@ import { useParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
 
 import { getDirectorDetailsById, resetDirectorPasswordInProfile, updateDirectorProfileDetails } from "../../api/apiMethods";
+import ErrorPopup from "../popups/ErrorPopup";
 const login_role_name = localStorage.getItem("role_name");
-
-
-
 
 
 const cardData = [
@@ -237,7 +235,6 @@ const Card = ({
 };
 
 
-
 const DefaultBottomShow = () => {
   const [status, setStatus] = useState(1); // Default active (1)
 
@@ -342,11 +339,13 @@ const UserProfileDashboard = () => {
   const [directorData, setDirectorData] = useState([]);
   const [error, setError] = useState("");
   const [editData, setEditData] = useState([])
+  // errorPopupOpen, setErrorPopupOpen, discription
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [description, setDesciption] = useState("");
+  const [editedDtat, setEditedDtat] = useState([]);
 
   const { id } = useParams();
-
 
 
   const handleEdit = (id) => {
@@ -355,7 +354,8 @@ const UserProfileDashboard = () => {
   }
   const resetDirectorPassword = (data) => {
     if (!id) {
-      alert("Invalid ID");
+      setDesciption("Invalid Id")
+      setErrorPopupOpen(true)
       return;
     }
 
@@ -368,16 +368,25 @@ const UserProfileDashboard = () => {
     resetDirectorPasswordInProfile(id, payload)
       .then((response) => {
         if (response.status === true) {
+          setEditedDtat(response.data)
           setDesciption(response.message)
           setShowSuccessPopup(true);
           handleResetPasswordClose()
 
+
+
         } else {
-          alert("Something went wrong");
+          setDesciption("Something went Wrong")
+          setErrorPopupOpen(true)
+          setShowResetPasswordPopup(false);
+
         }
       })
       .catch((error) => {
-        alert(error?.message || "Request failed");
+        setDesciption(error.message)
+        setErrorPopupOpen(true)
+        setShowResetPasswordPopup(false);
+
       });
   };
   useEffect(() => {
@@ -397,6 +406,9 @@ const UserProfileDashboard = () => {
       .catch((error) => {
         console.error("API Call Error:", error);
         setError(error?.message || "Login failed");
+        setDesciption(error.message)
+        setErrorPopupOpen(true)
+        setShowResetPasswordPopup(false);
       });
   }, [id]); // Now it runs only when `id` changes
 
@@ -407,10 +419,11 @@ const UserProfileDashboard = () => {
   };
 
   const handleResetPasswordClose = () => {
-    setShowSuccessPopup(true);
+    // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
 
   };
+
 
   return (
     <div>
@@ -458,10 +471,17 @@ const UserProfileDashboard = () => {
           <div className="row">
             <div className="col-2 super-admin-top-container">
               <img
-                src={`${imgUrl}/directorProfilePhotos/${directorData.photo}`}
-                alt="UserDashboard"
+                src={directorData.photo ? `${imgUrl}/directorProfilePhotos/${directorData.photo}` : `${Images.defaultProfileImage}`}
+                loading="lazy"
+                alt="Profile Photo Loading"
                 className="super-admin-profile-img-con"
+                onError={(e) => {
+                  e.target.onerror = null;  // Prevent infinite loop if the fallback image also fails
+                  e.target.src = `${Images.defaultProfileImage}`;  // Set a default image as fallback if the image fails to load
+                }}
               />
+
+
               <div
                 className="d-flex gap-2 super-admin-img-down-content align-items-end"
                 style={{ marginTop: "20px" }}
@@ -518,12 +538,18 @@ const UserProfileDashboard = () => {
       <EditProfilePopup
         show={showEditProfilePopup}
         data={directorData}
+        // reload = {getDirectorDetailsById}
         onHide={() => setShowEditProfilePopup(false)}
       />
       <SuccessPopup
         successPopupOpen={showSuccessPopup}
         // onHide={() => setShowSuccessPopup(false)}
         setSuccessPopupOpen={() => setShowSuccessPopup(false)}
+        discription={description}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
         discription={description}
       />
 

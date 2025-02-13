@@ -338,7 +338,7 @@ const endpoints = {
 
   updateDirectorProfileDetails: {
     method: "put",
-    url: (id) => `/user/${userID()}/directorProfileUpdate/${id}`,
+    url: (id) => `/director/${userID()}/directorProfileUpdate/${id}`,
   },
   updateDirectorAccountDetails: {
     method: "put",
@@ -389,7 +389,7 @@ const endpoints = {
   
   resetDirectorPasswordInProfile: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorProfileResetPassword/${id}`,
+    url: (id) => `/director/${userID()}/directorProfileResetPassword/${id}`,
   },
 
   getDirectorDwnList: {

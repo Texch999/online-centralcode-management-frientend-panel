@@ -58,6 +58,7 @@
   transform: translateY(-30%);
   left: 20%;
   z-index: 10;
+  border-radius: 50px;
 }
 
 .super-admin-img-down-content {
