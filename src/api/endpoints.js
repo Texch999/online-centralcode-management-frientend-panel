@@ -68,7 +68,7 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
-      console.log("params",params)
+      console.log("params", params);
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/promotionsTypes?${query}`;
     },
@@ -80,7 +80,7 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
-      console.log("params",params)
+      console.log("params", params);
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/promotionsImages?${query}`;
     },
@@ -106,15 +106,15 @@ const endpoints = {
     method: "get",
     url: (params) => {
       console.log("params", params);
-      
+
       const { id, ...filteredParams } = params;
-      
+
       const query = new URLSearchParams(filteredParams).toString();
-      
+
       return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
     },
   },
-  
+
   createBanner: {
     method: "post",
     url: () => `/user/${userID()}/banner`,
@@ -338,12 +338,12 @@ const endpoints = {
     url: (params) => {
       console.log("params", params);
       const { id, ...filteredParams } = params;
-      
+
       const query = new URLSearchParams(filteredParams).toString();
-      
+
       return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
+    },
   },
-},
 
   statusBroadcastUpdate: {
     method: "put",
@@ -478,27 +478,29 @@ const endpoints = {
   //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
   createManagementOfflinePaymentModes: {
     method: "post",
-    url: () => `/user/${userID()}/offlinePaymentMode`,
+    url: () => `/director/${userID()}/offlinePaymentMode`,
   },
   getManagementOfflinePaymentModes: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
+      return `/director/${userID()}/totalOfflinePaymentModes?${query}`;
     },
   },
   getManagementOfflinePaymentModeById: {
     method: "get",
-    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+    url: (id) => `/director/${userID()}/offlinePaymentMode/${id}`,
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
     url: (data) =>
-      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
+      `/director/${userID()}/offlinePaymentMode/${data.id}/status/${
+        data.status
+      }`,
   },
   updateManagementOfflinePaymentDetails: {
     method: "put",
-    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
+    url: (id) => `/director/${userID()}/offlinePaymentMode/${id}`,
   },
   managementPaymentDetails: {
     method: "get",
@@ -520,6 +522,19 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/details/${userID()}`,
   },
+  //show dir payment details in man
+  managementDwnProfileDirPaymentDetails: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+  },
+  UpdateProfileDirpaymentDetailsByMan: {
+    method: "put",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  getDirPayDetailsByIdProfile:{
+    method: "get",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  }
 };
 
 export default endpoints;
