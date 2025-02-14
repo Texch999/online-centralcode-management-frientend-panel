@@ -52,9 +52,11 @@ const PaymentModes = ({
                             onClick={() => handleModelActions(card)}
                             src={`${imgUrl}/offlinepaymentsMode/${card?.image}`}
                             alt={card?.name}
-                            className="w-60 h-100 text-nowrap"
+                            className="text-nowrap"
                             style={{
-                              objectFit: "contain",
+                              height:"5vh",
+                              width:"20vw",
+                              objectFit:"contain",
                               objectPosition: "center",
                             }}
                           />

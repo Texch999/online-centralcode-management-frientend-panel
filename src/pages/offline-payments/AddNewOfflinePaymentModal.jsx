@@ -11,6 +11,7 @@ import {
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "./../popups/ErrorPopup";
+import { useSearchParams } from "react-router-dom";
 
 const AddNewOfflinePaymentModal = ({
   showAddModal,
@@ -34,8 +35,13 @@ const AddNewOfflinePaymentModal = ({
   const [paymentModesDataById, setPaymentModesDataById] = useState();
   const role_code = localStorage.getItem("role_code");
   const [errors, setErrors] = useState({});
+  const itemsPerPage = 4;
   const [paymnetEditId, setPaymnetEditId] = useState(null);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(intialpage);
+  const page = currentPage;
+  const pageSize = itemsPerPage;
   const currencyOptions = countries?.map((item) => ({
     value: item?.id,
     label: item?.currency_name,
@@ -129,7 +135,7 @@ const AddNewOfflinePaymentModal = ({
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, [2000]);
-        getAllManPaymentModes();
+        getAllManPaymentModes(page, pageSize);
         setImage(null);
         setImgName(null);
         setSelectedType(null);
@@ -146,7 +152,7 @@ const AddNewOfflinePaymentModal = ({
       setTimeout(() => {
         setErrorPopupOpen(false);
       }, [2000]);
-      getAllManPaymentModes();
+      getAllManPaymentModes(page, pageSize);
       setImage(null);
       setImgName(null);
       setSelectedType(null);

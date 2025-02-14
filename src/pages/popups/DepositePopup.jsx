@@ -140,7 +140,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         </div>
                         <div className="d-flex justify-content-end flex-grow-1">
                             <div className="d-flex flex-column text-end">
-                                <h5 className="medium-font fw-600 mb-0 green-font">{actionType} in {selectedWebDetails?.currencyName || ""}</h5>
+                                <h5 className="medium-font fw-600 mb-0 green-font">Deposit in {selectedWebDetails?.currencyName || ""}</h5>
 
                                 <p className="medium-font mb-0 dep-pop-clr">
                                     {selectedWebDetails?.commission_type === 1

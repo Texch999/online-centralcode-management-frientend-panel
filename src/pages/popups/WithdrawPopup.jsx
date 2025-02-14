@@ -4,6 +4,8 @@ import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { Images } from "../../images";
+import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
+import { MdContentCopy } from "react-icons/md";
 
 const WithdrawPopup = ({
     setWithdrawPopup,
@@ -12,6 +14,14 @@ const WithdrawPopup = ({
     selectedPayment
 }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
+    const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
+    const [selectedAdmin, setSelectedAdmin] = useState(null);
+    const isInitialRender = useRef(true);
+    const [directorSites, setDirectorSites] = useState([]);
+    const [userWebsites, setUserWebsites] = useState([]);
+    const [errors, setErrors] = useState({});
+    const userName = localStorage.getItem("user_name");
+    const userRole = localStorage.getItem("role_code");
     const [formData, setFormData] = useState({
         balanceAmount: "",
         netAmount: "",
@@ -23,97 +33,111 @@ const WithdrawPopup = ({
         accountNumber: "",
         ifscCode: "",
         upiId: "",
+        websiteName: "", // Add websiteName to formData
     });
 
-    const depositeDetails = [
-        {
-            label: "ICICI Bank",
-            value: "icici",
-            details: {
-                name: "John Doe",
-                bankName: "ICICI Bank",
-                accountNumber: "1234567890",
-                ifscCode: "ICIC0001234",
-            },
-        },
-        {
-            label: "HDFC Bank",
-            value: "hdfc",
-            details: {
-                name: "Jane Smith",
-                bankName: "HDFC Bank",
-                accountNumber: "0987654321",
-                ifscCode: "HDFC0005678",
-            },
-        },
-    ];
+    const [error, setError] = useState("");
+    const [selectedWebDetails, setSelectedWebDetails] = useState(null);
 
-    const PaymentType = [
-        { label: "NEFT/RTGS", value: "neftrtgs" },
-        { label: "UPI", value: "upi" },
-    ];
+    const getDirectorAccessedWebistesList = () => {
+        getDirectorAccessWebites()
+            .then((response) => {
+                if (response?.status === true) {
+                    setDirectorWebsitesList(response.data);
+                    // Set the first admin website as default
+                    if (response.data.length > 0) {
+                        const firstAdmin = response.data[0].admin_websites[0];
+                        setSelectedAdmin({
+                            label: firstAdmin.admin_web_name,
+                            value: firstAdmin.admin_panel_id,
+                        });
+                        setUserWebsites(firstAdmin.users || []);
+                        // Set the first user website as default
+                        if (firstAdmin.users.length > 0) {
+                            setFormData((prev) => ({
+                                ...prev,
+                                websiteName: firstAdmin.users[0].website_access_id,
+                            }));
+                            getWebsiteDetailsByUserId(firstAdmin.users[0].website_access_id);
+                        }
+                    }
+                } else {
+                    setError("Something Went Wrong");
+                }
+            })
+            .catch((error) => {
+                setError(error?.message || "API request failed");
+            });
+    };
 
-    const UpiOptions = [
-        { label: "UPI Option 1", value: "upi1" },
-        { label: "UPI Option 2", value: "upi2" },
-    ];
+    const getDirectorSitesList = () => {
+        getDirectorSites()
+            .then((response) => {
+                if (response?.status === true) {
+                    setDirectorSites(response.data);
+                } else {
+                    setError("Something Went Wrong");
+                }
+            })
+            .catch((error) => {
+                setError(error?.message || "API request failed");
+            });
+    };
 
     useEffect(() => {
-        if (PaymentType.length > 0) {
-            setFormData((prev) => ({
-                ...prev,
-                deployType: PaymentType[0],
-            }));
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
         }
+        getDirectorAccessedWebistesList();
+        getDirectorSitesList();
     }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSelectChange = (field, option) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: option,
-        }));
+    const validateForm = () => {
+        const newErrors = {};
 
-        if (field === "deployType") {
-            setFormData((prev) => ({
-                ...prev,
-                panelType: null,
-                name: "",
-                bankName: "",
-                accountNumber: "",
-                ifscCode: "",
-                upiId: "",
-            }));
+        if (!selectedAdmin) {
+            newErrors.admin = "Please select an Admin Website.";
         }
 
-        if (field === "panelType" && option) {
-            setFormData((prev) => ({
-                ...prev,
-                name: option.details.name,
-                bankName: option.details.bankName,
-                accountNumber: option.details.accountNumber,
-                ifscCode: option.details.ifscCode,
-            }));
+        if (!formData.websiteName) {
+            newErrors.user = "Please select a User Website.";
         }
+
+        setErrors(newErrors);
+
+        // Return true if there are no errors
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = () => {
-        console.log("Form Data:", formData);
+        if (validateForm()) {
+            console.log("Form Data:", formData);
+            // Proceed with your form submission logic here
+        } else {
+            console.log("Validation failed. Please check the form.");
+        }
     };
 
+    const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
+
+    function getWebsiteDetailsByUserId(selectedUserId) {
+        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
+        setSelectedWebDetails(...WebUserDetails);
+    }
+    const handleClosePopup = () => {
+        setWithdrawPopup(false)
+        setSelectedWebDetails(null)
+    }
     return (
         <div>
             <Modal show={withdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
-                    {/* <div className="d-flex justify-content-between align-items-center mb-2">
-                        <h5 className="medium-font fw-600">Withdraw</h5>
-                        <MdOutlineClose size={22} className="pointer" onClick={() => setWithdrawPopup(false)} />
-                    </div> */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                        {/* Image on the left */}
                         <div>
                             <img
                                 src={Images?.phonepe}
@@ -121,19 +145,18 @@ const WithdrawPopup = ({
                                 className="me-3"
                                 style={{ width: "50px", height: "50px" }}
                             />
-
                         </div>
                         <div className="d-flex justify-content-end flex-grow-1">
                             <div className="d-flex flex-column text-end">
-                                <h5 className="medium-font fw-600 mb-0 green-font">Withdraw in USD</h5>
-                                <p className="medium-font mb-0 dep-pop-clr">Srinivas - SuperAdmin (Share - 10%) </p>
+                                <h5 className="medium-font fw-600 mb-0 green-font">Withdraw in {selectedWebDetails?.currencyName}</h5>
+                                <p className="medium-font mb-0 dep-pop-clr"> {`${userName} - ${userRole} (Share-${selectedWebDetails?.share || 0}%)`} </p>
                             </div>
                         </div>
                         <div>
-                            <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setWithdrawPopup(false)} />
+                            <MdOutlineClose size={22} className="pointer ms-3" onClick={handleClosePopup} />
                         </div>
                     </div>
-                    {/* <div className="row ">
+                    <div className="row ">
                         <div className="col mb-2">
                             <label className="small-font mb-1">Admin Panel</label>
                             <Select
@@ -151,8 +174,18 @@ const WithdrawPopup = ({
                                         (admin) => admin.admin_panel_id === option.value
                                     );
                                     setUserWebsites(selectedAdminData?.users || []);
+                                    // Set the first user website as default
+                                    if (selectedAdminData?.users.length > 0) {
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            websiteName: selectedAdminData.users[0].website_access_id,
+                                        }));
+                                    }
+                                    // Clear the admin error when an option is selected
+                                    setErrors((prev) => ({ ...prev, admin: "" }));
                                 }}
                             />
+                            {errors.admin && <p className="text-danger small-font">{errors.admin}</p>}
                         </div>
                         <div className="col mb-2">
                             <label className="small-font mb-1">User Panel</label>
@@ -169,127 +202,153 @@ const WithdrawPopup = ({
                                         ...prev,
                                         websiteName: option.value,
                                     }));
-                                    getWebsiteDetailsByUserId(option.value)
+                                    getWebsiteDetailsByUserId(option.value);
+                                    // Clear the user error when an option is selected
+                                    setErrors((prev) => ({ ...prev, user: "" }));
                                 }}
                             />
-                        </div>
-                    </div> */}
-                    {/* Balance Amount */}
-                    <div className="row">
-                        <div className="col">
-                            <label className="small-font mb-1">Balance Amount</label>
-                            <input
-                                type="text"
-                                name="balanceAmount"
-                                className="w-100 small-font rounded input-css all-none"
-                                placeholder="Enter Balance Amount"
-                                value={formData.balanceAmount}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        {/* Net Amount */}
-                        <div className="col">
-                            <label className="small-font mb-1">Net Amount</label>
-                            <input
-                                type="text"
-                                name="netAmount"
-                                className="w-100 small-font rounded input-css all-none"
-                                placeholder="Enter Net Amount"
-                                value={formData.netAmount}
-                                onChange={handleChange}
-                            />
+                            {errors.user && <p className="text-danger small-font">{errors.user}</p>}
                         </div>
                     </div>
 
+                    {/* Rest of the code remains the same */}
+                    <div className="row">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Currency</label>
+                            <input
+                                type="text"
+                                name="currency"
+                                className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
+                                placeholder="Enter Amount"
+                                value={selectedWebDetails?.currencyName || ""}
+                                onChange={handleChange}
+                            />
+                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                        </div>
+
+                    </div>
+                    {selectedPayment?.avil_modes === 1 && (
+                        <>
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">Bank Transfer</label>
+                                <input
+                                    type="text"
+                                    name="upi"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                    placeholder="Enter "
+                                    value={selectedPayment?.name || ""}
+                                    onChange={handleChange}
+                                />
+                                {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+
+                                {selectedDepositDetails && (
+                                    <div className="mt-1 p-2  rounded input-css white-bg input-border">
+                                        <div className="d-flex justify-content-between small-font mb-1">
+                                            <strong>Account Holder Name</strong> <span className="text-end">{selectedPayment.acc_hold_name}</span>
+                                        </div>
+                                        <div className="d-flex justify-content-between small-font mb-1">
+                                            <strong>Bank Name</strong> <span className="text-end">{selectedPayment.bank_name}</span>
+                                        </div>
+                                        <div className="d-flex justify-content-between small-font mb-1">
+                                            <strong>Account Number</strong> <span className="text-end">{selectedPayment.bank_acc_no}</span>
+                                        </div>
+                                        <div className="d-flex justify-content-between small-font mb-1">
+                                            <strong>IFSC Code</strong> <span className="text-end">{selectedPayment.bank_ifsc}</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+                    {selectedPayment?.avil_modes === 2 && (
+                        <>
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">UPI ID</label>
+                                <div className="position-relative">
+                                    <input
+                                        type="text"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border pe-5" // Extra padding for the icon
+                                        placeholder="Enter"
+                                        value={selectedPayment?.upi_provider_id || ""}
+                                        onChange={handleChange}
+                                        readOnly
+                                    />
+                                    <MdContentCopy
+                                        size={18}
+                                        className="position-absolute text-muted"
+                                        style={{ top: "50%", right: "10px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                        onClick={() => navigator.clipboard.writeText(selectedPayment?.upi_provider_id || "")}
+                                    />
+                                </div>
+                                {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                            </div>
+                        </>
+                    )}
 
                     {/* Withdraw Amount */}
                     <div className="row">
                         <div className="col">
-                            <label className="small-font mb-1">Withdraw Amount</label>
+                            <label className="small-font mb-1">Wallet Chips Balance - {selectedWebDetails?.currencyName}</label>
                             <input
                                 type="text"
                                 name="withdrawAmount"
-                                className="w-100 small-font rounded input-css all-none"
+                                className="w-100 small-font rounded input-css white-bg input-border"
                                 placeholder="Enter Withdraw Amount"
                                 value={formData.withdrawAmount}
                                 onChange={handleChange}
                             />
                         </div>
-
-                        {/* Payment Type Dropdown */}
-                        <div className="col mb-2">
-                            <label className="small-font mb-1">Payment Type</label>
-                            <Select
-                                className="small-font"
-                                options={PaymentType}
-                                placeholder="Select"
-                                styles={customStyles}
-                                value={formData.deployType}
-                                onChange={(option) => handleSelectChange("deployType", option)}
+                        <div className="col">
+                            <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
+                            <input
+                                type="text"
+                                name="withdrawAmount"
+                                className="w-100 small-font rounded input-css  white-bg placeholder-red-clr input-border"
+                                placeholder="Enter Withdraw Amount"
+                                value={formData.withdrawAmount}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
-                    {/* Conditional Fields Based on Payment Type */}
-                    {formData.deployType?.value === "neftrtgs" && (
+                    <div className="col">
+                        <label className="small-font mb-1">Amount ({selectedWebDetails?.share}%) - {selectedWebDetails?.currencyName}</label>
+                        <input
+                            type="text"
+                            name="withdrawAmount"
+                            className="w-100 small-font rounded input-css  white-bg input-border"
+                            placeholder="Enter Withdraw Amount"
+                            value={formData.withdrawAmount}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="col">
+                        <label className="small-font mb-1">Enter Chips - {selectedWebDetails?.currencyName}</label>
+                        <input
+                            type="text"
+                            name="withdrawAmount"
+                            className="w-100 small-font rounded input-css  white-bg placeholder-red-clr input-border"
+                            placeholder="Enter Withdraw Amount"
+                            value={formData.withdrawAmount}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    {selectedPayment?.avil_modes === 3 && (
                         <>
-                            {/* Bank Account Details */}
-                            <div className="row">
-                                <div className="col">
-                                    <label className="small-font mb-1">Name</label>
-                                    <input type="text" name="name" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.name} />
-                                </div>
-
-                                <div className="col">
-                                    <label className="small-font mb-1">Bank Name</label>
-                                    <input type="text" name="bankName" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.bankName} />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <label className="small-font mb-1">Account Number</label>
-                                    <input type="text" name="accountNumber" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.accountNumber} />
-                                </div>
-
-                                <div className="col">
-                                    <label className="small-font mb-1">IFSC Code</label>
-                                    <input type="text" name="ifscCode" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.ifscCode} />
-                                </div>
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">QR Code</label>
+                                {selectedPayment?.qr_code_image ? (
+                                    <img
+                                        src={selectedPayment.qr_code_image}
+                                        alt="QR Code"
+                                        className="w-100"
+                                    />
+                                ) : (
+                                    <p className="text-muted small-font">No QR Code available.</p>
+                                )}
                             </div>
                         </>
                     )}
-
-                    {formData.deployType?.value === "upi" && (
-                        <>
-                            {/* UPI Details */}
-                            <div className="row">
-                                <div className="col">
-                                    <label className="small-font mb-1">UPI ID</label>
-                                    <input
-                                        type="text"
-                                        name="upiId"
-                                        className="w-100 small-font rounded input-css all-none"
-                                        placeholder="Enter UPI ID"
-                                        value={formData.upiId}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div className="col">
-                                    <label className="small-font mb-1">Name</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        className="w-100 small-font rounded input-css all-none"
-                                        placeholder="Enter Name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    )}
-
                     {/* Submit Button */}
                     <div className="mt-3 d-flex flex-row w-100">
                         <button className="saffron-btn small-font rounded col" onClick={handleSubmit}>
