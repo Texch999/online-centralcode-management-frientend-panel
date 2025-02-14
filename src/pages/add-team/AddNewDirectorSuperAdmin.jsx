@@ -34,14 +34,22 @@ function AddNewDirectorSuperAdmin() {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
   const [countryData, setCountryData] = useState();
   const [currencyData, setCurrencyData] = useState();
+  const [forms, setForms] = useState([{ id: 1 }]);
 
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId || null;
-
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [userWebsites, setUserWebsites] = useState([]);
+  const [selectedAdmins, setSelectedAdmins] = useState({});
+  const [userWebsitesList, setUserWebsitesList] = useState({});
+  const [selectedWebsites, setSelectedWebsites] = useState({});
+  const [accountTypes, setAccountTypes] = useState({});
   console.log(userId, "userId");
+  console.log(selectedAdmins, "selectedAdmins");
+
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -102,23 +110,22 @@ function AddNewDirectorSuperAdmin() {
   }));
   console.log(adminRoless, "adminRoless");
 
-  const [selectedAdmin, setSelectedAdmin] = useState(null);
-  const [userWebsites, setUserWebsites] = useState([]);
   console.log(userWebsites, "userWebsites");
 
-  const handleAdminRoleChange = (selectedOption) => {
-    console.log("Selected Admin:", selectedOption);
-    setSelectedAdmin(selectedOption);
+  const handleAdminRoleChange = (formId, selectedOption) => {
+    setSelectedAdmins((prev) => ({
+      ...prev,
+      [formId]: selectedOption,
+    }));
 
     const adminData = adminWebsite.find(
       (admin) => admin.id === selectedOption.value
     );
-    console.log("User Websites Found:", adminData?.userWebsites || []);
-    setUserWebsites(adminData?.userWebsites || []);
+    setUserWebsitesList((prev) => ({
+      ...prev,
+      [formId]: adminData?.userWebsites || [],
+    }));
   };
-
-  const [selectedWebsites, setSelectedWebsites] = useState({});
-  const [accountTypes, setAccountTypes] = useState({});
 
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
@@ -127,43 +134,28 @@ function AddNewDirectorSuperAdmin() {
     })
   );
 
-  const [forms, setForms] = useState([
-    {
-      id: 1,
-      adminWebsite: null,
-      userWebsites: [],
-      selectedWebsites: {},
-      accountTypes: {},
-    },
-  ]);
-  const addAnotherForm = () => {
-    setForms((prevForms) => [
-      ...prevForms,
-      {
-        id: prevForms.length + 1,
-        adminWebsite: null,
-        userWebsites: [],
-        selectedWebsites: {},
-        accountTypes: {},
-        showFullForm: false,
-      },
-    ]);
-  };
-
   const [websiteDetails, setWebsiteDetails] = useState({});
-  const handleCheckboxChange = (id) => {
+
+  const handleCheckboxChange = (formId, userId) => {
     setSelectedWebsites((prev) => ({
       ...prev,
-      [id]: !prev[id],
+      [formId]: {
+        ...prev[formId],
+        [userId]: !prev[formId]?.[userId],
+      },
     }));
   };
 
-  const handleAccountTypeChange = (id, selectedOption) => {
+  const handleAccountTypeChange = (formId, userSiteId, selectedOption) => {
     setAccountTypes((prev) => ({
       ...prev,
-      [id]: selectedOption.value,
+      [formId]: {
+        ...prev[formId],
+        [userSiteId]: selectedOption.value,
+      },
     }));
   };
+
   const handleInputChange = (id, field, value) => {
     setWebsiteDetails((prevDetails) => ({
       ...prevDetails,
@@ -182,53 +174,73 @@ function AddNewDirectorSuperAdmin() {
       return;
     }
 
-    if (!selectedAdmin) {
-      alert("Please select an Admin Website.");
+    if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+      alert("Please select at least one Admin Website.");
       return;
     }
 
-    const selectedUserWebsites = userWebsites
-      .filter((site) => selectedWebsites[site.id])
-      .map((site) => {
-        const accotypeid = accountTypes[site.id];
-        let websiteData = {
-          admin_panel_id: selectedAdmin.value,
-          user_paner_id: site.id,
-          commission_type: accotypeid,
-        };
-        if (accotypeid === "2") {
-          websiteData.share = parseFloat(websiteDetails[site.id]?.share || 0);
-          websiteData.caschip_values = parseFloat(
-            websiteDetails[site.id]?.caschip_values || 0
-          );
-          websiteData.downline_comm = parseFloat(
-            websiteDetails[site.id]?.downline_comm || 0
-          );
-        }
-        if (accotypeid === "1") {
-          websiteData.rent_start_date =
-            websiteDetails[site.id]?.rent_start_date || "";
-          websiteData.monthly_amount = parseInt(
-            websiteDetails[site.id]?.monthly_amount || 0
-          );
-          websiteData.chip_percentage = parseFloat(
-            websiteDetails[site.id]?.chip_percentage || 0
-          );
-          websiteData.max_chips_monthly = parseInt(
-            websiteDetails[site.id]?.max_chips_monthly || 0
-          );
-          websiteData.extra_chips_percentage = parseFloat(
-            websiteDetails[site.id]?.extra_chips_percentage || 0
-          );
-          websiteData.share = parseFloat(websiteDetails[site.id]?.share || 0);
-        }
-        return websiteData;
-      });
+    console.log(selectedWebsites, "selectedWebsites before processing");
 
-    if (selectedUserWebsites.length === 0) {
+    if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
       alert("Please select at least one User Website.");
       return;
     }
+
+    const selectedUserWebsites = forms.flatMap((form) => {
+      return userWebsitesList[form.id]?.map((userSite) => {
+        if (!selectedWebsites[form.id]?.[userSite.id]) return null;
+
+        const accotypeid = accountTypes[form.id]?.[userSite.id];
+        let websiteData = {
+          admin_panel_id: selectedAdmins[form.id]?.value,
+          user_paner_id: userSite.id,
+          commission_type: accotypeid,
+        };
+
+        if (accotypeid === "2") {
+          websiteData.share = parseFloat(
+            websiteDetails[userSite.id]?.share || 0
+          );
+          websiteData.caschip_values = parseFloat(
+            websiteDetails[userSite.id]?.caschip_values || 0
+          );
+          websiteData.downline_comm = parseFloat(
+            websiteDetails[userSite.id]?.downline_comm || 0
+          );
+        }
+
+        if (accotypeid === "1") {
+          websiteData.rent_start_date =
+            websiteDetails[userSite.id]?.rent_start_date || "";
+          websiteData.monthly_amount = parseInt(
+            websiteDetails[userSite.id]?.monthly_amount || 0
+          );
+          websiteData.chip_percentage = parseFloat(
+            websiteDetails[userSite.id]?.chip_percentage || 0
+          );
+          websiteData.max_chips_monthly = parseInt(
+            websiteDetails[userSite.id]?.max_chips_monthly || 0
+          );
+          websiteData.extra_chips_percentage = parseFloat(
+            websiteDetails[userSite.id]?.extra_chips_percentage || 0
+          );
+          websiteData.share = parseFloat(
+            websiteDetails[userSite.id]?.share || 0
+          );
+        }
+
+        return websiteData;
+      });
+    });
+
+    const validUserWebsites = selectedUserWebsites.filter(Boolean);
+
+    if (validUserWebsites.length === 0) {
+      alert("Please select at least one User Website.");
+      return;
+    }
+
+    console.log(validUserWebsites, "Final Selected User Websites");
 
     const finalData = {
       type: selectedRole,
@@ -239,8 +251,10 @@ function AddNewDirectorSuperAdmin() {
       parent_password: managementPassword,
       country_id: selectedCountryCode,
       currency_id: selectedCurrencyCode,
-      accessWebsites: selectedUserWebsites,
+      accessWebsites: validUserWebsites,
     };
+
+    console.log("Final Submitted Data:", finalData);
 
     createDirector(finalData)
       .then((response) => {
@@ -255,8 +269,6 @@ function AddNewDirectorSuperAdmin() {
         }
       })
       .catch((error) => console.log(error));
-
-    console.log("Final Submitted Data:", finalData);
   };
 
   const handleCountryChange = (event) => {
@@ -334,6 +346,9 @@ function AddNewDirectorSuperAdmin() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const addAnotherForm = () => {
+    setForms((prev) => [...prev, { id: Date.now() }]);
+  };
   return (
     <>
       <div>
@@ -537,9 +552,9 @@ function AddNewDirectorSuperAdmin() {
                         value: admin.id,
                         label: admin.web_name,
                       }))}
-                      value={selectedAdmin}
-                      onChange={(selectedAdmin) =>
-                        handleAdminRoleChange(selectedAdmin)
+                      value={selectedAdmins[form.id] || null}
+                      onChange={(selectedOption) =>
+                        handleAdminRoleChange(form.id, selectedOption)
                       }
                     />
                   </div>
@@ -548,14 +563,20 @@ function AddNewDirectorSuperAdmin() {
                 {/* User Websites */}
                 <div className="col-11">
                   <label className="small-font my-1">User Website</label>
-                  {userWebsites.length > 0 ? (
-                    userWebsites.map((userSite) => (
-                      <div key={userSite.id} className="w-100 row">
+                  {userWebsitesList[form.id]?.length > 0 ? (
+                    userWebsitesList[form.id].map((userSite) => (
+                      <div key={userSite.id} className="row">
+                        {/* Checkbox for Selecting User Website */}
                         <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
                           <input
                             type="checkbox"
                             className="me-2"
-                            onChange={() => handleCheckboxChange(userSite.id)}
+                            checked={
+                              selectedWebsites[form.id]?.[userSite.id] || false
+                            }
+                            onChange={() =>
+                              handleCheckboxChange(form.id, userSite.id)
+                            }
                           />
                           <input
                             type="text"
@@ -564,31 +585,35 @@ function AddNewDirectorSuperAdmin() {
                             readOnly
                           />
                         </div>
-                        {selectedWebsites[userSite.id] && (
-                          <div className="col-1 my-1">
+                        {console.log(
+                          userWebsitesList[form.id],
+                          "userWebsitesList[form.id]"
+                        )}
+                        {selectedWebsites[form.id]?.[userSite.id] && (
+                          <div className="col-2 my-1">
                             <Select
                               className="small-font white-bg"
                               placeholder="Account Type"
                               options={commissionOptions}
                               styles={customStyles}
-                              maxMenuHeight={120}
                               onChange={(selectedOption) =>
                                 handleAccountTypeChange(
+                                  form.id,
                                   userSite.id,
                                   selectedOption
                                 )
                               }
                               value={
-                                commissionOptions.filter((option) =>
-                                  accountTypes[userSite.id]?.includes(
-                                    option.value
-                                  )
-                                ) || []
+                                commissionOptions.find(
+                                  (option) =>
+                                    option.value ===
+                                    accountTypes[form.id]?.[userSite.id]
+                                ) || null
                               }
                             />
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "1" && (
+                        {accountTypes[form.id]?.[userSite.id] === "1" && (
                           <div className="col-9">
                             <div className="row">
                               <div className="col">
@@ -683,7 +708,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "2" && (
+                        {accountTypes[form.id]?.[userSite.id] === "2" && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -741,7 +766,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[userSite.id] === "3" && (
+                        {accountTypes[form.id]?.[userSite.id] === "3" && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
                               <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
