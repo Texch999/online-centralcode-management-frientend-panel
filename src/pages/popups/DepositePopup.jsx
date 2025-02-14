@@ -121,23 +121,33 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
         setSelectedWebDetails(...WebUserDetails)
     }
+    console.log(selectedWebDetails, "=====>selectedWebDetails")
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-center mb-2">
                         {/* Image on the left */}
-                        <img
-                            src={Images?.phonepe}
-                            alt="Icon"
-                            className="me-3"
-                            style={{ width: "50px", height: "50px" }}
-                        />
-
+                        <div>
+                            <img
+                                src={Images?.phonepe}
+                                alt="Icon"
+                                className="me-3"
+                                style={{ width: "50px", height: "50px" }}
+                            />
+                            {selectedWebDetails?.commission_type === 1 ? <div className=" fw-600 mb-0 dep-pop-clr text-size">Sports</div> : null
+                            }
+                        </div>
                         <div className="d-flex justify-content-end flex-grow-1">
                             <div className="d-flex flex-column text-end">
                                 <h5 className="medium-font fw-600 mb-0 green-font">{actionType} in {selectedWebDetails?.currencyName || ""}</h5>
-                                <p className="medium-font text-secondary mb-0">{`${userName} - ${userRole} (Share-${selectedWebDetails?.share || null}%)`}</p>
+
+                                <p className="medium-font mb-0 dep-pop-clr">
+                                    {selectedWebDetails?.commission_type === 1
+                                        ? `${userName} - ${userRole}`
+                                        : `${userName} - ${userRole} (Share-${selectedWebDetails?.share || 0}%)`}
+                                </p>
+                                <h5 className="medium-font fw-600 mb-0 dep-pop-clr">{selectedWebDetails?.commission_type === 1 ? `(SP Rental - ${selectedWebDetails?.MonthlyRent}, Ext - ${selectedWebDetails?.Etc_Chips_percent}%)` : ""} </h5>
                             </div>
                         </div>
                         <div>
@@ -260,58 +270,143 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             </div>
                         </>
                     )}
-                    <div className="row">
-                        <div className="col mb-2">
-                            <label className="small-font mb-1">Wallet Chips Balance -  {selectedWebDetails?.currencyName}</label>
-                            <input
-                                type="availableChips"
-                                name="upi"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                placeholder="Enter "
-                                value={formData.amount || ""}
-                                onChange={handleChange}
-                            />
-                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
-                        </div>
-                        <div className="col mb-2">
-                            <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
-                            <input
-                                type="availableChips"
-                                name="upi"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                placeholder="Enter "
-                                value={formData.amount || ""}
-                                onChange={handleChange}
-                            />
-                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Chips -  {selectedWebDetails?.currencyName}</label>
-                            <input
-                                type="chipsNeed"
-                                name="upi"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                placeholder="Enter "
-                                value={formData.amount || ""}
-                                onChange={handleChange}
-                            />
-                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
-                        </div>
-                        <div className="col mb-2">
-                            <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {selectedWebDetails?.currencyName}</label>
-                            <input
-                                type="availableChips"
-                                name="upi"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                placeholder="Enter "
-                                value={formData.amount || ""}
-                                onChange={handleChange}
-                            />
-                            {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
-                        </div>
-                    </div>
+                    {selectedWebDetails?.commission_type !== 1 && (
+                        <>
+                            <div className="row">
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Wallet Chips Balance -  {selectedWebDetails?.currencyName}</label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Enter Chips -  {selectedWebDetails?.currencyName}</label>
+                                    <input
+                                        type="chipsNeed"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {selectedWebDetails?.currencyName}</label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                            </div>
+                        </>)}
+                    {selectedWebDetails?.commission_type === 1 && (
+                        <>
+                            <div className="row">
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Enter SP Chips -  {selectedWebDetails?.currencyName}</label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Chips Amount - {selectedWebDetails?.currencyName}</label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Enter Extra SP Chips </label>
+                                    <input
+                                        type="chipsNeed"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.share}%) </label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Total Chips Amount - {selectedWebDetails?.currencyName} </label>
+                                    <input
+                                        type="chipsNeed"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                                <div className="col mb-2">
+                                    <label className="small-font mb-1">Enter Paid Amount - {selectedWebDetails?.currencyName} </label>
+                                    <input
+                                        type="availableChips"
+                                        name="upi"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter "
+                                        value={formData.amount || ""}
+                                        onChange={handleChange}
+                                    />
+                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                </div>
+                            </div>
+                        </>)
+                    }
                     {/* File Upload for NEFT/RTGS and UPI */}
                     {(selectedPayment?.avil_modes !== 4) && (
                         <div>
@@ -427,7 +522,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                     </div>
                 </Modal.Body>
             </Modal>
-        </div>
+        </div >
     );
 };
 
