@@ -4,17 +4,13 @@ import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { useSelector } from "react-redux";
-import { all } from "axios";
 import {
   createManagementOfflinePaymentModes,
-  createPaymentModesInManagement,
   getManagementOfflinePaymentModeById,
   updateManagementOfflinePaymentDetails,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "./../popups/ErrorPopup";
-import { useForm } from "react-hook-form";
 
 const AddNewOfflinePaymentModal = ({
   showAddModal,
@@ -26,8 +22,6 @@ const AddNewOfflinePaymentModal = ({
   countries,
   getAllManPaymentModes,
 }) => {
-  console.log(isEdit, "isEdit");
-  console.log(editId, "editId");
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
@@ -40,7 +34,6 @@ const AddNewOfflinePaymentModal = ({
   const [paymentModesDataById, setPaymentModesDataById] = useState();
   const role_code = localStorage.getItem("role_code");
   const [errors, setErrors] = useState({});
-  console.log(paymentModesDataById, "paymentModesDataById");
   const [paymnetEditId, setPaymnetEditId] = useState(null);
 
   const currencyOptions = countries?.map((item) => ({
@@ -65,26 +58,27 @@ const AddNewOfflinePaymentModal = ({
   };
 
   const getOffPaymnetDetailsById = () => {
-    console.log("editId", editId);
     getManagementOfflinePaymentModeById(editId)
       .then((response) => {
-        console.log("response", response);
         setPaymnetEditId(response?.id);
         setName(response?.name || "");
         setSelectedCurrency(response?.currency);
-
         setSelectedType(response?.avil_modes);
-
         setImage(response?.image || "");
         setImgName(response?.image || "");
       })
       .catch((error) => {
         setErrorMsg(error?.message);
+        setShowAddModal(false);
+        setErrorPopupOpen(true);
+        setTimeout(() => {
+          setErrorPopupOpen(false);
+        }, [2000]);
       });
   };
 
   useEffect(() => {
-    if (editId && isEdit) {
+    if (editId && isEdit && role_code === "management") {
       getOffPaymnetDetailsById();
     }
   }, [editId]);
@@ -298,7 +292,11 @@ const AddNewOfflinePaymentModal = ({
               <button
                 type="submit"
                 className="w-100 saffron-btn rounded small-font"
-                onClick={postEditPaymentModes}
+                onClick={() => {
+                  if (role_code === "management") {
+                    postEditPaymentModes();
+                  }
+                }}
               >
                 {`${isEdit ? "Update" : "Submit"}`}
               </button>

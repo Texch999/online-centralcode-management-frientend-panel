@@ -97,9 +97,9 @@ import InActiveUsers from "./pages/live-block/InActiveUsers";
 import SetLimits from "./pages/live-block/SetLimits";
 import WhiteLabelSetting from "./pages/white-label/WhiteLabelSetting";
 import AddDirectorTeam from "./pages/add-team/AddDirectorTeam";
-import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
+import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 import EditNewDirector from "./pages/EditNewDirector";
 import PageNotFound from "./pages/notFound/PageNotFound";
 
@@ -174,7 +174,7 @@ function App() {
                 element={<EditNewDirector />}
               />
               <Route
-                path="/user-profile-dashboard"
+                path="/user-profile-dashboard/:id"
                 element={<UserProfileDashboard />}
               />
               <Route path="/downline-list" element={<DownlineList />} />

@@ -34,10 +34,10 @@ const endpoints = {
     url: () => `/user/${userID()}/website/website`,
   },
   // loginUser: { method: "post", url: "/master/login" },
-  // createWebsite: {
-  //   method: "post",
-  //   url: () => `/user/${userID()}/website/website`,
-  // },
+  createWebsite: {
+    method: "post",
+    url: () => `/user/${userID()}/website/website`,
+  },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -67,7 +67,11 @@ const endpoints = {
   },
   getPromotionsTypes: {
     method: "get",
-    url: () => `/user/${userID()}/promotionsTypes`,
+    url: (params) => {
+      console.log("params",params)
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/promotionsTypes?${query}`;
+    },
   },
   statusPromotionsTypes: {
     method: "put",
@@ -75,7 +79,11 @@ const endpoints = {
   },
   getPromotionsImage: {
     method: "get",
-    url: () => `/user/${userID()}/promotionsImages`,
+    url: (params) => {
+      console.log("params",params)
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/promotionsImages?${query}`;
+    },
   },
   createPromotionImages: {
     method: "post",
@@ -89,6 +97,24 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/banners`,
   },
+  // getBannerByUserId: {
+  //   method: "get",
+  //   url: (id) => `/user/${userID()}/banners/user/${id}`,
+  // },
+
+  getBannerByUserId: {
+    method: "get",
+    url: (params) => {
+      console.log("params", params);
+      
+      const { id, ...filteredParams } = params;
+      
+      const query = new URLSearchParams(filteredParams).toString();
+      
+      return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
+    },
+  },
+  
   createBanner: {
     method: "post",
     url: () => `/user/${userID()}/banner`,
@@ -209,7 +235,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/secQuestion/?${query}`;
+      return `/user/${userID()}/secQuestions/?${query}`;
     },
   },
   getSecQusetionsById: {
@@ -220,12 +246,6 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/secQuestion/${id}`,
   },
-  //rejection reasons
-
-  // getAllRejectionReasons: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/rejectionReasons/`,
-  // },
 
   getAllRejectionReasons: {
     method: "get",
@@ -236,22 +256,16 @@ const endpoints = {
   },
   createRejReasons: {
     method: "post",
-    url: () => `/user/${userID()}/rejectionReasons/`,
+    url: () => `/user/${userID()}/rejectionReason/`,
   },
   updateRejReasons: {
     method: "put",
-    url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
+    url: (id) => `/user/${userID()}/rejectionReason/${id}`,
   },
   getRejReasonsById: {
     method: "get",
-    url: (id) => `/user/${userID()}/rejectionReasons/${id}`,
+    url: (id) => `/user/${userID()}/rejectionReason/${id}`,
   },
-
-  //privacy
-  // getPrivacyPolicy: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/privacypolicies/`,
-  // },
   getPrivacyPolicy: {
     method: "get",
     url: (params) => {
@@ -290,6 +304,10 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
   },
+  getWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/websites`,
+  },
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {
@@ -317,8 +335,15 @@ const endpoints = {
   },
   getBroadCasting: {
     method: "get",
-    url: () => `/user/${userID()}/broadcastings`,
+    url: (params) => {
+      console.log("params", params);
+      const { id, ...filteredParams } = params;
+      
+      const query = new URLSearchParams(filteredParams).toString();
+      
+      return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
   },
+},
 
   statusBroadcastUpdate: {
     method: "put",
@@ -329,28 +354,33 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
+  // dir payment methods
 
-  //DirectorAccountDetails
   getDirectorAccountDetails: {
     method: "get",
-    url: () => `/user/${userID()}/directorAccount`,
+    url: () => `/director/${userID()}/directorAccounts`,
   },
   postDirectorAccountDetails: {
     method: "post",
-    url: () => `/user/${userID()}/directorAccount`,
+    url: () => `/director/${userID()}/directorAccount`,
   },
   suspendDirectorAccountPaymentDetails: {
     method: "patch",
     url: (data) =>
-      `/user/${userID()}/directorAccount/${data.id}/status/${data.status}`,
+      `/director/${userID()}/directorAccount/${data.id}/status/${data.status}`,
+  },
+
+  updateDirectorProfileDetails: {
+    method: "put",
+    url: (id) => `/director/${userID()}/directorProfileUpdate/${id}`,
   },
   updateDirectorAccountDetails: {
     method: "put",
-    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+    url: (id) => `/director/${userID()}/directorAccount/${id}`,
   },
   getDirectorAccountById: {
     method: "get",
-    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+    url: (id) => `/director/${userID()}/directorAccount/${id}`,
   },
 
   getDirectorAccessWebites: {
@@ -365,14 +395,14 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/loginLogs?${query}`;
+      return `/user/${userID()}/loginLogs?${query}`;
     },
   },
   getLoggedInLogsById: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/loginLogsById?${query}`;
+      return `/user/${userID()}/loginLogsById?${query}`;
     },
   },
   getDirectorLoginLogs: {
@@ -388,6 +418,11 @@ const endpoints = {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/getParentLoginLogsById?${query}`;
     },
+  },
+
+  resetDirectorPasswordInProfile: {
+    method: "post",
+    url: (id) => `/director/${userID()}/directorProfileResetPassword/${id}`,
   },
 
   getDirectorDwnList: {
@@ -406,6 +441,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
   },
+  getUserWebsites: {
+    method: "get",
+    url: () => `/user/${userID()}/website/userWebsites`,
+  },
   getAdminWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/all-admin/websites`,
@@ -414,7 +453,11 @@ const endpoints = {
   // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
-    url: () => `/user/${userID()}/paymentDetails`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/paymentDetails?${query}`;
+    },
+    // url: () => `/user/${userID()}/paymentDetails`,
   },
   suspendManagementPaymentDetails: {
     method: "post",
@@ -468,6 +511,14 @@ const endpoints = {
   DirectorUpLinePaymentDetails: {
     method: "get",
     url: () => `/director/${userID()}/payments`,
+  },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  },
+  getDirectorSites: {
+    method: "get",
+    url: () => `/director/${userID()}/details/${userID()}`,
   },
 };
 

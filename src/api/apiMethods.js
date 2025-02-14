@@ -87,13 +87,16 @@ const getDirectorEmployeeDetailsById = (id) => {
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
 };
+const resetDirectorPasswordInProfile = (id,data) => {
+  return apiRequest("resetDirectorPasswordInProfile", data, id);
+}
 
 const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
 };
 // const getWebsitesList = (params) => {
 const getDirectorAccountDetails = (data) => {
-  return apiRequest("getDirectorAccountDetails");
+  return apiRequest("getDirectorAccountDetails",data);
 };
 
 const postDirectorAccountDetails = (data) => {
@@ -107,6 +110,10 @@ const updateDirectorAccountDetails = (id, data) => {
 };
 const getDirectorAccountById = (id, data) => {
   return apiRequest("getDirectorAccountById", data, id);
+};
+
+const updateDirectorProfileDetails=(id, data) => {
+  return apiRequest("updateDirectorProfileDetails", data, id);
 };
 
 const getCountries = (data) => {
@@ -141,12 +148,13 @@ export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
 //VijayaLakshmi
-const getPromotionsTypes = () => {
-  return apiRequest("getPromotionsTypes");
+const getPromotionsTypes = (params) => {
+  console.log("params",params)
+  return apiRequest("getPromotionsTypes", {}, params);
 };
-
-const getPromotionsImage = () => {
-  return apiRequest("getPromotionsImage");
+const getPromotionsImage = (params) => {
+  console.log("params",params)
+  return apiRequest("getPromotionsImage", {}, params);
 };
 const createPromotionImages = (data) => {
   return apiRequest("createPromotionImages", data);
@@ -157,8 +165,8 @@ const statusPromotionsTypes = (id, data) => {
 const deletePromotionsImages = (id, data) => {
   return apiRequest("deletePromotionsImages", data, id);
 };
-export const getBroadCasting = () => {
-  return apiRequest("getBroadCasting");
+export const getBroadCasting = (params) => {
+  return apiRequest("getBroadCasting", {}, params);
 };
 
 export const createBroadCasting = (data) => {
@@ -186,6 +194,7 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
+
 
 // rejection reasons
 // const getAllRejectionReasons = (data) => {
@@ -253,6 +262,10 @@ const unblockBlockDirectorDwnln = (id, data) => {
 const getBanner = () => {
   return apiRequest("getBanner");
 };
+ const getBannerByUserId = (params) => {
+  return apiRequest("getBannerByUserId", {}, params);
+};
+
 const createBanner = (data) => {
   return apiRequest("createBanner", data);
 };
@@ -276,8 +289,8 @@ const resetDirectorEmployeePassword = (id, data) => {
 const addWebsiteToPrivacyPolicy = (id, data) => {
   return apiRequest("addWebsiteToPrivacyPolicy", data, id);
 };
-const getManagementPaymentDetails = (data) => {
-  return apiRequest("getManagementPaymentDetails", data);
+const getManagementPaymentDetails = (params) => {
+  return apiRequest("getManagementPaymentDetails", {}, params);
 };
 const suspendManagementPaymentDetails = (id, data) => {
   return apiRequest("suspendManagementPaymentDetails", data, id);
@@ -316,6 +329,9 @@ const ownersAvailablePaymentsModes = (data) => {
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
+const getDirectorSites = (data) => {
+  return apiRequest("getDirectorSites", data);
+};
 export {
   loginManagement,
   createSecurityQuestions,
@@ -332,6 +348,7 @@ export {
   getPrivacyPolicy,
   getWebsites,
   getPrivacyPolicyById,
+  updateDirectorProfileDetails,
   createPrivacyPolicy,
   updatePrivacyPolicyById,
   privacyPolicyStatusUpdate,
@@ -389,9 +406,12 @@ export {
   getManagementOfflinePaymentModeById,
   updateManagementOfflinePaymentDetails,
   managementPaymentDetails,
+  ownersAvailablePaymentsModes,
   getCurrencies,
   loginDirectorEmployee,
-  ownersAvailablePaymentsModes,
+  resetDirectorPasswordInProfile,
   updateDirectorByID,
   DirectorUpLinePaymentDetails,
+  getBannerByUserId,
+  getDirectorSites,
 };

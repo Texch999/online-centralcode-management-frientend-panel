@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { MdLockReset, MdRemoveRedEye, MdOutlineVisibilityOff } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
@@ -9,10 +9,18 @@ import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
 import ResetPasswordPopup from "../../pages/popups/ResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
+import SuccessPopup from "../popups/SuccessPopup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../add-team/style.css";
 import "../../App.css";
 import "../../index.css";
+import { useParams } from "react-router-dom";
+import { imgUrl } from "../../api/baseUrl";
+
+import { getDirectorDetailsById, resetDirectorPasswordInProfile, updateDirectorProfileDetails } from "../../api/apiMethods";
+import ErrorPopup from "../popups/ErrorPopup";
+const login_role_name = localStorage.getItem("role_name");
+
 
 const cardData = [
   {
@@ -226,7 +234,14 @@ const Card = ({
   );
 };
 
+
 const DefaultBottomShow = () => {
+  const [status, setStatus] = useState(1); // Default active (1)
+
+  const handleToggle = (e) => {
+    setStatus(e.target.checked ? 1 : 2); // 1 for Active, 2 for Inactive
+  };
+
   return (
     <div className="py-4 bg-white shadow rounded">
       <div className="px-4 d-flex justify-content-between align-items-center mb-3">
@@ -244,6 +259,8 @@ const DefaultBottomShow = () => {
               type="switch"
               id="custom-switch"
               className="director-admin-profile-toggle-btn"
+              checked={status === 1}
+              onChange={handleToggle}
             />
           </Form>
 
@@ -318,6 +335,83 @@ const UserProfileDashboard = () => {
   const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false);
   const [showEditProfilePopup, setShowEditProfilePopup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [directorData, setDirectorData] = useState([]);
+  const [error, setError] = useState("");
+  const [editData, setEditData] = useState([])
+  // errorPopupOpen, setErrorPopupOpen, discription
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
+  const [description, setDesciption] = useState("");
+  const [editedDtat, setEditedDtat] = useState([]);
+
+  const { id } = useParams();
+
+
+  const handleEdit = (id) => {
+    setShowEditProfilePopup(true);
+    getDirectorDetailsById(id)
+  }
+  const resetDirectorPassword = (data) => {
+    if (!id) {
+      setDesciption("Invalid Id")
+      setErrorPopupOpen(true)
+      return;
+    }
+
+    const payload = {
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      parent_password: data.managementPassword,
+    };
+
+    resetDirectorPasswordInProfile(id, payload)
+      .then((response) => {
+        if (response.status === true) {
+          setEditedDtat(response.data)
+          setDesciption(response.message)
+          setShowSuccessPopup(true);
+          handleResetPasswordClose()
+
+
+
+        } else {
+          setDesciption("Something went Wrong")
+          setErrorPopupOpen(true)
+          setShowResetPasswordPopup(false);
+
+        }
+      })
+      .catch((error) => {
+        setDesciption(error.message)
+        setErrorPopupOpen(true)
+        setShowResetPasswordPopup(false);
+
+      });
+  };
+  useEffect(() => {
+    if (!id) return; // Prevent calling API if id is undefined
+
+    getDirectorDetailsById(id)
+      .then((response) => {
+        if (response) {
+
+          console.log(response, "response12357");
+          setDirectorData(response.data);
+
+        } else {
+          setError("No employee data found");
+        }
+      })
+      .catch((error) => {
+        console.error("API Call Error:", error);
+        setError(error?.message || "Login failed");
+        setDesciption(error.message)
+        setErrorPopupOpen(true)
+        setShowResetPasswordPopup(false);
+      });
+  }, [id]); // Now it runs only when `id` changes
+
 
 
   const handleTabClick = (tabName) => {
@@ -325,8 +419,11 @@ const UserProfileDashboard = () => {
   };
 
   const handleResetPasswordClose = () => {
+    // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
+
   };
+
 
   return (
     <div>
@@ -335,7 +432,7 @@ const UserProfileDashboard = () => {
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-4 px-3 text-white rounded-pill">
             <span className="fw-600 small-font">User Name</span>
-            <span className="fw-600 small-font">Jayanta</span>
+            <span className="fw-600 small-font">{directorData.login_name}</span>
           </div>
 
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 text-white rounded-pill px-3">
@@ -374,18 +471,25 @@ const UserProfileDashboard = () => {
           <div className="row">
             <div className="col-2 super-admin-top-container">
               <img
-                src={Images.dashboardProfile}
-                alt="UserDashboard"
+                src={directorData.photo ? `${imgUrl}/directorProfilePhotos/${directorData.photo}` : `${Images.defaultProfileImage}`}
+                loading="lazy"
+                alt="Profile Photo Loading"
                 className="super-admin-profile-img-con"
+                onError={(e) => {
+                  e.target.onerror = null;  // Prevent infinite loop if the fallback image also fails
+                  e.target.src = `${Images.defaultProfileImage}`;  // Set a default image as fallback if the image fails to load
+                }}
               />
+
+
               <div
                 className="d-flex gap-2 super-admin-img-down-content align-items-end"
                 style={{ marginTop: "20px" }}
               >
-                <h6 className="small-font mb-0">Jayanta Pal</h6>
+                <h6 className="small-font mb-0">{directorData.name}</h6>
                 <FaPen
                   className="yellow-font pointer medium-font mt-1"
-                  onClick={() => setShowEditProfilePopup(true)}
+                  onClick={() => handleEdit(id)}
                 />
               </div>
             </div>
@@ -429,10 +533,24 @@ const UserProfileDashboard = () => {
       <ResetPasswordPopup
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
+        onSubmit={resetDirectorPassword}
       />
       <EditProfilePopup
         show={showEditProfilePopup}
+        data={directorData}
+        // reload = {getDirectorDetailsById}
         onHide={() => setShowEditProfilePopup(false)}
+      />
+      <SuccessPopup
+        successPopupOpen={showSuccessPopup}
+        // onHide={() => setShowSuccessPopup(false)}
+        setSuccessPopupOpen={() => setShowSuccessPopup(false)}
+        discription={description}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={description}
       />
 
       {/* Tabs Section */}

@@ -3,10 +3,13 @@ import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
+import { Images } from "../../images";
 
 const WithdrawPopup = ({
     setWithdrawPopup,
     withdrawPopup,
+    actionType,
+    selectedPayment
 }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [formData, setFormData] = useState({
@@ -105,11 +108,72 @@ const WithdrawPopup = ({
         <div>
             <Modal show={withdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
-                    <div className="d-flex justify-content-between align-items-center mb-2">
+                    {/* <div className="d-flex justify-content-between align-items-center mb-2">
                         <h5 className="medium-font fw-600">Withdraw</h5>
                         <MdOutlineClose size={22} className="pointer" onClick={() => setWithdrawPopup(false)} />
-                    </div>
+                    </div> */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        {/* Image on the left */}
+                        <div>
+                            <img
+                                src={Images?.phonepe}
+                                alt="Icon"
+                                className="me-3"
+                                style={{ width: "50px", height: "50px" }}
+                            />
 
+                        </div>
+                        <div className="d-flex justify-content-end flex-grow-1">
+                            <div className="d-flex flex-column text-end">
+                                <h5 className="medium-font fw-600 mb-0 green-font">Withdraw in USD</h5>
+                                <p className="medium-font mb-0 dep-pop-clr">Srinivas - SuperAdmin (Share - 10%) </p>
+                            </div>
+                        </div>
+                        <div>
+                            <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setWithdrawPopup(false)} />
+                        </div>
+                    </div>
+                    {/* <div className="row ">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Admin Panel</label>
+                            <Select
+                                className="small-font white-bg input-border rounded"
+                                options={adminWebsitesList.map((admin) => ({
+                                    label: admin.admin_web_name,
+                                    value: admin.admin_panel_id,
+                                }))}
+                                placeholder="Select Admin Website"
+                                styles={customStyles}
+                                value={selectedAdmin}
+                                onChange={(option) => {
+                                    setSelectedAdmin(option);
+                                    const selectedAdminData = adminWebsitesList.find(
+                                        (admin) => admin.admin_panel_id === option.value
+                                    );
+                                    setUserWebsites(selectedAdminData?.users || []);
+                                }}
+                            />
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">User Panel</label>
+                            <Select
+                                className="small-font white-bg input-border rounded"
+                                options={userWebsites.map((user) => ({
+                                    label: user.user_web_name,
+                                    value: user.website_access_id,
+                                }))}
+                                placeholder="Select User Website"
+                                styles={customStyles}
+                                onChange={(option) => {
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        websiteName: option.value,
+                                    }));
+                                    getWebsiteDetailsByUserId(option.value)
+                                }}
+                            />
+                        </div>
+                    </div> */}
                     {/* Balance Amount */}
                     <div className="row">
                         <div className="col">
@@ -173,23 +237,23 @@ const WithdrawPopup = ({
                             <div className="row">
                                 <div className="col">
                                     <label className="small-font mb-1">Name</label>
-                                    <input type="text" name="name"  placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.name}  />
+                                    <input type="text" name="name" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.name} />
                                 </div>
 
                                 <div className="col">
                                     <label className="small-font mb-1">Bank Name</label>
-                                    <input type="text" name="bankName" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.bankName}  />
+                                    <input type="text" name="bankName" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.bankName} />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col">
                                     <label className="small-font mb-1">Account Number</label>
-                                    <input type="text" name="accountNumber" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.accountNumber}  />
+                                    <input type="text" name="accountNumber" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.accountNumber} />
                                 </div>
 
                                 <div className="col">
                                     <label className="small-font mb-1">IFSC Code</label>
-                                    <input type="text" name="ifscCode" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.ifscCode}  />
+                                    <input type="text" name="ifscCode" placeholder="Enter" className="w-100 small-font rounded input-css all-none" value={formData.ifscCode} />
                                 </div>
                             </div>
                         </>

@@ -82,6 +82,11 @@ input[type="date"] {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .login-box {
+    max-width: 1000px;
+    max-height: 700px;
+    /* style={{ maxWidth: "1000px", maxHeight: "700px" }} */
+  }
   .x-small-font {
     font-size: 0.4rem;
     font-weight: 400;
@@ -102,6 +107,11 @@ input[type="date"] {
   }
 }
 @media only screen and (min-width: 1024px) and (max-width: 1439px) {
+  .login-box {
+    max-width: 1000px;
+    max-height: 550px;
+    /* style={{ maxWidth: "1000px", maxHeight: "700px" }} */
+  }
   .x-small-font {
     font-size: 0.5rem;
     font-weight: 400;
@@ -119,6 +129,11 @@ input[type="date"] {
   }
 }
 @media only screen and (min-width: 1440px) and (max-width: 2559px) {
+  .login-box {
+    max-width: 1000px;
+    max-height: 600px;
+    /* style={{ maxWidth: "1000px", maxHeight: "700px" }} */
+  }
   .x-small-font {
     font-size: 0.6rem;
     font-weight: 400;
@@ -136,6 +151,11 @@ input[type="date"] {
   }
 }
 @media only screen and (min-width: 2560px) {
+  .login-box {
+    max-width: 1500px;
+    max-height: 800px;
+    /* style={{ maxWidth: "1000px", maxHeight: "700px" }} */
+  }
   .x-small-font {
     font-size: 0.7rem;
     font-weight: 400;

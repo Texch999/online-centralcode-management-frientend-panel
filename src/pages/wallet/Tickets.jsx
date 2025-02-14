@@ -15,7 +15,7 @@ function Tickets() {
   const handleDepositWithdrawPopupOpen = () => {
     setDepositWithdrawPopupOpen(true);
   };
-  
+
   const navigate = useNavigate()
   const TICKETS_COLUMNS = [
     { header: "SNo", field: "serialNo" },
@@ -147,10 +147,14 @@ function Tickets() {
         {userRole !== "management" ?
           //search input 
           <div className="d-flex align-items-center gap-1">
-            <button className={`me-3 dark-green-bg px-3`} onClick={() => handleDeposit("Deposit")
-              // setDepositePopup(true
+            <button className={`me-3 dark-green-bg px-3`} onClick={() => 
+            // handleDeposit("Deposit")
+              setDepositePopup(true)
             }>Deposit</button>
-            <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
+            <button className={`me-3 saffron-btn2 px-3`} onClick={() =>
+               setWithdrawPopup(true)
+              // handleDeposit("Withdraw")
+            } > Withdraw</button>
           </div>
           :
           // deposit and withdraw buttons

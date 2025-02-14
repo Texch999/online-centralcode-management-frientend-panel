@@ -1,14 +1,7 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
-import { FaRegTrashCan, FaSlash } from "react-icons/fa6";
 import AddNewPopUp from "./AddNewPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -19,7 +12,6 @@ import {
 } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
-import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 const ReferenceData = () => {
@@ -43,15 +35,17 @@ const ReferenceData = () => {
   );
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalRecordsSecQns, setTotalRecordsSecQns] = useState(null);
-
   const intialpage = parseInt(searchParams.get("page") || 1);
-  console.log(intialpage);
   const [currentPage, setCurrentPage] = useState(intialpage);
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
-
   const role_code = localStorage.getItem("role_code");
+  const itemsPerPage = 4;
+  const currentOffset = (currentPage - 1) * itemsPerPage;
+  const page = intialpage;
+  const pageSize = itemsPerPage;
+  const status = selectStatus;
 
   const handleStatusChange = (selectedOption) => {
     setSelectStatus(selectedOption?.value);
@@ -66,12 +60,6 @@ const ReferenceData = () => {
     }
   };
 
-  const itemsPerPage = 4;
-  const currentOffset = (currentPage - 1) * itemsPerPage;
-  const page = intialpage;
-  const pageSize = itemsPerPage;
-
-
   const getSecurityQuestions = () => {
     setLoading(true);
     getAllSecurityQuestions({ page, pageSize, status })
@@ -82,12 +70,14 @@ const ReferenceData = () => {
       .catch((error) => {
         setError(error?.message);
         setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, [2000]);
       })
       .finally(() => {
         setLoading(false);
       });
   };
-  const status = selectStatus;
 
   const handleSubmit = () => {
     if (activeBtn === "Rejection Reasons") {
@@ -101,7 +91,6 @@ const ReferenceData = () => {
 
   const getRejReasons = () => {
     setLoading(true);
-    // setSearchParams({ status: selectStatus, page: currentPage });
     getAllRejectionReasons({ page, pageSize, status })
       .then((response) => {
         setRejReasonsData(response?.data);
@@ -109,6 +98,10 @@ const ReferenceData = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, [2000]);
       })
       .finally(() => {
         setLoading(false);
@@ -134,7 +127,6 @@ const ReferenceData = () => {
     { header: "Status", field: "status", width: "10%" },
     { header: "Action", field: "action", width: "10%" },
   ];
-
 
   const SECURITY_DATA = securityQuestions.map((item, index) => ({
     questions: <div>{item?.questions}</div>,
@@ -172,7 +164,6 @@ const ReferenceData = () => {
     { header: "Status", field: "status", width: "10%" },
     { header: "Action", field: "action", width: "10%" },
   ];
-
 
   const REJECTION_DATA = rejReasonsData.map((item, index) => ({
     reason: <div>{item?.reason}</div>,
@@ -250,8 +241,15 @@ const ReferenceData = () => {
             />
           </div>
           <div
-            className="saffron-btn2 small-font pointer col-3 mx-2"
-            onClick={handleSubmit}
+            title="please select a option"
+            className={`saffron-btn2 small-font pointer col-3 mx-2 ${
+              !selectStatus || selectStatus === "0" ? "disabled-btn" : ""
+            }`}
+            onClick={() => {
+              if (selectStatus && selectStatus !== "0") {
+                handleSubmit();
+              }
+            }}
           >
             Submit
           </div>

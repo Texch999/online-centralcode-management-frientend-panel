@@ -1,4 +1,4 @@
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
@@ -13,7 +13,7 @@ import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { ImUserPlus } from "react-icons/im";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
-import { getAllCountires } from "../api/apiMethods";
+import { getCountries } from "../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../redux/action";
 function Header() {
@@ -23,6 +23,7 @@ function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const countriesDataFetched = useRef(false);
+  const userRole = localStorage.getItem("role_code")
   const [error, setError] = useState("");
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
@@ -38,13 +39,22 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+    if (userRole === "management") {
+      localStorage.clear();
+      navigate("/master/login");
+    } else if (userRole === "director") {
+      localStorage.clear();
+      navigate("/director/login");
+    }
+
+
+    // window.location.reload();
+
   };
   const dispatch = useDispatch()
   const isDashboard = window?.location?.pathname === "/";
   const getAllCountries = () => {
-    getAllCountires()
+    getCountries ()
       .then((response) => {
         if (response?.status === true) {
           dispatch(setAllCountries(response?.data));
@@ -56,7 +66,7 @@ function Header() {
         setError(error?.message || "API request failed");
       });
   };
-  useEffect (() => {
+  useEffect(() => {
     if (countriesDataFetched.current) return;
     countriesDataFetched.current = true;
     getAllCountries();

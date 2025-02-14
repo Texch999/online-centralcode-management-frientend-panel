@@ -14,7 +14,9 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
-
+.h-100 {
+  height: 100%;
+}
 .h-fill {
   height: -webkit-fill-available !important;
 }
@@ -603,6 +605,7 @@
 .border-left2 {
   border-right: 2px solid #aeaeae;
 }
+
 .border-left3 {
   border-left: 2px solid #aeaeae;
 }
@@ -764,10 +767,12 @@
 .custom-file-upload:hover {
   background: #e9ecef;
 }
+
 .disabled {
   opacity: 0.5;
   pointer-events: none;
 }
+
 .cst-btn {
   transition: all 0.3s ease-in-out;
   width: 15%;
@@ -843,11 +848,23 @@ button.cst-btn:hover {
 .white-clr {
   color: "#ffffff";
 }
+
 .border-danger {
   border: 1px solid red !important;
 }
 
 .error {
   color: rgb(237, 53, 53) !important;
-  font-size: 0.875rem; /* Small text for error messages */
+  font-size: 0.875rem;
+  /* Small text for error messages */
+}
+
+.input-border {
+  border: 1px solid rgb(0, 0, 0, 0.2);
+}
+.dep-pop-clr {
+  color: "#222A4C";
+}
+.text-size {
+  font-size: 1.8125rem;
 }
