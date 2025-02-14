@@ -52,4 +52,5 @@ export const Images = {
   error: "/assets/error.png",
   phonepe: "/assets/phonepe.png",
   nodatafound: "/assets/nodatafound.png",
+  ErrorImage:"/assets/404Error.webp"
 };
