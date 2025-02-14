@@ -95,7 +95,7 @@ function Login() {
             <div className="py-4 medium-font">
               <div className="w-100 d-flex align-items-center input-bg loginbox-radius mt-2 p-2">
                 <img
-                  className="icon-img"
+                  className="icon-img rounded-2"
                   alt="username-icon"
                   src={Images.loginUserImages}
                 />
@@ -197,8 +197,8 @@ function Login() {
         <div className="w-50 pe-3 py-3">
           <img
             src={Images.LoginImageTwo}
-            alt="sports-login"
-            className="w-100 h-100"
+            alt="sports-login "
+            className="w-100 h-100 rounded-4"
           />
         </div>
       </div>

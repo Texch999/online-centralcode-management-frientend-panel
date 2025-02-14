@@ -1,6 +1,6 @@
 export const Images = {
   LoginImageOne: "/assets/login_image_one.png",
-  LoginImageTwo: "/assets/login_image_two.png",
+  LoginImageTwo: "/assets/login2.webp",
   loginUserImages: "/assets/loginUser.png",
   loginUserLock: "/assets/loginPassword.png",
   S7Logo: "/assets/S7_Logo.png",
@@ -52,6 +52,6 @@ export const Images = {
   error: "/assets/error.png",
   phonepe: "/assets/phonepe.png",
   nodatafound: "/assets/nodatafound.png",
-  ErrorImage:"/assets/404Error.webp",
+  ErrorImage:"/assets/404Errorr.webp",
   defaultProfileImage: "/assets/defaultProfileImage.jpg",
 };

@@ -10,7 +10,12 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { blockDirector, blockEmploye, getEmployees, resetEmployeePassword } from "../../api/apiMethods";
+import {
+  blockDirector,
+  blockEmploye,
+  getEmployees,
+  resetEmployeePassword,
+} from "../../api/apiMethods";
 import Roles from "../../utils/enum";
 import EditManagementPopup from "./popups/EditManagementPopup";
 import PaginationComponent from "../../components/Pagination";
@@ -37,10 +42,9 @@ const AddManagementTeam = () => {
   useEffect(() => {
     GetEmployee();
   }, []);
-  console.log(tableData, "tableData")
+  console.log(tableData, "tableData");
   const TableData = tableData.map((employee) => {
     const role = Roles[Number(employee.role)] || "Unknown";
-
     return {
       id: employee.id,
       name: employee.name,
@@ -54,8 +58,6 @@ const AddManagementTeam = () => {
       updated_date: new Date(employee.updated_date).toLocaleString(),
     };
   });
-
-
 
   const [modalState, setModalState] = useState({
     showAddModal: false,
@@ -130,6 +132,8 @@ const AddManagementTeam = () => {
       }
       return [...prevData, { id: Date.now(), ...newData }];
     });
+    GetEmployee();
+
     toggleModal("showAddModal", false);
   };
 
@@ -162,6 +166,8 @@ const AddManagementTeam = () => {
     setTableData((prevData) =>
       prevData.filter((row) => row.id !== modalState.deleteAccountId)
     );
+    GetEmployee();
+
     toggleModal("isDeletePopupVisible", false);
   };
   const handleResetPasswordPopup = (rowId) => {
@@ -204,6 +210,7 @@ const AddManagementTeam = () => {
   };
   const handleEditShowClose = () => {
     setEditShow(false);
+    GetEmployee();
   };
   const tableDataWithActions = TableData.map((row) => ({
     ...row,
@@ -238,7 +245,7 @@ const AddManagementTeam = () => {
           setTimeout(() => {
             setResetPasswordPopup(false);
           }, 1000);
-
+          GetEmployee();
         } else {
           alert("Something went wrong");
         }
@@ -247,9 +254,10 @@ const AddManagementTeam = () => {
         alert(error?.message || "Request failed");
       });
   };
-  const status =
-    tableData.find((row) => row.id === modalState.blockAccountId)?.status
-  const blockAccountId = modalState.blockAccountId
+  const status = tableData.find(
+    (row) => row.id === modalState.blockAccountId
+  )?.status;
+  const blockAccountId = modalState.blockAccountId;
 
   const onEmployeeBlockSubmit = () => {
     const requestData = {
@@ -258,10 +266,10 @@ const AddManagementTeam = () => {
     blockEmploye(blockAccountId, requestData)
       .then((response) => {
         if (response.status === true) {
-          console.log(response, "response")
-          setTimeout(() => {
-
-          }, 1000);
+          console.log(response, "response");
+          setTimeout(() => {}, 1000);
+          GetEmployee();
+          toggleModal("isBlockPopupVisible", false);
         } else {
           alert("Something went wrong");
         }
@@ -353,36 +361,6 @@ const AddManagementTeam = () => {
   );
 };
 
-// const ActionButtons = ({
-//   rowId,
-//   onEdit,
-//   onBlock,
-//   onResetPassword,
-//   onDelete,
-//   status,
-//   handleEditShow,
-// }) => {
-
-//   return (
-//     <div className="d-flex gap-3 flex-center">
-//       <SlPencil
-//         size={18}
-//         className="pointer black-text"
-//         onClick={() => handleEditShow(rowId)}
-//       />
-//       <MdLockReset
-//         size={18}
-//         className="pointer black-text"
-//         onClick={() => onResetPassword(rowId)}
-//       />
-//       <MdBlockFlipped
-//         size={18}
-
-//         onClick={() => onBlock(rowId)}
-//       />
-//     </div>
-//   );
-// };
 const ActionButtons = ({
   rowId,
   onEdit,
@@ -408,7 +386,7 @@ const ActionButtons = ({
       />
       <MdBlockFlipped
         size={18}
-        className={`pointer ${blockIconColor}`} // Applying dynamic color class
+        className={`pointer ${blockIconColor}`}
         onClick={() => onBlock(rowId)}
       />
     </div>

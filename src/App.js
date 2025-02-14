@@ -119,8 +119,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/master/login" />} />
           <Route path="/master/login" element={<Login />} />
+          <Route path="/director/login" element={<Login />} />
           <Route path="*" element={<PageNotFound />} />{" "}
-          {/* Catch-all route for 404 */}
         </Routes>
       ) : (
         <div>

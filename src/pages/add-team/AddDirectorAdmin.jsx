@@ -1,162 +1,94 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
-import { SlPencil } from "react-icons/sl";
-import { MdLockReset, MdBlockFlipped } from "react-icons/md";
-import { FaSearch } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-import { BsEye } from "react-icons/bs";
+import { SlPencil, BsEye } from "react-icons/all";
+import { MdLockReset, MdBlockFlipped, CgUnblock } from "react-icons/all";
+import { FaSearch, FaPlus } from "react-icons/fa";
 import AddDirectorAdminPopup from "./popups/AddDirectorAdminPopup";
-import "../add-team/style.css";
-import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import {
   blockDirector,
-  getCountries,
   getDirectors,
   resetDirectorPassword,
 } from "../../api/apiMethods";
 import EditDirectorAdminPopup from "./popups/EditDirectorAdminPopup";
-import {
-  getDirectorDwnList,
-  getDirectorDwnListById,
-  updateDirectorDwnlnPswd,
-} from "../../api/apiMethods";
-import { CgUnblock } from "react-icons/cg";
 import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
+import "../add-team/style.css";
+import "../../App.css";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState();
+  const [showEditModal, setShowEditModal] = useState(false);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [directorId, setDirectorId] = useState();
-  const [directorDwnList, setDirectorDwnList] = useState([]);
-  const [dirDwnlnId, setDirDwnlnId] = useState(null);
-  const [dirDwnlnBlockUnblockId, setDirDwnlnBlockUnblockId] = useState(null);
-  const [statusId, setStatusId] = useState(null);
+  const [selectedDirectorId, setSelectedDirectorId] = useState(null);
+  const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
   const login_role_name = localStorage.getItem("role_name");
 
-  const handleResetPswdDirDwn = (id) => {
-    setResetPasswordPopup(true);
-    setDirDwnlnId(id);
-  };
-  const handleBlockUnblockDirDwn = (id, user, status) => {
-    setConfirmationPopup(true);
-    setSelectedUser(user);
-    setDirDwnlnBlockUnblockId(id);
-    setStatusId(status);
-  };
-
-  const handleModalOpen = () => {
-    setShowModal(true);
-  };
-
+  const handleModalOpen = () => setShowModal(true);
+  const handleModalClose = () => setShowModal(false);
   const handleEditModalOpen = (id) => {
-    setDirectorId(id);
+    setSelectedDirectorId(id);
     setShowEditModal(true);
   };
-  const handleEditModalClose = () => {
-    setShowEditModal(false);
-  };
-  const handleModalClose = () => {
-    setShowModal(false);
-  };
-  const [selectedDirectorId, setSelectedDirectorId] = useState(null);
-  console.log(selectedDirectorId, "selectedDirectorId");
+  const handleEditModalClose = () => setShowEditModal(false);
   const handleResetPasswordOpen = (id) => {
     setSelectedDirectorId(id);
     setResetPasswordPopup(true);
   };
-
-  const handleResetPasswordClose = () => {
-    setSelectedUser(null);
-    setResetPasswordPopup(false);
-  };
-
+  const handleResetPasswordClose = () => setResetPasswordPopup(false);
   const handleBlockUserOpen = (user, id) => {
     setSelectedUser(user);
     setSelectedDirectorId(id);
     setConfirmationPopup(true);
   };
+  const handleBlockUserClose = () => setConfirmationPopup(false);
 
-  const handleBlockUserClose = () => {
-    setSelectedUser(null);
-    setConfirmationPopup(false);
-  };
-
-  const handleBlockUserConfirm = () => {
-    handleBlockUserClose();
-  };
-
-  const navigate = useNavigate();
-  const handleNavigateUserDashboard = (id) => {
+  const handleNavigateUserDashboard = (id) =>
     navigate(`/user-profile-dashboard/${id}`);
 
-  };
-
-  const [countryData, setCountryData] = useState([]);
-  const GetAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        if (response?.status === true) {
-          setCountryData(response?.data);
-          console.log(response, "countries");
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Not able to get Countries");
-      });
-  };
-  useEffect(() => {
-    GetAllCountries();
-  }, []);
-
-  const getDirectorDwnSAList = () => {
+  const GetAllDirectors = () => {
     setLoading(true);
-    getDirectorDwnList()
+    getDirectors({ limit: 10, offset: 0 })
       .then((response) => {
-        if (response) {
-          console.log(response?.directorsWithWebsites, "response0000");
-          setDirectorDwnList(response?.directorsWithWebsites);
-        } else {
-          console.log(error, "Ganga chi chi hci");
-        }
+        if (response.status) setTableData(response.directorsWithWebsites);
       })
-      .catch((error) => {
-        console.log(error, "error");
-        setError(error?.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
   };
+
   useEffect(() => {
-    getDirectorDwnSAList();
+    GetAllDirectors();
   }, []);
 
-  console.log(dirDwnlnId, "dirDwnlnId");
+  const onDirectorResetPassword = (data) => {
+    if (!selectedDirectorId) return alert("Invalid ID");
 
-  const getDrirectorDwnlnById = () => {
-    getDirectorDwnListById(dirDwnlnId)
-      .then((response) => {
-        console.log("responsegetidddd", response);
-      })
-      .catch((error) => {
-        console.log("error", error);
-        setError(error?.message);
-      });
+    const requestData = {
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      parent_password: data.managementPassword,
+    };
+
+    resetDirectorPassword(selectedDirectorId, requestData)
+      .then(() => setResetPasswordPopup(false))
+      .catch((error) => alert(error?.message || "Request failed"));
   };
-  useEffect(() => {
-    getDrirectorDwnlnById();
-  }, [dirDwnlnId]);
+
+  const blockUnblock = () => {
+    blockDirector(selectedDirectorId)
+      .then(() => {
+        GetAllDirectors();
+        setConfirmationPopup(false);
+      })
+      .catch((error) => console.error(error));
+  };
 
   const columns = [
     { header: "Role", field: "role" },
@@ -174,295 +106,122 @@ const AddDirectorAdmin = () => {
       width: "8%",
     },
   ];
-  const [error, setError] = useState();
-  const [tableData, setTableData] = useState();
 
+  const TableData = tableData?.map((user) => {
+    const linkWebsites = user.accessWebsites.map((website) => ({
+      name: website.user_panel_name,
+      url: website.user_panel_url,
+      adminPanel: website.admin_panel_name,
+      adminUrl: website.admin_panel_url,
+    }));
 
-  const TableData =
-    role === "management"
-      ? tableData?.map((user) => {
-        const linkWebsites = user.accessWebsites.map((website) => ({
-          name: website.user_panel_name,
-          url: website.user_panel_url,
-          adminPanel: website.admin_panel_name,
-          adminUrl: website.admin_panel_url,
-        }));
+    const shareRent = user.accessWebsites.map((website) => ({
+      commissionType: website.commission_type,
+      share: website.share,
+    }));
 
-        const shareRent = user.accessWebsites.map((website) => ({
-          commissionType: website.commission_type,
-          monthlyAmount: website.monthly_amount || "N/A",
-          maxChipsMonthly: website.max_chips_monthly || "N/A",
-          extraChipsPercentage: website.extra_chips_percentage || "N/A",
-          chipPercentage: website.chip_percentage || "N/A",
-          share: website.share,
-        }));
-
-        return {
-          id: user.id,
-          role: user.type === 1 ? "Director" : "Super Admin",
-          name: user.name,
-          loginname: user.login_name,
-          inUsed: (
-            <div
-              className={` ${user.status === 1 ? "green-clr" : "clr-red"}`}
-            >
-              {" "}
-              {user.status === 1 ? "Active" : "InActive"}
-            </div>
-          ),
-          linkWebsites: (
-            <span className="d-flex flex-column">
-              {linkWebsites.map((website, index) => (
-                <span key={index}>
-                  <a
-                    className="yellow-font"
-                    href={website.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {website.url}
-                  </a>{" "}
-                  (Admin:{" "}
-                  <a
-                    href={website.adminUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {website.adminPanel}
-                  </a>
-                  )
-                </span>
-              ))}
+    return {
+      id: user.id,
+      role: user.type === 1 ? "Director" : "Super Admin",
+      name: user.name,
+      loginname: user.login_name,
+      inUsed: (
+        <div className={user.status === 1 ? "green-clr" : "clr-red"}>
+          {user.status === 1 ? "Active" : "InActive"}
+        </div>
+      ),
+      linkWebsites: (
+        <span className="d-flex flex-column">
+          {linkWebsites.map((website, index) => (
+            <span key={index}>
+              <a
+                className="yellow-font"
+                href={website.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {website.url}
+              </a>{" "}
+              (Admin:{" "}
+              <a
+                href={website.adminUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {website.adminPanel}
+              </a>
+              )
             </span>
-          ),
-          shareRent: (
-            <span className="d-flex flex-column">
-              {shareRent.map((type, index) => (
-                <span key={index}>
-                  <span className="green-clr">
-                    {commissionTypes[type.commissionType] || "Unknown"}{" "}
-                  </span>
-                  {/* Correct way to access the enum */}
-                  {type.share ? `, Share: ${type.share}%` : ""}
-                </span>
-              ))}
+          ))}
+        </span>
+      ),
+      shareRent: (
+        <span className="d-flex flex-column">
+          {shareRent.map((type, index) => (
+            <span key={index}>
+              <span className="green-clr">
+                {commissionTypes[type.commissionType] || "Unknown"}{" "}
+              </span>
+              {type.share ? `, Share: ${type.share}%` : ""}
             </span>
-          ),
-
-          // shareRent: (
-          //   <span className="d-flex flex-column">
-          //     {shareRent.map((type, index) => (
-          //       <span key={index}>
-          //         {commissionTypes[type] || ""}
-          //         {/* {`Type: ${rent.commissionType}, Share: ${rent.share}%`} */}
-          //       </span>
-          //     ))}
-          //   </span>
-          // ),
-          billing: "0",
-          pl: <div className="red-font">0</div>,
-          dw: (
-            <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-              D/W
-            </button>
-          ),
-          action: (
-            <div className="d-flex flex-center gap-3">
-              <SlPencil
-                size={18}
-                className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                  }`}
-                onClick={() =>
-                  user.status !== 2 &&
-                  navigate(`/director-admin/editDirector/`, {
-                    state: { userId: user.id, mode: "edit" },
-                  })
-                }
-              />
-
-              <MdLockReset
-                size={18}
-                className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                  }`}
-                onClick={() =>
-                  user.status !== 2 && handleResetPasswordOpen(user.id)
-                }
-              />
-
-              <MdBlockFlipped
-                size={18}
-                className={user.status === 2 ? "clr-red" : "green-clr"}
-                onClick={() => handleBlockUserOpen(user.login_name, user.id)}
-              />
-
-              <BsEye
-                size={18}
-                className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                  }`}
-                onClick={() => handleNavigateUserDashboard(user?.id)}
-              />
-            </div>
-          ),
-        };
-      })
-      : directorDwnList?.map((item) => ({
-        id: item.id,
-        role: item.type === 2 ? "Super Admin" : "",
-        name: item.name,
-        loginname: item.login_name,
-        inUsed: "N/A",
-
-        shareRent: [],
-        billing: "0",
-        pl: <div className="red-font">0</div>,
-        dw: (
-          <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-            D/W
-          </button>
-        ),
-        action: (
-          <div className="d-flex flex-center gap-3">
-            <SlPencil
-              size={18}
-              className="black-text pointer"
-              onClick={() => setShowModal(true)}
-            />
-            <MdLockReset
-              size={18}
-              className="black-text pointer"
-              onClick={() => handleResetPswdDirDwn(item?.id)}
-            />
-            {item?.status === 1 ? (
-              <CgUnblock
-                size={20}
-                className="green-font pointer"
-                onClick={() =>
-                  handleBlockUnblockDirDwn(
-                    item?.id,
-                    item?.login_name,
-                    item?.status
-                  )
-                }
-              />
-            ) : (
-              <MdBlockFlipped
-                size={18}
-                className="red-font pointer"
-                onClick={() =>
-                  handleBlockUnblockDirDwn(
-                    item?.id,
-                    item?.login_name,
-                    item?.status
-                  )
-                }
-              />
-            )}
-            <BsEye
-              size={18}
-              className="black-text pointer"
-              onClick={() => handleNavigateUserDashboard(item?.id)}
-            />
-          </div>
-        ),
-      }));
-  console.log(tableData, "tableData");
-
-  const GetAllDirectors = () => {
-    getDirectors({ limit: 10, offset: 0 })
-      .then((response) => {
-        if (response.status === true) {
-          console.log(response, "response from API");
-          setTableData(response.directorsWithWebsites);
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Login failed");
-      });
-  };
-  useEffect(() => {
-    GetAllDirectors();
-  }, []);
-
-  const onDirectorResetPassword = (data) => {
-    if (!selectedDirectorId) {
-      alert("Invalid ID");
-      return;
-    }
-
-    const requestData = {
-      password: data.password,
-      confirm_password: data.confirmPassword,
-      parent_password: data.managementPassword,
+          ))}
+        </span>
+      ),
+      billing: "0",
+      pl: <div className="red-font">0</div>,
+      dw: (
+        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+          D/W
+        </button>
+      ),
+      action: (
+        <div className="d-flex flex-center gap-3">
+          <SlPencil
+            size={18}
+            className={`black-text pointer ${
+              user.status === 2 ? "disabled" : ""
+            }`}
+            onClick={() =>
+              user.status !== 2 &&
+              navigate(`/director-admin/editDirector/`, {
+                state: { userId: user.id, mode: "edit" },
+              })
+            }
+          />
+          <MdLockReset
+            size={18}
+            className={`black-text pointer ${
+              user.status === 2 ? "disabled" : ""
+            }`}
+            onClick={() =>
+              user.status !== 2 && handleResetPasswordOpen(user.id)
+            }
+          />
+          <MdBlockFlipped
+            size={18}
+            className={user.status === 2 ? "clr-red" : "green-clr"}
+            onClick={() => handleBlockUserOpen(user.login_name, user.id)}
+          />
+          <BsEye
+            size={18}
+            className={`black-text pointer ${
+              user.status === 2 ? "disabled" : ""
+            }`}
+            onClick={() => handleNavigateUserDashboard(user?.id)}
+          />
+        </div>
+      ),
     };
-
-    resetDirectorPassword(selectedDirectorId, requestData)
-      .then((response) => {
-        if (response) {
-          setTimeout(() => {
-            setResetPasswordPopup(false);
-          }, 1000);
-        } else {
-          alert("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        alert(error?.message || "Request failed");
-      });
-  };
-
-  const resetPasswordDwnln = (data) => {
-    if (!dirDwnlnId) {
-      alert("Invalid ID");
-      return;
-    }
-
-    const payload = {
-      password: data.password,
-      confirm_password: data.confirmPassword,
-      parent_password: data.managementPassword,
-    };
-
-    updateDirectorDwnlnPswd(dirDwnlnId, payload)
-      .then((response) => {
-        if (response) {
-          setTimeout(() => {
-            setResetPasswordPopup(false);
-          }, 1000);
-        } else {
-          alert("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        alert(error?.message || "Request failed");
-      });
-  };
-
-  const blockUnblock = () => {
-    blockDirector(selectedDirectorId)
-      .then((response) => {
-        console.log(response, "resp");
-        getDirectorDwnSAList();
-        setDirectorDwnList();
-        setConfirmationPopup(false);
-      })
-      .catch((error) => {
-        console.log(error, "error");
-        setError(error?.message);
-      });
-  };
+  });
 
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        {role === "management" ? (
-          <h6 className="yellow-font medium-font mb-0">
-            Add Director & Super Admin
-          </h6>
-        ) : (
-          <h6 className="yellow-font mb-0">Add Super Admin</h6>
-        )}
+        <h6 className="yellow-font medium-font mb-0">
+          {role === "management"
+            ? "Add Director & Super Admin"
+            : "Add Super Admin"}
+        </h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
@@ -493,35 +252,25 @@ const AddDirectorAdmin = () => {
         <Table data={TableData} columns={columns} itemsPerPage={7} />
       )}
 
-      <AddDirectorAdminPopup
-        show={showModal}
-        handleClose={handleModalClose}
-        getDirectorDwnSAList={getDirectorDwnSAList}
-      />
+      <AddDirectorAdminPopup show={showModal} handleClose={handleModalClose} />
       <EditDirectorAdminPopup
         showEditModal={showEditModal}
-        setShowEditModal={setShowEditModal}
         handleEditModalClose={handleEditModalClose}
-        directorId={directorId}
+        directorId={selectedDirectorId}
       />
-
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
-        onSubmit={
-          login_role_name === "director"
-            ? resetPasswordDwnln
-            : onDirectorResetPassword
-        }
+        onSubmit={onDirectorResetPassword}
       />
-
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopup}
         setConfirmationPopupOpen={setConfirmationPopup}
-        discription={`Are you sure you want to ${statusId === 1 ? "Unblock" : "Block"
-          } ${selectedUser}?`}
-        submitButton={`${statusId === 1 ? "Unblock" : "Block"}`}
-        onSubmit={() => blockUnblock()}
+        discription={`Are you sure you want to ${
+          selectedUser?.status === 1 ? "Unblock" : "Block"
+        } ${selectedUser?.login_name}?`}
+        submitButton={`${selectedUser?.status === 1 ? "Unblock" : "Block"}`}
+        onSubmit={blockUnblock}
       />
     </div>
   );
