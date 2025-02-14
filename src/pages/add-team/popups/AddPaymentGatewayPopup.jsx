@@ -15,7 +15,7 @@ import ErrorPopup from "../../popups/ErrorPopup";
 
 const AddPaymentGatewayPopup = ({
   show,
-  onHide,
+  setOnAddPaymentGateway,
   addpaymentId,
   availablePaymentModeId,
   setAvailablePaymentModeId,
@@ -55,6 +55,25 @@ const AddPaymentGatewayPopup = ({
   };
   const [validationErrors, setValidationErrors] = useState({});
   const [msg, setMsg] = useState("");
+
+  const resetFields = () => {
+    setUpiID("");
+    setAccountNumber("");
+    setBankIFSC("");
+    setBankName("");
+    setCountry("");
+    setAccHolderName("");
+    setDetails("");
+    setQrCode(null);
+    setQrName("");
+    setValidationErrors({});
+    setMsg("");
+  };
+
+  const onHide = () => {
+    setOnAddPaymentGateway(false);
+    resetFields();
+  };
 
   // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
   const [updateId, setUpdateId] = useState(null);
@@ -177,7 +196,7 @@ const AddPaymentGatewayPopup = ({
       if (response.status === true) {
         console.log(response, "handleManagementPaymentAddEdit");
         setMsg(response?.message);
-        onHide();
+        resetFields();
         setSuccessPopupOpen(true);
         fetchManagementPaymentDetails();
         setTimeout(() => {
@@ -317,7 +336,7 @@ const AddPaymentGatewayPopup = ({
       if (response.status === true) {
         console.log(response, "handldirtPaymentAddEdit");
         setMsg(response?.message);
-        onHide();
+        resetFields();
         setSuccessPopupOpen(true);
         getDirectorAccountData();
         setTimeout(() => {
