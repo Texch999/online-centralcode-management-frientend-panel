@@ -3,15 +3,11 @@ import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import DepositWithdrawPopup from "./DepositWithdrawPopup";
-import DepositePopup from "../popups/DepositePopup";
-import WithdrawPopup from "../popups/WithdrawPopup";
 import { useNavigate } from "react-router-dom";
 function Tickets() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
     useState(false);
   const userRole = localStorage.getItem("role_code");
-  const [depositePopup, setDepositePopup] = useState(false);
-  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const handleDepositWithdrawPopupOpen = () => {
     setDepositWithdrawPopupOpen(true);
   };
@@ -215,14 +211,6 @@ function Tickets() {
       <DepositWithdrawPopup
         depositWithdrawPopupOpen={depositWithdrawPopupOpen}
         setDepositWithdrawPopupOpen={setDepositWithdrawPopupOpen}
-      />
-      <DepositePopup
-        setDepositePopup={setDepositePopup}
-        depositePopup={depositePopup}
-      />
-      <WithdrawPopup
-        setWithdrawPopup={setWithdrawPopup}
-        withdrawPopup={withdrawPopup}
       />
     </div >
   );
