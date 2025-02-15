@@ -270,7 +270,7 @@ const AddNePaymentGateway = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
-  const [AddPaymentGatewayModal, setAddPaymentGatewayModal] = useState(false);
+  const [AddPaymentGatewayModal, setOnAddPaymentGateway] = useState(false);
   const userRole = localStorage.getItem("role_code");
   const [depositePopup, setDepositePopup] = useState(false);
   const [withdrawPopup, setWithdrawPopup] = useState(false);
@@ -285,7 +285,7 @@ const AddNePaymentGateway = () => {
   const handleAddModal = (id, country, available_id) => {
     setAddPaymentId(id);
     setCountryId(country);
-    setAddPaymentGatewayModal(true);
+    setOnAddPaymentGateway(true);
     setAvailablePaymentModeId(available_id);
   };
   const tabNames = ["Offline Payment Modes", "Payment Gateway"];
@@ -464,7 +464,7 @@ const AddNePaymentGateway = () => {
 
       <AddPaymentGatewayPopup
         show={AddPaymentGatewayModal}
-        onHide={() => setAddPaymentGatewayModal(false)}
+        setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
         addpaymentId={addpaymentId}
         setAddPaymentId={setAddPaymentId}
         countryId={countryId}

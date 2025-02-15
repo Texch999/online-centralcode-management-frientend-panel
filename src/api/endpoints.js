@@ -507,7 +507,7 @@ const endpoints = {
   },
   ownersAvailablePaymentsModes: {
     method: "get",
-    url: () => `/director/${userID()}/offlinePaymentModes`,
+    url: () => `/user/${userID()}/offlinePaymentModes`,
   },
   DirectorUpLinePaymentDetails: {
     method: "get",
