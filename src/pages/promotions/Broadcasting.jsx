@@ -466,9 +466,9 @@ const Broadcasting = () => {
       <ConfirmationPopup
         confirmationPopupOpen={broadcastBlockModal}
         setConfirmationPopupOpen={() => setBroadcastBlockModal(false)}
-        discription={`are you sure you want to ${
+        discription={`Are you sure you want to ${
           selectedBroadcastStatus === 1 ? "Block" : "UnBlock"
-        } this Braodcast`}
+        } this Broadcast?`}
         selectedId={selectedBroadcastId}
         submitButton={selectedBroadcastStatus === 1 ? "Block" : "UnBlock"}
         onSubmit={BockOrUnblock}
