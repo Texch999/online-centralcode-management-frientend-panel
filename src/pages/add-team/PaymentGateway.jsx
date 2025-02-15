@@ -108,7 +108,7 @@ const PaymentGateway = () => {
   const fetchManagementPaymentDetails = async (limit, offset) => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails({ limit, offset });
+      const response = await getManagementPaymentDetails(limit, offset);
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
         setTotalRecords(response?.meta?.totalCount);
@@ -177,77 +177,76 @@ const PaymentGateway = () => {
     );
   });
 
-  const managementPaymentData = filteredPayments
-    .map((item, index) => ({
-      gatewayName: gatewayTypeMap[item?.gateway_type],
-      paymentDetails: (() => {
-        switch (item?.gateway_type) {
-          case 1:
-            return (
-              <div className="d-flex flex-column align-items-start">
-                <span className="">bank_name: {item?.bank_name}</span>
-                <span>Acc No: {item?.bank_acc_no}</span>
-                <span>IFSC: {item?.bank_ifsc}</span>
-              </div>
-            );
-          case 2:
-            return (
-              <div className="d-flex align-items-center">
-                <span className="fw-bold">{item?.upi_id}</span>
-              </div>
-            );
-          case 3:
-            return (
-              <div className="d-flex align-items-center">
-                <img
-                  src={`${imgUrl}/mngPayDetails/${item?.qr_code_image}`}
-                  alt="QR Code"
-                  className="w-30 h-7vh me-2"
-                  loading="lazy"
-                />
-                <span className="fw-bold">{item?.bank_name}</span>
-              </div>
-            );
-          case 4:
-            return <div className="fw-bold">{item?.acc_hold_name}</div>;
-          default:
-            return <span className="text-muted">N/A</span>;
-        }
-      })(),
-      accholder: item?.acc_hold_name,
-      lastUpdated: moment(item?.updated_date).format("DD-MM-YYYY"),
-      country: getCountryName(item?.currency_id),
-      currency: getCurrencySymbol(item?.currency_id),
-      status:
-        item?.status === 1 ? (
-          <span className="green-btn badge py-2 px-3">Active</span>
-        ) : (
-          <span className="red-btn badge py-2 px-3">In-Active</span>
-        ),
-      action: (
-        <div className="flex-center gap-2">
-          {item?.status === 1 ? (
-            <SlPencil
-              size={20}
-              className="pointer me-2"
-              onClick={() =>
-                handleEditManagePayment(item?.id, item?.gateway_type)
-              }
-            />
-          ) : (
-            <span title="this gateway is inactivated you can't updated it!">
-              <SlPencil size={20} className="me-2 disabled" />
-            </span>
-          )}
-
-          <RiDeleteBinLine
-            size={20}
-            className="pointer ms-1"
-            onClick={() => handleManagementSuspend(item?.id, item.status)}
-          />
-        </div>
+  const managementPaymentData = filteredPayments.map((item, index) => ({
+    gatewayName: gatewayTypeMap[item?.gateway_type],
+    paymentDetails: (() => {
+      switch (item?.gateway_type) {
+        case 1:
+          return (
+            <div className="d-flex flex-column align-items-start">
+              <span className="">bank_name: {item?.bank_name}</span>
+              <span>Acc No: {item?.bank_acc_no}</span>
+              <span>IFSC: {item?.bank_ifsc}</span>
+            </div>
+          );
+        case 2:
+          return (
+            <div className="d-flex align-items-center">
+              <span className="fw-bold">{item?.upi_id}</span>
+            </div>
+          );
+        case 3:
+          return (
+            <div className="d-flex align-items-center">
+              <img
+                src={`${imgUrl}/mngPayDetails/${item?.qr_code_image}`}
+                alt="QR Code"
+                className="w-30 h-7vh me-2"
+                loading="lazy"
+              />
+              <span className="fw-bold">{item?.bank_name}</span>
+            </div>
+          );
+        case 4:
+          return <div className="fw-bold">{item?.acc_hold_name}</div>;
+        default:
+          return <span className="text-muted">N/A</span>;
+      }
+    })(),
+    accholder: item?.acc_hold_name,
+    lastUpdated: moment(item?.updated_date).format("DD-MM-YYYY"),
+    country: getCountryName(item?.currency_id),
+    currency: getCurrencySymbol(item?.currency_id),
+    status:
+      item?.status === 1 ? (
+        <span className="green-btn badge py-2 px-3">Active</span>
+      ) : (
+        <span className="red-btn badge py-2 px-3">In-Active</span>
       ),
-    }));
+    action: (
+      <div className="flex-center gap-2">
+        {item?.status === 1 ? (
+          <SlPencil
+            size={20}
+            className="pointer me-2"
+            onClick={() =>
+              handleEditManagePayment(item?.id, item?.gateway_type)
+            }
+          />
+        ) : (
+          <span title="this gateway is inactivated you can't updated it!">
+            <SlPencil size={20} className="me-2 disabled" />
+          </span>
+        )}
+
+        <RiDeleteBinLine
+          size={20}
+          className="pointer ms-1"
+          onClick={() => handleManagementSuspend(item?.id, item.status)}
+        />
+      </div>
+    ),
+  }));
 
   // management payment details =================== management payment details====================
 
@@ -495,9 +494,7 @@ const PaymentGateway = () => {
       {role_code === "management" ? (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
-          onHide={() => {
-            setOnAddPaymentGateway(false);
-          }}
+          setOnAddPaymentGateway={setOnAddPaymentGateway}
           data={countries}
           managementPaymentEdit={managementPaymentEdit}
           setManagementPaymentEdit={setManagementPaymentEdit}
@@ -509,9 +506,7 @@ const PaymentGateway = () => {
       ) : (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
-          onHide={() => {
-            setOnAddPaymentGateway(false);
-          }}
+          setOnAddPaymentGateway={setOnAddPaymentGateway}
           dirEditId={dirEditId}
           setDirEditId={setDirEditId}
           dirGatewayId={dirGatewayId}
@@ -528,21 +523,18 @@ const PaymentGateway = () => {
         <ConfirmationPopup
           confirmationPopupOpen={suspendPayment}
           setConfirmationPopupOpen={setSuspendPayment}
-          discription={`Are you sure you want to ${
-            suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
-          } this payment gateway?`}
-          submitButton={`${
-            suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
-          }`}
+          discription={`Are you sure you want to ${suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
+            } this payment gateway?`}
+          submitButton={`${suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
+            }`}
           onSubmit={suspendManPaymnet}
         />
       ) : (
         <ConfirmationPopup
           confirmationPopupOpen={onBlockPopup}
           setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-          discription={`are you sure you want to ${
-            statusId === 1 ? "In-Active" : "Active"
-          } this Gateway?`}
+          discription={`are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
+            } this Gateway?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
         />
