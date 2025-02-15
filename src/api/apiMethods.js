@@ -327,6 +327,7 @@ const ownersAvailablePaymentsModes = (data) => {
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
+
 const getDirectorSites = (data) => {
   return apiRequest("getDirectorSites", data);
 };
@@ -338,6 +339,9 @@ const UpdateProfileDirpaymentDetailsByMan = (id, data) => {
 };
 const getDirPayDetailsByIdProfile = (id, data) => {
   return apiRequest("getDirPayDetailsByIdProfile", data, id);
+};
+const DirectorAvailablePaymentsModes = (data) => {
+  return apiRequest("DirectorAvailablePaymentsModes", data);
 };
 export {
   managementDwnProfileDirPaymentDetails,
@@ -424,4 +428,5 @@ export {
   DirectorUpLinePaymentDetails,
   getBannerByUserId,
   getDirectorSites,
+  DirectorAvailablePaymentsModes,
 };

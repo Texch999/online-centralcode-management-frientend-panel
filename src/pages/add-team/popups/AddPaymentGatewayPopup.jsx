@@ -194,7 +194,18 @@ const AddPaymentGatewayPopup = ({
     }
   };
   // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
-
+  const resetStates = () => {
+    setManPaymentData("");
+    setUpdateId("");
+    setAccHolderName("");
+    setAccountNumber("");
+    setBankIFSC("");
+    setBankName("");
+    setUpiID("");
+    setDetails("");
+    setQrCode(null);
+    setQrName("");
+  }
   // director payment apis ===================================================================== director
   const [dirPaymentDataById, setDirPaymentDataById] = useState(null);
   console.log(dirPaymentDataById, "setDirPaymentDataById");
@@ -320,6 +331,7 @@ const AddPaymentGatewayPopup = ({
         onHide();
         setSuccessPopupOpen(true);
         getDirectorAccountData();
+        resetStates()
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 2000);
@@ -333,9 +345,11 @@ const AddPaymentGatewayPopup = ({
       console.log(error?.message, "errorr");
     }
   };
+  const handleclose = () => {
+    resetStates()
+    onHide()
+  }
 
-  //director payment apis ================================================================= director
-  console.log(availablePaymentModeId, "===>availablePaymentModeId");
   return (
     <>
       <Modal centered show={show} onHide={onHide} size="md">
@@ -346,7 +360,7 @@ const AddPaymentGatewayPopup = ({
               {role_code === "director" ? "Director" : "Management"} Payment
               Gateway
             </h5>
-            <MdOutlineClose size={22} onClick={onHide} className="pointer" />
+            <MdOutlineClose size={22} onClick={handleclose} className="pointer" />
           </div>
 
           <div className="row mb-3">
@@ -558,11 +572,11 @@ const AddPaymentGatewayPopup = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={msg}
-        // discription={
-        //   managementPaymentEdit
-        //     ? "Successfully updated!"
-        //     : "Successfully added!"
-        // }
+      // discription={
+      //   managementPaymentEdit
+      //     ? "Successfully updated!"
+      //     : "Successfully added!"
+      // }
       />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}

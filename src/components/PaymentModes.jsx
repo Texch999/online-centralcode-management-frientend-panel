@@ -1,5 +1,6 @@
 import React from "react";
 import { imgUrl } from "../api/baseUrl";
+import { HiCheckBadge } from "react-icons/hi2";
 
 const PaymentModes = ({
   modes,
@@ -11,6 +12,14 @@ const PaymentModes = ({
   selectedTab,
 }) => {
   const handleModelActions = (card) => {
+    // If actionType is "Deposit" or "Withdraw" and isEnabled is false, do nothing
+    if (
+      (actionType === "Deposit" || actionType === "Withdraw") &&
+      !card.isEnabled
+    ) {
+      return;
+    }
+
     if (userRole === "director") {
       if (actionType === "Deposit") {
         handleDepositAndWithdraw(card);
@@ -39,7 +48,13 @@ const PaymentModes = ({
                 <div className="row g-1">
                   {filteredPayments.map((card) => (
                     <div key={card.id} className="col-2">
-                      <div className="card h-100">
+                      <div
+                        className="card h-100"
+                        style={{
+                          opacity: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? 0.7 : 1, 
+                          pointerEvents: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? "none" : "auto", 
+                        }}
+                      >
                         <div
                           className="card-img-top d-flex align-items-center justify-content-center"
                           style={{
@@ -54,12 +69,25 @@ const PaymentModes = ({
                             alt={card?.name}
                             className="text-nowrap"
                             style={{
-                              height:"5vh",
-                              width:"20vw",
-                              objectFit:"contain",
+                              height: "5vh",
+                              width: "20vw",
+                              objectFit: "contain",
                               objectPosition: "center",
                             }}
                           />
+                          {(actionType === "Deposit" || actionType === "Withdraw") && card.isEnabled && (
+                            <div>
+                              <HiCheckBadge
+                                style={{
+                                  position: "absolute",
+                                  top: "0px",
+                                  right: "0px",
+                                  color: "green",
+                                  fontSize: "1.5rem",
+                                }}
+                              />
+                            </div>
+                          )}
                         </div>
                         <div
                           className="card-body d-flex align-items-center justify-content-center tag-bg"

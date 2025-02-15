@@ -245,10 +245,12 @@
 
 // export default AddNePaymentGateway;
 
+
 import React, { useState, useEffect, useRef } from "react";
 import {
   DirectorUpLinePaymentDetails,
   ownersAvailablePaymentsModes,
+  DirectorAvailablePaymentsModes,
 } from "../../../src/api/apiMethods";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -259,7 +261,7 @@ import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
 import { useLocation } from "react-router-dom";
 import DepositePopup from "../popups/DepositePopup";
 import WithdrawPopup from "../popups/WithdrawPopup";
-import PaymentModes from "../../components/PaymentModes"; // Import the new component
+import PaymentModes from "../../components/PaymentModes";
 
 const AddNePaymentGateway = () => {
   const [error, setError] = useState(null);
@@ -276,7 +278,17 @@ const AddNePaymentGateway = () => {
   const [countryId, setCountryId] = useState(null);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
-  const initialRendering = useRef(true);
+  const [offlinePaymentModes, setOfflinePaymentModes] = useState([]);
+  const [combinedPaymentModes, setCombinedPaymentModes] = useState([]);
+  const location = useLocation();
+  const { actionType } = location.state || {};
+  const handleAddModal = (id, country, available_id) => {
+    setAddPaymentId(id);
+    setCountryId(country);
+    setAddPaymentGatewayModal(true);
+    setAvailablePaymentModeId(available_id);
+  };
+  const tabNames = ["Offline Payment Modes", "Payment Gateway"];
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -284,30 +296,13 @@ const AddNePaymentGateway = () => {
     { title: "Cash", mode: 4 },
     { title: "Payment Gateway", mode: 5 },
   ];
-  const tabNames = ["Offline Payment Modes", "Payment Gateway"];
-  const location = useLocation();
-  const { actionType } = location.state || {};
-  const role_code = localStorage.getItem("role_code");
-
-  const handleAddModal = (id, country, available_id) => {
-    setAddPaymentId(id);
-    setCountryId(country);
-    setAddPaymentGatewayModal(true);
-    setAvailablePaymentModeId(available_id);
-  };
-
   const getOwnersPaymentModes = () => {
     setLoading(true);
+
     let fetchPaymentModes;
     if (userRole === "director") {
-      if (actionType === "Withdraw") {
+      if (actionType === "Withdraw" || "Deposit") {
         fetchPaymentModes = DirectorUpLinePaymentDetails();
-        console.log("DirectorUpLinePaymentDetails");
-      } else if (actionType === "Deposit") {
-        fetchPaymentModes = DirectorUpLinePaymentDetails();
-      } else {
-        fetchPaymentModes = ownersAvailablePaymentsModes();
-        console.log("ownersAvailablePaymentsModes");
       }
     } else {
       fetchPaymentModes = ownersAvailablePaymentsModes();
@@ -326,19 +321,67 @@ const AddNePaymentGateway = () => {
       });
   };
 
+  const OfflineModesdata = () => {
+    setLoading(true);
+    let fetchPaymentModes;
+    if (userRole === "director") {
+      fetchPaymentModes = DirectorAvailablePaymentsModes();
+    } else {
+      fetchPaymentModes = ownersAvailablePaymentsModes();
+    }
+    fetchPaymentModes
+      .then((response) => {
+        setOfflinePaymentModes(response?.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+        console.log("getDirectorAccountDetails error", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  const initialyRendering = useRef(true)
+
   useEffect(() => {
+    if (initialyRendering.current) {
+      initialyRendering.current = false
+      return
+    }
+    OfflineModesdata();
     getOwnersPaymentModes();
   }, []);
+
+  useEffect(() => {
+    if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
+      const combinedData = offlinePaymentModes.map((offlineMode) => {
+        const paymentMode = paymentModes.find(
+          (paymentMode) =>
+            paymentMode.payment_mode_id === Number(offlineMode.id.slice(3, -3))
+        );
+        return {
+          ...offlineMode,
+          ...paymentMode,
+          isEnabled: !!paymentMode,
+        };
+      });
+
+      setCombinedPaymentModes(combinedData);
+    }
+  }, [offlinePaymentModes, paymentModes]);
 
   const allCountries = useSelector((item) => item?.allCountries);
   const formattedCountries = allCountries.map((country) => ({
     value: country.id,
     label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
   }));
-  const filteredPaymentModes = paymentModes.filter(
+
+  const filteredPaymentModes = combinedPaymentModes.filter(
     (mode) => mode.country_id === selectedCountryId
   );
+
   const hasNoRecords = filteredPaymentModes.length === 0;
+
   const handleDepositAndWithdraw = (paymentDetails) => {
     if (actionType === "Deposit") {
       setDepositePopup(true);
@@ -348,6 +391,7 @@ const AddNePaymentGateway = () => {
       setSelectedPayment(paymentDetails);
     }
   };
+
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -385,38 +429,8 @@ const AddNePaymentGateway = () => {
             />
           </div>
         </div>
-
-        {role_code === "management" ? (
-          <AddPaymentGatewayPopup
-            show={AddPaymentGatewayModal}
-            onHide={() => setAddPaymentGatewayModal(false)}
-            addpaymentId={addpaymentId}
-            setAddPaymentId={setAddPaymentId}
-            countryId={countryId}
-            setCountryId={setCountryId}
-            availablePaymentModeId={availablePaymentModeId}
-            setAvailablePaymentModeId={setAvailablePaymentModeId}
-          />
-        ) : (
-          <AddPaymentGatewayPopup
-            show={AddPaymentGatewayModal}
-            onHide={() => setAddPaymentGatewayModal(false)}
-            addpaymentId={addpaymentId}
-            setAddPaymentId={setAddPaymentId}
-            countryId={countryId}
-            setCountryId={setCountryId}
-            availablePaymentModeId={availablePaymentModeId}
-            setAvailablePaymentModeId={setAvailablePaymentModeId}
-          />
-        )}
-
-        {actionType === "Deposit" ? (
-          <DepositePopup
-            setDepositePopup={setDepositePopup}
-            depositePopup={depositePopup}
-            actionType={actionType}
-            selectedPayment={selectedPayment}
-          />
+        {hasNoRecords ? (
+          <NoDataFound />
         ) : (
           <>
             <div className="d-flex justify-content-start ms-3">
@@ -424,9 +438,8 @@ const AddNePaymentGateway = () => {
                 {tabNames.map((tabName, index) => (
                   <div
                     key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
-                      selectedTab === index ? "saffron-btn2 " : ""
-                    }`}
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                      }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => setSelectedTab(index)}
                   >

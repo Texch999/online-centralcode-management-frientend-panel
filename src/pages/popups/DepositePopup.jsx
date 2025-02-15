@@ -255,7 +255,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border pe-5" // Extra padding for the icon
                                         placeholder="Enter"
-                                        value={selectedPayment?.upi_provider_id || ""}
+                                        value={selectedPayment?.upi_id || ""}
                                         onChange={handleChange}
                                         readOnly // Prevent accidental editing
                                     />

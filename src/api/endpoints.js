@@ -494,8 +494,7 @@ const endpoints = {
   suspenManagementOfflinePaymentModes: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/offlinePaymentMode/${data.id}/status/${
-        data.status
+      `/director/${userID()}/offlinePaymentMode/${data.id}/status/${data.status
       }`,
   },
   updateManagementOfflinePaymentDetails: {
@@ -531,10 +530,14 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
   },
-  getDirPayDetailsByIdProfile:{
+  getDirPayDetailsByIdProfile: {
     method: "get",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
-  }
+  },
+  DirectorAvailablePaymentsModes: {
+    method: "get",
+    url: () => `/director/${userID()}/offlinePaymentModes`,
+  },
 };
 
 export default endpoints;
