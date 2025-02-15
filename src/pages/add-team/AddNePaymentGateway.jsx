@@ -245,7 +245,6 @@
 
 // export default AddNePaymentGateway;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import {
   DirectorUpLinePaymentDetails,
@@ -341,12 +340,12 @@ const AddNePaymentGateway = () => {
         setLoading(false);
       });
   };
-  const initialyRendering = useRef(true)
+  const initialyRendering = useRef(true);
 
   useEffect(() => {
     if (initialyRendering.current) {
-      initialyRendering.current = false
-      return
+      initialyRendering.current = false;
+      return;
     }
     OfflineModesdata();
     getOwnersPaymentModes();
@@ -438,8 +437,9 @@ const AddNePaymentGateway = () => {
                 {tabNames.map((tabName, index) => (
                   <div
                     key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
-                      }`}
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
+                      selectedTab === index ? "saffron-btn2 " : ""
+                    }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => setSelectedTab(index)}
                   >
