@@ -44,15 +44,17 @@ const PaymentModes = ({
           return (
             filteredPayments.length > 0 && (
               <div className="mb-3" key={mode}>
+
                 <h1 className="large-font fw-600">{title}</h1>
-                <div className="row g-1" style={{ display: "flex", flexWrap: "wrap" }}>
+                <div className="row g-1">
                   {filteredPayments.map((card) => (
-                    <div key={card.id} className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div key={card.id} className="col-2">
+                      {console.log(card, "===card")}
                       <div
                         className="card h-100"
                         style={{
-                          opacity: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? 0.7 : 1,
-                          pointerEvents: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? "none" : "auto",
+                          opacity: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? 0.5 : 1, // Reduce opacity if disabled
+                          pointerEvents: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? "none" : "auto", // Disable click if disabled
                         }}
                       >
                         <div

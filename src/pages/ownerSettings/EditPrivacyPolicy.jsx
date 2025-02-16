@@ -21,16 +21,23 @@ const EditPrivacyPolicy = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   console.log(showPrivacyText?.description, "showPrivacyText");
   const [errorPopup, setErrorPopup] = useState(false);
-  const dataFetched = useRef(false);
 
   const getPolicyPrivacyDataById = () => {
     getPrivacyPolicyById(privacyPolicyId)
       .then((response) => {
-        setShowPrivacyText(response || { description: "" });
+        if (response?.status === true) {
+          setShowPrivacyText(response?.data || { description: "" });
+        } else {
+          setErrorPopup("Something went wrong");
+        }
       })
       .catch((error) => {
         setError(error?.message);
+        setEditPrivacyPolicyModal(false);
         setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, [1500]);
       });
   };
   useEffect(() => {
@@ -45,14 +52,18 @@ const EditPrivacyPolicy = ({
     };
     updatePrivacyPolicyById(privacyPolicyId, payload)
       .then((response) => {
-        setSuccessPopupOpen(true);
-        setTimeout(() => {
-          setSuccessPopupOpen(false);
-        }, 1000);
-        setEditPrivacyPolicyModal(false);
-        getPolicyPrivacyData();
-        privacyPolicyId(null);
-        setShowPrivacyText("");
+        if (response.status === true) {
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+          }, 1000);
+          setEditPrivacyPolicyModal(false);
+          getPolicyPrivacyData();
+          setPrivacyPolicyId(null);
+          setShowPrivacyText("");
+        } else {
+          setError("Something went wrong");
+        }
       })
       .catch((error) => {
         setError(error?.message);

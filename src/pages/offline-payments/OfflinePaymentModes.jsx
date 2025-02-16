@@ -145,7 +145,7 @@ const OfflinePaymentModes = () => {
     );
   });
 
-  const suspendStatus = () => {
+  const suspendStatus = (currentLimit, currentOffset) => {
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         console.log(response);
@@ -163,7 +163,7 @@ const OfflinePaymentModes = () => {
         setErrorPopup(true);
         setTimeout(() => {
           setErrorPopup(false);
-        });
+        },2000);
       });
   };
 

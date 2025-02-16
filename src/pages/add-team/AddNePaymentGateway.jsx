@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import {
   DirectorUpLinePaymentDetails,
   ownersAvailablePaymentsModes,
   DirectorAvailablePaymentsModes,
+  managementPaymentDetails,
 } from "../../../src/api/apiMethods";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -53,7 +53,7 @@ const AddNePaymentGateway = () => {
     let fetchPaymentModes;
     if (userRole === "director") {
       if (actionType === "Withdraw" || "Deposit") {
-        fetchPaymentModes = DirectorUpLinePaymentDetails();
+        fetchPaymentModes = managementPaymentDetails();
       }
     } else {
       fetchPaymentModes = ownersAvailablePaymentsModes();
@@ -105,17 +105,21 @@ const AddNePaymentGateway = () => {
   useEffect(() => {
     if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
       const combinedData = offlinePaymentModes.map((offlineMode) => {
+        // Slice the offlineMode.id to remove the first 3 and last 3 characters
+        const slicedId = Number(offlineMode.id.slice(3, -3));
+        // Find the corresponding paymentMode for the sliced offlineMode.id
         const paymentMode = paymentModes.find(
-          (paymentMode) =>
-            paymentMode.payment_mode_id === Number(offlineMode.id.slice(3, -3))
-        );
+          (paymentMode) => paymentMode.payment_mode_id === slicedId
+
+        );  
         return {
-          ...offlineMode,
-          ...paymentMode,
-          isEnabled: !!paymentMode,
+          ...offlineMode, 
+          ...paymentMode, 
+          isEnabled: !!paymentMode, 
         };
       });
 
+      console.log(combinedData, "=====> Combined Data");
       setCombinedPaymentModes(combinedData);
     }
   }, [offlinePaymentModes, paymentModes]);

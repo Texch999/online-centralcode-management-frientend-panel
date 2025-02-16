@@ -275,26 +275,26 @@ const endpoints = {
   },
   getPrivacyPolicyById: {
     method: "get",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}`,
   },
   createPrivacyPolicy: {
     method: "post",
-    url: () => `/user/${userID()}/privacypolicies/`,
+    url: () => `/user/${userID()}/privacypolicy`,
   },
   updatePrivacyPolicyById: {
     method: "put",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}`,
   },
   privacyPolicyStatusUpdate: {
     method: "patch",
     url: (data) =>
-      `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
+      `/user/${userID()}/privacypolicy/${data.id}/status/${data.status}`,
   },
 
-  // addWebsiteToPrivacyPolicy: {
-  //   method: "post",
-  //   url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
-  // },
+  addWebsiteToPrivacyPolicy: {
+    method: "post",
+    url: (id) => `/user/${userID()}/privacypolicy/${id}/addwebsites`,
+  },
 
   // getCountries: {
   //   method: "get",
@@ -326,7 +326,7 @@ const endpoints = {
 
   getAvailableWebsites: {
     method: "get",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/websites`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}/websites`,
   },
 
   createBroadCasting: {
@@ -455,17 +455,17 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/paymentDetails?${query}`;
+      return `/user/${userID()}/offlinePayments?${query}`;
     },
     // url: () => `/user/${userID()}/paymentDetails`,
   },
   suspendManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/suspend/${id}`,
+    url: (id) => `/user/${userID()}/offlinePayment/${id}/suspend`,
   },
   getManagementPaymentDetailsById: {
     method: "get",
-    url: (id) => `/user/${userID()}/payment/${id}`,
+    url: (id) => `/user/${userID()}/offlinePayment/${id}`,
   },
   createManagementPaymentDetails: {
     method: "post",
@@ -473,37 +473,36 @@ const endpoints = {
   },
   updateManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/update/${id}`,
+    url: (id) => `/user/${userID()}/offlinePayment/${id}`,
   },
   //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
   createManagementOfflinePaymentModes: {
     method: "post",
-    url: () => `/director/${userID()}/offlinePaymentMode`,
+    url: () => `/user/${userID()}/offlinePaymentMode`,
   },
   getManagementOfflinePaymentModes: {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/director/${userID()}/totalOfflinePaymentModes?${query}`;
+      return `/user/${userID()}/totalOfflinePaymentModes?${query}`;
     },
   },
   getManagementOfflinePaymentModeById: {
     method: "get",
-    url: (id) => `/director/${userID()}/offlinePaymentMode/${id}`,
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
   },
   suspenManagementOfflinePaymentModes: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/offlinePaymentMode/${data.id}/status/${data.status
-      }`,
+      `/user/${userID()}/offlinePaymentMode/${data.id}/status/${data.status}`,
   },
   updateManagementOfflinePaymentDetails: {
     method: "put",
-    url: (id) => `/director/${userID()}/offlinePaymentMode/${id}`,
+    url: (id) => `/user/${userID()}/offlinePaymentMode/${id}`,
   },
   managementPaymentDetails: {
     method: "get",
-    url: () => `/director/${userID()}/payments`,
+    url: () => `/director/${userID()}/Payments`,
   },
   ownersAvailablePaymentsModes: {
     method: "get",
@@ -511,12 +510,12 @@ const endpoints = {
   },
   DirectorUpLinePaymentDetails: {
     method: "get",
-    url: () => `/director/${userID()}/payments`,
+    url: () => `/director/${userID()}/PaymentModes`,
   },
-  addWebsiteToPrivacyPolicy: {
-    method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
-  },
+  // addWebsiteToPrivacyPolicy: {
+  //   method: "post",
+  //   url: (id) => `/user/${userID()}/privacypolicy/${id}/addwebsites`,
+  // },
   getDirectorSites: {
     method: "get",
     url: () => `/director/${userID()}/details/${userID()}`,
