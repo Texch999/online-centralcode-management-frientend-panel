@@ -23,14 +23,22 @@ const ActiveInActiveModal = ({
   const suspendStatus = () => {
     privacyPolicyStatusUpdate(privacyStatusId, status_Id)
       .then((response) => {
-        getPolicyPrivacyData();
-        setPrivacyStatusId("");
-        setStatusId("");
-        setActiveInActivePopup(false);
+        if (response.status === true) {
+          getPolicyPrivacyData();
+          setPrivacyStatusId("");
+          setStatusId("");
+          setActiveInActivePopup(false);
+        } else {
+          setError("Something Went Wrong");
+        }
       })
       .catch((error) => {
         setError(error.message);
+        setActiveInActivePopup(false);
         setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 2000);
       });
   };
 

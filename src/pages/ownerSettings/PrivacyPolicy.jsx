@@ -111,7 +111,11 @@ const PrivacyPolicy = () => {
     if (websites.length > 0) return;
     getWebsites()
       .then((response) => {
-        setWebsites(response.data);
+        if (response?.status === true) {
+          setWebsites(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
       })
       .catch((error) => {
         setError(error?.message);
@@ -122,7 +126,11 @@ const PrivacyPolicy = () => {
     setLoading(true);
     getPrivacyPolicy({ page, pageSize })
       .then((response) => {
-        setPrivacyList(response.data);
+        if (response?.status === true) {
+          setPrivacyList(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
       })
       .catch((error) => {
         setError(error?.message);

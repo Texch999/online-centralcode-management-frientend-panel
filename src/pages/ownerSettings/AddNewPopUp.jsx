@@ -13,7 +13,7 @@ import {
   updateSecurityQuestions,
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ErrorPopup from "../popups/ErrorPopup";
 
 const AddNewPopUp = ({
@@ -23,12 +23,9 @@ const AddNewPopUp = ({
   addNewModalSecurity,
   getSecurityQuestions,
   selectedQnsId,
-  setIsEdit,
   isEdit,
-  setSelectedRejReasonId,
   selectedRejReasonId,
   getRejReasons,
-  setSelectedSecQnsId,
 }) => {
   const {
     register,
@@ -36,7 +33,6 @@ const AddNewPopUp = ({
     setValue,
     watch,
     reset,
-    control,
     formState: { errors, isValid },
   } = useForm({
     mode: "onTouched",

@@ -21,13 +21,12 @@ const ReferenceData = () => {
   const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
   const [error, setError] = useState("");
   const [securityQuestions, setSecurityQuestions] = useState([]);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedQnsId, setSelectedSecQnsId] = useState(null);
   const [rejReasonsData, setRejReasonsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState("");
   const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
-  const [errorPopup, setErrorPopup] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const dataFetched = useRef(false);
   const [selectStatus, setSelectStatus] = useState(
@@ -41,9 +40,8 @@ const ReferenceData = () => {
     setActiveBtn(item);
   };
   const role_code = localStorage.getItem("role_code");
-  const itemsPerPage = 4;
-  const currentOffset = (currentPage - 1) * itemsPerPage;
-  const page = intialpage;
+  const itemsPerPage = 2;
+  const page = currentPage;
   const pageSize = itemsPerPage;
   const status = selectStatus;
 
@@ -51,16 +49,15 @@ const ReferenceData = () => {
     setSelectStatus(selectedOption?.value);
   };
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = (page, pageSize) => {
     if (activeBtn === "Rejection Reasons") {
-      getRejReasons();
+      getRejReasons(page, pageSize);
     } else {
-      getSecurityQuestions();
+      getSecurityQuestions(page, pageSize);
     }
   };
 
-  const getSecurityQuestions = () => {
+  const getSecurityQuestions = (page, pageSize) => {
     setLoading(true);
     getAllSecurityQuestions({ page, pageSize, status })
       .then((response) => {
@@ -69,10 +66,10 @@ const ReferenceData = () => {
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true);
+        setErrorPopupOpen(true);
         setTimeout(() => {
-          setErrorPopup(false);
-        }, [2000]);
+          setErrorPopupOpen(false);
+        }, 1000);
       })
       .finally(() => {
         setLoading(false);
@@ -81,15 +78,13 @@ const ReferenceData = () => {
 
   const handleSubmit = () => {
     if (activeBtn === "Rejection Reasons") {
-      getRejReasons();
-      setCurrentPage(1);
+      getRejReasons(page, pageSize);
     } else {
-      setCurrentPage(1);
-      getSecurityQuestions();
+      getSecurityQuestions(page, pageSize);
     }
   };
 
-  const getRejReasons = () => {
+  const getRejReasons = (page, pageSize) => {
     setLoading(true);
     getAllRejectionReasons({ page, pageSize, status })
       .then((response) => {
@@ -98,10 +93,10 @@ const ReferenceData = () => {
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true);
+        setErrorPopupOpen(true);
         setTimeout(() => {
-          setErrorPopup(false);
-        }, [2000]);
+          setErrorPopupOpen(false);
+        }, 1000);
       })
       .finally(() => {
         setLoading(false);
@@ -111,10 +106,10 @@ const ReferenceData = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      getRejReasons();
-      getSecurityQuestions();
+      getRejReasons(page, pageSize);
+      getSecurityQuestions(page, pageSize);
     }
-  }, []);
+  }, [page, pageSize]);
 
   const selectOptions = [
     { value: "0", label: "All" },
@@ -327,8 +322,8 @@ const ReferenceData = () => {
       />
       <ErrorPopup
         discription={error}
-        errorPopupOpen={errorPopup}
-        setErrorPopupOpen={setErrorPopup}
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
       />
     </div>
   );

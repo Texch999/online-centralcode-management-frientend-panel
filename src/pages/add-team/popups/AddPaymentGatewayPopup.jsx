@@ -71,7 +71,7 @@ const AddPaymentGatewayPopup = ({
 
   const onHide = () => {
     // setOnAddPaymentGateway(false);
-    setOnAddPaymentGateway()
+    setOnAddPaymentGateway();
     resetFields();
   };
 
@@ -194,21 +194,21 @@ const AddPaymentGatewayPopup = ({
         ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
         : await createManagementPaymentDetails(formData);
       if (response.status === true) {
-        console.log(response, "handleManagementPaymentAddEdit");
+        setOnAddPaymentGateway(false);
         setMsg(response?.message);
-        resetFields();
-        setSuccessPopupOpen(true);
         fetchManagementPaymentDetails();
+        setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
-        }, 5000);
+        }, 2000);
+        resetFields();
       }
     } catch (error) {
       setError(error?.message);
       setErrorPopupOpen(true);
       setTimeout(() => {
         setErrorPopupOpen(false);
-      });
+      }, 2000);
       console.log(error?.message, "errorr");
     }
   };
@@ -334,10 +334,10 @@ const AddPaymentGatewayPopup = ({
         ? await updateDirectorAccountDetails(dirPaymentDataById, formData)
         : await postDirectorAccountDetails(formData);
       if (response.status === true) {
-        console.log(response, "handldirtPaymentAddEdit");
         setMsg(response?.message);
-        resetFields();
+        setOnAddPaymentGateway(false);
         setSuccessPopupOpen(true);
+        resetFields();
         getDirectorAccountData();
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -348,7 +348,7 @@ const AddPaymentGatewayPopup = ({
       setErrorPopupOpen(true);
       setTimeout(() => {
         setErrorPopupOpen(false);
-      });
+      },2000);
       console.log(error?.message, "errorr");
     }
   };
@@ -577,11 +577,11 @@ const AddPaymentGatewayPopup = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={msg}
-      // discription={
-      //   managementPaymentEdit
-      //     ? "Successfully updated!"
-      //     : "Successfully added!"
-      // }
+        // discription={
+        //   managementPaymentEdit
+        //     ? "Successfully updated!"
+        //     : "Successfully added!"
+        // }
       />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
