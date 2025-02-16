@@ -387,7 +387,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+      return `/director/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
     },
   },
 

@@ -8,6 +8,7 @@ import { VscCloudUpload } from "react-icons/vsc";
 import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
 import { Images } from "../../images";
 import { MdContentCopy } from "react-icons/md";
+import { imgUrl } from "../../api/baseUrl";
 const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPayment }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
@@ -66,8 +67,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
             isInitialRender.current = false;
             return;
         }
-        getDirectorAccessedWebistesList();
-        getDirectorSitesList();
+        if (depositePopup) {
+            getDirectorAccessedWebistesList();
+            getDirectorSitesList();
+        }
     }, []);
 
     const handleChange = (e) => {
@@ -121,7 +124,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
         setSelectedWebDetails(...WebUserDetails)
     }
-    console.log(selectedWebDetails, "=====>selectedWebDetails")
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -130,7 +132,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         {/* Image on the left */}
                         <div>
                             <img
-                                src={Images?.phonepe}
+                                src={`${imgUrl}/offlinepaymentsMode/${selectedWebDetails.image}`}
                                 alt="Icon"
                                 className="me-3"
                                 style={{ width: "50px", height: "50px" }}
