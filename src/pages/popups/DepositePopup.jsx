@@ -14,27 +14,34 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     const [userWebsites, setUserWebsites] = useState([]);
+
     const [formData, setFormData] = useState({
         paymentType: null,
         depositeDetails: null,
         city: "",
         websiteName: "",
-        utr: "",
         cashHandoverName: "",
         description: "",
         phoneNumber: "",
-        amount: null,
-        screenshot: null,
+        paidAmount: null,
+        slip: null,
+        adminWebsiteId: null,
+        userPanelId: null,
+        currency: "",
+        transactionId: "",
+        cashDes: "",
+        selectedChips: 0,
     });
     const isInitialRender = useRef(true);
     const [errors, setErrors] = useState({});
     const [error, setError] = useState("");
     const fileInputRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [slip, setSlip] = useState(null);
     const userName = localStorage.getItem("user_name")
     const userRole = localStorage.getItem("role_code")
     const [directorSites, setDirectorSites] = useState([])
-
+    const [directorCurrency, setDirectorCurrency] = useState("")
 
     const getDirectorAccessedWebistesList = () => {
         getDirectorAccessWebites()
@@ -53,7 +60,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         getDirectorSites()
             .then((response) => {
                 if (response?.status === true) {
+                    const siteData = response?.data
                     setDirectorSites(response.data);
+                    setDirectorCurrency(siteData[0]?.currencyName)
                 } else {
                     setError("Something Went Wrong");
                 }
@@ -83,11 +92,17 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
+            setSlip(event.target.files[0])
             setSelectedFile(file.name);
             setPreviewImage(URL.createObjectURL(file));
         }
     };
-
+    const [selectedWebDetails, setSelectedWebDetails] = useState(null)
+    const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
+    function getWebsiteDetailsByUserId(selectedUserId) {
+        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
+        setSelectedWebDetails(...WebUserDetails)
+    }
     const validateForm = () => {
         const newErrors = {};
         if (!formData.amount) newErrors.amount = "Amount is required";
@@ -100,30 +115,52 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     };
 
     const handleSubmit = () => {
-        if (!validateForm()) return;
+        // if (!validateForm()) return;
 
-        // Transform formData into the desired payload format
+        // Construct the payload based on your requirements
         const payload = {
-            amount: parseFloat(formData.amount),
-            type: formData.paymentType.type,
-            admin: selectedAdmin?.value || null,
-            websiteid: formData.websiteName || null,
-            transactionId: formData.utr || null,
-            slip: formData.screenshot || null,
+            adminPanelId: selectedAdmin?.value || null,
+            userPanelId: formData.websiteName || null,
+            currency: directorCurrency || "",
+            paymentId: selectedPayment?.id || null,
+            selectedChips: formData.selectedChips || null,
+            paidAmount: (formData.selectedChips) * (selectedWebDetails.share / 100)
         };
 
-        // Include cash-specific fields if payment type is cash
-        if (formData.paymentType?.value === "cash") {
-            payload.handoverName = formData.cashHandoverName;
-            payload.description = formData.description;
+        if (selectedPayment?.avil_modes === 4) {
+            payload.cashDes = formData.description;
+        } else {
+
+            payload.transactionId = formData.transactionId;
+            payload.slip = slip
         }
+
+        console.log("Payload:", payload);
+
+        // const requestBody = {
+        //     body: payload,
+        // };
+
+        // if (formData.screenshot) {
+        //     requestBody.file = formData.screenshot;
+        // }
+
+        // Call the API with the payload
+        // submitDeposit(requestBody)
+        //     .then((response) => {
+        //         if (response?.status === true) {
+        //             console.log("Deposit successful:", response.data);
+        //             setDepositePopup(false);
+        //         } else {
+        //             setError("Deposit failed. Please try again.");
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         setError(error?.message || "API request failed");
+        //     });
     };
-    const [selectedWebDetails, setSelectedWebDetails] = useState(null)
-    const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
-    function getWebsiteDetailsByUserId(selectedUserId) {
-        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
-        setSelectedWebDetails(...WebUserDetails)
-    }
+
+    console.log(selectedWebDetails, "==========>selectedWebDetails")
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -132,7 +169,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         {/* Image on the left */}
                         <div>
                             <img
-                                src={`${imgUrl}/offlinepaymentsMode/${selectedWebDetails.image}`}
+                                src={`${imgUrl}/offlinepaymentsMode/${selectedWebDetails?.image}`}
                                 alt="Icon"
                                 className="me-3"
                                 style={{ width: "50px", height: "50px" }}
@@ -142,7 +179,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         </div>
                         <div className="d-flex justify-content-end flex-grow-1">
                             <div className="d-flex flex-column text-end">
-                                <h5 className="medium-font fw-600 mb-0 green-font">Deposit in {selectedWebDetails?.currencyName || ""}</h5>
+                                <h5 className="medium-font fw-600 mb-0 green-font">Deposit in {directorCurrency || ""}</h5>
 
                                 <p className="medium-font mb-0 dep-pop-clr">
                                     {selectedWebDetails?.commission_type === 1
@@ -164,7 +201,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 className="small-font white-bg input-border rounded"
                                 options={adminWebsitesList.map((admin) => ({
                                     label: admin.admin_web_name,
-                                    value: admin.admin_panel_id,
+                                    value: admin.admin_WebSite_id,
                                 }))}
                                 placeholder="Select Admin Website"
                                 styles={customStyles}
@@ -184,7 +221,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 className="small-font white-bg input-border rounded"
                                 options={userWebsites.map((user) => ({
                                     label: user.user_web_name,
-                                    value: user.website_access_id,
+                                    value: user.user_WebSite_id,
                                 }))}
                                 placeholder="Select User Website"
                                 styles={customStyles}
@@ -205,8 +242,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             name="currency"
                             className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
                             placeholder="Enter Amount"
-                            value={selectedWebDetails?.currencyName || ""}
+                            value={directorCurrency || ""}
                             onChange={handleChange}
+                            readOnly
                         />
                         {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                     </div>
@@ -223,6 +261,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     placeholder="Enter "
                                     value={selectedPayment?.name || ""}
                                     onChange={handleChange}
+                                    readOnly
                                 />
                                 {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
 
@@ -254,7 +293,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <div className="position-relative">
                                     <input
                                         type="text"
-                                        name="upi"
+                                        name="upi_id"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border pe-5" // Extra padding for the icon
                                         placeholder="Enter"
                                         value={selectedPayment?.upi_id || ""}
@@ -276,52 +315,56 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <>
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Wallet Chips Balance -  {selectedWebDetails?.currencyName}</label>
+                                    <label className="small-font mb-1">Wallet Chips Balance -  {directorCurrency}</label>
                                     <input
-                                        type="availableChips"
-                                        name="upi"
+                                        type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={(selectedWebDetails?.total_chips === undefined || null ? 0 : selectedWebDetails?.total_chips)}
                                         onChange={handleChange}
+                                        readOnly
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
+                                    <label className="small-font mb-1">
+                                        Total Chips - {directorCurrency}
+                                    </label>
                                     <input
-                                        type="availableChips"
-                                        name="upi"
+                                        type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
-                                        onChange={handleChange}
+                                        value={
+                                            (selectedWebDetails?.total_chips || 0) + (formData?.selectedChips || 0)
+                                        }
+                                        readOnly
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                    {console.log(selectedWebDetails?.total_chips, "=======>selectedWebDetails?.total_chips===>1")}
                                 </div>
+
                             </div>
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Enter Chips -  {selectedWebDetails?.currencyName}</label>
+                                    <label className="small-font mb-1">Enter Chips - {directorCurrency}</label>
                                     <input
-                                        type="chipsNeed"
-                                        name="upi"
+                                        type="number"
+                                        name="selectedChips"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                        placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        placeholder="Enter Chips"
+                                        value={formData.selectedChips}
                                         onChange={handleChange}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                    {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {selectedWebDetails?.currencyName}</label>
+                                    <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {directorCurrency}</label>
                                     <input
-                                        type="availableChips"
-                                        name="upi"
+                                        type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
-                                        onChange={handleChange}
+                                        value={(formData.selectedChips * (selectedWebDetails?.share / 100))}
+                                        readOnly
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
@@ -331,25 +374,25 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <>
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Enter SP Chips -  {selectedWebDetails?.currencyName}</label>
+                                    <label className="small-font mb-1">Enter SP Chips -  {directorCurrency}</label>
                                     <input
-                                        type="availableChips"
+                                        type="spChips"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={formData.spChips || ""}
                                         onChange={handleChange}
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Chips Amount - {selectedWebDetails?.currencyName}</label>
+                                    <label className="small-font mb-1">Chips Amount - {directorCurrency}</label>
                                     <input
-                                        type="availableChips"
+                                        type="chipsAmount"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={formData.chipsAmount || ""}
                                         onChange={handleChange}
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
@@ -359,11 +402,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Enter Extra SP Chips </label>
                                     <input
-                                        type="chipsNeed"
+                                        type="extSpChips"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={formData.extSpChips || ""}
                                         onChange={handleChange}
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
@@ -371,11 +414,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.share}%) </label>
                                     <input
-                                        type="availableChips"
+                                        type="extSpChipsAmount"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={formData.extSpChipsAmount || ""}
                                         onChange={handleChange}
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
@@ -383,26 +426,28 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             </div>
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Total Chips Amount - {selectedWebDetails?.currencyName} </label>
+                                    <label className="small-font mb-1">Total Chips Amount - {directorCurrency} </label>
                                     <input
-                                        type="chipsNeed"
+                                        type="totalChipsAMount"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={formData.totalChipsAMount || ""}
                                         onChange={handleChange}
+                                        readOnly
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Enter Paid Amount - {selectedWebDetails?.currencyName} </label>
+                                    <label className="small-font mb-1">Enter Paid Amount - {directorCurrency} </label>
                                     <input
-                                        type="availableChips"
+                                        type="paidAmount"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.amount || ""}
+                                        value={formData.paidAmount || ""}
                                         onChange={handleChange}
+                                        readOnly
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
@@ -416,10 +461,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 <label className="small-font mb-1">UTR/Transaction ID</label>
                                 <input
                                     type="text"
-                                    name="utr"
+                                    name="transactionId"
                                     className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter"
-                                    value={formData.utr}
+                                    value={formData.transactionId}
                                     onChange={handleChange}
                                 />
                                 {errors.utr && <p className="text-danger small-font">{errors.utr}</p>}
@@ -439,7 +484,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                 {/* Hidden File Input */}
                                 <input
                                     type="file"
-                                    name="screenshot"
+                                    name="slip"
                                     ref={fileInputRef}
                                     className="d-none "
                                     onChange={handleFileChange}
@@ -473,17 +518,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     onChange={handleChange}
                                 />
                                 {errors.cashHandoverName && <p className="text-danger small-font">{errors.cashHandoverName}</p>}
-                            </div>
-                            <div className="col mb-2">
-                                <label className="small-font mb-1">Phone Number</label>
-                                <input
-                                    type="text"
-                                    name="phoneNumber"
-                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                    placeholder="Enter Phone Number"
-                                    value={formData.phoneNumber}
-                                    onChange={handleChange}
-                                />
                             </div>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">Description</label>

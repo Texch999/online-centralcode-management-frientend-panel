@@ -26,7 +26,7 @@ const endpoints = {
   getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
   getCurrencies: {
     method: "get",
-    url: () => `/user/${userID()}/countries/currency-name`,
+    url: () => `/director/${userID()}/countries/currency-name`,
   },
 
   createWebsite: {
@@ -34,10 +34,10 @@ const endpoints = {
     url: () => `/user/${userID()}/website/website`,
   },
   // loginUser: { method: "post", url: "/master/login" },
-  createWebsite: {
-    method: "post",
-    url: () => `/user/${userID()}/website/website`,
-  },
+  // createWebsite: {
+  //   method: "post",
+  //   url: () => `/user/${userID()}/website/website`,
+  // },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -132,13 +132,13 @@ const endpoints = {
     url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
 
-  getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
+  // getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
 
   loginUser: { method: "post", url: () => "/master/login" },
   // addManagemnentTeam: { method: "post", url: "/employee" },
-  addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
+  // addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
 
-  getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
+  // getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
   // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
   // getEmployees: ({ limit, offset }) => ({
   //   method: "get",
@@ -291,19 +291,19 @@ const endpoints = {
       `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
   },
 
-  addWebsiteToPrivacyPolicy: {
-    method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
-  },
+  // addWebsiteToPrivacyPolicy: {
+  //   method: "post",
+  //   url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+  // },
 
   // getCountries: {
   //   method: "get",
   //   url: () => `/user/${userID()}/website/websites`,
   // },
-  getWebsites: {
-    method: "get",
-    url: () => `/user/${userID()}/website/websites`,
-  },
+  // getWebsites: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/website/websites`,
+  // },
   getWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
@@ -469,7 +469,7 @@ const endpoints = {
   },
   createManagementPaymentDetails: {
     method: "post",
-    url: () => `/user/${userID()}/create`,
+    url: () => `/user/${userID()}/offlinePayment`,
   },
   updateManagementPaymentDetails: {
     method: "post",
