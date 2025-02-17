@@ -120,92 +120,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
             if (!formData.cashDes) newErrors.cashDes = "Description is required";
         }
         setErrors(newErrors);
-        console.log(newErrors, "=======>newErrors")
         return Object.keys(newErrors).length === 0;
     };
     const maxAllowed = selectedWebDetails?.max_chips_rent - selectedWebDetails?.total_sport_chips;
-    // const handleSubmit = () => {
-    //     // Construct the payload based on commission_type
-    //     let payload;
-    //     if (!validateForm()) return;
-    //     if (selectedWebDetails?.commission_type === 1 && formData.selectedChips <= maxAllowed) {
-    //         // Payload for commission_type === 1
-    //         payload = {
-    //             adminPanelId: selectedAdmin?.value || null,
-    //             userPanelId: formData.websiteName || null,
-    //             currency: directorCurrency?.county || "",
-    //             paymentId: selectedPayment?.gateway_id || null,
-    //             selctChips: formData.selectedChips || null,
-    //             paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.rentPercentage / 100)) + ((formData.selectedSportsChips) * (selectedWebDetails.extChipPercent / 100))),
-    //             selctSpcChips: formData.selectedSportsChips,
-    //         };
-    //     } else {
-    //         // Payload for commission_type !== 1
-    //         payload = {
-    //             adminPanelId: selectedAdmin?.value || null,
-    //             userPanelId: formData.websiteName || null,
-    //             currency: directorCurrency?.county || "",
-    //             paymentId: selectedPayment?.gateway_id || null,
-    //             selctChips: formData.selectedChips || null,
-    //             paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.share / 100))),
-    //         };
-    //     }
-
-    //     // Add conditional fields based on payment mode
-    //     if (selectedPayment?.avil_modes === 4) {
-    //         payload.cashDes = formData.description;
-    //     } else {
-    //         payload.transactinId = formData.transactionId;
-    //     }
-
-    //     // Create a FormData object
-    //     const formDataToSend = new FormData();
-
-    //     // Append the payload as a JSON string under the key 'body'
-    //     formDataToSend.append('body', JSON.stringify(payload));
-
-    //     // Append the slip file if payment mode is not 4 and slip exists
-    //     if (selectedPayment?.avil_modes !== 4 && slip) {
-    //         formDataToSend.append('slip', slip);
-    //     }
-
-    //     DirectorOffilneDepositTicket(formDataToSend)
-    //         .then((response) => {
-    //             if (response?.status === true) {
-    //                 setDepositePopup(false)
-    //                 handleSuccessPopupOpen()
-    //                 setFormData({
-    //                     paymentType: null,
-    //                     depositeDetails: null,
-    //                     city: "",
-    //                     websiteName: "",
-    //                     cashHandoverName: "",
-    //                     description: "",
-    //                     phoneNumber: "",
-    //                     paidAmount: 0,
-    //                     slip: null,
-    //                     adminWebsiteId: null,
-    //                     userPanelId: null,
-    //                     currency: "",
-    //                     transactionId: "",
-    //                     cashDes: "",
-    //                     selectedChips: 0,
-    //                     selectedSportsChips: 0,
-    //                 })
-    //                 setSlip(null)
-    //                 setSelectedFile(null);
-    //                 setPreviewImage(null);
-
-    //             } else {
-    //                 setError("Deposit failed. Please try again.");
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             setError(error?.message || "API request failed");
-    //         });
-    // };
-
-    // console.log(selectedWebDetails, "======>selectedWebDetails")
     const handleSubmit = () => {
         if (!validateForm()) return;
 
@@ -232,7 +149,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
         }
 
         if (selectedPayment?.avil_modes === 4) {
-            payload.cashDes = formData.description;
+            payload.cashDes = formData.cashDes;
+            payload.transactinId = "Tex68575688"
         } else {
             payload.transactinId = formData.transactionId;
         }
@@ -276,7 +194,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 }
             })
             .catch((error) => {
-                setApiErrors(error?.response?.data?.errors || error?.message || "API request failed");
+                setApiErrors(error?.errors || error?.message || "API request failed");
             });
     };
     return (
@@ -316,11 +234,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                             {Array.isArray(apiErrors) ? (
                                 <ul>
                                     {apiErrors.map((error, index) => (
-                                        <li key={index}>{error.message || error}</li>
+                                        <li className="small-font" key={index}>{error.message || error}</li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p>{apiErrors.message || apiErrors}</p>
+                                <p className="small-font">{apiErrors.message || apiErrors}</p>
                             )}
                         </div>
                     )}
@@ -671,10 +589,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                 <label className="small-font mb-1">Description</label>
                                 <input
                                     type="text"
-                                    name="description"
+                                    name="cashDes"
                                     className="w-100 small-font rounded input-css all-none white-bg input-border"
                                     placeholder="Enter Description"
-                                    value={formData.description}
+                                    value={formData.cashDes}
                                     onChange={handleChange}
                                 />
                             </div>
