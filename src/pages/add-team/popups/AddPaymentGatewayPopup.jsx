@@ -290,14 +290,14 @@ const AddPaymentGatewayPopup = ({
       }
       if (!qrCode) errors.qrCode = "QR Code Image is required.";
     } 
-    // else if (availablePaymentModeId === 4) {
-    //   if (!details.trim()) {
-    //     errors.details = "Details are required.";
-    //   } else if (!/^[a-zA-Z0-9 ]*$/.test(details)) {
-    //     errors.details =
-    //       "Details can only contain letters, numbers, and spaces.";
-    //   }
-    // }
+    else if (availablePaymentModeId === 4) {
+      if (!details.trim()) {
+        errors.details = "Details are required.";
+      } else if (!/^[a-zA-Z0-9 ]*$/.test(details)) {
+        errors.details =
+          "Details can only contain letters, numbers, and spaces.";
+      }
+    }
 
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
