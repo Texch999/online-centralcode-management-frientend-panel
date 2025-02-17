@@ -27,9 +27,6 @@ const AddPaymentGatewayPopup = ({
   countryId,
   //dir
   dirEditId,
-  setDirEditId,
-  dirGatewayId,
-  setDirGatewayId,
   getDirectorAccountData,
   //man profile
 }) => {
@@ -349,7 +346,7 @@ const AddPaymentGatewayPopup = ({
       setErrorPopupOpen(true);
       setTimeout(() => {
         setErrorPopupOpen(false);
-      },2000);
+      }, 2000);
       console.log(error?.message, "errorr");
     }
   };

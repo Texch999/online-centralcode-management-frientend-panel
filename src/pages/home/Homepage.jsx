@@ -21,6 +21,7 @@ import { roundedReactSelect } from "../../components/ReactSelectStyles";
 import { getAllCountires } from "../../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../../redux/action";
+import { getDataFromDB, saveDataToDB } from "../../utils/indexDBHelper";
 
 function Homepage() {
   ChartJS.register(
@@ -336,7 +337,7 @@ function Homepage() {
   };
 
   // get all countries api
-  const getAllCountries = () => {
+  const getAllCountriesss = () => {
     getAllCountires()
       .then((response) => {
         if (response?.status === true) {
@@ -349,6 +350,33 @@ function Homepage() {
         setError(error?.message || "API request failed");
       });
   };
+  useEffect(() => {
+    if (countriesDataFetched.current) return;
+    countriesDataFetched.current = true;
+    getAllCountries();
+  }, []);
+
+  const [countries, setCountries] = useState([]);
+
+  const getAllCountries = async () => {
+    try {
+      // Fetch from API
+      const response = await getAllCountires();
+
+      if (response?.status === true) {
+        setCountries(response.data); // Store in state
+
+        // Store data in IndexedDB
+        await saveDataToDB("countries", response.data);
+        console.log("Countries saved to IndexedDB");
+      } else {
+        setError("Something Went Wrong");
+      }
+    } catch (error) {
+      setError(error?.message || "API request failed");
+    }
+  };
+
   useEffect(() => {
     if (countriesDataFetched.current) return;
     countriesDataFetched.current = true;

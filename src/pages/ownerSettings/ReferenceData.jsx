@@ -41,7 +41,7 @@ const ReferenceData = () => {
   };
   const role_code = localStorage.getItem("role_code");
   const itemsPerPage = 2;
-  const page = currentPage;
+  const page = intialpage;
   const pageSize = itemsPerPage;
   const status = selectStatus;
 
@@ -49,11 +49,12 @@ const ReferenceData = () => {
     setSelectStatus(selectedOption?.value);
   };
 
-  const handlePageChange = (page, pageSize) => {
+  const handlePageChange = () => {
+    console.log(page, pageSize, "page, pageSize");
     if (activeBtn === "Rejection Reasons") {
-      getRejReasons(page, pageSize);
+      getRejReasons(intialpage, pageSize);
     } else {
-      getSecurityQuestions(page, pageSize);
+      getSecurityQuestions(intialpage, pageSize);
     }
   };
 
@@ -76,7 +77,7 @@ const ReferenceData = () => {
       });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (page, pageSize) => {
     if (activeBtn === "Rejection Reasons") {
       getRejReasons(page, pageSize);
     } else {
@@ -89,7 +90,7 @@ const ReferenceData = () => {
     getAllRejectionReasons({ page, pageSize, status })
       .then((response) => {
         setRejReasonsData(response?.data);
-        setTotalRecords(response.meta?.totalCount);
+        setTotalRecords(response?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
@@ -109,7 +110,7 @@ const ReferenceData = () => {
       getRejReasons(page, pageSize);
       getSecurityQuestions(page, pageSize);
     }
-  }, [page, pageSize]);
+  }, []);
 
   const selectOptions = [
     { value: "0", label: "All" },
