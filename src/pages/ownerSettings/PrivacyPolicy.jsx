@@ -47,11 +47,8 @@ const PrivacyPolicy = () => {
   const intialpage = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(intialpage);
   const [totalRecords, setTotalRecords] = useState(null);
-
   const role_code = localStorage.getItem("role_code");
-
   const itemsPerPage = 4;
-  const currentOffset = (currentPage - 1) * itemsPerPage;
   const page = intialpage;
   const pageSize = itemsPerPage;
 
@@ -64,14 +61,13 @@ const PrivacyPolicy = () => {
     getAllWebsites();
   };
 
-  const totalFetchs = 4;
-  const currentOffst = (currentPage - 1) * totalFetchs;
-  const pages = currentOffst;
-  const pagsizes = totalFetchs;
+  // const totalFetchs = 4;
+  // const currentOffst = (currentPage - 1) * totalFetchs;
+  // const pages = currentOffst;
+  // const pagsizes = totalFetchs;
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    getPolicyPrivacyData();
+  const handlePageChange = () => {
+    getPolicyPrivacyData(intialpage,pageSize);
   };
 
   const handleStatus = (id, status) => {
@@ -122,7 +118,7 @@ const PrivacyPolicy = () => {
       });
   };
 
-  const getPolicyPrivacyData = () => {
+  const getPolicyPrivacyData = (page,pageSize) => {
     setLoading(true);
     getPrivacyPolicy({ page, pageSize })
       .then((response) => {
@@ -144,7 +140,7 @@ const PrivacyPolicy = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      getPolicyPrivacyData();
+      getPolicyPrivacyData(page,pageSize);
       getAllCountries();
     }
   }, []);

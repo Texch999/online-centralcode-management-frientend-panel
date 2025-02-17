@@ -35,12 +35,11 @@ const ReferenceData = () => {
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalRecordsSecQns, setTotalRecordsSecQns] = useState(null);
   const intialpage = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(intialpage);
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
   const role_code = localStorage.getItem("role_code");
-  const itemsPerPage = 2;
+  const itemsPerPage = 4;
   const page = intialpage;
   const pageSize = itemsPerPage;
   const status = selectStatus;
