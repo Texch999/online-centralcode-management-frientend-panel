@@ -537,6 +537,10 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/offlinePaymentModes`,
   },
+  DirectorOffilneDepositTicket: {
+    method: "post",
+    url: () => `/director/${userID()}/offlineDeposit`,
+  },
 };
 
 export default endpoints;

@@ -5,11 +5,12 @@ import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
-import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
+import { DirectorOffilneDepositTicket, getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
 import { Images } from "../../images";
 import { MdContentCopy } from "react-icons/md";
 import { imgUrl } from "../../api/baseUrl";
-const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPayment }) => {
+import SuccessPopup from "./SuccessPopup";
+const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
@@ -23,7 +24,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         cashHandoverName: "",
         description: "",
         phoneNumber: "",
-        paidAmount: null,
+        paidAmount: 0,
         slip: null,
         adminWebsiteId: null,
         userPanelId: null,
@@ -31,6 +32,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         transactionId: "",
         cashDes: "",
         selectedChips: 0,
+        selectedSportsChips: 0,
     });
     const isInitialRender = useRef(true);
     const [errors, setErrors] = useState({});
@@ -42,7 +44,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     const userRole = localStorage.getItem("role_code")
     const [directorSites, setDirectorSites] = useState([])
     const [directorCurrency, setDirectorCurrency] = useState("")
-
+    const [fieldError, setFieldError] = useState('')
+    const [previewImage, setPreviewImage] = useState(null);
+    const [apiErrors, setApiErrors] = useState(null);
     const getDirectorAccessedWebistesList = () => {
         getDirectorAccessWebites()
             .then((response) => {
@@ -62,7 +66,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                 if (response?.status === true) {
                     const siteData = response?.data
                     setDirectorSites(response.data);
-                    setDirectorCurrency(siteData[0]?.currencyName)
+                    // setDirectorCurrency(siteData[0]?.county)
+                    setDirectorCurrency(siteData[0])
                 } else {
                     setError("Something Went Wrong");
                 }
@@ -87,7 +92,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         setErrors({ ...errors, [e.target.name]: "" });
     };
 
-    const [previewImage, setPreviewImage] = useState(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -100,64 +104,180 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
     const [selectedWebDetails, setSelectedWebDetails] = useState(null)
     const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
     function getWebsiteDetailsByUserId(selectedUserId) {
-        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
+        const WebUserDetails = directorSites.filter(item => item.user_paner_id === selectedUserId);
         setSelectedWebDetails(...WebUserDetails)
     }
+
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.amount) newErrors.amount = "Amount is required";
-        if (!formData.paymentType) newErrors.paymentType = "Payment type is required";
-        if (formData.paymentType?.value === "neftrtgs" && !formData.utr) newErrors.utr = "UTR is required";
-        if (formData.paymentType?.value === "upi" && !formData.utr) newErrors.utr = "UTR is required";
-        if (formData.paymentType?.value === "cash" && !formData.cashHandoverName) newErrors.cashHandoverName = "Cash handover name is required";
+        if (selectedPayment?.avil_modes !== 4) {
+            if (!selectedAdmin?.value) newErrors.adminWebsiteId = "AdminWebsiteId is required";
+            if (!formData.websiteName) newErrors.userPanelId = "UserPanelId is required";
+            if (!formData.transactionId) newErrors.transactionId = "TransactionId is required";
+            if (!slip) newErrors.slip = "Upload payment file is required";
+        } else {
+            if (!formData.cashHandoverName) newErrors.cashHandoverName = "Cash handover name is required";
+            if (!formData.cashDes) newErrors.cashDes = "Description is required";
+        }
         setErrors(newErrors);
+        console.log(newErrors, "=======>newErrors")
         return Object.keys(newErrors).length === 0;
     };
+    const maxAllowed = selectedWebDetails?.max_chips_rent - selectedWebDetails?.total_sport_chips;
+    // const handleSubmit = () => {
+    //     // Construct the payload based on commission_type
+    //     let payload;
+    //     if (!validateForm()) return;
+    //     if (selectedWebDetails?.commission_type === 1 && formData.selectedChips <= maxAllowed) {
+    //         // Payload for commission_type === 1
+    //         payload = {
+    //             adminPanelId: selectedAdmin?.value || null,
+    //             userPanelId: formData.websiteName || null,
+    //             currency: directorCurrency?.county || "",
+    //             paymentId: selectedPayment?.gateway_id || null,
+    //             selctChips: formData.selectedChips || null,
+    //             paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.rentPercentage / 100)) + ((formData.selectedSportsChips) * (selectedWebDetails.extChipPercent / 100))),
+    //             selctSpcChips: formData.selectedSportsChips,
+    //         };
+    //     } else {
+    //         // Payload for commission_type !== 1
+    //         payload = {
+    //             adminPanelId: selectedAdmin?.value || null,
+    //             userPanelId: formData.websiteName || null,
+    //             currency: directorCurrency?.county || "",
+    //             paymentId: selectedPayment?.gateway_id || null,
+    //             selctChips: formData.selectedChips || null,
+    //             paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.share / 100))),
+    //         };
+    //     }
 
+    //     // Add conditional fields based on payment mode
+    //     if (selectedPayment?.avil_modes === 4) {
+    //         payload.cashDes = formData.description;
+    //     } else {
+    //         payload.transactinId = formData.transactionId;
+    //     }
+
+    //     // Create a FormData object
+    //     const formDataToSend = new FormData();
+
+    //     // Append the payload as a JSON string under the key 'body'
+    //     formDataToSend.append('body', JSON.stringify(payload));
+
+    //     // Append the slip file if payment mode is not 4 and slip exists
+    //     if (selectedPayment?.avil_modes !== 4 && slip) {
+    //         formDataToSend.append('slip', slip);
+    //     }
+
+    //     DirectorOffilneDepositTicket(formDataToSend)
+    //         .then((response) => {
+    //             if (response?.status === true) {
+    //                 setDepositePopup(false)
+    //                 handleSuccessPopupOpen()
+    //                 setFormData({
+    //                     paymentType: null,
+    //                     depositeDetails: null,
+    //                     city: "",
+    //                     websiteName: "",
+    //                     cashHandoverName: "",
+    //                     description: "",
+    //                     phoneNumber: "",
+    //                     paidAmount: 0,
+    //                     slip: null,
+    //                     adminWebsiteId: null,
+    //                     userPanelId: null,
+    //                     currency: "",
+    //                     transactionId: "",
+    //                     cashDes: "",
+    //                     selectedChips: 0,
+    //                     selectedSportsChips: 0,
+    //                 })
+    //                 setSlip(null)
+    //                 setSelectedFile(null);
+    //                 setPreviewImage(null);
+
+    //             } else {
+    //                 setError("Deposit failed. Please try again.");
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             setError(error?.message || "API request failed");
+    //         });
+    // };
+
+    // console.log(selectedWebDetails, "======>selectedWebDetails")
     const handleSubmit = () => {
-        // if (!validateForm()) return;
+        if (!validateForm()) return;
 
-        // Construct the payload based on your requirements
-        const payload = {
-            adminPanelId: selectedAdmin?.value || null,
-            userPanelId: formData.websiteName || null,
-            currency: directorCurrency || "",
-            paymentId: selectedPayment?.id || null,
-            selectedChips: formData.selectedChips || null,
-            paidAmount: (formData.selectedChips) * (selectedWebDetails.share / 100)
-        };
+        let payload;
+        if (selectedWebDetails?.commission_type === 1 && formData.selectedChips <= maxAllowed) {
+            payload = {
+                adminPanelId: selectedAdmin?.value || null,
+                userPanelId: formData.websiteName || null,
+                currency: directorCurrency?.county || "",
+                paymentId: selectedPayment?.gateway_id || null,
+                selctChips: formData.selectedChips || null,
+                paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.rentPercentage / 100)) + ((formData.selectedSportsChips) * (selectedWebDetails.extChipPercent / 100))),
+                selctSpcChips: formData.selectedSportsChips,
+            };
+        } else {
+            payload = {
+                adminPanelId: selectedAdmin?.value || null,
+                userPanelId: formData.websiteName || null,
+                currency: directorCurrency?.county || "",
+                paymentId: selectedPayment?.gateway_id || null,
+                selctChips: formData.selectedChips || null,
+                paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.share / 100))),
+            };
+        }
 
         if (selectedPayment?.avil_modes === 4) {
             payload.cashDes = formData.description;
         } else {
-            payload.transactionId = formData.transactionId;
+            payload.transactinId = formData.transactionId;
         }
 
-        console.log("Payload:", payload);
+        const formDataToSend = new FormData();
+        formDataToSend.append('body', JSON.stringify(payload));
 
-        // Construct the request body
-        const requestBody = {
-            body: payload,
-        };
-
-        // If there's a screenshot, add it to the request body
-        if (selectedPayment?.avil_modes !== 4) {
-            requestBody.slip = slip
+        if (selectedPayment?.avil_modes !== 4 && slip) {
+            formDataToSend.append('slip', slip);
         }
-        console.log("requestBody:", requestBody);
-        // Call the API with the payload
-        // submitDeposit(requestBody)
-        //     .then((response) => {
-        //         if (response?.status === true) {
-        //             console.log("Deposit successful:", response.data);
-        //             setDepositePopup(false);
-        //         } else {
-        //             setError("Deposit failed. Please try again.");
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         setError(error?.message || "API request failed");
-        //     });
+
+        DirectorOffilneDepositTicket(formDataToSend)
+            .then((response) => {
+                if (response?.status === true) {
+                    setDepositePopup(false);
+                    handleSuccessPopupOpen();
+                    setFormData({
+                        paymentType: null,
+                        depositeDetails: null,
+                        city: "",
+                        websiteName: "",
+                        cashHandoverName: "",
+                        description: "",
+                        phoneNumber: "",
+                        paidAmount: 0,
+                        slip: null,
+                        adminWebsiteId: null,
+                        userPanelId: null,
+                        currency: "",
+                        transactionId: "",
+                        cashDes: "",
+                        selectedChips: 0,
+                        selectedSportsChips: 0,
+                    });
+                    setSlip(null);
+                    setSelectedFile(null);
+                    setPreviewImage(null);
+                    setApiErrors(null); // Clear any previous errors
+                } else {
+                    setApiErrors(response?.errors || "Deposit failed. Please try again.");
+                }
+            })
+            .catch((error) => {
+                setApiErrors(error?.response?.data?.errors || error?.message || "API request failed");
+            });
     };
     return (
         <div>
@@ -177,20 +297,33 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         </div>
                         <div className="d-flex justify-content-end flex-grow-1">
                             <div className="d-flex flex-column text-end">
-                                <h5 className="medium-font fw-600 mb-0 green-font">Deposit in {directorCurrency || ""}</h5>
+                                <h5 className="medium-font fw-600 mb-0 green-font">Deposit in {directorCurrency?.currencyName || ""}</h5>
 
                                 <p className="medium-font mb-0 dep-pop-clr">
                                     {selectedWebDetails?.commission_type === 1
                                         ? `${userName} - ${userRole}`
                                         : `${userName} - ${userRole} (Share-${selectedWebDetails?.share || 0}%)`}
                                 </p>
-                                <h5 className="medium-font fw-600 mb-0 dep-pop-clr">{selectedWebDetails?.commission_type === 1 ? `(SP Rental - ${selectedWebDetails?.MonthlyRent}, Ext - ${selectedWebDetails?.Etc_Chips_percent}%)` : ""} </h5>
+                                <h5 className="medium-font fw-600 mb-0 dep-pop-clr">{selectedWebDetails?.commission_type === 1 ? `(SP Rental - ${selectedWebDetails?.max_chips_rent}, Ext - ${selectedWebDetails?.extChipPercent}%)` : ""} </h5>
                             </div>
                         </div>
                         <div>
                             <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositePopup(false)} />
                         </div>
                     </div>
+                    {apiErrors && (
+                        <div className="alert alert-danger">
+                            {Array.isArray(apiErrors) ? (
+                                <ul>
+                                    {apiErrors.map((error, index) => (
+                                        <li key={index}>{error.message || error}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>{apiErrors.message || apiErrors}</p>
+                            )}
+                        </div>
+                    )}
                     <hr />
                     <div className="row ">
                         <div className="col mb-2">
@@ -212,6 +345,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     setUserWebsites(selectedAdminData?.users || []);
                                 }}
                             />
+
+                            {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
                         </div>
                         <div className="col mb-2">
                             <label className="small-font mb-1">User Panel</label>
@@ -231,7 +366,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     getWebsiteDetailsByUserId(option.value)
                                 }}
                             />
+                            {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
                         </div>
+
                     </div>
                     <div className="col mb-2">
                         <label className="small-font mb-1">Currency</label>
@@ -240,11 +377,10 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                             name="currency"
                             className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
                             placeholder="Enter Amount"
-                            value={directorCurrency || ""}
+                            value={directorCurrency?.currencyName || ""}
                             onChange={handleChange}
                             readOnly
                         />
-                        {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                     </div>
 
                     {/* NEFT/RTGS Section */}
@@ -261,7 +397,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     onChange={handleChange}
                                     readOnly
                                 />
-                                {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
 
                                 {selectedDepositDetails && (
                                     <div className="mt-1 p-2  rounded input-css white-bg input-border">
@@ -305,7 +440,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                         onClick={() => navigator.clipboard.writeText(selectedPayment?.upi_provider_id || "")}
                                     />
                                 </div>
-                                {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                             </div>
                         </>
                     )}
@@ -313,20 +447,20 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                         <>
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Wallet Chips Balance -  {directorCurrency}</label>
+                                    <label className="small-font mb-1">Wallet Chips Balance -  {directorCurrency?.currencyName}</label>
                                     <input
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(selectedWebDetails?.total_chips === undefined || null ? 0 : selectedWebDetails?.total_chips)}
+                                        value={(selectedWebDetails?.total_chips === undefined || null ? 0 : selectedWebDetails?.total_chips)} total_sport_chips
                                         onChange={handleChange}
                                         readOnly
+                                        style={{ pointerEvents: "none" }}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">
-                                        Total Chips - {directorCurrency}
+                                        Total Chips - {directorCurrency?.currencyName}
                                     </label>
                                     <input
                                         type="number"
@@ -336,15 +470,15 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                             (selectedWebDetails?.total_chips || 0) + (formData?.selectedChips || 0)
                                         }
                                         readOnly
+                                        style={{ pointerEvents: "none" }}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
-                                    {console.log(selectedWebDetails?.total_chips, "=======>selectedWebDetails?.total_chips===>1")}
                                 </div>
 
                             </div>
+
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Enter Chips - {directorCurrency}</label>
+                                    <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
                                     <input
                                         type="number"
                                         name="selectedChips"
@@ -356,98 +490,112 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {directorCurrency}</label>
+                                    <label className="small-font mb-1">Paid Amount ( {selectedWebDetails?.share}%) -  {directorCurrency?.currencyName}</label>
                                     <input
                                         type="number"
+                                        name="paidAmount"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
                                         value={(formData.selectedChips * (selectedWebDetails?.share / 100))}
+                                        onChange={handleChange}
                                         readOnly
+                                        style={{ pointerEvents: "none" }}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                             </div>
                         </>)}
                     {selectedWebDetails?.commission_type === 1 && (
                         <>
                             <div className="row">
+
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Enter SP Chips -  {directorCurrency}</label>
+                                    <label className="small-font mb-1">
+                                        SP Chips - {directorCurrency?.currencyName}
+                                    </label>
                                     <input
-                                        type="spChips"
-                                        name="upi"
+                                        type="number"
+                                        name="selectedChips"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                        placeholder="Enter "
-                                        value={formData.spChips || ""}
-                                        onChange={handleChange}
+                                        placeholder="Enter Chips"
+                                        value={formData.selectedChips}
+                                        onChange={(e) => {
+                                            if (Number(e.target.value) <= maxAllowed) {
+                                                handleChange(e);
+                                                setFieldError("")
+                                            } else {
+                                                setFieldError(`You cannot enter more than ${maxAllowed} chips.`);
+                                            }
+                                        }}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
+                                    {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Chips Amount - {directorCurrency}</label>
+                                    <label className="small-font mb-1">Chips Amount - {directorCurrency?.currencyName}</label>
                                     <input
-                                        type="chipsAmount"
-                                        name="upi"
+                                        type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                        placeholder="Enter "
-                                        value={formData.chipsAmount || ""}
+                                        placeholder="Enter"
+                                        value={(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
                                         onChange={handleChange}
+                                        style={{ pointerEvents: "none" }}
+                                        readOnly
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                             </div>
+
+
                             <div className="row">
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Enter Extra SP Chips </label>
                                     <input
-                                        type="extSpChips"
-                                        name="upi"
+                                        type="number"
+                                        name="selectedSportsChips"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.extSpChips || ""}
+                                        value={formData.selectedSportsChips}
                                         onChange={handleChange}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.share}%) </label>
+                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.extChipPercent}%) </label>
                                     <input
-                                        type="extSpChipsAmount"
-                                        name="upi"
+                                        type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.extSpChipsAmount || ""}
+                                        value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100))}
                                         onChange={handleChange}
+                                        readOnly
+                                        style={{ pointerEvents: "none" }}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Total Chips Amount - {directorCurrency} </label>
+                                    <label className="small-font mb-1">Total Chips - {directorCurrency?.currencyName} </label>
                                     <input
-                                        type="totalChipsAMount"
+                                        type="number"
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.totalChipsAMount || ""}
+                                        value={Number(formData.selectedChips) + Number(formData.selectedSportsChips)}
                                         onChange={handleChange}
                                         readOnly
+                                        style={{ pointerEvents: "none" }}
                                     />
                                     {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Enter Paid Amount - {directorCurrency} </label>
+                                    <label className="small-font mb-1">Paid Amount - {directorCurrency?.currencyName} </label>
                                     <input
-                                        type="paidAmount"
-                                        name="upi"
+                                        type="number"
+                                        name="paidAmount"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={formData.paidAmount || ""}
+                                        value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100)) + (formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
                                         onChange={handleChange}
                                         readOnly
+                                        style={{ pointerEvents: "none" }}
                                     />
-                                    {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
                                 </div>
                             </div>
                         </>)
@@ -465,7 +613,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                     value={formData.transactionId}
                                     onChange={handleChange}
                                 />
-                                {errors.utr && <p className="text-danger small-font">{errors.utr}</p>}
+                                {errors.transactionId && <p className="text-danger small-font">{errors.transactionId}</p>}
                             </div>
                             <div className="col mb-2">
                                 <label className="small-font mb-1">Upload Payment Screenshot</label>
@@ -500,6 +648,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
                                         />
                                     </div>
                                 )}
+                                {errors.utr && <p className="text-danger small-font">{errors.utr}</p>}
+                                {errors.utr && <p className="text-danger small-font">{errors.utr}</p>}
                             </div>
                         </div>
                     )}

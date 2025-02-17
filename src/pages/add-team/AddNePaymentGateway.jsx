@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import DepositePopup from "../popups/DepositePopup";
 import WithdrawPopup from "../popups/WithdrawPopup";
 import PaymentModes from "../../components/PaymentModes";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const AddNePaymentGateway = () => {
   const [error, setError] = useState(null);
@@ -31,6 +32,8 @@ const AddNePaymentGateway = () => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [offlinePaymentModes, setOfflinePaymentModes] = useState([]);
   const [combinedPaymentModes, setCombinedPaymentModes] = useState([]);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
+  const [discription, setDiscription] = useState("Deposit Ticket Successfully Created")
   const isInitialRendering = useRef(true)
   const location = useLocation();
   const { actionType } = location.state || {};
@@ -111,11 +114,11 @@ const AddNePaymentGateway = () => {
         const paymentMode = paymentModes.find(
           (paymentMode) => paymentMode.payment_mode_id === slicedId
 
-        );  
+        );
         return {
-          ...offlineMode, 
-          ...paymentMode, 
-          isEnabled: !!paymentMode, 
+          ...offlineMode,
+          ...paymentMode,
+          isEnabled: !!paymentMode,
         };
       });
 
@@ -144,7 +147,9 @@ const AddNePaymentGateway = () => {
       setSelectedPayment(paymentDetails);
     }
   };
-
+  const handleSuccessPopupOpen = () => {
+    setSuccessPopupOpen(true)
+  }
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -232,6 +237,7 @@ const AddNePaymentGateway = () => {
           depositePopup={depositePopup}
           actionType={actionType}
           selectedPayment={selectedPayment}
+          handleSuccessPopupOpen={handleSuccessPopupOpen}
         />
       )}
 
@@ -243,6 +249,11 @@ const AddNePaymentGateway = () => {
           selectedPayment={selectedPayment}
         />
       )}
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={discription}
+      />
     </div>
   );
 };
