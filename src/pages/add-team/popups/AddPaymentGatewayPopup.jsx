@@ -27,9 +27,6 @@ const AddPaymentGatewayPopup = ({
   countryId,
   //dir
   dirEditId,
-  setDirEditId,
-  dirGatewayId,
-  setDirGatewayId,
   getDirectorAccountData,
   //man profile
 }) => {
