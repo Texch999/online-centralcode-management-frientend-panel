@@ -119,7 +119,6 @@ const AddNePaymentGateway = () => {
         };
       });
 
-      console.log(combinedData, "=====> Combined Data");
       setCombinedPaymentModes(combinedData);
     }
   }, [offlinePaymentModes, paymentModes]);
@@ -141,7 +140,6 @@ const AddNePaymentGateway = () => {
       setDepositePopup(true);
       setSelectedPayment(paymentDetails);
     } else if (actionType === "Withdraw") {
-      console.log(actionType, paymentDetails, "=======>paymentDetails")
       setWithdrawPopup(true);
       setSelectedPayment(paymentDetails);
     }

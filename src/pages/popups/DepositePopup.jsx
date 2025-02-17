@@ -130,21 +130,21 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         if (selectedPayment?.avil_modes === 4) {
             payload.cashDes = formData.description;
         } else {
-
             payload.transactionId = formData.transactionId;
-            payload.slip = slip
         }
 
         console.log("Payload:", payload);
 
-        // const requestBody = {
-        //     body: payload,
-        // };
+        // Construct the request body
+        const requestBody = {
+            body: payload,
+        };
 
-        // if (formData.screenshot) {
-        //     requestBody.file = formData.screenshot;
-        // }
-
+        // If there's a screenshot, add it to the request body
+        if (selectedPayment?.avil_modes !== 4) {
+            requestBody.slip = slip
+        }
+        console.log("requestBody:", requestBody);
         // Call the API with the payload
         // submitDeposit(requestBody)
         //     .then((response) => {
@@ -159,8 +159,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, actionType, selectedPa
         //         setError(error?.message || "API request failed");
         //     });
     };
-
-    console.log(selectedWebDetails, "==========>selectedWebDetails")
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">

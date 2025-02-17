@@ -49,7 +49,6 @@ const PaymentModes = ({
                 <div className="row g-1">
                   {filteredPayments.map((card) => (
                     <div key={card.id} className="col-2">
-                      {console.log(card, "===card")}
                       <div
                         className="card h-100"
                         style={{
