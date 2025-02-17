@@ -50,9 +50,9 @@ const PaymentGateway = () => {
   const pages = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(pages);
   const limit = itemsPerPage;
-  const offset = (currentPage - 1) * itemsPerPage;
-  const [currentLimit, setCurrentLimit] = useState(4);
-  const [currentOffset, setCurrentOffset] = useState(0);
+  const offset = (currentPage-1)*itemsPerPage;
+  // const [currentLimit, setCurrentLimit] = useState(4);
+  // const [currentOffset, setCurrentOffset] = useState(0);
   const [countryId, setCountryId] = useState(null);
 
   const gatewayTypeMap = {
@@ -108,7 +108,7 @@ const PaymentGateway = () => {
   const fetchManagementPaymentDetails = async (limit, offset) => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails(limit, offset);
+      const response = await getManagementPaymentDetails({limit, offset});
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
         setTotalRecords(response?.meta?.totalCount);
@@ -132,19 +132,17 @@ const PaymentGateway = () => {
     }
   }, []);
   const onPageChange = ({ limit, offset }) => {
-    setCurrentLimit(limit);
-    setCurrentOffset(offset);
     if (role_code === "management") {
       fetchManagementPaymentDetails(limit, offset);
     }
   };
 
   //suspend api
-  const suspendManPaymnet = () => {
+  const suspendManPaymnet = (limit, offset) => {
     suspendManagementPaymentDetails(suspendManagementPaymentId)
       .then((response) => {
         if (response?.status === true) {
-          fetchManagementPaymentDetails(currentLimit, currentOffset);
+          fetchManagementPaymentDetails(limit, offset);
           setSuspendPayment(false);
           setSuspendManagementPaymentId(null);
           setSuspendManagementPaymentStatus(null);
@@ -263,8 +261,8 @@ const PaymentGateway = () => {
   const pageSize = itemsPerPage;
 
   const handleDirPageChange = ({ limit, offset }) => {
-    setCurrentLimit(limit);
-    setCurrentOffset(offset);
+    // setCurrentLimit(limit);
+    // setCurrentOffset(offset);
     if (role_code === "director") {
       getDirectorAccountData(pages, pageSize);
     }

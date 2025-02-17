@@ -43,6 +43,8 @@ const OfflinePaymentModes = () => {
   const [errorPopup, setErrorPopup] = useState(false);
   const status_id = statusId === 1 ? 2 : 1;
 
+
+  
   const hanldeAddModal = () => {
     setShowAddModal(true);
     setIsEdit(false);
@@ -163,7 +165,7 @@ const OfflinePaymentModes = () => {
         setErrorPopup(true);
         setTimeout(() => {
           setErrorPopup(false);
-        },2000);
+        }, 2000);
       });
   };
 

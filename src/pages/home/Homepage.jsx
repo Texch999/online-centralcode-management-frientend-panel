@@ -18,9 +18,9 @@ import { FaCoins } from "react-icons/fa";
 import Select from "react-select";
 import { HiUserGroup } from "react-icons/hi";
 import { roundedReactSelect } from "../../components/ReactSelectStyles";
-import { getAllCountires } from "../../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../../redux/action";
+import { getCountries } from "../../api/apiMethods";
 
 function Homepage() {
   ChartJS.register(
@@ -337,7 +337,7 @@ function Homepage() {
 
   // get all countries api
   const getAllCountries = () => {
-    getAllCountires()
+    getCountries()
       .then((response) => {
         if (response?.status === true) {
           dispatch(setAllCountries(response?.data));
