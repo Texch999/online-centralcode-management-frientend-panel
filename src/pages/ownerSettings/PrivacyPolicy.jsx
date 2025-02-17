@@ -20,13 +20,16 @@ import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import ActiveInActiveModal from "../popups/ActiveInActiveModal";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
+import { useCountries } from "../../context/CountriesContext";
 
 const PrivacyPolicy = () => {
+  const { countries, refreshCountries } = useCountries();
+  console.log(countries, "ggggg");
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [privacyList, setPrivacyList] = useState([]);
   const [error, setError] = useState("");
-  const [countries, setCountries] = useState([]);
+  // const [countries, setCountries] = useState([]);
   const [showPrivacyText, setShowPrivacyText] = useState("");
   const [privacyPolicyId, setPrivacyPolicyId] = useState(null);
   const [websites, setWebsites] = useState([]);
@@ -67,7 +70,7 @@ const PrivacyPolicy = () => {
   // const pagsizes = totalFetchs;
 
   const handlePageChange = () => {
-    getPolicyPrivacyData(intialpage,pageSize);
+    getPolicyPrivacyData(intialpage, pageSize);
   };
 
   const handleStatus = (id, status) => {
@@ -76,10 +79,13 @@ const PrivacyPolicy = () => {
     setStatusId(status);
   };
 
-  const countryOptions = countries.map((item) => ({
-    value: item?.id,
-    label: item?.name,
-  }));
+  const countryOptions = [
+    { value: 0, label: "All" },
+    ...countries.map((item) => ({
+      value: item?.id,
+      label: item?.name,
+    })),
+  ];
 
   const websiteOptions = websites.map((item) => ({
     value: item?.id,
@@ -91,17 +97,17 @@ const PrivacyPolicy = () => {
     setAvailablePrivacyWebsiteId(id);
   };
 
-  const getAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
-        setCountries(updatedCountries);
-        setCountriesData(response?.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
+  // const getAllCountries = () => {
+  //   getCountries()
+  //     .then((response) => {
+  //       const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
+  //       setCountries(updatedCountries);
+  //       setCountriesData(response?.data);
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
 
   const getAllWebsites = () => {
     if (websites.length > 0) return;
@@ -118,7 +124,7 @@ const PrivacyPolicy = () => {
       });
   };
 
-  const getPolicyPrivacyData = (page,pageSize) => {
+  const getPolicyPrivacyData = (page, pageSize) => {
     setLoading(true);
     getPrivacyPolicy({ page, pageSize })
       .then((response) => {
@@ -140,8 +146,8 @@ const PrivacyPolicy = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      getPolicyPrivacyData(page,pageSize);
-      getAllCountries();
+      getPolicyPrivacyData(page, pageSize);
+      // getAllCountries();
     }
   }, []);
 
