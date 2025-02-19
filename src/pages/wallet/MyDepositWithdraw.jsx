@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import DepositePopup from "../popups/DepositePopup";
 import WithdrawPopup from "../popups/WithdrawPopup";
@@ -16,6 +15,11 @@ import { BsEye } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { MdAutoDelete } from "react-icons/md";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import SuccessPopup from "../popups/SuccessPopup";
+import ErrorPopup from "../popups/ErrorPopup";
+
+
+
 function MyDepositWithdraw() {
   const [depositePopup, setDepositePopup] = useState(false);
   const [withdrawPopup, setWithdrawPopup] = useState(false);
@@ -38,6 +42,9 @@ function MyDepositWithdraw() {
   const [rejectionReasons, setRejectionReasons] = useState(null);
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [ticketId, setTicketId] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [ErroDiscription, setErroDiscription] = useState("");
   const initialRendering = useRef(true)
 
   const handleDepositWithdrawPopupOpen = () => {
@@ -174,11 +181,20 @@ function MyDepositWithdraw() {
       .then((response) => {
         if (response.status === true || "true") {
           getDepositTickets(limit, offset)
+          setSuccessPopupOpen(true)
+        } else {
+          console.log(response, "=====> response")
         }
       })
       .catch((error) => {
         setError(error?.message);
-        console.log("Fail to delete ticket error", error);
+        setErrorPopupOpen(true)
+        if (error?.message?.errorCode === "DB_ERROR" || "VALID_ERROR") {
+          setErroDiscription("Unable to delete the record. Please try again.")
+        } else {
+          setErroDiscription("Unable to delete the record. Please try again.")
+        }
+
       })
   }
 
@@ -228,7 +244,7 @@ function MyDepositWithdraw() {
                 }
                 }
               />
-              {}
+              { }
               < MdAutoDelete
                 size={22}
                 className="eye-icon pointer m-2 pointer"
@@ -240,16 +256,6 @@ function MyDepositWithdraw() {
       }
     ));
 
-  const MY_TRANSACTIONS_FOOTER = [
-    { header: "Total" },
-    { header: "" },
-    { header: "" },
-    { header: <div className="green-font">10000000</div> },
-    { header: <div className="red-font">10000000</div> },
-    { header: "" },
-    { header: "10000000" },
-    { header: "" },
-  ];
 
   const handleDeposit = (action) => {
     navigate("/addnew-payments", {
@@ -360,28 +366,14 @@ function MyDepositWithdraw() {
           </div>
         </div>
       </div>
-      {/* {userRole === "management" ?
-        <Table
-          columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
-          data={MY_TRANSACTIONS_MANAGEMENT_DATA}
-          // footer={MY_TRANSACTIONS_FOOTER}
-          itemsPerPage={itemsPerPage}
-          totalRecords={totalRecords}
-          onPageChange={handlePageChange}
-          rejectionReasons={rejectionReasons}
-        />
-        : */}
+
       <Table
         columns={MY_TRANSACTIONS_DIRECTOR_COLUMNS}
         data={MY_TRANSACTIONS_DIRECTOR_DATA}
-        // footer={MY_TRANSACTIONS_FOOTER}
         itemsPerPage={itemsPerPage}
         totalRecords={totalRecords}
         onPageChange={handlePageChange}
-      // rejectionReasons={[]}
       />
-      {/* } */}
-
 
       {depositePopup && (
         <DepositePopup
@@ -420,7 +412,22 @@ function MyDepositWithdraw() {
           />
         )
       }
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription="Ticket deleted successfully"
+        />
+      )}
 
+      {errorPopupOpen && (
+        <ErrorPopup
+          errorPopupOpen={errorPopupOpen}
+          setErrorPopupOpen={setErrorPopupOpen}
+          discription={ErroDiscription}
+
+        />
+      )}
 
     </div>
   );
