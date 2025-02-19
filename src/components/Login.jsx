@@ -27,7 +27,25 @@ function Login() {
   const [loginData, setLoginData] = useState();
   console.log(loginData, "loginData");
   const location = useLocation();
+  useEffect(() => {
+    if (loginData) {
+      // Only run this logic if loginData is set
+      if (loginData?.status === true) {
+        localStorage.setItem("jwt_token", loginData?.token);
+        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("emp_role_id", loginData?.user?.role?.role_id);
+        localStorage.setItem("role_name", loginData?.user?.role?.role_name);
+        localStorage.setItem("role_code", loginData?.user?.role?.role_name);
+        localStorage.setItem("user_id", loginData?.user?.id);
+        localStorage.setItem("user_name", loginData?.user?.name);
+        navigate("/");  // Navigate to the home page or dashboard
 
+        setError("");  // Clear any existing error message
+      } else {
+        setError("Something Went Wrong");
+      }
+    }
+  }, [loginData, navigate]); // This will run when `loginData` changes
   // const handleLogin = (data) => {
   //   const payload = {
   //     login_name: data?.username,
@@ -90,32 +108,15 @@ function Login() {
     loginApiCall(payload)
       .then((response) => {
         setLoading(false);
-
-        if (response?.status === true) {
-          console.log(response, "response from API");
-          setLoginData(response);
-          localStorage.setItem("jwt_token", response?.token);
-          localStorage?.setItem("isLoggedIn", true);
-          localStorage.setItem("emp_role_id", response?.user?.role?.role_id);
-          localStorage.setItem("role_name", response?.user?.role?.role_name);
-          localStorage.setItem("role_code", response?.user?.role?.role_name);
-          localStorage.setItem("user_id", response?.user?.id);
-          localStorage.setItem("user_name", response?.user?.name);
-          console.log(response, "========>response login ")
-          navigate("/");
-          setError("");
-        } else {
-          setError("Something Went Wrong");
-        }
+        setLoginData(response); // Set loginData here to trigger useEffect
       })
       .catch((error) => {
         setLoading(false);
         setError(error?.message || "Login failed");
       });
 
-    setTimeout(() => setError(""), 2000);
+    setTimeout(() => setError(""), 2000); // Clear the error after a short delay
   };
-
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -220,9 +221,8 @@ function Login() {
               )}
 
               <button
-                className={`orange-btn mt-4 w-100 ${
-                  !isValid || loading ? "disabled-btn" : ""
-                }`}
+                className={`orange-btn mt-4 w-100 ${!isValid || loading ? "disabled-btn" : ""
+                  }`}
                 type="submit"
                 disabled={!isValid || loading}
               >

@@ -437,6 +437,7 @@ export {
   getDirectorSites,
   DirectorAvailablePaymentsModes,
   getNotificationsforManagement,
-  
+  getNotificationsforDirector
+
 
 };
