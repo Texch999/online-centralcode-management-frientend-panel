@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
@@ -7,8 +7,17 @@ import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+
 
 function UserReports() {
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+
+
+  const handleConfirmDeletePopupOpen = () => {
+    setShowConfirmPopup(true);
+  };
+
   const websiteOptions = [
     { value: "Option 1", label: "Option 1" },
     { value: "Option 2", label: "Option 2" },
@@ -72,14 +81,18 @@ function UserReports() {
     ),
     pl: (
       <div>
-        <span className="green-font">10000000</span> <br/>
+        <span className="green-font">10000000</span> <br />
         Result: Rajasthan Royals Win
       </div>
     ),
     status: (
       <div className="d-flex gap-3">
-          <SlPencil size={18} className="pointer"/>
-          <FaRegTrashCan size={18} className="pointer"/>
+        <SlPencil size={18} className="pointer" />
+        <FaRegTrashCan
+          size={18}
+          className="pointer"
+          onClick={handleConfirmDeletePopupOpen}
+        />
         <span className="active-btn-table small-font ms-2">Settled</span>
       </div>
     ),
@@ -184,6 +197,12 @@ function UserReports() {
         footer={DIRECTOR_FOOTER}
         greyBackground="footer-bg"
         itemsPerPage={5}
+      />
+      <ConfirmationPopup
+        confirmationPopupOpen={showConfirmPopup}
+        setConfirmationPopupOpen={setShowConfirmPopup}
+        discription="Are you sure you want to block this Report?"
+        submitButton="Block"
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -18,6 +18,9 @@ import { FaCoins } from "react-icons/fa";
 import Select from "react-select";
 import { HiUserGroup } from "react-icons/hi";
 import { roundedReactSelect } from "../../components/ReactSelectStyles";
+import { useDispatch } from "react-redux";
+import { setAllCountries } from "../../redux/action";
+import { getCountries } from "../../api/apiMethods";
 
 function Homepage() {
   ChartJS.register(
@@ -30,6 +33,9 @@ function Homepage() {
   );
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState(0);
+  const dispatch = useDispatch();
+  const countriesDataFetched = useRef(false);
+  const [error, setError] = useState("");
   const BUTTONS = ["Casino Winners", "Casino Looser"];
   const FILTER_OPTIONS = [
     { value: "today", label: "Today" },
@@ -328,6 +334,26 @@ function Homepage() {
       },
     },
   };
+
+  // get all countries api
+  const getAllCountries = () => {
+    getCountries()
+      .then((response) => {
+        if (response?.status === true) {
+          dispatch(setAllCountries(response?.data));
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "API request failed");
+      });
+  };
+  useEffect(() => {
+    if (countriesDataFetched.current) return;
+    countriesDataFetched.current = true;
+    getAllCountries();
+  }, []);
 
   return (
     <div className="p-2">

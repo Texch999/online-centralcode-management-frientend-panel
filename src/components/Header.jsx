@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
@@ -13,14 +13,18 @@ import { PiDotsNineBold, PiSquaresFourFill } from "react-icons/pi";
 import { ImUserPlus } from "react-icons/im";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
-
+import { getCountries } from "../api/apiMethods";
+import { useDispatch } from "react-redux";
+import { setAllCountries } from "../redux/action";
 function Header() {
   const navigate = useNavigate();
   const role_name = localStorage?.getItem("role_name");
   const role_code = localStorage?.getItem("role_code");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
-
+  const countriesDataFetched = useRef(false);
+  const userRole = localStorage.getItem("role_code")
+  const [error, setError] = useState("");
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
   };
@@ -35,17 +39,43 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+    if (userRole === "management") {
+      localStorage.clear();
+      navigate("/master/login");
+    } else if (userRole === "director") {
+      localStorage.clear();
+      navigate("/director/login");
+    }
+
+
+    // window.location.reload();
+
   };
-
+  const dispatch = useDispatch()
   const isDashboard = window?.location?.pathname === "/";
-
+  const getAllCountries = () => {
+    getCountries ()
+      .then((response) => {
+        if (response?.status === true) {
+          dispatch(setAllCountries(response?.data));
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "API request failed");
+      });
+  };
+  useEffect(() => {
+    if (countriesDataFetched.current) return;
+    countriesDataFetched.current = true;
+    getAllCountries();
+  }, []);
   return (
     <div className="header">
       <div className="w-100 flex-between px-2 py-1">
         <div className="d-flex align-items-center">
-          <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" />
+          <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" onClick={() => navigate("/")} />
           <div className="d-flex align-items-center input-css ms-1">
             <FaSearch size={18} className="grey-clr me-2" />
             <input
@@ -55,11 +85,10 @@ function Header() {
           </div>
         </div>
         <div className="d-flex align-items-center">
-          {role_name === "Central Panel" && (
+          {role_name === "owner" && (
             <div
-              className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
-                isActiveBtn ? "active-saffron-btn white-text" : ""
-              }`}
+              className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${isActiveBtn ? "active-saffron-btn white-text" : ""
+                }`}
               onClick={handleRegisterBtn}
             >
               <ImUserPlus size={18} />
@@ -88,31 +117,36 @@ function Header() {
             onClick={() => navigate("/")}
           >
             <PiSquaresFourFill size={24} className="me-2" />
-            <span className="medium-font pointer">Dashboard</span>
+            <span className="medium-font pointer text-capitalize">
+              Dashboard
+            </span>
           </div>
-          {role_name !== "Central Panel" ? (
+          {role_name !== "owner" ? (
             <div
               className={`${!isDashboard ? "saffron-btn" : "white-btn"}`}
               onClick={handleNavigate}
             >
-              {role_name !== "Central Panel" ? (
+              {role_name !== "owner" ? (
                 <FaUserTie size={22} className="me-2" />
               ) : (
                 <FaUserCog size={22} className="me-2" />
               )}
-              <span className="medium-font pointer">{role_name}</span>
+              <span className="medium-font pointer text-capitalize">
+                {role_name}
+              </span>
             </div>
           ) : (
             <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
               <Dropdown.Toggle
                 variant="none"
-                className={`${
-                  !isDashboard ? "saffron-btn" : "white-btn"
-                } br-0px d-flex align-items-center`}
+                className={`${!isDashboard ? "saffron-btn" : "white-btn"
+                  } br-0px d-flex align-items-center`}
                 id="dropdown-autoclose-true"
               >
                 <FaUserCog size={24} className="me-2" />
-                <span className="medium-font pointer">{role_name}</span>
+                <span className="medium-font pointer text-capitalize">
+                  {role_name}
+                </span>
                 {isDropdownOpen ? (
                   <FaChevronUp size={16} className="ms-2" />
                 ) : (
@@ -153,7 +187,7 @@ function Header() {
           <span className="ms-2 black-text3 medium-font">Chat</span>
         </div>
       </div>
-      {role_name !== "Central Panel" && role_name !== "White Label Setting" && (
+      {role_name !== "owner" && role_name !== "White Label Setting" && (
         <SubHeader />
       )}
     </div>

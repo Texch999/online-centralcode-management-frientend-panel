@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
 import AddManagementPopup from "./popups/AddManagementPopup";
 import { SlPencil } from "react-icons/sl";
@@ -10,18 +10,52 @@ import "../add-team/style.css";
 import "../../App.css";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { blockDirector, blockEmploye, getEmployees, resetEmployeePassword } from "../../api/apiMethods";
+import Roles from "../../utils/enum";
+import EditManagementPopup from "./popups/EditManagementPopup";
+import PaginationComponent from "../../components/Pagination";
 
 const AddManagementTeam = () => {
-  const [tableData, setTableData] = useState(
-    Array.from({ length: 17 }, (_, index) => ({
-      id: index + 1,
-      role: "Designer",
-      name: `Jayanta ${index + 1}`,
-      loginname: `Jayanta121_${index + 1}`,
-      phone: `+91 755145673${index}`,
-      email: `jayanta${index + 1}@demo.com`,
-    }))
-  );
+  const token = localStorage.getItem("jwt_token");
+  const [error, setError] = useState("");
+  const [tableData, setTableData] = useState([]);
+  const GetEmployee = () => {
+    getEmployees({ limit: 10, offset: 0 })
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response, "response from API");
+          setTableData(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message || "Login failed");
+      });
+  };
+
+  useEffect(() => {
+    GetEmployee();
+  }, []);
+  console.log(tableData, "tableData")
+  const TableData = tableData.map((employee) => {
+    const role = Roles[Number(employee.role)] || "Unknown";
+
+    return {
+      id: employee.id,
+      name: employee.name,
+      login_name: employee.login_name,
+      phone_no: employee.phone_no,
+      email: employee.email,
+      role: employee.role,
+      status: employee.status === 1 ? "green-clr" : "clr-red",
+      statusColor: employee.status === 1 ? "green-clr" : "clr-red",
+      created_date: new Date(employee.created_date).toLocaleString(),
+      updated_date: new Date(employee.updated_date).toLocaleString(),
+    };
+  });
+
+
 
   const [modalState, setModalState] = useState({
     showAddModal: false,
@@ -35,6 +69,8 @@ const AddManagementTeam = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingRowId, setEditingRowId] = useState(null);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
+  const [resetPasswordId, setResetPasswordId] = useState(null);
+  console.log(editingRowId, "editingRowId");
 
   const [formData, setFormData] = useState({
     role: "",
@@ -72,8 +108,8 @@ const AddManagementTeam = () => {
       setFormData({
         role: rowData.role,
         name: rowData.name,
-        loginName: rowData.loginName,
-        phoneNumber: rowData.phone,
+        loginName: rowData.login_name,
+        phoneNumber: rowData.phone_no,
         email: rowData.email,
         password: "",
         confirmPassword: "",
@@ -98,18 +134,27 @@ const AddManagementTeam = () => {
   };
 
   const handleBlockPopup = (rowId) => {
-    setModalState({
-      ...modalState,
+    const updatedTableData = tableData.map((row) => {
+      if (row.id === rowId) {
+        const newStatus = row.status === 1 ? 2 : 1;
+        return { ...row, status: newStatus };
+      }
+      return row;
+    });
+    setTableData(updatedTableData);
+
+    setModalState((prevState) => ({
+      ...prevState,
       isBlockPopupVisible: true,
       blockAccountId: rowId,
-    });
+    }));
   };
 
   const handleDeletePopup = (rowId) => {
     setModalState({
       ...modalState,
       isDeletePopupVisible: true,
-      deleteAccountId: rowId, // Store the ID of the account to delete
+      deleteAccountId: rowId,
     });
   };
 
@@ -117,11 +162,11 @@ const AddManagementTeam = () => {
     setTableData((prevData) =>
       prevData.filter((row) => row.id !== modalState.deleteAccountId)
     );
-    toggleModal("isDeletePopupVisible", false); // Close the delete popup
+    toggleModal("isDeletePopupVisible", false);
   };
-
-  const handleResetPasswordPopup = (isOpen) => {
-    setResetPasswordPopup(isOpen);
+  const handleResetPasswordPopup = (rowId) => {
+    setResetPasswordId(rowId);
+    setResetPasswordPopup(true);
   };
 
   const columns = [
@@ -135,11 +180,11 @@ const AddManagementTeam = () => {
     },
     {
       header: "Login Name",
-      field: "loginname",
+      field: "login_name",
     },
     {
       header: "Phone",
-      field: "phone",
+      field: "phone_no",
     },
     {
       header: "Email",
@@ -152,8 +197,15 @@ const AddManagementTeam = () => {
       width: "12%",
     },
   ];
-
-  const tableDataWithActions = tableData.map((row) => ({
+  const [EditShow, setEditShow] = useState();
+  const handleEditShow = (rowId) => {
+    setEditShow(true);
+    setEditingRowId(rowId);
+  };
+  const handleEditShowClose = () => {
+    setEditShow(false);
+  };
+  const tableDataWithActions = TableData.map((row) => ({
     ...row,
     action: (
       <ActionButtons
@@ -162,9 +214,62 @@ const AddManagementTeam = () => {
         onBlock={handleBlockPopup}
         onResetPassword={handleResetPasswordPopup}
         onDelete={handleDeletePopup}
+        status={row.status}
+        handleEditShow={handleEditShow}
       />
     ),
   }));
+
+  const onEmployeePasswordSubmit = (data) => {
+    if (!resetPasswordId) {
+      alert("Invalid ID");
+      return;
+    }
+
+    const requestData = {
+      password: data.password,
+      confirm_password: data.confirmPassword,
+      management_password: data.managementPassword,
+    };
+
+    resetEmployeePassword(resetPasswordId, requestData)
+      .then((response) => {
+        if (response) {
+          setTimeout(() => {
+            setResetPasswordPopup(false);
+          }, 1000);
+
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        alert(error?.message || "Request failed");
+      });
+  };
+  const status =
+    tableData.find((row) => row.id === modalState.blockAccountId)?.status
+  const blockAccountId = modalState.blockAccountId
+
+  const onEmployeeBlockSubmit = () => {
+    const requestData = {
+      status: status,
+    };
+    blockEmploye(blockAccountId, requestData)
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response, "response")
+          setTimeout(() => {
+
+          }, 1000);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        console.log(error?.message || "Request failed");
+      });
+  };
 
   return (
     <div>
@@ -189,27 +294,46 @@ const AddManagementTeam = () => {
           className="black-text"
           data={tableDataWithActions}
           columns={columns}
-          itemsPerPage={9}
+          itemsPerPage={5}
         />
       </div>
-      {/* AddManagementPopup Modal */}
+
       <AddManagementPopup
         show={modalState.showAddModal}
         onClose={() => toggleModal("showAddModal", false)}
-        formData={formData}
-        setFormData={setFormData}
         onSubmit={handleFormSubmit}
       />
-      {/* Block Account Modal */}
+      <EditManagementPopup
+        EditShow={EditShow}
+        handleEditShowClose={handleEditShowClose}
+        editingRowId={editingRowId}
+      />
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isBlockPopupVisible}
         setConfirmationPopupOpen={(value) =>
           toggleModal("isBlockPopupVisible", value)
         }
-        discription={"Are You Sure to Block this Account?"}
-        submitButton={"Block"}
+        discription={
+          modalState.blockAccountId &&
+          (tableData.find((row) => row.id === modalState.blockAccountId)
+            ?.status === 1
+            ? "Are you sure you want to activate this account?"
+            : "Are you sure you want to block  this account?")
+        }
+        submitButton={
+          modalState.blockAccountId &&
+          (tableData.find((row) => row.id === modalState.blockAccountId)
+            ?.status === 1
+            ? "Activate"
+            : "Block")
+        }
+        blockAccountId={modalState.blockAccountId}
+        status={
+          tableData.find((row) => row.id === modalState.blockAccountId)?.status
+        }
+        onSubmit={onEmployeeBlockSubmit}
       />
-      {/* Delete Account Modal */}
+
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isDeletePopupVisible}
         setConfirmationPopupOpen={(value) =>
@@ -219,44 +343,76 @@ const AddManagementTeam = () => {
         submitButton={"Delete"}
         onSubmit={handleDeleteAccount}
       />
-      {/* Reset Password Modal */}
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}
         setResetPasswordPopup={setResetPasswordPopup}
+        IndividualpassowrdId={resetPasswordId}
+        onSubmit={onEmployeePasswordSubmit}
       />
     </div>
   );
 };
 
+// const ActionButtons = ({
+//   rowId,
+//   onEdit,
+//   onBlock,
+//   onResetPassword,
+//   onDelete,
+//   status,
+//   handleEditShow,
+// }) => {
+
+//   return (
+//     <div className="d-flex gap-3 flex-center">
+//       <SlPencil
+//         size={18}
+//         className="pointer black-text"
+//         onClick={() => handleEditShow(rowId)}
+//       />
+//       <MdLockReset
+//         size={18}
+//         className="pointer black-text"
+//         onClick={() => onResetPassword(rowId)}
+//       />
+//       <MdBlockFlipped
+//         size={18}
+
+//         onClick={() => onBlock(rowId)}
+//       />
+//     </div>
+//   );
+// };
 const ActionButtons = ({
   rowId,
   onEdit,
   onBlock,
   onResetPassword,
   onDelete,
-}) => (
-  <div className="d-flex gap-3 flex-center">
-    <SlPencil
-      size={18}
-      className="pointer black-text"
-      onClick={() => onEdit(rowId)}
-    />
-    <MdLockReset
-      size={18}
-      className="pointer black-text"
-      onClick={() => onResetPassword(true)}
-    />
-    <MdBlockFlipped
-      size={18}
-      className="pointer black-text"
-      onClick={() => onBlock(rowId)}
-    />
-    <FaRegTrashCan
-      size={18}
-      className="pointer black-text"
-      onClick={() => onDelete(rowId)}
-    />
-  </div>
-);
+  status,
+  handleEditShow,
+}) => {
+  const blockIconColor = status === "green-clr" ? "green-clr" : "clr-red";
+
+  return (
+    <div className="d-flex gap-3 flex-center">
+      <SlPencil
+        size={18}
+        className="pointer black-text"
+        onClick={() => handleEditShow(rowId)}
+      />
+      <MdLockReset
+        size={18}
+        className="pointer black-text"
+        onClick={() => onResetPassword(rowId)}
+      />
+      <MdBlockFlipped
+        size={18}
+        className={`pointer ${blockIconColor}`} // Applying dynamic color class
+        onClick={() => onBlock(rowId)}
+      />
+    </div>
+  );
+};
 
 export default AddManagementTeam;

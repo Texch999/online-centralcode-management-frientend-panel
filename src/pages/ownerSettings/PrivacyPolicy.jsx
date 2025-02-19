@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import Table from "../../components/Table";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -8,16 +8,153 @@ import PrivacyPopUp from "./PrivacyPopUp";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
+import {
+  getCountries,
+  getPrivacyPolicy,
+  getWebsites,
+} from "../../api/apiMethods";
+import EditPrivacyPolicy from "./EditPrivacyPolicy";
+import { CircleLoader } from "react-spinners";
+import { CgWebsite } from "react-icons/cg";
+import SelectWebsitePopUp from "./SelectWebsitePopUp";
+import ActiveInActiveModal from "../popups/ActiveInActiveModal";
+import ErrorPopup from "../popups/ErrorPopup";
+import { useSearchParams } from "react-router-dom";
+import { useCountries } from "../../context/CountriesContext";
 
 const PrivacyPolicy = () => {
+  const { countries, refreshCountries } = useCountries();
+  console.log(countries, "ggggg");
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [privacyList, setPrivacyList] = useState([]);
+  const [error, setError] = useState("");
+  // const [countries, setCountries] = useState([]);
+  const [showPrivacyText, setShowPrivacyText] = useState("");
+  const [privacyPolicyId, setPrivacyPolicyId] = useState(null);
+  const [websites, setWebsites] = useState([]);
+  const [editPrivacyPolicyModal, setEditPrivacyPolicyModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectWebsite, setSelectWebsite] = useState(false);
+  const [activeInActivePopup, setActiveInActivePopup] = useState(false);
+  const [statusId, setStatusId] = useState(null);
+  const [privacyStatusId, setPrivacyStatusId] = useState("");
+  const [errorPopup, setErrorPopup] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [isEditModal, setIsEditModal] = useState("");
+  const [availablePrivacyWebsiteId, setAvailablePrivacyWebsiteId] =
+    useState(null);
+  const [countriesData, setCountriesData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dataFetched = useRef(false);
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(intialpage);
+  const [totalRecords, setTotalRecords] = useState(null);
+  const role_code = localStorage.getItem("role_code");
+  const itemsPerPage = 4;
+  const page = intialpage;
+  const pageSize = itemsPerPage;
 
-  const selectOptions = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
+  const handleEditPrivacyModal = (id) => {
+    setPrivacyPolicyId(id);
+    setEditPrivacyPolicyModal(true);
+  };
+  const handleAddPrivacyModal = () => {
+    setAddPrivacyModal(true);
+    getAllWebsites();
+  };
+
+  // const totalFetchs = 4;
+  // const currentOffst = (currentPage - 1) * totalFetchs;
+  // const pages = currentOffst;
+  // const pagsizes = totalFetchs;
+
+  const handlePageChange = () => {
+    getPolicyPrivacyData(intialpage, pageSize);
+  };
+
+  const handleStatus = (id, status) => {
+    setActiveInActivePopup(true);
+    setPrivacyStatusId(id);
+    setStatusId(status);
+  };
+
+  const countryOptions = [
+    { value: 0, label: "All" },
+    ...countries.map((item) => ({
+      value: item?.id,
+      label: item?.name,
+    })),
   ];
+
+  const websiteOptions = websites.map((item) => ({
+    value: item?.id,
+    label: item?.web_name,
+  }));
+
+  const hanldeWebsites = (id) => {
+    setSelectWebsite(true);
+    setAvailablePrivacyWebsiteId(id);
+  };
+
+  // const getAllCountries = () => {
+  //   getCountries()
+  //     .then((response) => {
+  //       const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
+  //       setCountries(updatedCountries);
+  //       setCountriesData(response?.data);
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
+
+  const getAllWebsites = () => {
+    if (websites.length > 0) return;
+    getWebsites()
+      .then((response) => {
+        if (response?.status === true) {
+          setWebsites(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  const getPolicyPrivacyData = (page, pageSize) => {
+    setLoading(true);
+    getPrivacyPolicy({ page, pageSize })
+      .then((response) => {
+        if (response?.status === true) {
+          setPrivacyList(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+        setErrorPopup(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (role_code === "management") {
+      if (dataFetched.current) return;
+      dataFetched.current = true;
+      getPolicyPrivacyData(page, pageSize);
+      // getAllCountries();
+    }
+  }, []);
+
+  const filteredData =
+    selectedCountry && selectedCountry.value !== 0
+      ? privacyList.filter((item) => item.country_id === selectedCountry.value)
+      : privacyList;
 
   const REJECTION_COLUMNS = [
     { header: "Country", field: "country", width: "20%" },
@@ -26,313 +163,174 @@ const PrivacyPolicy = () => {
     { header: "Status", field: "status", width: "10%" },
     { header: "Action", field: "action", width: "30%" },
   ];
-  const REJECTION_DATA = [
-    {
-      country: <div>India</div>,
 
+  const DATA = filteredData.map((item, index) => {
+    const country = countries?.find(
+      (country) => country.id === item.country_id
+    );
+    return {
+      country: <div>{country?.name}</div>,
       policyDetails: (
         <div
           className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
+          onClick={() => {
+            setIsEditModal(true);
+            setShowPrivacyModal(true);
+            setShowPrivacyText(item?.description);
+          }}
         >
           View
         </div>
       ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
+      showingWebsite: item?.websites?.map((item) => (
+        <div className="d-flex flex-column">{item?.web_name}</div>
+      )),
       status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      country: <div>India</div>,
-
-      policyDetails: (
         <div
-          className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
+          className={`${
+            item?.is_active === 1 ? "green-btn" : "red-btn"
+          }  w-fill`}
         >
-          View
+          {item?.is_active === 1 ? "Active" : "In-Active"}
         </div>
       ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
       action: (
         <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      country: <div>India</div>,
-
-      policyDetails: (
-        <div
-          className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
-        >
-          View
-        </div>
-      ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
+          {item?.is_active === 2 ? (
+            <span className="mx-3 pointer disabled">
+              <CgWebsite size={20} />
+            </span>
+          ) : (
+            <span
+              className="mx-3 pointer"
+              onClick={() => hanldeWebsites(item?.id)}
+            >
+              <CgWebsite size={20} />
+            </span>
+          )}
+          {item?.is_active === 2 ? (
+            <span title="this action is denied" className="disabled">
+              <SlPencil size={20} />
+            </span>
+          ) : (
+            <span
+              onClick={() => handleEditPrivacyModal(item?.id)}
+              className="pointer"
+            >
+              <SlPencil size={20} />
+            </span>
+          )}
+          <span
+            className="ms-2 pointer"
+            onClick={() => handleStatus(item?.id, item?.is_active)}
+          >
+            <FaRegTrashCan size={20} />
           </span>
         </div>
       ),
+    };
+  });
 
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      country: <div>India</div>,
-
-      policyDetails: (
-        <div
-          className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
-        >
-          View
-        </div>
-      ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      country: <div>India</div>,
-
-      policyDetails: (
-        <div
-          className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
-        >
-          View
-        </div>
-      ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-    {
-      country: <div>India</div>,
-
-      policyDetails: (
-        <div
-          className="saffron-btn2 w-20 pointer"
-          onClick={() => setShowPrivacyModal(true)}
-        >
-          View
-        </div>
-      ),
-
-      showingWebsite: (
-        <div>
-          we2Call.com <br />
-          www.ravana.com <br />
-          txchange.com
-        </div>
-      ),
-      status: (
-        <div>
-          <div className="green-btn w-fill">Active</div>
-        </div>
-      ),
-
-      action: (
-        <div className="large-font d-flex w-50 flex-between">
-          <span>
-            <SlPencil size={18} />
-          </span>
-          <span className="ms-2">
-            <FaRegTrashCan size={18} />
-          </span>
-        </div>
-      ),
-
-      resultDateTime: (
-        <div>
-          02-10-2024
-          <br />
-          10:34:00
-        </div>
-      ),
-    },
-  ];
   return (
     <div>
-      
       <div className="w-100 d-flex flex-between align-items-center mb-3 mt-2">
-        <h6 className="yellow-font mb-0">Privacy Policy</h6>
-        <div className="col-5 col-lg-4 d-flex align-items-center gap-2">
+        <div className="col-9 ">
+          <h6 className="yellow-font mb-0">Privacy Policy</h6>
+        </div>
+
+        <div className="d-flex col-3 gap-1 flex-between">
+          <div className="col-7 d-flex align-items-center gap-2">
             <Select
               className="small-font w-100"
-              options={selectOptions}
+              options={countryOptions}
               placeholder="Select"
               styles={customStyles}
               maxMenuHeight={120}
               menuPlacement="auto"
               classNamePrefix="custom-react-select"
+              onChange={(selectedOption) => {
+                setSelectedCountry(selectedOption);
+              }}
             />
-          <div className="w-50 saffron-btn2 small-font pointer">
-            Submit
           </div>
           <button
-            className="col-1 flex-center align-items-center small-font pointer blue-font input-pill rounded w-25 py-2"
-            onClick={() => setAddPrivacyModal(true)}
+            className="col-4 flex-center align-items-center small-font pointer blue-font input-pill rounded  py-2"
+            onClick={handleAddPrivacyModal}
           >
-            <IoAddOutline className="medium-font"/>
+            <IoAddOutline className="medium-font" />
             <span className="small-font">Add new</span>
           </button>
         </div>
       </div>
-
-      <Table
-        columns={REJECTION_COLUMNS}
-        data={REJECTION_DATA}
-        itemsPerPage={5}
-      />
+      <div>
+        {loading ? (
+          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            <CircleLoader color="#3498db" size={40} />
+            <div className="medium-font black-font my-3">
+              Just a moment...............⏳
+            </div>
+          </div>
+        ) : (
+          <Table
+            columns={REJECTION_COLUMNS}
+            data={DATA}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
 
       <AddPrivacyPolicyPopUp
         setAddPrivacyModal={setAddPrivacyModal}
         addPrivacyModal={addPrivacyModal}
+        isEditModal={isEditModal}
+        setIsEditModal={setIsEditModal}
+        getPolicyPrivacyData={getPolicyPrivacyData}
+        setCountriesData={setCountriesData}
+        countriesData={countriesData}
+        websites={websites}
+        setWebsites={setWebsites}
       />
       <PrivacyPopUp
         setShowPrivacyModal={setShowPrivacyModal}
         showPrivacyModal={showPrivacyModal}
+        setShowPrivacyText={setShowPrivacyText}
+        showPrivacyText={showPrivacyText}
+      />
+      <EditPrivacyPolicy
+        setEditPrivacyPolicyModal={setEditPrivacyPolicyModal}
+        editPrivacyPolicyModal={editPrivacyPolicyModal}
+        setPrivacyPolicyId={setPrivacyPolicyId}
+        privacyPolicyId={privacyPolicyId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
+        setShowPrivacyText={setShowPrivacyText}
+        showPrivacyText={showPrivacyText}
+      />
+      <SelectWebsitePopUp
+        setSelectWebsite={setSelectWebsite}
+        selectWebsite={selectWebsite}
+        setAvailablePrivacyWebsiteId={setAvailablePrivacyWebsiteId}
+        availablePrivacyWebsiteId={availablePrivacyWebsiteId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
+      />
+      <ActiveInActiveModal
+        privacyStatusId={privacyStatusId}
+        setPrivacyStatusId={setPrivacyStatusId}
+        statusId={statusId}
+        setStatusId={setStatusId}
+        getPolicyPrivacyData={getPolicyPrivacyData}
+        setActiveInActivePopup={setActiveInActivePopup}
+        activeInActivePopup={activeInActivePopup}
+        discription={`Are you sure want to ${
+          statusId === 1 ? "In-Active" : "Active"
+        }  Privacy Policy`}
+        submitButton={statusId === 1 ? "In-Active" : "Active"}
+      />
+      <ErrorPopup
+        discription={error}
+        errorPopupOpen={errorPopup}
+        setErrorPopupOpen={setErrorPopup}
       />
     </div>
   );

@@ -1,0 +1,300 @@
+import React, { useState, useEffect, useRef } from "react";
+import {
+  DirectorUpLinePaymentDetails,
+  ownersAvailablePaymentsModes,
+  DirectorAvailablePaymentsModes,
+  managementPaymentDetails,
+} from "../../../src/api/apiMethods";
+import Select from "react-select";
+import { customStyles } from "../../components/ReactSelectStyles";
+import NoDataFound from "./NoDataFound ";
+import { useSelector } from "react-redux";
+import AddPaymentGatewayPopup from "./popups/AddPaymentGatewayPopup";
+import { useLocation } from "react-router-dom";
+import DepositePopup from "../popups/DepositePopup";
+import WithdrawPopup from "../popups/WithdrawPopup";
+import PaymentModes from "../../components/PaymentModes";
+import SuccessPopup from "../popups/SuccessPopup";
+
+const AddNePaymentGateway = () => {
+  const [error, setError] = useState(null);
+  const [selectedCountryId, setSelectedCountryId] = useState(107);
+  const [loading, setLoading] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [paymentModes, setPaymentModes] = useState([]);
+  const [AddPaymentGatewayModal, setOnAddPaymentGateway] = useState(false);
+  const userRole = localStorage.getItem("role_code");
+  const [depositePopup, setDepositePopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
+  const [addpaymentId, setAddPaymentId] = useState();
+  const [countryId, setCountryId] = useState(null);
+  const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [offlinePaymentModes, setOfflinePaymentModes] = useState([]);
+  const [combinedPaymentModes, setCombinedPaymentModes] = useState([]);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
+  const [discription, setDiscription] = useState("Deposit Ticket Successfully Created")
+  const isInitialRendering = useRef(true)
+  const location = useLocation();
+  const { actionType } = location.state || {};
+  const handleAddModal = (id, country, available_id) => {
+    setAddPaymentId(id);
+    setCountryId(country);
+    setOnAddPaymentGateway(true);
+    setAvailablePaymentModeId(available_id);
+  };
+  const tabNames = ["Offline Payment Modes", "Payment Gateway"];
+  const modes = [
+    { title: "Bank Transfer", mode: 1 },
+    { title: "E-Wallets", mode: 2 },
+    { title: "QR Codes", mode: 3 },
+    { title: "Cash", mode: 4 },
+    { title: "Payment Gateway", mode: 5 },
+  ];
+  const getOwnersPaymentModes = () => {
+    setLoading(true);
+    let fetchPaymentModes;
+    if (userRole === "director") {
+      if (actionType === "Withdraw" || "Deposit") {
+        fetchPaymentModes = managementPaymentDetails();
+      }
+    } else {
+      fetchPaymentModes = ownersAvailablePaymentsModes();
+    }
+
+    fetchPaymentModes
+      .then((response) => {
+        setPaymentModes(response?.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+        console.log("getDirectorAccountDetails error", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+
+  const OfflineModesdata = () => {
+    setLoading(true);
+    let fetchPaymentModes;
+    if (userRole === "director") {
+      fetchPaymentModes = DirectorAvailablePaymentsModes();
+    } else {
+      fetchPaymentModes = ownersAvailablePaymentsModes();
+    }
+    fetchPaymentModes
+      .then((response) => {
+        setOfflinePaymentModes(response?.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+        console.log("getDirectorAccountDetails error", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false
+      return
+    }
+    OfflineModesdata();
+    getOwnersPaymentModes();
+  }, [isInitialRendering]);
+
+  useEffect(() => {
+    if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
+      const combinedData = offlinePaymentModes.map((offlineMode) => {
+        // Slice the offlineMode.id to remove the first 3 and last 3 characters
+        const slicedId = Number(offlineMode.id.slice(3, -3));
+        // Find the corresponding paymentMode for the sliced offlineMode.id
+        const paymentMode = paymentModes.find(
+          (paymentMode) => paymentMode.payment_mode_id === slicedId
+
+        );
+        return {
+          ...offlineMode,
+          ...paymentMode,
+          isEnabled: !!paymentMode,
+        };
+      });
+
+      setCombinedPaymentModes(combinedData);
+    }
+  }, [offlinePaymentModes, paymentModes]);
+
+  // useEffect(() => {
+  //   if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
+  //     // Create a map to group payment modes by their sliced ID
+  //     const paymentModesMap = paymentModes.reduce((acc, paymentMode) => {
+  //       const slicedId = paymentMode.payment_mode_id.toString(); // Convert to string to match the sliced ID
+  //       if (!acc[slicedId]) {
+  //         acc[slicedId] = [];
+  //       }
+  //       acc[slicedId].push(paymentMode);
+  //       return acc;
+  //     }, {});
+
+  //     // Flatten the data to create one card per payment detail
+  //     const flattenedData = offlinePaymentModes.flatMap((offlineMode) => {
+  //       const slicedId = offlineMode.id.slice(3, -3); // Slice the offlineMode.id
+  //       const paymentDetails = paymentModesMap[slicedId] || []; // Get the payment details for the sliced ID
+
+  //       // If there are no payment details, return a single card with isEnabled: false
+  //       if (paymentDetails.length === 0) {
+  //         return [
+  //           {
+  //             ...offlineMode,
+  //             paymentDetails: [], // No payment details
+  //             isEnabled: false, // Disable the card
+  //           },
+  //         ];
+  //       }
+
+  //       // If there are payment details, create one card per payment detail
+  //       return paymentDetails.map((paymentDetail) => ({
+  //         ...offlineMode,
+  //         paymentDetails: [paymentDetail], // Single payment detail per card
+  //         isEnabled: true, // Enable the card
+  //       }));
+  //     });
+
+  //     setCombinedPaymentModes(flattenedData);
+  //   }
+  // }, [offlinePaymentModes, paymentModes]);
+  const allCountries = useSelector((item) => item?.allCountries);
+  const formattedCountries = allCountries.map((country) => ({
+    value: country.id,
+    label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
+  }));
+
+  const filteredPaymentModes = combinedPaymentModes.filter(
+    (mode) => mode.country_id === selectedCountryId
+  );
+
+  const hasNoRecords = filteredPaymentModes.length === 0;
+
+  const handleDepositAndWithdraw = (paymentDetails) => {
+    if (actionType === "Deposit") {
+      setDepositePopup(true);
+      setSelectedPayment(paymentDetails);
+    } else if (actionType === "Withdraw") {
+      setWithdrawPopup(true);
+      setSelectedPayment(paymentDetails);
+    }
+  };
+  const handleSuccessPopupOpen = () => {
+    setSuccessPopupOpen(true)
+  }
+  return (
+    <div>
+      <div className="row justify-content-between align-items-center mb-3 mt-2">
+        <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
+      </div>
+      <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
+        <div className="row mb-3">
+          <div className="col-3">
+            <label htmlFor="paymentMethod" className="medium-font mb-1">
+              Currency
+            </label>
+            <Select
+              className="small-font text-capitalize"
+              options={formattedCountries}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={300}
+              menuPlacement="auto"
+              value={formattedCountries.find(
+                (option) => option.value === selectedCountryId
+              )}
+              onChange={(selected) => setSelectedCountryId(selected.value)}
+              formatOptionLabel={(option) => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    textTransform: "text-capitalize",
+                  }}
+                >
+                  <span>{option.label.split(" - ")[0]}</span>
+                  <span>{option.label.split(" - ")[1]}</span>
+                </div>
+              )}
+            />
+          </div>
+        </div>
+        {hasNoRecords ? (
+          <NoDataFound />
+        ) : (
+          <>
+            <div className="d-flex justify-content-start ms-3">
+              <div className="row mb-2 gap-2">
+                {tabNames.map((tabName, index) => (
+                  <div
+                    key={index}
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                      }`}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSelectedTab(index)}
+                  >
+                    {tabName}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <PaymentModes
+              modes={modes}
+              filteredPaymentModes={filteredPaymentModes}
+              userRole={userRole}
+              actionType={actionType}
+              handleDepositAndWithdraw={handleDepositAndWithdraw}
+              handleAddModal={handleAddModal}
+              selectedTab={selectedTab}
+            />
+          </>
+        )}
+      </div>
+      {AddPaymentGatewayModal && (
+        <AddPaymentGatewayPopup
+          show={AddPaymentGatewayModal}
+          setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
+          addpaymentId={addpaymentId}
+          setAddPaymentId={setAddPaymentId}
+          countryId={countryId}
+          setCountryId={setCountryId}
+          availablePaymentModeId={availablePaymentModeId}
+          setAvailablePaymentModeId={setAvailablePaymentModeId}
+        />
+      )}
+      {actionType === "Deposit" && depositePopup && (
+        <DepositePopup
+          setDepositePopup={setDepositePopup}
+          depositePopup={depositePopup}
+          actionType={actionType}
+          selectedPayment={selectedPayment}
+          handleSuccessPopupOpen={handleSuccessPopupOpen}
+        />
+      )}
+
+      {actionType === "Withdraw" && withdrawPopup && (
+        <WithdrawPopup
+          setWithdrawPopup={setWithdrawPopup}
+          withdrawPopup={withdrawPopup}
+          actionType={actionType}
+          selectedPayment={selectedPayment}
+        />
+      )}
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={discription}
+      />
+    </div>
+  );
+};
+
+export default AddNePaymentGateway;

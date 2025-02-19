@@ -22,6 +22,7 @@ function SubHeader() {
           { label: "Management Team", path: "/management-team" },
           { label: "Director & Super Admin", path: "/director-admin" },
           { label: "View Downline List", path: "/downline-list" },
+          { label: "Offline Payment Modes", path: "/offline-payment-modes" },
           { label: "Payment Details", path: "/payment-details" },
           { label: "Websites", path: "/websites" },
         ],
@@ -88,9 +89,9 @@ function SubHeader() {
             label: "Create Promotions Type",
             path: "/create-promotion-type",
           },
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Offers", path: "/offers" },
+          // { label: "Sports Promotions", path: "/sports-promotions" },
+          // { label: "Casino Promotions", path: "/casino-promotions" },
+          // { label: "Offers", path: "/offers" },
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
@@ -102,6 +103,7 @@ function SubHeader() {
       {
         label: "Adding",
         options: [
+          { label: "Director Team", path: "/director-team" },
           { label: "Add Super Admin", path: "/director-admin" },
           { label: "View Downline List", path: "/downline-list" },
           { label: "Payment Details", path: "/payment-details" },
@@ -112,7 +114,7 @@ function SubHeader() {
         label: "Live/Block",
         options: [
           { label: "Sports", path: "/live-block-sports" },
-          { label: "Casino", path: "//management-casino" },
+          { label: "Casino", path: "/management-casino" },
           { label: "Set Limits", path: "/set-limits" },
           { label: "In-active Users", path: "/inactive-users" },
           { label: "Bet Block Users", path: "/bet-block-users" },
@@ -132,6 +134,7 @@ function SubHeader() {
       {
         label: "Wallet",
         options: [
+          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           { label: "Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
         ],
@@ -355,8 +358,9 @@ function SubHeader() {
           key={index}
         >
           <Dropdown
-            onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
+            // onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
             className="w-100"
+            onClick={(isOpen) => handleDropdownToggle(index, isOpen)}
           >
             <Dropdown.Toggle
               variant="none"

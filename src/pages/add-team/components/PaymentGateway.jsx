@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import Form from "react-bootstrap/Form";
@@ -6,12 +6,16 @@ import "../style.css";
 import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
-
-const countryOptions = [
-  { value: "India", label: "India" },
-  { value: "USA", label: "USA" },
-  { value: "Canada", label: "Canada" },
-];
+import {
+  getDirPayDetailsByIdProfile,
+  managementDwnProfileDirPaymentDetails,
+} from "../../../api/apiMethods";
+import moment from "moment";
+import { useSelector } from "react-redux";
+import { imgUrl } from "../../../api/baseUrl";
+import { useSearchParams } from "react-router-dom";
+import { CircleLoader } from "react-spinners";
+import ProfilePaymentsModal from "../popups/ProfilePaymentsModal";
 
 const gatewayOptions = [
   { value: "NEFT", label: "NEFT" },
@@ -34,82 +38,169 @@ const columns = [
   { header: "Action", field: "action", width: "10%" },
 ];
 
-const PaymentGateway = () => {
+const PaymentGateway = ({ dwnlnId }) => {
   const [showPaymentGatewayPopup, setShowPaymentGatewayPopup] = useState(false);
+  const [showPaymentGatewayData, setShowPaymentGatewayData] = useState([]);
+  const [error, setError] = useState("");
+  const allCountries = useSelector((item) => item.allCountries);
+  const itemsPerPage = 2;
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pages = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(pages);
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const [loading, setLoading] = useState(false);
+  const [currentLimit, setCurrentLimit] = useState(4);
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const page = currentPage;
+  const pageSize = itemsPerPage;
+  const gatewayTypeMap = {
+    1: "NEFT/RTGS",
+    2: "UPI",
+    3: "QR Code",
+    4: "Cash",
+  };
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [manDirProfileId, setManDirProfileId] = useState(null);
+  const [dirPaymentGatewayProfileId, setDirPaymentGatewayProfileId] =
+    useState(null);
+  const currencyId = selectedCountry;
+  const [countryId, setCountryId] = useState(null);
 
-  const data = [
-    {
-      gatewayName: "Google Pay",
-      paymentDetails: "7551078156",
-      lastUpdated: "26/09/2024",
-      country: "India",
-      currency: "INR ₹",
+  const role_code = localStorage.getItem("role_code");
+  const countryOptions = allCountries?.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
+
+  const getCurrencySymbol = (id) => {
+    const country = allCountries.find((c) => c.id === id);
+    return country
+      ? `${country.currency_symbol} ${country.currency_name}`
+      : "N/A";
+  };
+
+  const getCountryName = (id) => {
+    const country = allCountries.find((c) => c.id === id);
+    return country ? country.name : "Unknown";
+  };
+
+  const handleStatusChange = (option) => {
+    setSelectedCountry(option?.value);
+  };
+
+  const handleEdit = (id, gateway, country) => {
+    setShowPaymentGatewayPopup(true);
+    setManDirProfileId(id);
+    setDirPaymentGatewayProfileId(gateway);
+    setCountryId(country);
+  };
+
+  const getDirPaymentDetails = (page, pageSize, currencyId) => {
+    setLoading(true);
+    managementDwnProfileDirPaymentDetails(dwnlnId, {
+      page,
+      pageSize,
+      currencyId,
+    })
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response.data, "response.data");
+          setShowPaymentGatewayData(response?.data);
+          setTotalRecords(response?.totalCount);
+        } else {
+          console.log("Something error happening");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error?.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (role_code === "management") {
+      getDirPaymentDetails(limit, offset, selectedCountry);
+    }
+  }, [selectedCountry]);
+
+  const handlePageChange = ({ limit, offset }) => {
+    setCurrentLimit(limit);
+    setCurrentOffset(offset);
+    if (role_code === "management") {
+      getDirPaymentDetails(pages, pageSize, selectedCountry);
+    }
+  };
+
+  const PAYMENT_DATA = showPaymentGatewayData?.map((item, index) => {
+    return {
+      gatewayName: gatewayTypeMap[item?.gateway_type],
+      paymentDetails: (() => {
+        switch (item?.gateway_type) {
+          case 1:
+            return (
+              <div className="d-flex flex-column align-items-start">
+                <span className="">bank_name: {item?.bank_name}</span>
+                <span>Acc No: {item?.bank_acc_no}</span>
+                <span>IFSC: {item?.bank_ifsc}</span>
+              </div>
+            );
+          case 2:
+            return (
+              <div className="d-flex align-items-center">
+                <span className="fw-bold">{item?.upi_id}</span>
+              </div>
+            );
+          case 3:
+            return (
+              <div className="d-flex align-items-center">
+                <img
+                  src={`${imgUrl}/directorpayment/${item?.qr_code_image}`}
+                  alt="QR Code"
+                  className="w-30 h-7vh me-2"
+                  loading="lazy"
+                />
+                <span className="fw-bold">{item?.bank_name}</span>
+              </div>
+            );
+          case 4:
+            return <div className="fw-bold">{item?.acc_hold_name}</div>;
+          default:
+            return <span className="text-muted">N/A</span>;
+        }
+      })(),
+      lastUpdated: moment(item?.last_updated).format("YYYY-MM-DD"),
+      country: getCountryName(item.currency_id),
+      currency: getCurrencySymbol(item.currency_id),
       status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
+        <span className="">
+          {item?.status === 1 ? (
+            <div className="green-btn badge py-2 px-3">Active</div>
+          ) : (
+            <div className="red-btn badge py-2 px-3">In-Active</div>
+          )}
         </span>
       ),
+
       action: (
-        <SlPencil
-          size={17}
-          className="pointer"
-          onClick={() => setShowPaymentGatewayPopup(true)}
-        />
+        <spna>
+          {item?.status === 1 ? (
+            <SlPencil
+              size={17}
+              onClick={() =>
+                handleEdit(item?.id, item?.gateway_type, item?.currency_id)
+              }
+            />
+          ) : (
+            <SlPencil size={17} />
+          )}
+        </spna>
       ),
-    },
-    {
-      gatewayName: "UPI",
-      paymentDetails: "srilCICI@ibl",
-      lastUpdated: "26/09/2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: <SlPencil size={17} />,
-    },
-    {
-      gatewayName: "NEFT/RTGS",
-      paymentDetails: (
-        <div>
-          Srikumar Sunkara <br />
-          A/C No: 34311236216 <br />
-          IFSC Code: ICIC0040 <br />
-          Bank: ICICI Bank
-        </div>
-      ),
-      lastUpdated: "26/09/2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: <SlPencil size={17} />,
-    },
-    {
-      gatewayName: "QR Code",
-      paymentDetails: (
-        <div>
-          <img src="qr_code.png" alt="QR Code" style={{ width: "50px" }} />{" "}
-          <br />
-          ICICI Bank
-        </div>
-      ),
-      lastUpdated: "26/09/2024",
-      country: "India",
-      currency: "INR ₹",
-      status: (
-        <span className="payment-gateway-status-badge badge py-2 px-3">
-          Active
-        </span>
-      ),
-      action: <SlPencil size={17} />,
-    },
-  ];
+    };
+  });
 
   return (
     <div>
@@ -145,7 +236,6 @@ const PaymentGateway = () => {
               menuPlacement="auto"
             />
           </div>
-
           {/* Gateway Dropdown */}
           <div className="col-md-2 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Gateway</label>
@@ -192,18 +282,42 @@ const PaymentGateway = () => {
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
+                value={countryOptions?.find(
+                  (c) => c?.value === selectedCountry
+                )}
+                onChange={handleStatusChange}
               />
             </div>
           </div>
         </div>
 
         <div className="table-parent-container mt-2">
-          <Table data={data} columns={columns} itemsPerPage={3} />
+          {loading ? (
+            <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+              <CircleLoader color="#3498db" size={40} />
+              <div className="medium-font black-font my-3">
+                Just a moment...............⏳
+              </div>
+            </div>
+          ) : (
+            <Table
+              data={PAYMENT_DATA}
+              columns={columns}
+              itemsPerPage={itemsPerPage}
+              totalRecords={totalRecords}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
 
-        <AddPaymentGatewayPopup
+        <ProfilePaymentsModal
           show={showPaymentGatewayPopup}
           onHide={() => setShowPaymentGatewayPopup(false)}
+          dirPaymentGatewayProfileId={dirPaymentGatewayProfileId}
+          setDirPaymentGatewayProfileId={setDirPaymentGatewayProfileId}
+          manDirProfileId={manDirProfileId}
+          countryId={countryId}
+          getDirPaymentDetails={getDirPaymentDetails}
         />
       </div>
     </div>
