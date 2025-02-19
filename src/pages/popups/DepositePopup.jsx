@@ -111,11 +111,13 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
     const validateForm = () => {
         const newErrors = {};
         if (selectedPayment?.avil_modes !== 4) {
-            if (!selectedAdmin?.value) newErrors.adminWebsiteId = "AdminWebsiteId is required";
-            if (!formData.websiteName) newErrors.userPanelId = "UserPanelId is required";
+            if (!selectedAdmin?.value) newErrors.adminWebsiteId = "Admin Website is required";
+            if (!formData.websiteName) newErrors.userPanelId = "User Website is required";
             if (!formData.transactionId) newErrors.transactionId = "TransactionId is required";
             if (!slip) newErrors.slip = "Upload payment file is required";
         } else {
+            if (!selectedAdmin?.value) newErrors.adminWebsiteId = "AdminWebsiteId is required";
+            if (!formData.websiteName) newErrors.userPanelId = "UserPanelId is required";
             if (!formData.cashHandoverName) newErrors.cashHandoverName = "Cash handover name is required";
             if (!formData.cashDes) newErrors.cashDes = "Description is required";
         }

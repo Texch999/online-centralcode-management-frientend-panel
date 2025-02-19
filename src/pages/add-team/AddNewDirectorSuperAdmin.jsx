@@ -257,7 +257,6 @@ function AddNewDirectorSuperAdmin() {
       })
       .catch((error) => console.log(error));
 
-    console.log("Final Submitted Data:", finalData);
   };
 
   const handleCountryChange = (event) => {
@@ -274,8 +273,6 @@ function AddNewDirectorSuperAdmin() {
 
   const [individualDirectorData, setIndividualDirectorData] = useState();
   const [selectedRole, setSelectedRole] = useState("");
-  console.log(selectedRole, "selectedRole");
-  console.log(individualDirectorData, "individualDirectorData");
 
   const getDirectorDetailsByID = () => {
     getDirectorDetailsById(userId)

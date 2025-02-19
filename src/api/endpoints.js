@@ -541,6 +541,31 @@ const endpoints = {
     method: "post",
     url: () => `/director/${userID()}/offlineDeposit`,
   },
+
+  getDirectorDepositeTicketsList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/offlineDeposits?${query}`;
+    },
+  },
+
+  getOwnerDownlineDepositeTicketsList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/offlineDeposits?${query}`;
+    },
+  },
+
+  depositTikcetDetailsById: {
+    method: "get",
+    url: (id) => `/director/${userID()}/offlineDeposits/${id}`,
+  },
+  managementDepositTikcetDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}`,
+  },
 };
 
 export default endpoints;
