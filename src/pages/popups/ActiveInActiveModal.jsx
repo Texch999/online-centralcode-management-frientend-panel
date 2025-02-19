@@ -4,6 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { privacyPolicyStatusUpdate } from "../../api/apiMethods";
 import ErrorPopup from "./ErrorPopup";
+import { useSearchParams } from "react-router-dom";
 
 const ActiveInActiveModal = ({
   setActiveInActivePopup,
@@ -16,6 +17,11 @@ const ActiveInActiveModal = ({
   setStatusId,
   getPolicyPrivacyData,
 }) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const itemsPerPage = 4;
+  const page = intialpage;
+  const pageSize = itemsPerPage;
   const [errorPopup, setErrorPopup] = useState(false);
   const [error, setError] = useState("");
   const status_Id = statusId === 1 ? 2 : 1;
@@ -23,14 +29,22 @@ const ActiveInActiveModal = ({
   const suspendStatus = () => {
     privacyPolicyStatusUpdate(privacyStatusId, status_Id)
       .then((response) => {
-        getPolicyPrivacyData();
-        setPrivacyStatusId("");
-        setStatusId("");
-        setActiveInActivePopup(false);
+        if (response.status === true) {
+          getPolicyPrivacyData(page,pageSize);
+          setPrivacyStatusId("");
+          setStatusId("");
+          setActiveInActivePopup(false);
+        } else {
+          setError("Something Went Wrong");
+        }
       })
       .catch((error) => {
         setError(error.message);
+        setActiveInActivePopup(false);
         setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 2000);
       });
   };
 

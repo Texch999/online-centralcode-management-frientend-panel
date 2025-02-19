@@ -71,7 +71,7 @@
   outline: none !important;
   color: #ffffff !important;
   font-weight: 500 !important;
-  padding: 0.5rem;
+  padding: 0.6rem;
   text-align: center !important;
   border-radius: 0.35rem;
 }
@@ -383,7 +383,7 @@
   outline: none;
   color: #727272;
   font-weight: 500;
-  padding: 0.5rem;
+  padding: 0.6rem;
   border-radius: 0.35rem;
 }
 
@@ -869,4 +869,11 @@ button.cst-btn:hover {
 
 .placeholder-red-clr {
   color: "#F43A23"
+}
+.status-bar {
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: capitalize;
 }

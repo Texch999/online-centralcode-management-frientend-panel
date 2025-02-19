@@ -321,9 +321,11 @@ const updateManagementOfflinePaymentDetails = (id, data) => {
 const managementPaymentDetails = (data) => {
   return apiRequest("managementPaymentDetails", data);
 };
+
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
+
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
@@ -350,6 +352,30 @@ const getNotificationsforManagement = (data) =>{
 const getNotificationsforDirector = (data) =>{
   return apiRequest("getNotificationsforDirector", data);
 }
+const DirectorOffilneDepositTicket = (data) => {
+  return apiRequest("DirectorOffilneDepositTicket", data);
+};
+
+const getDirectorDepositeTicketsList = (params) => {
+  return apiRequest("getDirectorDepositeTicketsList", {}, params);
+};
+
+const getOwnerDownlineDepositeTicketsList = (params) => {
+  return apiRequest("getOwnerDownlineDepositeTicketsList", {}, params);
+};
+
+const depositTikcetDetailsById = (id, data) => {
+  return apiRequest("depositTikcetDetailsById", data, id);
+};
+
+const managementDepositTikcetDetailsById = (id, data) => {
+  return apiRequest("managementDepositTikcetDetailsById", data, id);
+};
+
+const DeleteDirectorTicketsById = (id, data) => {
+  return apiRequest("DeleteDirectorTicketsById", data, id);
+};
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -437,7 +463,11 @@ export {
   getDirectorSites,
   DirectorAvailablePaymentsModes,
   getNotificationsforManagement,
-  getNotificationsforDirector
-
-
+  getNotificationsforDirector,
+  DirectorOffilneDepositTicket,
+  getDirectorDepositeTicketsList,
+  getOwnerDownlineDepositeTicketsList,
+  depositTikcetDetailsById,
+  managementDepositTikcetDetailsById,
+  DeleteDirectorTicketsById,
 };

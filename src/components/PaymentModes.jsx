@@ -51,8 +51,8 @@ const PaymentModes = ({
                       <div
                         className="card h-100"
                         style={{
-                          opacity: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? 0.7 : 1, 
-                          pointerEvents: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? "none" : "auto", 
+                          opacity: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? 0.5 : 1, // Reduce opacity if disabled
+                          pointerEvents: (actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled ? "none" : "auto", // Disable click if disabled
                         }}
                       >
                         <div

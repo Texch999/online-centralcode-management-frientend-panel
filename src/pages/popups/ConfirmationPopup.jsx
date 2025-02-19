@@ -1,6 +1,8 @@
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
@@ -9,12 +11,18 @@ function ConfirmationPopup({
   submitButton,
   onSubmit,
 }) {
+  const itemsPerPage=4;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(intialpage);
+  const page = currentPage;
+  const pageSize = itemsPerPage;
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
 
   const handleSunmit = async () => {
-    onSubmit();
+    onSubmit(page,pageSize);
     setConfirmationPopupOpen(false);
   };
 
@@ -50,7 +58,10 @@ function ConfirmationPopup({
               >
                 Cancel
               </button>
-              <button className="w-50 saffron-btn2 ms-2" onClick={() =>handleSunmit()}>
+              <button
+                className="w-50 saffron-btn2 ms-2"
+                onClick={() => handleSunmit()}
+              >
                 {submitButton}
               </button>
             </div>
