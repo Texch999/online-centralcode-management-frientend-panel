@@ -321,9 +321,11 @@ const updateManagementOfflinePaymentDetails = (id, data) => {
 const managementPaymentDetails = (data) => {
   return apiRequest("managementPaymentDetails", data);
 };
+
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
+
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
@@ -358,8 +360,13 @@ const getOwnerDownlineDepositeTicketsList = (params) => {
 const depositTikcetDetailsById = (id, data) => {
   return apiRequest("depositTikcetDetailsById", data, id);
 };
+
 const managementDepositTikcetDetailsById = (id, data) => {
   return apiRequest("managementDepositTikcetDetailsById", data, id);
+};
+
+const DeleteDirectorTicketsById = (id, data) => {
+  return apiRequest("DeleteDirectorTicketsById", data, id);
 };
 
 export {
@@ -453,4 +460,5 @@ export {
   getOwnerDownlineDepositeTicketsList,
   depositTikcetDetailsById,
   managementDepositTikcetDetailsById,
+  DeleteDirectorTicketsById,
 };

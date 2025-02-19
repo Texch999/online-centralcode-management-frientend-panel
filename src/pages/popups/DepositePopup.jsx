@@ -135,9 +135,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 userPanelId: formData.websiteName || null,
                 currency: directorCurrency?.county || "",
                 paymentId: selectedPayment?.gateway_id || null,
-                selctChips: formData.selectedChips || null,
+                selctChips: Number(formData.selectedChips) || null,
                 paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.rentPercentage / 100)) + ((formData.selectedSportsChips) * (selectedWebDetails.extChipPercent / 100))),
-                selctSpcChips: formData.selectedSportsChips,
+                selctSpcChips: Number(formData.selectedSportsChips),
             };
         } else {
             payload = {
@@ -145,7 +145,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 userPanelId: formData.websiteName || null,
                 currency: directorCurrency?.county || "",
                 paymentId: selectedPayment?.gateway_id || null,
-                selctChips: formData.selectedChips || null,
+                selctChips: Number(formData.selectedChips) || null,
                 paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.share / 100))),
             };
         }

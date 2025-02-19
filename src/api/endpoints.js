@@ -562,9 +562,15 @@ const endpoints = {
     method: "get",
     url: (id) => `/director/${userID()}/offlineDeposits/${id}`,
   },
+
   managementDepositTikcetDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/offlineDeposits/${id}`,
+  },
+
+  DeleteDirectorTicketsById: {
+    method: "delete",
+    url: (id) => `/director/${userID()}/offlineDeposit/${id}`,
   },
 };
 
