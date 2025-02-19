@@ -369,6 +369,14 @@ const DeleteDirectorTicketsById = (id, data) => {
   return apiRequest("DeleteDirectorTicketsById", data, id);
 };
 
+const ownerTicketApprove = (id, data) => {
+  return apiRequest("ownerTicketApprove", data, id);
+};
+
+const ownerTicketRejection = (id, data) => {
+  return apiRequest("ownerTicketRejection", data, id);
+};
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -461,4 +469,6 @@ export {
   depositTikcetDetailsById,
   managementDepositTikcetDetailsById,
   DeleteDirectorTicketsById,
+  ownerTicketApprove,
+  ownerTicketRejection, 
 };

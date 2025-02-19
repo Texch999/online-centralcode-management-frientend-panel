@@ -572,6 +572,18 @@ const endpoints = {
     method: "delete",
     url: (id) => `/director/${userID()}/offlineDeposit/${id}`,
   },
+ 
+  ownerTicketApprove: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}/approve`,
+  },
+
+  ownerTicketRejection: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}/reject`,
+  },
+
+
 };
 
 export default endpoints;

@@ -15,7 +15,8 @@ function DepositWithdrawPopup({
   ticketData,
   setTicketDetails,
   rejectionReasons,
-  fromPath
+  fromPath,
+  handleTikcetApproveRejection
 }) {
   const handleCancel = () => {
     setTicketDetails(null)
@@ -25,6 +26,7 @@ function DepositWithdrawPopup({
   const userRole = localStorage.getItem("role_code");
   const allCountries = useSelector((item) => item?.allCountries);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [rejectionError, setRejectionError] = useState(null);
 
   const getCurrency = (id) => {
     const country = allCountries.find((item) => item.id === id);
@@ -33,12 +35,12 @@ function DepositWithdrawPopup({
 
   const options = rejectionReasons?.map((reason) => ({
     value: reason.id, // Use id as the value
-    label: reason.questions, // Use questions as the label
+    label: reason.reason, // Use questions as the label
   }));
 
   const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption); // Store the selected option
-    console.log("Selected Reason ID:", selectedOption.value); // For debugging
+    setSelectedOption(selectedOption.value); // Store the selected option
+    console.log("Selected Reason ID:", selectedOption); // For debugging
   };
 
   const formatDateTime = (isoString) => {
@@ -61,6 +63,18 @@ function DepositWithdrawPopup({
     return `${formattedDate} | ${formattedTime}`;
   };
 
+  const handleTicket = (action) => {
+    if (action === "REJECT") {
+      if (selectedOption === null) {
+        setRejectionError("Please select a reason for rejection.");
+      } else {
+        handleTikcetApproveRejection(action, selectedOption)
+      }
+    } else {
+      handleTikcetApproveRejection(action, selectedOption)
+
+    }
+  }
   return (
     <Modal show={depositWithdrawPopupOpen} centered>
       <div className="d-flex justify-content-between black-text4 p-3">
@@ -78,8 +92,10 @@ function DepositWithdrawPopup({
             <h6 className="ms-2 mb-0">{userDetails2}</h6>
           </div>
         </div>
-        <div className="green-btn small-font h-fit">{ticketData?.ticketType === 1 ? "Deposit" : "Withdraw"}</div>
-        <IoCloseSharp size={20} onClick={handleCancel} />
+        <div className="d-flex flex-row justify-content-between align-items-center">
+          <div className="green-btn small-font h-fit me-2">{ticketData?.ticketType === 1 || ticketData?.ticketType === 0 ? "Deposit" : "Withdraw"}</div>
+          <IoCloseSharp size={24} onClick={handleCancel} />
+        </div>
       </div>
       <hr className="m-0" />
       <div className="px-3 pb-3 pt-1">
@@ -93,7 +109,7 @@ function DepositWithdrawPopup({
           <div className="col-4 mt-2">
             <div className="grey-box flex-between">
               <span className="green-font">{getCurrency(ticketData?.reqCurrency)} To INR </span>
-              <span>{Math.floor(ticketData?.totCur)}</span>
+              <span>{ticketData?.totCur ? Math.floor(ticketData?.totCur) : 0}</span>
             </div>
           </div>
           <div className="col-4 mt-2">
@@ -105,7 +121,7 @@ function DepositWithdrawPopup({
           <div className="col-4 mt-2">
             <div className="grey-box flex-between">
               <span>Cur Amt.</span>
-              <span>{Math.floor(ticketData?.totCur)}</span>
+              <span>{ticketData?.curRate ? Math.floor(ticketData?.curRate) : 0}</span>
             </div>
           </div>
           <div className="col-4 mt-2">
@@ -160,33 +176,33 @@ function DepositWithdrawPopup({
                 <span>Sports Chips - {getCurrency(ticketData?.reqCurrency)} </span>
                 <span className="yellow-font">{ticketData?.requChips}</span>
               </div>
-              <div className="grey-box flex-between">
+              <div className="grey-box flex-between mt-2">
                 <span>Sports Chips - INR</span>
                 <span className="yellow-font">{Math.floor(ticketData?.totCur)}</span>
               </div>
             </div>}
 
-          <div className="col-12 mt-2">
-            <Select
-              className="small-font"
-              options={options} // Pass transformed options
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              onChange={handleChange} // Handle selection change
-              value={selectedOption} // Control the selected value displayed in the selector
-            />
-          </div>
           {fromPath === "tickets" ? <>
-            <div className="col-6 mt-3">
-              <button className="w-100 saffron-btn2" >Approved</button>
+            <div className="col-12 mt-2">
+              <Select
+                className="small-font"
+                options={options}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                onChange={handleChange}
+                value={selectedOption?.value}
+              />
+              {!selectedOption && <p className="text-danger small-font">{rejectionError}</p>}
             </div>
             <div className="col-6 mt-3">
-              <button className="w-100 white-btn3">Rejected</button>
+              <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE")}>Approved</button>
+            </div>
+            <div className="col-6 mt-3">
+              <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT")}>Rejected</button>
             </div>
           </> : null}
-
 
         </div>
       </div>
