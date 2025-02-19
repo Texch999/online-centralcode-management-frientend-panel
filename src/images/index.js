@@ -53,4 +53,5 @@ export const Images = {
   phonepe: "/assets/phonepe.png",
   nodatafound: "/assets/nodatafound.png",
   defaultProfileImage: "/assets/defaultProfileImage.jpg",
+  emptyNotifications: "/assets/EmptyNotifications.svg",
 };

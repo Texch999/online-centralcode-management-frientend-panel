@@ -537,6 +537,14 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/offlinePaymentModes`,
   },
+  getNotificationsforManagement:{
+    method: "get",
+    url: () => `/user/${userID()}/notifications`,
+  },
+  getNotificationsforDirector:{
+    method: "get",
+    url: () => `/director/${userID()}/notifications`,
+  },
   DirectorOffilneDepositTicket: {
     method: "post",
     url: () => `/director/${userID()}/offlineDeposit`,

@@ -16,12 +16,14 @@ import SubHeader from "./SubHeader";
 import { getCountries } from "../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../redux/action";
+import NotificationsPopup from "../pages/popups/NotificationsPopup";
 function Header() {
   const navigate = useNavigate();
   const role_name = localStorage?.getItem("role_name");
   const role_code = localStorage?.getItem("role_code");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
+  const [notificationPopup,setNotificationPopup] = useState(false);
   const countriesDataFetched = useRef(false);
   const userRole = localStorage.getItem("role_code")
   const [error, setError] = useState("");
@@ -37,6 +39,12 @@ function Header() {
         : "/sports-vendor-registration";
     navigate(path);
   };
+
+  const handleNotification = () =>{
+    setNotificationPopup(true);
+
+
+  }
 
   const handleLogout = () => {
     if (userRole === "management") {
@@ -72,6 +80,7 @@ function Header() {
     getAllCountries();
   }, []);
   return (
+    <>
     <div className="header">
       <div className="w-100 flex-between px-2 py-1">
         <div className="d-flex align-items-center">
@@ -98,6 +107,7 @@ function Header() {
             </div>
           )}
           <IoMdNotificationsOutline
+            onClick={handleNotification}
             size={24}
             className="grey-clr me-2 mx-3 fw-800"
           />
@@ -191,6 +201,8 @@ function Header() {
         <SubHeader />
       )}
     </div>
+    <NotificationsPopup notificationPopup={notificationPopup} setNotificationPopup={setNotificationPopup} />
+    </>
   );
 }
 
