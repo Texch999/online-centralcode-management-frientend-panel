@@ -343,6 +343,13 @@ const getDirPayDetailsByIdProfile = (id, data) => {
 const DirectorAvailablePaymentsModes = (data) => {
   return apiRequest("DirectorAvailablePaymentsModes", data);
 };
+
+const getNotificationsforManagement = (data) =>{
+  return apiRequest("getNotificationsforManagement", data);
+};
+const getNotificationsforDirector = (data) =>{
+  return apiRequest("getNotificationsforDirector", data);
+}
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -429,4 +436,7 @@ export {
   getBannerByUserId,
   getDirectorSites,
   DirectorAvailablePaymentsModes,
+  getNotificationsforManagement,
+  
+
 };

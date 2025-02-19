@@ -3,151 +3,218 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   height: 100vh !important;
   width: 100% !important;
   background: #f5f7ff !important;
   font-family: "Inter", sans-serif !important;
 }
+
 .bg-check {
   background-color: yellow;
 }
+
 .table-body-height {
   max-height: 30vh;
   overflow-y: auto;
   overflow-x: auto;
   position: relative;
 }
+
 .fixed-table thead {
   position: sticky;
   top: 0;
   z-index: 1;
 }
+
 .fixed-table tfoot {
   position: sticky;
   bottom: 0;
   z-index: 1;
 }
+
 .fixed-table tbody {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
 .table-wrapper {
   border-radius: 10px;
   background: #ffffff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: grey;
   border-radius: 25px;
 }
+
 ::-webkit-scrollbar-track {
   background: lightgray;
   border-radius: 25px;
 }
+
 option {
   background-color: #ffffff;
   color: #1c1c1c;
   border: 1px solid #e0e0e0;
   padding: 0.5rem !important;
 }
+
 option:hover {
   background-color: #ffa310;
   color: #ffffff;
   border: none;
 }
+
 .scroll-x {
   overflow-x: auto;
 }
+
 .border-left {
   border-left: 1px solid #dee2e6 !important;
 }
+
 .border-right {
   border-right: 1px solid #dee2e6 !important;
 }
+
 .confirm-popup .modal-content {
   width: 90%;
   margin-left: 5%;
 }
+
 .w-inherit {
   width: inherit;
 }
+
 input[type="date"] {
   text-transform: uppercase !important;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .modal-content {
+    width: 90% !important;
+    /* Make modal take 90% of screen width */
+    max-width: 450px;
+    /* Limit max width to 450px */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .modal-body {
+    min-height: 400px;
+    /* Adjust the minimum height */
+    padding: 1rem;
+    /* Add some padding */
+  }
+
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .text-center {
+    padding: 0 1rem;
+  }
+
+  /* Adjust the image size for responsiveness */
+  .not-img {
+    width: 100%;
+    /* Make the image responsive */
+    max-width: 250px;
+    /* Limit the image to max width */
+    height: auto;
+  }
+
   .x-small-font {
     font-size: 0.4rem;
     font-weight: 400;
   }
+
   .small-font {
     font-size: 0.55rem;
     font-weight: 500;
   }
+
   .medium-font {
     font-size: 0.7rem;
     font-weight: 500;
   }
+
   .large-font {
     font-size: 0.9rem;
   }
+
   .logo-img {
     height: 6vh !important;
   }
 }
+
 @media only screen and (min-width: 1024px) and (max-width: 1439px) {
   .x-small-font {
     font-size: 0.5rem;
     font-weight: 400;
   }
+
   .small-font {
     font-size: 0.7rem;
     font-weight: 500;
   }
+
   .medium-font {
     font-size: 0.9rem;
     font-weight: 500;
   }
+
   .large-font {
     font-size: 1rem;
   }
 }
+
 @media only screen and (min-width: 1440px) and (max-width: 2559px) {
   .x-small-font {
     font-size: 0.6rem;
     font-weight: 400;
   }
+
   .small-font {
     font-size: 0.8rem;
     font-weight: 500;
   }
+
   .medium-font {
     font-size: 1rem;
     font-weight: 500;
   }
+
   .large-font {
     font-size: 1.2rem;
   }
 }
+
 @media only screen and (min-width: 2560px) {
   .x-small-font {
     font-size: 0.7rem;
     font-weight: 400;
   }
+
   .small-font {
     font-size: 1rem;
     font-weight: 500;
   }
+
   .medium-font {
     font-size: 1.2rem;
     font-weight: 500;
   }
+
   .large-font {
     font-size: 1.3rem;
   }
@@ -161,6 +228,7 @@ input[type="date"] {
   height: 100vh;
   width: 100%;
 }
+
 .spinner-circle {
   width: 50px;
   height: 50px;
@@ -172,10 +240,12 @@ input[type="date"] {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
