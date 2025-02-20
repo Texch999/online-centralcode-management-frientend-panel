@@ -387,7 +387,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
                                         value={
-                                            (selectedWebDetails?.total_chips || 0) + (formData?.selectedChips || 0)
+                                            (selectedWebDetails?.total_chips ?? 0) + (formData?.selectedChips ?? 0)
                                         }
                                         readOnly
                                         style={{ pointerEvents: "none" }}

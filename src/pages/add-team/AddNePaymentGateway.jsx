@@ -105,66 +105,54 @@ const AddNePaymentGateway = () => {
     getOwnersPaymentModes();
   }, [isInitialRendering]);
 
+  // useEffect(() => {
+  //   if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
+  //     const combinedData = offlinePaymentModes.map((offlineMode) => {
+  //       // Slice the offlineMode.id to remove the first 3 and last 3 characters
+  //       const slicedId = Number(offlineMode.id.slice(3, -3));
+  //       // Find the corresponding paymentMode for the sliced offlineMode.id
+  //       const paymentMode = paymentModes.find(
+  //         (paymentMode) => paymentMode.payment_mode_id === slicedId
+
+  //       );
+  //       return {
+  //         ...offlineMode,
+  //         ...paymentMode,
+  //         isEnabled: !!paymentMode,
+  //       };
+  //     });
+
+  //     setCombinedPaymentModes(combinedData);
+  //   }
+  // }, [offlinePaymentModes, paymentModes]);
+
   useEffect(() => {
     if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
-      const combinedData = offlinePaymentModes.map((offlineMode) => {
-        // Slice the offlineMode.id to remove the first 3 and last 3 characters
+      const combinedData = offlinePaymentModes.flatMap((offlineMode) => {
+        
+        // Extract the numeric payment_mode_id from offlineMode.id
         const slicedId = Number(offlineMode.id.slice(3, -3));
-        // Find the corresponding paymentMode for the sliced offlineMode.id
-        const paymentMode = paymentModes.find(
-          (paymentMode) => paymentMode.payment_mode_id === slicedId
 
+        // Find all paymentModes that match the slicedId
+        const matchingPaymentModes = paymentModes.filter(
+          (paymentMode) => paymentMode.payment_mode_id === slicedId
         );
-        return {
-          ...offlineMode,
-          ...paymentMode,
-          isEnabled: !!paymentMode,
-        };
+
+        // If matching records exist, merge them, otherwise keep offlineMode as is
+        return matchingPaymentModes.length > 0
+          ? matchingPaymentModes.map((paymentMode) => ({
+            ...offlineMode,
+            ...paymentMode,
+            isEnabled: true,
+          }))
+          : [{ ...offlineMode, isEnabled: false }];
       });
 
       setCombinedPaymentModes(combinedData);
     }
   }, [offlinePaymentModes, paymentModes]);
 
-  // useEffect(() => {
-  //   if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
-  //     // Create a map to group payment modes by their sliced ID
-  //     const paymentModesMap = paymentModes.reduce((acc, paymentMode) => {
-  //       const slicedId = paymentMode.payment_mode_id.toString(); // Convert to string to match the sliced ID
-  //       if (!acc[slicedId]) {
-  //         acc[slicedId] = [];
-  //       }
-  //       acc[slicedId].push(paymentMode);
-  //       return acc;
-  //     }, {});
 
-  //     // Flatten the data to create one card per payment detail
-  //     const flattenedData = offlinePaymentModes.flatMap((offlineMode) => {
-  //       const slicedId = offlineMode.id.slice(3, -3); // Slice the offlineMode.id
-  //       const paymentDetails = paymentModesMap[slicedId] || []; // Get the payment details for the sliced ID
-
-  //       // If there are no payment details, return a single card with isEnabled: false
-  //       if (paymentDetails.length === 0) {
-  //         return [
-  //           {
-  //             ...offlineMode,
-  //             paymentDetails: [], // No payment details
-  //             isEnabled: false, // Disable the card
-  //           },
-  //         ];
-  //       }
-
-  //       // If there are payment details, create one card per payment detail
-  //       return paymentDetails.map((paymentDetail) => ({
-  //         ...offlineMode,
-  //         paymentDetails: [paymentDetail], // Single payment detail per card
-  //         isEnabled: true, // Enable the card
-  //       }));
-  //     });
-
-  //     setCombinedPaymentModes(flattenedData);
-  //   }
-  // }, [offlinePaymentModes, paymentModes]);
   const allCountries = useSelector((item) => item?.allCountries);
   const formattedCountries = allCountries.map((country) => ({
     value: country.id,

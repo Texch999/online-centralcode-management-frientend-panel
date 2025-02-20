@@ -244,12 +244,12 @@ function MyDepositWithdraw() {
                 }
                 }
               />
-              {record.status === 0 ?  < MdAutoDelete
+              {record.status === 0 ? < MdAutoDelete
                 size={22}
                 className="eye-icon pointer m-2 pointer"
                 onClick={() => ConfirmationDeleteTicket(record.id)}
-              />:null }
-             
+              /> : null}
+
             </div>
           </div >
         ),
@@ -296,10 +296,10 @@ function MyDepositWithdraw() {
       setErrors(newErrors);
       return;
     }
-
-    // If all fields are valid, clear errors and proceed with the API call
+    const limit = itemsPerPage
+    const offset = (page - 1) * itemsPerPage
     setErrors({ startDate: "", fromDate: "", selectedType: "" });
-    getDepositTickets(limit, offset, startDate, fromDate, selectedType);
+    getDepositTickets(limit, offset, startDate, fromDate, selectedType?.value);
   };
 
   return (

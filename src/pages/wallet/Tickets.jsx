@@ -216,14 +216,14 @@ function Tickets() {
 
             {/* Eye Icon Button */}
             <div className="w-100 flex-center status-container d-flex flex-row justify-content-center">
-              {record?.status === 0 ? < BsEye
+              < BsEye
                 size={22}
                 className="eye-icon pointer m-2 pointer"
                 onClick={() => {
                   handleDepositAndWithdraw(record?.id)
                 }
                 }
-              /> : null}
+              />
             </div>
           </div >
         ),
@@ -279,9 +279,11 @@ function Tickets() {
       setErrors(newErrors);
       return;
     }
+    const limit =itemsPerPage
+    const offset =(page-1) *itemsPerPage
 
     setErrors({ startDate: "", fromDate: "", selectedType: "" });
-    getDepositTickets(limit, offset, startDate, fromDate, selectedType);
+    getDepositTickets(limit, offset, startDate, fromDate, selectedType.value);
   };
 
   return (
@@ -290,7 +292,7 @@ function Tickets() {
         <h6 className="d-flex yellow-font mb-0">Downline Tickets</h6>
         {/* <---------- deposit and withdraw buttons ------->*/}
 
-        {userRole !== "management" ?
+        {/* {userRole !== "management" ?
           <div className="d-flex align-items-center gap-1">
             <button className={`me-3 dark-green-bg px-3`} onClick={() =>
               handleDeposit("Deposit")
@@ -303,7 +305,7 @@ function Tickets() {
           <div className="input-pill d-flex align-items-center rounded-pill px-2">
             <FaSearch size={16} className="grey-clr me-2" />
             <input className="small-font all-none" placeholder="Search..." />
-          </div>}
+          </div>} */}
 
       </div>
 

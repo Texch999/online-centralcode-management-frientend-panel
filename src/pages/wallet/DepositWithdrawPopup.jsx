@@ -195,13 +195,19 @@ function DepositWithdrawPopup({
                 value={selectedOption?.value}
               />
               {!selectedOption && <p className="text-danger small-font">{rejectionError}</p>}
+
             </div>
-            <div className="col-6 mt-3">
-              <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE")}>Approved</button>
-            </div>
-            <div className="col-6 mt-3">
-              <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT")}>Rejected</button>
-            </div>
+            {ticketData?.status === 0 ? (
+              <>
+                <div className="col-6 mt-3">
+                  <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE")}>Approve</button>
+                </div>
+                <div className="col-6 mt-3">
+                  <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT")}>Reject</button>
+                </div>
+              </>) : <button className="w-100 saffron-btn2 pointer-events-none cursor-not-allowed" disabled>{ticketData?.status === 1 ? "Approved" : "Rejected"}</button>
+            }
+
           </> : null}
 
         </div>
