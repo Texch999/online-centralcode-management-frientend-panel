@@ -14,6 +14,8 @@ import {
   managementDepositTikcetDetailsById,
   ownerTicketApprove,
   ownerTicketRejection,
+  ownerWithdrawTicketApprove,
+  ownerWithdrawTicketRejection,
 } from "../../api/apiMethods";
 
 function Tickets() {
@@ -42,6 +44,7 @@ function Tickets() {
   const [ErroDiscription, setErroDiscription] = useState("");
   const [ticketAction, setTicketAction] = useState("");
   const [selectedType, setSelectedType] = useState(null);
+  const [ticketType, setTicketType] = useState("");
 
   const [errors, setErrors] = useState({ startDate: "", fromDate: "", selectedType: "" });
 
@@ -144,11 +147,12 @@ function Tickets() {
     }
   };
 
-  const handleTikcetApproveRejection = async (action, reason) => {
-
+  // <====================== Deposit  Approve and Rejection =====================>
+  const handleTikcetApproveRejection = async (action, reason, ticketType) => {
+    console.log(action, ticketType, "=====> deposit action")
     let apiCAll
     setTicketAction(action)
-
+    setTicketType(ticketType)
     const data = {
       rejId: reason
     }
@@ -166,6 +170,41 @@ function Tickets() {
           setSuccessPopupOpen(true)
           setDepositWithdrawPopupOpen(false)
           setErroDiscription("")
+
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+        setErroDiscription(error?.message)
+        setErrorPopupOpen(true)
+      })
+  }
+
+  // <====================== Withdraw Approve and Rejection =====================>
+
+  const handleWithdrwaTicketApproveRejection = async (action, reason, ticketType) => {
+    let apiCAll
+    setTicketAction(action)
+    setTicketType(ticketType)
+    console.log(action, ticketType, "=====> withdrw action")
+    const data = {
+      rejId: reason
+    }
+
+    if (action === "APPROVE") {
+      apiCAll = ownerWithdrawTicketApprove
+    } else {
+      apiCAll = ownerWithdrawTicketRejection
+    }
+
+    await apiCAll(ticketId, data)
+      .then((response) => {
+        if (response.status === true) {
+          getDepositTickets(limit, offset);
+          setSuccessPopupOpen(true)
+          setDepositWithdrawPopupOpen(false)
+          setErroDiscription("")
+
         }
       })
       .catch((error) => {
@@ -195,11 +234,11 @@ function Tickets() {
         utrno: <div >{record.transacId}</div>,
         dw: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>
           {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
-        chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record.requChips}</div>,
-        currtypeamount: <div >{record.paidAmount}<br />{getCurrency(record.reqCurrency)}</div>,
-        currRate: <div >{record.curRate}<br />{getCurrency(record.reqCurrency)}</div>,
-        yourChips: <div >{record.paidAmount}<br />{getCurrency(record.reqCurrency)}</div>,
-        yourcurramount: <div >{record.totCur}<br />{getCurrency(record.reqCurrency)}</div>,
+        chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips}</div>,
+        currtypeamount: <div >{Number(record.paidAmount).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
+        currRate: <div >{Number(record?.curRate).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
+        yourChips: <div >{record.shareType === 1 ? Number(record?.inrSportsChips).toFixed(2) : Number(record?.inrChips).toFixed(2)}</div>,
+        yourcurramount: <div >{Number(record?.totCur).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
         view: (
           <div className="w-100 flex-center status-container d-flex flex-column justify-content-center">
             {/* Status Bar Button */}
@@ -238,11 +277,11 @@ function Tickets() {
     getDepositTickets(limit, offset)
   }, [])
 
-  const handleDeposit = (action) => {
-    navigate("/addnew-payments", {
-      state: { actionType: action },
-    });
-  }
+  // const handleDeposit = (action) => {
+  //   navigate("/addnew-payments", {
+  //     state: { actionType: action },
+  //   });
+  // }
 
   const handleDepositAndWithdraw = (id) => {
     if (id) {
@@ -279,13 +318,14 @@ function Tickets() {
       setErrors(newErrors);
       return;
     }
-    const limit =itemsPerPage
-    const offset =(page-1) *itemsPerPage
+    const limit = itemsPerPage
+    const offset = (page - 1) * itemsPerPage
 
     setErrors({ startDate: "", fromDate: "", selectedType: "" });
     getDepositTickets(limit, offset, startDate, fromDate, selectedType.value);
   };
 
+  console.log(ticketType, ticketAction, "====>ticketType")
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -408,6 +448,7 @@ function Tickets() {
           rejectionReasons={rejectionReasons}
           fromPath="tickets"
           handleTikcetApproveRejection={handleTikcetApproveRejection}
+          handleWithdrwaTicketApproveRejection={handleWithdrwaTicketApproveRejection}
         />
       )}
 
@@ -415,7 +456,7 @@ function Tickets() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={`Ticket ${ticketAction} successfully`}
+          discription={`${ticketType} Ticket ${ticketAction === "APPROVE" ? "Approved" : "Rejected"} successfully`}
         />
       )}
 

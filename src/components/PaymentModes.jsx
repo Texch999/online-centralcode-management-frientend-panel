@@ -16,10 +16,14 @@ const PaymentModes = ({
     if ((actionType === "Deposit" || actionType === "Withdraw") && !card.isEnabled) {
       return;
     }
-
     if (userRole === "director") {
-      handleDepositAndWithdraw(card);
+      if (actionType === "Deposit" || actionType === "Withdraw") {
+        handleDepositAndWithdraw(card);
+      } else {
+        handleAddModal(card.id, card.country_id, card.avil_modes);
+      }
     } else {
+
       handleAddModal(card.id, card.country_id, card.avil_modes);
     }
   };
@@ -32,8 +36,6 @@ const PaymentModes = ({
           const filteredPayments = filteredPaymentModes?.filter(
             (card) => card.avil_modes === mode
           );
-
-          console.log("filteredPaymentModes:", filteredPaymentModes);
 
           return (
             filteredPayments.length > 0 && (

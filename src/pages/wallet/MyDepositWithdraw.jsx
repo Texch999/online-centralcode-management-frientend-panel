@@ -45,6 +45,7 @@ function MyDepositWithdraw() {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [ErroDiscription, setErroDiscription] = useState("");
+  const [ticketType, setTicketType] = useState(null);
   const initialRendering = useRef(true)
 
   const handleDepositWithdrawPopupOpen = () => {
@@ -165,10 +166,13 @@ function MyDepositWithdraw() {
     }
   }
 
-  const ConfirmationDeleteTicket = (id) => {
+  const ConfirmationDeleteTicket = (id, ticketType) => {
+
+    setTicketType(ticketType)
     if (id) {
       setTicketId(id)
       setConfirmationPopupOpen(true)
+
     }
   }
 
@@ -216,8 +220,8 @@ function MyDepositWithdraw() {
         </div>),
         utrno: <div >{record.transacId}  <br /> {record?.accDtl}</div>,
         dw: <div style={{ color: `${record.ticketType === 1 || 0 ? "#18B962" : "#D0431C"}` }}>
-          {record.ticketType === 1 || 0 ? "Deposit" : "Withdaw"}</div>,
-        chips: <div style={{ color: `${record.ticketType === 1 || 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips || "--"}</div>,
+          {record.ticketType === 1 ? "Deposit" : "Withdaw"}</div>,
+        chips: <div style={{ color: `${record.ticketType === 1 ? "#18B962" : "#D0431C"}` }}>{record?.requChips || "--"}</div>,
         currtypeamount: <div >{record.paidAmount}<br />{getCurrency(record?.reqCurrency)}</div>,
 
         view: (
@@ -247,7 +251,7 @@ function MyDepositWithdraw() {
               {record.status === 0 ? < MdAutoDelete
                 size={22}
                 className="eye-icon pointer m-2 pointer"
-                onClick={() => ConfirmationDeleteTicket(record.id)}
+                onClick={() => ConfirmationDeleteTicket(record.id, record?.ticketType)}
               /> : null}
 
             </div>
@@ -449,7 +453,7 @@ function MyDepositWithdraw() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription="Ticket deleted successfully"
+          discription={`${ticketType !== 2 || ticketType !== "2" ? "Deposit" : "Withdraw"} Ticket deleted successfully`}
         />
       )}
 

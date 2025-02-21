@@ -10,7 +10,8 @@ import { Images } from "../../images";
 import { MdContentCopy } from "react-icons/md";
 import { imgUrl } from "../../api/baseUrl";
 import SuccessPopup from "./SuccessPopup";
-const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment }) => {
+import { rfloor } from "../../utils/mathFunctions"
+const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment, setDiscription }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
@@ -190,7 +191,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                     setSlip(null);
                     setSelectedFile(null);
                     setPreviewImage(null);
-                    setApiErrors(null); // Clear any previous errors
+                    setApiErrors(null);
+                    setDiscription("Deposit ticket created successfully")
                 } else {
                     setApiErrors(response?.errors || "Deposit failed. Please try again.");
                 }
@@ -199,6 +201,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 setApiErrors(error?.errors || error?.message || "API request failed");
             });
     };
+    console.log(selectedWebDetails, formData.websiteName, "======>selectedWebDetails.user_paner_id")
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -207,7 +210,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                         {/* Image on the left */}
                         <div>
                             <img
-                                src={`${imgUrl}/offlinepaymentsMode/${selectedWebDetails?.image}`}
+                                src={`${imgUrl}/offlinepaymentsMode/${selectedPayment?.image}`}
                                 alt="Icon"
                                 className="me-3"
                                 style={{ width: "50px", height: "50px" }}
@@ -387,7 +390,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
                                         value={
-                                            (selectedWebDetails?.total_chips ?? 0) + (formData?.selectedChips ?? 0)
+                                            Number(selectedWebDetails?.total_chips ?? 0) + Number(formData?.selectedChips ?? 0)
                                         }
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -607,7 +610,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                 <label className="small-font mb-1">QR Code</label>
                                 {selectedPayment?.qr_code_image ? (
                                     <img
-                                        src={selectedPayment.qr_code_image}
+
+                                        src={`${imgUrl}/offlinepaymentsMode/${selectedPayment.qr_code_image}`}
                                         alt="QR Code"
                                         className="w-100"
                                     />

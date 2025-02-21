@@ -553,7 +553,26 @@ const endpoints = {
     url: (id) => `/user/${userID()}/offlineDeposits/${id}/reject`,
   },
 
+  DirectorWithdrawPaymentDetails: {
+    method: "get",
+    url: (id) => `/director/${userID()}/offlineAccounts/${id}`,
+  },
 
+  DirectorWithdrawTicketCreation: {
+    method: "post",
+    url: (id) => `/director/${userID()}/offlineWithdraw`,
+  },
+
+  ownerWithdrawTicketRejection: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineWithdraw/${id}/reject`,
+  },
+
+  ownerWithdrawTicketApprove: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineWithdraw/${id}/approve`,
+  },
+ 
 };
 
 export default endpoints;
