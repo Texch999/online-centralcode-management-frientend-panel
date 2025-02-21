@@ -346,12 +346,20 @@ const DirectorAvailablePaymentsModes = (data) => {
   return apiRequest("DirectorAvailablePaymentsModes", data);
 };
 
+//notifications
 const getNotificationsforManagement = (data) =>{
   return apiRequest("getNotificationsforManagement", data);
 };
 const getNotificationsforDirector = (data) =>{
   return apiRequest("getNotificationsforDirector", data);
 }
+const readNotificationsforManagement = (id, status) => {
+  return apiRequest("readNotificationsforManagement",id,{id,status});
+};
+
+const readNotificationsforDirector = (id, status) => {
+  return apiRequest("readNotificationsforDirector",id,{id,status});
+};
 const DirectorOffilneDepositTicket = (data) => {
   return apiRequest("DirectorOffilneDepositTicket", data);
 };
@@ -470,4 +478,6 @@ export {
   depositTikcetDetailsById,
   managementDepositTikcetDetailsById,
   DeleteDirectorTicketsById,
+  readNotificationsforDirector,
+  readNotificationsforManagement
 };
