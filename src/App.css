@@ -877,3 +877,6 @@ button.cst-btn:hover {
   font-weight: bold;
   text-transform: capitalize;
 }
+.red-font{
+  color:"#db5318"
+}

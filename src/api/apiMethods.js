@@ -346,11 +346,10 @@ const DirectorAvailablePaymentsModes = (data) => {
   return apiRequest("DirectorAvailablePaymentsModes", data);
 };
 
-//notifications
-const getNotificationsforManagement = (data) =>{
+const getNotificationsforManagement = (data) => {
   return apiRequest("getNotificationsforManagement", data);
 };
-const getNotificationsforDirector = (data) =>{
+const getNotificationsforDirector = (data) => {
   return apiRequest("getNotificationsforDirector", data);
 }
 const readNotificationsforManagement = (id, status) => {
@@ -382,6 +381,30 @@ const managementDepositTikcetDetailsById = (id, data) => {
 
 const DeleteDirectorTicketsById = (id, data) => {
   return apiRequest("DeleteDirectorTicketsById", data, id);
+};
+
+const ownerTicketApprove = (id, data) => {
+  return apiRequest("ownerTicketApprove", data, id);
+};
+
+const ownerTicketRejection = (id, data) => {
+  return apiRequest("ownerTicketRejection", data, id);
+};
+
+const DirectorWithdrawPaymentDetails = (id, data) => {
+  return apiRequest("DirectorWithdrawPaymentDetails", data, id);
+};
+
+const DirectorWithdrawTicketCreation = (data) => {
+  return apiRequest("DirectorWithdrawTicketCreation", data);
+};
+
+const ownerWithdrawTicketRejection = (id, data) => {
+  return apiRequest("ownerWithdrawTicketRejection", data, id);
+};
+
+const ownerWithdrawTicketApprove = (id, data) => {
+  return apiRequest("ownerWithdrawTicketApprove", data, id);
 };
 
 export {
@@ -479,5 +502,11 @@ export {
   managementDepositTikcetDetailsById,
   DeleteDirectorTicketsById,
   readNotificationsforDirector,
-  readNotificationsforManagement
+  readNotificationsforManagement,
+  ownerTicketApprove,
+  ownerTicketRejection,
+  DirectorWithdrawPaymentDetails,
+  DirectorWithdrawTicketCreation,
+  ownerWithdrawTicketRejection,
+  ownerWithdrawTicketApprove,
 };

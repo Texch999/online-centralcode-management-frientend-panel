@@ -45,6 +45,7 @@ function MyDepositWithdraw() {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [ErroDiscription, setErroDiscription] = useState("");
+  const [ticketType, setTicketType] = useState(null);
   const initialRendering = useRef(true)
 
   const handleDepositWithdrawPopupOpen = () => {
@@ -52,11 +53,11 @@ function MyDepositWithdraw() {
   };
 
   const typeOptions = [
-    { label: "All", value: "" },
-    { label: "Deposit", value: "1" },
-    { label: "Withdraw", value: "2" },
+    { label: "All", value: null },
+    { label: "Deposit", value: 1 },
+    { label: "Withdraw", value: 2 },
   ];
-  const [selectedType, setSelectedType] = useState("")
+  const [selectedType, setSelectedType] = useState(null)
 
   const getDepositTickets = async (limit, offset, startDate, fromDate, type) => {
 
@@ -165,10 +166,13 @@ function MyDepositWithdraw() {
     }
   }
 
-  const ConfirmationDeleteTicket = (id) => {
+  const ConfirmationDeleteTicket = (id, ticketType) => {
+
+    setTicketType(ticketType)
     if (id) {
       setTicketId(id)
       setConfirmationPopupOpen(true)
+
     }
   }
 
@@ -216,8 +220,8 @@ function MyDepositWithdraw() {
         </div>),
         utrno: <div >{record.transacId}  <br /> {record?.accDtl}</div>,
         dw: <div style={{ color: `${record.ticketType === 1 || 0 ? "#18B962" : "#D0431C"}` }}>
-          {record.ticketType === 1 || 0 ? "Deposit" : "Withdaw"}</div>,
-        chips: <div style={{ color: `${record.ticketType === 1 || 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips || "--"}</div>,
+          {record.ticketType === 1 ? "Deposit" : "Withdaw"}</div>,
+        chips: <div style={{ color: `${record.ticketType === 1 ? "#18B962" : "#D0431C"}` }}>{record?.requChips || "--"}</div>,
         currtypeamount: <div >{record.paidAmount}<br />{getCurrency(record?.reqCurrency)}</div>,
 
         view: (
@@ -244,12 +248,12 @@ function MyDepositWithdraw() {
                 }
                 }
               />
-              { }
-              < MdAutoDelete
+              {record.status === 0 ? < MdAutoDelete
                 size={22}
                 className="eye-icon pointer m-2 pointer"
-                onClick={() => ConfirmationDeleteTicket(record.id)}
-              />
+                onClick={() => ConfirmationDeleteTicket(record.id, record?.ticketType)}
+              /> : null}
+
             </div>
           </div >
         ),
@@ -267,11 +271,40 @@ function MyDepositWithdraw() {
     getDepositTickets(limit, offset);
   };
 
+  const [errors, setErrors] = useState({ startDate: "", fromDate: "", selectedType: "" });
+
   const handleDataFilter = () => {
-    if (startDate && fromDate && type) {
-      getDepositTickets(limit, offset, startDate, fromDate, type);
+    let newErrors = { startDate: "", fromDate: "", selectedType: "" };
+    let isValid = true;
+
+    // Validate startDate
+    if (!startDate) {
+      newErrors.startDate = "Start date is required";
+      isValid = false;
     }
-  }
+
+    // Validate fromDate
+    if (!fromDate) {
+      newErrors.fromDate = "From date is required";
+      isValid = false;
+    }
+
+    // Validate selectedType
+    if (!selectedType) {
+      newErrors.selectedType = "Type selection is required";
+      isValid = false;
+    }
+
+    // If any field is missing, update errors and stop execution
+    if (!isValid) {
+      setErrors(newErrors);
+      return;
+    }
+    const limit = itemsPerPage
+    const offset = (page - 1) * itemsPerPage
+    setErrors({ startDate: "", fromDate: "", selectedType: "" });
+    getDepositTickets(limit, offset, startDate, fromDate, selectedType?.value);
+  };
 
   return (
     <div>
@@ -343,6 +376,7 @@ function MyDepositWithdraw() {
               value={selectedType}
               onChange={(option) => setSelectedType(option)}
             />
+            <p className="small-font red-font">{errors.selectedType}</p>
           </div>
           <div className="col flex-column">
             <label className="black-text4 small-font mb-1">From</label>
@@ -352,6 +386,7 @@ function MyDepositWithdraw() {
               value={new Date(startDate).toISOString().split("T")[0]}
               onChange={(e) => setStartDate(e.target.value)}
             />
+            <p className="small-font red-font">{errors.startDate}</p>
           </div>
           <div className="col flex-column">
             <label className="black-text4 small-font mb-1">To</label>
@@ -360,9 +395,11 @@ function MyDepositWithdraw() {
               value={new Date(fromDate).toISOString().split("T")[0]}
               onChange={(e) => setFromDate(e.target.value)}
               type="date" />
+            <p className="small-font red-font">{errors.fromDate}</p>
           </div>
           <div className="col flex-column d-flex align-items-end justify-content-end">
             <button className="w-100 saffron-btn2 small-font" onClick={handleDataFilter}>Submit</button>
+            <p className="small-font red-font">{""}</p>
           </div>
         </div>
       </div>
@@ -416,7 +453,7 @@ function MyDepositWithdraw() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription="Ticket deleted successfully"
+          discription={`${ticketType !== 2 || ticketType !== "2" ? "Deposit" : "Withdraw"} Ticket deleted successfully`}
         />
       )}
 

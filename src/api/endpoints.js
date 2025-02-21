@@ -33,11 +33,6 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/website/website`,
   },
-  // loginUser: { method: "post", url: "/master/login" },
-  // createWebsite: {
-  //   method: "post",
-  //   url: () => `/user/${userID()}/website/website`,
-  // },
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -97,20 +92,13 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/banners`,
   },
-  // getBannerByUserId: {
-  //   method: "get",
-  //   url: (id) => `/user/${userID()}/banners/user/${id}`,
-  // },
 
   getBannerByUserId: {
     method: "get",
     url: (params) => {
       console.log("params", params);
-
       const { id, ...filteredParams } = params;
-
       const query = new URLSearchParams(filteredParams).toString();
-
       return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
     },
   },
@@ -132,18 +120,7 @@ const endpoints = {
     url: (id) => `/user/${userID()}/banner/${id}/status`,
   },
 
-  // getRoles: { method: "get", url: `/user/${userID()}/rolesList` },
-
   loginUser: { method: "post", url: () => "/master/login" },
-  // addManagemnentTeam: { method: "post", url: "/employee" },
-  // addManagemnentTeam: { method: "post", url: `/user/${userID()}/employee` },
-
-  // getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
-  // getEmployees: { method: "get", url: `/user/${userID()}/employees` },
-  // getEmployees: ({ limit, offset }) => ({
-  //   method: "get",
-  //   url: `/user/${userID()}/employeeeees?limit=${limit}&offset=${offset}`,
-  // }),
 
   getEmployees: {
     method: "get",
@@ -197,12 +174,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
-  // {{baseUrl}}/user/1/director/Abcd7222
   updateDirectorByID: {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}`,
   },
-  // endpoint: http://localhost:901rest2/0.1/director/1/updateEmployee/Abcd1234
 
   updateDirectorEmployeeByID: {
     method: "post",
@@ -212,7 +187,7 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
-  // http://localhost:901rest2/0.1/director/1/employee/Abcd1234
+
   getDirectorEmployeeDetailsById: {
     method: "get",
     url: (id) => `/director/${userID()}/employee/${id}`,
@@ -226,10 +201,6 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
   },
-  // getAllSecurityQuestions: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/secQuestion/`,
-  // },
 
   getAllSecurityQuestions: {
     method: "get",
@@ -296,14 +267,6 @@ const endpoints = {
     url: (id) => `/user/${userID()}/privacypolicy/${id}/addwebsites`,
   },
 
-  // getCountries: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/website/websites`,
-  // },
-  // getWebsites: {
-  //   method: "get",
-  //   url: () => `/user/${userID()}/website/websites`,
-  // },
   getWebsites: {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
@@ -338,9 +301,7 @@ const endpoints = {
     url: (params) => {
       console.log("params", params);
       const { id, ...filteredParams } = params;
-
       const query = new URLSearchParams(filteredParams).toString();
-
       return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
     },
   },
@@ -354,7 +315,6 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/broadcasting/${id}`,
   },
-  // dir payment methods
 
   getDirectorAccountDetails: {
     method: "get",
@@ -457,25 +417,30 @@ const endpoints = {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/offlinePayments?${query}`;
     },
-    // url: () => `/user/${userID()}/paymentDetails`,
   },
+
   suspendManagementPaymentDetails: {
     method: "post",
     url: (id) => `/user/${userID()}/offlinePayment/${id}/suspend`,
   },
+
   getManagementPaymentDetailsById: {
     method: "get",
     url: (id) => `/user/${userID()}/offlinePayment/${id}`,
   },
+
   createManagementPaymentDetails: {
     method: "post",
     url: () => `/user/${userID()}/offlinePayment`,
   },
+
   updateManagementPaymentDetails: {
     method: "post",
     url: (id) => `/user/${userID()}/offlinePayment/${id}`,
   },
+
   //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+
   createManagementOfflinePaymentModes: {
     method: "post",
     url: () => `/user/${userID()}/offlinePaymentMode`,
@@ -512,10 +477,7 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/PaymentModes`,
   },
-  // addWebsiteToPrivacyPolicy: {
-  //   method: "post",
-  //   url: (id) => `/user/${userID()}/privacypolicy/${id}/addwebsites`,
-  // },
+
   getDirectorSites: {
     method: "get",
     url: () => `/director/${userID()}/details/${userID()}`,
@@ -537,13 +499,11 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/offlinePaymentModes`,
   },
-  //Notifications
-
-  getNotificationsforManagement:{
+  getNotificationsforManagement: {
     method: "get",
     url: () => `/user/${userID()}/notifications`,
   },
-  getNotificationsforDirector:{
+  getNotificationsforDirector: {
     method: "get",
     url: () => `/director/${userID()}/notifications`,
   },
@@ -591,6 +551,37 @@ const endpoints = {
     method: "delete",
     url: (id) => `/director/${userID()}/offlineDeposit/${id}`,
   },
+
+  ownerTicketApprove: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}/approve`,
+  },
+
+  ownerTicketRejection: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}/reject`,
+  },
+
+  DirectorWithdrawPaymentDetails: {
+    method: "get",
+    url: (id) => `/director/${userID()}/offlineAccounts/${id}`,
+  },
+
+  DirectorWithdrawTicketCreation: {
+    method: "post",
+    url: (id) => `/director/${userID()}/offlineWithdraw`,
+  },
+
+  ownerWithdrawTicketRejection: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineWithdraw/${id}/reject`,
+  },
+
+  ownerWithdrawTicketApprove: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineWithdraw/${id}/approve`,
+  },
+ 
 };
 
 export default endpoints;
