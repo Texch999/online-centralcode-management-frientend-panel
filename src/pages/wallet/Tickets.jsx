@@ -150,6 +150,8 @@ function Tickets() {
   // <====================== Deposit  Approve and Rejection =====================>
   const handleTikcetApproveRejection = async (action, reason, ticketType) => {
     console.log(action, ticketType, "=====> deposit action")
+    const limit = itemsPerPage
+    const offset = (page - 1) * itemsPerPage
     let apiCAll
     setTicketAction(action)
     setTicketType(ticketType)
@@ -183,10 +185,13 @@ function Tickets() {
   // <====================== Withdraw Approve and Rejection =====================>
 
   const handleWithdrwaTicketApproveRejection = async (action, reason, ticketType) => {
+    const limit = itemsPerPage
+    const offset = (page - 1) * itemsPerPage
+    console.log(action, reason, ticketType, "====>action, reason, ticketType")
     let apiCAll
     setTicketAction(action)
     setTicketType(ticketType)
-    console.log(action, ticketType, "=====> withdrw action")
+
     const data = {
       rejId: reason
     }

@@ -64,7 +64,7 @@ function DepositWithdrawPopup({
     return `${formattedDate} | ${formattedTime}`;
   };
 
-  const handleTicket = (action) => {
+  const handleTicket = (action, DepOrWit) => {
 
     if (userRole === "management") {
       // management deposit and withdraw aprrove & rejection
@@ -74,21 +74,21 @@ function DepositWithdrawPopup({
         } else {
           if (ticketData?.ticketType === 1) {
             //deposite rejection
-            handleTikcetApproveRejection(action, selectedOption, "Deposit")
+            handleTikcetApproveRejection(action, selectedOption, DepOrWit)
 
           } else {
             // withdraw rejection
-            handleWithdrwaTicketApproveRejection(action, selectedOption, "Withdraw")
+            handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit)
 
           }
         }
       } else {
         if (ticketData?.ticketType === 2) {
           // deposit approve
-          handleTikcetApproveRejection(action, selectedOption, "Deposit")
+          handleTikcetApproveRejection(action, selectedOption, DepOrWit)
         } else {
           // withdrwa approve
-          handleWithdrwaTicketApproveRejection(action, selectedOption, "Withdraw")
+          handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit)
         }
 
       }
@@ -100,21 +100,21 @@ function DepositWithdrawPopup({
         } else {
           if (ticketData?.ticketType === 1) {
             //deposite rejection
-            handleTikcetApproveRejection(action, selectedOption, "Deposit")
+            handleTikcetApproveRejection(action, selectedOption, DepOrWit)
 
           } else {
             // withdraw rejection
-            handleTikcetApproveRejection(action, selectedOption, "Withdraw")
+            handleTikcetApproveRejection(action, selectedOption, DepOrWit)
 
           }
         }
       } else {
         if (ticketData?.ticketType === 2) {
           // deposit approve
-          handleTikcetApproveRejection(action, selectedOption, "Deposit")
+          handleTikcetApproveRejection(action, selectedOption, DepOrWit)
         } else {
           // withdrwa approve
-          handleTikcetApproveRejection(action, selectedOption, "Withdraw")
+          handleTikcetApproveRejection(action, selectedOption, DepOrWit)
         }
 
       }
@@ -288,10 +288,10 @@ function DepositWithdrawPopup({
 
                 </div>
                 <div className="col-6 mt-3">
-                  <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE")}>Approve</button>
+                  <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>Approve</button>
                 </div>
                 <div className="col-6 mt-3">
-                  <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT")}>Reject</button>
+                  <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>Reject</button>
                 </div>
               </>) : <button className="w-100 saffron-btn2 pointer-events-none cursor-not-allowed" disabled>{ticketData?.status === 1 ? "Approved" : "Rejected"}</button>
             }

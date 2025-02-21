@@ -7,7 +7,9 @@ import { Images } from "../../images";
 import { getDirectorAccessWebites, getDirectorSites, DirectorWithdrawTicketCreation } from "../../api/apiMethods";
 import { MdContentCopy } from "react-icons/md";
 import { imgUrl } from "../../api/baseUrl";
-import { rfloor } from "../../utils/mathFunctions"
+import { rround, rfloor, rceil } from "../../utils/mathFunctions";
+
+
 const WithdrawPopup = ({
     setWithdrawPopup,
     withdrawPopup,
@@ -88,6 +90,10 @@ const WithdrawPopup = ({
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    // chips math function 
+
+    const shareChipValue = Number(formData.selectedChips * (selectedWebDetails?.share / 100));
+    const roundedShareChipValue = shareChipValue > 0 ? rfloor(shareChipValue, -3) : 0;
 
     const validateForm = () => {
 
@@ -116,7 +122,7 @@ const WithdrawPopup = ({
             currency: directorCurrency?.county || "",
             paymentId: selectedPayment?.gateway_type || null,
             selctChips: Number(formData.selectedChips) || 0,
-            paidAmount: formData.selectedChips ? (formData.selectedChips * (selectedWebDetails?.share / 100)) : 0,
+            paidAmount: roundedShareChipValue,
         };
 
         if (selectedPayment?.avil_modes === 4) {
@@ -162,6 +168,7 @@ const WithdrawPopup = ({
         setSelectedWebDetails(null)
     }
     const maxAllowed = selectedWebDetails?.total_chips !== null ? selectedWebDetails?.total_chips : 0
+
 
     return (
         <div>
@@ -361,7 +368,7 @@ const WithdrawPopup = ({
                                     name="paidAmount"
                                     className="w-100 small-font rounded input-css  white-bg input-border"
                                     placeholder="Enter Withdraw Amount"
-                                    value={(formData?.selectedChips ? formData.selectedChips : 0) * (selectedWebDetails?.share / 100)}
+                                    value={roundedShareChipValue}
                                     onChange={handleChange}
                                 />
                             </div>

@@ -10,7 +10,7 @@ import { Images } from "../../images";
 import { MdContentCopy } from "react-icons/md";
 import { imgUrl } from "../../api/baseUrl";
 import SuccessPopup from "./SuccessPopup";
-import { rfloor } from "../../utils/mathFunctions"
+import { rround, rfloor, rceil } from "../../utils/mathFunctions";
 const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment, setDiscription }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
@@ -109,6 +109,21 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
         setSelectedWebDetails(...WebUserDetails)
     }
 
+    /// chips paid amunt calculation by the Math function for rental
+    const externalChipValue = Number(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100));
+    const roundedExternalChipValue = externalChipValue > 0 ? rceil(externalChipValue, -3) : 0;
+
+    // Calculate the rent chip value
+    const rentChipValue = Number(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100));
+    const roundedRentChipValue = rentChipValue > 0 ? rceil(rentChipValue, -3) : 0;
+
+    // Sum the rounded values
+    const totalValue = roundedExternalChipValue + roundedRentChipValue;
+
+    // chip calculation for the share & royality
+
+    const shareChipValue = Number(formData.selectedChips * (selectedWebDetails?.share / 100));
+    const roundedShareChipValue = shareChipValue > 0 ? rceil(shareChipValue, -3) : 0;
     const validateForm = () => {
         const newErrors = {};
         if (selectedPayment?.avil_modes !== 4) {
@@ -137,7 +152,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 currency: directorCurrency?.county || "",
                 paymentId: selectedPayment?.gateway_id || null,
                 selctChips: Number(formData.selectedChips) || null,
-                paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.rentPercentage / 100)) + ((formData.selectedSportsChips) * (selectedWebDetails.extChipPercent / 100))),
+                paidAmount: totalValue,
                 selctSpcChips: Number(formData.selectedSportsChips),
             };
         } else {
@@ -147,7 +162,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 currency: directorCurrency?.county || "",
                 paymentId: selectedPayment?.gateway_id || null,
                 selctChips: Number(formData.selectedChips) || null,
-                paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.share / 100))),
+                paidAmount: roundedShareChipValue,
             };
         }
 
@@ -201,7 +216,17 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 setApiErrors(error?.errors || error?.message || "API request failed");
             });
     };
-    console.log(selectedWebDetails, formData.websiteName, "======>selectedWebDetails.user_paner_id")
+
+    const value = 10.45699;
+
+    console.log(rround(value, -2), "/ Output: 10.45 (rounds to nearest)");
+    console.log(rfloor(value, -2), "// Output: 10.45 (floors down)");
+    console.log(rceil(value, -2), "// Output: 10.46 (ceils up)");
+
+
+
+
+
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -419,7 +444,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         name="paidAmount"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(formData.selectedChips * (selectedWebDetails?.share / 100))}
+                                        value={roundedShareChipValue}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -458,7 +483,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter"
-                                        value={(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
+                                        value={roundedRentChipValue}
+                                        // value={(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
                                         onChange={handleChange}
                                         style={{ pointerEvents: "none" }}
                                         readOnly
@@ -485,7 +511,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100))}
+                                        // value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100))}
+                                        value={roundedExternalChipValue}
+
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -514,7 +542,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         name="paidAmount"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100)) + (formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
+                                        value={totalValue}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
