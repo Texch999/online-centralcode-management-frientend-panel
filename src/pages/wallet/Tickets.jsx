@@ -105,7 +105,7 @@ function Tickets() {
       })
   }
 
-
+  
 
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
