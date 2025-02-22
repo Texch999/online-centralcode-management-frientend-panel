@@ -123,11 +123,8 @@ function Login() {
 
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center">
-      <div
-        className="white-bg w-100 h-fill login-box-shadow rounded-4 d-flex"
-        style={{ maxWidth: "1000px" }}
-      >
-        <div className="w-50 pt-3 h-fill position-relative d-flex justify-content-center">
+      <div className="white-bg w-100 login-box-shadow rounded-4 d-flex login-box">
+        <div className="w-50 pt-3  position-relative d-flex justify-content-center">
           <form
             className="ps-4 pe-5 flex-column px-5 w-75"
             onSubmit={handleSubmit(handleLogin)}
@@ -237,11 +234,11 @@ function Login() {
             className="loginimg w-100"
           />
         </div>
-        <div className="w-50 pe-3 py-3 h-fill">
+        <div className="w-50 pe-3 py-3">
           <img
             src={Images.LoginImageTwo}
             alt="sports-login"
-            className="w-100 h-fill"
+            className="w-100 h-100"
           />
         </div>
       </div>

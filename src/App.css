@@ -14,7 +14,9 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
-
+.h-100 {
+  height: 100%;
+}
 .h-fill {
   height: -webkit-fill-available !important;
 }
@@ -668,7 +670,9 @@
 .cursor-pointer {
   cursor: pointer;
 }
-
+.no-cursor {
+  cursor: not-allowed;
+}
 .text-capitalize {
   text-transform: capitalize;
 }
@@ -838,7 +842,7 @@ button.cst-btn:hover {
 }
 
 .tag-bg {
-  background-color: #39426B;
+  background-color: #39426b;
 }
 
 .white-clr {
@@ -856,13 +860,11 @@ button.cst-btn:hover {
 }
 
 .input-border {
-  border: 1px solid rgb(0, 0, 0, 0.2)
+  border: 1px solid rgb(0, 0, 0, 0.2);
 }
-
 .dep-pop-clr {
-  color: "#222A4C"
+  color: "#222A4C";
 }
-
 .text-size {
   font-size: 1.8125rem;
 }

@@ -14,7 +14,6 @@ function SubHeader() {
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
 
   const menuConfig = {
-    // Management
     management: [
       {
         label: "Adding",
@@ -89,16 +88,13 @@ function SubHeader() {
             label: "Create Promotions Type",
             path: "/create-promotion-type",
           },
-          // { label: "Sports Promotions", path: "/sports-promotions" },
-          // { label: "Casino Promotions", path: "/casino-promotions" },
-          // { label: "Offers", path: "/offers" },
+
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
       },
     ],
 
-    // Director
     director: [
       {
         label: "Adding",
@@ -170,7 +166,6 @@ function SubHeader() {
       },
     ],
 
-    // Super Admin
     super_admin: [
       {
         label: "Adding",
@@ -238,7 +233,6 @@ function SubHeader() {
       },
     ],
 
-    // Designing Team
     designing_team: [
       {
         label: "Settings",
@@ -259,7 +253,6 @@ function SubHeader() {
       },
     ],
 
-    // Risk Team
     risk_team: [
       {
         label: "Live/Block",
@@ -303,7 +296,6 @@ function SubHeader() {
       },
     ],
 
-    // Accounts Team
     accounts_team: [
       {
         label: "Wallet",
@@ -358,7 +350,6 @@ function SubHeader() {
           key={index}
         >
           <Dropdown
-            // onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
             className="w-100"
             onClick={(isOpen) => handleDropdownToggle(index, isOpen)}
           >

@@ -2,22 +2,18 @@ import React from "react";
 import "./App.css";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
-// Components
 import Login from "./components/Login";
 import Header from "./components/Header";
 
-// Pages
 import Homepage from "./pages/home/Homepage";
 import DashboardViewAll from "./pages/home/DashboardViewAll";
 
-// Casino Pages
 import Casino from "./pages/casino/Casino";
 import CasinoVendor from "./pages/casino/CasinoVendor";
 import CasinoGames from "./pages/casino/CasinoGames";
 import VendorRegistration from "./pages/vendor-registration/casino/casino/VendorRegistration";
 import SportsVendorRegistration from "./pages/vendor-registration/casino/sports/SportsVendorRegistration";
 
-// Risk Management Pages
 import RiskLimitSet from "./pages/risk-management/RiskLimitSet";
 import RiskSports from "./pages/risk-management/RiskSports";
 import RiskBetHistory from "./pages/risk-management/RiskBetHistory";
@@ -26,7 +22,6 @@ import LiveBetList from "./pages/risk-management/LiveBetList";
 import DeletedBetHistory from "./pages/risk-management/DeletedBetHistory";
 import CheatAlertBets from "./pages/risk-management/CheatAlertBets";
 
-// User Profile and Management
 import UserProfileDashboard from "./pages/add-team/UserProfileDasboard";
 import AddManagementTeam from "./pages/add-team/AddManagementTeam";
 import AddDirectorAdmin from "./pages/add-team/AddDirectorAdmin";
@@ -41,7 +36,6 @@ import Tickets from "./pages/wallet/Tickets";
 import PaymentGateway from "./pages/add-team/PaymentGateway";
 import AddWibsites from "./pages/add-team/AddWebsites";
 
-// Reports
 import DownLineAdmins from "./pages/reports/DownLineAdmins";
 import MatchWisePl from "./pages/reports/match-wise-pl/MatchWisePl";
 import IndividualMatchPl from "./pages/reports/match-wise-pl/IndividualMatchPl";
@@ -55,11 +49,9 @@ import SportsReport from "./pages/reports/SportsReport";
 import UserReports from "./pages/reports/UserReports";
 import ClientRental from "./pages/reports/ClientRental";
 
-// Sports Pages
 import Sports from "./pages/sports/Sports";
 import SportProviders from "./pages/sports/SportProviders";
 
-// Cricket Pages
 import Cricket from "./pages/cricket/Cricket";
 import FancyCricket from "./pages/cricket/FancyCricket";
 import FancyIndividualCricketMatch from "./pages/cricket/FancyIndividualCricketMatch";
@@ -67,11 +59,9 @@ import CricketBookmaker from "./pages/cricket/CricketBookmaker";
 import CricketLiveStreaming from "./pages/cricket/CricketLiveStreaming";
 import CricketScoreboard from "./pages/cricket/CricketScoreboard";
 
-// Fancy Result and Market Result Pages
 import FancyResult from "./pages/fancy-result/FancyResult";
 import MarketResult from "./pages/market-result/MarketResult";
 
-// Promotions
 import Offer from "./pages/promotions/Offer";
 import PromotionType from "./pages/promotions/PromotionType";
 import SportsPromotions from "./pages/promotions/SportsPromotions";
@@ -79,10 +69,8 @@ import CasinoPromotions from "./pages/promotions/CasinoPromotions";
 import Broadcasting from "./pages/promotions/Broadcasting";
 import SandCBanner from "./pages/promotions/SandCBanner";
 
-// Wallet Transactions
 import GatewayTransactions from "./pages/wallet/GatewayTransactions";
 
-// Owner Settings
 import ActivityLogs from "./pages/ownerSettings/ActivityLogs";
 import RecentAccessIp from "./pages/ownerSettings/RecentAccessIp";
 import IndividualMatch from "./pages/ownerSettings/IndividualMatch";
@@ -90,13 +78,11 @@ import ReferenceData from "./pages/ownerSettings/ReferenceData";
 import PrivacyPolicy from "./pages/ownerSettings/PrivacyPolicy";
 import Result from "./pages/ownerSettings/Result";
 
-// Live Block
 import LiveBlockSports from "./pages/live-block/LiveBlockSports";
 import IndividualMatchOddsLive from "./pages/live-block/components/IndividualMatchOddsLive";
 import ViewFancyBets from "./pages/live-block/components/ViewFancyBets";
 import LiveScoreBoard from "./pages/live-block/components/LiveScoreboard";
 
-// Live Block Casino Management
 import CasinoWebsite from "./pages/live-block/casino-management/CasinoWebsite";
 import MCasinoGames from "./pages/live-block/casino-management/MCasinoGames";
 import McasinoGDetails from "./pages/live-block/casino-management/McasinoGDetails";
@@ -105,7 +91,6 @@ import CasinoProvider from "./pages/live-block/casino-management/CasinoProvider"
 import CasinoProviderGames from "./pages/live-block/casino-management/CasinoProviderGames";
 import CasinoMBetHistory from "./pages/live-block/casino-management/CasinoMBetHistory";
 
-// Bonus Chips and User Management
 import BonusChips from "./pages/bonuschips/BonusChips";
 import BetBlockUsers from "./pages/live-block/BetBlockUsers";
 import InActiveUsers from "./pages/live-block/InActiveUsers";
@@ -117,14 +102,11 @@ import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
 import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 import EditNewDirector from "./pages/EditNewDirector";
 import { CountriesProvider } from "./context/CountriesContext";
+import PageNotFound from "./pages/notFound/PageNotFound";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
 
-  // const PrivateRoute = ({ children }) => {
-  //   return isLoggedIn ? children : <Navigate to="/director/login" />;
-  // };
-  // const path = window.location.pathname;
   const location = useLocation();
 
   const showLoginPage =
