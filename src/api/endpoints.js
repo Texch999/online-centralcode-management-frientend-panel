@@ -507,6 +507,15 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/notifications`,
   },
+  
+  readNotificationsforManagement:{
+    method: "patch",
+    url: (data) => `/user/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
+  },
+  readNotificationsforDirector:{
+    method: "patch",
+    url: (data) => `/director/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
+  },
   DirectorOffilneDepositTicket: {
     method: "post",
     url: () => `/director/${userID()}/offlineDeposit`,
