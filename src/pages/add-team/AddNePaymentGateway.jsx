@@ -49,7 +49,7 @@ const AddNePaymentGateway = () => {
     setOnAddPaymentGateway(true);
     setAvailablePaymentModeId(available_id);
   };
-  const tabNames = ["Offline Payment Modes", "Payment Gateway"];
+  const tabNames = ["All", "Bank Transfe", "E-Wallets", 'QR Codes', "Cash", "Payment Gateway"];
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -223,7 +223,7 @@ const AddNePaymentGateway = () => {
                 {tabNames.map((tabName, index) => (
                   <div
                     key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 px2" : "rounded"
                       }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => setSelectedTab(index)}

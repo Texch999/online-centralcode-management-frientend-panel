@@ -336,58 +336,85 @@
 // export default OfflineDepositWithdraw;
 
 
-
-
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import DepositePopup from "../popups/DepositePopup";
 import WithdrawPopup from "../popups/WithdrawPopup";
 import Table from "../../components/Table"; // Common Table component
+import { customStyles } from "../../components/ReactSelectStyles";
+import Select from "react-select";
+import { convertChipsToInr } from "../../utils/currEchange"
 
 function OfflineDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
   const [depositePopup, setDepositePopup] = useState(false);
   const [withdrawPopup, setWithdrawPopup] = useState(false);
+  const [inputData, setInputData] = useState({
+    adminWeb: "",
+    userWeb: "",
+    inrChips: "",
+    InrAmont: "",
+  })
   const handleSportClick = (sport) => {
     setActiveSport(sport);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInputData((prevData) => ({
+      ...prevData,
+      [name]: value, // Dynamically update the field based on the input name
+    }));
   };
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
 
   const AdminSiteDropdown = ({ onChange }) => {
-    const adminSites = ["Admin Site 1", "Admin Site 2", "Admin Site 3"];
+    const adminSites = [
+      { label: "Admin Site 1", value: "Admin Site 1" },
+      { label: "Admin Site 2", value: "Admin Site 2" },
+      { label: "Admin Site 3", value: "Admin Site 3" },
+    ];
+
     return (
-      <select onChange={(e) => onChange(e.target.value)}>
-        <option value="">Select Admin Site</option>
-        {adminSites.map((site, index) => (
-          <option key={index} value={site}>
-            {site}
-          </option>
-        ))}
-      </select>
+      <Select
+        className="small-font white-bg input-border rounded"
+        placeholder="Select Admin Website"
+        styles={{
+          ...customStyles,
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
+        menuPortalTarget={document.body}
+        onChange={(option) => onChange(option.value)}
+        options={adminSites}
+      />
     );
   };
 
   const UserSiteDropdown = ({ adminSite, onChange }) => {
-    const userSites = {
-      "Admin Site 1": ["User 1", "User 2"],
-      "Admin Site 2": ["User 3", "User 4"],
-      "Admin Site 3": ["User 5", "User 6"],
-    }; // Example data
+    const userSites = [
+      { label: "User 1", value: "User 1" },
+      { label: "User 2", value: "User 2" },
+      { label: "User 3", value: "User 3" },
+    ];
+
     return (
-      <select onChange={(e) => onChange(e.target.value)}>
-        <option value="">Select User Site</option>
-        {userSites[adminSite]?.map((user, index) => (
-          <option key={index} value={user}>
-            {user}
-          </option>
-        ))}
-      </select>
+      <Select
+        className="small-font white-bg input-border rounded"
+        placeholder="Select user website"
+        styles={{
+          ...customStyles,
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Ensure dropdown is above other elements
+        }}
+        menuPortalTarget={document.body} // Render dropdown outside the table
+        onChange={(option) => onChange(option.value)}
+        options={userSites}
+      />
     );
   };
 
   const ActionButtons = ({ onDeposit, onWithdraw }) => {
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center">
+      <div className="d-flex flex-column justify-content-start align-items-center">
         <div>
           <button className="me-3 dark-green-bg px-3" onClick={onDeposit}>D/C</button>
           <button className="me-3 saffron-btn2 px-3" onClick={onWithdraw}>W</button>
@@ -398,30 +425,30 @@ function OfflineDepositWithdraw() {
 
   const [data, setData] = useState([
     {
-      id: 1, // Unique identifier for the row
+      id: 1,
       uid: "1",
       details: "Details 1",
       usdChips: "100",
       usdAmount: "1000",
       action: "Action 1",
-      showChildRow: false, // Track child row visibility
-      walletBalance: 1000, // Example data
-      exposure: 500, // Example data
-      inrChips: 200, // Example data
-      currentChips: 300, // Example data
+      showChildRow: false,
+      walletBalance: 1000,
+      exposure: 500,
+      inrChips: 200,
+      currentChips: 300,
     },
     {
-      id: 2, // Unique identifier for the row
+      id: 2,
       uid: "2",
       details: "Details 2",
       usdChips: "200",
       usdAmount: "2000",
       action: "Action 2",
-      showChildRow: false, // Track child row visibility
-      walletBalance: 1500, // Example data
-      exposure: 600, // Example data
-      inrChips: 250, // Example data
-      currentChips: 350, // Example data
+      showChildRow: false,
+      walletBalance: 1500,
+      exposure: 600,
+      inrChips: 250,
+      currentChips: 350,
     },
   ]);
 
@@ -444,53 +471,82 @@ function OfflineDepositWithdraw() {
   };
 
   // Prepare data for the Table component
-  const tableData = data.flatMap((row, index) => {
-    const parentRow = {
-      ...row,
-      details: (
-        <div>
-          <AdminSiteDropdown
-            onChange={(value) => handleAdminSiteChange(index, value)}
-          />
-          <UserSiteDropdown
-            adminSite={row.adminSite}
-            onChange={(value) => handleUserSiteChange(index, value)}
-          />
-        </div>
-      ),
-      action: (
-        <ActionButtons
-          onDeposit={() => toggleChildRow(index)}
-          onWithdraw={() => toggleChildRow(index)}
-        />
-      ),
-    };
+  // const tableData = data.flatMap((row, index) => {
+  //   const parentRow = {
+  //     ...row,
+  //     details: (
+  //       <div className="row col-12">
+  //         <div className="col-4">
+  //           <AdminSiteDropdown
+  //             onChange={(value) => handleAdminSiteChange(index, value)}
+  //           />
+  //         </div>
+  //         <div className="col-4">
+  //           <UserSiteDropdown
+  //             adminSite={row.adminSite}
+  //             onChange={(value) => handleUserSiteChange(index, value)}
+  //           />
+  //         </div>
+  //         <div className="col-4">
+  //           <input
+  //             type="text"
+  //             name="userWeb"
+  //             className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
+  //             placeholder="Diamond Exchange"
+  //             readOnly
+  //           />
+  //         </div>
+  //       </div>
+  //     ),
+  //     action: (
+  //       <ActionButtons
+  //         onDeposit={() => toggleChildRow(index)}
+  //         onWithdraw={() => toggleChildRow(index)}
+  //       />
+  //     ),
+  //   };
 
-    const childRow = row.showChildRow
-      ? {
-          id: `child-${row.id}`, 
-          isChild: true, 
-          details: (
-            <div className="w-100 d-flex justify-content-between p-2">
-              <span>Available Wallet Balance: {row.walletBalance}</span>
-              <span>Exposure: {row.exposure}</span>
-              <span>INR Chips: <input type="text" /></span>
-              <span>Current Chips: <input type="text" /></span>
-              <div className="d-flex flex-row justify-content-center align-items-center">
-                <button className="me-3 saffron-btn2 px-3">Submit</button>
-              </div>
-            </div>
-          ),
-          uid: "", // Empty for child row
-          usdChips: "", // Empty for child row
-          usdAmount: "", // Empty for child row
-          action: "", // Empty for child row
-        }
-      : null;
+  //   const childRow = row.showChildRow
+  //     ? {
+  //       id: `child-${row.id}`,
+  //       isChild: true,
+  //       details: (
+  //         <div className="w-100 d-flex justify-content-between align-items-center p-2">
+  //           <span>Available D/W : {row.walletBalance}</span>
+  //           <span>Exposure: {row.exposure}</span>
+  //           <span>
+  //             INR CHIPS:
+  //             <input
+  //               type="text"
+  //               name="currency"
+  //               className="w-60 small-font input-css all-none rounded white-bg input-border ms-2"
+  //               placeholder="Enter Chips"
+  //             />
+  //           </span>
+  //           <span>
+  //             <input
+  //               type="text"
+  //               name="currency"
+  //               className="w-60 small-font input-css all-none rounded white-bg input-border ms-2"
+  //               placeholder="Enter Chips"
+  //               value={convertChipsToInr(1,)}
+  //               readOnly
+  //             />
+  //           </span>
+  //           <div className="d-flex flex-row justify-content-center align-items-center">
+  //             <button className="me-3 saffron-btn2 px-3">Submit</button>
+  //           </div>
+  //         </div>
+  //       ),
+  //       uid: "",
+  //       usdChips: "",
+  //       usdAmount: "",
+  //       action: "",
+  //     }
+  //     : null;
 
-    return childRow ? [parentRow, childRow] : [parentRow];
-  });
-
+  //   return childRow ? [parentRow, childRow] : [parentRow];
+  // });
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "UID", field: "uid" },
     { header: "Details", field: "details" },
@@ -498,16 +554,81 @@ function OfflineDepositWithdraw() {
     { header: "USD Amount", field: "usdAmount" },
     { header: "Action", field: "action" },
   ];
+  
+  const tableData = data.map((row, index) => ({
+    ...row,
+    uid: (<div> {`1. TechVibe - Director`}</div>),
+    details: (
+      <div className="w-100">
+        {/* Parent Row Content */}
+        <div className="row col-12">
+          <div className="col-4">
+            <AdminSiteDropdown
+              onChange={(value) => handleAdminSiteChange(index, value)}
+            />
+          </div>
+          <div className="col-4">
+            <UserSiteDropdown
+              adminSite={row.adminSite}
+              onChange={(value) => handleUserSiteChange(index, value)}
+            />
+          </div>
+          <div className="col-4">
+            <input
+              type="text"
+              name="userWeb"
+              className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
+              placeholder="Diamond Exchange"
+              readOnly
+            />
+          </div>
+        </div>
+
+        {/* Child Row Content - Show only when D/C or W button is clicked */}
+        {row.showChildRow && (
+          <div className="w-100 d-flex justify-content-between align-items-center p-2 mt-2 border-top">
+            <span>Available D/W : {row.walletBalance}</span>
+            <span>Exposure: {row.exposure}</span>
+            <span>
+              INR CHIPS:
+              <input
+                type="text"
+                name="inrChips"
+                className="w-60 small-font input-css all-none rounded white-bg input-border ms-2"
+                placeholder="Enter Chips"
+                onChange={handleInputChange}
+              />
+            </span>
+            <span>
+              <input
+                type="text"
+                name="currency"
+                className="w-60 small-font input-css all-none rounded white-bg input-border ms-2"
+                placeholder="Enter Chips"
+                value={convertChipsToInr(1, inputData?.inrChips,)}
+                readOnly
+              />
+            </span>
+            <div className="d-flex flex-row justify-content-center align-items-center">
+              <button className="me-3 saffron-btn2 px-3">Submit</button>
+            </div>
+          </div>
+        )}
+      </div>
+    ),
+    action: (
+      <ActionButtons
+        onDeposit={() => toggleChildRow(index)}
+        onWithdraw={() => toggleChildRow(index)}
+      />
+    ),
+  }));
 
   return (
     <>
       <div>
         <div className="flex-between mb-3 mt-2">
           <h6 className="d-flex yellow-font mb-0">Offline Deposit & Withdraw</h6>
-          <div className="d-flex align-items-center gap-1">
-            <button className={`me-3 dark-green-bg px-3`} onClick={() => setDepositePopup(true)}>Deposit</button>
-            <button className={`me-3 saffron-btn2 px-3`} onClick={() => setWithdrawPopup(true)} > Withdraw</button>
-          </div>
         </div>
         <div className="d-flex small-font mb-3">
           {SPORTS_BUTTONS?.map((sport, index) => (
@@ -527,10 +648,12 @@ function OfflineDepositWithdraw() {
         </div>
 
         {/* Use the common Table component */}
-        <Table
-          columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
-          data={tableData}
-        />
+        <div style={{ zIndex: "10" }}>
+          <Table
+            columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
+            data={tableData}
+          />
+        </div>
       </div>
 
       <DepositePopup

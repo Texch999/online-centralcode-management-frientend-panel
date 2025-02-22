@@ -293,7 +293,7 @@ function DepositWithdrawPopup({
                 <div className="col-6 mt-3">
                   <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>Reject</button>
                 </div>
-              </>) : <button className="w-100 saffron-btn2 pointer-events-none cursor-not-allowed" disabled>{ticketData?.status === 1 ? "Approved" : "Rejected"}</button>
+              </>) : <button className="w-100 mt-3 saffron-btn2 pointer-events-none cursor-not-allowed" disabled>{ticketData?.status === 1 ? "Approved" : "Rejected"}</button>
             }
           </> : null}
 
