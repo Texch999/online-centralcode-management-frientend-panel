@@ -24,6 +24,7 @@ const AddManagementTeam = () => {
   const token = localStorage.getItem("jwt_token");
   const [error, setError] = useState("");
   const [tableData, setTableData] = useState([]);
+
   const GetEmployee = () => {
     getEmployees({ limit: 10, offset: 0 })
       .then((response) => {
@@ -42,7 +43,7 @@ const AddManagementTeam = () => {
   useEffect(() => {
     GetEmployee();
   }, []);
-  console.log(tableData, "tableData");
+
   const TableData = tableData.map((employee) => {
     const role = Roles[Number(employee.role)] || "Unknown";
     return {
@@ -72,7 +73,6 @@ const AddManagementTeam = () => {
   const [editingRowId, setEditingRowId] = useState(null);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [resetPasswordId, setResetPasswordId] = useState(null);
-  console.log(editingRowId, "editingRowId");
 
   const [formData, setFormData] = useState({
     role: "",
@@ -170,6 +170,7 @@ const AddManagementTeam = () => {
 
     toggleModal("isDeletePopupVisible", false);
   };
+
   const handleResetPasswordPopup = (rowId) => {
     setResetPasswordId(rowId);
     setResetPasswordPopup(true);
@@ -203,7 +204,8 @@ const AddManagementTeam = () => {
       width: "12%",
     },
   ];
-  const [EditShow, setEditShow] = useState();
+
+  const [EditShow, setEditShow] = useState(false);
   const handleEditShow = (rowId) => {
     setEditShow(true);
     setEditingRowId(rowId);
@@ -212,6 +214,7 @@ const AddManagementTeam = () => {
     setEditShow(false);
     GetEmployee();
   };
+
   const tableDataWithActions = TableData.map((row) => ({
     ...row,
     action: (
@@ -254,6 +257,7 @@ const AddManagementTeam = () => {
         alert(error?.message || "Request failed");
       });
   };
+
   const status = tableData.find(
     (row) => row.id === modalState.blockAccountId
   )?.status;

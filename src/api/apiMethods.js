@@ -35,6 +35,9 @@ const addDirectorTeam = (data) => {
 const createDirector = (data) => {
   return apiRequest("createDirector", data);
 };
+const createSuperAdmin = (data) => {
+  return apiRequest("createSuperAdmin", data);
+};
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
@@ -56,6 +59,9 @@ const resetEmployeePassword = (id, data) => {
 const resetDirectorPassword = (id, data) => {
   return apiRequest("resetDirectorPassword", data, id);
 };
+const resetSuperAdminPassword = (id, data) => {
+  return apiRequest("resetSuperAdminPassword", data, id);
+};
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
@@ -72,7 +78,9 @@ const updateEmployeeByID = (id, data) => {
 const updateDirectorByID = (id, data) => {
   return apiRequest("updateDirectorByID", data, id);
 };
-
+const updateSuperAdminByID = (id, data) => {
+  return apiRequest("updateSuperAdminByID", data, id);
+};
 // updateDirectorEmployeeByID
 const updateDirectorEmployeeByID = (id, data) => {
   return apiRequest("updateDirectorEmployeeByID", data, id);
@@ -87,16 +95,19 @@ const getDirectorEmployeeDetailsById = (id) => {
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
 };
-const resetDirectorPasswordInProfile = (id,data) => {
+const getSuperAdminDetailsById = (id) => {
+  return apiRequest("getSuperAdminDetailsById", null, id);
+};
+const resetDirectorPasswordInProfile = (id, data) => {
   return apiRequest("resetDirectorPasswordInProfile", data, id);
-}
+};
 
 const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
 };
 // const getWebsitesList = (params) => {
 const getDirectorAccountDetails = (data) => {
-  return apiRequest("getDirectorAccountDetails",data);
+  return apiRequest("getDirectorAccountDetails", data);
 };
 
 const postDirectorAccountDetails = (data) => {
@@ -112,7 +123,7 @@ const getDirectorAccountById = (id, data) => {
   return apiRequest("getDirectorAccountById", data, id);
 };
 
-const updateDirectorProfileDetails=(id, data) => {
+const updateDirectorProfileDetails = (id, data) => {
   return apiRequest("updateDirectorProfileDetails", data, id);
 };
 
@@ -141,19 +152,18 @@ export const getWebsiteDetails = (id, data) =>
 export const getAdminWebsiteDetails = () =>
   apiRequest("getAdminWebsiteDetails");
 
-export const getUserWebsiteDetails = () =>
-  apiRequest("getUserWebsiteDetails");
+export const getUserWebsiteDetails = () => apiRequest("getUserWebsiteDetails");
 
 export const blockAndUnblock = (id, data) =>
   apiRequest("blockAndUnblock", data, id);
 
 //VijayaLakshmi
 const getPromotionsTypes = (params) => {
-  console.log("params",params)
+  console.log("params", params);
   return apiRequest("getPromotionsTypes", {}, params);
 };
 const getPromotionsImage = (params) => {
-  console.log("params",params)
+  console.log("params", params);
   return apiRequest("getPromotionsImage", {}, params);
 };
 const createPromotionImages = (data) => {
@@ -173,7 +183,7 @@ export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
 export const editBroadCasting = (id, data) => {
-  console.log(id,"id")
+  console.log(id, "id");
   return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {
@@ -194,7 +204,6 @@ export const getDirectorLoginLogs = (params) => {
 export const getDirectorLoginLogsById = (params) => {
   return apiRequest("getDirectorLoginLogsById", {}, params);
 };
-
 
 // rejection reasons
 // const getAllRejectionReasons = (data) => {
@@ -262,7 +271,7 @@ const unblockBlockDirectorDwnln = (id, data) => {
 const getBanner = () => {
   return apiRequest("getBanner");
 };
- const getBannerByUserId = (params) => {
+const getBannerByUserId = (params) => {
   return apiRequest("getBannerByUserId", {}, params);
 };
 
@@ -414,4 +423,8 @@ export {
   DirectorUpLinePaymentDetails,
   getBannerByUserId,
   getDirectorSites,
+  createSuperAdmin,
+  getSuperAdminDetailsById,
+  resetSuperAdminPassword,
+  updateSuperAdminByID,
 };

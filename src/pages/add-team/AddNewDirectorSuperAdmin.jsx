@@ -9,9 +9,11 @@ import {
 import Select from "react-select";
 import {
   createDirector,
+  createSuperAdmin,
   getAdminWebsites,
   getCountries,
   getCurrencies,
+  getDirectorAccessWebites,
   getDirectorDetailsById,
 } from "../../api/apiMethods";
 import { adminRoles, commissionTypes } from "../../utils/enum";
@@ -21,6 +23,8 @@ import SuccessPopup from "../popups/SuccessPopup";
 
 function AddNewDirectorSuperAdmin() {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role_code");
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
@@ -32,85 +36,98 @@ function AddNewDirectorSuperAdmin() {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
-  const [countryData, setCountryData] = useState();
-  const [currencyData, setCurrencyData] = useState();
+  const [countryData, setCountryData] = useState([]);
+  const [currencyData, setCurrencyData] = useState([]);
   const [forms, setForms] = useState([{ id: 1 }]);
-
-  const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-
-  const location = useLocation();
-  const mode = location.state?.mode || "add";
-  const userId = location.state?.userId || null;
-  const [selectedAdmin, setSelectedAdmin] = useState(null);
-  const [userWebsites, setUserWebsites] = useState([]);
+  const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [selectedAdmins, setSelectedAdmins] = useState({});
   const [userWebsitesList, setUserWebsitesList] = useState({});
   const [selectedWebsites, setSelectedWebsites] = useState({});
   const [accountTypes, setAccountTypes] = useState({});
-  console.log(userId, "userId");
+  const [websiteDetails, setWebsiteDetails] = useState({});
+  const [individualDirectorData, setIndividualDirectorData] = useState();
+  const [selectedRole, setSelectedRole] = useState("");
+  const [errors, setErrors] = useState({});
   console.log(selectedAdmins, "selectedAdmins");
+  const location = useLocation();
+  const mode = location.state?.mode || "add";
+  const userId = location.state?.userId || null;
+  const [selectedOption, setSelectedOption] = useState(null);
+  console.log(userWebsitesList, "userWebsitesList");
+  const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
         if (response?.status === true) {
           setCountryData(response?.data);
-          console.log(response, "countries");
         } else {
-          setErrors("Something Went Wrong");
+          setErrors({ ...errors, countries: "Something Went Wrong" });
         }
       })
       .catch((error) => {
-        setErrors(error?.message || "Not able to get Countries");
+        setErrors({
+          ...errors,
+          countries: error?.message || "Not able to get Countries",
+        });
       });
   };
+
   const GetAllCurrencies = () => {
     getCurrencies()
       .then((response) => {
         if (response?.status === true) {
           setCurrencyData(response?.data);
-          console.log(response, "countries");
         } else {
-          setErrors("Something Went Wrong");
+          setErrors({ ...errors, currencies: "Something Went Wrong" });
         }
       })
       .catch((error) => {
-        setErrors(error?.message || "Not able to get Countries");
+        setErrors({
+          ...errors,
+          currencies: error?.message || "Not able to get Currencies",
+        });
       });
   };
-  const [adminWebsite, setAllAdminWebsite] = useState();
-
-  console.log(adminWebsite, "adminWebsite");
 
   const GetAllAdminWebsites = () => {
     getAdminWebsites()
       .then((response) => {
         if (response?.status === true) {
-          console.log(response.data, "AdminWebsites");
           setAllAdminWebsite(response.data);
         } else {
-          setErrors("Something Went Wrong");
+          setErrors({ ...errors, adminWebsites: "Something Went Wrong" });
         }
       })
       .catch((error) => {
-        setErrors(error?.message || "Not able to get Countries");
+        setErrors({
+          ...errors,
+          adminWebsites: error?.message || "Not able to get Admin Websites",
+        });
       });
   };
-  console.log(currencyData, "currencyData");
+  const [allAccessWebsites, setAllAccessWebsites] = useState(false);
+  console.log(allAccessWebsites, "allAccessWebsites");
+
+  const GetAllAccessedWebsites = () => {
+    getDirectorAccessWebites()
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response, "Response From Accessed Websites");
+          setAllAccessWebsites(response.data);
+        } else {
+          console.log("Error Happening");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
+    GetAllAccessedWebsites();
     GetAllAdminWebsites();
     GetAllCountries();
     GetAllCurrencies();
-  }, []);
-
-  const adminRoless = Object.entries(adminRoles).map(([value, label]) => ({
-    value: Number(value),
-    label,
-  }));
-  console.log(adminRoless, "adminRoless");
-
-  console.log(userWebsites, "userWebsites");
+  }, [userId]);
 
   const handleAdminRoleChange = (formId, selectedOption) => {
     setSelectedAdmins((prev) => ({
@@ -126,15 +143,6 @@ function AddNewDirectorSuperAdmin() {
       [formId]: adminData?.userWebsites || [],
     }));
   };
-
-  const commissionOptions = Object.entries(commissionTypes).map(
-    ([value, label]) => ({
-      value,
-      label,
-    })
-  );
-
-  const [websiteDetails, setWebsiteDetails] = useState({});
 
   const handleCheckboxChange = (formId, userId) => {
     setSelectedWebsites((prev) => ({
@@ -165,7 +173,6 @@ function AddNewDirectorSuperAdmin() {
       },
     }));
   };
-  console.log(websiteDetails, "websiteDetails");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -178,9 +185,7 @@ function AddNewDirectorSuperAdmin() {
       alert("Please select at least one Admin Website.");
       return;
     }
-
-    console.log(selectedWebsites, "selectedWebsites before processing");
-
+    console.log(selectedWebsites, "selectedWebsites");
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
       alert("Please select at least one User Website.");
       return;
@@ -232,15 +237,13 @@ function AddNewDirectorSuperAdmin() {
         return websiteData;
       });
     });
-
+    console.log(selectedUserWebsites, "selectedUserWebsites");
     const validUserWebsites = selectedUserWebsites.filter(Boolean);
 
     if (validUserWebsites.length === 0) {
       alert("Please select at least one User Website.");
       return;
     }
-
-    console.log(validUserWebsites, "Final Selected User Websites");
 
     const finalData = {
       type: selectedRole,
@@ -254,12 +257,112 @@ function AddNewDirectorSuperAdmin() {
       accessWebsites: validUserWebsites,
     };
 
-    console.log("Final Submitted Data:", finalData);
-
     createDirector(finalData)
       .then((response) => {
         if (response.status === true) {
-          console.log("Response after clicking", response);
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            navigate("/director-admin");
+          }, 2000);
+        } else {
+          console.log("Something went wrong");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+  console.log(selectedOption, "selectedOption");
+
+  const handleDirectorSubmit = (e) => {
+    e.preventDefault();
+    console.log(selectedWebsites, "selectedWebsites");
+
+    if (!validateForm()) {
+      return;
+    }
+
+    if (!selectedOption || Object.keys(selectedOption).length === 0) {
+      alert("Please select at least one Admin Website.");
+      return;
+    }
+    console.log(selectedWebsites, "selectedWebsites");
+    if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+      alert("Please select at least one User Website.");
+      return;
+    }
+
+    const selectedUserWebsites = forms.flatMap((form) => {
+      return userWebsitesList[form.id]?.map((userSite) => {
+        if (!selectedWebsites[form.id]?.[userSite.website_access_id])
+          return null;
+
+        const accotypeid = accountTypes[form.id]?.[userSite.website_access_id];
+        console.log(userSite, "userSite");
+        let websiteData = {
+          admin_panel_id: selectedOption?.value,
+          user_paner_id: userSite.user_WebSite_id,
+          commission_type: accotypeid,
+        };
+        console.log(websiteData, "websiteData");
+
+        if (accotypeid === "2" || accotypeid === "3") {
+          websiteData.share = parseFloat(
+            websiteDetails[userSite.website_access_id]?.share || 0
+          );
+          websiteData.caschip_values = parseFloat(
+            websiteDetails[userSite.website_access_id]?.caschip_values || 0
+          );
+          websiteData.downline_comm = parseFloat(
+            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+          );
+        }
+
+        if (accotypeid === "1") {
+          websiteData.rent_start_date =
+            websiteDetails[userSite.website_access_id]?.rent_start_date || "";
+          websiteData.monthly_amount = parseInt(
+            websiteDetails[userSite.website_access_id]?.monthly_amount || 0
+          );
+          websiteData.chip_percentage = parseFloat(
+            websiteDetails[userSite.website_access_id]?.chip_percentage || 0
+          );
+          websiteData.max_chips_monthly = parseInt(
+            websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
+          );
+          websiteData.extra_chips_percentage = parseFloat(
+            websiteDetails[userSite.website_access_id]
+              ?.extra_chips_percentage || 0
+          );
+          websiteData.share = parseFloat(
+            websiteDetails[userSite.website_access_id]?.share || 0
+          );
+        }
+
+        return websiteData;
+      });
+    });
+
+    const validUserWebsites = selectedUserWebsites.filter(Boolean);
+
+    if (validUserWebsites.length === 0) {
+      alert("Please select at least one User Website.");
+      return;
+    }
+
+    const finalData = {
+      type: selectedRole,
+      name,
+      login_name: loginName,
+      password,
+      confirm_password: confirmPassword,
+      parent_password: managementPassword,
+      country_id: selectedCountryCode,
+      currency_id: selectedCurrencyCode,
+      accessWebsites: validUserWebsites,
+    };
+
+    createSuperAdmin(finalData)
+      .then((response) => {
+        if (response.status === true) {
           setSuccessPopupOpen(true);
           setTimeout(() => {
             navigate("/director-admin");
@@ -272,47 +375,17 @@ function AddNewDirectorSuperAdmin() {
   };
 
   const handleCountryChange = (event) => {
-    const selectedCode = event.target.value;
-    setSelectedCountryCode(selectedCode);
-    console.log(selectedCode, "selectedCode");
+    setSelectedCountryCode(event.target.value);
   };
 
   const handleCurrencyChange = (event) => {
-    const selectedCurrency = event.target.value;
-    setSelectedCurrencyCode(selectedCurrency);
-    console.log(selectedCurrency, "selectedCurrency");
+    setSelectedCurrencyCode(event.target.value);
   };
 
-  const [individualDirectorData, setIndividualDirectorData] = useState();
-  const [selectedRole, setSelectedRole] = useState("");
-  console.log(selectedRole, "selectedRole");
-  console.log(individualDirectorData, "individualDirectorData");
-
-  const getDirectorDetailsByID = () => {
-    getDirectorDetailsById(userId)
-      .then((response) => {
-        if (response.status === true) {
-          console.log(response, "responsegetdirectordetialbyid");
-          setIndividualDirectorData(response.data);
-        } else {
-          console.log("Something error happening");
-        }
-      })
-      .catch((error) => console.log(error));
-  };
-  useEffect(() => {
-    getDirectorDetailsByID();
-  }, [userId]);
-
-  const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
-    id,
-    name,
-  }));
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
   };
 
-  const [errors, setErrors] = useState();
   const validateForm = () => {
     let newErrors = {};
 
@@ -323,25 +396,9 @@ function AddNewDirectorSuperAdmin() {
       newErrors.selectedCountryCode = "Country is required.";
     if (!selectedCurrencyCode)
       newErrors.selectedCurrencyCode = "Currency is required.";
-
-    if (mode !== "edit") {
-      if (!password) {
-        newErrors.password = "Password is required.";
-      } else if (password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters.";
-      }
-
-      if (!confirmPassword) {
-        newErrors.confirmPassword = "Confirm Password is required.";
-      } else if (confirmPassword !== password) {
-        newErrors.confirmPassword = "Passwords do not match.";
-      }
-    }
-
     if (!managementPassword) {
       newErrors.managementPassword = "Management Password is required.";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -349,6 +406,28 @@ function AddNewDirectorSuperAdmin() {
   const addAnotherForm = () => {
     setForms((prev) => [...prev, { id: Date.now() }]);
   };
+
+  const adminRoless = Object.entries(adminRoles).map(([value, label]) => ({
+    value: Number(value),
+    label,
+  }));
+
+  const commissionOptions = Object.entries(commissionTypes).map(
+    ([value, label]) => ({
+      value,
+      label,
+    })
+  );
+  const transformedOptions = Array.isArray(allAccessWebsites)
+    ? allAccessWebsites.flatMap((item) =>
+        item.admin_websites.map((admin) => ({
+          label: admin.admin_web_name,
+          value: admin.admin_panel_id,
+        }))
+      )
+    : [];
+
+  console.log(transformedOptions, "transformedOptions");
   return (
     <>
       <div>
@@ -360,11 +439,7 @@ function AddNewDirectorSuperAdmin() {
           >
             <FaArrowLeft /> Go Back
           </button>
-          {mode === "edit" ? (
-            <h5 className="yellow-font">Edit Director & Super Admin</h5>
-          ) : (
-            <h5 className="yellow-font">Add Director & Super Admin</h5>
-          )}
+          <h5 className="yellow-font">Add Director & Super Admin</h5>
         </div>
 
         <div className="d-flex w-100 my-2 align-items-center">
@@ -402,17 +477,11 @@ function AddNewDirectorSuperAdmin() {
               onChange={handleRoleChange}
             >
               <option value="">Select</option>
-              {adminRolesArray.length > 0 ? (
-                adminRolesArray.map((role, index) => (
-                  <option key={index} value={role.id}>
-                    {role.name}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  No roles available
+              {adminRoless.map((role, index) => (
+                <option key={index} value={role.value}>
+                  {role.label}
                 </option>
-              )}
+              ))}
             </select>
             {errors?.selectedRole && (
               <span className="x-small-font error">{errors?.selectedRole}</span>
@@ -499,7 +568,6 @@ function AddNewDirectorSuperAdmin() {
                   }
                 >
                   {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
-                  {/* {showConfirmPassword ? <FaEye /> : <FaEyeSlash />} */}
                 </span>
                 {errors?.confirmPassword && (
                   <span className="x-small-font error">
@@ -538,163 +606,263 @@ function AddNewDirectorSuperAdmin() {
       </div>
       <div>
         <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET </h3>
-        <form className="custom-form small-font p-3" onSubmit={handleSubmit}>
+        <form
+          className="custom-form small-font p-3"
+          onSubmit={role === "management" ? handleSubmit : handleDirectorSubmit}
+        >
+          {/* <form className="custom-form small-font p-3" onSubmit={handleSubmit}> */}
           <div className="row align-items-center">
             {forms.map((form, index) => (
               <>
-                <div key={form.id} className="col-1">
-                  <label className="small-font my-1">Admin Website</label>
-                  <div className="custom-select-wrapper">
-                    <Select
-                      className="small-font"
-                      placeholder="Select"
-                      options={adminWebsite?.map((admin) => ({
-                        value: admin.id,
-                        label: admin.web_name,
-                      }))}
-                      value={selectedAdmins[form.id] || null}
-                      onChange={(selectedOption) =>
-                        handleAdminRoleChange(form.id, selectedOption)
-                      }
-                    />
-                  </div>
+                <div key={form.id}>
+                  {role === "director" ? (
+                    <div className="col-1">
+                      <label className="small-font my-1">Admin Website</label>
+                      <div className="custom-select-wrapper">
+                        <Select
+                          className="small-font"
+                          placeholder="Select"
+                          options={transformedOptions}
+                          value={selectedOption}
+                          onChange={(selectedOption) => {
+                            console.log("Selected Option:", selectedOption);
+
+                            setSelectedOption(selectedOption);
+
+                            const selectedAdmin = allAccessWebsites
+                              .flatMap((access) => access.admin_websites)
+                              .find(
+                                (admin) =>
+                                  admin.admin_panel_id === selectedOption?.value
+                              );
+
+                            console.log("Selected Admin:", selectedAdmin);
+
+                            setUserWebsitesList((prev) => {
+                              const updatedList = {
+                                ...prev,
+                                [form.id]: selectedAdmin
+                                  ? selectedAdmin.users
+                                  : [],
+                              };
+                              console.log(
+                                "Updated User Websites List:",
+                                updatedList
+                              );
+                              return updatedList;
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-1">
+                      <label className="small-font my-1">Admin Website</label>
+                      <div className="custom-select-wrapper">
+                        <Select
+                          className="small-font"
+                          placeholder="Select"
+                          options={adminWebsite?.map((admin) => ({
+                            value: admin.id,
+                            label: admin.web_name,
+                          }))}
+                          value={selectedAdmins[form.id] || null}
+                          onChange={(selectedOption) =>
+                            handleAdminRoleChange(form.id, selectedOption)
+                          }
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* User Websites */}
                 <div className="col-11">
                   <label className="small-font my-1">User Website</label>
-                  {userWebsitesList[form.id]?.length > 0 ? (
-                    userWebsitesList[form.id].map((userSite) => (
-                      <div key={userSite.id} className="row">
-                        {/* Checkbox for Selecting User Website */}
-                        <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
-                          <input
-                            type="checkbox"
-                            className="me-2"
-                            checked={
-                              selectedWebsites[form.id]?.[userSite.id] || false
-                            }
-                            onChange={() =>
-                              handleCheckboxChange(form.id, userSite.id)
-                            }
-                          />
-                          <input
-                            type="text"
-                            className="small-font rounded all-none w-100"
-                            value={userSite.web_url}
-                            readOnly
-                          />
-                        </div>
-                        {console.log(
-                          userWebsitesList[form.id],
-                          "userWebsitesList[form.id]"
-                        )}
-                        {selectedWebsites[form.id]?.[userSite.id] && (
-                          <div className="col-2 my-1">
-                            <Select
-                              className="small-font white-bg"
-                              placeholder="Account Type"
-                              options={commissionOptions}
-                              styles={customStyles}
-                              onChange={(selectedOption) =>
-                                handleAccountTypeChange(
+                  {role === "director" && selectedOption ? (
+                    userWebsitesList[form.id]?.length > 0 ? (
+                      userWebsitesList[form.id].map((userSite) => (
+                        <div key={userSite.website_access_id} className="row">
+                          {/* Checkbox for Selecting User Website */}
+                          <div>hi:{userSite.user_panel}</div>
+                          <span>{userSite.website_access_id}</span>
+                          <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
+                            <input
+                              type="checkbox"
+                              className="me-2"
+                              checked={
+                                selectedWebsites[form.id]?.[
+                                  userSite.website_access_id
+                                ] || false
+                              }
+                              onChange={() =>
+                                handleCheckboxChange(
                                   form.id,
-                                  userSite.id,
-                                  selectedOption
+                                  userSite.website_access_id
                                 )
                               }
-                              value={
-                                commissionOptions.find(
-                                  (option) =>
-                                    option.value ===
-                                    accountTypes[form.id]?.[userSite.id]
-                                ) || null
-                              }
+                            />
+                            <input
+                              type="text"
+                              className="small-font rounded all-none w-100"
+                              value={userSite.user_web_url}
+                              readOnly
                             />
                           </div>
-                        )}
-                        {accountTypes[form.id]?.[userSite.id] === "1" && (
-                          <div className="col-9">
-                            <div className="row">
-                              <div className="col">
-                                <input
-                                  type="date"
-                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "rent_start_date",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                              </div>
-                              <div className="col">
-                                <input
-                                  type="text"
-                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                  placeholder="Monthly Amnt"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "monthly_amount",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                              </div>
-                              <div className="col">
-                                <input
-                                  type="text"
-                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                  placeholder="Max Chips Monthly"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "max_chips_monthly",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                              </div>
-                              <div className="col">
-                                <input
-                                  type="text"
-                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                  placeholder="Chip %"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "chip_percentage",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                              </div>
-                              <div className="col">
-                                <div className="white-bg rounded small-font">
+                          {selectedWebsites[form.id]?.[
+                            userSite.website_access_id
+                          ] && (
+                            <div className="col-2 my-1">
+                              <Select
+                                className="small-font white-bg"
+                                placeholder="Account Type"
+                                options={commissionOptions}
+                                styles={customStyles}
+                                onChange={(selectedOption) =>
+                                  handleAccountTypeChange(
+                                    form.id,
+                                    userSite.website_access_id,
+                                    selectedOption
+                                  )
+                                }
+                                value={
+                                  commissionOptions.find(
+                                    (option) =>
+                                      option.value ===
+                                      accountTypes[form.id]?.[
+                                        userSite.website_access_id
+                                      ]
+                                  ) || null
+                                }
+                              />
+                            </div>
+                          )}
+                          {accountTypes[form.id]?.[
+                            userSite.website_access_id
+                          ] === "1" && (
+                            <div className="col-9">
+                              <div className="row">
+                                <div className="col">
                                   <input
+                                    type="date"
                                     className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                    placeholder="Extra Chip %"
                                     onChange={(e) =>
                                       handleInputChange(
-                                        userSite.id,
-                                        "extra_chips_percentage",
+                                        userSite.website_access_id,
+                                        "rent_start_date",
                                         e.target.value
                                       )
                                     }
                                   />
                                 </div>
-                              </div>
-                              <div className="col-3">
-                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                <div className="col">
                                   <input
                                     type="text"
-                                    className="small-font bg-none p-2 w-75"
-                                    placeholder="Commission(%)"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    placeholder="Monthly Amnt"
                                     onChange={(e) =>
                                       handleInputChange(
-                                        userSite.id,
+                                        userSite.website_access_id,
+                                        "monthly_amount",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>
+                                <div className="col">
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    placeholder="Max Chips Monthly"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "max_chips_monthly",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>
+                                <div className="col">
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    placeholder="Chip %"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "chip_percentage",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>
+                                <div className="col">
+                                  <div className="white-bg rounded small-font">
+                                    <input
+                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                      placeholder="Extra Chip %"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.website_access_id,
+                                          "extra_chips_percentage",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-3">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      type="text"
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Commission(%)"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.website_access_id,
+                                          "share",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b>My Comm.. 1%</b>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {accountTypes[form.id]?.[
+                            userSite.website_access_id
+                          ] === "2" && (
+                            <div className="col d-flex">
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Downline Sharing"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "downline_comm",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Share 10%</b>
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Enter Commission: M.0"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
                                         "share",
                                         e.target.value
                                       )
@@ -705,129 +873,358 @@ function AddNewDirectorSuperAdmin() {
                                   </span>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        )}
-                        {accountTypes[form.id]?.[userSite.id] === "2" && (
-                          <div className="col d-flex">
-                            <div className="col position-relative mx-1">
-                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                <input
-                                  className="small-font bg-none p-2 w-75"
-                                  placeholder="Downline Sharing"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "downline_comm",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <span className="small-font text-center border-left3 px-1">
-                                  <b>My Share 10%</b>
-                                </span>
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Casino Chip Value"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "caschip_values",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b className="mx-1">Cas. Chip Val 20</b>
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                            <div className="col position-relative mx-1">
-                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                <input
-                                  className="small-font bg-none p-2 w-75"
-                                  placeholder="Enter Commission: M.0"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "share",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <span className="small-font text-center border-left3 px-1">
-                                  <b>My Comm.. 1%</b>
-                                </span>
+                          )}
+                          {accountTypes[form.id]?.[
+                            userSite.website_access_id
+                          ] === "3" && (
+                            <div className="col d-flex">
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Downline Sharing"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "downline_comm",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Share 10%</b>
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Enter Commission: M.0"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "share",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Comm.. 1%</b>
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Casino Chip Value"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "caschip_values",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b className="mx-1">Cas. Chip Val 20</b>
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                            <div className="col position-relative mx-1">
-                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                <input
-                                  className="small-font bg-none p-2 w-75"
-                                  placeholder="Casino Chip Value"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "caschip_values",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <span className="small-font text-center border-left3 px-1">
-                                  <b className="mx-1">Cas. Chip Val 20</b>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                        {accountTypes[form.id]?.[userSite.id] === "3" && (
-                          <div className="col d-flex">
-                            <div className="col position-relative mx-1">
-                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                <input
-                                  className="small-font bg-none p-2 w-75"
-                                  placeholder="Downline Sharing"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "downline_comm",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <span className="small-font text-center border-left3 px-1">
-                                  <b>My Share 10%</b>
-                                </span>
-                              </div>
-                            </div>
-                            <div className="col position-relative mx-1">
-                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                <input
-                                  className="small-font bg-none p-2 w-75"
-                                  placeholder="Enter Commission: M.0"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "share",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <span className="small-font text-center border-left3 px-1">
-                                  <b>My Comm.. 1%</b>
-                                </span>
-                              </div>
-                            </div>
-                            <div className="col position-relative mx-1">
-                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                <input
-                                  className="small-font bg-none p-2 w-75"
-                                  placeholder="Casino Chip Value"
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      userSite.id,
-                                      "caschip_values",
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                <span className="small-font text-center border-left3 px-1">
-                                  <b className="mx-1">Cas. Chip Val 20</b>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="small-font">No user websites available</p>
+                    )
                   ) : (
-                    <p className="small-font">No user websites available</p>
+                    <div className="col-11">
+                      <label className="small-font my-1">User Website</label>
+                      {userWebsitesList[form.id]?.length > 0 ? (
+                        userWebsitesList[form.id].map((userSite) => (
+                          <div key={userSite.id} className="row">
+                            {/* Checkbox for Selecting User Website */}
+                            <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
+                              <input
+                                type="checkbox"
+                                className="me-2"
+                                checked={
+                                  selectedWebsites[form.id]?.[userSite.id] ||
+                                  false
+                                }
+                                onChange={() =>
+                                  handleCheckboxChange(form.id, userSite.id)
+                                }
+                              />
+                              <input
+                                type="text"
+                                className="small-font rounded all-none w-100"
+                                value={userSite.web_url}
+                                readOnly
+                              />
+                            </div>
+                            {selectedWebsites[form.id]?.[userSite.id] && (
+                              <div className="col-2 my-1">
+                                <Select
+                                  className="small-font white-bg"
+                                  placeholder="Account Type"
+                                  options={commissionOptions}
+                                  styles={customStyles}
+                                  onChange={(selectedOption) =>
+                                    handleAccountTypeChange(
+                                      form.id,
+                                      userSite.id,
+                                      selectedOption
+                                    )
+                                  }
+                                  value={
+                                    commissionOptions.find(
+                                      (option) =>
+                                        option.value ===
+                                        accountTypes[form.id]?.[userSite.id]
+                                    ) || null
+                                  }
+                                />
+                              </div>
+                            )}
+                            {accountTypes[form.id]?.[userSite.id] === "1" && (
+                              <div className="col-9">
+                                <div className="row">
+                                  <div className="col">
+                                    <input
+                                      type="date"
+                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "rent_start_date",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col">
+                                    <input
+                                      type="text"
+                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                      placeholder="Monthly Amnt"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "monthly_amount",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col">
+                                    <input
+                                      type="text"
+                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                      placeholder="Max Chips Monthly"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "max_chips_monthly",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col">
+                                    <input
+                                      type="text"
+                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                      placeholder="Chip %"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "chip_percentage",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                  <div className="col">
+                                    <div className="white-bg rounded small-font">
+                                      <input
+                                        className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                        placeholder="Extra Chip %"
+                                        onChange={(e) =>
+                                          handleInputChange(
+                                            userSite.id,
+                                            "extra_chips_percentage",
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col-3">
+                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                      <input
+                                        type="text"
+                                        className="small-font bg-none p-2 w-75"
+                                        placeholder="Commission(%)"
+                                        onChange={(e) =>
+                                          handleInputChange(
+                                            userSite.id,
+                                            "share",
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                      <span className="small-font text-center border-left3 px-1">
+                                        <b>My Comm.. 1%</b>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            {accountTypes[form.id]?.[userSite.id] === "2" && (
+                              <div className="col d-flex">
+                                <div className="col position-relative mx-1">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Downline Sharing"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "downline_comm",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b>My Share 10%</b>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="col position-relative mx-1">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Enter Commission: M.0"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "share",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b>My Comm.. 1%</b>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="col position-relative mx-1">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Casino Chip Value"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "caschip_values",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b className="mx-1">Cas. Chip Val 20</b>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            {accountTypes[form.id]?.[userSite.id] === "3" && (
+                              <div className="col d-flex">
+                                <div className="col position-relative mx-1">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Downline Sharing"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "downline_comm",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b>My Share 10%</b>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="col position-relative mx-1">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Enter Commission: M.0"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "share",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b>My Comm.. 1%</b>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="col position-relative mx-1">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Casino Chip Value"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.id,
+                                          "caschip_values",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b className="mx-1">Cas. Chip Val 20</b>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <p className="small-font">No user websites available</p>
+                      )}
+                    </div>
                   )}
                 </div>
               </>

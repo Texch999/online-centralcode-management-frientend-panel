@@ -42,6 +42,8 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
     GetEmployementDetailsById();
   }, [editingRowId]);
 
+  console.log(editingRowId, "editingRowId");
+
   useEffect(() => {
     if (employeeData) {
       setFormData({
