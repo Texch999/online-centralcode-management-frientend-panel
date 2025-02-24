@@ -407,6 +407,19 @@ const ownerWithdrawTicketApprove = (id, data) => {
   return apiRequest("ownerWithdrawTicketApprove", data, id);
 };
 
+const getOwnerCurrencies = (data) => {
+  return apiRequest("getOwnerCurrencies", data);
+};
+
+const ownerDowlineDirAndSADetails = (data) => {
+  return apiRequest("ownerDowlineDirAndSADetails", data);
+};
+
+const ManagementOfflineDepositeTicketCreation = (id, data) => {
+  return apiRequest("ManagementOfflineDepositeTicketCreation", data, id);
+};
+
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -509,4 +522,7 @@ export {
   DirectorWithdrawTicketCreation,
   ownerWithdrawTicketRejection,
   ownerWithdrawTicketApprove,
+  getOwnerCurrencies,
+  ownerDowlineDirAndSADetails,
+  ManagementOfflineDepositeTicketCreation,
 };

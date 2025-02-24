@@ -63,7 +63,6 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/promotionsTypes?${query}`;
     },
@@ -75,7 +74,6 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/promotionsImages?${query}`;
     },
@@ -96,7 +94,6 @@ const endpoints = {
   getBannerByUserId: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
       return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
@@ -299,7 +296,6 @@ const endpoints = {
   getBroadCasting: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
       return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
@@ -507,12 +503,12 @@ const endpoints = {
     method: "get",
     url: () => `/director/${userID()}/notifications`,
   },
-  
-  readNotificationsforManagement:{
+
+  readNotificationsforManagement: {
     method: "patch",
     url: (data) => `/user/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
   },
-  readNotificationsforDirector:{
+  readNotificationsforDirector: {
     method: "patch",
     url: (data) => `/director/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
   },
@@ -520,6 +516,11 @@ const endpoints = {
     method: "post",
     url: () => `/director/${userID()}/offlineDeposit`,
   },
+  DirectorOffilneDepositTicket: {
+    method: "post",
+    url: () => `/director/${userID()}/offlineDeposit`,
+  },
+ 
 
   getDirectorDepositeTicketsList: {
     method: "get",
@@ -581,7 +582,21 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/offlineWithdraw/${id}/approve`,
   },
- 
+
+  getOwnerCurrencies: {
+    method: "get",
+    url: () => `/user/${userID()}/countries/currency-name`,
+  },
+
+  ownerDowlineDirAndSADetails: {
+    method: "get",
+    url: () => `/user/${userID()}/offlineDeposits/directors`,
+  },
+
+  ManagementOfflineDepositeTicketCreation: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/offlineDeposits`,
+  },
 };
 
 export default endpoints;

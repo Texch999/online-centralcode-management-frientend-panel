@@ -105,7 +105,7 @@ function Tickets() {
       })
   }
 
-  
+
 
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
@@ -149,7 +149,6 @@ function Tickets() {
 
   // <====================== Deposit  Approve and Rejection =====================>
   const handleTikcetApproveRejection = async (action, reason, ticketType) => {
-    console.log(action, ticketType, "=====> deposit action")
     const limit = itemsPerPage
     const offset = (page - 1) * itemsPerPage
     let apiCAll
@@ -187,7 +186,6 @@ function Tickets() {
   const handleWithdrwaTicketApproveRejection = async (action, reason, ticketType) => {
     const limit = itemsPerPage
     const offset = (page - 1) * itemsPerPage
-    console.log(action, reason, ticketType, "====>action, reason, ticketType")
     let apiCAll
     setTicketAction(action)
     setTicketType(ticketType)
@@ -241,7 +239,7 @@ function Tickets() {
           {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
         chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips}</div>,
         currtypeamount: <div >{Number(record.paidAmount).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
-        currRate: <div >{Number(record?.curRate).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
+        currRate: <div >{Number(record?.curRate)}<br />{getCurrency(record.reqCurrency)}</div>,
         yourChips: <div >{record.shareType === 1 ? Number(record?.inrSportsChips).toFixed(2) : Number(record?.inrChips).toFixed(2)}</div>,
         yourcurramount: <div >{Number(record?.totCur).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
         view: (
@@ -330,7 +328,6 @@ function Tickets() {
     getDepositTickets(limit, offset, startDate, fromDate, selectedType.value);
   };
 
-  console.log(ticketType, ticketAction, "====>ticketType")
   return (
     <div>
       <div className="flex-between mb-3 mt-2">

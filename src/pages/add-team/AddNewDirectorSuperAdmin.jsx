@@ -13,6 +13,7 @@ import {
   getCountries,
   getCurrencies,
   getDirectorDetailsById,
+  getOwnerCurrencies,
 } from "../../api/apiMethods";
 import { adminRoles, commissionTypes } from "../../utils/enum";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -65,7 +66,7 @@ function AddNewDirectorSuperAdmin() {
       });
   };
   const GetAllCurrencies = () => {
-    getCurrencies()
+    getOwnerCurrencies()
       .then((response) => {
         if (response?.status === true) {
           setCurrencyData(response?.data);

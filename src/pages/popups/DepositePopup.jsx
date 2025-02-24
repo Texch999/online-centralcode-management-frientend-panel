@@ -114,16 +114,17 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
     const roundedExternalChipValue = externalChipValue > 0 ? rceil(externalChipValue, -3) : 0;
 
     // Calculate the rent chip value
-    const rentChipValue = Number(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100));
-    const roundedRentChipValue = rentChipValue > 0 ? rceil(rentChipValue, -3) : 0;
+    const rentChipValue = Number(formData.selectedChips * (selectedWebDetails?.rentPercentage !== null ? (selectedWebDetails?.rentPercentage / 100) : 0));
+    const roundedRentChipValue = rentChipValue >= 0 ? rceil(rentChipValue, -3) : 0;
 
     // Sum the rounded values
     const totalValue = roundedExternalChipValue + roundedRentChipValue;
 
     // chip calculation for the share & royality
-
-    const shareChipValue = Number(formData.selectedChips * (selectedWebDetails?.share / 100));
+    console.log(roundedRentChipValue, "====>selected chips")
+    const shareChipValue = Number(formData?.selectedChips * (selectedWebDetails?.share / 100));
     const roundedShareChipValue = shareChipValue > 0 ? rceil(shareChipValue, -3) : 0;
+
     const validateForm = () => {
         const newErrors = {};
         if (selectedPayment?.avil_modes !== 4) {
@@ -217,16 +218,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
             });
     };
 
-    const value = 10.45699;
-
-    console.log(rround(value, -2), "/ Output: 10.45 (rounds to nearest)");
-    console.log(rfloor(value, -2), "// Output: 10.45 (floors down)");
-    console.log(rceil(value, -2), "// Output: 10.46 (ceils up)");
-
-
-
-
-
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -260,15 +251,15 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                         </div>
                     </div>
                     {apiErrors && (
-                        <div className="alert alert-danger">
+                        <div className="alert alert-danger pb-1">
                             {Array.isArray(apiErrors) ? (
-                                <ul>
+                                <ul className="pb-1 ps-1">
                                     {apiErrors.map((error, index) => (
                                         <li className="small-font" key={index}>{error.message || error}</li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="small-font">{apiErrors.message || apiErrors}</p>
+                                <p className="small-font ps-1">{apiErrors.message || apiErrors}</p>
                             )}
                         </div>
                     )}
