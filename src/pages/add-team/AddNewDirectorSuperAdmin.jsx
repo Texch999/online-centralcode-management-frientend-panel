@@ -23,7 +23,8 @@ import SuccessPopup from "../popups/SuccessPopup";
 
 function AddNewDirectorSuperAdmin() {
   const navigate = useNavigate();
-  const role = localStorage.getItem("role_code");
+  // const role = localStorage.getItem("role_code");
+  const [role, setRole] = useState(localStorage.getItem("role_code") || ""); // Default to empty
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -270,7 +271,6 @@ function AddNewDirectorSuperAdmin() {
       })
       .catch((error) => console.log(error));
   };
-  console.log(selectedOption, "selectedOption");
 
   const handleDirectorSubmit = (e) => {
     e.preventDefault();
@@ -373,6 +373,7 @@ function AddNewDirectorSuperAdmin() {
       })
       .catch((error) => console.log(error));
   };
+  console.log(selectedOption, "selectedOption");
 
   const handleCountryChange = (event) => {
     setSelectedCountryCode(event.target.value);
@@ -428,6 +429,44 @@ function AddNewDirectorSuperAdmin() {
     : [];
 
   console.log(transformedOptions, "transformedOptions");
+
+  // const handleFormSubmit = (e) => {
+  //   e.preventDefault();
+    
+  //   if (!selectedRole) {
+  //     alert("Please select a role");
+  //     return;
+  //   }
+  
+  //   if (selectedRole === "management") {
+  //     handleSubmit(e);
+  //     return;  // Prevent further execution
+  //   }
+  
+  //   if (selectedRole === "director") {
+  //     handleDirectorSubmit(e);
+  //     return;
+  //   }
+  // };
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole); // Ensure state updates correctly
+    }
+  }, []);
+  useEffect(() => {
+    if (!role) return; // Prevents running if role is undefined
+    
+    console.log("🚀 Role changed to:", role);
+    
+    if (role === "management") {
+      handleSubmit(); // Correctly call API
+    } else if (role === "director") {
+      handleDirectorSubmit(); // Correctly call API
+    }
+  }, [role]); // Runs whenever `role` changes
+    
+
   return (
     <>
       <div>
@@ -607,8 +646,19 @@ function AddNewDirectorSuperAdmin() {
       <div>
         <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET </h3>
         <form
-          className="custom-form small-font p-3"
-          onSubmit={role === "management" ? handleSubmit : handleDirectorSubmit}
+        className="custom-form small-font p-3"
+        onSubmit={(e) => {
+          e.preventDefault(); // Prevents double submissions
+      
+          if (role === "management") {
+            handleSubmit(e);
+          } else if (role === "director") {
+            handleDirectorSubmit(e);
+          }
+        }}
+          // className="custom-form small-font p-3"
+          // onSubmit={role === "management" ? handleSubmit : handleDirectorSubmit}
+          // onSubmit={handleFormSubmit}
         >
           {/* <form className="custom-form small-font p-3" onSubmit={handleSubmit}> */}
           <div className="row align-items-center">

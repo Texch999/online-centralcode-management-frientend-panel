@@ -505,9 +505,10 @@ function EditNewDirector() {
             <FaArrowLeft /> Go Back
           </button>
           <h5 className="yellow-font">
-            {mode === "edit"
+            {mode === "edit" ? `Edit  ${role}` : `Add ${role}`}
+            {/* {mode === "edit"
               ? "Edit Director & Super Admin"
-              : "Add Director & Super Admin"}
+              : "Add Director & Super Admin"} */}
           </h5>
         </div>
 

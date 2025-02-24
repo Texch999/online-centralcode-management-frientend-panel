@@ -36,12 +36,13 @@ const AddManagementTeam = () => {
         }
       })
       .catch((error) => {
-        setError(error?.message || "Login failed");
+        setError(error?.message || "Failed to fetch employees");
       });
   };
 
   useEffect(() => {
     GetEmployee();
+    console.log("hi there");
   }, []);
 
   const TableData = tableData.map((employee) => {
@@ -309,17 +310,21 @@ const AddManagementTeam = () => {
           itemsPerPage={5}
         />
       </div>
+      {modalState.showAddModal && (
+        <AddManagementPopup
+          show={modalState.showAddModal}
+          onClose={() => toggleModal("showAddModal", false)}
+          onSubmit={handleFormSubmit}
+        />
+      )}
+      {EditShow && (
+        <EditManagementPopup
+          EditShow={EditShow}
+          handleEditShowClose={handleEditShowClose}
+          editingRowId={editingRowId}
+        />
+      )}
 
-      <AddManagementPopup
-        show={modalState.showAddModal}
-        onClose={() => toggleModal("showAddModal", false)}
-        onSubmit={handleFormSubmit}
-      />
-      <EditManagementPopup
-        EditShow={EditShow}
-        handleEditShowClose={handleEditShowClose}
-        editingRowId={editingRowId}
-      />
       <ConfirmationPopup
         confirmationPopupOpen={modalState.isBlockPopupVisible}
         setConfirmationPopupOpen={(value) =>

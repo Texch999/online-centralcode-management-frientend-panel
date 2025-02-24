@@ -253,7 +253,7 @@ function SubHeader() {
       },
     ],
 
-    risk_team: [
+    "risk management": [
       {
         label: "Live/Block",
         options: [

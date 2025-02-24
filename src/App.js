@@ -102,6 +102,7 @@ import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
 import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 import EditNewDirector from "./pages/EditNewDirector";
 import PageNotFound from "./pages/notFound/PageNotFound";
+import PrivateRoute from "./pages/routes/PrivateRoutes";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -127,190 +128,216 @@ function App() {
           {isLoggedIn && <Header />}
           <div className="home">
             <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route
-                path="/dashboard-view-all"
-                element={<DashboardViewAll />}
-              />
-              <Route path="/central-casino" element={<Casino />} />
-              <Route
-                path="/central-casino/:vendor/:provider"
-                element={<CasinoVendor />}
-              />
-              <Route
-                path="/central-casino/:vendor/:provider/:game"
-                element={<CasinoGames />}
-              />
-              <Route
-                path="/vendor-registration"
-                element={<VendorRegistration />}
-              />
-              <Route
-                path="/sports-vendor-registration"
-                element={<SportsVendorRegistration />}
-              />
-              <Route path="/risk-limit-set" element={<RiskLimitSet />} />
-              <Route path="/risk-sports" element={<RiskSports />} />
-              <Route path="/risk-casino" element={<RiskCasino />} />
-              <Route
-                path="/risk-sports/:matchName"
-                element={<RiskBetHistory />}
-              />
-              <Route path="/live-bet-list" element={<LiveBetList />} />
-              <Route
-                path="/deleted-bet-history"
-                element={<DeletedBetHistory />}
-              />
-              <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
-              <Route path="/management-team" element={<AddManagementTeam />} />
-              <Route path="/director-admin" element={<AddDirectorAdmin />} />
-              <Route path="/director-team" element={<AddDirectorTeam />} />
-              <Route
-                path="/director-admin/addnewdirector"
-                element={<AddNewDirectorSuperAdmin />}
-              />
-              <Route
-                path="/director-admin/editDirector"
-                element={<EditNewDirector />}
-              />
-              <Route
-                path="/user-profile-dashboard/:id"
-                element={<UserProfileDashboard />}
-              />
-              <Route path="/downline-list" element={<DownlineList />} />
-              <Route
-                path="/downline-list/:transactionHistory"
-                element={<DownlineTrasactionHistory />}
-              />
-              <Route
-                path="/my-vendors-account"
-                element={<MyVendorsAccount />}
-              />
-              <Route path="/settled-history" element={<SettledHistory />} />
-              <Route path="/my-statement" element={<MyStatement />} />
-              <Route path="/deposit-withdraw" element={<MyDepositWithdraw />} />
-              <Route
-                path="/offline-deposit-withdraw"
-                element={<OfflineDepositWithdraw />}
-              />
-              <Route path="/tickets" element={<Tickets />} />
-              <Route
-                path="/gateway-transactions"
-                element={<GatewayTransactions />}
-              />
-              <Route path="/payment-details" element={<PaymentGateway />} />
-              <Route path="/websites" element={<AddWibsites />} />
-              {/* Reports */}
-              <Route path="/pl-report-downline" element={<DownLineAdmins />} />
-              <Route path="/match-wise-pl" element={<MatchWisePl />} />
-              <Route
-                path="/match-wise-pl/:matchName"
-                element={<IndividualMatchPl />}
-              />
-              <Route
-                path="/match-wise-pl/:matchName/:role"
-                element={<MatchAdminsUsersPl />}
-              />
-              <Route
-                path="/match-wise-pl/:matchName/:role/:userDetails"
-                element={<UsersMatchPl />}
-              />
-              <Route path="/downline/:superadmin" element={<SuperAdminDL />} />
-              <Route path="/superadmin/:user" element={<Userslist />} />
-              <Route path="/pl-casino-report" element={<CasinoReports />} />
-              <Route path="/userbets/:username" element={<UserBetsList />} />
-              <Route path="/pl-report-sports" element={<SportsReport />} />
-              <Route path="/pl-report-users" element={<UserReports />} />
-              <Route path="/client-rental-sheet" element={<ClientRental />} />
-              {/* Sports Routes */}
-              <Route path="/central-sports" element={<Sports />} />
-              <Route path="/sports-promotions" element={<SportsPromotions />} />
-              <Route path="/casino-promotions" element={<CasinoPromotions />} />
-              <Route path="/fancy-results" element={<FancyResult />} />
-              <Route path="/market-results" element={<MarketResult />} />
-              <Route
-                path="/central-sports/:vendor/:provider"
-                element={<SportProviders />}
-              />
-              <Route
-                path="/central-sports/:vendor/:provider/:match"
-                element={<Cricket />}
-              />
-              <Route
-                path="/central-sports/:vendor/:provider/:match/:individualMatch"
-                element={<FancyIndividualCricketMatch />}
-              />
-              {/* Promotions */}
-              <Route
-                path="/create-promotion-type"
-                element={<PromotionType />}
-              />
-              <Route path="/broadcasting" element={<Broadcasting />} />
-              <Route path="/banners" element={<SandCBanner />} />
-              <Route path="/offers" element={<Offer />} />
-              {/* Owner Settings */}
-              <Route path="/activity-logs" element={<ActivityLogs />} />
-              <Route
-                path="/userActivity/:userId/:userActivity"
-                element={<RecentAccessIp />}
-              />
-              <Route path="/reference-data" element={<ReferenceData />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/results" element={<Result />} />{" "}
-              <Route path="/results/:matchName" element={<IndividualMatch />} />
-              {/* Live Block Routes */}
-              <Route path="/live-block-sports" element={<LiveBlockSports />} />
-              <Route
-                path="/live-block-sports/:sport"
-                element={<IndividualMatchOddsLive />}
-              />
-              <Route
-                path="/live-block-sports/:sport/:fancyType"
-                element={<ViewFancyBets />}
-              />
-              {/* Live Block Casino Management */}
-              <Route path="/management-casino" element={<CasinoWebsite />} />
-              <Route
-                path="/management-casino/:gamename"
-                element={<MCasinoGames />}
-              />
-              <Route
-                path="/management-casino/:gamename/:usergame"
-                element={<McasinoGDetails />}
-              />
-              <Route
-                path="/management-casino/:gamename/:usergame/:bethistory"
-                element={<MCasinoBetHistory />}
-              />
-              <Route
-                path="/management-casino-provider/:provider"
-                element={<CasinoProvider />}
-              />
-              <Route
-                path="/management-casino-provider/:provider/:gamename"
-                element={<CasinoProviderGames />}
-              />
-              <Route
-                path="/management-casino-provider/:provider/:gamename/:bethistory"
-                element={<CasinoMBetHistory />}
-              />
-              {/* Miscellaneous */}
-              <Route path="/bonus-chips" element={<BonusChips />} />
-              <Route path="/bet-block-users" element={<BetBlockUsers />} />
-              <Route path="/inactive-users" element={<InActiveUsers />} />
-              <Route path="/set-limits" element={<SetLimits />} />
-              <Route
-                path="/white-label-setting"
-                element={<WhiteLabelSetting />}
-              />
-              <Route
-                path="/offline-payment-modes"
-                element={<OfflinePaymentModes />}
-              />
-              <Route
-                path="/addnew-payments"
-                element={<AddNePaymentGateway />}
-              />
+              <Route element={<PrivateRoute />}>
+                <Route path="/" element={<Homepage />} />
+                <Route
+                  path="/dashboard-view-all"
+                  element={<DashboardViewAll />}
+                />
+                <Route path="/central-casino" element={<Casino />} />
+                <Route
+                  path="/central-casino/:vendor/:provider"
+                  element={<CasinoVendor />}
+                />
+                <Route
+                  path="/central-casino/:vendor/:provider/:game"
+                  element={<CasinoGames />}
+                />
+                <Route
+                  path="/vendor-registration"
+                  element={<VendorRegistration />}
+                />
+                <Route
+                  path="/sports-vendor-registration"
+                  element={<SportsVendorRegistration />}
+                />
+                <Route path="/risk-limit-set" element={<RiskLimitSet />} />
+                <Route path="/risk-sports" element={<RiskSports />} />
+                <Route path="/risk-casino" element={<RiskCasino />} />
+                <Route
+                  path="/risk-sports/:matchName"
+                  element={<RiskBetHistory />}
+                />
+                <Route path="/live-bet-list" element={<LiveBetList />} />
+                <Route
+                  path="/deleted-bet-history"
+                  element={<DeletedBetHistory />}
+                />
+                <Route path="/cheat-alert-bets" element={<CheatAlertBets />} />
+                <Route
+                  path="/management-team"
+                  element={<AddManagementTeam />}
+                />
+                <Route path="/director-admin" element={<AddDirectorAdmin />} />
+                <Route path="/director-team" element={<AddDirectorTeam />} />
+                <Route
+                  path="/director-admin/addnewdirector"
+                  element={<AddNewDirectorSuperAdmin />}
+                />
+                <Route
+                  path="/director-admin/editDirector"
+                  element={<EditNewDirector />}
+                />
+                <Route
+                  path="/user-profile-dashboard/:id"
+                  element={<UserProfileDashboard />}
+                />
+                <Route path="/downline-list" element={<DownlineList />} />
+                <Route
+                  path="/downline-list/:transactionHistory"
+                  element={<DownlineTrasactionHistory />}
+                />
+                <Route
+                  path="/my-vendors-account"
+                  element={<MyVendorsAccount />}
+                />
+                <Route path="/settled-history" element={<SettledHistory />} />
+                <Route path="/my-statement" element={<MyStatement />} />
+                <Route
+                  path="/deposit-withdraw"
+                  element={<MyDepositWithdraw />}
+                />
+                <Route
+                  path="/offline-deposit-withdraw"
+                  element={<OfflineDepositWithdraw />}
+                />
+                <Route path="/tickets" element={<Tickets />} />
+                <Route
+                  path="/gateway-transactions"
+                  element={<GatewayTransactions />}
+                />
+                <Route path="/payment-details" element={<PaymentGateway />} />
+                <Route path="/websites" element={<AddWibsites />} />
+                {/* Reports */}
+                <Route
+                  path="/pl-report-downline"
+                  element={<DownLineAdmins />}
+                />
+                <Route path="/match-wise-pl" element={<MatchWisePl />} />
+                <Route
+                  path="/match-wise-pl/:matchName"
+                  element={<IndividualMatchPl />}
+                />
+                <Route
+                  path="/match-wise-pl/:matchName/:role"
+                  element={<MatchAdminsUsersPl />}
+                />
+                <Route
+                  path="/match-wise-pl/:matchName/:role/:userDetails"
+                  element={<UsersMatchPl />}
+                />
+                <Route
+                  path="/downline/:superadmin"
+                  element={<SuperAdminDL />}
+                />
+                <Route path="/superadmin/:user" element={<Userslist />} />
+                <Route path="/pl-casino-report" element={<CasinoReports />} />
+                <Route path="/userbets/:username" element={<UserBetsList />} />
+                <Route path="/pl-report-sports" element={<SportsReport />} />
+                <Route path="/pl-report-users" element={<UserReports />} />
+                <Route path="/client-rental-sheet" element={<ClientRental />} />
+                {/* Sports Routes */}
+                <Route path="/central-sports" element={<Sports />} />
+                <Route
+                  path="/sports-promotions"
+                  element={<SportsPromotions />}
+                />
+                <Route
+                  path="/casino-promotions"
+                  element={<CasinoPromotions />}
+                />
+                <Route path="/fancy-results" element={<FancyResult />} />
+                <Route path="/market-results" element={<MarketResult />} />
+                <Route
+                  path="/central-sports/:vendor/:provider"
+                  element={<SportProviders />}
+                />
+                <Route
+                  path="/central-sports/:vendor/:provider/:match"
+                  element={<Cricket />}
+                />
+                <Route
+                  path="/central-sports/:vendor/:provider/:match/:individualMatch"
+                  element={<FancyIndividualCricketMatch />}
+                />
+                {/* Promotions */}
+                <Route
+                  path="/create-promotion-type"
+                  element={<PromotionType />}
+                />
+                <Route path="/broadcasting" element={<Broadcasting />} />
+                <Route path="/banners" element={<SandCBanner />} />
+                <Route path="/offers" element={<Offer />} />
+                {/* Owner Settings */}
+                <Route path="/activity-logs" element={<ActivityLogs />} />
+                <Route
+                  path="/userActivity/:userId/:userActivity"
+                  element={<RecentAccessIp />}
+                />
+                <Route path="/reference-data" element={<ReferenceData />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/results" element={<Result />} />{" "}
+                <Route
+                  path="/results/:matchName"
+                  element={<IndividualMatch />}
+                />
+                {/* Live Block Routes */}
+                <Route
+                  path="/live-block-sports"
+                  element={<LiveBlockSports />}
+                />
+                <Route
+                  path="/live-block-sports/:sport"
+                  element={<IndividualMatchOddsLive />}
+                />
+                <Route
+                  path="/live-block-sports/:sport/:fancyType"
+                  element={<ViewFancyBets />}
+                />
+                {/* Live Block Casino Management */}
+                <Route path="/management-casino" element={<CasinoWebsite />} />
+                <Route
+                  path="/management-casino/:gamename"
+                  element={<MCasinoGames />}
+                />
+                <Route
+                  path="/management-casino/:gamename/:usergame"
+                  element={<McasinoGDetails />}
+                />
+                <Route
+                  path="/management-casino/:gamename/:usergame/:bethistory"
+                  element={<MCasinoBetHistory />}
+                />
+                <Route
+                  path="/management-casino-provider/:provider"
+                  element={<CasinoProvider />}
+                />
+                <Route
+                  path="/management-casino-provider/:provider/:gamename"
+                  element={<CasinoProviderGames />}
+                />
+                <Route
+                  path="/management-casino-provider/:provider/:gamename/:bethistory"
+                  element={<CasinoMBetHistory />}
+                />
+                {/* Miscellaneous */}
+                <Route path="/bonus-chips" element={<BonusChips />} />
+                <Route path="/bet-block-users" element={<BetBlockUsers />} />
+                <Route path="/inactive-users" element={<InActiveUsers />} />
+                <Route path="/set-limits" element={<SetLimits />} />
+                <Route
+                  path="/white-label-setting"
+                  element={<WhiteLabelSetting />}
+                />
+                <Route
+                  path="/offline-payment-modes"
+                  element={<OfflinePaymentModes />}
+                />
+                <Route
+                  path="/addnew-payments"
+                  element={<AddNePaymentGateway />}
+                />
+              </Route>
             </Routes>
           </div>
         </div>
