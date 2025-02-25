@@ -178,43 +178,43 @@ function EditNewDirector() {
     }
   }, [mode, userId]);
 
-  // const handleSubmit = () => {
-  //   const payload = {
-  //     type: parseInt(selectedRole),
-  //     country_id: parseInt(selectedCountryCode),
-  //     currency_id: parseInt(selectedCurrencyCode),
-  //     name: name,
-  //     login_name: loginName,
-  //     parent_password: managementPassword,
-  //     accessWebsites: userWebsites.map((site) => ({
-  //       id: site.id,
-  //       admin_panel_id: parseInt(site.admin_panel_id),
-  //       user_paner_id: parseInt(site.user_paner_id),
-  //       commission_type: parseInt(site.commission_type),
-  //     })),
-  //     addWebsites: addWebsites.map((website) => {
-  //       const commissionType = parseInt(website.commission_type);
-  //       return {
-  //         admin_panel_id: parseInt(website.admin_panel_id),
-  //         user_paner_id: parseInt(website.user_paner_id),
-  //         commission_type: commissionType,
-  //         share: parseInt(website.share),
-  //         casino_chip_values: parseInt(website.casino_chip_values),
-  //         downline_comm: parseInt(website.downline_comm),
-  //       };
-  //     }),
-  //   };
+  const handleManagementSubmit = () => {
+    const payload = {
+      type: parseInt(selectedRole),
+      country_id: parseInt(selectedCountryCode),
+      currency_id: parseInt(selectedCurrencyCode),
+      name: name,
+      login_name: loginName,
+      parent_password: managementPassword,
+      accessWebsites: userWebsites.map((site) => ({
+        id: site.id,
+        admin_panel_id: parseInt(site.admin_panel_id),
+        user_paner_id: parseInt(site.user_paner_id),
+        commission_type: parseInt(site.commission_type),
+      })),
+      addWebsites: addWebsites.map((website) => {
+        const commissionType = parseInt(website.commission_type);
+        return {
+          admin_panel_id: parseInt(website.admin_panel_id),
+          user_paner_id: parseInt(website.user_paner_id),
+          commission_type: commissionType,
+          share: parseInt(website.share),
+          casino_chip_values: parseInt(website.casino_chip_values),
+          downline_comm: parseInt(website.downline_comm),
+        };
+      }),
+    };
 
-  //   updateDirectorByID(userId, payload)
-  //     .then((response) => {
-  //       if (response.status) {
-  //         setSuccessPopupOpen(true);
-  //         setTimeout(() => navigate("/director-admin"), 2000);
-  //       }
-  //     })
-  //     .catch((error) => console.error("Error updating director:", error));
-  // };
-  const handleSubmit = () => {
+    updateDirectorByID(userId, payload)
+      .then((response) => {
+        if (response.status) {
+          setSuccessPopupOpen(true);
+          setTimeout(() => navigate("/director-admin"), 2000);
+        }
+      })
+      .catch((error) => console.error("Error updating director:", error));
+  };
+  const handleDirectorSubmit = () => {
     // Log state for debugging
     console.log("Selected Websites:", selectedWebsites);
     console.log("Account Types:", accountTypes);
@@ -1329,7 +1329,11 @@ function EditNewDirector() {
             <button
               className="saffron-btn rounded"
               type="button"
-              onClick={handleSubmit}
+              onClick={
+                Role === "management"
+                  ? handleManagementSubmit
+                  : handleDirectorSubmit
+              }
             >
               Update Details
             </button>
