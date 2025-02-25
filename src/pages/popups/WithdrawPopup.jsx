@@ -333,7 +333,7 @@ const WithdrawPopup = ({
                                 type="text"
                                 className="w-100 small-font rounded input-css white-bg input-border"
                                 placeholder="Enter Withdraw Amount"
-                                value={selectedWebDetails?.total_chips ?? 0}
+                                value={selectedWebDetails?.commission_type !== 1 ? selectedWebDetails?.total_chips : selectedWebDetails?.total_sport_chips}
                                 onChange={handleChange}
                                 readOnly
                             />

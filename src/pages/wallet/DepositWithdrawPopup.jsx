@@ -5,6 +5,8 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { imgUrl } from "../../api/baseUrl";
+import { rfloor } from "../../utils/mathFunctions";
+import utcDate from "../../utils/utcDateConversion";
 
 function DepositWithdrawPopup({
   depositWithdrawPopupOpen,
@@ -68,6 +70,7 @@ function DepositWithdrawPopup({
 
     if (userRole === "management") {
       // management deposit and withdraw aprrove & rejection
+      console.log(ticketData, "====>ticketData")
       if (action === "REJECT") {
         if (selectedOption === null) {
           setRejectionError("Please select a reason for rejection.");
@@ -83,7 +86,7 @@ function DepositWithdrawPopup({
           }
         }
       } else {
-        if (ticketData?.ticketType === 2) {
+        if (ticketData?.ticketType === 1) {
           // deposit approve
           handleTikcetApproveRejection(action, selectedOption, DepOrWit)
         } else {
@@ -94,6 +97,7 @@ function DepositWithdrawPopup({
       }
     } else {
       // director deposit and withdraw aprrove & rejection
+      // user role id director 
       if (action === "REJECT") {
         if (selectedOption === null) {
           setRejectionError("Please select a reason for rejection.");
@@ -109,7 +113,7 @@ function DepositWithdrawPopup({
           }
         }
       } else {
-        if (ticketData?.ticketType === 2) {
+        if (ticketData?.ticketType === 1) {
           // deposit approve
           handleTikcetApproveRejection(action, selectedOption, DepOrWit)
         } else {
@@ -172,7 +176,6 @@ function DepositWithdrawPopup({
             <div className="yellow-bg py-1 px-2 rounded small-font white-text w-fit">
               {ticketData?.dirName}
             </div>
-            <h6 className="ms-2 mb-0">{userDetails2}</h6>
           </div>
         </div>
         <div className="  d-flex flex-row justify-content-between align-items-center">
@@ -198,7 +201,7 @@ function DepositWithdrawPopup({
             <div className="col-4 mt-2">
               <div className="grey-box flex-between">
                 <span className="green-font">{getCurrency(ticketData?.reqCurrency)} To INR </span>
-                <span>{ticketData?.totCur ? Math.floor(Number(ticketData?.totCur).toFixed(2)) : 0}</span>
+                <span>{ticketData?.curRate ? rfloor(ticketData?.curRate, -5) : 0}</span>
               </div>
             </div> : null}
 
@@ -217,7 +220,7 @@ function DepositWithdrawPopup({
           {userRole === "management" ? <div className="col-4 mt-2">
             <div className="grey-box flex-between">
               <span>Amt INR</span>
-              <span className="yellow-font">{Math.floor(Number(ticketData?.totCur).toFixed(2))}</span>
+              <span className="yellow-font">{ticketData?.totCur ? rfloor((ticketData?.totCur), -2) : 0}</span>
             </div>
           </div> : null}
         </div>
@@ -240,7 +243,7 @@ function DepositWithdrawPopup({
           <hr className="m-0" />
           <div className="flex-between p-2">
             <span>Date & Time</span>
-            <span>{ticketData?.date ? formatDateTime(ticketData?.date) : null}</span>
+            <span>{ticketData?.date ? utcDate(ticketData?.date) : null}</span>
           </div>
         </div>
 
@@ -255,19 +258,21 @@ function DepositWithdrawPopup({
                 <span>Sports & Casino Chips - {getCurrency(ticketData?.reqCurrency)} </span>
                 <span className="yellow-font">{ticketData?.requChips}</span>
               </div>
-              <div className="grey-box flex-between mt-1">
+              {userRole === "management" ? <div className="grey-box flex-between mt-1">
                 <span>Sports & Casino Chips - INR</span>
-                <span className="yellow-font">{Math.floor(Number(ticketData?.inrChips).toFixed(2))}</span>
-              </div>
+                <span className="yellow-font">{ticketData?.inrChips ? rfloor(ticketData?.inrChips, -2) : 0}</span>
+              </div> : null}
+
             </div> : <div className="col-12 mt-2">
               <div className="grey-box flex-between">
                 <span>Sports Chips - {getCurrency(ticketData?.reqCurrency)} </span>
                 <span className="yellow-font">{ticketData?.requChips}</span>
               </div>
-              <div className="grey-box flex-between mt-2">
-                <span>Sports Chips - INR</span>
-                <span className="yellow-font">{Math.floor(Number(ticketData?.totCur).toFixed(2))}</span>
-              </div>
+              {userRole === "management" ?
+                <div className="grey-box flex-between mt-2">
+                  <span>Sports Chips - INR</span>
+                  <span className="yellow-font">{ticketData?.inrSportsChips ? rfloor(ticketData?.inrSportsChips, -2) : 0}</span>
+                </div> : null}
             </div>}
 
           {fromPath === "tickets" ? <>

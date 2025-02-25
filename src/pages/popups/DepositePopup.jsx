@@ -391,7 +391,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(selectedWebDetails?.total_chips === undefined || null ? 0 : selectedWebDetails?.total_chips)} total_sport_chips
+                                        value={selectedWebDetails?.total_chips ?? 0}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -418,14 +418,30 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                             <div className="row">
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
-                                    <input
+                                    {/* <input
                                         type="number"
                                         name="selectedChips"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter Chips"
                                         value={formData.selectedChips}
                                         onChange={handleChange}
+                                    /> */}
+                                    <input
+                                        type="number"
+                                        name="selectedChips"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter Chips"
+                                        value={formData.selectedChips}
+                                        onChange={(e) => {
+                                            if (Number(e.target.value) <= 99999999999) {
+                                                handleChange(e);
+                                                setFieldError("")
+                                            } else {
+                                                setFieldError(`You cannot enter more than ${99999999999} chips.`);
+                                            }
+                                        }}
                                     />
+                                    {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                                     {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                                 </div>
                                 <div className="col mb-2">

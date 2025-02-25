@@ -520,7 +520,7 @@ const endpoints = {
     method: "post",
     url: () => `/director/${userID()}/offlineDeposit`,
   },
- 
+
 
   getDirectorDepositeTicketsList: {
     method: "get",
@@ -588,14 +588,29 @@ const endpoints = {
     url: () => `/user/${userID()}/countries/currency-name`,
   },
 
+  // ownerDowlineDirAndSADetails: {
+  //   method: "get",
+  //   url: () => `/user/${userID()}/offlineDeposits/directors`,
+  // },
+
   ownerDowlineDirAndSADetails: {
     method: "get",
-    url: () => `/user/${userID()}/offlineDeposits/directors`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/offlineDeposits/directors?${query}`;
+    },
   },
+
+
 
   ManagementOfflineDepositeTicketCreation: {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/offlineDeposits`,
+  },
+
+  ManagementOfflineWithdrawTicketCreation: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/offlineWithdraw`,
   },
 };
 
