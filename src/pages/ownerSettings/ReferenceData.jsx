@@ -21,13 +21,12 @@ const ReferenceData = () => {
   const [addNewModalSecurity, setAddNewModalSecurity] = useState(false);
   const [error, setError] = useState("");
   const [securityQuestions, setSecurityQuestions] = useState([]);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedQnsId, setSelectedSecQnsId] = useState(null);
   const [rejReasonsData, setRejReasonsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState("");
   const [selectedRejReasonId, setSelectedRejReasonId] = useState(null);
-  const [errorPopup, setErrorPopup] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const dataFetched = useRef(false);
   const [selectStatus, setSelectStatus] = useState(
@@ -36,13 +35,11 @@ const ReferenceData = () => {
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalRecordsSecQns, setTotalRecordsSecQns] = useState(null);
   const intialpage = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(intialpage);
   const handleSportClick = (item) => {
     setActiveBtn(item);
   };
   const role_code = localStorage.getItem("role_code");
   const itemsPerPage = 4;
-  const currentOffset = (currentPage - 1) * itemsPerPage;
   const page = intialpage;
   const pageSize = itemsPerPage;
   const status = selectStatus;
@@ -51,16 +48,16 @@ const ReferenceData = () => {
     setSelectStatus(selectedOption?.value);
   };
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = () => {
+    console.log(page, pageSize, "page, pageSize");
     if (activeBtn === "Rejection Reasons") {
-      getRejReasons();
+      getRejReasons(intialpage, pageSize);
     } else {
-      getSecurityQuestions();
+      getSecurityQuestions(intialpage, pageSize);
     }
   };
 
-  const getSecurityQuestions = () => {
+  const getSecurityQuestions = (page, pageSize) => {
     setLoading(true);
     getAllSecurityQuestions({ page, pageSize, status })
       .then((response) => {
@@ -69,39 +66,37 @@ const ReferenceData = () => {
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true);
+        setErrorPopupOpen(true);
         setTimeout(() => {
-          setErrorPopup(false);
-        }, [2000]);
+          setErrorPopupOpen(false);
+        }, 1000);
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (page, pageSize) => {
     if (activeBtn === "Rejection Reasons") {
-      getRejReasons();
-      setCurrentPage(1);
+      getRejReasons(page, pageSize);
     } else {
-      setCurrentPage(1);
-      getSecurityQuestions();
+      getSecurityQuestions(page, pageSize);
     }
   };
 
-  const getRejReasons = () => {
+  const getRejReasons = (page, pageSize) => {
     setLoading(true);
     getAllRejectionReasons({ page, pageSize, status })
       .then((response) => {
         setRejReasonsData(response?.data);
-        setTotalRecords(response.meta?.totalCount);
+        setTotalRecords(response?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true);
+        setErrorPopupOpen(true);
         setTimeout(() => {
-          setErrorPopup(false);
-        }, [2000]);
+          setErrorPopupOpen(false);
+        }, 1000);
       })
       .finally(() => {
         setLoading(false);
@@ -111,8 +106,8 @@ const ReferenceData = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      getRejReasons();
-      getSecurityQuestions();
+      getRejReasons(page, pageSize);
+      getSecurityQuestions(page, pageSize);
     }
   }, []);
 
@@ -327,8 +322,8 @@ const ReferenceData = () => {
       />
       <ErrorPopup
         discription={error}
-        errorPopupOpen={errorPopup}
-        setErrorPopupOpen={setErrorPopup}
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
       />
     </div>
   );

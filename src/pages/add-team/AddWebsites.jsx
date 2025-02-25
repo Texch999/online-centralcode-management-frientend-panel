@@ -8,7 +8,6 @@ import AddWebsitesPopup from "./popups/AddWebsitesPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 import {
-  getAllCountires,
   getWebsitesList,
   blockAndUnblock,
   getDirectorAccessWebites,
@@ -24,7 +23,7 @@ const AddWibsites = () => {
   const [error, setError] = useState("");
   const [websites, setWebsite] = useState([]);
   const [directorSites, setDirectorSites] = useState([]);
-
+  const isInitialRendering = useRef(true)
   const [editMode, setEditMode] = useState(false);
   const [websiteId, setWebsiteId] = useState(null);
   const [status, setStatus] = useState(null);
@@ -34,12 +33,10 @@ const AddWibsites = () => {
   const [displayMsg, setDisplayeMsg] = useState("");
   const [totalRecords, setTotalRecords] = useState(null);
   const itemsPerPage = 9;
-  const isInitialRender = useRef(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const allCountries = useSelector((item) => item?.allCountries);
-  // const [countries, setCountries] = useState(allCountries);
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
       limit,
@@ -80,33 +77,18 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
-  // const getCountries = () => {
-  //   getAllCountires()
-  //     .then((response) => {
-  //       if (response?.status === true) {
-  //         setCountries(response.data);
-  //       } else {
-  //         setError("Something Went Wrong");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message || "API request failed");
-  //     });
-  // };
-
   useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false
+      return
     }
-    // getCountries();
     if (filterName.trim() === "") {
       const limit = itemsPerPage;
-      const offset = (currentPage - 1) * itemsPerPage;
+      const offset = (page - 1) * itemsPerPage;
       if (role === "management") {
         getAllWebsiteList(limit, offset);
       } else {
-        getAllDirectorWebsiteList(offset, offset);
+        getAllDirectorWebsiteList(limit, offset);
       }
     }
   }, [filterName, role]);
@@ -140,8 +122,8 @@ const AddWibsites = () => {
     admin: (
       <div>
         {" "}
-        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${website?.panel_type === 1 ? "Admin" : "User"
-          } )`}
+        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
+          } `}
       </div>
     ),
     websiteName: website?.web_name,
@@ -208,20 +190,24 @@ const AddWibsites = () => {
     }))
   );
   const handleFiltration = async (e) => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     if (e.key === "Enter") {
       if (role === "management") {
         setError(null);
-        getAllWebsiteList();
+        getAllWebsiteList(limit, offset);
       } else {
-        getAllDirectorWebsiteList();
+        getAllDirectorWebsiteList(limit, offset);
       }
     }
   };
   const handleBlockAndUnblock = () => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     blockAndUnblock(websiteId)
       .then((response) => {
         if (response?.status === true) {
-          getAllWebsiteList();
+          getAllWebsiteList(limit, offset);
           setOpenSuccessPopup(true);
           setDisplayeMsg(response.message);
           setTimeout(() => {
@@ -242,6 +228,12 @@ const AddWibsites = () => {
         }, 2000);
       });
   };
+  const getWebsitesCallback = () => {
+
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    getAllWebsiteList(limit, offset)
+  }
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -297,7 +289,7 @@ const AddWibsites = () => {
         show={onAddwebsitePopup}
         onHide={() => setOnAddwebsitePopup(false)}
         countries={allCountries}
-        getWebsitesCallback={getAllWebsiteList}
+        getWebsitesCallback={getWebsitesCallback}
         editMode={editMode}
         websiteId={websiteId}
         setEditMode={setEditMode}

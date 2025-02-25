@@ -7,10 +7,12 @@ import {
   getEmployeeDetailsById,
   updateEmployeeByID,
 } from "../../../api/apiMethods";
+import { Roles } from "../../../utils/enum";
 
 function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
   console.log(editingRowId, "editingRowId");
   const [employeeData, setEmployeeData] = useState();
+  console.log(employeeData, "employeeData");
   const [formData, setFormData] = useState({
     role: "",
     name: "",
@@ -21,6 +23,7 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
   });
   console.log(employeeData, "employeeData");
   const [error, setError] = useState();
+
   const GetEmployementDetailsById = () => {
     getEmployeeDetailsById(editingRowId)
       .then((response) => {
@@ -112,11 +115,13 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
                 className="small-font rounded all-none input-css w-100"
                 value={formData.role}
                 onChange={handleChange}
+                disabled
               >
-                <option value="owner">Owner</option>
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="employee">Employee</option>
+                {Object.entries(Roles).map(([id, roleName]) => (
+                  <option key={id} value={id}>
+                    {roleName}
+                  </option>
+                ))}
               </select>
             </div>
 

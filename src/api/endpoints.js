@@ -21,14 +21,14 @@ const endpoints = {
   },
 
   createDirector: { method: "post", url: () => `/user/${userID()}/director` },
-      createSuperAdmin: {
-        method: "post",
-        url: () => `/director/${userID()}/superAdmin`,
-      },
+  createSuperAdmin: {
+    method: "post",
+    url: () => `/director/${userID()}/superAdmin`,
+  },
 
   getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
   getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
-  getCurrencies: { 
+  getCurrencies: {
     method: "get",
     url: () => `/director/${userID()}/countries/currency-name`,
   },
@@ -68,7 +68,6 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/promotionsTypes?${query}`;
     },
@@ -80,7 +79,6 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/promotionsImages?${query}`;
     },
@@ -101,12 +99,8 @@ const endpoints = {
   getBannerByUserId: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
-
       const { id, ...filteredParams } = params;
-
       const query = new URLSearchParams(filteredParams).toString();
-
       return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
     },
   },
@@ -198,16 +192,9 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/employee/${id}`,
   },
-
   updateDirectorByID: {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}`,
-  },
-  // updateSuperAdminByID
-
-  updateSuperAdminByID: {
-    method: "post",
-    url: (id) => `/director/${userID()}/superAdmin/${id}`,
   },
 
   updateDirectorEmployeeByID: {
@@ -281,25 +268,25 @@ const endpoints = {
   },
   getPrivacyPolicyById: {
     method: "get",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}`,
   },
   createPrivacyPolicy: {
     method: "post",
-    url: () => `/user/${userID()}/privacypolicies/`,
+    url: () => `/user/${userID()}/privacypolicy`,
   },
   updatePrivacyPolicyById: {
     method: "put",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}`,
   },
   privacyPolicyStatusUpdate: {
     method: "patch",
     url: (data) =>
-      `/user/${userID()}/privacypolicies/${data.id}/status/${data.status}`,
+      `/user/${userID()}/privacypolicy/${data.id}/status/${data.status}`,
   },
 
   addWebsiteToPrivacyPolicy: {
     method: "post",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/addwebsites`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}/addwebsites`,
   },
 
   getWebsites: {
@@ -325,7 +312,7 @@ const endpoints = {
 
   getAvailableWebsites: {
     method: "get",
-    url: (id) => `/user/${userID()}/privacypolicies/${id}/websites`,
+    url: (id) => `/user/${userID()}/privacypolicy/${id}/websites`,
   },
 
   createBroadCasting: {
@@ -335,11 +322,8 @@ const endpoints = {
   getBroadCasting: {
     method: "get",
     url: (params) => {
-      console.log("params", params);
       const { id, ...filteredParams } = params;
-
       const query = new URLSearchParams(filteredParams).toString();
-
       return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
     },
   },
@@ -452,25 +436,31 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/paymentDetails?${query}`;
+      return `/user/${userID()}/offlinePayments?${query}`;
     },
   },
+
   suspendManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/suspend/${id}`,
+    url: (id) => `/user/${userID()}/offlinePayment/${id}/suspend`,
   },
+
   getManagementPaymentDetailsById: {
     method: "get",
-    url: (id) => `/user/${userID()}/payment/${id}`,
+    url: (id) => `/user/${userID()}/offlinePayment/${id}`,
   },
+
   createManagementPaymentDetails: {
     method: "post",
-    url: () => `/user/${userID()}/create`,
+    url: () => `/user/${userID()}/offlinePayment`,
   },
+
   updateManagementPaymentDetails: {
     method: "post",
-    url: (id) => `/user/${userID()}/update/${id}`,
+    url: (id) => `/user/${userID()}/offlinePayment/${id}`,
   },
+
+  //offline payment modessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
   createManagementOfflinePaymentModes: {
     method: "post",
@@ -498,7 +488,7 @@ const endpoints = {
   },
   managementPaymentDetails: {
     method: "get",
-    url: () => `/director/${userID()}/payments`,
+    url: () => `/director/${userID()}/Payments`,
   },
   ownersAvailablePaymentsModes: {
     method: "get",
@@ -506,12 +496,134 @@ const endpoints = {
   },
   DirectorUpLinePaymentDetails: {
     method: "get",
-    url: () => `/director/${userID()}/payments`,
+    url: () => `/director/${userID()}/PaymentModes`,
   },
 
   getDirectorSites: {
     method: "get",
     url: () => `/director/${userID()}/details/${userID()}`,
+  },
+  //show dir payment details in man
+  managementDwnProfileDirPaymentDetails: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+  },
+  UpdateProfileDirpaymentDetailsByMan: {
+    method: "put",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  getDirPayDetailsByIdProfile: {
+    method: "get",
+    url: (id) => `/user/${userID()}/directorAccount/${id}`,
+  },
+  DirectorAvailablePaymentsModes: {
+    method: "get",
+    url: () => `/director/${userID()}/offlinePaymentModes`,
+  },
+  getNotificationsforManagement: {
+    method: "get",
+    url: () => `/user/${userID()}/notifications`,
+  },
+  getNotificationsforDirector: {
+    method: "get",
+    url: () => `/director/${userID()}/notifications`,
+  },
+
+  readNotificationsforManagement: {
+    method: "patch",
+    url: (data) =>
+      `/user/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
+  },
+  readNotificationsforDirector: {
+    method: "patch",
+    url: (data) =>
+      `/director/${userID()}/notifications/${data.id}/readStatus/${
+        data.status
+      }`,
+  },
+  DirectorOffilneDepositTicket: {
+    method: "post",
+    url: () => `/director/${userID()}/offlineDeposit`,
+  },
+  DirectorOffilneDepositTicket: {
+    method: "post",
+    url: () => `/director/${userID()}/offlineDeposit`,
+  },
+
+  getDirectorDepositeTicketsList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/offlineDeposits?${query}`;
+    },
+  },
+
+  getOwnerDownlineDepositeTicketsList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/offlineDeposits?${query}`;
+    },
+  },
+
+  depositTikcetDetailsById: {
+    method: "get",
+    url: (id) => `/director/${userID()}/offlineDeposits/${id}`,
+  },
+
+  managementDepositTikcetDetailsById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}`,
+  },
+
+  DeleteDirectorTicketsById: {
+    method: "delete",
+    url: (id) => `/director/${userID()}/offlineDeposit/${id}`,
+  },
+
+  ownerTicketApprove: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}/approve`,
+  },
+
+  ownerTicketRejection: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineDeposits/${id}/reject`,
+  },
+
+  DirectorWithdrawPaymentDetails: {
+    method: "get",
+    url: (id) => `/director/${userID()}/offlineAccounts/${id}`,
+  },
+
+  DirectorWithdrawTicketCreation: {
+    method: "post",
+    url: (id) => `/director/${userID()}/offlineWithdraw`,
+  },
+
+  ownerWithdrawTicketRejection: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineWithdraw/${id}/reject`,
+  },
+
+  ownerWithdrawTicketApprove: {
+    method: "post",
+    url: (id) => `/user/${userID()}/offlineWithdraw/${id}/approve`,
+  },
+
+  getOwnerCurrencies: {
+    method: "get",
+    url: () => `/user/${userID()}/countries/currency-name`,
+  },
+
+  ownerDowlineDirAndSADetails: {
+    method: "get",
+    url: () => `/user/${userID()}/offlineDeposits/directors`,
+  },
+
+  ManagementOfflineDepositeTicketCreation: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/offlineDeposits`,
   },
 };
 

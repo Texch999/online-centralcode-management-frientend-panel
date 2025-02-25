@@ -14,9 +14,11 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
+
 .h-100 {
   height: 100%;
 }
+
 .h-fill {
   height: -webkit-fill-available !important;
 }
@@ -73,7 +75,7 @@
   outline: none !important;
   color: #ffffff !important;
   font-weight: 500 !important;
-  padding: 0.5rem;
+  padding: 0.6rem;
   text-align: center !important;
   border-radius: 0.35rem;
 }
@@ -385,7 +387,7 @@
   outline: none;
   color: #727272;
   font-weight: 500;
-  padding: 0.5rem;
+  padding: 0.6rem;
   border-radius: 0.35rem;
 }
 
@@ -670,9 +672,11 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
 .no-cursor {
   cursor: not-allowed;
 }
+
 .text-capitalize {
   text-transform: capitalize;
 }
@@ -862,9 +866,31 @@ button.cst-btn:hover {
 .input-border {
   border: 1px solid rgb(0, 0, 0, 0.2);
 }
+
 .dep-pop-clr {
   color: "#222A4C";
 }
+
 .text-size {
   font-size: 1.8125rem;
+}
+
+.placeholder-red-clr {
+  color: "#F43A23"
+}
+
+.status-bar {
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.red-font {
+  color: "#db5318"
+}
+
+.input-cevent-stop {
+  pointer-events: "none"
 }

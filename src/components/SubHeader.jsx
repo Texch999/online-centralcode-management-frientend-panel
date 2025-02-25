@@ -51,12 +51,12 @@ function SubHeader() {
         label: "Wallet",
         options: [
           { label: "My Vendors Account", path: "/my-vendors-account" },
-          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+          // { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           {
             label: "Offline Deposit/Withdraw",
             path: "/offline-deposit-withdraw",
           },
-          { label: "Tickets", path: "/tickets" },
+          { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
         ],
       },
@@ -131,7 +131,7 @@ function SubHeader() {
         label: "Wallet",
         options: [
           { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-          { label: "Tickets", path: "/tickets" },
+          { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
         ],
       },
@@ -355,9 +355,8 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${
-                activeIndex === index ? "grey-btn" : "balck-btn"
-              } br-0px flex-center w-100`}
+              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
+                } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>

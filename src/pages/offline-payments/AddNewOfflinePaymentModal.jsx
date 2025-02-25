@@ -11,6 +11,7 @@ import {
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "./../popups/ErrorPopup";
+import { useSearchParams } from "react-router-dom";
 
 const AddNewOfflinePaymentModal = ({
   showAddModal,
@@ -34,8 +35,13 @@ const AddNewOfflinePaymentModal = ({
   const [paymentModesDataById, setPaymentModesDataById] = useState();
   const role_code = localStorage.getItem("role_code");
   const [errors, setErrors] = useState({});
+  const itemsPerPage = 4;
   const [paymnetEditId, setPaymnetEditId] = useState(null);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(intialpage);
+  const page = currentPage;
+  const pageSize = itemsPerPage;
   const currencyOptions = countries?.map((item) => ({
     value: item?.id,
     label: item?.currency_name,
@@ -60,12 +66,16 @@ const AddNewOfflinePaymentModal = ({
   const getOffPaymnetDetailsById = () => {
     getManagementOfflinePaymentModeById(editId)
       .then((response) => {
-        setPaymnetEditId(response?.id);
-        setName(response?.name || "");
-        setSelectedCurrency(response?.currency);
-        setSelectedType(response?.avil_modes);
-        setImage(response?.image || "");
-        setImgName(response?.image || "");
+        if (response?.status === true) {
+          setPaymnetEditId(response?.data?.id);
+          setName(response?.data?.name || "");
+          setSelectedCurrency(response?.data?.currency);
+          setSelectedType(response?.data?.avil_modes);
+          setImage(response?.data?.image || "");
+          setImgName(response?.data?.image || "");
+        } else {
+          setErrorMsg("Payment mode not found.");
+        }
       })
       .catch((error) => {
         setErrorMsg(error?.message);
@@ -73,7 +83,7 @@ const AddNewOfflinePaymentModal = ({
         setErrorPopupOpen(true);
         setTimeout(() => {
           setErrorPopupOpen(false);
-        }, [2000]);
+        }, 2000);
       });
   };
 
@@ -81,7 +91,7 @@ const AddNewOfflinePaymentModal = ({
     if (editId && isEdit && role_code === "management") {
       getOffPaymnetDetailsById();
     }
-  }, [editId]);
+  }, [editId && isEdit]);
 
   const validateForm = () => {
     let newErrors = {};
@@ -124,18 +134,18 @@ const AddNewOfflinePaymentModal = ({
       if (response.status === true) {
         console.log("resposne successs", response);
         setMsg(response?.message);
-        setShowAddModal(false);
-        setSuccessPopupOpen(true);
-        setTimeout(() => {
-          setSuccessPopupOpen(false);
-        }, [2000]);
-        getAllManPaymentModes();
         setImage(null);
         setImgName(null);
         setSelectedType(null);
         setSelectedCurrency(null);
         setName("");
         setErrors({});
+        setShowAddModal(false);
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 2000);
+        getAllManPaymentModes(page, pageSize);
       } else {
         console.log("error");
       }
@@ -146,7 +156,7 @@ const AddNewOfflinePaymentModal = ({
       setTimeout(() => {
         setErrorPopupOpen(false);
       }, [2000]);
-      getAllManPaymentModes();
+      getAllManPaymentModes(page, pageSize);
       setImage(null);
       setImgName(null);
       setSelectedType(null);

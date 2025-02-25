@@ -101,6 +101,7 @@ import OfflinePaymentModes from "./pages/offline-payments/OfflinePaymentModes";
 import AddNePaymentGateway from "./pages/add-team/AddNePaymentGateway";
 import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin";
 import EditNewDirector from "./pages/EditNewDirector";
+import { CountriesProvider } from "./context/CountriesContext";
 import PageNotFound from "./pages/notFound/PageNotFound";
 import PrivateRoute from "./pages/routes/PrivateRoutes";
 
@@ -115,20 +116,21 @@ function App() {
     location.pathname === "/director/employee/login";
 
   return (
-    <div>
-      {showLoginPage || !isLoggedIn ? (
-        <Routes>
-          <Route path="/" element={<Navigate to="/master/login" />} />
-          <Route path="/master/login" element={<Login />} />
-          <Route path="/director/login" element={<Login />} />
-          <Route path="*" element={<PageNotFound />} />{" "}
-        </Routes>
-      ) : (
-        <div>
-          {isLoggedIn && <Header />}
-          <div className="home">
-            <Routes>
-              <Route element={<PrivateRoute />}>
+    <CountriesProvider>
+      <div>
+        {showLoginPage || !isLoggedIn ? (
+          <Routes>
+            <Route path="/" element={<Navigate to="/master/login" />} />
+            <Route path="/master/login" element={<Login />} />
+            <Route path="/director/login" element={<Login />} />
+            <Route path="*" element={<PageNotFound />} />{" "}
+          </Routes>
+        ) : (
+          <div>
+            {isLoggedIn && <Header />}
+            <div className="home">
+              <Routes>
+                {/* <Route element={<PrivateRoute />}> */}
                 <Route path="/" element={<Homepage />} />
                 <Route
                   path="/dashboard-view-all"
@@ -337,12 +339,12 @@ function App() {
                   path="/addnew-payments"
                   element={<AddNePaymentGateway />}
                 />
-              </Route>
-            </Routes>
+              </Routes>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </CountriesProvider>
   );
 }
 

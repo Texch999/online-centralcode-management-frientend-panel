@@ -54,4 +54,5 @@ export const Images = {
   nodatafound: "/assets/nodatafound.png",
   ErrorImage:"/assets/404Errorr.webp",
   defaultProfileImage: "/assets/defaultProfileImage.jpg",
+  emptyNotifications: "/assets/EmptyNotifications.svg",
 };

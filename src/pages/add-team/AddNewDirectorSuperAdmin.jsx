@@ -15,6 +15,7 @@ import {
   getCurrencies,
   getDirectorAccessWebites,
   getDirectorDetailsById,
+  getOwnerCurrencies,
 } from "../../api/apiMethods";
 import { adminRoles, commissionTypes } from "../../utils/enum";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -75,7 +76,7 @@ function AddNewDirectorSuperAdmin() {
   };
 
   const GetAllCurrencies = () => {
-    getCurrencies()
+    getOwnerCurrencies()
       .then((response) => {
         if (response?.status === true) {
           setCurrencyData(response?.data);
@@ -175,17 +176,112 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   // e?.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+  //   if (!validateForm()) {
+  //     return;
+  //   }
+
+  //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+  //     alert("Please select at least one Admin Website.");
+  //     return;
+  //   }
+  //   console.log(selectedWebsites, "selectedWebsites");
+  //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+  //     alert("Please select at least one User Website.");
+  //     return;
+  //   }
+
+  //   const selectedUserWebsites = forms.flatMap((form) => {
+  //     return userWebsitesList[form.id]?.map((userSite) => {
+  //       if (!selectedWebsites[form.id]?.[userSite.id]) return null;
+
+  //       const accotypeid = accountTypes[form.id]?.[userSite.id];
+  //       let websiteData = {
+  //         admin_panel_id: selectedAdmins[form.id]?.value,
+  //         user_paner_id: userSite.id,
+  //         commission_type: accotypeid,
+  //       };
+
+  //       if (accotypeid === "2") {
+  //         websiteData.share = parseFloat(
+  //           websiteDetails[userSite.id]?.share || 0
+  //         );
+  //         websiteData.caschip_values = parseFloat(
+  //           websiteDetails[userSite.id]?.caschip_values || 0
+  //         );
+  //         websiteData.downline_comm = parseFloat(
+  //           websiteDetails[userSite.id]?.downline_comm || 0
+  //         );
+  //       }
+
+  //       if (accotypeid === "1") {
+  //         websiteData.rent_start_date =
+  //           websiteDetails[userSite.id]?.rent_start_date || "";
+  //         websiteData.monthly_amount = parseInt(
+  //           websiteDetails[userSite.id]?.monthly_amount || 0
+  //         );
+  //         websiteData.chip_percentage = parseFloat(
+  //           websiteDetails[userSite.id]?.chip_percentage || 0
+  //         );
+  //         websiteData.max_chips_monthly = parseInt(
+  //           websiteDetails[userSite.id]?.max_chips_monthly || 0
+  //         );
+  //         websiteData.extra_chips_percentage = parseFloat(
+  //           websiteDetails[userSite.id]?.extra_chips_percentage || 0
+  //         );
+  //         websiteData.share = parseFloat(
+  //           websiteDetails[userSite.id]?.share || 0
+  //         );
+  //       }
+
+  //       return websiteData;
+  //     });
+  //   });
+  //   console.log(selectedUserWebsites, "selectedUserWebsites");
+  //   const validUserWebsites = selectedUserWebsites.filter(Boolean);
+
+  //   if (validUserWebsites.length === 0) {
+  //     alert("Please select at least one User Website.");
+  //     return;
+  //   }
+
+  //   const finalData = {
+  //     type: selectedRole,
+  //     name,
+  //     login_name: loginName,
+  //     password,
+  //     confirm_password: confirmPassword,
+  //     parent_password: managementPassword,
+  //     country_id: selectedCountryCode,
+  //     currency_id: selectedCurrencyCode,
+  //     accessWebsites: validUserWebsites,
+  //   };
+
+  //   createDirector(finalData)
+  //     .then((response) => {
+  //       if (response.status === true) {
+  //         setSuccessPopupOpen(true);
+  //         setTimeout(() => {
+  //           navigate("/director-admin");
+  //         }, 2000);
+  //       } else {
+  //         console.log("Something went wrong");
+  //       }
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+  const handleSubmit = (e) => {
+    e?.stopPropagation(); // Prevents event bubbling
+
+    if (!validateForm()) return;
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
       alert("Please select at least one Admin Website.");
       return;
     }
+
     console.log(selectedWebsites, "selectedWebsites");
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
       alert("Please select at least one User Website.");
@@ -238,6 +334,7 @@ function AddNewDirectorSuperAdmin() {
         return websiteData;
       });
     });
+
     console.log(selectedUserWebsites, "selectedUserWebsites");
     const validUserWebsites = selectedUserWebsites.filter(Boolean);
 
@@ -289,6 +386,7 @@ function AddNewDirectorSuperAdmin() {
       alert("Please select at least one User Website.");
       return;
     }
+
 
     const selectedUserWebsites = forms.flatMap((form) => {
       return userWebsitesList[form.id]?.map((userSite) => {
@@ -432,17 +530,17 @@ function AddNewDirectorSuperAdmin() {
 
   // const handleFormSubmit = (e) => {
   //   e.preventDefault();
-    
+
   //   if (!selectedRole) {
   //     alert("Please select a role");
   //     return;
   //   }
-  
+
   //   if (selectedRole === "management") {
   //     handleSubmit(e);
   //     return;  // Prevent further execution
   //   }
-  
+
   //   if (selectedRole === "director") {
   //     handleDirectorSubmit(e);
   //     return;
@@ -456,16 +554,15 @@ function AddNewDirectorSuperAdmin() {
   }, []);
   useEffect(() => {
     if (!role) return; // Prevents running if role is undefined
-    
+
     console.log("🚀 Role changed to:", role);
-    
+
     if (role === "management") {
       handleSubmit(); // Correctly call API
     } else if (role === "director") {
       handleDirectorSubmit(); // Correctly call API
     }
   }, [role]); // Runs whenever `role` changes
-    
 
   return (
     <>
@@ -646,18 +743,18 @@ function AddNewDirectorSuperAdmin() {
       <div>
         <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET </h3>
         <form
-        className="custom-form small-font p-3"
-        onSubmit={(e) => {
-          e.preventDefault(); // Prevents double submissions
-      
-          if (role === "management") {
-            handleSubmit(e);
-          } else if (role === "director") {
-            handleDirectorSubmit(e);
-          }
-        }}
+          className="custom-form small-font p-3"
+          // onSubmit={(e) => {
+          //   e.preventDefault(); // Prevents double submissions
+
+          //   if (role === "management") {
+          //     handleSubmit(e);
+          //   } else if (role === "director") {
+          //     handleDirectorSubmit(e);
+          //   }
+          // }}
           // className="custom-form small-font p-3"
-          // onSubmit={role === "management" ? handleSubmit : handleDirectorSubmit}
+          onSubmit={role === "management" ? handleSubmit : handleDirectorSubmit}
           // onSubmit={handleFormSubmit}
         >
           {/* <form className="custom-form small-font p-3" onSubmit={handleSubmit}> */}

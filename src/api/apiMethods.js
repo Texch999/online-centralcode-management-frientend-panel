@@ -332,16 +332,109 @@ const updateManagementOfflinePaymentDetails = (id, data) => {
 const managementPaymentDetails = (data) => {
   return apiRequest("managementPaymentDetails", data);
 };
+
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
+
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
+
 const getDirectorSites = (data) => {
   return apiRequest("getDirectorSites", data);
 };
+const managementDwnProfileDirPaymentDetails = (id, data) => {
+  return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+};
+const UpdateProfileDirpaymentDetailsByMan = (id, data) => {
+  return apiRequest("UpdateProfileDirpaymentDetailsByMan", data, id);
+};
+const getDirPayDetailsByIdProfile = (id, data) => {
+  return apiRequest("getDirPayDetailsByIdProfile", data, id);
+};
+const DirectorAvailablePaymentsModes = (data) => {
+  return apiRequest("DirectorAvailablePaymentsModes", data);
+};
+
+const getNotificationsforManagement = (data) => {
+  return apiRequest("getNotificationsforManagement", data);
+};
+const getNotificationsforDirector = (data) => {
+  return apiRequest("getNotificationsforDirector", data);
+}
+const readNotificationsforManagement = (id, status) => {
+  return apiRequest("readNotificationsforManagement",id,{id,status});
+};
+
+const readNotificationsforDirector = (id, status) => {
+  return apiRequest("readNotificationsforDirector",id,{id,status});
+};
+const DirectorOffilneDepositTicket = (data) => {
+  return apiRequest("DirectorOffilneDepositTicket", data);
+};
+
+const getDirectorDepositeTicketsList = (params) => {
+  return apiRequest("getDirectorDepositeTicketsList", {}, params);
+};
+
+const getOwnerDownlineDepositeTicketsList = (params) => {
+  return apiRequest("getOwnerDownlineDepositeTicketsList", {}, params);
+};
+
+const depositTikcetDetailsById = (id, data) => {
+  return apiRequest("depositTikcetDetailsById", data, id);
+};
+
+const managementDepositTikcetDetailsById = (id, data) => {
+  return apiRequest("managementDepositTikcetDetailsById", data, id);
+};
+
+const DeleteDirectorTicketsById = (id, data) => {
+  return apiRequest("DeleteDirectorTicketsById", data, id);
+};
+
+const ownerTicketApprove = (id, data) => {
+  return apiRequest("ownerTicketApprove", data, id);
+};
+
+const ownerTicketRejection = (id, data) => {
+  return apiRequest("ownerTicketRejection", data, id);
+};
+
+const DirectorWithdrawPaymentDetails = (id, data) => {
+  return apiRequest("DirectorWithdrawPaymentDetails", data, id);
+};
+
+const DirectorWithdrawTicketCreation = (data) => {
+  return apiRequest("DirectorWithdrawTicketCreation", data);
+};
+
+const ownerWithdrawTicketRejection = (id, data) => {
+  return apiRequest("ownerWithdrawTicketRejection", data, id);
+};
+
+const ownerWithdrawTicketApprove = (id, data) => {
+  return apiRequest("ownerWithdrawTicketApprove", data, id);
+};
+
+const getOwnerCurrencies = (data) => {
+  return apiRequest("getOwnerCurrencies", data);
+};
+
+const ownerDowlineDirAndSADetails = (data) => {
+  return apiRequest("ownerDowlineDirAndSADetails", data);
+};
+
+const ManagementOfflineDepositeTicketCreation = (id, data) => {
+  return apiRequest("ManagementOfflineDepositeTicketCreation", data, id);
+};
+
+
 export {
+  managementDwnProfileDirPaymentDetails,
+  UpdateProfileDirpaymentDetailsByMan,
+  getDirPayDetailsByIdProfile,
   loginManagement,
   createSecurityQuestions,
   getAllSecurityQuestions,
@@ -427,4 +520,24 @@ export {
   getSuperAdminDetailsById,
   resetSuperAdminPassword,
   updateSuperAdminByID,
+  DirectorAvailablePaymentsModes,
+  getNotificationsforManagement,
+  getNotificationsforDirector,
+  DirectorOffilneDepositTicket,
+  getDirectorDepositeTicketsList,
+  getOwnerDownlineDepositeTicketsList,
+  depositTikcetDetailsById,
+  managementDepositTikcetDetailsById,
+  DeleteDirectorTicketsById,
+  readNotificationsforDirector,
+  readNotificationsforManagement,
+  ownerTicketApprove,
+  ownerTicketRejection,
+  DirectorWithdrawPaymentDetails,
+  DirectorWithdrawTicketCreation,
+  ownerWithdrawTicketRejection,
+  ownerWithdrawTicketApprove,
+  getOwnerCurrencies,
+  ownerDowlineDirAndSADetails,
+  ManagementOfflineDepositeTicketCreation,
 };

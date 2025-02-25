@@ -20,13 +20,16 @@ import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import ActiveInActiveModal from "../popups/ActiveInActiveModal";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
+import { useCountries } from "../../context/CountriesContext";
 
 const PrivacyPolicy = () => {
+  const { countries, refreshCountries } = useCountries();
+  console.log(countries, "ggggg");
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [privacyList, setPrivacyList] = useState([]);
   const [error, setError] = useState("");
-  const [countries, setCountries] = useState([]);
+  // const [countries, setCountries] = useState([]);
   const [showPrivacyText, setShowPrivacyText] = useState("");
   const [privacyPolicyId, setPrivacyPolicyId] = useState(null);
   const [websites, setWebsites] = useState([]);
@@ -47,11 +50,8 @@ const PrivacyPolicy = () => {
   const intialpage = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(intialpage);
   const [totalRecords, setTotalRecords] = useState(null);
-
   const role_code = localStorage.getItem("role_code");
-
   const itemsPerPage = 4;
-  const currentOffset = (currentPage - 1) * itemsPerPage;
   const page = intialpage;
   const pageSize = itemsPerPage;
 
@@ -64,14 +64,13 @@ const PrivacyPolicy = () => {
     getAllWebsites();
   };
 
-  const totalFetchs = 4;
-  const currentOffst = (currentPage - 1) * totalFetchs;
-  const pages = currentOffst;
-  const pagsizes = totalFetchs;
+  // const totalFetchs = 4;
+  // const currentOffst = (currentPage - 1) * totalFetchs;
+  // const pages = currentOffst;
+  // const pagsizes = totalFetchs;
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    getPolicyPrivacyData();
+  const handlePageChange = () => {
+    getPolicyPrivacyData(intialpage, pageSize);
   };
 
   const handleStatus = (id, status) => {
@@ -80,10 +79,13 @@ const PrivacyPolicy = () => {
     setStatusId(status);
   };
 
-  const countryOptions = countries.map((item) => ({
-    value: item?.id,
-    label: item?.name,
-  }));
+  const countryOptions = [
+    { value: 0, label: "All" },
+    ...countries.map((item) => ({
+      value: item?.id,
+      label: item?.name,
+    })),
+  ];
 
   const websiteOptions = websites.map((item) => ({
     value: item?.id,
@@ -95,34 +97,42 @@ const PrivacyPolicy = () => {
     setAvailablePrivacyWebsiteId(id);
   };
 
-  const getAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
-        setCountries(updatedCountries);
-        setCountriesData(response?.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
+  // const getAllCountries = () => {
+  //   getCountries()
+  //     .then((response) => {
+  //       const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
+  //       setCountries(updatedCountries);
+  //       setCountriesData(response?.data);
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
 
   const getAllWebsites = () => {
     if (websites.length > 0) return;
     getWebsites()
       .then((response) => {
-        setWebsites(response.data);
+        if (response?.status === true) {
+          setWebsites(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
       })
       .catch((error) => {
         setError(error?.message);
       });
   };
 
-  const getPolicyPrivacyData = () => {
+  const getPolicyPrivacyData = (page, pageSize) => {
     setLoading(true);
     getPrivacyPolicy({ page, pageSize })
       .then((response) => {
-        setPrivacyList(response.data);
+        if (response?.status === true) {
+          setPrivacyList(response.data);
+        } else {
+          setError("Something Went Wrong");
+        }
       })
       .catch((error) => {
         setError(error?.message);
@@ -136,8 +146,8 @@ const PrivacyPolicy = () => {
     if (role_code === "management") {
       if (dataFetched.current) return;
       dataFetched.current = true;
-      getPolicyPrivacyData();
-      getAllCountries();
+      getPolicyPrivacyData(page, pageSize);
+      // getAllCountries();
     }
   }, []);
 

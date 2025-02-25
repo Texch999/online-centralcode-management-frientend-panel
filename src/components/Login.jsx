@@ -27,6 +27,19 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  // useEffect(() => {  if (loginData) {
+  //   // Only run this logic if loginData is set
+  //   if (loginData?.status === true) {
+  //     localStorage.setItem("jwt_token", loginData?.token);
+  //     localStorage.setItem("isLoggedIn", true);
+  //     localStorage.setItem("emp_role_id", loginData?.user?.role?.role_id);
+  //     localStorage.setItem("role_name", loginData?.user?.role?.role_name);
+  //     localStorage.setItem("role_code", loginData?.user?.role?.role_name);
+  //     localStorage.setItem("user_id", loginData?.user?.id);
+  //     localStorage.setItem("user_name", loginData?.user?.name);
+  //     navigate("/");  // Navigate to the home page or dashboard
+  //   }
+  // }},[])
 
   // useEffect(() => {
   //   const checkToken = async () => {
@@ -96,9 +109,8 @@ function Login() {
       setError(error?.message || "Login failed");
     }
 
-    setTimeout(() => setError(""), 2000);
+    setTimeout(() => setError(""), 2000); // Clear the error after a short delay
   };
-
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };

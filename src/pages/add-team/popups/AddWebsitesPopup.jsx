@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
@@ -7,8 +6,11 @@ import { customStyles } from "../../../components/ReactSelectStyles";
 import { createWebsite, getWebsiteDetails, updateWebsite } from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
+import { useSearchParams } from "react-router-dom";
 
-const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMode, websiteId, setEditMode, setWebsiteId }) => {
+const AddWebsitesPopup = ({ show, onHide,
+  countries, getWebsitesCallback, editMode,
+  websiteId, setEditMode, setWebsiteId }) => {
   const [formData, setFormData] = useState({
     deployType: null,
     panelType: null,
@@ -19,12 +21,28 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     websiteURL: "",
     ref_type: null
   });
-  const userId = localStorage.getItem("user_id")
-  const [errors, setErrors] = useState({});
+  const isInitialRendering = useRef(true)
+  const itemsPerPage = 9
+  const userId = localStorage.getItem("user_id");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [errors, setErrors] = useState({
+    deployType: "",
+    panelType: "",
+    location: "",
+    city: "",
+    websiteName: "",
+    websiteURL: "",
+    ref_type: "",
+    websiteNameExists: "",
+    websiteURLExists: "",
+  });
   const [apiError, setApiError] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
-  const [displayMsg, setDisplayeMsg] = useState("")
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [displayMsg, setDisplayeMsg] = useState("");
+
   const PanelOptions = [
     { value: 1, label: "Admin Panel" },
     { value: 2, label: "User Panel" },
@@ -37,7 +55,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     { value: 1, label: "Company" },
     { value: 2, label: "White Label" },
   ];
-  const [status, setStatus] = useState(null)
+  const [status, setStatus] = useState(null);
   const formattedCountries = countries?.map((country) => ({
     value: country.id,
     label: country.name
@@ -48,17 +66,25 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear backend errors when the user starts typing
+    if (e.target.name === "websiteName") {
+      setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "" }));
+    } else if (e.target.name === "websiteURL") {
+      setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "" }));
+    }
   };
 
-  // Handle Select Change
   const handleSelectChange = (field, selectedOption) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: selectedOption,
     }));
   };
-
   useEffect(() => {
+    if (isInitialRendering.current) {
+      isInitialRendering.current = false
+      return
+    }
     if (editMode && websiteId) {
       getWebsiteDetails(websiteId)
         .then((response) => {
@@ -74,7 +100,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
               created_by: data?.created_by || null,
               ref_type: refTypesOptions.find((opt) => opt.value === data?.ref_type) || null,
             });
-            setStatus(data?.status)
+            setStatus(data?.status);
             setApiError("");
           } else {
             setApiError("Something Went Wrong");
@@ -97,7 +123,6 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     }
   }, [editMode, websiteId]);
 
-  // Manual Validation Function
   const validateForm = () => {
     const newErrors = {};
 
@@ -112,6 +137,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     if (!formData.location) {
       newErrors.location = "Location is required.";
     }
+
     if (!formData.ref_type) {
       newErrors.ref_type = "Reference Type is required.";
     }
@@ -155,18 +181,31 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
       websiteURL: "",
       ref_type: null
     });
+    setErrors({
+      deployType: "",
+      panelType: "",
+      location: "",
+      city: "",
+      websiteName: "",
+      websiteURL: "",
+      ref_type: "",
+      websiteNameExists: "",
+      websiteURLExists: "",
+    });
+    setApiError("");
   };
 
   const handleClose = () => {
     resetData();
     onHide();
-    setWebsiteId(null)
+    setWebsiteId(null);
     setErrors({});
   };
 
   const handleSubmit = () => {
-    console.log(formData.ref_type, "====>formData.ref_type?.value")
-    setApiError("")
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    setApiError(""); // Clear previous API errors
     if (validateForm()) {
       const finalData = editMode ? {
         deploy_type: formData?.deployType?.value,
@@ -179,7 +218,6 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         status: status,
         created_by: formData.created_by,
         ref_type: formData.ref_type?.value
-
       } : {
         deploy_type: formData?.deployType?.value,
         panel_type: formData?.panelType?.value,
@@ -190,22 +228,22 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         city: formData?.city,
         created_by: userId,
         ref_type: formData.ref_type?.value
-      }
-      console.log(finalData, "=====>finalData")
-      const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData)
+      };
+
+      const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData);
       apiCall
         .then((response) => {
           if (response?.status === true) {
-            getWebsitesCallback()
+            getWebsitesCallback(limit, offset);
             setErrors({});
-            setDisplayeMsg(response?.message)
-            setApiError("")
-            setEditMode(false)
+            setDisplayeMsg(response?.message);
+            setApiError("");
+            setEditMode(false);
             onHide();
             setSuccessPopupOpen(true);
             setTimeout(() => {
-              resetData()
-              setWebsiteId(null)
+              resetData();
+              setWebsiteId(null);
               setSuccessPopupOpen(false);
             }, 2000);
           } else {
@@ -213,12 +251,18 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
           }
         })
         .catch((error) => {
-          setApiError(error?.message || "API request failed");
-          setErrorPopupOpen(true)
-          setDisplayeMsg(error?.message)
-          setTimeout(() => {
-            setErrorPopupOpen(false)
-          }, 2000);
+          const errorMessage = error?.message
+          // Handle backend validation errors
+          if (errorMessage.includes("Website name already exists.")) {
+            setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "Please Try another Webiste Name" }));
+          } else if (errorMessage.includes("Website Url already exists")) {
+            setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "Please Try another Webiste URL" }));
+          }
+          else if (errorMessage.includes("API Error, please try again.")) {
+            setApiError("Please Try Again ");
+          } else {
+            setApiError("Please Try Again ");
+          }
 
         });
     }
@@ -228,13 +272,18 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
     <div>
       <Modal centered show={show} onHide={handleClose} size="md">
         <Modal.Body>
-          {/* Header Section */}
+          {/* API Error Display */}
+          {apiError && (
+            <div className="alert alert-danger small-font mb-3">
+              {apiError}
+            </div>
+          )}
+
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">Add Website</h5>
             <MdOutlineClose size={22} onClick={handleClose} className="pointer" />
           </div>
 
-          {/* Form Section */}
           <div className="row mb-3">
             {/* Deploy Type Dropdown */}
             <div className="col-4">
@@ -264,7 +313,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
               {errors.panelType && <p className="text-danger small-font">{errors.panelType}</p>}
             </div>
 
-            {/* Location Dropdown */}
+            {/* Reference Type Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Reference Type</label>
               <Select
@@ -275,9 +324,10 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
                 value={formData.ref_type}
                 onChange={(option) => handleSelectChange("ref_type", option)}
               />
-
-              {errors.refTypes && <p className="text-danger small-font">{errors.refTypes}</p>}
+              {errors.ref_type && <p className="text-danger small-font">{errors.ref_type}</p>}
             </div>
+
+            {/* Location Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Location</label>
               <Select
@@ -288,9 +338,10 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
                 value={formData.location}
                 onChange={(option) => handleSelectChange("location", option)}
               />
-
               {errors.location && <p className="text-danger small-font">{errors.location}</p>}
             </div>
+
+            {/* City Input */}
             <div className="col-4">
               <label className="small-font mb-1">City</label>
               <input
@@ -304,6 +355,7 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
               {errors.city && <p className="text-danger small-font">{errors.city}</p>}
             </div>
 
+            {/* Website Name Input */}
             <div className="col-4">
               <label className="small-font mb-1">Website Name</label>
               <input
@@ -315,7 +367,10 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
                 onChange={handleChange}
               />
               {errors.websiteName && <p className="text-danger small-font">{errors.websiteName}</p>}
+              {errors.websiteNameExists && <p className="text-danger small-font">{errors.websiteNameExists}</p>}
             </div>
+
+            {/* Website URL Input */}
             <div className="col-4">
               <label className="small-font mb-1">Website URL</label>
               <input
@@ -327,12 +382,11 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
                 onChange={handleChange}
               />
               {errors.websiteURL && <p className="text-danger small-font">{errors.websiteURL}</p>}
+              {errors.websiteURLExists && <p className="text-danger small-font">{errors.websiteURLExists}</p>}
             </div>
           </div>
 
-          {/* Text Inputs */}
-          {/* <div className="row">
-          </div> */}
+          {/* Submit Button */}
           <div className="mt-3 d-flex flex-row w-100 justify-content-end">
             <button className="saffron-btn small-font rounded col-4" onClick={handleSubmit}>
               Submit
@@ -340,6 +394,8 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
           </div>
         </Modal.Body>
       </Modal>
+
+      {/* Success and Error Popups */}
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
@@ -351,7 +407,6 @@ const AddWebsitesPopup = ({ show, onHide, countries, getWebsitesCallback, editMo
         discription={displayMsg}
       />
     </div>
-
   );
 };
 

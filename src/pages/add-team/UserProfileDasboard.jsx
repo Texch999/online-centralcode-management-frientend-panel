@@ -611,7 +611,7 @@ const UserProfileDashboard = () => {
       {/* Conditional Rendering of Components */}
       <div className="table-parent-container mt-2">
         {activeTab === "websitesLimit" && <DefaultBottomShow />}
-        {activeTab === "paymentGateway" && <PaymentGateway />}
+        {activeTab === "paymentGateway" && <PaymentGateway  dwnlnId={id}/>}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
       </div>

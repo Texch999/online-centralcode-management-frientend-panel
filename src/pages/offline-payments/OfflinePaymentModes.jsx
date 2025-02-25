@@ -43,6 +43,8 @@ const OfflinePaymentModes = () => {
   const [errorPopup, setErrorPopup] = useState(false);
   const status_id = statusId === 1 ? 2 : 1;
 
+
+  
   const hanldeAddModal = () => {
     setShowAddModal(true);
     setIsEdit(false);
@@ -145,7 +147,7 @@ const OfflinePaymentModes = () => {
     );
   });
 
-  const suspendStatus = () => {
+  const suspendStatus = (currentLimit, currentOffset) => {
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         console.log(response);
@@ -163,7 +165,7 @@ const OfflinePaymentModes = () => {
         setErrorPopup(true);
         setTimeout(() => {
           setErrorPopup(false);
-        });
+        }, 2000);
       });
   };
 
