@@ -204,7 +204,7 @@ const AddWebsitesPopup = ({ show, onHide,
 
   const handleSubmit = () => {
     const limit = itemsPerPage;
-    const offset = (currentPage - 1) * itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     setApiError(""); // Clear previous API errors
     if (validateForm()) {
       const finalData = editMode ? {

@@ -84,7 +84,7 @@ const AddWibsites = () => {
     }
     if (filterName.trim() === "") {
       const limit = itemsPerPage;
-      const offset = (currentPage - 1) * itemsPerPage;
+      const offset = (page - 1) * itemsPerPage;
       if (role === "management") {
         getAllWebsiteList(limit, offset);
       } else {
@@ -122,8 +122,8 @@ const AddWibsites = () => {
     admin: (
       <div>
         {" "}
-        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${website?.panel_type === 1 ? "Admin" : "User"
-          } )`}
+        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
+          } `}
       </div>
     ),
     websiteName: website?.web_name,
@@ -190,18 +190,20 @@ const AddWibsites = () => {
     }))
   );
   const handleFiltration = async (e) => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     if (e.key === "Enter") {
       if (role === "management") {
         setError(null);
-        getAllWebsiteList();
+        getAllWebsiteList(limit, offset);
       } else {
-        getAllDirectorWebsiteList();
+        getAllDirectorWebsiteList(limit, offset);
       }
     }
   };
   const handleBlockAndUnblock = () => {
     const limit = itemsPerPage;
-    const offset = (currentPage - 1) * itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     blockAndUnblock(websiteId)
       .then((response) => {
         if (response?.status === true) {
@@ -226,7 +228,10 @@ const AddWibsites = () => {
         }, 2000);
       });
   };
-  const getWebsitesCallback = (limit, offset) => {
+  const getWebsitesCallback = () => {
+
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     getAllWebsiteList(limit, offset)
   }
   return (
