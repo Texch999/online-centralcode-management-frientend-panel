@@ -45,7 +45,7 @@ function OfflineDepositWithdraw() {
   // Fetch owner downline director and super admin details
   const fetchOwnerDownlineDirectorAndSuperAdminDetails = async (limit, offset) => {
     try {
-      const response = await ownerDowlineDirAndSADetails(limit, offset);
+      const response = await ownerDowlineDirAndSADetails({ limit, offset });
       if (response?.list?.length > 0) {
         setDirAndSADetails(response.list);
         setTotalRecords(response.count)
@@ -580,8 +580,6 @@ function OfflineDepositWithdraw() {
       ),
     };
   });
-
-
 
   const handlePageChange = ({ limit, offset }) => {
     fetchOwnerDownlineDirectorAndSuperAdminDetails(limit, offset);

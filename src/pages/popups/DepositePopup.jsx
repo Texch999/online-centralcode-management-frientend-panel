@@ -485,7 +485,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                     {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Chips Amount - {directorCurrency?.currencyName}</label>
+                                    <label className="small-font mb-1">Chips Amount - {selectedWebDetails?.rentPercentage}%/{directorCurrency?.currencyName}</label>
                                     <input
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
@@ -513,7 +513,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                     />
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.extChipPercent}%) </label>
+                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.extChipPercent}%/{directorCurrency?.currencyName}) </label>
                                     <input
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
