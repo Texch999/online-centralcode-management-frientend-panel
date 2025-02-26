@@ -86,7 +86,7 @@ function OfflineDepositWithdraw() {
   // Admin site dropdown component
   const AdminSiteDropdown = ({ options, onChange, value }) => (
     <Select
-      className="small-font white-bg input-border rounded text-capitalize"
+      className="small-font white-bg input-border rounded text-capitalize text-nowrap"
       placeholder="Select Admin Website"
       styles={customStyles}
       menuPortalTarget={document.body}
@@ -101,7 +101,7 @@ function OfflineDepositWithdraw() {
   // User site dropdown component
   const UserSiteDropdown = ({ options, onChange, value }) => (
     <Select
-      className="small-font white-bg input-border rounded text-capitalize"
+      className="small-font white-bg input-border rounded text-capitalize text-nowrap"
       placeholder="Select User Website"
       styles={customStyles}
       menuPortalTarget={document.body}
@@ -176,7 +176,6 @@ function OfflineDepositWithdraw() {
 
   // Toggle child row visibility
   const toggleChildRow = (index, action) => {
-    console.log(action, "======>DEPOSIT")
     setDirAndSADetails((prevData) =>
       prevData.map((row, i) => ({
         ...row,
@@ -404,148 +403,143 @@ function OfflineDepositWithdraw() {
                 </div>
               </div>
               <div className="d-flex flex-column mt-2">
-                <div className="d-flex align-items-center mb-2 col-12">
-                  <div className="row w-100">
-                    <div className="col-sm-3">
-                      <label>Enter Chips INR</label>
+                <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
+                  <div className="flex-grow-1 w-100">
+                    <label>Enter Chips in INR </label>
+                    <input
+                      type="text"
+                      name="inrChips"
+                      className="small-font input-css all-none rounded white-bg input-border w-100"
+                      placeholder="Enter Chips"
+                      onChange={handleInputChange}
+                      value={inputData.inrChips}
+                    />
+                    {errors.inrChips && <p className="text-danger small-font">{errors.inrChips}</p>}
+                  </div>
+                  <div className="flex-grow-1 w-100">
+                    <label>
+                      Paid Amt In INR -{" "}
+                      {row.selectedUserDetails?.commission_type === 1
+                        ? row.selectedUserDetails?.chip_percentage
+                        : row.selectedUserDetails?.share}
+                      %:
+                    </label>
+                    <input
+                      type="text"
+                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                      placeholder="Enter Chips"
+                      value={inputData.inrChips ? calculatePaidAmount(
+                        Number(inputData.inrChips),
+                        row.selectedUserDetails?.commission_type === 1
+                          ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage
+                          : row.selectedUserDetails?.share
+                      ).toFixed(2) : 0}
+                      readOnly
+                    />
+                  </div>
+                  <div className="flex-grow-1 w-100">
+                    <label>Chips In {getCurrency(row?.currency_id)}</label>
+                    <input
+                      type="text"
+                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                      placeholder="Enter Chips"
+                      value={inputData.inrChips ? currencyConvert(
+                        Number(inputData.inrChips),
+                        getCurrencyRate(107),
+                        getCurrencyRate(row?.currency_id)
+                      ).toFixed(4) : 0}
+                      readOnly
+                    />
+                  </div>
+                  <div className="flex-grow-1 w-100">
+                    <label>
+                      Paid Amt {getCurrency(row?.currency_id)} -{" "}
+                      {row.selectedUserDetails?.commission_type === 1
+                        ? row.selectedUserDetails?.chip_percentage
+                        : row.selectedUserDetails?.share}
+                      %
+                    </label>
+                    <input
+                      type="text"
+                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                      placeholder="Enter Chips"
+                      value={inputData.inrChips ? (
+                        currencyConvert(
+                          Number(inputData.inrChips),
+                          getCurrencyRate(107),
+                          getCurrencyRate(row?.currency_id)
+                        ) *
+                        (row.selectedUserDetails?.commission_type === 1
+                          ? row.selectedUserDetails?.chip_percentage / 100
+                          : row.selectedUserDetails?.share / 100)
+                      ).toFixed(4) : 0}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                {row.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW" && (
+                  <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
+                    <div className="flex-grow-1 w-100">
+                      <label className="text-nowrap">Enter Ext Sp Chips</label>
                       <input
                         type="text"
-                        name="inrChips"
-                        className="small-font input-css all-none rounded white-bg input-border"
+                        name="extChips"
+                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
                         placeholder="Enter Chips"
                         onChange={handleInputChange}
-                        value={inputData.inrChips}
+                        value={inputData.extChips}
                       />
-                      {errors.inrChips && <p className="text-danger small-font">{errors.inrChips}</p>}
+                      {errors.extInrChips && <p className="text-danger small-font">{errors.extChips}</p>}
                     </div>
-                    <div className="col-sm-3">
+                    <div className="flex-grow-1 w-100">
                       <label>
-                        Paid Amount In INR -{" "}
-                        {row.selectedUserDetails?.commission_type === 1
-                          ? row.selectedUserDetails?.chip_percentage
-                          : row.selectedUserDetails?.share}
-                        %:
+                        Paid Amt In INR{" "}
+                        {row.selectedUserDetails?.extra_chips_percentage}%
                       </label>
                       <input
                         type="text"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
+                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
                         placeholder="Enter Chips"
-                        value={inputData.inrChips ? calculatePaidAmount(
-                          Number(inputData.inrChips),
-                          row.selectedUserDetails?.commission_type === 1
-                            ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage
-                            : row.selectedUserDetails?.share
+                        value={inputData.extChips ? calculatePaidAmount(
+                          Number(inputData.extChips),
+                          row.selectedUserDetails?.extra_chips_percentage
                         ).toFixed(2) : 0}
                         readOnly
                       />
                     </div>
-                    <div className="col-sm-3">
+                    <div className="flex-grow-1 w-100">
                       <label>Chips In {getCurrency(row?.currency_id)}</label>
                       <input
                         type="text"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
+                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
                         placeholder="Enter Chips"
-                        value={inputData.inrChips ? currencyConvert(
-                          Number(inputData.inrChips),
+                        value={inputData.extChips ? currencyConvert(
+                          Number(inputData.extChips),
                           getCurrencyRate(107),
                           getCurrencyRate(row?.currency_id)
                         ).toFixed(4) : 0}
                         readOnly
                       />
                     </div>
-                    <div className="col-sm-3">
+                    <div className="flex-grow-1 w-100">
                       <label>
-                        Paid Amount {getCurrency(row?.currency_id)} -{" "}
-                        {row.selectedUserDetails?.commission_type === 1
-                          ? row.selectedUserDetails?.chip_percentage
-                          : row.selectedUserDetails?.share}
-                        %
+                        Paid Amt In {getCurrency(row?.currency_id)} -{" "}
+                        {row.selectedUserDetails?.extra_chips_percentage}%
                       </label>
                       <input
                         type="text"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
+                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
                         placeholder="Enter Chips"
-                        value={inputData.inrChips ? (
+                        value={inputData.extChips ? (
                           currencyConvert(
-                            Number(inputData.inrChips),
+                            Number(inputData.extChips),
                             getCurrencyRate(107),
                             getCurrencyRate(row?.currency_id)
                           ) *
-                          (row.selectedUserDetails?.commission_type === 1
-                            ? row.selectedUserDetails?.chip_percentage / 100
-                            : row.selectedUserDetails?.share / 100)
+                          (row.selectedUserDetails?.extra_chips_percentage / 100)
                         ).toFixed(4) : 0}
                         readOnly
                       />
-                    </div>
-                  </div>
-                </div>
-                {row.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW" && (
-                  <div className="d-flex align-items-center mb-2 col-12">
-                    <div className="row w-100">
-                      <div className="col-sm-3">
-                        <label>INR Ext Sp Chips</label>
-                        <input
-                          type="text"
-                          name="extChips"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
-                          placeholder="Enter Chips"
-                          onChange={handleInputChange}
-                          value={inputData.extChips}
-                        />
-
-                        {errors.extInrChips && <p className="text-danger small-font">{errors.extChips}</p>}
-                      </div>
-                      <div className="col-sm-3">
-                        <label>
-                          Paid Amount In INR{" "}
-                          {row.selectedUserDetails?.extra_chips_percentage}%
-                        </label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
-                          placeholder="Enter Chips"
-                          value={inputData.extChips ? calculatePaidAmount(
-                            Number(inputData.extChips),
-                            row.selectedUserDetails?.extra_chips_percentage
-                          ).toFixed(2) : 0}
-                          readOnly
-                        />
-                      </div>
-                      <div className="col-sm-3">
-                        <label>Chips In {getCurrency(row?.currency_id)}</label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
-                          placeholder="Enter Chips"
-                          value={inputData.extChips ? currencyConvert(
-                            Number(inputData.extChips),
-                            getCurrencyRate(107),
-                            getCurrencyRate(row?.currency_id)
-                          ).toFixed(4) : 0}
-                          readOnly
-                        />
-                      </div>
-                      <div className="col-sm-3">
-                        <label>
-                          Paid Amount In {getCurrency(row?.currency_id)} -{" "}
-                          {row.selectedUserDetails?.extra_chips_percentage}%
-                        </label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
-                          placeholder="Enter Chips"
-                          value={inputData.extChips ? (
-                            currencyConvert(
-                              Number(inputData.extChips),
-                              getCurrencyRate(107),
-                              getCurrencyRate(row?.currency_id)
-                            ) *
-                            (row.selectedUserDetails?.extra_chips_percentage / 100)
-                          ).toFixed(4) : 0}
-                          readOnly
-                        />
-                      </div>
                     </div>
                   </div>
                 )}
