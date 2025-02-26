@@ -633,7 +633,19 @@ function EditNewDirector() {
         }))
       )
     : [];
+  // const handleCommissionTypeChange = (userIndex, newValue) => {
+  //   const updatedUserWebsites = [...data.userWebsites];
+  //   updatedUserWebsites[userIndex].commission_type = newValue;
+  //   setData({ ...data, userWebsites: updatedUserWebsites });
+  // };
 
+  // const handleExtraChipsChange = (userIndex, newValue) => {
+  //   const updatedUserWebsites = [...data.userWebsites];
+  //   updatedUserWebsites[userIndex].extra_chips_percentage = newValue;
+  //   setData({ ...data, userWebsites: updatedUserWebsites });
+  // };
+
+  // Similar handlers for other fields...
   return (
     <>
       <div>
@@ -769,7 +781,7 @@ function EditNewDirector() {
                   </div>
                 </div>
 
-                {data.userWebsites?.map((userWebsite, userIndex) => (
+                {/* {data.userWebsites?.map((userWebsite, userIndex) => (
                   <div key={userIndex} className="w-100 mt-3 row">
                     <div className="col-2 d-flex flex-column">
                       <label className="small-font my-1">User Website</label>
@@ -836,6 +848,116 @@ function EditNewDirector() {
                             className="small-font white-bg rounded border-grey3 p-2 w-100"
                             value={userWebsite.caschip_values}
                             readOnly
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))} */}
+                {data.userWebsites?.map((userWebsite, userIndex) => (
+                  <div key={userIndex} className="w-100 mt-3 row">
+                    <div className="col-2 d-flex flex-column">
+                      <label className="small-font my-1">User Website</label>
+                      <select
+                        className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
+                        disabled
+                      >
+                        <option value={userWebsite.web_name}>
+                          {userWebsite.web_name}
+                        </option>
+                      </select>
+                    </div>
+                    <div className="col-2">
+                      <label className="small-font my-1">Commission Type</label>
+                      <div className="d-flex align-items-center">
+                        <select
+                          className="small-font white-bg rounded border-grey3 p-2 w-100"
+                          value={userWebsite.commission_type}
+                          onChange={(e) => {
+                            const updatedUserWebsites = [...data.userWebsites];
+                            updatedUserWebsites[userIndex].commission_type =
+                              e.target.value;
+                            // Update the state with the new commission type
+                            // You may need to update the state at a higher level depending on your structure
+                          }}
+                        >
+                          {Object.entries(commissionTypes).map(
+                            ([value, label]) => (
+                              <option key={value} value={value}>
+                                {label}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                    {userWebsite.commission_type === 1 && (
+                      <div className="col-2">
+                        <label className="small-font my-1">Extra Chips %</label>
+                        <input
+                          className="small-font white-bg rounded border-grey3 p-2 w-100"
+                          value={userWebsite.extra_chips_percentage}
+                          onChange={(e) => {
+                            const updatedUserWebsites = [...data.userWebsites];
+                            updatedUserWebsites[
+                              userIndex
+                            ].extra_chips_percentage = e.target.value;
+                            // Update the state with the new extra chips percentage
+                          }}
+                        />
+                      </div>
+                    )}
+                    {userWebsite.commission_type === 2 && (
+                      <>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Downline Share
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.share}
+                            onChange={(e) => {
+                              const updatedUserWebsites = [
+                                ...data.userWebsites,
+                              ];
+                              updatedUserWebsites[userIndex].share =
+                                e.target.value;
+                              // Update the state with the new share value
+                            }}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Downline Comm
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.downline_comm}
+                            onChange={(e) => {
+                              const updatedUserWebsites = [
+                                ...data.userWebsites,
+                              ];
+                              updatedUserWebsites[userIndex].downline_comm =
+                                e.target.value;
+                              // Update the state with the new downline commission
+                            }}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Caschip Values
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.caschip_values}
+                            onChange={(e) => {
+                              const updatedUserWebsites = [
+                                ...data.userWebsites,
+                              ];
+                              updatedUserWebsites[userIndex].caschip_values =
+                                e.target.value;
+                              // Update the state with the new caschip values
+                            }}
                           />
                         </div>
                       </>
