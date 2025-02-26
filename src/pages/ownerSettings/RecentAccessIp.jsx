@@ -27,6 +27,7 @@ const RecentAccessIp = () => {
     { header: "Last Date/Time", field: "lastDateTime", width: "20%" },
     { header: "Method", field: "method", width: "20%" },
     { header: "IP", field: "ip", width: "20%" },
+    { header: "Login Url", field: "loginurl", width: "20%" },
     { header: "Configure", field: "configure", width: "10%" },
   ];
   const [logData, setLogsData] = useState([])
@@ -123,6 +124,7 @@ const RecentAccessIp = () => {
     </div>,
     method: <div>{item.browser_type || "Unknown Browser"}</div>,
     location: <div>{item.location}</div>,
+    loginurl: <div>{item.login_url}</div>,
     ip: <div>{item.ip}</div>,
     configure: (
       <div className="relative">

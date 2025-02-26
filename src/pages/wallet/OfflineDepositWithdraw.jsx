@@ -313,6 +313,21 @@ function OfflineDepositWithdraw() {
         setApiErrors(error?.errors || error?.message || "API request failed");
       });
   }
+
+  const handleCancel = (index) => {
+    setDirAndSADetails((prevData) =>
+      prevData.map((row, i) => ({
+        ...row,
+        showChildRow: i === index ? !row.showChildRow : false,
+      }))
+    );
+    setInputData({
+      inrChips: 0,
+      extChips: 0,
+    });
+    setErrors({})
+  }
+
   // Prepare table data
   const tableData = dirAndSADetails.map((row, index) => {
     const adminSites = row.adminSName.map((admin) => ({
@@ -535,17 +550,25 @@ function OfflineDepositWithdraw() {
                   </div>
                 )}
               </div>
-              {actionType === "WITHDRAW" && row.selectedUserDetails?.commission_type === 2 && (
-                <div className="d-flex flex-row justify-content-end align-items-center">
-                  <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
-                </div>
-              )}
 
-              {actionType !== "WITHDRAW" && (
+              <div className="d-flex flex-row justify-content-end align-items-cente">
+
                 <div className="d-flex flex-row justify-content-end align-items-center">
-                  <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
+                  <button className="me-3 saffron-btn2 px-3" onClick={() => handleCancel(index)}>Cancel</button>
                 </div>
-              )}
+
+                {actionType === "WITHDRAW" && row.selectedUserDetails?.commission_type === 2 && (
+                  <div className="d-flex flex-row justify-content-end align-items-center">
+                    <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
+                  </div>
+                )}
+
+                {actionType !== "WITHDRAW" && (
+                  <div className="d-flex flex-row justify-content-end align-items-center">
+                    <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
+                  </div>
+                )}
+              </div>
 
               {apiErrors && (
                 <div className="alert alert-danger mt-1">
