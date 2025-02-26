@@ -107,13 +107,13 @@ const DownlineList = () => {
 
   const ACCOUNT_COLUMNS = [
     { header: "Account", field: "account" },
-    { header: "Credit Ref.", field: "creditRef" },
+    // { header: "Credit Ref.", field: "creditRef" },
     { header: "Total Cus D", field: "totalCusD" },
     { header: "Total Cus W", field: "totalCusW" },
     { header: "Wall. Bal", field: "walletBalance" },
     { header: "Exposure", field: "exposure" },
-    { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
-    { header: "Ref P/L", field: "referralPL" },
+    // { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
+    // { header: "Ref P/L", field: "referralPL" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
 
@@ -321,13 +321,13 @@ const DownlineList = () => {
 
   const ACCOUNT_FOOTER = [
     { header: <span className="fw-700">Total</span> },
-    { header: "" },
+    // { header: "" },
     { header: <span className="fw-700">50000</span> },
     { header: <span className="fw-700">25000</span> },
     { header: <span className="fw-700 yellow-font">10000</span> },
     { header: <span className="fw-700 red-font">5000</span> },
-    { header: <span className="fw-700">500</span> },
-    { header: <span className="fw-700 green-font">15000</span> },
+    // { header: <span className="fw-700">500</span> },
+    // { header: <span className="fw-700 green-font">15000</span> },
     { header: "" },
   ];
 

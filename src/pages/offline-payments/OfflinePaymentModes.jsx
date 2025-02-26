@@ -4,8 +4,6 @@ import { FaPlus, FaSearch } from "react-icons/fa";
 import { SlPencil } from "react-icons/sl";
 import AddNewOfflinePaymentModal from "./AddNewOfflinePaymentModal";
 import {
-  getAllCountires,
-  getCountries,
   getManagementOfflinePaymentModes,
   suspenManagementOfflinePaymentModes,
 } from "../../api/apiMethods";
@@ -16,6 +14,7 @@ import ConfirmationPopup from "./../popups/ConfirmationPopup";
 import { imgUrl } from "../../api/baseUrl";
 import { useSearchParams } from "react-router-dom";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useSelector } from "react-redux";
 
 const OfflinePaymentModes = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -42,9 +41,8 @@ const OfflinePaymentModes = () => {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [errorPopup, setErrorPopup] = useState(false);
   const status_id = statusId === 1 ? 2 : 1;
+  const allCountries = useSelector((item) => item?.allCountries);
 
-
-  
   const hanldeAddModal = () => {
     setShowAddModal(true);
     setIsEdit(false);
@@ -63,27 +61,27 @@ const OfflinePaymentModes = () => {
     4: "Cash",
   };
 
-  const getAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        if (response?.status === true) {
-          setCountries(response?.data);
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "API request failed");
-      });
-  };
+  // const getAllCountries = () => {
+  //   getCountries()
+  //     .then((response) => {
+  //       if (response?.status === true) {
+  //         setCountries(response?.data);
+  //       } else {
+  //         setError("Something Went Wrong");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message || "API request failed");
+  //     });
+  // };
 
   const getCountryName = (id) => {
-    const country = countries.find((c) => c.id === id);
+    const country = allCountries.find((c) => c.id === id);
     console.log(country);
     return country ? country.name : "Unknown";
   };
   const getCurrencyName = (id) => {
-    const currency = countries.find((c) => c.id === id);
+    const currency = allCountries.find((c) => c.id === id);
     console.log(currency);
     return currency ? currency.currency_name : "Unknown";
   };
@@ -115,7 +113,7 @@ const OfflinePaymentModes = () => {
       if (dataFetched.current) return;
       dataFetched.current = true;
       getAllManPaymentModes(page, pageSize);
-      getAllCountries();
+      // getAllCountries();
     }
   }, []);
 
@@ -284,7 +282,7 @@ const OfflinePaymentModes = () => {
         setIsEdit={setIsEdit}
         editId={editId}
         setEditId={setEditId}
-        countries={countries}
+        countries={allCountries}
         getAllManPaymentModes={getAllManPaymentModes}
       />
       <ConfirmationPopup

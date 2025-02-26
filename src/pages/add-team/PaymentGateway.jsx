@@ -50,7 +50,7 @@ const PaymentGateway = () => {
   const pages = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(pages);
   const limit = itemsPerPage;
-  const offset = (currentPage-1)*itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
   // const [currentLimit, setCurrentLimit] = useState(4);
   // const [currentOffset, setCurrentOffset] = useState(0);
   const [countryId, setCountryId] = useState(null);
@@ -108,7 +108,7 @@ const PaymentGateway = () => {
   const fetchManagementPaymentDetails = async (limit, offset) => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails({limit, offset});
+      const response = await getManagementPaymentDetails({ limit, offset });
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
         setTotalRecords(response?.meta?.totalCount);
@@ -521,18 +521,21 @@ const PaymentGateway = () => {
         <ConfirmationPopup
           confirmationPopupOpen={suspendPayment}
           setConfirmationPopupOpen={setSuspendPayment}
-          discription={`Are you sure you want to ${suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
-            } this payment gateway?`}
-          submitButton={`${suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
-            }`}
+          discription={`Are you sure you want to ${
+            suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
+          } this payment gateway?`}
+          submitButton={`${
+            suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
+          }`}
           onSubmit={suspendManPaymnet}
         />
       ) : (
         <ConfirmationPopup
           confirmationPopupOpen={onBlockPopup}
           setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-          discription={`are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
-            } this Gateway?`}
+          discription={`are you sure you want to ${
+            statusId === 1 ? "In-Active" : "Active"
+          } this Gateway?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
         />

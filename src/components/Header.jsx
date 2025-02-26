@@ -19,7 +19,7 @@ import { setAllCountries } from "../redux/action";
 import NotificationsPopup from "../pages/popups/NotificationsPopup";
 import {
   getNotificationsforDirector,
-  getNotificationsforManagement
+  getNotificationsforManagement,
 } from "../api/apiMethods";
 function Header() {
   const navigate = useNavigate();
@@ -29,17 +29,13 @@ function Header() {
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const [notificationPopup, setNotificationPopup] = useState(false);
   const countriesDataFetched = useRef(false);
-  const userRole = localStorage.getItem("role_code")
+  const userRole = localStorage.getItem("role_code");
   const [error, setError] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-
-
   const id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role_name");
-
-
 
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
@@ -55,18 +51,15 @@ function Header() {
   };
 
   const handleNotification = () => {
-    console.log(unreadCount)
+    console.log(unreadCount);
     setNotificationPopup(true);
-
-
-  }
+  };
 
   const getAllNotificationsToDir = () => {
     getNotificationsforDirector()
       .then((response) => {
         setNotifications(response?.data);
         setUnreadCount(response?.metaData.unread_count);
-
       })
       .catch((error) => {
         setError(error?.message);
@@ -78,7 +71,6 @@ function Header() {
       .then((response) => {
         setNotifications(response?.data);
         setUnreadCount(response?.metaData.unread_count);
-
       })
       .catch((error) => {
         setError(error?.message);
@@ -88,12 +80,10 @@ function Header() {
   useEffect(() => {
     if (role === "director") {
       getAllNotificationsToDir();
-    }
-    else if (role === "management") {
+    } else if (role === "management") {
       getAllNotificationsToMan();
     }
   }, []);
-
 
   const handleLogout = () => {
     if (userRole === "management") {
@@ -104,11 +94,9 @@ function Header() {
       navigate("/director/login");
     }
 
-
     // window.location.reload();
-
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isDashboard = window?.location?.pathname === "/";
   const getAllCountries = () => {
     getCountries()
@@ -133,7 +121,12 @@ function Header() {
       <div className="header">
         <div className="w-100 flex-between px-2 py-1">
           <div className="d-flex align-items-center">
-            <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" onClick={() => navigate("/")} />
+            <img
+              className="logo-img me-5"
+              src={Images?.S7Logo}
+              alt="Logo"
+              onClick={() => navigate("/")}
+            />
             <div className="d-flex align-items-center input-css ms-1">
               <FaSearch size={18} className="grey-clr me-2" />
               <input
@@ -145,8 +138,9 @@ function Header() {
           <div className="d-flex align-items-center">
             {role_name === "owner" && (
               <div
-                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${isActiveBtn ? "active-saffron-btn white-text" : ""
-                  }`}
+                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
+                  isActiveBtn ? "active-saffron-btn white-text" : ""
+                }`}
                 onClick={handleRegisterBtn}
               >
                 <ImUserPlus size={18} />
@@ -174,10 +168,8 @@ function Header() {
               // onClick={() => setIsNotificationModalShow((prev) => !prev)}
               onClick={handleNotification}
             >
-              <IoMdNotificationsOutline size={26}
-              />
+              <IoMdNotificationsOutline size={26} />
               <span className="notification-count d-flex flex-center white-text small-font px-1">
-
                 {unreadCount}
               </span>
             </div>
@@ -219,8 +211,9 @@ function Header() {
               <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
                 <Dropdown.Toggle
                   variant="none"
-                  className={`${!isDashboard ? "saffron-btn" : "white-btn"
-                    } br-0px d-flex align-items-center`}
+                  className={`${
+                    !isDashboard ? "saffron-btn" : "white-btn"
+                  } br-0px d-flex align-items-center`}
                   id="dropdown-autoclose-true"
                 >
                   <FaUserCog size={24} className="me-2" />
