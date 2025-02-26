@@ -629,7 +629,6 @@ const endpoints = {
   },
 
 
-
   ManagementOfflineDepositeTicketCreation: {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/offlineDeposits`,
