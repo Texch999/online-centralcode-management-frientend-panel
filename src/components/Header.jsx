@@ -17,10 +17,12 @@ import { getCountries } from "../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../redux/action";
 import NotificationsPopup from "../pages/popups/NotificationsPopup";
+import { AiOutlineLogout } from "react-icons/ai";
 import {
   getNotificationsforDirector,
   getNotificationsforManagement,
 } from "../api/apiMethods";
+
 function Header() {
   const navigate = useNavigate();
   const role_name = localStorage?.getItem("role_name");
@@ -92,6 +94,9 @@ function Header() {
     } else if (userRole === "director") {
       localStorage.clear();
       navigate("/director/login");
+    } else {
+      localStorage.clear();
+      navigate("/master/login");
     }
 
     // window.location.reload();
@@ -111,11 +116,11 @@ function Header() {
         setError(error?.message || "API request failed");
       });
   };
-  useEffect(() => {
-    if (countriesDataFetched.current) return;
-    countriesDataFetched.current = true;
-    getAllCountries();
-  }, []);
+  // useEffect(() => {
+  //   if (countriesDataFetched.current) return;
+  //   countriesDataFetched.current = true;
+  //   getAllCountries();
+  // }, []);
   return (
     <>
       <div className="header">
@@ -174,7 +179,7 @@ function Header() {
               </span>
             </div>
             <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
-            <PiDotsNineBold
+            <AiOutlineLogout 
               size={24}
               title="Logout"
               className="grey-clr mx-2 fw-800 pointer"

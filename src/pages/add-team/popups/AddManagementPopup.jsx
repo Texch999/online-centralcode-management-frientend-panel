@@ -20,11 +20,11 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     managementPassword: false,
   });
 
-  const Role = localStorage.getItem("roleCode");
+  const Role = localStorage.getItem("role_code");
   console.log(editingRowId, "editingRowId");
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
-  const [selectedRoleId, setSelectedRoleId] = useState(3);
+  const [selectedRoleId, setSelectedRoleId] = useState(null);
 
   console.log(roleOptions, "roleOptions");
 
@@ -43,11 +43,13 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     getRoles({ token })
       .then((response) => {
         if (response?.status === true && response.data) {
-          const roles = response.data.map((role) => ({
-            value: role.role,
-            label: role.name,
-          }));
-          console.log(roles, "roles");
+          const roles = response.data
+            .filter((role) => role.role !== 1 && role.role !== 2) // Exclude owner and management
+            .map((role) => ({
+              value: role.role,
+              label: role.name,
+            }));
+          console.log(roles, "Filtered roles");
           setRoleOptions(roles);
         } else {
           setError("Failed to fetch roles");
@@ -58,6 +60,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
         setError(err.message || "Error fetching roles");
       });
   }, []);
+  
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prevState) => ({

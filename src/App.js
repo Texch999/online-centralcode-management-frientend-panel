@@ -103,6 +103,7 @@ import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin"
 import EditNewDirector from "./pages/EditNewDirector";
 import { CountriesProvider } from "./context/CountriesContext";
 import PageNotFound from "./pages/notFound/PageNotFound";
+import PrivateRoute from "./pages/routes/PrivateRoutes";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -118,12 +119,19 @@ function App() {
     <CountriesProvider>
       <div>
         {showLoginPage || !isLoggedIn ? (
-          <Login />
+          <Routes>
+            <Route path="/" element={<Navigate to="/master/login" />} />
+            <Route path="/master/login" element={<Login />} />
+            <Route path="/director/login" element={<Login />} />
+            <Route path="/director/employee/login" element={<Login />} />
+            <Route path="*" element={<PageNotFound />} />{" "}
+          </Routes>
         ) : (
           <div>
             {isLoggedIn && <Header />}
             <div className="home">
               <Routes>
+                {/* <Route element={<PrivateRoute />}> */}
                 <Route path="/" element={<Homepage />} />
                 <Route
                   path="/dashboard-view-all"
