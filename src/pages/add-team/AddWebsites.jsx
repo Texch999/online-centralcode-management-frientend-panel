@@ -77,21 +77,35 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
+  // useEffect(() => {
+  //   if (isInitialRendering.current) {
+  //     isInitialRendering.current = false
+  //     return
+  //   }
+  //   if (filterName.trim() === "") {
+  //     const limit = itemsPerPage;
+  //     const offset = (page - 1) * itemsPerPage;
+  //     if (role === "management") {
+  //       getAllWebsiteList(limit, offset);
+  //     } else {
+  //       getAllDirectorWebsiteList(limit, offset);
+  //     }
+  //   }
+  // }, [filterName, role]);
+
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false
-      return
-    }
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+
+    // Fetch data based on role and filterName
     if (filterName.trim() === "") {
-      const limit = itemsPerPage;
-      const offset = (page - 1) * itemsPerPage;
       if (role === "management") {
         getAllWebsiteList(limit, offset);
       } else {
         getAllDirectorWebsiteList(limit, offset);
       }
     }
-  }, [filterName, role]);
+  }, [filterName, role, page, itemsPerPage]);
 
   const handlePageChange = ({ limit, offset }) => {
     if (role === "management") {
@@ -244,7 +258,7 @@ const AddWibsites = () => {
             <FaSearch size={16} className="grey-clr me-2" />
             <input
               className="small-font all-none"
-              placeholder="Search..."
+              placeholder="Enter website name"
               onChange={(e) => setFilterName(e.target.value.trim())}
               onKeyDown={handleFiltration}
             />

@@ -44,7 +44,7 @@ const AddNewOfflinePaymentModal = ({
   const pageSize = itemsPerPage;
   const currencyOptions = countries?.map((item) => ({
     value: item?.id,
-    label: item?.currency_name,
+    label: `${item.name} - ${item.currency_symbol} ${item.currency_name}`,
   }));
 
   const typeOptions = [
@@ -190,7 +190,7 @@ const AddNewOfflinePaymentModal = ({
             <div className="col-6">
               <label className="small-font mb-1">Select Currency</label>
               <Select
-                className="small-font"
+                className="small-font text-capitalize"
                 options={currencyOptions}
                 placeholder="Select"
                 styles={customStyles}
@@ -209,7 +209,26 @@ const AddNewOfflinePaymentModal = ({
                     currency: option ? "" : prev.currency,
                   }));
                 }}
+                formatOptionLabel={(option) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      textTransform: "text-capitalize",
+                    }}
+                  >
+                    <span>{option.label.split(" - ")[0]}</span>
+                    <span>{option.label.split(" - ")[1]}</span>
+                  </div>
+                )}
               />
+
+
+
+
+
+
+
               {errors.currency && (
                 <p className="text-danger small-font">{errors.currency}</p>
               )}

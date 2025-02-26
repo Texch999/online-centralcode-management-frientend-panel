@@ -422,12 +422,20 @@ const getOwnerCurrencies = (data) => {
   return apiRequest("getOwnerCurrencies", data);
 };
 
-const ownerDowlineDirAndSADetails = (data) => {
-  return apiRequest("ownerDowlineDirAndSADetails", data);
+// const ownerDowlineDirAndSADetails = (data) => {
+//   return apiRequest("ownerDowlineDirAndSADetails", data);
+// };
+
+const ownerDowlineDirAndSADetails = (params) => {
+  return apiRequest("ownerDowlineDirAndSADetails", {}, params);
 };
 
 const ManagementOfflineDepositeTicketCreation = (id, data) => {
   return apiRequest("ManagementOfflineDepositeTicketCreation", data, id);
+};
+
+const ManagementOfflineWithdrawTicketCreation = (id, data) => {
+  return apiRequest("ManagementOfflineWithdrawTicketCreation", data, id);
 };
 
 
@@ -540,4 +548,5 @@ export {
   getOwnerCurrencies,
   ownerDowlineDirAndSADetails,
   ManagementOfflineDepositeTicketCreation,
+  ManagementOfflineWithdrawTicketCreation,
 };

@@ -13,12 +13,11 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import DepositWithdrawPopup from "./DepositWithdrawPopup";
 import { BsEye } from "react-icons/bs";
 import { useSelector } from "react-redux";
-import { MdAutoDelete } from "react-icons/md";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
-
-
+import { MdDelete } from "react-icons/md";
+import utcDate from "../../utils/utcDateConversion";
 
 function MyDepositWithdraw() {
   const [depositePopup, setDepositePopup] = useState(false);
@@ -104,7 +103,6 @@ function MyDepositWithdraw() {
     { header: "UTR No/ DepositeType", field: "utrno" },
     { header: "D/W", field: "dw" },
     { header: "Chips", field: "chips" },
-    { header: "Curr Type/Amt.", field: "currtypeamount" },
     { header: "", field: "view" },
   ];
 
@@ -205,7 +203,7 @@ function MyDepositWithdraw() {
   const MY_TRANSACTIONS_DIRECTOR_DATA =
     deposiTikcteslist.map((record, index) => (
       {
-        dateTime: new Date(record.date).toLocaleString(),
+        dateTime: utcDate(record.date),
         nameRole: (
           <div>
             {record.dirName} - Director
@@ -222,7 +220,6 @@ function MyDepositWithdraw() {
         dw: <div style={{ color: `${record.ticketType === 1 || 0 ? "#18B962" : "#D0431C"}` }}>
           {record.ticketType === 1 ? "Deposit" : "Withdaw"}</div>,
         chips: <div style={{ color: `${record.ticketType === 1 ? "#18B962" : "#D0431C"}` }}>{record?.requChips || "--"}</div>,
-        currtypeamount: <div >{record.paidAmount}<br />{getCurrency(record?.reqCurrency)}</div>,
 
         view: (
           <div className="w-100 flex-center status-container d-flex flex-column justify-content-center">
@@ -248,7 +245,7 @@ function MyDepositWithdraw() {
                 }
                 }
               />
-              {record.status === 0 ? < MdAutoDelete
+              {record.status === 0 ? < MdDelete
                 size={22}
                 className="eye-icon pointer m-2 pointer"
                 onClick={() => ConfirmationDeleteTicket(record.id, record?.ticketType)}
@@ -347,18 +344,7 @@ function MyDepositWithdraw() {
         </div>
       </div>
       <div className="w-100 flex-between mb-3">
-        {/* <div className="d-flex small-font">
-          {SPORTS_BUTTONS?.map((sport, index) => (
-            <div
-              key={index}
-              className={`me-3 ${activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-                }`}
-              onClick={() => handleSportClick(sport)}
-            >
-              {sport}
-            </div>
-          ))}
-        </div> */}
+
         <div className="w-70 row">
           <div className="col flex-column">
             <label className="black-text4  small-font mb-1">Type</label>

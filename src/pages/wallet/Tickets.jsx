@@ -17,6 +17,8 @@ import {
   ownerWithdrawTicketApprove,
   ownerWithdrawTicketRejection,
 } from "../../api/apiMethods";
+import utcDate from "../../utils/utcDateConversion";
+import { rfloor } from "../../utils/mathFunctions";
 
 function Tickets() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
@@ -221,7 +223,7 @@ function Tickets() {
   const MY_TRANSACTIONS_MANAGEMENT_DATA =
     deposiTikcteslist.map((record, index) => (
       {
-        dateTime: new Date(record.date).toLocaleString(),
+        dateTime: utcDate(record.date),
         nameRole: (
           <div>
             {record.dirName} - Director
@@ -239,9 +241,9 @@ function Tickets() {
           {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
         chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips}</div>,
         currtypeamount: <div >{Number(record.paidAmount).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
-        currRate: <div >{Number(record?.curRate)}<br />{getCurrency(record.reqCurrency)}</div>,
+        currRate: <div >{record?.curRate ? rfloor((record?.curRate), -6) : 0}<br />{getCurrency(record.reqCurrency)}</div>,
         yourChips: <div >{record.shareType === 1 ? Number(record?.inrSportsChips).toFixed(2) : Number(record?.inrChips).toFixed(2)}</div>,
-        yourcurramount: <div >{Number(record?.totCur).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
+        yourcurramount: <div >{Number(record?.totCur).toFixed(2)}<br />{getCurrency(107)}</div>,
         view: (
           <div className="w-100 flex-center status-container d-flex flex-column justify-content-center">
             {/* Status Bar Button */}

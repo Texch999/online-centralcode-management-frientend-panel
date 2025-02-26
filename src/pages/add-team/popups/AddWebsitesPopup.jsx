@@ -161,9 +161,10 @@ const AddWebsitesPopup = ({ show, onHide,
     if (!formData.websiteURL.trim()) {
       newErrors.websiteURL = "Website URL is required.";
     } else if (
-      !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/.test(formData.websiteURL)
+      !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/.test(formData.websiteURL) ||
+      !/\.(com|net|org|io|co|in|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i.test(formData.websiteURL)
     ) {
-      newErrors.websiteURL = "Invalid website URL, Please Enter Valid Website Url Format";
+      newErrors.websiteURL = "Invalid website URL. Please enter a valid URL with a supported top-level domain (e.g., .com, .net, .org).";
     }
 
     setErrors(newErrors);
@@ -254,9 +255,9 @@ const AddWebsitesPopup = ({ show, onHide,
           const errorMessage = error?.message
           // Handle backend validation errors
           if (errorMessage.includes("Website name already exists.")) {
-            setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "Please Try another Webiste Name" }));
+            setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "This website already taken" }));
           } else if (errorMessage.includes("Website Url already exists")) {
-            setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "Please Try another Webiste URL" }));
+            setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "This website url already taken" }));
           }
           else if (errorMessage.includes("API Error, please try again.")) {
             setApiError("Please Try Again ");

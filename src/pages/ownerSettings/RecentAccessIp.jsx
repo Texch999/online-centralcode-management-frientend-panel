@@ -25,7 +25,6 @@ const RecentAccessIp = () => {
     { header: "Prod", field: "prod", width: "10%" },
     { header: "First Date/Time", field: "firstDateTime", width: "20%" },
     { header: "Last Date/Time", field: "lastDateTime", width: "20%" },
-    { header: "Duration", field: "duration", width: "20%" },
     { header: "Method", field: "method", width: "20%" },
     { header: "IP", field: "ip", width: "20%" },
     { header: "Configure", field: "configure", width: "10%" },
@@ -122,11 +121,6 @@ const RecentAccessIp = () => {
         second: "2-digit",
       })}
     </div>,
-    duration: (
-      <div>
-        <span>10s</span>
-      </div>
-    ),
     method: <div>{item.browser_type || "Unknown Browser"}</div>,
     location: <div>{item.location}</div>,
     ip: <div>{item.ip}</div>,
