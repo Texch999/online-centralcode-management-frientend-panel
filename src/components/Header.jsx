@@ -23,7 +23,7 @@ function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const countriesDataFetched = useRef(false);
-  const userRole = localStorage.getItem("role_code")
+  const userRole = localStorage.getItem("role_code");
   const [error, setError] = useState("");
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
@@ -47,14 +47,12 @@ function Header() {
       navigate("/director/login");
     }
 
-
     // window.location.reload();
-
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isDashboard = window?.location?.pathname === "/";
   const getAllCountries = () => {
-    getCountries ()
+    getCountries()
       .then((response) => {
         if (response?.status === true) {
           dispatch(setAllCountries(response?.data));
@@ -75,7 +73,12 @@ function Header() {
     <div className="header">
       <div className="w-100 flex-between px-2 py-1">
         <div className="d-flex align-items-center">
-          <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" onClick={() => navigate("/")} />
+          <img
+            className="logo-img me-5"
+            src={Images?.S7Logo}
+            alt="Logo"
+            onClick={() => navigate("/")}
+          />
           <div className="d-flex align-items-center input-css ms-1">
             <FaSearch size={18} className="grey-clr me-2" />
             <input
@@ -87,8 +90,9 @@ function Header() {
         <div className="d-flex align-items-center">
           {role_name === "owner" && (
             <div
-              className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${isActiveBtn ? "active-saffron-btn white-text" : ""
-                }`}
+              className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
+                isActiveBtn ? "active-saffron-btn white-text" : ""
+              }`}
               onClick={handleRegisterBtn}
             >
               <ImUserPlus size={18} />
@@ -139,8 +143,9 @@ function Header() {
             <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
               <Dropdown.Toggle
                 variant="none"
-                className={`${!isDashboard ? "saffron-btn" : "white-btn"
-                  } br-0px d-flex align-items-center`}
+                className={`${
+                  !isDashboard ? "saffron-btn" : "white-btn"
+                } br-0px d-flex align-items-center`}
                 id="dropdown-autoclose-true"
               >
                 <FaUserCog size={24} className="me-2" />

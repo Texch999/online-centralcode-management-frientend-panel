@@ -211,7 +211,7 @@ const SelectWebsitePopUp = ({
     if (availablePrivacyWebsiteId) {
       availableWebsites();
     }
-  }, [availablePrivacyWebsiteId]);
+  }, []);
 
   const handleCheckboxChange = (id) => {
     setWebsites((prevWebsites) => {

@@ -25,7 +25,7 @@ export const CountriesProvider = ({ children }) => {
         if (response?.status === true) {
           setCountries(response?.data);
           // Optional: Cache in localStorage
-          localStorage.setItem("countries", JSON.stringify(response.data));
+          // localStorage.setItem("countries", JSON.stringify(response.data));
         } else {
           setError("Something Went Wrong");
         }

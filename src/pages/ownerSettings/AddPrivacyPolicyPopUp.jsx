@@ -49,6 +49,7 @@ const AddPrivacyPolicyPopUp = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -87,6 +88,7 @@ const AddPrivacyPolicyPopUp = ({
       });
       return;
     }
+    setIsSubmitting(true)
 
     const payload = {
       country_id: data.country?.value,
@@ -115,7 +117,9 @@ const AddPrivacyPolicyPopUp = ({
         reset();
         setValues("");
         getPolicyPrivacyData();
-      });
+      }).finally(()=>{
+        setIsSubmitting(false)
+      })
   };
 
   return (
@@ -238,9 +242,9 @@ const AddPrivacyPolicyPopUp = ({
                     className={` w-100 ${
                       isValid ? "saffron-btn2" : "disabled-btn py-2 px-2 br-5"
                     }`}
-                    disabled={!isValid}
+                    disabled={!isValid || isSubmitting}
                   >
-                    Create
+                    {isSubmitting ? "submitting..." : "Create"}
                   </button>
                 </div>
                 
