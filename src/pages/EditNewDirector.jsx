@@ -35,12 +35,14 @@ function EditNewDirector() {
   const [individualDirectorData, setIndividualDirectorData] = useState(null);
   const [individualSuperAdminData, setIndividualSuperAdminData] =
     useState(null);
-
+  const [websiteDetails, setWebsiteDetails] = useState({});
+  console.log(websiteDetails, "websiteDetails");
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
   const [addWebsites, setAddWebsites] = useState([]);
   const [forms, setForms] = useState([{ id: 1 }]);
   const role = localStorage.getItem("role_code");
+  console.log(userWebsites, "userWebsites");
 
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
@@ -99,7 +101,7 @@ function EditNewDirector() {
                           ...basePayload,
                           downline_comm: site.downline_comm,
                           share: site.share,
-                          casino_chip_values: site.casino_chip_values,
+                          caschip_values: site.caschip_values,
                         };
                       case 3:
                         return {
@@ -153,7 +155,7 @@ function EditNewDirector() {
                           ...basePayload,
                           downline_comm: site.downline_comm,
                           share: site.share,
-                          casino_chip_values: site.casino_chip_values,
+                          caschip_values: site.caschip_values,
                         };
                       case 3:
                         return {
@@ -186,24 +188,72 @@ function EditNewDirector() {
       name: name,
       login_name: loginName,
       parent_password: managementPassword,
-      accessWebsites: userWebsites.map((site) => ({
-        id: site.id,
-        admin_panel_id: parseInt(site.admin_panel_id),
-        user_paner_id: parseInt(site.user_paner_id),
-        commission_type: parseInt(site.commission_type),
-      })),
-      addWebsites: addWebsites.map((website) => {
-        const commissionType = parseInt(website.commission_type);
+      // accessWebsites: userWebsites.map((site) => ({
+      //   id: site.id,
+      //   admin_panel_id: parseInt(site.admin_panel_id),
+      //   user_paner_id: parseInt(site.user_paner_id),
+      //   commission_type: parseInt(site.commission_type),
+      //   extra_chips_percentage: site.extra_chips_percentage || null,
+      //   share: site.share || null,
+      //   caschip_values: site.caschip_values || null,
+      //   downline_comm: site.downline_comm || null,
+      // })),
+      accessWebsites: userWebsites.map((site) => {
+        const commissionType = parseInt(site.commission_type);
+        console.log(commissionType, "commissionType");
         return {
-          admin_panel_id: parseInt(website.admin_panel_id),
-          user_paner_id: parseInt(website.user_paner_id),
+          id: site.id,
+          admin_panel_id: parseInt(site.admin_panel_id),
+          user_paner_id: parseInt(site.user_paner_id),
           commission_type: commissionType,
-          share: parseInt(website.share),
-          casino_chip_values: parseInt(website.casino_chip_values),
-          downline_comm: parseInt(website.downline_comm),
+          ...(commissionType === 1
+            ? { extra_chips_percentage: site.extra_chips_percentage || null }
+            : {
+                // extra_chips_percentage: site.extra_chips_percentage || null,
+                share: site.share || null,
+                // caschip_values: site.caschip_values || null,
+                downline_comm: site.downline_comm || null,
+              }),
         };
       }),
+      addWebsites: Object.keys(websiteDetails).map((key) => {
+        const commissionType = parseInt(accountTypes[1]?.[key]); // Get commission_type for the website
+        const adminPanelId = selectedAdmins[1]?.value; // Access the value from selectedAdmins
+        console.log(adminPanelId, "adminPanelId");
+
+        const websiteData = {
+          // adminPanelId
+          admin_panel_id: adminPanelId,
+          user_paner_id: parseInt(key),
+          commission_type: commissionType,
+        };
+
+        // Add fields based on commission_type
+        if (commissionType === 1) {
+          websiteData.rent_start_date =
+            websiteDetails[key]?.rent_start_date || null;
+          websiteData.monthly_amount =
+            parseInt(websiteDetails[key]?.monthly_amount) || null;
+          websiteData.max_chips_monthly =
+            parseInt(websiteDetails[key]?.max_chips_monthly) || null;
+          websiteData.chip_percentage =
+            parseFloat(websiteDetails[key]?.chip_percentage) || null;
+          websiteData.extra_chips_percentage =
+            parseFloat(websiteDetails[key]?.extra_chips_percentage) || null;
+          websiteData.share = parseFloat(websiteDetails[key]?.share) || null;
+        } else if (commissionType === 2 || commissionType === 3) {
+          websiteData.share = parseFloat(websiteDetails[key]?.share) || null;
+          websiteData.caschip_values =
+            parseFloat(websiteDetails[key]?.caschip_values) || null;
+          websiteData.downline_comm =
+            parseFloat(websiteDetails[key]?.downline_comm) || null;
+        }
+
+        return websiteData;
+      }),
     };
+
+    console.log(payload, "=====>payload");
 
     updateDirectorByID(userId, payload)
       .then((response) => {
@@ -215,7 +265,6 @@ function EditNewDirector() {
       .catch((error) => console.error("Error updating director:", error));
   };
   const handleDirectorSubmit = () => {
-    // Log state for debugging
     console.log("Selected Websites:", selectedWebsites);
     console.log("Account Types:", accountTypes);
     console.log("User Websites List:", userWebsitesList);
@@ -253,9 +302,8 @@ function EditNewDirector() {
             websiteData.share = parseFloat(
               websiteDetails[userSite.website_access_id]?.share || 0
             );
-            websiteData.casino_chip_values = parseFloat(
-              websiteDetails[userSite.website_access_id]?.casino_chip_values ||
-                0
+            websiteData.caschip_values = parseFloat(
+              websiteDetails[userSite.website_access_id]?.caschip_values || 0
             );
             websiteData.downline_comm = parseFloat(
               websiteDetails[userSite.website_access_id]?.downline_comm || 0
@@ -288,7 +336,6 @@ function EditNewDirector() {
       }),
     };
 
-    // Log final payload for debugging
     console.log("Payload:", payload);
 
     updateSuperAdminByID(userId, payload)
@@ -324,7 +371,7 @@ function EditNewDirector() {
         extra_chips_percentage: site.extra_chips_percentage,
         share: site.share,
         downline_comm: site.downline_comm,
-        casino_chip_values: site.casino_chip_values,
+        caschip_values: site.caschip_values,
       });
     });
 
@@ -338,14 +385,10 @@ function EditNewDirector() {
     adminWebsites = transformData(individualSuperAdminData);
   }
 
-  // const adminWebsites = transformData(individualDirectorData);
-  // individualSuperAdminData
-
   const [selectedAdmins, setSelectedAdmins] = useState({});
   const [userWebsitesList, setUserWebsitesList] = useState({});
   const [selectedWebsites, setSelectedWebsites] = useState({});
   const [accountTypes, setAccountTypes] = useState({});
-  const [websiteDetails, setWebsiteDetails] = useState({});
 
   const [errors, setErrors] = useState({});
   console.log(selectedAdmins, "selectedAdmins");
@@ -473,9 +516,22 @@ function EditNewDirector() {
   console.log(selectedOption, "selectedOption");
 
   const addAnotherForm = () => {
-    setForms((prevForms) => [...prevForms, { id: Date.now() }]);
-  };
+    const newForm = { id: Date.now() };
+    setForms((prevForms) => [...prevForms, newForm]);
 
+    setAddWebsites((prevAddWebsites) => [
+      ...prevAddWebsites,
+      {
+        id: newForm.id,
+        admin_panel_id: null,
+        user_paner_id: null,
+        commission_type: null,
+        share: null,
+        caschip_values: null,
+        downline_comm: null,
+      },
+    ]);
+  };
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
       value,
@@ -496,111 +552,116 @@ function EditNewDirector() {
   return (
     <>
       <div>
-        <div className="d-flex align-items-center">
-          <button
-            type="button"
-            className="saffron-btn2 me-2 cursor-pointer"
-            onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft /> Go Back
-          </button>
-          <h5 className="yellow-font">
+        <div className="d-flex align-items-center justify-content-between">
+          <h5 className="yellow-font fw-bold">
             {mode === "edit" ? `Edit  ${role}` : `Add ${role}`}
             {/* {mode === "edit"
               ? "Edit Director & Super Admin"
               : "Add Director & Super Admin"} */}
           </h5>
+          <span
+            className="yellow-font cursor-pointer"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft /> Go Back
+          </span>
         </div>
 
-        <div className="d-flex w-100 my-2 align-items-center">
-          {/* Input fields for director details */}
-          <div className="col p-1">
-            <label className="small-font my-1">Name</label>
-            <input
-              type="text"
-              placeholder="Enter Name"
-              className="border-grey3 small-font rounded all-none input-css white-bg w-100"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+        {/* Input fields for director details */}
+        <div className="p-1">
+          {" "}
+          <div className="row">
+            {" "}
+            <div className="col p-1">
+              <label className="small-font my-1">Name</label>
+              <input
+                type="text"
+                placeholder="Enter Name"
+                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="col p-1">
+              <label className="small-font my-1">Login Name</label>
+              <input
+                type="text"
+                placeholder="Enter Login Name"
+                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                value={loginName}
+                onChange={(e) => setLoginName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="col p-1">
+              <label className="small-font my-1">Role</label>
+              <select
+                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
+              >
+                <option value="">Select</option>
+                {adminRolesArray.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col p-1">
+              <label className="small-font my-1">Currency</label>
+              <select
+                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                value={selectedCurrencyCode}
+                onChange={(e) => setSelectedCurrencyCode(e.target.value)}
+              >
+                <option value="">Select</option>
+                {currencyData.map((currency) => (
+                  <option key={currency.country_id} value={currency.country_id}>
+                    {currency.currency_name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="col p-1">
-            <label className="small-font my-1">Login Name</label>
-            <input
-              type="text"
-              placeholder="Enter Login Name"
-              className="border-grey3 small-font rounded all-none input-css white-bg w-100"
-              value={loginName}
-              onChange={(e) => setLoginName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="col-1 p-1">
-            <label className="small-font my-1">Role</label>
-            <select
-              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
-              value={selectedRole}
-              onChange={(e) => setSelectedRole(e.target.value)}
-            >
-              <option value="">Select</option>
-              {adminRolesArray.map((role) => (
-                <option key={role.id} value={role.id}>
-                  {role.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-1 p-1">
-            <label className="small-font my-1">Country</label>
-            <select
-              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
-              value={selectedCountryCode}
-              onChange={(e) => setSelectedCountryCode(e.target.value)}
-            >
-              <option value="">Select</option>
-              {countryData.map((country) => (
-                <option key={country.id} value={country.id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-1 p-1">
-            <label className="small-font my-1">Currency</label>
-            <select
-              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
-              value={selectedCurrencyCode}
-              onChange={(e) => setSelectedCurrencyCode(e.target.value)}
-            >
-              <option value="">Select</option>
-              {currencyData.map((currency) => (
-                <option key={currency.country_id} value={currency.country_id}>
-                  {currency.currency_name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="row">
+            <div className="col-3 p-1">
+              <label className="small-font my-1">Country</label>
+              <select
+                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                value={selectedCountryCode}
+                onChange={(e) => setSelectedCountryCode(e.target.value)}
+              >
+                <option value="">Select</option>
+                {countryData.map((country) => (
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="p-1 col position-relative">
-            <label className="small-font my-1">Management Password</label>
-            <input
-              type="password"
-              className="border-grey3 small-font rounded all-none input-css white-bg w-100"
-              placeholder="Enter"
-              required
-              value={managementPassword}
-              onChange={(e) => setManagementPassword(e.target.value)}
-            />
-            <span
-              className="position-absolute"
-              style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-              onClick={() =>
-                togglePasswordVisibility(setShowManagementPassword)
-              }
-            >
-              {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
-            </span>
+            <div className="p-1  col-3 position-relative">
+              <label className="small-font my-1">Management Password</label>
+              <input
+                type="password"
+                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                placeholder="Enter"
+                required
+                value={managementPassword}
+                onChange={(e) => setManagementPassword(e.target.value)}
+              />
+              <span
+                className="position-absolute"
+                style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
+                onClick={() =>
+                  togglePasswordVisibility(setShowManagementPassword)
+                }
+              >
+                {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -969,7 +1030,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "casino_chip_values",
+                                        "caschip_values",
                                         e.target.value
                                       )
                                     }
@@ -1029,7 +1090,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "casino_chip_values",
+                                        "caschip_values",
                                         e.target.value
                                       )
                                     }
@@ -1237,7 +1298,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "casino_chip_values",
+                                          "caschip_values",
                                           e.target.value
                                         )
                                       }
@@ -1295,7 +1356,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "casino_chip_values",
+                                          "caschip_values",
                                           e.target.value
                                         )
                                       }

@@ -17,10 +17,12 @@ import { getCountries } from "../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../redux/action";
 import NotificationsPopup from "../pages/popups/NotificationsPopup";
+import { AiOutlineLogout } from "react-icons/ai";
 import {
   getNotificationsforDirector,
   getNotificationsforManagement
 } from "../api/apiMethods";
+
 function Header() {
   const navigate = useNavigate();
   const role_name = localStorage?.getItem("role_name");
@@ -183,7 +185,7 @@ function Header() {
               </span>
             </div>
             <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
-            <PiDotsNineBold
+            <AiOutlineLogout 
               size={24}
               title="Logout"
               className="grey-clr mx-2 fw-800 pointer"

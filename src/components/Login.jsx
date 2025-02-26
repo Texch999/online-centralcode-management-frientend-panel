@@ -114,7 +114,14 @@ function Login() {
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-
+  let imageSrc;
+  if (location.pathname === "/master/login") {
+    imageSrc = Images.LoginImageTwo;
+  } else if (location.pathname === "/director/login") {
+    imageSrc = Images.LoginImageThree;
+  } else {
+    imageSrc = Images.TechVibeTwo;
+  }
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center">
       <div className="white-bg w-100 login-box-shadow rounded-4 d-flex login-box">
@@ -215,10 +222,10 @@ function Login() {
             alt="login-one"
             className="loginimg w-100"
           />
-        </div>
+        </div>{" "}
         <div className="w-50 pe-3 py-3">
           <img
-            src={Images.LoginImageTwo}
+            src={imageSrc}
             alt="sports-login"
             className="w-100 h-100 rounded-4"
           />

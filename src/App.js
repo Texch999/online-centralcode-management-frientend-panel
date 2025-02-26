@@ -123,6 +123,7 @@ function App() {
             <Route path="/" element={<Navigate to="/master/login" />} />
             <Route path="/master/login" element={<Login />} />
             <Route path="/director/login" element={<Login />} />
+            <Route path="/director/employee/login" element={<Login />} />
             <Route path="*" element={<PageNotFound />} />{" "}
           </Routes>
         ) : (

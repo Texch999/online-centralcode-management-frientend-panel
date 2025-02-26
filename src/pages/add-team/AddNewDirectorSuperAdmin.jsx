@@ -272,6 +272,7 @@ function AddNewDirectorSuperAdmin() {
   //     })
   //     .catch((error) => console.log(error));
   // };
+
   const handleSubmit = (e) => {
     e?.stopPropagation(); // Prevents event bubbling
 
@@ -354,7 +355,7 @@ function AddNewDirectorSuperAdmin() {
       currency_id: selectedCurrencyCode,
       accessWebsites: validUserWebsites,
     };
-
+    console.log(finalData, "====>finalData");
     createDirector(finalData)
       .then((response) => {
         if (response.status === true) {
@@ -579,170 +580,186 @@ function AddNewDirectorSuperAdmin() {
           <h5 className="yellow-font">Add Director & Super Admin</h5>
         </div>
 
-        <div className="d-flex w-100 my-2 align-items-center">
-          <div className="col p-1">
-            <label className="small-font my-1">Name</label>
-            <input
-              type="text"
-              placeholder="Enter Name"
-              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            {errors?.name && <span className="error">{errors?.name}</span>}
-          </div>
-          <div className="col p-1">
-            <label className="small-font my-1">Login Name</label>
-            <input
-              type="text"
-              placeholder="Enter Login Name"
-              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-              value={loginName}
-              onChange={(e) => setLoginName(e.target.value)}
-              required
-            />
-            {errors?.loginName && (
-              <span className="x-small-font error">{errors?.loginName}</span>
-            )}
-          </div>
-          <div className="col-1 p-1">
-            <label className="small-font my-1">Role</label>
-            <select
-              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
-              value={selectedRole}
-              onChange={handleRoleChange}
-            >
-              <option value="">Select</option>
-              {adminRoless.map((role, index) => (
-                <option key={index} value={role.value}>
-                  {role.label}
-                </option>
-              ))}
-            </select>
-            {errors?.selectedRole && (
-              <span className="x-small-font error">{errors?.selectedRole}</span>
-            )}
-          </div>
-          <div className="col-1 p-1">
-            <label className="small-font my-1">Country</label>
-            <select
-              className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
-              value={selectedCountryCode}
-              onChange={handleCountryChange}
-            >
-              <option value="">Select</option>
-              {countryData?.map((country, index) => (
-                <option key={index} value={country.id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-            {errors?.selectedCountryCode && (
-              <span className="x-small-font error">
-                {errors?.selectedCountryCode}
-              </span>
-            )}
-          </div>
-          <div className="col-1 p-1">
-            <label className="small-font my-1">Currency</label>
-            <select
-              className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
-              value={selectedCurrencyCode}
-              onChange={handleCurrencyChange}
-            >
-              <option value="">Select </option>
-              {currencyData?.map((currency, index) => (
-                <option key={index} value={currency.country_id}>
-                  {currency.currency_name}
-                </option>
-              ))}
-            </select>
-            {errors?.selectedCurrencyCode && (
-              <span className="x-small-font error">
-                {errors?.selectedCurrencyCode}
-              </span>
-            )}
-          </div>
-          {mode === "edit" ? null : (
-            <>
-              <div className="p-1 col position-relative">
-                <label className="small-font my-1">Password</label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                  placeholder="Enter"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <span
-                  className="position-absolute"
-                  style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-                  onClick={() => togglePasswordVisibility(setShowPassword)}
-                >
-                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+          <div className="row">
+            {" "}
+            <div className="col p-1">
+              <label className="small-font my-1">Name</label>
+              <input
+                type="text"
+                placeholder="Enter Name"
+                className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              {errors?.name && <span className="error">{errors?.name}</span>}
+            </div>
+            <div className="col p-1">
+              <label className="small-font my-1">Login Name</label>
+              <input
+                type="text"
+                placeholder="Enter Login Name"
+                className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                value={loginName}
+                onChange={(e) => setLoginName(e.target.value)}
+                required
+              />
+              {errors?.loginName && (
+                <span className="x-small-font error">{errors?.loginName}</span>
+              )}
+            </div>
+            <div className="col p-1">
+              <label className="small-font my-1">Role</label>
+              <select
+                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                value={selectedRole}
+                onChange={handleRoleChange}
+              >
+                <option value="">Select</option>
+                {adminRoless.map((role, index) => (
+                  <option key={index} value={role.value}>
+                    {role.label}
+                  </option>
+                ))}
+              </select>
+              {errors?.selectedRole && (
+                <span className="x-small-font error">
+                  {errors?.selectedRole}
                 </span>
-                {errors?.password && (
-                  <span className="x-small-font error">{errors?.password}</span>
-                )}
-              </div>
-              <div className="p-1 col position-relative">
-                <label className="small-font my-1">Confirm Password</label>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                  placeholder="Enter"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-                <span
-                  className="position-absolute"
-                  style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-                  onClick={() =>
-                    togglePasswordVisibility(setShowConfirmPassword)
-                  }
-                >
-                  {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+              )}
+            </div>
+            <div className="col p-1">
+              <label className="small-font my-1">Country</label>
+              <select
+                className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
+                value={selectedCountryCode}
+                onChange={handleCountryChange}
+              >
+                <option value="">Select</option>
+                {countryData?.map((country, index) => (
+                  <option key={index} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+              {errors?.selectedCountryCode && (
+                <span className="x-small-font error">
+                  {errors?.selectedCountryCode}
                 </span>
-                {errors?.confirmPassword && (
-                  <span className="x-small-font error">
-                    {errors?.confirmPassword}
+              )}
+            </div>
+          </div>
+          <div className="row">
+            {" "}
+            <div className="col p-1">
+              <label className="small-font my-1">Currency</label>
+              <select
+                className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
+                value={selectedCurrencyCode}
+                onChange={handleCurrencyChange}
+              >
+                <option value="">Select </option>
+                {currencyData?.map((currency, index) => (
+                  <option key={index} value={currency.country_id}>
+                    {currency.currency_name}
+                  </option>
+                ))}
+              </select>
+              {errors?.selectedCurrencyCode && (
+                <span className="x-small-font error">
+                  {errors?.selectedCurrencyCode}
+                </span>
+              )}
+            </div>
+            {mode === "edit" ? null : (
+              <>
+                <div className="p-1 col position-relative">
+                  <label className="small-font my-1">Password</label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                    placeholder="Enter"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <span
+                    className="position-absolute"
+                    style={{
+                      right: "1.5rem",
+                      top: "2.3rem",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => togglePasswordVisibility(setShowPassword)}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </span>
-                )}
-              </div>
-            </>
-          )}
-          <div className="p-1 col position-relative">
-            <label className="small-font my-1">Management Password</label>
-            <input
-              type="password"
-              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-              placeholder="Enter"
-              required
-              value={managementPassword}
-              onChange={(e) => setManagementPassword(e.target.value)}
-            />
-            <span
-              className="position-absolute"
-              style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-              onClick={() =>
-                togglePasswordVisibility(setShowManagementPassword)
-              }
-            >
-              {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
-            </span>
-            {errors?.managementPassword && (
-              <span className="x-small-font error">
-                {errors?.managementPassword}
-              </span>
+                  {errors?.password && (
+                    <span className="x-small-font error">
+                      {errors?.password}
+                    </span>
+                  )}
+                </div>
+                <div className="p-1 col position-relative">
+                  <label className="small-font my-1">Confirm Password</label>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                    placeholder="Enter"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                  <span
+                    className="position-absolute"
+                    style={{
+                      right: "1.5rem",
+                      top: "2.3rem",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      togglePasswordVisibility(setShowConfirmPassword)
+                    }
+                  >
+                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                  {errors?.confirmPassword && (
+                    <span className="x-small-font error">
+                      {errors?.confirmPassword}
+                    </span>
+                  )}
+                </div>
+              </>
             )}
+            <div className="p-1 col position-relative">
+              <label className="small-font my-1">Management Password</label>
+              <input
+                type="password"
+                className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                placeholder="Enter"
+                required
+                value={managementPassword}
+                onChange={(e) => setManagementPassword(e.target.value)}
+              />
+              <span
+                className="position-absolute"
+                style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
+                onClick={() =>
+                  togglePasswordVisibility(setShowManagementPassword)
+                }
+              >
+                {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+              {errors?.managementPassword && (
+                <span className="x-small-font error">
+                  {errors?.managementPassword}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
       </div>
       <div>
-        <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET </h3>
+        <h4 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h4>
 
         {/* <form className="custom-form small-font p-3" onSubmit={handleSubmit}> */}
         <div className="row align-items-center">

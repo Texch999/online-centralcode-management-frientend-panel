@@ -40,11 +40,15 @@ const AddDirectorAdmin = () => {
   const handleResetPasswordClose = () => {
     setResetPasswordPopup(false);
   };
+  const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
 
-  const handleBlockUserOpen = (user, id) => {
-    setSelectedUser(user);
-    setSelectedDirectorId(id);
-    setConfirmationPopup(true);
+  const handleBlockUserOpen = (login_name, id) => {
+    const director = tableData.find((user) => user.id === id);
+    if (director) {
+      setSelectedDirectorId(id);
+      setSelectedDirectorStatus(director.status);
+      setConfirmationPopup(true);
+    }
   };
 
   const handleNavigateUserDashboard = (id) => {
@@ -103,9 +107,12 @@ const AddDirectorAdmin = () => {
   };
 
   useEffect(() => {
-    GetAllSuperAdmin();
-    GetAllDirectors();
-  }, []);
+    if (role === "director") {
+      GetAllSuperAdmin();
+    } else if (role === "management") {
+      GetAllDirectors();
+    }
+  }, [role]); // Runs when role changes
 
   const onDirectorResetPassword = (data) => {
     if (!selectedDirectorId) {
@@ -448,22 +455,29 @@ const AddDirectorAdmin = () => {
           )}
         </>
       )}
+      {resetPasswordPopup && (
+        <ResetPasswordPopup
+          resetPasswordPopup={resetPasswordPopup}
+          setResetPasswordPopup={handleResetPasswordClose}
+          onSubmit={
+            role === "management"
+              ? onDirectorResetPassword
+              : onSuperAdminResetPassword
+          }
+        />
+      )}
 
-      <ResetPasswordPopup
-        resetPasswordPopup={resetPasswordPopup}
-        setResetPasswordPopup={handleResetPasswordClose}
-        onSubmit={
-          role === "management"
-            ? onDirectorResetPassword
-            : onSuperAdminResetPassword
-        }
-      />
-
-      <ConfirmationPopup
-        confirmationPopupOpen={confirmationPopup}
-        setConfirmationPopupOpen={setConfirmationPopup}
-        onSubmit={blockUnblock}
-      />
+      {confirmationPopup && (
+        <ConfirmationPopup
+          confirmationPopupOpen={confirmationPopup}
+          setConfirmationPopupOpen={setConfirmationPopup}
+          onSubmit={blockUnblock}
+          discription={`Do you want to ${
+            selectedDirectorStatus === 1 ? "Block" : "Unblock"
+          } this director?`}
+          submitButton={selectedDirectorStatus === 1 ? "Block" : "Unblock"}
+        />
+      )}
     </div>
   );
 };
