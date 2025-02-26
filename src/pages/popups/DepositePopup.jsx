@@ -10,7 +10,8 @@ import { Images } from "../../images";
 import { MdContentCopy } from "react-icons/md";
 import { imgUrl } from "../../api/baseUrl";
 import SuccessPopup from "./SuccessPopup";
-const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment }) => {
+import { rround, rfloor, rceil } from "../../utils/mathFunctions";
+const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment, setDiscription }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
@@ -108,6 +109,22 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
         setSelectedWebDetails(...WebUserDetails)
     }
 
+    /// chips paid amunt calculation by the Math function for rental
+    const externalChipValue = Number(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100));
+    const roundedExternalChipValue = externalChipValue > 0 ? rceil(externalChipValue, -3) : 0;
+
+    // Calculate the rent chip value
+    const rentChipValue = Number(formData.selectedChips * (selectedWebDetails?.rentPercentage !== null ? (selectedWebDetails?.rentPercentage / 100) : 0));
+    const roundedRentChipValue = rentChipValue >= 0 ? rceil(rentChipValue, -3) : 0;
+
+    // Sum the rounded values
+    const totalValue = roundedExternalChipValue + roundedRentChipValue;
+
+    // chip calculation for the share & royality
+    console.log(roundedRentChipValue, "====>selected chips")
+    const shareChipValue = Number(formData?.selectedChips * (selectedWebDetails?.share / 100));
+    const roundedShareChipValue = shareChipValue > 0 ? rceil(shareChipValue, -3) : 0;
+
     const validateForm = () => {
         const newErrors = {};
         if (selectedPayment?.avil_modes !== 4) {
@@ -135,9 +152,9 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 userPanelId: formData.websiteName || null,
                 currency: directorCurrency?.county || "",
                 paymentId: selectedPayment?.gateway_id || null,
-                selctChips: formData.selectedChips || null,
-                paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.rentPercentage / 100)) + ((formData.selectedSportsChips) * (selectedWebDetails.extChipPercent / 100))),
-                selctSpcChips: formData.selectedSportsChips,
+                selctChips: Number(formData.selectedChips) || null,
+                paidAmount: totalValue,
+                selctSpcChips: Number(formData.selectedSportsChips),
             };
         } else {
             payload = {
@@ -145,8 +162,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 userPanelId: formData.websiteName || null,
                 currency: directorCurrency?.county || "",
                 paymentId: selectedPayment?.gateway_id || null,
-                selctChips: formData.selectedChips || null,
-                paidAmount: Math.ceil(Number((formData.selectedChips) * (selectedWebDetails.share / 100))),
+                selctChips: Number(formData.selectedChips) || null,
+                paidAmount: roundedShareChipValue,
             };
         }
 
@@ -190,7 +207,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                     setSlip(null);
                     setSelectedFile(null);
                     setPreviewImage(null);
-                    setApiErrors(null); // Clear any previous errors
+                    setApiErrors(null);
+                    setDiscription("Deposit ticket created successfully")
                 } else {
                     setApiErrors(response?.errors || "Deposit failed. Please try again.");
                 }
@@ -199,6 +217,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 setApiErrors(error?.errors || error?.message || "API request failed");
             });
     };
+
     return (
         <div>
             <Modal show={depositePopup} centered className="confirm-popup" size="md">
@@ -207,7 +226,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                         {/* Image on the left */}
                         <div>
                             <img
-                                src={`${imgUrl}/offlinepaymentsMode/${selectedWebDetails?.image}`}
+                                src={`${imgUrl}/offlinepaymentsMode/${selectedPayment?.image}`}
                                 alt="Icon"
                                 className="me-3"
                                 style={{ width: "50px", height: "50px" }}
@@ -232,15 +251,15 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                         </div>
                     </div>
                     {apiErrors && (
-                        <div className="alert alert-danger">
+                        <div className="alert alert-danger pb-1">
                             {Array.isArray(apiErrors) ? (
-                                <ul>
+                                <ul className="pb-1 ps-1">
                                     {apiErrors.map((error, index) => (
                                         <li className="small-font" key={index}>{error.message || error}</li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="small-font">{apiErrors.message || apiErrors}</p>
+                                <p className="small-font ps-1">{apiErrors.message || apiErrors}</p>
                             )}
                         </div>
                     )}
@@ -372,7 +391,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(selectedWebDetails?.total_chips === undefined || null ? 0 : selectedWebDetails?.total_chips)} total_sport_chips
+                                        value={selectedWebDetails?.total_chips ?? 0}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -387,7 +406,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
                                         value={
-                                            (selectedWebDetails?.total_chips || 0) + (formData?.selectedChips || 0)
+                                            Number(selectedWebDetails?.total_chips ?? 0) + Number(formData?.selectedChips ?? 0)
                                         }
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -399,14 +418,30 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                             <div className="row">
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
-                                    <input
+                                    {/* <input
                                         type="number"
                                         name="selectedChips"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter Chips"
                                         value={formData.selectedChips}
                                         onChange={handleChange}
+                                    /> */}
+                                    <input
+                                        type="number"
+                                        name="selectedChips"
+                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                        placeholder="Enter Chips"
+                                        value={formData.selectedChips}
+                                        onChange={(e) => {
+                                            if (Number(e.target.value) <= 99999999999) {
+                                                handleChange(e);
+                                                setFieldError("")
+                                            } else {
+                                                setFieldError(`You cannot enter more than ${99999999999} chips.`);
+                                            }
+                                        }}
                                     />
+                                    {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                                     {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                                 </div>
                                 <div className="col mb-2">
@@ -416,7 +451,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         name="paidAmount"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(formData.selectedChips * (selectedWebDetails?.share / 100))}
+                                        value={roundedShareChipValue}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -450,12 +485,13 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                     {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Chips Amount - {directorCurrency?.currencyName}</label>
+                                    <label className="small-font mb-1">Chips Amount - {selectedWebDetails?.rentPercentage}%/{directorCurrency?.currencyName}</label>
                                     <input
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter"
-                                        value={(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
+                                        value={roundedRentChipValue}
+                                        // value={(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
                                         onChange={handleChange}
                                         style={{ pointerEvents: "none" }}
                                         readOnly
@@ -477,12 +513,14 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                     />
                                 </div>
                                 <div className="col mb-2">
-                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.extChipPercent}%) </label>
+                                    <label className="small-font mb-1">Ext SP Chips Amount -  ( {selectedWebDetails?.extChipPercent}%/{directorCurrency?.currencyName}) </label>
                                     <input
                                         type="number"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100))}
+                                        // value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100))}
+                                        value={roundedExternalChipValue}
+
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -511,7 +549,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         name="paidAmount"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={(formData.selectedSportsChips * (selectedWebDetails?.extChipPercent / 100)) + (formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
+                                        value={totalValue}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
@@ -607,7 +645,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                 <label className="small-font mb-1">QR Code</label>
                                 {selectedPayment?.qr_code_image ? (
                                     <img
-                                        src={selectedPayment.qr_code_image}
+
+                                        src={`${imgUrl}/offlinepaymentsMode/${selectedPayment.qr_code_image}`}
                                         alt="QR Code"
                                         className="w-100"
                                     />

@@ -150,7 +150,6 @@ const ActivityLogs = () => {
     { header: "Device", field: "device" },
     { header: "Date/Time", field: "dateTime" },
     { header: "User/Admin", field: "userAdmin" },
-    { header: "Duration", field: "duration" },
     { header: "Executable", field: "executable" },
     { header: "Location", field: "location" },
     { header: "URL", field: "url" },
@@ -188,11 +187,6 @@ const ActivityLogs = () => {
       <div>
         {item.user_name} <br />
         {item.user_role}
-      </div>
-    ),
-    duration: (
-      <div>
-        <span>---</span>
       </div>
     ),
     executable: <div>{item.browser_type || "Unknown Browser"}</div>,
