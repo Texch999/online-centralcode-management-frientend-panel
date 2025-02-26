@@ -1,44 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import DepositePopup from "../popups/DepositePopup";
-import WithdrawPopup from "../popups/WithdrawPopup";
 import Table from "../../components/Table"; // Common Table component
 import { customStyles } from "../../components/ReactSelectStyles";
 import Select from "react-select";
-import { convertChipsToInr, currencyConvert } from "../../utils/currEchange";
-import { ManagementOfflineDepositeTicketCreation, ownerDowlineDirAndSADetails } from "../../api/apiMethods";
+import { currencyConvert } from "../../utils/currEchange";
+import { ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicketCreation, ownerDowlineDirAndSADetails } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
 import { rceil } from "../../utils/mathFunctions";
 import SuccessPopup from "../popups/SuccessPopup";
+import { useSearchParams } from "react-router-dom";
 
 function OfflineDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
   const [dirAndSADetails, setDirAndSADetails] = useState([]);
+  const [actionType, setActionType] = useState([]);
+  const [apiErrors, setApiErrors] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
+  const [discription, setDiscription] = useState("")
+  const [errors, setErrors] = useState({});
+  const [totalRecords, setTotalRecords] = useState(null)
   const [inputData, setInputData] = useState({
     adminWeb: "",
     userWeb: "",
     inrChips: 0,
     InrAmont: 0,
     extChips: 0,
-    selectedAdminSiteId: null, // Store selected admin site ID
-    selectedUserSiteId: null, // Store selected user site ID
-    selectedCommissionType: null, // Store selected commission type
+    selectedAdminSiteId: null,
+    selectedUserSiteId: null,
+    selectedCommissionType: null,
   });
 
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
   const allCountries = useSelector((state) => state?.allCountries);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const itemsPerPage = 4
+  const limit = itemsPerPage
+  const offset = (currentPage - 1) * itemsPerPage
 
-  // Fetch data on component mount
   useEffect(() => {
-    fetchOwnerDownlineDirectorAndSuperAdminDetails();
+    fetchOwnerDownlineDirectorAndSuperAdminDetails(limit, offset);
   }, []);
 
   // Fetch owner downline director and super admin details
-  const fetchOwnerDownlineDirectorAndSuperAdminDetails = async () => {
+  const fetchOwnerDownlineDirectorAndSuperAdminDetails = async (limit, offset) => {
     try {
-      const response = await ownerDowlineDirAndSADetails();
+      const response = await ownerDowlineDirAndSADetails({ limit, offset });
       if (response?.list?.length > 0) {
         setDirAndSADetails(response.list);
+        setTotalRecords(response.count)
       } else {
         setDirAndSADetails([]);
       }
@@ -76,26 +86,30 @@ function OfflineDepositWithdraw() {
   // Admin site dropdown component
   const AdminSiteDropdown = ({ options, onChange, value }) => (
     <Select
-      className="small-font white-bg input-border rounded"
+      className="small-font white-bg input-border rounded text-capitalize"
       placeholder="Select Admin Website"
       styles={customStyles}
       menuPortalTarget={document.body}
       onChange={(option) => onChange(option.value)}
       options={options}
       value={value}
+      maxMenuHeight={120}
+      menuPlacement="auto"
     />
   );
 
   // User site dropdown component
   const UserSiteDropdown = ({ options, onChange, value }) => (
     <Select
-      className="small-font white-bg input-border rounded"
+      className="small-font white-bg input-border rounded text-capitalize"
       placeholder="Select User Website"
       styles={customStyles}
       menuPortalTarget={document.body}
       onChange={(option) => onChange(option.value)}
       options={options}
       value={value}
+      maxMenuHeight={120}
+      menuPlacement="auto"
     />
   );
 
@@ -110,45 +124,6 @@ function OfflineDepositWithdraw() {
       </button>
     </div>
   );
-
-  // Handle admin site change
-  // const handleAdminSiteChange = (index, adminSiteId) => {
-  //   const newData = [...dirAndSADetails];
-  //   const selectedAdmin = newData[index].adminSName.find(
-  //     (site) => site.id === adminSiteId
-  //   );
-
-  //   if (!selectedAdmin) {
-  //     console.error("Admin site not found:", adminSiteId);
-  //     return;
-  //   }
-
-  //   newData[index].selectedAdminSite = adminSiteId;
-  //   newData[index].selectedAdminName = selectedAdmin.name;
-  //   newData[index].selectedUserSite = null;
-  //   newData[index].availableUserSites = selectedAdmin.list || [];
-
-  //   setDirAndSADetails(newData);
-  // };
-
-  // // Handle user site change
-  // const handleUserSiteChange = (index, userSiteId) => {
-  //   const newData = [...dirAndSADetails];
-  //   const selectedUser = newData[index]?.availableUserSites?.find(
-  //     (user) => user.website_access_id === userSiteId
-  //   );
-
-  //   if (!selectedUser) {
-  //     console.error("User site not found:", userSiteId);
-  //     return;
-  //   }
-
-  //   newData[index].selectedUserSite = userSiteId;
-  //   newData[index].selectedUserDetails = selectedUser;
-
-  //   setDirAndSADetails(newData);
-  // };
-
 
   const handleAdminSiteChange = (index, adminSiteId) => {
     const newData = [...dirAndSADetails];
@@ -188,7 +163,7 @@ function OfflineDepositWithdraw() {
 
     newData[index].selectedUserSite = userSiteId;
     newData[index].selectedUserDetails = selectedUser;
-
+    console.log(newData[index].selectedUserSite, "===> newData[index].selectedUserSite")
     // Update selected user site ID and commission type in state
     setInputData((prevData) => ({
       ...prevData,
@@ -199,15 +174,21 @@ function OfflineDepositWithdraw() {
     setDirAndSADetails(newData);
   };
 
-
   // Toggle child row visibility
-  const toggleChildRow = (index) => {
+  const toggleChildRow = (index, action) => {
+    console.log(action, "======>DEPOSIT")
     setDirAndSADetails((prevData) =>
       prevData.map((row, i) => ({
         ...row,
         showChildRow: i === index ? !row.showChildRow : false,
       }))
     );
+    setInputData({
+      inrChips: 0,
+      extChips: 0,
+    });
+    setActionType(action)
+    setErrors({})
   };
 
   // Calculate paid amount based on commission type
@@ -222,42 +203,114 @@ function OfflineDepositWithdraw() {
     { header: "Chips", field: "usdChips" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
-  const [discription, setDiscription] = useState("")
-  const handleSubmit = (siteData) => {
-    // ManagementOfflineDepositeTicketCreation
 
-    console.log(siteData, "====>siteData")
-    console.log("hell")
+  const validateForm = (siteData) => {
+    const newErrors = {};
+
+    // Validate Admin Panel ID
+    if (!siteData?.selectedUserDetails?.admin_panel_id) {
+      newErrors.adminWebsiteId = "Please select an Admin Panel ID";
+    }
+
+    // Validate User Panel ID
+    if (!siteData?.selectedUserDetails?.user_paner_id) {
+      newErrors.userPanelId = "Please select a User Panel ID";
+    }
+
+    // Validate INR Chips
+    if (!inputData?.inrChips || inputData?.inrChips <= 0) {
+      newErrors.inrChips = "INR Chips value is required and must be greater than zero";
+    }
+
+    // Validate Extended INR Chips (only if commission_type is 1 and actionType is not WITHDRAW)
+    if (
+      siteData?.selectedUserDetails?.commission_type === 1 &&
+      actionType !== "WITHDRAW" &&
+      (!inputData?.extChips || inputData?.extChips <= 0)
+    ) {
+      newErrors.extChips = "Extended INR Chips value is required and must be greater than zero";
+    }
+
+    // Set errors in state
+    setErrors(newErrors);
+
+    // Return true if no errors, false otherwise
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (siteData) => {
+    if (!validateForm(siteData)) return
     const payload = {
       adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
       userPanelId: siteData?.selectedUserDetails?.user_paner_id,
-      currency: siteData?.currency_id, // Assuming currency is fixed or fetched from somewhere
-      selctChips: Number(inputData.inrChips),
+      currency: siteData?.currency_id,
+      selctChips: (inputData.inrChips ? currencyConvert(
+        Number(inputData.inrChips),
+        getCurrencyRate(107),
+        getCurrencyRate(siteData?.currency_id)
+      ) : 0),
 
     };
 
-    if (siteData?.selectedUserDetails?.commission_type === 1) {
-      payload.selctSpcChips = Number(inputData?.extChips ? inputData?.extChips : 0);
-      payload.paidAmount = rceil((Number(inputData.inrChips) * (siteData?.selectedUserDetails?.chip_percentage ? Number(siteData?.selectedUserDetails?.chip_percentage) / 100 : 0)) +
-        (Number(inputData.extChips) * (siteData?.selectedUserDetails?.extra_chips_percentage ? Number(siteData?.selectedUserDetails?.extra_chips_percentage) / 100 : 0)), -3)
+    if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
+      payload.selctSpcChips = (inputData.extChips ? currencyConvert(
+        Number(inputData.extChips),
+        getCurrencyRate(107),
+        getCurrencyRate(siteData?.currency_id)
+      ) : 0)
+
+      payload.paidAmount = rceil((inputData.inrChips ? (
+        currencyConvert(
+          Number(inputData.inrChips),
+          getCurrencyRate(107),
+          getCurrencyRate(siteData?.currency_id)
+        ) *
+        (siteData.selectedUserDetails?.commission_type === 1
+          ? siteData.selectedUserDetails?.chip_percentage / 100
+          : siteData.selectedUserDetails?.share / 100)
+      ) : 0) +
+        (inputData.extChips ? currencyConvert(
+          Number(inputData.extChips),
+          getCurrencyRate(107),
+          getCurrencyRate(siteData?.currency_id)
+        ) : 0), -3)
     } else {
-      payload.paidAmount = rceil((Number(inputData.inrChips) * Number(siteData?.selectedUserDetails?.share) / 100), -3)
+      payload.paidAmount = rceil((inputData.inrChips ? (
+        currencyConvert(
+          Number(inputData.inrChips),
+          getCurrencyRate(107),
+          getCurrencyRate(siteData?.currency_id)
+        ) *
+        (siteData.selectedUserDetails?.commission_type === 1
+          ? siteData.selectedUserDetails?.chip_percentage / 100
+          : siteData.selectedUserDetails?.share / 100)
+      ) : 0), -3)
+
     }
-    console.log(payload, "=====>payload")
-    const formDataToSend = new FormData();
-    formDataToSend.append('body', JSON.stringify(payload));
-    ManagementOfflineDepositeTicketCreation(siteData?.id, payload)
+    let apiCall
+    if (actionType === "DEPOSIT") {
+      apiCall = ManagementOfflineDepositeTicketCreation
+
+    } else {
+      apiCall = ManagementOfflineWithdrawTicketCreation
+    }
+    apiCall(siteData?.id, payload)
       .then((response) => {
         if (response?.status === true) {
           setSuccessPopupOpen(true);
-          setDiscription("Deposit Created Successfully")
+          setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "WIthdraw"} Created Successfully`)
+          setInputData({
+            inrChips: 0,
+            extChips: 0,
+          });
+          setApiErrors(null);
+          setErrors({})
         } else {
-          console.log("set erro")
+          setApiErrors(response?.errors || "Deposit failed. Please try again.");
         }
       })
       .catch((error) => {
-        console.log("set erro")
+        setApiErrors(error?.errors || error?.message || "API request failed");
       });
   }
   // Prepare table data
@@ -277,8 +330,10 @@ function OfflineDepositWithdraw() {
       uid: <div>{`${index + 1}. ${row.name}`}</div>,
       details: (
         <div className="w-100">
+          {console.log(row, "====>row")}
           <div className="row col-12">
             <div className="col-5">
+
               <AdminSiteDropdown
                 options={adminSites}
                 onChange={(value) => handleAdminSiteChange(index, value)}
@@ -291,6 +346,8 @@ function OfflineDepositWithdraw() {
                     : null
                 }
               />
+
+              {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
             </div>
             <div className="col-6">
               <UserSiteDropdown
@@ -313,6 +370,7 @@ function OfflineDepositWithdraw() {
                     : null
                 }
               />
+              {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
             </div>
           </div>
           {row.showChildRow && (
@@ -320,14 +378,14 @@ function OfflineDepositWithdraw() {
               <div className="d-flex flex-row justify-content-between align-items-center col-4">
                 <div className="black-text2">
                   Avl D/W:
-                  <span className="black-text2">
-                    {row.selectedUserDetails?.commission_type === 1
-                      ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2)
-                      : Number(row.selectedUserDetails?.inrChips).toFixed(2)}
+                  <span className="black-text2 medium-font fw-600">
+                    {" "}{row.selectedUserDetails?.commission_type === 1
+                      ? (row.selectedUserDetails ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
+                      : (row.selectedUserDetails ? Number(row.selectedUserDetails?.inrChips).toFixed(2) : 0)}
                   </span>
                 </div>
                 <div className="ps-2 black-text2">
-                  Exposure: <span className="black-text2">0</span>
+                  Exposure: <span className="black-text2  medium-font fw-600">0</span>
                 </div>
               </div>
               <div className="d-flex flex-column mt-2">
@@ -341,7 +399,9 @@ function OfflineDepositWithdraw() {
                         className="small-font input-css all-none rounded white-bg input-border"
                         placeholder="Enter Chips"
                         onChange={handleInputChange}
+                        value={inputData.inrChips}
                       />
+                      {errors.inrChips && <p className="text-danger small-font">{errors.inrChips}</p>}
                     </div>
                     <div className="col-sm-3">
                       <label>
@@ -355,12 +415,12 @@ function OfflineDepositWithdraw() {
                         type="text"
                         className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                         placeholder="Enter Chips"
-                        value={calculatePaidAmount(
+                        value={inputData.inrChips ? calculatePaidAmount(
                           Number(inputData.inrChips),
                           row.selectedUserDetails?.commission_type === 1
                             ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage
                             : row.selectedUserDetails?.share
-                        ).toFixed(2)}
+                        ).toFixed(2) : 0}
                         readOnly
                       />
                     </div>
@@ -370,11 +430,11 @@ function OfflineDepositWithdraw() {
                         type="text"
                         className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                         placeholder="Enter Chips"
-                        value={currencyConvert(
+                        value={inputData.inrChips ? currencyConvert(
                           Number(inputData.inrChips),
                           getCurrencyRate(107),
                           getCurrencyRate(row?.currency_id)
-                        ).toFixed(4)}
+                        ).toFixed(4) : 0}
                         readOnly
                       />
                     </div>
@@ -390,7 +450,7 @@ function OfflineDepositWithdraw() {
                         type="text"
                         className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                         placeholder="Enter Chips"
-                        value={(
+                        value={inputData.inrChips ? (
                           currencyConvert(
                             Number(inputData.inrChips),
                             getCurrencyRate(107),
@@ -399,13 +459,13 @@ function OfflineDepositWithdraw() {
                           (row.selectedUserDetails?.commission_type === 1
                             ? row.selectedUserDetails?.chip_percentage / 100
                             : row.selectedUserDetails?.share / 100)
-                        ).toFixed(4)}
+                        ).toFixed(4) : 0}
                         readOnly
                       />
                     </div>
                   </div>
                 </div>
-                {row.selectedUserDetails?.commission_type === 1 && (
+                {row.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW" && (
                   <div className="d-flex align-items-center mb-2 col-12">
                     <div className="row w-100">
                       <div className="col-sm-3">
@@ -416,7 +476,10 @@ function OfflineDepositWithdraw() {
                           className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                           placeholder="Enter Chips"
                           onChange={handleInputChange}
+                          value={inputData.extChips}
                         />
+
+                        {errors.extInrChips && <p className="text-danger small-font">{errors.extChips}</p>}
                       </div>
                       <div className="col-sm-3">
                         <label>
@@ -427,10 +490,10 @@ function OfflineDepositWithdraw() {
                           type="text"
                           className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                           placeholder="Enter Chips"
-                          value={calculatePaidAmount(
+                          value={inputData.extChips ? calculatePaidAmount(
                             Number(inputData.extChips),
                             row.selectedUserDetails?.extra_chips_percentage
-                          ).toFixed(2)}
+                          ).toFixed(2) : 0}
                           readOnly
                         />
                       </div>
@@ -440,11 +503,11 @@ function OfflineDepositWithdraw() {
                           type="text"
                           className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                           placeholder="Enter Chips"
-                          value={currencyConvert(
+                          value={inputData.extChips ? currencyConvert(
                             Number(inputData.extChips),
                             getCurrencyRate(107),
                             getCurrencyRate(row?.currency_id)
-                          ).toFixed(4)}
+                          ).toFixed(4) : 0}
                           readOnly
                         />
                       </div>
@@ -457,14 +520,14 @@ function OfflineDepositWithdraw() {
                           type="text"
                           className="small-font input-css all-none rounded white-bg input-border input-cevent-stop"
                           placeholder="Enter Chips"
-                          value={(
+                          value={inputData.extChips ? (
                             currencyConvert(
                               Number(inputData.extChips),
                               getCurrencyRate(107),
                               getCurrencyRate(row?.currency_id)
                             ) *
                             (row.selectedUserDetails?.extra_chips_percentage / 100)
-                          ).toFixed(4)}
+                          ).toFixed(4) : 0}
                           readOnly
                         />
                       </div>
@@ -472,9 +535,31 @@ function OfflineDepositWithdraw() {
                   </div>
                 )}
               </div>
-              <div className="d-flex flex-row justify-content-end align-items-center">
-                <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
-              </div>
+              {actionType === "WITHDRAW" && row.selectedUserDetails?.commission_type === 2 && (
+                <div className="d-flex flex-row justify-content-end align-items-center">
+                  <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
+                </div>
+              )}
+
+              {actionType !== "WITHDRAW" && (
+                <div className="d-flex flex-row justify-content-end align-items-center">
+                  <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
+                </div>
+              )}
+
+              {apiErrors && (
+                <div className="alert alert-danger mt-1">
+                  {Array.isArray(apiErrors) ? (
+                    <ul className="ps-2 mb-0">
+                      {apiErrors.map((error, index) => (
+                        <li className="small-font" key={index}>{error.message || error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="small-font ps-2">{apiErrors.message || apiErrors}</p>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -484,17 +569,21 @@ function OfflineDepositWithdraw() {
           {row.selectedUserDetails?.commission_type === 1
             ? (row.selectedUserDetails ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
             : row.selectedUserDetails ? (Number(row.selectedUserDetails?.inrChips).toFixed(2)) : 0}
-          <br /> {getCurrency(row?.currency_id)}
+          <br /> {getCurrency(107)}
         </div>
       ),
       action: (
         <ActionButtons
-          onDeposit={() => toggleChildRow(index)}
-          onWithdraw={() => toggleChildRow(index)}
+          onDeposit={() => toggleChildRow(index, "DEPOSIT")}
+          onWithdraw={() => toggleChildRow(index, "WITHDRAW")}
         />
       ),
     };
   });
+
+  const handlePageChange = ({ limit, offset }) => {
+    fetchOwnerDownlineDirectorAndSuperAdminDetails(limit, offset);
+  };
 
   return (
     <>
@@ -522,6 +611,9 @@ function OfflineDepositWithdraw() {
           <Table
             columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
             data={tableData}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
           />
         </div>
       </div>

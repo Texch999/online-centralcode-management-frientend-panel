@@ -233,7 +233,7 @@ function SubHeader() {
       },
     ],
 
-    designing_team: [
+    "digital marketing": [
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
@@ -253,7 +253,7 @@ function SubHeader() {
       },
     ],
 
-    risk_team: [
+    "risk management": [
       {
         label: "Live/Block",
         options: [
@@ -296,7 +296,7 @@ function SubHeader() {
       },
     ],
 
-    accounts_team: [
+    accounts: [
       {
         label: "Wallet",
         options: [

@@ -17,10 +17,12 @@ import { getCountries } from "../api/apiMethods";
 import { useDispatch } from "react-redux";
 import { setAllCountries } from "../redux/action";
 import NotificationsPopup from "../pages/popups/NotificationsPopup";
+import { AiOutlineLogout } from "react-icons/ai";
 import {
   getNotificationsforDirector,
   getNotificationsforManagement
 } from "../api/apiMethods";
+
 function Header() {
   const navigate = useNavigate();
   const role_name = localStorage?.getItem("role_name");
@@ -29,7 +31,7 @@ function Header() {
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const [notificationPopup, setNotificationPopup] = useState(false);
   const countriesDataFetched = useRef(false);
-  const userRole = localStorage.getItem("role_code")
+  const userRole = localStorage.getItem("role_code");
   const [error, setError] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -102,13 +104,14 @@ function Header() {
     } else if (userRole === "director") {
       localStorage.clear();
       navigate("/director/login");
+    } else {
+      localStorage.clear();
+      navigate("/master/login");
     }
 
-
     // window.location.reload();
-
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isDashboard = window?.location?.pathname === "/";
   const getAllCountries = () => {
     getCountries()
@@ -123,11 +126,11 @@ function Header() {
         setError(error?.message || "API request failed");
       });
   };
-  useEffect(() => {
-    if (countriesDataFetched.current) return;
-    countriesDataFetched.current = true;
-    getAllCountries();
-  }, []);
+  // useEffect(() => {
+  //   if (countriesDataFetched.current) return;
+  //   countriesDataFetched.current = true;
+  //   getAllCountries();
+  // }, []);
   return (
     <>
       <div className="header">
@@ -182,7 +185,7 @@ function Header() {
               </span>
             </div>
             <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
-            <PiDotsNineBold
+            <AiOutlineLogout 
               size={24}
               title="Logout"
               className="grey-clr mx-2 fw-800 pointer"

@@ -35,6 +35,9 @@ const addDirectorTeam = (data) => {
 const createDirector = (data) => {
   return apiRequest("createDirector", data);
 };
+const createSuperAdmin = (data) => {
+  return apiRequest("createSuperAdmin", data);
+};
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
@@ -56,6 +59,9 @@ const resetEmployeePassword = (id, data) => {
 const resetDirectorPassword = (id, data) => {
   return apiRequest("resetDirectorPassword", data, id);
 };
+const resetSuperAdminPassword = (id, data) => {
+  return apiRequest("resetSuperAdminPassword", data, id);
+};
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
@@ -72,7 +78,9 @@ const updateEmployeeByID = (id, data) => {
 const updateDirectorByID = (id, data) => {
   return apiRequest("updateDirectorByID", data, id);
 };
-
+const updateSuperAdminByID = (id, data) => {
+  return apiRequest("updateSuperAdminByID", data, id);
+};
 // updateDirectorEmployeeByID
 const updateDirectorEmployeeByID = (id, data) => {
   return apiRequest("updateDirectorEmployeeByID", data, id);
@@ -86,6 +94,9 @@ const getDirectorEmployeeDetailsById = (id) => {
 };
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
+};
+const getSuperAdminDetailsById = (id) => {
+  return apiRequest("getSuperAdminDetailsById", null, id);
 };
 const resetDirectorPasswordInProfile = (id, data) => {
   return apiRequest("resetDirectorPasswordInProfile", data, id);
@@ -411,12 +422,20 @@ const getOwnerCurrencies = (data) => {
   return apiRequest("getOwnerCurrencies", data);
 };
 
-const ownerDowlineDirAndSADetails = (data) => {
-  return apiRequest("ownerDowlineDirAndSADetails", data);
+// const ownerDowlineDirAndSADetails = (data) => {
+//   return apiRequest("ownerDowlineDirAndSADetails", data);
+// };
+
+const ownerDowlineDirAndSADetails = (params) => {
+  return apiRequest("ownerDowlineDirAndSADetails", {}, params);
 };
 
 const ManagementOfflineDepositeTicketCreation = (id, data) => {
   return apiRequest("ManagementOfflineDepositeTicketCreation", data, id);
+};
+
+const ManagementOfflineWithdrawTicketCreation = (id, data) => {
+  return apiRequest("ManagementOfflineWithdrawTicketCreation", data, id);
 };
 
 
@@ -505,6 +524,10 @@ export {
   DirectorUpLinePaymentDetails,
   getBannerByUserId,
   getDirectorSites,
+  createSuperAdmin,
+  getSuperAdminDetailsById,
+  resetSuperAdminPassword,
+  updateSuperAdminByID,
   DirectorAvailablePaymentsModes,
   getNotificationsforManagement,
   getNotificationsforDirector,
@@ -525,4 +548,5 @@ export {
   getOwnerCurrencies,
   ownerDowlineDirAndSADetails,
   ManagementOfflineDepositeTicketCreation,
+  ManagementOfflineWithdrawTicketCreation,
 };

@@ -71,7 +71,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
   };
   useEffect(() => {
     GetAllCountries();
-  }, []);
+  }, [show]);
   const [adminWebsite, setAllAdminWebsite] = useState();
 
   console.log(adminWebsite, "adminWebsite");
@@ -92,7 +92,7 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
   };
   useEffect(() => {
     GetAllAdminWebsites();
-  }, []);
+  }, [show]);
 
   const adminRoless = Object.entries(adminRoles).map(([value, label]) => ({
     value: Number(value),
