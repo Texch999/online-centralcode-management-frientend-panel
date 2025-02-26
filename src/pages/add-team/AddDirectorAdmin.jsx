@@ -13,6 +13,7 @@ import {
   getDirectors,
   resetDirectorPassword,
   resetSuperAdminPassword,
+  unblockBlockDirectorDwnln,
 } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
@@ -24,7 +25,7 @@ const AddDirectorAdmin = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedDirectorId, setSelectedDirectorId] = useState(null);
   const [selectedSuperAdminId, setSelectedSuperAdminId] = useState(null);
-
+  console.log(selectedSuperAdminId, "selectedSuperAdminId");
   const [tableData, setTableData] = useState([]);
   const [tableSuperAdminData, setTableSuperAdminData] = useState([]);
 
@@ -41,6 +42,8 @@ const AddDirectorAdmin = () => {
     setResetPasswordPopup(false);
   };
   const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
+  const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] =
+    useState(null);
 
   const handleBlockUserOpen = (login_name, id) => {
     const director = tableData.find((user) => user.id === id);
@@ -49,8 +52,17 @@ const AddDirectorAdmin = () => {
       setSelectedDirectorStatus(director.status);
       setConfirmationPopup(true);
     }
+    const superAdmin = tableSuperAdminData.find((user) => user.id === id);
+    if (superAdmin) {
+      setSelectedSuperAdminId(id);
+      setSelectedSuperAdminStatus(superAdmin.status);
+      setConfirmationPopup(true);
+    }
   };
-
+  // else {
+  //   setSelectedSuperAdminId(id);
+  //   setConfirmationPopup(true);
+  // }
   const handleNavigateUserDashboard = (id) => {
     navigate(`/user-profile-dashboard/${id}`);
   };
@@ -178,7 +190,22 @@ const AddDirectorAdmin = () => {
         console.error(error?.message || "Failed to block/unblock director");
       });
   };
-
+  const blockUnblockSuperAdmin = () => {
+    const data = {
+      id: selectedSuperAdminId,
+      status: selectedSuperAdminStatus,
+    };
+    console.log(data, "====?data");
+    unblockBlockDirectorDwnln(data)
+      .then((response) => {
+        console.log(response, "resp");
+        setConfirmationPopup(false);
+        GetAllSuperAdmin();
+      })
+      .catch((error) => {
+        console.error(error?.message || "Failed to block/unblock director");
+      });
+  };
   const TableData = tableData?.map((user) => {
     const linkWebsites = user.accessWebsites.map((website) => ({
       name: website.user_panel_name,
@@ -468,15 +495,40 @@ const AddDirectorAdmin = () => {
       )}
 
       {confirmationPopup && (
-        <ConfirmationPopup
-          confirmationPopupOpen={confirmationPopup}
-          setConfirmationPopupOpen={setConfirmationPopup}
-          onSubmit={blockUnblock}
-          discription={`Do you want to ${
-            selectedDirectorStatus === 1 ? "Block" : "Unblock"
-          } this director?`}
-          submitButton={selectedDirectorStatus === 1 ? "Block" : "Unblock"}
-        />
+        <>
+          {role === "management" ? (
+            <>
+              <ConfirmationPopup
+                confirmationPopupOpen={confirmationPopup}
+                setConfirmationPopupOpen={setConfirmationPopup}
+                onSubmit={blockUnblock}
+                discription={`Do you want to ${
+                  selectedDirectorStatus === 1 ? "Block" : "Unblock"
+                } this director?`}
+                submitButton={
+                  selectedDirectorStatus === 1 ? "Block" : "Unblock"
+                }
+              />
+            </>
+          ) : (
+            <>
+              {" "}
+              <ConfirmationPopup
+                confirmationPopupOpen={confirmationPopup}
+                setConfirmationPopupOpen={setConfirmationPopup}
+                onSubmit={blockUnblockSuperAdmin}
+                discription={`Do you want to ${
+                  selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
+                } this SuperAdmin?`}
+                submitButton={
+                  selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
+                }
+              />
+            </>
+          )}
+        </>
+
+        // selectedSuperAdminStatus
       )}
     </div>
   );
