@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaChevronLeft, FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { useParams } from "react-router-dom";
 import { FiChevronLeft } from "react-icons/fi";
@@ -199,11 +199,10 @@ const DownlineTrasactionHistory = () => {
   return (
     <div>
       <div className="row d-flex justify-content-between align-items-center mb-4 mt-2">
-        <h6 className="col-3 mb-0 d-flex align-items-center">
-          <FiChevronLeft
-            className="medium-font yellow-font pointer"
-            onClick={() => navigate(-1)}
-          />
+        <h6 className="col-3 mb-0 d-flex align-items-center" onClick={()=>navigate(-1)}>
+          <span>
+            <FaChevronLeft className="mx-1 pointer yellow-font" />
+          </span>
           <span className="yellow-font medium-font">
             {userwebsite} Transaction History
           </span>

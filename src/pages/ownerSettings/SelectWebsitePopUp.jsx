@@ -211,7 +211,7 @@ const SelectWebsitePopUp = ({
     if (availablePrivacyWebsiteId) {
       availableWebsites();
     }
-  }, []);
+  }, [availablePrivacyWebsiteId]);
 
   const handleCheckboxChange = (id) => {
     setWebsites((prevWebsites) => {
@@ -307,7 +307,7 @@ const SelectWebsitePopUp = ({
             {allUnchecked && (
               <div className="alert alert-warning mx-2">
                 <p>
-                  All websites are unchecked. This privacy policy will be
+                  All websites are unselected. This privacy policy will be
                   removed.
                 </p>
                 <button
