@@ -37,7 +37,7 @@ const PaymentModes = ({
           filteredPayments.length > 0 && (
             <div className="mb-3" key={mode}>
               <h1 className="large-font fw-600">{title}</h1>
-              <div className="row g-1">
+              <div className="row g-1 ">
                 {filteredPayments?.map((card, index) => (
                   <div key={`${card.id}-${index}`} className="col-2">
                     <div

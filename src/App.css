@@ -595,9 +595,11 @@
 .white-bg2 {
   background-color: #ffffff;
 }
+
 .border-none {
   border: none !important;
 }
+
 .border-left {
   border-left: 1px solid #dee2e6 !important;
 }
@@ -895,4 +897,9 @@ button.cst-btn:hover {
 
 .input-cevent-stop {
   pointer-events: "none";
+}
+
+.back-btn-bg {
+  background-color: #ffa310;
+  border-radius: 5px;
 }
