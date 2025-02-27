@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const DownlineTrasactionHistory = () => {
   const { transactionHistory } = useParams();
   const navigate = useNavigate();
+  const { userwebsite } = useParams();
 
   // State for active button
   const [activeButton, setActiveButton] = useState("All");
@@ -19,7 +20,6 @@ const DownlineTrasactionHistory = () => {
   const handleButtonClick = (button) => {
     setActiveButton(button);
   };
-  
 
   const TRANSACTION_COLUMNS = [
     { header: "S No", field: "sNo", width: "5%" },
@@ -204,7 +204,9 @@ const DownlineTrasactionHistory = () => {
             className="medium-font black-text"
             onClick={() => navigate(-1)}
           />
-          <span className="yellow-font medium-font">{transactionHistory}</span>
+          <span className="yellow-font medium-font">
+            {userwebsite} Transaction History
+          </span>
         </h6>
         <div className="col-4 d-flex justify-content-end gap-3 medium-font">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 w-60">

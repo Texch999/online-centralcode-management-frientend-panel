@@ -103,6 +103,7 @@ import AddNewDirectorSuperAdmin from "./pages/add-team/AddNewDirectorSuperAdmin"
 import EditNewDirector from "./pages/EditNewDirector";
 import { CountriesProvider } from "./context/CountriesContext";
 import PageNotFound from "./pages/notFound/PageNotFound";
+import DownlineWebsiteList from "./pages/add-team/DownlineWebsiteList";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -177,9 +178,14 @@ function App() {
                   path="/user-profile-dashboard/:id"
                   element={<UserProfileDashboard />}
                 />
-                <Route path="/downline-list" element={<DownlineList />} />
+                <Route path="/downline-list" element={<DownlineList />} exact />
                 <Route
-                  path="/downline-list/:transactionHistory"
+                  path="/downline-list/:director/:website"
+                  element={<DownlineWebsiteList />}
+                  exact
+                />
+                <Route
+                  path="/downline-list/:userwebsite"
                   element={<DownlineTrasactionHistory />}
                 />
                 <Route
