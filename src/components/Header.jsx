@@ -143,9 +143,8 @@ function Header() {
           <div className="d-flex align-items-center">
             {role_name === "owner" && (
               <div
-                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
-                  isActiveBtn ? "active-saffron-btn white-text" : ""
-                }`}
+                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${isActiveBtn ? "active-saffron-btn white-text" : ""
+                  }`}
                 onClick={handleRegisterBtn}
               >
                 <ImUserPlus size={18} />
@@ -179,7 +178,7 @@ function Header() {
               </span>
             </div>
             <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
-            <AiOutlineLogout 
+            <AiOutlineLogout
               size={24}
               title="Logout"
               className="grey-clr mx-2 fw-800 pointer"
@@ -216,9 +215,8 @@ function Header() {
               <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
                 <Dropdown.Toggle
                   variant="none"
-                  className={`${
-                    !isDashboard ? "saffron-btn" : "white-btn"
-                  } br-0px d-flex align-items-center`}
+                  className={`${!isDashboard ? "saffron-btn" : "white-btn"
+                    } br-0px d-flex align-items-center`}
                   id="dropdown-autoclose-true"
                 >
                   <FaUserCog size={24} className="me-2" />

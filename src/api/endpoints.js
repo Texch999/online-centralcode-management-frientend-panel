@@ -433,7 +433,7 @@ const endpoints = {
   },
   getAdminWebsites: {
     method: "get",
-    url: () => `/director/${userID()}/website/all-admin/websites`,
+    url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
   getManagementPaymentDetails: {
