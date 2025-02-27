@@ -10,6 +10,7 @@ import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { GiClick } from "react-icons/gi";
 
 const DownlineList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
@@ -132,10 +133,20 @@ const DownlineList = () => {
       ),
       websitelist: (
         <>
-          <div className="pointer" onClick={() => handleNaviagte("srinivas", "brahma")}>
+          <div
+            className="pointer"
+            onClick={() => handleNaviagte("srinivas", "brahma")}
+          >
             brahma.com
+            <GiClick className="yellow-font mx-1 pointer" size={18} />
           </div>
-          <div className="pointer" onClick={() => handleNaviagte("vamsi", "ravana")}>ravan.com</div>
+          <div
+            className="pointer"
+            onClick={() => handleNaviagte("vamsi", "ravana")}
+          >
+            ravan.com
+            <GiClick className="yellow-font mx-1 pointer" size={18} />
+          </div>
         </>
       ),
       totalCusD: 10000,

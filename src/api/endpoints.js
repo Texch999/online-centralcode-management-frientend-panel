@@ -508,10 +508,19 @@ const endpoints = {
     url: () => `/director/${userID()}/details/${userID()}`,
   },
   //show dir payment details in man
+  // managementDwnProfileDirPaymentDetails: {
+  //   method: "get",
+  //   url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+  // },
+
   managementDwnProfileDirPaymentDetails: {
     method: "get",
-    url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/offlineAccounts/${params.dwnlnId}?${query}`;
+    },
   },
+
   UpdateProfileDirpaymentDetailsByMan: {
     method: "put",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
@@ -641,6 +650,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/offlineWithdraw`,
   },
+  managemnetViewDownlinelist:{
+    method:"get",
+    url:`/user/${userID()}/downlinelist`
+  }
 };
 
 export default endpoints;

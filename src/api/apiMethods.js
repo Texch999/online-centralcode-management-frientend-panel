@@ -344,9 +344,14 @@ const DirectorUpLinePaymentDetails = (data) => {
 const getDirectorSites = (data) => {
   return apiRequest("getDirectorSites", data);
 };
-const managementDwnProfileDirPaymentDetails = (id, data) => {
-  return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+// const managementDwnProfileDirPaymentDetails = (id, data) => {
+//   return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+// };
+
+const managementDwnProfileDirPaymentDetails = (params) => {
+  return apiRequest("managementDwnProfileDirPaymentDetails", {}, params);
 };
+
 const UpdateProfileDirpaymentDetailsByMan = (id, data) => {
   return apiRequest("UpdateProfileDirpaymentDetailsByMan", data, id);
 };

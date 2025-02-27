@@ -116,11 +116,11 @@ function Header() {
         setError(error?.message || "API request failed");
       });
   };
-  // useEffect(() => {
-  //   if (countriesDataFetched.current) return;
-  //   countriesDataFetched.current = true;
-  //   getAllCountries();
-  // }, []);
+  useEffect(() => {
+    if (countriesDataFetched.current) return;
+    countriesDataFetched.current = true;
+    getAllCountries();
+  }, []);
   return (
     <>
       <div className="header">
