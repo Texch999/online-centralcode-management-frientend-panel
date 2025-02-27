@@ -428,8 +428,9 @@ const endpoints = {
   },
   unblockBlockDirectorDwnln: {
     method: "post",
-    url: (data) =>
-      `/director/${userID()}/superAdmin/${data.id}/status`,
+    url: (data) => `/director/${userID()}/superAdmin/${data.id}/status`,
+    // url: (data) =>
+    //   `/director/${userID()}/superAdmin/${data.id}/status`,
   },
   getUserWebsites: {
     method: "get",
@@ -520,8 +521,9 @@ const endpoints = {
   managementDwnProfileDirPaymentDetails: {
     method: "get",
     url: (params) => {
-      const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/offlineAccounts/${params.dwnlnId}?${query}`;
+      const { dwnlnId, ...filteredParams } = params;
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/offlineAccounts/${dwnlnId}?${query}`;
     },
   },
 
@@ -653,9 +655,18 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/offlineWithdraw`,
   },
-  managemnetViewDownlinelist:{
-    method:"get",
-    url:`/user/${userID()}/downlinelist`
+  managemnetViewDownlinelist: {
+    method: "get",
+    url: `/user/${userID()}/downlinelist`,
+  },
+  dwnlineDSASuspend: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/status`,
+  },
+  getDwnlineWebsiteList: {
+    method: "get",
+    url: (data) =>
+      `/user/${userID()}/director/${data?.id}/adminweb/${data?.websiteId}`,
   },
 };
 

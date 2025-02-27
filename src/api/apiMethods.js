@@ -445,6 +445,12 @@ const ManagementOfflineWithdrawTicketCreation = (id, data) => {
 const managemnetViewDownlinelist = (data) => {
   return apiRequest("managemnetViewDownlinelist", data);
 };
+const dwnlineDSASuspend = (id, data) => {
+  return apiRequest("dwnlineDSASuspend", data, id);
+};
+const getDwnlineWebsiteList = (id, websiteId) => {
+  return apiRequest("getDwnlineWebsiteList", id, { id, websiteId });
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -557,4 +563,6 @@ export {
   ManagementOfflineDepositeTicketCreation,
   ManagementOfflineWithdrawTicketCreation,
   managemnetViewDownlinelist,
+  dwnlineDSASuspend,
+  getDwnlineWebsiteList,
 };
