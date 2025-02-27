@@ -343,8 +343,12 @@ const endpoints = {
 
   getDirectorAccountDetails: {
     method: "get",
-    url: () => `/director/${userID()}/directorAccounts`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/directorAccounts?${query}`;
+    },
   },
+
   postDirectorAccountDetails: {
     method: "post",
     url: () => `/director/${userID()}/directorAccount`,
@@ -425,6 +429,8 @@ const endpoints = {
   unblockBlockDirectorDwnln: {
     method: "post",
     url: (data) => `/director/${userID()}/superAdmin/${data.id}/status`,
+    // url: (data) =>
+    //   `/director/${userID()}/superAdmin/${data.id}/status`,
   },
   getUserWebsites: {
     method: "get",
@@ -550,8 +556,7 @@ const endpoints = {
   readNotificationsforDirector: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/notifications/${data.id}/readStatus/${
-        data.status
+      `/director/${userID()}/notifications/${data.id}/readStatus/${data.status
       }`,
   },
   DirectorOffilneDepositTicket: {
