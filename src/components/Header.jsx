@@ -20,7 +20,7 @@ import NotificationsPopup from "../pages/popups/NotificationsPopup";
 import { AiOutlineLogout } from "react-icons/ai";
 import {
   getNotificationsforDirector,
-  getNotificationsforManagement
+  getNotificationsforManagement,
 } from "../api/apiMethods";
 
 function Header() {
@@ -36,12 +36,8 @@ function Header() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-
-
   const id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role_name");
-
-
 
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
@@ -57,18 +53,15 @@ function Header() {
   };
 
   const handleNotification = () => {
-    console.log(unreadCount)
+    console.log(unreadCount);
     setNotificationPopup(true);
-
-
-  }
+  };
 
   const getAllNotificationsToDir = () => {
     getNotificationsforDirector()
       .then((response) => {
         setNotifications(response?.data);
         setUnreadCount(response?.metaData.unread_count);
-
       })
       .catch((error) => {
         setError(error?.message);
@@ -80,7 +73,6 @@ function Header() {
       .then((response) => {
         setNotifications(response?.data);
         setUnreadCount(response?.metaData.unread_count);
-
       })
       .catch((error) => {
         setError(error?.message);
@@ -90,12 +82,10 @@ function Header() {
   useEffect(() => {
     if (role === "director") {
       getAllNotificationsToDir();
-    }
-    else if (role === "management") {
+    } else if (role === "management") {
       getAllNotificationsToMan();
     }
   }, []);
-
 
   const handleLogout = () => {
     if (userRole === "management") {
@@ -126,17 +116,20 @@ function Header() {
         setError(error?.message || "API request failed");
       });
   };
-  // useEffect(() => {
-  //   if (countriesDataFetched.current) return;
-  //   countriesDataFetched.current = true;
-  //   getAllCountries();
-  // }, []);
+  useEffect(() => {
+    getAllCountries();
+  }, []);
   return (
     <>
       <div className="header">
         <div className="w-100 flex-between px-2 py-1">
           <div className="d-flex align-items-center">
-            <img className="logo-img me-5" src={Images?.S7Logo} alt="Logo" onClick={() => navigate("/")} />
+            <img
+              className="logo-img me-5"
+              src={Images?.S7Logo}
+              alt="Logo"
+              onClick={() => navigate("/")}
+            />
             <div className="d-flex align-items-center input-css ms-1">
               <FaSearch size={18} className="grey-clr me-2" />
               <input
@@ -177,15 +170,13 @@ function Header() {
               // onClick={() => setIsNotificationModalShow((prev) => !prev)}
               onClick={handleNotification}
             >
-              <IoMdNotificationsOutline size={26}
-              />
+              <IoMdNotificationsOutline size={26} />
               <span className="notification-count d-flex flex-center white-text small-font px-1">
-
                 {unreadCount}
               </span>
             </div>
             <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
-            <AiOutlineLogout 
+            <AiOutlineLogout
               size={24}
               title="Logout"
               className="grey-clr mx-2 fw-800 pointer"

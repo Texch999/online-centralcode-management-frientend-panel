@@ -282,58 +282,62 @@ function EditNewDirector() {
         user_paner_id: parseInt(site.user_paner_id),
         commission_type: parseInt(site.commission_type),
       })),
-      addWebsites: forms.flatMap((form) => {
-        return userWebsitesList[form.id]?.map((userSite) => {
-          if (!selectedWebsites[form.id]?.[userSite.website_access_id])
-            return null;
+      addWebsites: forms
+        .flatMap((form) => {
+          return userWebsitesList[form.id]?.map((userSite) => {
+            if (!selectedWebsites[form.id]?.[userSite.website_access_id])
+              return null;
 
-          const accotypeid =
-            accountTypes[form.id]?.[userSite.website_access_id];
-          console.log(userSite, "userSite");
-          let websiteData = {
-            admin_panel_id: selectedOption?.value,
-            user_paner_id: userSite.user_WebSite_id,
-            commission_type: accotypeid,
-          };
+            const accotypeid =
+              accountTypes[form.id]?.[userSite.website_access_id];
+            console.log(userSite, "userSite");
+            let websiteData = {
+              admin_panel_id: selectedOption?.value,
+              user_paner_id: userSite.user_WebSite_id,
+              commission_type: accotypeid,
+            };
 
-          console.log(websiteData, "websiteData");
+            console.log(websiteData, "websiteData");
 
-          if (accotypeid === "2" || accotypeid === "3") {
-            websiteData.share = parseFloat(
-              websiteDetails[userSite.website_access_id]?.share || 0
-            );
-            websiteData.caschip_values = parseFloat(
-              websiteDetails[userSite.website_access_id]?.caschip_values || 0
-            );
-            websiteData.downline_comm = parseFloat(
-              websiteDetails[userSite.website_access_id]?.downline_comm || 0
-            );
-          }
+            if (accotypeid === "2" || accotypeid === "3") {
+              websiteData.share = parseFloat(
+                websiteDetails[userSite.website_access_id]?.share || 0
+              );
+              websiteData.caschip_values = parseFloat(
+                websiteDetails[userSite.website_access_id]?.caschip_values || 0
+              );
+              websiteData.downline_comm = parseFloat(
+                websiteDetails[userSite.website_access_id]?.downline_comm || 0
+              );
+            }
 
-          if (accotypeid === "1") {
-            websiteData.rent_start_date =
-              websiteDetails[userSite.website_access_id]?.rent_start_date || "";
-            websiteData.monthly_amount = parseInt(
-              websiteDetails[userSite.website_access_id]?.monthly_amount || 0
-            );
-            websiteData.chip_percentage = parseFloat(
-              websiteDetails[userSite.website_access_id]?.chip_percentage || 0
-            );
-            websiteData.max_chips_monthly = parseInt(
-              websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
-            );
-            websiteData.extra_chips_percentage = parseFloat(
-              websiteDetails[userSite.website_access_id]
-                ?.extra_chips_percentage || 0
-            );
-            websiteData.share = parseFloat(
-              websiteDetails[userSite.website_access_id]?.share || 0
-            );
-          }
+            if (accotypeid === "1") {
+              websiteData.rent_start_date =
+                websiteDetails[userSite.website_access_id]?.rent_start_date ||
+                "";
+              websiteData.monthly_amount = parseInt(
+                websiteDetails[userSite.website_access_id]?.monthly_amount || 0
+              );
+              websiteData.chip_percentage = parseFloat(
+                websiteDetails[userSite.website_access_id]?.chip_percentage || 0
+              );
+              websiteData.max_chips_monthly = parseInt(
+                websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
+                  0
+              );
+              websiteData.extra_chips_percentage = parseFloat(
+                websiteDetails[userSite.website_access_id]
+                  ?.extra_chips_percentage || 0
+              );
+              websiteData.share = parseFloat(
+                websiteDetails[userSite.website_access_id]?.share || 0
+              );
+            }
 
-          return websiteData;
-        });
-      }),
+            return websiteData;
+          });
+        })
+        .filter(Boolean), // Filter out null values
     };
 
     console.log("Payload:", payload);
@@ -347,6 +351,89 @@ function EditNewDirector() {
       })
       .catch((error) => console.error("Error updating director:", error));
   };
+  // const handleDirectorSubmit = () => {
+  //   console.log("Selected Websites:", selectedWebsites);
+  //   console.log("Account Types:", accountTypes);
+  //   console.log("User Websites List:", userWebsitesList);
+
+  //   const payload = {
+  //     type: parseInt(selectedRole),
+  //     country_id: parseInt(selectedCountryCode),
+  //     currency_id: parseInt(selectedCurrencyCode),
+  //     name: name,
+  //     login_name: loginName,
+  //     parent_password: managementPassword,
+  //     accessWebsites: userWebsites.map((site) => ({
+  //       id: site.id,
+  //       admin_panel_id: parseInt(site.admin_panel_id),
+  //       user_paner_id: parseInt(site.user_paner_id),
+  //       commission_type: parseInt(site.commission_type),
+  //     })),
+  //     addWebsites: forms.flatMap((form) => {
+  //       return userWebsitesList[form.id]?.map((userSite) => {
+  //         if (!selectedWebsites[form.id]?.[userSite.website_access_id])
+  //           return null;
+
+  //         const accotypeid =
+  //           accountTypes[form.id]?.[userSite.website_access_id];
+  //         console.log(userSite, "userSite");
+  //         let websiteData = {
+  //           admin_panel_id: selectedOption?.value,
+  //           user_paner_id: userSite.user_WebSite_id,
+  //           commission_type: accotypeid,
+  //         };
+
+  //         console.log(websiteData, "websiteData");
+
+  //         if (accotypeid === "2" || accotypeid === "3") {
+  //           websiteData.share = parseFloat(
+  //             websiteDetails[userSite.website_access_id]?.share || 0
+  //           );
+  //           websiteData.caschip_values = parseFloat(
+  //             websiteDetails[userSite.website_access_id]?.caschip_values || 0
+  //           );
+  //           websiteData.downline_comm = parseFloat(
+  //             websiteDetails[userSite.website_access_id]?.downline_comm || 0
+  //           );
+  //         }
+
+  //         if (accotypeid === "1") {
+  //           websiteData.rent_start_date =
+  //             websiteDetails[userSite.website_access_id]?.rent_start_date || "";
+  //           websiteData.monthly_amount = parseInt(
+  //             websiteDetails[userSite.website_access_id]?.monthly_amount || 0
+  //           );
+  //           websiteData.chip_percentage = parseFloat(
+  //             websiteDetails[userSite.website_access_id]?.chip_percentage || 0
+  //           );
+  //           websiteData.max_chips_monthly = parseInt(
+  //             websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
+  //           );
+  //           websiteData.extra_chips_percentage = parseFloat(
+  //             websiteDetails[userSite.website_access_id]
+  //               ?.extra_chips_percentage || 0
+  //           );
+  //           websiteData.share = parseFloat(
+  //             websiteDetails[userSite.website_access_id]?.share || 0
+  //           );
+  //         }
+
+  //         return websiteData;
+  //       });
+  //     }),
+  //   };
+
+  //   console.log("Payload:", payload);
+
+  //   updateSuperAdminByID(userId, payload)
+  //     .then((response) => {
+  //       if (response.status) {
+  //         setSuccessPopupOpen(true);
+  //         setTimeout(() => navigate("/director-admin"), 2000);
+  //       }
+  //     })
+  //     .catch((error) => console.error("Error updating director:", error));
+  // };
   const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
     id,
     name,
@@ -546,9 +633,19 @@ function EditNewDirector() {
         }))
       )
     : [];
+  // const handleCommissionTypeChange = (userIndex, newValue) => {
+  //   const updatedUserWebsites = [...data.userWebsites];
+  //   updatedUserWebsites[userIndex].commission_type = newValue;
+  //   setData({ ...data, userWebsites: updatedUserWebsites });
+  // };
 
-  console.log(transformedOptions, "transformedOptions");
+  // const handleExtraChipsChange = (userIndex, newValue) => {
+  //   const updatedUserWebsites = [...data.userWebsites];
+  //   updatedUserWebsites[userIndex].extra_chips_percentage = newValue;
+  //   setData({ ...data, userWebsites: updatedUserWebsites });
+  // };
 
+  // Similar handlers for other fields...
   return (
     <>
       <div>
@@ -684,7 +781,7 @@ function EditNewDirector() {
                   </div>
                 </div>
 
-                {data.userWebsites?.map((userWebsite, userIndex) => (
+                {/* {data.userWebsites?.map((userWebsite, userIndex) => (
                   <div key={userIndex} className="w-100 mt-3 row">
                     <div className="col-2 d-flex flex-column">
                       <label className="small-font my-1">User Website</label>
@@ -718,7 +815,6 @@ function EditNewDirector() {
                         <input
                           className="small-font white-bg rounded border-grey3 p-2 w-100"
                           value={userWebsite.extra_chips_percentage}
-                          readOnly
                         />
                       </div>
                     )}
@@ -752,6 +848,116 @@ function EditNewDirector() {
                             className="small-font white-bg rounded border-grey3 p-2 w-100"
                             value={userWebsite.caschip_values}
                             readOnly
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))} */}
+                {data.userWebsites?.map((userWebsite, userIndex) => (
+                  <div key={userIndex} className="w-100 mt-3 row">
+                    <div className="col-2 d-flex flex-column">
+                      <label className="small-font my-1">User Website</label>
+                      <select
+                        className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
+                        disabled
+                      >
+                        <option value={userWebsite.web_name}>
+                          {userWebsite.web_name}
+                        </option>
+                      </select>
+                    </div>
+                    <div className="col-2">
+                      <label className="small-font my-1">Commission Type</label>
+                      <div className="d-flex align-items-center">
+                        <select
+                          className="small-font white-bg rounded border-grey3 p-2 w-100"
+                          value={userWebsite.commission_type}
+                          onChange={(e) => {
+                            const updatedUserWebsites = [...data.userWebsites];
+                            updatedUserWebsites[userIndex].commission_type =
+                              e.target.value;
+                            // Update the state with the new commission type
+                            // You may need to update the state at a higher level depending on your structure
+                          }}
+                        >
+                          {Object.entries(commissionTypes).map(
+                            ([value, label]) => (
+                              <option key={value} value={value}>
+                                {label}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                    {userWebsite.commission_type === 1 && (
+                      <div className="col-2">
+                        <label className="small-font my-1">Extra Chips %</label>
+                        <input
+                          className="small-font white-bg rounded border-grey3 p-2 w-100"
+                          value={userWebsite.extra_chips_percentage}
+                          onChange={(e) => {
+                            const updatedUserWebsites = [...data.userWebsites];
+                            updatedUserWebsites[
+                              userIndex
+                            ].extra_chips_percentage = e.target.value;
+                            // Update the state with the new extra chips percentage
+                          }}
+                        />
+                      </div>
+                    )}
+                    {userWebsite.commission_type === 2 && (
+                      <>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Downline Share
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.share}
+                            onChange={(e) => {
+                              const updatedUserWebsites = [
+                                ...data.userWebsites,
+                              ];
+                              updatedUserWebsites[userIndex].share =
+                                e.target.value;
+                              // Update the state with the new share value
+                            }}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Downline Comm
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.downline_comm}
+                            onChange={(e) => {
+                              const updatedUserWebsites = [
+                                ...data.userWebsites,
+                              ];
+                              updatedUserWebsites[userIndex].downline_comm =
+                                e.target.value;
+                              // Update the state with the new downline commission
+                            }}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Caschip Values
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.caschip_values}
+                            onChange={(e) => {
+                              const updatedUserWebsites = [
+                                ...data.userWebsites,
+                              ];
+                              updatedUserWebsites[userIndex].caschip_values =
+                                e.target.value;
+                              // Update the state with the new caschip values
+                            }}
                           />
                         </div>
                       </>

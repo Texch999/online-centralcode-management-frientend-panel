@@ -179,8 +179,14 @@ const AddNePaymentGateway = () => {
 
   return (
     <div>
-      <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
+      <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
+        <div className="yellow-font medium-font mb-0">Add New Gateway</div>
+
+        <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
+          <span className="small-font" style={{ color: "#fff" }} >
+            Back
+          </span>
+        </div>
       </div>
       <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
         <div className="row mb-3">

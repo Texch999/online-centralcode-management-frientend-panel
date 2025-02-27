@@ -11,7 +11,6 @@ const RecentAccessIp = () => {
   const [activeRow, setActiveRow] = useState(null);
   const { userId, userActivity } = useParams();
   const isInitialRender = useRef(true)
-  const location = useLocation();
   const decodedUserId = decodeURIComponent(userId);
   const decodedUserActivity = decodeURIComponent(userActivity);
   const itemsPerPage = 6
@@ -27,6 +26,7 @@ const RecentAccessIp = () => {
     { header: "Last Date/Time", field: "lastDateTime", width: "20%" },
     { header: "Method", field: "method", width: "20%" },
     { header: "IP", field: "ip", width: "20%" },
+    { header: "Login Url", field: "loginurl", width: "20%" },
     { header: "Configure", field: "configure", width: "10%" },
   ];
   const [logData, setLogsData] = useState([])
@@ -123,6 +123,7 @@ const RecentAccessIp = () => {
     </div>,
     method: <div>{item.browser_type || "Unknown Browser"}</div>,
     location: <div>{item.location}</div>,
+    loginurl: <div>{item.login_url}</div>,
     ip: <div>{item.ip}</div>,
     configure: (
       <div className="relative">
@@ -186,10 +187,14 @@ const RecentAccessIp = () => {
     <div>
       <div className="mt-2">
         <div className="d-flex justify-content-between align-items-center w-100">
-          <div className="d-flex ">
+
+          <div className="d-flex align-items-center">
             <h6>Activity Logs</h6>
             <FiChevronRight className="medium-font m-1" size={18} />
             <h6 className="saffron-clr">{decodedUserActivity}</h6>
+          </div>
+          <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
+            <span className="small-font" style={{ color: "#fff" }} >Back</span>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { MdBlockFlipped, MdSwapVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
 import { SlPencil } from "react-icons/sl";
-
 import { FaSearch } from "react-icons/fa";
 import { Images } from "../../images/index";
 import Table from "../../components/Table";
@@ -19,9 +18,13 @@ const DownlineList = () => {
 
   const navigate = useNavigate();
 
-  const handleNavigateUserDashboard = (trasaction) => {
-    navigate(`/downline-list/${trasaction}`);
+  const handleNaviagte = (director, website) => {
+    navigate(`/downline-list/${director}/${website}`);
   };
+
+  // const handleNavigateUserDashboard = (trasaction) => {
+  //   navigate(`/downline-list/${trasaction}`);
+  // };
 
   const cardData = [
     {
@@ -100,20 +103,22 @@ const DownlineList = () => {
           <h6 className="mb-0 text-white small-font">{title}</h6>
           {icon}
         </div>
-        <p className={`medium-font fw-600 ${bootstrapClassesBottom}`}>{value}</p>
+        <p className={`medium-font fw-600 ${bootstrapClassesBottom}`}>
+          {value}
+        </p>
       </div>
     );
   };
 
   const ACCOUNT_COLUMNS = [
     { header: "Account", field: "account" },
-    { header: "Credit Ref.", field: "creditRef" },
+    { header: "Website List", field: "websitelist" },
     { header: "Total Cus D", field: "totalCusD" },
     { header: "Total Cus W", field: "totalCusW" },
     { header: "Wall. Bal", field: "walletBalance" },
-    { header: "Exposure", field: "exposure" },
-    { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
-    { header: "Ref P/L", field: "referralPL" },
+    // { header: "Exposure", field: "exposure" },
+    // { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
+    // { header: "Ref P/L", field: "referralPL" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
 
@@ -125,14 +130,12 @@ const DownlineList = () => {
           <div>India - Hyderabad</div>
         </div>
       ),
-      creditRef: (
+      websitelist: (
         <>
-          0{" "}
-          <SlPencil
-            className="icon-edit ms-2 pointer"
-            size={15}
-            onClick={() => setShowCreditAmountPopup(true)}
-          />
+          <div className="pointer" onClick={() => handleNaviagte("srinivas", "brahma")}>
+            brahma.com
+          </div>
+          <div className="pointer" onClick={() => handleNaviagte("vamsi", "ravana")}>ravan.com</div>
         </>
       ),
       totalCusD: 10000,
@@ -147,17 +150,21 @@ const DownlineList = () => {
             Active
           </button>
           <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2 pointer" />
+            <BsPerson
+              size={20}
+              className="icon-action me-2 pointer"
+              // onClick={profilepage}
+            />
             <MdBlockFlipped
               size={20}
               className="icon-action me-2 pointer"
               onClick={() => setOnBlockPopup(true)}
             />
-            <MdSwapVert
+            {/* <MdSwapVert
               size={20}
               className="icon-action pointer"
-              onClick={() => handleNavigateUserDashboard("Trasactions History")}
-            />
+              onClick={() => handleNaviagte("srinivas", "brahma")}
+            /> */}
           </div>
         </div>
       ),
@@ -177,7 +184,7 @@ const DownlineList = () => {
       totalCusD: 10000,
       totalCusW: 5000,
       walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
+      // exposure: <span className="red-font">1000</span>,
       walletPlayingBalance: 1000,
       referralPL: <div className="green-font">3000</div>,
       action: (
@@ -188,7 +195,11 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2" />
             <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" />
+            {/* <MdSwapVert
+              size={20}
+              className="icon-action"
+              onClick={() => handleNaviagte("srinivas", "brahma")}
+            /> */}
           </div>
         </div>
       ),
@@ -219,7 +230,7 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2" />
             <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" />
+            {/* <MdSwapVert size={20} className="icon-action" /> */}
           </div>
         </div>
       ),
@@ -250,7 +261,7 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2" />
             <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" />
+            {/* <MdSwapVert size={20} className="icon-action" /> */}
           </div>
         </div>
       ),
@@ -281,7 +292,7 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2" />
             <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" />
+            {/* <MdSwapVert size={20} className="icon-action" /> */}
           </div>
         </div>
       ),
@@ -312,7 +323,7 @@ const DownlineList = () => {
           <div className="d-flex">
             <BsPerson size={20} className="icon-action me-2" />
             <MdBlockFlipped size={20} className="icon-action me-2" />
-            <MdSwapVert size={20} className="icon-action" />
+            {/* <MdSwapVert size={20} className="icon-action" /> */}
           </div>
         </div>
       ),
@@ -325,9 +336,6 @@ const DownlineList = () => {
     { header: <span className="fw-700">50000</span> },
     { header: <span className="fw-700">25000</span> },
     { header: <span className="fw-700 yellow-font">10000</span> },
-    { header: <span className="fw-700 red-font">5000</span> },
-    { header: <span className="fw-700">500</span> },
-    { header: <span className="fw-700 green-font">15000</span> },
     { header: "" },
   ];
 

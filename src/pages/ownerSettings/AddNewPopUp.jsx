@@ -51,6 +51,7 @@ const AddNewPopUp = ({
   const [selectedSecurityQuestion, setSelectedSecurityQuestion] = useState([]);
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
   const [errorPopup, setErrorPopup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectOptions = [
     { value: 1, label: "Active" },
@@ -60,13 +61,13 @@ const AddNewPopUp = ({
   const handleCloseRejReasons = () => {
     setAddNewModalRejection(false);
     reset();
-    // getRejReasons();
+    getRejReasons();
   };
 
   const handleCloseSecQns = () => {
     setAddNewModalSecurity(false);
     reset();
-    // getSecurityQuestions();
+    getSecurityQuestions();
   };
 
   useEffect(() => {
@@ -96,6 +97,7 @@ const AddNewPopUp = ({
       description: data.description,
       status: Number(data.status?.value),
     };
+    setIsSubmitting(true);
 
     const response = isEdit
       ? updateRejReasons(selectedRejReasonId, payload)
@@ -117,6 +119,9 @@ const AddNewPopUp = ({
         setTimeout(() => {
           setErrorPopup(false);
         }, 1000);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
@@ -141,6 +146,7 @@ const AddNewPopUp = ({
   }, [isEdit, selectedQnsId, setValue]);
 
   const onSubmitSecQns = (data) => {
+    setIsSubmitting(true);
     const payload = {
       questions: data.securityQns,
       status: data.status?.value || null,
@@ -166,6 +172,9 @@ const AddNewPopUp = ({
         setTimeout(() => {
           setErrorPopup(false);
         }, 1000);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
   return (
@@ -346,7 +355,11 @@ const AddNewPopUp = ({
                       pointerEvents: isValid ? "auto" : "none",
                     }}
                   >
-                    {isEdit ? "Update" : "Create"}
+                    {isSubmitting
+                      ? "submitting..."
+                      : isEdit
+                      ? "Update"
+                      : "Create"}
                   </button>
                 </div>
               </div>

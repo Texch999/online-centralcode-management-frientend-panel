@@ -142,7 +142,7 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const query = new URLSearchParams(params).toString();
-      return `/director/${userID()}/superAdmins?${query}`;
+      return `/director/${userID()}/superAdmins`;
     },
   },
   // getDirectorDwnList: {
@@ -196,7 +196,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}`,
   },
-
+  updateSuperAdminByID: {
+    method: "post",
+    url: (id) => `/director/${userID()}/superAdmin/${id}`,
+  },
   updateDirectorEmployeeByID: {
     method: "post",
     url: (id) => `/director/${userID()}/updateEmployee/${id}`,
@@ -421,7 +424,8 @@ const endpoints = {
   },
   unblockBlockDirectorDwnln: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
+    url: ( data) =>
+      `/director/${userID()}/superAdmin/${data.id}/status`,
   },
   getUserWebsites: {
     method: "get",
@@ -627,7 +631,6 @@ const endpoints = {
       return `/user/${userID()}/offlineDeposits/directors?${query}`;
     },
   },
-
 
   ManagementOfflineDepositeTicketCreation: {
     method: "post",

@@ -37,6 +37,7 @@ const AddWibsites = () => {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const allCountries = useSelector((item) => item?.allCountries);
+  console.log(allCountries, "====>allCountries")
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
       limit,
@@ -96,7 +97,6 @@ const AddWibsites = () => {
   useEffect(() => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-
     // Fetch data based on role and filterName
     if (filterName.trim() === "") {
       if (role === "management") {
