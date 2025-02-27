@@ -653,7 +653,7 @@ const endpoints = {
   managemnetViewDownlinelist:{
     method:"get",
     url:`/user/${userID()}/downlinelist`
-  }
+  },
 };
 
 export default endpoints;
