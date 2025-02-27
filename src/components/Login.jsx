@@ -99,6 +99,7 @@ function Login() {
         localStorage.setItem("role_code", response?.user?.role?.role_name);
         localStorage.setItem("user_id", response?.user?.id);
         localStorage.setItem("user_name", response?.user?.name);
+        localStorage.setItem("currency_id", response?.user?.currency_id);
 
         navigate("/");
       } else {

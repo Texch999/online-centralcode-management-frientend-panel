@@ -106,8 +106,8 @@ const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
 };
 // const getWebsitesList = (params) => {
-const getDirectorAccountDetails = (data) => {
-  return apiRequest("getDirectorAccountDetails", data);
+const getDirectorAccountDetails = (params) => {
+  return apiRequest("getDirectorAccountDetails", {}, params);
 };
 
 const postDirectorAccountDetails = (data) => {
