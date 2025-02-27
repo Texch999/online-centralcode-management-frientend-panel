@@ -595,7 +595,9 @@
 .white-bg2 {
   background-color: #ffffff;
 }
-
+.border-none {
+  border: none !important;
+}
 .border-left {
   border-left: 1px solid #dee2e6 !important;
 }
@@ -876,7 +878,7 @@ button.cst-btn:hover {
 }
 
 .placeholder-red-clr {
-  color: "#F43A23"
+  color: "#F43A23";
 }
 
 .status-bar {
@@ -888,9 +890,9 @@ button.cst-btn:hover {
 }
 
 .red-font {
-  color: "#db5318"
+  color: "#db5318";
 }
 
 .input-cevent-stop {
-  pointer-events: "none"
+  pointer-events: "none";
 }

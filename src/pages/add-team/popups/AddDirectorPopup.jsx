@@ -9,38 +9,21 @@ import {
   addDirectorTeam,
   updateDirectorEmployeeByID,
 } from "../../../api/apiMethods";
-import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-const schema = yup.object().shape({
-  role: yup.string().required("Role is required"),
-  name: yup.string().required("Name is required"),
-  login_name: yup.string().required("Login Name is required"),
-  phone_no: yup
-    .string()
-    .matches(/^\d{10}$/, "Phone Number must be 10 digits")
-    .optional(),
-  password: yup.string().when("$isEditMode", {
-    is: false,
-    then: yup.string().required("Password is required"),
-  }),
-  confirm_password: yup.string().when("$isEditMode", {
-    is: false,
-    then: yup
-      .string()
-      .required("Confirm Password is required")
-      .oneOf([yup.ref("password"), null], "Passwords must match"),
-  }),
-  email: yup
-    .string()
-    .email("Email must be a valid email")
-    .required("Email is required"),
-  parent_password: yup.string().required("Parent Password is required"),
-});
 
 function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
-  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    role: "",
+    name: "",
+    login_name: "",
+    phone_no: "",
+    password: "",
+    confirm_password: "",
+    email: "",
+    parent_password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [backendError, setBackendError] = useState(null);
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirm_password: false,
@@ -52,36 +35,31 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
     label: value,
   }));
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    getValues,
-    setError: setFormError,
-  } = useForm({
-    resolver: yupResolver(schema),
-    context: { isEditMode },
-  });
-
   useEffect(() => {
     if (isEditMode && selectedUser) {
-      setValue("role", selectedUser.role?.toString() || "");
-      setValue("name", selectedUser.name || "");
-      setValue("login_name", selectedUser.login_name || "");
-      setValue("phone_no", selectedUser.phone_no || "");
-      setValue("email", selectedUser.email || "");
-      setValue("parent_password", "");
+      setFormData({
+        role: selectedUser.role?.toString() || "",
+        name: selectedUser.name || "",
+        login_name: selectedUser.login_name || "",
+        phone_no: selectedUser.phone_no || "",
+        email: selectedUser.email || "",
+        parent_password: "",
+        password: "",
+        confirm_password: "",
+      });
     } else {
-      setValue("role", "");
-      setValue("name", "");
-      setValue("login_name", "");
-      setValue("phone_no", "");
-      setValue("password", "");
-      setValue("confirm_password", "");
-      setValue("email", "");
-      setValue("parent_password", "");
+      setFormData({
+        role: "",
+        name: "",
+        login_name: "",
+        phone_no: "",
+        password: "",
+        confirm_password: "",
+        email: "",
+        parent_password: "",
+      });
     }
-  }, [selectedUser, isEditMode, show, setValue]);
+  }, [selectedUser, isEditMode, show]);
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prevState) => ({
@@ -90,22 +68,100 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
     }));
   };
 
-  const onSubmitHandler = (data) => {
-    const apiCall = isEditMode ? updateDirectorEmployeeByID : addDirectorTeam;
-    const payload = isEditMode ? { ...data, id: selectedUser.id } : data;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
 
-    apiCall(payload)
-      .then((response) => {
-        if (response?.status === true) {
-          console.log("Operation successful", response);
-          onClose();
-        } else {
-          setError("Operation failed");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "Operation failed");
-      });
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const handleSelectChange = (selectedOption) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      role: selectedOption.value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, role: "" }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.role) {
+      newErrors.role = "Role is required";
+    }
+
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.login_name) {
+      newErrors.login_name = "Login Name is required";
+    }
+
+    if (formData.phone_no && !/^\d{10}$/.test(formData.phone_no)) {
+      newErrors.phone_no = "Phone Number must be 10 digits";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email must be a valid email";
+    }
+
+    if (!isEditMode) {
+      if (!formData.password) {
+        newErrors.password = "Password is required";
+      } else if (formData.password.length < 8) {
+        newErrors.password = "Password must be at least 8 characters";
+      }
+
+      if (!formData.confirm_password) {
+        newErrors.confirm_password = "Confirm Password is required";
+      } else if (formData.confirm_password !== formData.password) {
+        newErrors.confirm_password = "Passwords must match";
+      }
+    }
+
+    if (!formData.parent_password) {
+      newErrors.parent_password = "Parent Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      let response;
+      if (isEditMode) {
+        const { password, confirm_password, ...updateData } = formData;
+
+        response = await updateDirectorEmployeeByID(
+          selectedUser.id,
+          updateData
+        );
+      } else {
+        response = await addDirectorTeam(formData);
+      }
+
+      if (response?.status === true) {
+        console.log("Operation successful", response);
+        onClose();
+      } else {
+        setBackendError(response?.message || "Operation failed");
+      }
+    } catch (error) {
+      setBackendError(error.message || "Operation failed");
+    }
   };
 
   return (
@@ -119,96 +175,86 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
         </div>
 
         <form
-          onSubmit={handleSubmit(onSubmitHandler)}
+          onSubmit={onSubmitHandler}
           className="add-management-popup-form mt-2"
         >
+          {backendError && <p className="text-danger">{backendError}</p>}
+
           <div className="row mb-3">
             <div className="col">
               <label className="small-font mb-1">Role</label>
-              <Controller
-                control={control}
-                name="role"
-                render={({ field }) => (
-                  <Select
-                    className="small-font"
-                    options={roleOptions}
-                    placeholder="Select"
-                    styles={customStyles}
-                    value={
-                      roleOptions.find(
-                        (option) => option.value === field.value
-                      ) || null
-                    }
-                    onChange={(option) => field.onChange(option.value)}
-                  />
-                )}
+              <Select
+                className="small-font"
+                options={roleOptions}
+                placeholder="Select"
+                styles={customStyles}
+                value={
+                  roleOptions.find(
+                    (option) => option.value === formData.role
+                  ) || null
+                }
+                onChange={handleSelectChange}
               />
+              {errors.role && (
+                <p className="text-danger small-font">{errors.role}</p>
+              )}
             </div>
             <div className="col">
               <label className="small-font mb-1">Name</label>
-              <Controller
-                control={control}
+              <input
+                type="text"
                 name="name"
-                render={({ field }) => (
-                  <input
-                    type="text"
-                    {...field}
-                    className="small-font rounded input-css w-100"
-                    placeholder="Enter"
-                    required
-                  />
-                )}
+                value={formData.name}
+                onChange={handleChange}
+                className="small-font rounded input-css w-100"
+                placeholder="Enter"
               />
+              {errors.name && (
+                <p className="text-danger small-font">{errors.name}</p>
+              )}
             </div>
             <div className="col">
               <label className="small-font mb-1">Login Name</label>
-              <Controller
-                control={control}
+              <input
+                type="text"
                 name="login_name"
-                render={({ field }) => (
-                  <input
-                    type="text"
-                    {...field}
-                    className="small-font rounded input-css w-100"
-                    placeholder="Enter"
-                    required
-                  />
-                )}
+                value={formData.login_name}
+                onChange={handleChange}
+                className="small-font rounded input-css w-100"
+                placeholder="Enter"
               />
+              {errors.login_name && (
+                <p className="text-danger small-font">{errors.login_name}</p>
+              )}
             </div>
           </div>
 
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="small-font mb-1">Phone Number</label>
-              <Controller
-                control={control}
+              <input
+                type="text"
                 name="phone_no"
-                render={({ field }) => (
-                  <input
-                    type="text"
-                    {...field}
-                    className="small-font rounded input-css w-100"
-                    placeholder="Enter"
-                  />
-                )}
+                value={formData.phone_no}
+                onChange={handleChange}
+                className="small-font rounded input-css w-100"
+                placeholder="Enter"
               />
+              {errors.phone_no && (
+                <p className="text-danger small-font">{errors.phone_no}</p>
+              )}
             </div>
             {!isEditMode && (
               <>
                 <div className="col-md-4 position-relative">
                   <label className="small-font mb-1">Password</label>
-                  <Controller
-                    control={control}
+                  <input
+                    type={showPassword.password ? "text" : "password"}
                     name="password"
-                    render={({ field }) => (
-                      <input
-                        type={showPassword.password ? "text" : "password"}
-                        {...field}
-                        className="small-font rounded input-css w-100"
-                        placeholder="Enter Password"
-                      />
-                    )}
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="small-font rounded input-css w-100"
+                    placeholder="Enter Password"
                   />
                   <span
                     className="eye-icon"
@@ -222,22 +268,19 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
                   >
                     {showPassword.password ? <FaEyeSlash /> : <FaEye />}
                   </span>
+                  {errors.password && (
+                    <p className="text-danger small-font">{errors.password}</p>
+                  )}
                 </div>
                 <div className="col-md-4 position-relative">
                   <label className="small-font mb-1">Confirm Password</label>
-                  <Controller
-                    control={control}
+                  <input
+                    type={showPassword.confirm_password ? "text" : "password"}
                     name="confirm_password"
-                    render={({ field }) => (
-                      <input
-                        type={
-                          showPassword.confirm_password ? "text" : "password"
-                        }
-                        {...field}
-                        className="small-font rounded input-css w-100"
-                        placeholder="Confirm Password"
-                      />
-                    )}
+                    value={formData.confirm_password}
+                    onChange={handleChange}
+                    className="small-font rounded input-css w-100"
+                    placeholder="Confirm Password"
                   />
                   <span
                     className="eye-icon"
@@ -251,6 +294,11 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
                   >
                     {showPassword.confirm_password ? <FaEyeSlash /> : <FaEye />}
                   </span>
+                  {errors.confirm_password && (
+                    <p className="text-danger small-font">
+                      {errors.confirm_password}
+                    </p>
+                  )}
                 </div>
               </>
             )}
@@ -259,33 +307,27 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
           <div className="row align-items-end">
             <div className="col-md-4">
               <label className="small-font mb-1">Email</label>
-              <Controller
-                control={control}
+              <input
+                type="email"
                 name="email"
-                render={({ field }) => (
-                  <input
-                    type="email"
-                    {...field}
-                    className="small-font rounded input-css w-100"
-                    placeholder="Enter Email"
-                    required
-                  />
-                )}
+                value={formData.email}
+                onChange={handleChange}
+                className="small-font rounded input-css w-100"
+                placeholder="Enter Email"
               />
+              {errors.email && (
+                <p className="text-danger small-font">{errors.email}</p>
+              )}
             </div>
             <div className="col-md-4 position-relative">
               <label className="small-font mb-1">Parent Password</label>
-              <Controller
-                control={control}
+              <input
+                type={showPassword.parent_password ? "text" : "password"}
                 name="parent_password"
-                render={({ field }) => (
-                  <input
-                    type={showPassword.parent_password ? "text" : "password"}
-                    {...field}
-                    className="small-font rounded input-css w-100"
-                    placeholder="Enter Parent Password"
-                  />
-                )}
+                value={formData.parent_password}
+                onChange={handleChange}
+                className="small-font rounded input-css w-100"
+                placeholder="Enter Parent Password"
               />
               <span
                 className="eye-icon"
@@ -299,6 +341,11 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
               >
                 {showPassword.parent_password ? <FaEyeSlash /> : <FaEye />}
               </span>
+              {errors.parent_password && (
+                <p className="text-danger small-font">
+                  {errors.parent_password}
+                </p>
+              )}
             </div>
             <div className="col-md-4">
               <button className="saffron-btn w-100" type="submit">
@@ -306,7 +353,6 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
               </button>
             </div>
           </div>
-          {error && <p className="text-danger">{error}</p>}
         </form>
       </Modal.Body>
     </Modal>

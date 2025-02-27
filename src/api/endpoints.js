@@ -21,6 +21,10 @@ const endpoints = {
   },
 
   createDirector: { method: "post", url: () => `/user/${userID()}/director` },
+  createSuperAdmin: {
+    method: "post",
+    url: () => `/director/${userID()}/superAdmin`,
+  },
 
   getRoles: { method: "get", url: () => `/user/${userID()}/rolesList` },
   getCountries: { method: "get", url: () => `/user/${userID()}/countries` },
@@ -33,6 +37,7 @@ const endpoints = {
     method: "post",
     url: () => `/user/${userID()}/website/website`,
   },
+
   updateWebsite: {
     method: "put",
     url: (id) => `/user/${userID()}/website/update/websiteby/${id}`,
@@ -133,7 +138,17 @@ const endpoints = {
       return `/user/${userID()}/directors?${query}`;
     },
   },
-  // endpoint: http://localhost:901rest2/0.1/director/1/employees?limit=10?offset=0
+  getDirectorDwnList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/superAdmins`;
+    },
+  },
+  // getDirectorDwnList: {
+  //   method: "get",
+  //   url: () => `/director/${userID()}/superAdmins`,
+  // },
   getDirectorEmployees: {
     method: "get",
     url: (params) => {
@@ -145,9 +160,15 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/employeeUpdatePassword/${id}`,
   },
+  //   "/director/:id/superAdmin/:userId/newPassword",
+
   resetDirectorPassword: {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/newPassword`,
+  },
+  resetSuperAdminPassword: {
+    method: "post",
+    url: (id) => `/director/${userID()}/superAdmin/${id}/newPassword`,
   },
   resetDirectorEmployeePassword: {
     method: "post",
@@ -175,7 +196,10 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}`,
   },
-
+  updateSuperAdminByID: {
+    method: "post",
+    url: (id) => `/director/${userID()}/superAdmin/${id}`,
+  },
   updateDirectorEmployeeByID: {
     method: "post",
     url: (id) => `/director/${userID()}/updateEmployee/${id}`,
@@ -193,7 +217,11 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/director/${id}`,
   },
-
+  // getSuperAdminDetailsById
+  getSuperAdminDetailsById: {
+    method: "get",
+    url: (id) => `/director/${userID()}/superAdmin/${id}`,
+  },
   createSecurityQuestions: {
     method: "post",
     url: () => `/user/${userID()}/secQuestion`,
@@ -268,6 +296,7 @@ const endpoints = {
     method: "get",
     url: () => `/user/${userID()}/website/websites`,
   },
+
   getDirectorEmployeesLoginLogsList: {
     method: "get",
     url: (params) => {
@@ -380,22 +409,23 @@ const endpoints = {
     method: "post",
     url: (id) => `/director/${userID()}/directorProfileResetPassword/${id}`,
   },
+  // /director/:id/superAdmin
 
-  getDirectorDwnList: {
-    method: "get",
-    url: () => `/user/${userID()}/directors`,
-  },
   getDirectorDwnListById: {
     method: "get",
-    url: (id) => `/user/${userID()}/director/${id}`,
+    url: (id) => `/director/${userID()}/superAdmin/${id}`,
   },
+
+  //...................//
+
   updateDirectorDwnlnPswd: {
     method: "post",
     url: (id) => `/user/${userID()}/directorUpdatePassword/${id}`,
   },
   unblockBlockDirectorDwnln: {
     method: "post",
-    url: (id) => `/user/${userID()}/directorBlockUnblock/${id}`,
+    url: ( data) =>
+      `/director/${userID()}/superAdmin/${data.id}/status`,
   },
   getUserWebsites: {
     method: "get",
@@ -403,10 +433,9 @@ const endpoints = {
   },
   getAdminWebsites: {
     method: "get",
-    url: () => `/user/${userID()}/website/all-admin/websites`,
+    url: () => `/director/${userID()}/website/all-admin/websites`,
   },
 
-  // payment details in managementttttttttttttttttttttttttttttttttttttttttttttt
   getManagementPaymentDetails: {
     method: "get",
     url: (params) => {
@@ -506,22 +535,24 @@ const endpoints = {
 
   readNotificationsforManagement: {
     method: "patch",
-    url: (data) => `/user/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
+    url: (data) =>
+      `/user/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
   },
   readNotificationsforDirector: {
     method: "patch",
-    url: (data) => `/director/${userID()}/notifications/${data.id}/readStatus/${data.status}`,
+    url: (data) =>
+      `/director/${userID()}/notifications/${data.id}/readStatus/${
+        data.status
+      }`,
   },
   DirectorOffilneDepositTicket: {
     method: "post",
     url: () => `/director/${userID()}/offlineDeposit`,
   },
-  DirectorOffilneDepositTicket: {
-    method: "post",
-    url: () => `/director/${userID()}/offlineDeposit`,
-  },
-
-
+  // DirectorOffilneDepositTicket: {
+  //   method: "post",
+  //   url: () => `/director/${userID()}/offlineDeposit`,
+  // },
   getDirectorDepositeTicketsList: {
     method: "get",
     url: (params) => {
@@ -600,8 +631,6 @@ const endpoints = {
       return `/user/${userID()}/offlineDeposits/directors?${query}`;
     },
   },
-
-
 
   ManagementOfflineDepositeTicketCreation: {
     method: "post",
