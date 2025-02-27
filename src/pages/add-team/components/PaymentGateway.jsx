@@ -43,6 +43,7 @@ const PaymentGateway = ({ dwnlnId }) => {
   const [showPaymentGatewayData, setShowPaymentGatewayData] = useState([]);
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item.allCountries);
+  console.log(allCountries,"allCountries")
   const itemsPerPage = 2;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -99,11 +100,13 @@ const PaymentGateway = ({ dwnlnId }) => {
 
   const getDirPaymentDetails = (page, pageSize, currencyId) => {
     setLoading(true);
-    managementDwnProfileDirPaymentDetails(dwnlnId, {
-      page,
-      pageSize,
-      currencyId,
-    })
+    const params={
+      page:page,
+      pageSize:pageSize,
+      currencyId:currencyId,
+      dwnlnId:dwnlnId
+    }
+    managementDwnProfileDirPaymentDetails( params)
       .then((response) => {
         if (response.status === true) {
           console.log(response.data, "response.data");
@@ -125,7 +128,7 @@ const PaymentGateway = ({ dwnlnId }) => {
     if (role_code === "management") {
       getDirPaymentDetails(limit, offset, selectedCountry);
     }
-  }, [selectedCountry]);
+  }, [selectedCountry,currentPage]);
 
   const handlePageChange = ({ limit, offset }) => {
     setCurrentLimit(limit);
@@ -207,7 +210,7 @@ const PaymentGateway = ({ dwnlnId }) => {
       <div className="py-4 bg-white shadow rounded">
         <div className="px-4 d-flex justify-content-between align-items-center mb-3">
           <h6 className="medium-font">Add Payment gateway</h6>
-          <div className="d-flex align-items-center">
+          {/* <div className="d-flex align-items-center">
             <span className="me-2 black-text small-font">Active</span>
 
             <Form>
@@ -219,12 +222,12 @@ const PaymentGateway = ({ dwnlnId }) => {
             </Form>
 
             <span className="me-2 black-text small-font">In-active</span>
-          </div>
+          </div> */}
         </div>
         <hr className="dashed-line mb-4" style={{ color: "black" }} />
 
-        <div className="row align-items-center py-3 px-3 mb-2 payment-gateway-select-container">
-          {/* Country Dropdown */}
+        {/* <div className="row align-items-center py-3 px-3 mb-2 payment-gateway-select-container">
+         
           <div className="col-md-2 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Country</label>
             <Select
@@ -236,7 +239,7 @@ const PaymentGateway = ({ dwnlnId }) => {
               menuPlacement="auto"
             />
           </div>
-          {/* Gateway Dropdown */}
+    
           <div className="col-md-2 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Gateway</label>
             <div className="position-relative">
@@ -251,7 +254,7 @@ const PaymentGateway = ({ dwnlnId }) => {
             </div>
           </div>
 
-          {/* Select Details Dropdown */}
+        
           <div className="col-md-6 col-lg-7 mb-3 mb-md-0">
             <label className="small-font mb-1 d-block">Select Details</label>
             <Select
@@ -264,11 +267,11 @@ const PaymentGateway = ({ dwnlnId }) => {
             />
           </div>
 
-          {/* Submit Button */}
+        
           <div className="col-md-2 col-lg-1 align-self-end">
             <button className="small-font saffron-btn2 w-100">Submit</button>
           </div>
-        </div>
+        </div> */}
 
         <div className="row d-flex justify-content-between px-3">
           <h6 className="col-2 small-font">All Currencies</h6>

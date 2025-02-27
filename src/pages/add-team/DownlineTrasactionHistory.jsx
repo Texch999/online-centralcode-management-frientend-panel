@@ -201,7 +201,7 @@ const DownlineTrasactionHistory = () => {
       <div className="row d-flex justify-content-between align-items-center mb-4 mt-2">
         <h6 className="col-3 mb-0 d-flex align-items-center">
           <FiChevronLeft
-            className="medium-font black-text"
+            className="medium-font yellow-font pointer"
             onClick={() => navigate(-1)}
           />
           <span className="yellow-font medium-font">

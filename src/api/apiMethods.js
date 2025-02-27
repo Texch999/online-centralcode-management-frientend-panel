@@ -344,9 +344,14 @@ const DirectorUpLinePaymentDetails = (data) => {
 const getDirectorSites = (data) => {
   return apiRequest("getDirectorSites", data);
 };
-const managementDwnProfileDirPaymentDetails = (id, data) => {
-  return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+// const managementDwnProfileDirPaymentDetails = (id, data) => {
+//   return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+// };
+
+const managementDwnProfileDirPaymentDetails = (params) => {
+  return apiRequest("managementDwnProfileDirPaymentDetails", {}, params);
 };
+
 const UpdateProfileDirpaymentDetailsByMan = (id, data) => {
   return apiRequest("UpdateProfileDirpaymentDetailsByMan", data, id);
 };
@@ -362,13 +367,13 @@ const getNotificationsforManagement = (data) => {
 };
 const getNotificationsforDirector = (data) => {
   return apiRequest("getNotificationsforDirector", data);
-}
+};
 const readNotificationsforManagement = (id, status) => {
-  return apiRequest("readNotificationsforManagement",id,{id,status});
+  return apiRequest("readNotificationsforManagement", id, { id, status });
 };
 
 const readNotificationsforDirector = (id, status) => {
-  return apiRequest("readNotificationsforDirector",id,{id,status});
+  return apiRequest("readNotificationsforDirector", id, { id, status });
 };
 const DirectorOffilneDepositTicket = (data) => {
   return apiRequest("DirectorOffilneDepositTicket", data);
@@ -437,7 +442,9 @@ const ManagementOfflineDepositeTicketCreation = (id, data) => {
 const ManagementOfflineWithdrawTicketCreation = (id, data) => {
   return apiRequest("ManagementOfflineWithdrawTicketCreation", data, id);
 };
-
+const managemnetViewDownlinelist = (data) => {
+  return apiRequest("managemnetViewDownlinelist", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -549,4 +556,5 @@ export {
   ownerDowlineDirAndSADetails,
   ManagementOfflineDepositeTicketCreation,
   ManagementOfflineWithdrawTicketCreation,
+  managemnetViewDownlinelist,
 };

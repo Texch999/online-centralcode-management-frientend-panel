@@ -9,6 +9,7 @@ import CreditReferencePopup from "./popups/CreditReferencePopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { useParams } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa6";
+import { GiClick } from "react-icons/gi";
 
 const DownlineWebsiteList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
@@ -43,7 +44,9 @@ const DownlineWebsiteList = () => {
       ),
       websitelist: (
         <>
-          <div>diamond.com</div>
+          <div className="pointer">diamond.com
+          <GiClick className="yellow-font mx-1" size={18}/>
+          </div>
         </>
       ),
       totalCusD: 10000,
@@ -181,9 +184,9 @@ const DownlineWebsiteList = () => {
     <div>
       <div className="row d-flex justify-content-between align-items-center mb-3">
         <div className="col-md-3">
-          <div className="yellow-font large-font mb-0">
+          <div className="yellow-font medium-font mb-0">
             <span onClick={() => navigate(-1)}>
-              <FaChevronLeft className="mx-1" />
+              <FaChevronLeft className="mx-1 pointer" />
             </span>
 
             <span>

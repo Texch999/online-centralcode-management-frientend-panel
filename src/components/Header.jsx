@@ -117,6 +117,8 @@ function Header() {
       });
   };
   useEffect(() => {
+    if (countriesDataFetched.current) return;
+    countriesDataFetched.current = true;
     getAllCountries();
   }, []);
   return (
