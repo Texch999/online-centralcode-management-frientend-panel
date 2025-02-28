@@ -39,7 +39,7 @@ function AddNewDirectorSuperAdmin() {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
   const [countryData, setCountryData] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
-  const [forms, setForms] = useState([]);
+  const [forms, setForms] = useState([{ id: 1 }]);
   const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [selectedAdmins, setSelectedAdmins] = useState({});
   const [userWebsitesList, setUserWebsitesList] = useState({});
@@ -705,8 +705,7 @@ function AddNewDirectorSuperAdmin() {
                     userWebsitesList[form.id].map((userSite) => (
                       <div key={userSite.website_access_id} className="row">
                         {/* Checkbox for Selecting User Website */}
-                        <div>hi:{userSite.user_panel}</div>
-                        <span>{userSite.website_access_id}</span>
+
                         <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
                           <input
                             type="checkbox"
