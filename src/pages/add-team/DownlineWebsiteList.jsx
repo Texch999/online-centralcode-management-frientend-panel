@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { MdBlockFlipped, MdSwapVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
@@ -9,228 +9,218 @@ import CreditReferencePopup from "./popups/CreditReferencePopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { useParams } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa6";
+import { GiClick } from "react-icons/gi";
+import { getDwnlineWebsiteList } from "../../api/apiMethods";
+import { CgUnblock } from "react-icons/cg";
+import { CircleLoader } from "react-spinners";
+import { getUserWebsiteDetails } from "./../../api/apiMethods";
 
 const DownlineWebsiteList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const role = localStorage.getItem("role");
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
   const navigate = useNavigate();
-  const { director, website } = useParams();
-  console.log(director, "director");
+  const [error, setError] = useState("");
+  const [userWebsitesData, setUserWebsitesData] = useState([]);
+  console.log(userWebsitesData, "userr");
+  const dataFetched = useRef(false);
+  const { user, userId, adminWebsite, adminWebsiteId } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [searchName, setSearchName] = useState("");
+  const [selectedWebsite, setSelectedWebsite] = useState("");
 
   const handleNavigateUserDashboard = (userwebisite) => {
     navigate(`/downline-list/${userwebisite}`);
   };
   const ACCOUNT_COLUMNS = [
-    // { header: "Account", field: "account" },
     { header: "User Websites", field: "websitelist" },
     { header: "Total Cus D", field: "totalCusD" },
     { header: "Total Cus W", field: "totalCusW" },
     { header: "Wall. Bal", field: "walletBalance" },
-    // { header: "Exposure", field: "exposure" },
-    // { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
-    // { header: "Ref P/L", field: "referralPL" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
 
-  const ACCOUNT_DATA = [
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      websitelist: (
-        <>
-          <div>diamond.com</div>
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
+  const filterData = userWebsitesData?.filter(
+    (item) =>
+      (searchName === "" ||
+        item?.websiteName?.toLowerCase().includes(searchName.toLowerCase())) &&
+      (selectedWebsite === "" || item?.websiteName === selectedWebsite)
+  );
+
+  const fetchDownlineUserWebsitesList = () => {
+    setLoading(true);
+    getDwnlineWebsiteList(userId, adminWebsiteId)
+      .then((response) => {
+        if (response?.status === true) {
+          setUserWebsitesData(response?.data);
+        } else {
+          setError("something went wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (dataFetched.current) return;
+    dataFetched.current = true;
+    fetchDownlineUserWebsitesList();
+  }, []);
+
+  const handleBlock = () => {
+    setOnBlockPopup(true);
+  };
+
+  const data = filterData?.map((item) => ({
+    websitelist: (
+      <>
+        <div className="pointer">{item?.websiteName}</div>
+      </>
+    ),
+    totalCusD: item?.toatalCustomerDiposite,
+    totalCusW: item?.totalCustomerWithdrawl,
+    walletBalance: <span className="yellow-font">{item?.wall_bal}</span>,
+    action: (
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        {item?.status === 1 ? (
           <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
             Active
           </button>
-          <div className="d-flex">
-            {/* <BsPerson
-              size={20}
-              className="icon-action me-2 pointer"
-    
-            /> */}
-            <MdBlockFlipped
-              size={20}
-              className="icon-action me-2 pointer"
-              onClick={() => setOnBlockPopup(true)}
-            />
-            <MdSwapVert
-              size={20}
-              className="icon-action pointer"
-              onClick={() => handleNavigateUserDashboard("diamond")}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      websitelist: (
-        <>
-          <div>diamond.com</div>
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      // exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            {/* <BsPerson
+        ) : (
+          <button className="red-btn mb-1 p-2 badge rounded">In-Active</button>
+        )}
+        <div className="d-flex">
+          <span>
+            {item?.status === 1 ? (
+              <CgUnblock
                 size={20}
-                className="icon-action me-2 pointer"
-      
-              /> */}
-            <MdBlockFlipped
-              size={20}
-              className="icon-action me-2 pointer"
-              onClick={() => setOnBlockPopup(true)}
-            />
-            <MdSwapVert
-              size={20}
-              className="icon-action pointer"
-              // onClick={() => handleNavigateUserDashboard("Trasactions History")}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      websitelist: (
-        <>
-          <div>diamond.com</div>
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            {/* <BsPerson
+                className="icon-action me-2 pointer green-clr"
+                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
+              />
+            ) : (
+              <MdBlockFlipped
                 size={20}
-                className="icon-action me-2 pointer"
-      
-              /> */}
-            <MdBlockFlipped
-              size={20}
-              className="icon-action me-2 pointer"
-              onClick={() => setOnBlockPopup(true)}
-            />
-            <MdSwapVert
-              size={20}
-              className="icon-action pointer"
-              // onClick={() => handleNavigateUserDashboard("Trasactions History")}
-            />
-          </div>
+                className="icon-action me-2 pointer red-clr"
+                onClick={() => handleBlock(item?.id)}
+              />
+            )}
+          </span>
+          <MdSwapVert
+            size={20}
+            className="icon-action pointer"
+            onClick={() => handleNavigateUserDashboard(item?.websiteName)}
+          />
         </div>
-      ),
-    },
-  ];
+      </div>
+    ),
+  }));
+
+  const totalDeposit = userWebsitesData?.reduce(
+    (sum, item) => sum + Number(item?.toatalCustomerDiposite || 0),
+    0
+  );
+
+  const totalWithdraw = userWebsitesData?.reduce(
+    (sum, item) => sum + Number(item?.totalCustomerWithdrawl || 0),
+    0
+  );
+  const totalBal = userWebsitesData?.reduce(
+    (sum, item) => sum + Number(item?.wall_bal || 0),
+    0
+  );
 
   const ACCOUNT_FOOTER = [
     { header: <span className="fw-700">Total</span> },
-    { header: "" },
-    { header: <span className="fw-700">50000</span> },
-    { header: <span className="fw-700">25000</span> },
-    { header: <span className="fw-700 yellow-font">10000</span> },
-    // { header: <span className="fw-700 red-font">5000</span> },
-    // { header: <span className="fw-700">500</span> },
-    // { header: <span className="fw-700 green-font">15000</span> },
+    { header: <span className="fw-700">{totalDeposit}</span> },
+    { header: <span className="fw-700">{totalWithdraw}</span> },
+    { header: <span className="fw-700 yellow-font">{totalBal}</span> },
     { header: "" },
   ];
 
   return (
     <div>
-      <div className="row d-flex justify-content-between align-items-center mb-3">
-        <div className="col-md-3">
-          <div className="yellow-font large-font mb-0">
-            <span onClick={() => navigate(-1)}>
-              <FaChevronLeft className="mx-1" />
-            </span>
-
-            <span>
-              {director}-{website}-downline website list
-            </span>
+      {loading ? (
+        <>
+          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            <CircleLoader color="#3498db" size={40} />
+            <div className="medium-font black-font my-3">
+              Just a moment...............⏳
+            </div>
           </div>
-        </div>
+        </>
+      ) : (
+        <div>
+          <div className="row d-flex justify-content-between align-items-center mb-3">
+            <div className="col-md-3">
+              <div
+                className="yellow-font medium-font mb-0 white-space pointer align-items-center"
+                onClick={() => navigate(-1)}
+              >
+                <span>
+                  <FaChevronLeft className="mx-1 pointer" />
+                </span>
 
-        <div className="col-md-9 d-flex flex-end align-items-center gap-3">
-          <select className="input-pill rounded-pill px-4 small-font">
-            <option value="all">All</option>
-          </select>
+                <span>
+                  {user}-{adminWebsite}-downline website list
+                </span>
+              </div>
+            </div>
 
-          <div className="input-pill d-flex align-items-center rounded-pill px-3">
-            <FaSearch size={18} className="grey-clr me-2" />
-            <input
-              className="small-font all-none w-100"
-              placeholder="Search..."
-              type="text"
+            <div className="col-md-9 d-flex flex-end align-items-center gap-3">
+              <select
+                className="input-pill rounded-pill px-4 small-font"
+                value={selectedWebsite}
+                onChange={(e) => setSelectedWebsite(e.target.value)}
+              >
+                <option value="">All</option>
+                {userWebsitesData?.map((item, index) => (
+                  <option key={index} value={item?.websiteName}>
+                    {item?.websiteName}
+                  </option>
+                ))}
+              </select>
+
+              <div className="input-pill d-flex align-items-center rounded-pill px-3">
+                <FaSearch size={18} className="grey-clr me-2" />
+                <input
+                  className="small-font all-none w-100"
+                  placeholder="Search..."
+                  type="text"
+                  value={searchName}
+                  onChange={(e) => setSearchName(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <Table
+              columns={ACCOUNT_COLUMNS}
+              data={data}
+              footer={ACCOUNT_FOOTER}
+              itemsPerPage={5}
+              rowColor={(row) =>
+                row.walletBalance > 0 ? "orange-text" : "black-text"
+              }
             />
           </div>
+
+          <CreditReferencePopup
+            show={showCreditAmountPopup}
+            onHide={() => setShowCreditAmountPopup(false)}
+          />
+
+          <ConfirmationPopup
+            confirmationPopupOpen={onBlockPopup}
+            setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+            discription={"are you sure you want to block this Account?"}
+            submitButton={"Block"}
+          />
         </div>
-      </div>
-
-      <div className="mt-3">
-        <Table
-          columns={ACCOUNT_COLUMNS}
-          data={ACCOUNT_DATA}
-          footer={ACCOUNT_FOOTER}
-          itemsPerPage={5}
-          rowColor={(row) =>
-            row.walletBalance > 0 ? "orange-text" : "black-text"
-          }
-        />
-      </div>
-
-      <CreditReferencePopup
-        show={showCreditAmountPopup}
-        onHide={() => setShowCreditAmountPopup(false)}
-      />
-
-      <ConfirmationPopup
-        confirmationPopupOpen={onBlockPopup}
-        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-        discription={"are you sure you want to block this Account?"}
-        submitButton={"Block"}
-      />
+      )}
     </div>
   );
 };
