@@ -451,6 +451,9 @@ const dwnlineDSASuspend = (id, data) => {
 const getDwnlineWebsiteList = (id, websiteId) => {
   return apiRequest("getDwnlineWebsiteList", id, { id, websiteId });
 };
+const dwnlineUserWebsites = (id, data) => {
+  return apiRequest("dwnlineUserWebsites", data, id);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -565,4 +568,5 @@ export {
   managemnetViewDownlinelist,
   dwnlineDSASuspend,
   getDwnlineWebsiteList,
+  dwnlineUserWebsites,
 };

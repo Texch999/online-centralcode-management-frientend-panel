@@ -556,7 +556,8 @@ const endpoints = {
   readNotificationsforDirector: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/notifications/${data.id}/readStatus/${data.status
+      `/director/${userID()}/notifications/${data.id}/readStatus/${
+        data.status
       }`,
   },
   DirectorOffilneDepositTicket: {
@@ -667,6 +668,10 @@ const endpoints = {
     method: "get",
     url: (data) =>
       `/user/${userID()}/director/${data?.id}/adminweb/${data?.websiteId}`,
+  },
+  dwnlineUserWebsites: {
+    method: "put",
+    url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
   },
 };
 
