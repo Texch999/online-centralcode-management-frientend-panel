@@ -16,8 +16,8 @@ import {
 } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
 import { CircleLoader } from "react-spinners";
-import e from "cors";
 import { CgUnblock } from "react-icons/cg";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const DownlineList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
@@ -35,6 +35,7 @@ const DownlineList = () => {
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState("");
   const [statusId, setStatusId] = useState(null);
+  const [errorPopup, setErrorPopup] = useState(false);
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value ? Number(e.target.value) : "");
   };
@@ -52,7 +53,6 @@ const DownlineList = () => {
     navigate(
       `/downline-list/${user}/${userid}/${adminwebsite}/${adminwebsiteId}`
     );
-
   };
 
   const totalDeposit = downlineList?.reduce(
@@ -177,6 +177,10 @@ const DownlineList = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 2000);
       })
       .finally(() => {
         setLoading(false);
@@ -388,6 +392,11 @@ const DownlineList = () => {
               } this ${userName}`}
               submitButton={statusId === 1 ? "Block" : "Un-Block"}
               onSubmit={suspend}
+            />
+            <ErrorPopup
+              discription={error}
+              errorPopupOpen={errorPopup}
+              setErrorPopupOpen={setErrorPopup}
             />
           </div>
         </>

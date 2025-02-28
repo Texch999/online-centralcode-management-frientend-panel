@@ -9,11 +9,13 @@ import CreditReferencePopup from "./popups/CreditReferencePopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { useParams } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa6";
-import { GiClick } from "react-icons/gi";
-import { getDwnlineWebsiteList } from "../../api/apiMethods";
+import {
+  dwnlineUserWebsites,
+  getDwnlineWebsiteList,
+} from "../../api/apiMethods";
 import { CgUnblock } from "react-icons/cg";
 import { CircleLoader } from "react-spinners";
-import { getUserWebsiteDetails } from "./../../api/apiMethods";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const DownlineWebsiteList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
@@ -28,6 +30,10 @@ const DownlineWebsiteList = () => {
   const [loading, setLoading] = useState(false);
   const [searchName, setSearchName] = useState("");
   const [selectedWebsite, setSelectedWebsite] = useState("");
+  const [errorPopup, setErrorPopup] = useState(false);
+  const [wName, setWName] = useState("");
+  const [statusId, setStatusId] = useState(null);
+  const[userWebsiteId,setUserWebsiteId]=useState(null)
 
   const handleNavigateUserDashboard = (userwebisite) => {
     navigate(`/downline-list/${userwebisite}`);
@@ -59,6 +65,10 @@ const DownlineWebsiteList = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 2000);
       })
       .finally(() => {
         setLoading(false);
@@ -70,8 +80,25 @@ const DownlineWebsiteList = () => {
     fetchDownlineUserWebsitesList();
   }, []);
 
-  const handleBlock = () => {
+  const handleBlock = (id, wname, status) => {
     setOnBlockPopup(true);
+    setUserWebsiteId(id);
+    setWName(wname);
+    setStatusId(status);
+  };
+
+  const suspend = () => {
+    dwnlineUserWebsites()
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response?.data);
+        } else {
+          setError("something went wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
   };
 
   const data = filterData?.map((item) => ({
@@ -98,7 +125,9 @@ const DownlineWebsiteList = () => {
               <CgUnblock
                 size={20}
                 className="icon-action me-2 pointer green-clr"
-                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
+                onClick={() =>
+                  handleBlock(item?.id, item?.websiteName, item?.status)
+                }
               />
             ) : (
               <MdBlockFlipped
@@ -216,8 +245,17 @@ const DownlineWebsiteList = () => {
           <ConfirmationPopup
             confirmationPopupOpen={onBlockPopup}
             setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-            discription={"are you sure you want to block this Account?"}
-            submitButton={"Block"}
+            discription={`are you sure you want to ${
+              statusId === 1 ? "Block" : "Un-Block"
+            } this ${wName}`}
+            submitButton={statusId === 1 ? "Block" : "Un-Block"}
+            onSubmit={suspend}
+          />
+
+          <ErrorPopup
+            discription={error}
+            errorPopupOpen={errorPopup}
+            setErrorPopupOpen={setErrorPopup}
           />
         </div>
       )}
