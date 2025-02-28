@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginManagement = (data) => {
@@ -454,6 +453,15 @@ const getDwnlineWebsiteList = (id, websiteId) => {
 const dwnlineUserWebsites = (id, data) => {
   return apiRequest("dwnlineUserWebsites", data, id);
 };
+const resetPasswordMan = (data) => {
+  return apiRequest("resetPasswordMan", data);
+};
+const resetPswdDirector = (data) => {
+  return apiRequest("resetPswdDirector", data);
+};
+const dirEmployeeResetPswd = (data) => {
+  return apiRequest("dirEmployeeResetPswd", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -569,4 +577,7 @@ export {
   dwnlineDSASuspend,
   getDwnlineWebsiteList,
   dwnlineUserWebsites,
+  resetPasswordMan,
+  resetPswdDirector,
+  dirEmployeeResetPswd,
 };
