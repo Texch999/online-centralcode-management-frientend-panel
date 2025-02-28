@@ -199,6 +199,7 @@ const DownlineList = () => {
       .then((response) => {
         if (response?.status === true) {
           console.log(response?.data);
+          fetchAllViewDownlineList();
         } else {
           setError("something went wrong");
         }
@@ -285,7 +286,7 @@ const DownlineList = () => {
               <MdBlockFlipped
                 size={20}
                 className="icon-action me-2 pointer red-clr"
-                onClick={() => handleBlock(item?.id)}
+                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
               />
             )}
           </span>
@@ -387,10 +388,8 @@ const DownlineList = () => {
             <ConfirmationPopup
               confirmationPopupOpen={onBlockPopup}
               setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-              discription={`are you sure you want to ${
-                statusId === 1 ? "Block" : "Un-Block"
-              } this ${userName}`}
-              submitButton={statusId === 1 ? "Block" : "Un-Block"}
+              discription={`Are you sure you want to Block this ${userName}`}
+              submitButton={"Block"}
               onSubmit={suspend}
             />
             <ErrorPopup
