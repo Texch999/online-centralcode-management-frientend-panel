@@ -657,7 +657,6 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-   
             <div className="col p-1">
               <label className="small-font my-1">Currency</label>
               <select
@@ -919,8 +918,9 @@ function EditNewDirector() {
 
             {forms.map((form, index) => (
               <>
-                            <h5 className="yellow-font fw-bold mb-0">ADD WEBSITE MARKET </h5>
-
+                <h5 className="yellow-font fw-bold mb-0">
+                  ADD WEBSITE MARKET{" "}
+                </h5>
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">
@@ -982,7 +982,6 @@ function EditNewDirector() {
                     </div>
                   )}
                 </div>
-
                 <div className="col-11">
                   <label className="small-font my-1">User Website</label>
                   {role === "director" && selectedOption ? (
