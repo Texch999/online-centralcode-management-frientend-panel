@@ -36,16 +36,12 @@ function EditNewDirector() {
   const [individualSuperAdminData, setIndividualSuperAdminData] =
     useState(null);
   const [websiteDetails, setWebsiteDetails] = useState({});
-  console.log(websiteDetails, "websiteDetails");
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
-  console.log(userWebsites, "userWebsites");
-  console.log(selectedRole, "selectedRole");
 
   const [addWebsites, setAddWebsites] = useState([]);
   const [forms, setForms] = useState([]);
   const role = localStorage.getItem("role_code");
-  console.log(userWebsites, "userWebsites");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   useEffect(() => {
@@ -224,7 +220,6 @@ function EditNewDirector() {
 
       accessWebsites: userWebsites.map((site) => {
         const commissionType = parseInt(site.commission_type);
-        console.log(commissionType, "commissionType");
         return {
           id: site.id,
           admin_panel_id: parseInt(site.admin_panel_id),
@@ -242,7 +237,6 @@ function EditNewDirector() {
       addWebsites: Object.keys(websiteDetails).map((key) => {
         const commissionType = parseInt(accountTypes[1]?.[key]);
         const adminPanelId = selectedAdmins[1]?.value;
-        console.log(adminPanelId, "adminPanelId");
 
         const websiteData = {
           admin_panel_id: adminPanelId,
@@ -287,10 +281,6 @@ function EditNewDirector() {
       .catch((error) => console.error("Error updating director:", error));
   };
   const handleDirectorSubmit = () => {
-    console.log("Selected Websites:", selectedWebsites);
-    console.log("Account Types:", accountTypes);
-    console.log("User Websites List:", userWebsitesList);
-
     const payload = {
       type: parseInt(selectedRole),
       country_id: parseInt(selectedCountryCode),
@@ -312,7 +302,6 @@ function EditNewDirector() {
 
             const accotypeid =
               accountTypes[form.id]?.[userSite.website_access_id];
-            console.log(userSite, "userSite");
             let websiteData = {
               admin_panel_id: selectedOption?.value,
               user_paner_id: userSite.user_WebSite_id,
@@ -362,7 +351,6 @@ function EditNewDirector() {
         .filter(Boolean),
     };
 
-    console.log("Payload:", payload);
 
     updateSuperAdminByID(userId, payload)
       .then((response) => {
@@ -418,10 +406,8 @@ function EditNewDirector() {
   const [accountTypes, setAccountTypes] = useState({});
 
   const [errors, setErrors] = useState({});
-  console.log(selectedAdmins, "selectedAdmins");
 
   const [selectedOption, setSelectedOption] = useState(null);
-  console.log(userWebsitesList, "userWebsitesList");
 
   const GetAllCountries = () => {
     getCountries()
@@ -740,7 +726,7 @@ function EditNewDirector() {
                 {userWebsites?.map((userWebsite, userIndex) => (
                   <div key={userIndex} className="w-100 mt-3 row">
                     <div className="col-2 d-flex flex-column">
-                      <label className="small-font my-1">User Website</label>
+                      {/* <label className="small-font my-1">User Website</label> */}
                       <select
                         className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
                         disabled
@@ -970,12 +956,12 @@ function EditNewDirector() {
                     </div>
                   )}
                 </div>
-                <div className="col-11">
-                  <label className="small-font my-1">User Website</label>
+                <div className="col-12">
+                  {/* <label className="small-font my-1">User Website</label> */}
                   {role === "director" && selectedOption ? (
                     userWebsitesList[form.id]?.length > 0 ? (
                       userWebsitesList[form.id].map((userSite) => (
-                        <div key={userSite.website_access_id} className="row">
+                        <div key={userSite.website_access_id} className="d-flex">
                           {/* Checkbox for Selecting User Website */}
                           <div>hi:{userSite.user_panel}</div>
                           <span>{userSite.website_access_id}</span>
@@ -1005,7 +991,7 @@ function EditNewDirector() {
                           {selectedWebsites[form.id]?.[
                             userSite.website_access_id
                           ] && (
-                            <div className="col-2 my-1">
+                            <div className="col-1 my-1">
                               <Select
                                 className="small-font white-bg"
                                 placeholder="Account Type"
@@ -1034,7 +1020,7 @@ function EditNewDirector() {
                             userSite.website_access_id
                           ] === "1" && (
                             <div className="col-9">
-                              <div className="row">
+                              <div className="d-flex">
                                 <div className="col">
                                   <input
                                     type="date"
@@ -1253,13 +1239,13 @@ function EditNewDirector() {
                       <p className="small-font">No user websites available</p>
                     )
                   ) : (
-                    <div className="col-11">
+                    <div className="col-12">
                       <label className="small-font my-1">User Website</label>
                       {userWebsitesList[form.id]?.length > 0 ? (
                         userWebsitesList[form.id].map((userSite) => (
                           <div key={userSite.id} className="row">
                             {/* Checkbox for Selecting User Website */}
-                            <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
+                            <div className="col-1 input-css d-flex white-bg border-grey3 my-2">
                               <input
                                 type="checkbox"
                                 className="me-2"
@@ -1279,7 +1265,7 @@ function EditNewDirector() {
                               />
                             </div>
                             {selectedWebsites[form.id]?.[userSite.id] && (
-                              <div className="col-2 my-1">
+                              <div className="col-1 my-1">
                                 <Select
                                   className="small-font white-bg"
                                   placeholder="Account Type"
@@ -1303,7 +1289,7 @@ function EditNewDirector() {
                               </div>
                             )}
                             {accountTypes[form.id]?.[userSite.id] === "1" && (
-                              <div className="col-9">
+                              <div className="col-10">
                                 <div className="row">
                                   <div className="col">
                                     <input
