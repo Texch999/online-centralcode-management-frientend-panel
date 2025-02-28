@@ -177,7 +177,7 @@ function AddNewDirectorSuperAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm()) return; // Only call validateForm() here
+    if (!validateForm()) return;
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
       alert("Please select at least one Admin Website.");
@@ -284,7 +284,7 @@ function AddNewDirectorSuperAdmin() {
 
   const handleDirectorSubmit = (e) => {
     console.log(selectedWebsites, "selectedWebsites");
-    if (e) e.preventDefault(); // Only prevent default if `e` exists
+    if (e) e.preventDefault();
     if (!validateForm()) return;
     if (!selectedOption || Object.keys(selectedOption).length === 0) {
       alert("Please select at least one Admin Website.");
@@ -437,24 +437,13 @@ function AddNewDirectorSuperAdmin() {
 
   console.log(transformedOptions, "transformedOptions");
 
-  // useEffect(() => {
-  //   if (!role) return;
-
-  //   if (role === "management") {
-  //     handleSubmit();
-  //   } else if (role === "director") {
-  //     handleDirectorSubmit();
-  //   } else {
-  //     console.log("error");
-  //   }
-  // }, [role]);
   const filteredRoles = adminRoless.filter((userRole) => {
     if (role === "management") {
       return userRole.label === "director" || userRole.label === "SuperAdmin";
     } else if (role === "director") {
       return userRole.label === "SuperAdmin";
     }
-    return false; // Default case, if no condition matches
+    return false;
   });
   return (
     <>
@@ -547,7 +536,7 @@ function AddNewDirectorSuperAdmin() {
               <option value="">Select </option>
               {currencyData?.map((currency, index) => (
                 <option key={index} value={currency.country_id}>
-                  {currency.currency_name}
+                  {currency.currency_name} ---{currency.name}
                 </option>
               ))}
             </select>
