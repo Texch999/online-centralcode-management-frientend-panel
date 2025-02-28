@@ -281,7 +281,7 @@ const AddWebsitesPopup = ({ show, onHide,
           )}
 
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h5 className="medium-font fw-600">Add Website</h5>
+            <h5 className="medium-font fw-600">{editMode ? "Update" : "Add"} Website</h5>
             <MdOutlineClose size={22} onClick={handleClose} className="pointer" />
           </div>
 

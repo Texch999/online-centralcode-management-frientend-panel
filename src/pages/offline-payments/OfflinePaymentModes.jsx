@@ -203,6 +203,7 @@ const OfflinePaymentModes = () => {
 
       action: (
         <div className="d-flex gap-2 my-1">
+          {console.log(item?.status, Number(item?.status) === 1, "===>  item?.status === ")}
           {item?.status === 1 ? (
             <span>
               <SlPencil
@@ -288,9 +289,8 @@ const OfflinePaymentModes = () => {
       <ConfirmationPopup
         confirmationPopupOpen={confirmationModal}
         setConfirmationPopupOpen={() => setConfirmationModal(false)}
-        discription={`Are you sure you want to ${
-          statusId === 1 ? "In-Active" : "Active"
-        } this Payment Mode?`}
+        discription={`Are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
+          } this Payment Mode?`}
         submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
         onSubmit={suspendStatus}
       />

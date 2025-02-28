@@ -343,8 +343,12 @@ const endpoints = {
 
   getDirectorAccountDetails: {
     method: "get",
-    url: () => `/director/${userID()}/directorAccounts`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/directorAccounts?${query}`;
+    },
   },
+
   postDirectorAccountDetails: {
     method: "post",
     url: () => `/director/${userID()}/directorAccount`,
@@ -424,8 +428,9 @@ const endpoints = {
   },
   unblockBlockDirectorDwnln: {
     method: "post",
-    url: ( data) =>
-      `/director/${userID()}/superAdmin/${data.id}/status`,
+    url: (data) => `/director/${userID()}/superAdmin/${data.id}/status`,
+    // url: (data) =>
+    //   `/director/${userID()}/superAdmin/${data.id}/status`,
   },
   getUserWebsites: {
     method: "get",
@@ -433,7 +438,7 @@ const endpoints = {
   },
   getAdminWebsites: {
     method: "get",
-    url: () => `/director/${userID()}/website/all-admin/websites`,
+    url: () => `/user/${userID()}/website/all-admin/websites`,
   },
 
   getManagementPaymentDetails: {
@@ -508,10 +513,20 @@ const endpoints = {
     url: () => `/director/${userID()}/details/${userID()}`,
   },
   //show dir payment details in man
+  // managementDwnProfileDirPaymentDetails: {
+  //   method: "get",
+  //   url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+  // },
+
   managementDwnProfileDirPaymentDetails: {
     method: "get",
-    url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+    url: (params) => {
+      const { dwnlnId, ...filteredParams } = params;
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/offlineAccounts/${dwnlnId}?${query}`;
+    },
   },
+
   UpdateProfileDirpaymentDetailsByMan: {
     method: "put",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
@@ -541,8 +556,7 @@ const endpoints = {
   readNotificationsforDirector: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/notifications/${data.id}/readStatus/${
-        data.status
+      `/director/${userID()}/notifications/${data.id}/readStatus/${data.status
       }`,
   },
   DirectorOffilneDepositTicket: {
@@ -640,6 +654,19 @@ const endpoints = {
   ManagementOfflineWithdrawTicketCreation: {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/offlineWithdraw`,
+  },
+  managemnetViewDownlinelist: {
+    method: "get",
+    url: `/user/${userID()}/downlinelist`,
+  },
+  dwnlineDSASuspend: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/status`,
+  },
+  getDwnlineWebsiteList: {
+    method: "get",
+    url: (data) =>
+      `/user/${userID()}/director/${data?.id}/adminweb/${data?.websiteId}`,
   },
 };
 

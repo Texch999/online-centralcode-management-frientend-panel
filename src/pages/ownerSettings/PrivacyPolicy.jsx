@@ -90,6 +90,7 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.web_name,
   }));
+  console.log(availablePrivacyWebsiteId,"gg")
 
   const hanldeWebsites = (id) => {
     setSelectWebsite(true);
@@ -128,7 +129,7 @@ const PrivacyPolicy = () => {
     getPrivacyPolicy({ page, pageSize })
       .then((response) => {
         if (response?.status === true) {
-          setPrivacyList(response.data);
+          setPrivacyList(response?.data);
         } else {
           setError("Something Went Wrong");
         }
