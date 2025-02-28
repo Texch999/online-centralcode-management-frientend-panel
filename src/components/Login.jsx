@@ -125,7 +125,7 @@ function Login() {
   } else if (location.pathname === "/director/login") {
     imageSrc = Images.LoginImageThree;
   } else {
-    imageSrc = Images.TechVibeTwo;
+    imageSrc = Images.LoginImageTwo;
   }
   return (
     <div className="login-bg w-100 h-100vh p-5 d-flex justify-content-center align-items-center">

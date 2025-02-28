@@ -39,11 +39,11 @@ function EditNewDirector() {
   console.log(websiteDetails, "websiteDetails");
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
+  console.log(userWebsites, "userWebsites");
   const [addWebsites, setAddWebsites] = useState([]);
-  const [forms, setForms] = useState([{ id: 1 }]);
+  const [forms, setForms] = useState([]);
   const role = localStorage.getItem("role_code");
   console.log(userWebsites, "userWebsites");
-
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   useEffect(() => {
@@ -65,7 +65,23 @@ function EditNewDirector() {
 
     fetchData();
   }, []);
+  const validateForm = () => {
+    const errors = {};
 
+    if (!name) errors.name = "Name is required";
+    if (!loginName) errors.loginName = "Login Name is required";
+    if (!selectedRole) errors.selectedRole = "Role is required";
+    if (!selectedCurrencyCode)
+      errors.selectedCurrencyCode = "Currency is required";
+    if (!selectedCountryCode)
+      errors.selectedCountryCode = "Country is required";
+    if (!managementPassword)
+      errors.managementPassword = "Management Password is required";
+
+    // Add more validation rules as needed
+
+    return errors;
+  };
   useEffect(() => {
     if (userId) {
       if (Role === "management") {
@@ -360,7 +376,7 @@ function EditNewDirector() {
     id,
     name,
   }));
-
+  console.log(adminRolesArray, "adminRolesArray");
   const transformData = (data) => {
     const adminMap = new Map();
 
@@ -523,7 +539,6 @@ function EditNewDirector() {
     }));
   };
   console.log(selectedOption, "selectedOption");
-
   const addAnotherForm = () => {
     const newForm = { id: Date.now() };
     setForms((prevForms) => [...prevForms, newForm]);
@@ -589,6 +604,9 @@ function EditNewDirector() {
                 onChange={(e) => setName(e.target.value)}
                 required
               />
+              {errors.name && (
+                <span className="text-danger small-font">{errors.name}</span>
+              )}
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Login Name</label>
@@ -600,6 +618,11 @@ function EditNewDirector() {
                 onChange={(e) => setLoginName(e.target.value)}
                 required
               />
+              {errors.loginName && (
+                <span className="text-danger small-font">
+                  {errors.loginName}
+                </span>
+              )}
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Role</label>
@@ -609,12 +632,30 @@ function EditNewDirector() {
                 onChange={(e) => setSelectedRole(e.target.value)}
               >
                 <option value="">Select</option>
-                {adminRolesArray.map((role) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name}
-                  </option>
-                ))}
+                {adminRolesArray
+                  .filter((role) => {
+                    if (selectedRole === "1") {
+                      // If Director is selected, exclude Director
+                      return role.name !== "director";
+                    } else if (selectedRole === "management") {
+                      // If Management is selected, show only Director and SuperAdmin
+                      return (
+                        role.name === "director" || role.name === "SuperAdmin"
+                      );
+                    }
+                    return true; // Default case, show all roles
+                  })
+                  .map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
               </select>
+              {errors.selectedRole && (
+                <span className="text-danger small-font">
+                  {errors.selectedRole}
+                </span>
+              )}
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Currency</label>
@@ -630,6 +671,11 @@ function EditNewDirector() {
                   </option>
                 ))}
               </select>
+              {errors.selectedCurrencyCode && (
+                <span className="text-danger small-font">
+                  {errors.selectedCurrencyCode}
+                </span>
+              )}
             </div>
           </div>
           <div className="row">
@@ -647,6 +693,11 @@ function EditNewDirector() {
                   </option>
                 ))}
               </select>
+              {errors.selectedCountryCode && (
+                <span className="text-danger small-font">
+                  {errors.selectedCountryCode}
+                </span>
+              )}
             </div>
 
             <div className="p-1  col-3 position-relative">
@@ -669,6 +720,11 @@ function EditNewDirector() {
                 {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
+            {errors.managementPassword && (
+              <span className="text-danger small-font">
+                {errors.managementPassword}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -699,8 +755,8 @@ function EditNewDirector() {
                         className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
                         disabled
                       >
-                        <option value={userWebsite.web_name}>
-                          {userWebsite.web_name}
+                        <option value={userWebsite.web_url}>
+                          {userWebsite.web_url}
                         </option>
                       </select>
                     </div>
@@ -710,6 +766,7 @@ function EditNewDirector() {
                         <select
                           className="small-font white-bg rounded border-grey3 p-2 w-100"
                           value={userWebsite.commission_type}
+                          disabled
                           onChange={(e) => {
                             const updatedUserWebsites = [...userWebsites];
                             updatedUserWebsites[userIndex].commission_type =
@@ -861,6 +918,9 @@ function EditNewDirector() {
 
             {forms.map((form, index) => (
               <>
+                <h5 className="yellow-font fw-bold mb-0">
+                  ADD WEBSITE MARKET{" "}
+                </h5>
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">
@@ -922,7 +982,6 @@ function EditNewDirector() {
                     </div>
                   )}
                 </div>
-
                 <div className="col-11">
                   <label className="small-font my-1">User Website</label>
                   {role === "director" && selectedOption ? (
@@ -1478,27 +1537,26 @@ function EditNewDirector() {
               </>
             ))}
           </div>
-
-          <div className="text-end mb-3 w-100">
-            <button type="button" className="cst-btn" onClick={addAnotherForm}>
-              <FaPlus className="me-2" /> Add Another
-            </button>
-          </div>
-
-          <div className="d-flex justify-content-end">
-            <button
-              className="saffron-btn rounded"
-              type="button"
-              onClick={
-                Role === "management"
-                  ? handleManagementSubmit
-                  : handleDirectorSubmit
-              }
-            >
-              Update Details
-            </button>
-          </div>
         </form>
+        <div className="text-end mb-3 w-100">
+          <button type="button" className="cst-btn" onClick={addAnotherForm}>
+            <FaPlus className="me-2" /> Add Another
+          </button>
+        </div>
+
+        <div className="d-flex justify-content-end">
+          <button
+            className="saffron-btn rounded"
+            type="button"
+            onClick={
+              Role === "management"
+                ? handleManagementSubmit
+                : handleDirectorSubmit
+            }
+          >
+            Update Details
+          </button>
+        </div>
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}

@@ -39,7 +39,7 @@ function AddNewDirectorSuperAdmin() {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
   const [countryData, setCountryData] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
-  const [forms, setForms] = useState([{ id: 1 }]);
+  const [forms, setForms] = useState([]);
   const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [selectedAdmins, setSelectedAdmins] = useState({});
   const [userWebsitesList, setUserWebsitesList] = useState({});
@@ -56,7 +56,7 @@ function AddNewDirectorSuperAdmin() {
   const [selectedOption, setSelectedOption] = useState(null);
   console.log(userWebsitesList, "userWebsitesList");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-
+  console.log("currencyData", currencyData);
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -177,7 +177,7 @@ function AddNewDirectorSuperAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm()) return; // Only call validateForm() here
+    if (!validateForm()) return;
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
       alert("Please select at least one Admin Website.");
@@ -284,7 +284,7 @@ function AddNewDirectorSuperAdmin() {
 
   const handleDirectorSubmit = (e) => {
     console.log(selectedWebsites, "selectedWebsites");
-    if (e) e.preventDefault(); // Only prevent default if `e` exists
+    if (e) e.preventDefault();
     if (!validateForm()) return;
     if (!selectedOption || Object.keys(selectedOption).length === 0) {
       alert("Please select at least one Admin Website.");
@@ -419,7 +419,7 @@ function AddNewDirectorSuperAdmin() {
     value: Number(value),
     label,
   }));
-
+  console.log(adminRoless, "adminRoless");
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
       value,
@@ -437,18 +437,14 @@ function AddNewDirectorSuperAdmin() {
 
   console.log(transformedOptions, "transformedOptions");
 
-  // useEffect(() => {
-  //   if (!role) return;
-
-  //   if (role === "management") {
-  //     handleSubmit();
-  //   } else if (role === "director") {
-  //     handleDirectorSubmit();
-  //   } else {
-  //     console.log("error");
-  //   }
-  // }, [role]);
-
+  const filteredRoles = adminRoless.filter((userRole) => {
+    if (role === "management") {
+      return userRole.label === "director" || userRole.label === "SuperAdmin";
+    } else if (role === "director") {
+      return userRole.label === "SuperAdmin";
+    }
+    return false;
+  });
   return (
     <>
       <div>
@@ -497,7 +493,7 @@ function AddNewDirectorSuperAdmin() {
               onChange={handleRoleChange}
             >
               <option value="">Select</option>
-              {adminRoless.map((role, index) => (
+              {filteredRoles.map((role, index) => (
                 <option key={index} value={role.value}>
                   {role.label}
                 </option>
@@ -540,7 +536,7 @@ function AddNewDirectorSuperAdmin() {
               <option value="">Select </option>
               {currencyData?.map((currency, index) => (
                 <option key={index} value={currency.country_id}>
-                  {currency.currency_name}
+                  {currency.currency_name} ---{currency.name}
                 </option>
               ))}
             </select>
@@ -636,11 +632,10 @@ function AddNewDirectorSuperAdmin() {
         </div>
       </div>
       <div>
-        <h4 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h4>
-
         <form className="row align-items-center">
           {forms.map((form, index) => (
             <>
+              <h5 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h5>
               <div key={form.id}>
                 {role === "director" ? (
                   <div className="col-1">
@@ -1261,7 +1256,7 @@ function AddNewDirectorSuperAdmin() {
         </div>
         <div className="d-flex justify-content-end">
           <button
-            className="yellow-bg py-2 black-text2 border-none"
+            className="saffron-btn rounded py-2 black-text2 border-none"
             onClick={
               role === "management" ? handleSubmit : handleDirectorSubmit
             }

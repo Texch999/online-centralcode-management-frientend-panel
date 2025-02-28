@@ -296,7 +296,31 @@ function SubHeader() {
       },
     ],
 
-    "accounts": [
+    accounts: [
+      {
+        label: "Wallet",
+        options: [
+          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+          {
+            label: "Offline Deposit/Withdraw",
+            path: "/offline-deposit-withdraw",
+          },
+          { label: "Tickets", path: "/tickets" },
+          { label: "Gateway Transactions", path: "/gateway-transactions" },
+        ],
+      },
+      {
+        label: "Reports",
+        options: [
+          { label: "Client Rental Sheet", path: "/client-rental-sheet" },
+        ],
+      },
+      {
+        label: "Settings",
+        options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
+      },
+    ],
+    promotions: [
       {
         label: "Wallet",
         options: [
@@ -355,8 +379,9 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
-                } br-0px flex-center w-100`}
+              className={`${
+                activeIndex === index ? "grey-btn" : "balck-btn"
+              } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>

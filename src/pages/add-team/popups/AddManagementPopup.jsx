@@ -26,6 +26,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(null);
 
 
 
@@ -62,7 +63,6 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       });
   }, []);
 
-
   const togglePasswordVisibility = (field) => {
     setShowPassword((prevState) => ({
       ...prevState,
@@ -86,8 +86,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       .then((response) => {
         console.log(response, "response from API");
         if (response?.status === true) {
-        
+
           if (onSubmit) onSubmit();
+          setSuccessPopupOpen(true);
         } else {
           setError("Something Went Wrong");
         }
@@ -146,7 +147,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               />
 
               {errors.role && (
-                <p className="text-danger small-font">{errors.role.message}</p>
+                <p className="text-danger small-font">
+                  {errors.role.message}
+                </p>
               )}
             </div>
 
@@ -159,7 +162,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 placeholder="Enter"
               />
               {errors.name && (
-                <p className="text-danger small-font">{errors.name.message}</p>
+                <p className="text-danger small-font">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -276,7 +281,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    value:
+                      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: "Enter a valid email address",
                   },
                 })}
@@ -284,7 +290,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 placeholder="Enter"
               />
               {errors.email && (
-                <p className="text-danger small-font">{errors.email.message}</p>
+                <p className="text-danger small-font">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -322,16 +330,11 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 Submit
               </Button>
             </div>
-            {error && (
-              <p className="text-danger small-font">
-                {error}
-              </p>
-            )}
           </div>
         </form>
       </Modal.Body>
-   
     </Modal>
+
 
   );
 };
