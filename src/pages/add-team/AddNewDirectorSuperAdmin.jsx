@@ -39,7 +39,7 @@ function AddNewDirectorSuperAdmin() {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
   const [countryData, setCountryData] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
-  const [forms, setForms] = useState([{ id: 1 }]);
+  const [forms, setForms] = useState([]);
   const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [selectedAdmins, setSelectedAdmins] = useState({});
   const [userWebsitesList, setUserWebsitesList] = useState({});
