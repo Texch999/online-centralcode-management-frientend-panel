@@ -164,8 +164,8 @@ function AddDirectorTeam() {
         if (response) {
           setTimeout(() => {
             setResetPasswordPopup(false);
-            GetAllDirectorEmployees(); // Refresh the table data
           }, 1000);
+          GetAllDirectorEmployees(); // Refresh the table data
         } else {
           alert("Something went wrong");
         }
@@ -181,8 +181,8 @@ function AddDirectorTeam() {
         if (response.status === true) {
           setTimeout(() => {
             setConfirmationPopup(false);
-            GetAllDirectorEmployees(); // Refresh the table data
           }, 1000);
+          GetAllDirectorEmployees(); // Refresh the table data
         } else {
           alert("Something went wrong");
         }
@@ -191,7 +191,9 @@ function AddDirectorTeam() {
         console.log(error?.message || "Request failed");
       });
   };
-
+  useEffect(() => {
+    GetAllDirectorEmployees();
+  }, []);
   return (
     <div>
       <div className="flex-between mb-3 mt-2">

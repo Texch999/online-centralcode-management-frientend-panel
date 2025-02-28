@@ -188,7 +188,7 @@ function App() {
                 />
                 <Route path="/downline-list" element={<DownlineList />} exact />
                 <Route
-                  path="/downline-list/:director/:website"
+                  path="/downline-list/:user/:userId/:adminWebsite/:adminWebsiteId"
                   element={<DownlineWebsiteList />}
                   exact
                 />

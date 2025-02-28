@@ -1,5 +1,7 @@
+
 const userID = () => {
   const id = localStorage.getItem("user_id");
+  console.log(id,"id")
   if (!id) {
     console.error("User ID is not available.");
     return null;
@@ -343,8 +345,12 @@ const endpoints = {
 
   getDirectorAccountDetails: {
     method: "get",
-    url: () => `/director/${userID()}/directorAccounts`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/directorAccounts?${query}`;
+    },
   },
+
   postDirectorAccountDetails: {
     method: "post",
     url: () => `/director/${userID()}/directorAccount`,
@@ -424,8 +430,9 @@ const endpoints = {
   },
   unblockBlockDirectorDwnln: {
     method: "post",
-    url: ( data) =>
-      `/director/${userID()}/superAdmin/${data.id}/status`,
+    url: (data) => `/director/${userID()}/superAdmin/${data.id}/status`,
+    // url: (data) =>
+    //   `/director/${userID()}/superAdmin/${data.id}/status`,
   },
   getUserWebsites: {
     method: "get",
@@ -508,10 +515,20 @@ const endpoints = {
     url: () => `/director/${userID()}/details/${userID()}`,
   },
   //show dir payment details in man
+  // managementDwnProfileDirPaymentDetails: {
+  //   method: "get",
+  //   url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+  // },
+
   managementDwnProfileDirPaymentDetails: {
     method: "get",
-    url: (id) => `/user/${userID()}/offlineAccounts/${id}`,
+    url: (params) => {
+      const { dwnlnId, ...filteredParams } = params;
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/offlineAccounts/${dwnlnId}?${query}`;
+    },
   },
+
   UpdateProfileDirpaymentDetailsByMan: {
     method: "put",
     url: (id) => `/user/${userID()}/directorAccount/${id}`,
@@ -641,6 +658,37 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/offlineWithdraw`,
   },
+  managemnetViewDownlinelist: {
+    method: "get",
+    url: `/user/${userID()}/downlinelist`,
+  },
+  dwnlineDSASuspend: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/status`,
+  },
+  getDwnlineWebsiteList: {
+    method: "get",
+    url: (data) =>
+      `/user/${userID()}/director/${data?.id}/adminweb/${data?.websiteId}`,
+  },
+  dwnlineUserWebsites: {
+    method: "put",
+    url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
+  },
+  resetPasswordMan: {
+    method: "put",
+    url: `/user/${userID()}/resetPassword`,
+  },
+  resetPswdDirector:{
+    method:"put",
+    url:`/director/${userID()}/directorresetPassword`
+    
+  },
+  
+  dirEmployeeResetPswd:{
+    method:"put",
+    url:`/director/${userID()}/dirEmpresetPassword`
+  }
 };
 
 export default endpoints;

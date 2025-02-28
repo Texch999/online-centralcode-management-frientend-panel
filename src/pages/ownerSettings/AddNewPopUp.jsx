@@ -136,10 +136,10 @@ const AddNewPopUp = ({
   useEffect(() => {
     if (isEdit && selectedQnsId) {
       getSecQusetionsById(selectedQnsId).then((response) => {
-        setValue("securityQns", isEdit === true ? response.questions : "");
+        setValue("securityQns", isEdit === true ? response?.data?.questions : "");
         setValue(
           "status",
-          selectOptions.find((opt) => opt.value === response.status)
+          selectOptions.find((opt) => opt.value === response?.data?.status)
         );
       });
     }
@@ -148,8 +148,8 @@ const AddNewPopUp = ({
   const onSubmitSecQns = (data) => {
     setIsSubmitting(true);
     const payload = {
-      questions: data.securityQns,
-      status: data.status?.value || null,
+      questions: data?.securityQns,
+      status: data?.status?.value || null,
     };
 
     const response = isEdit

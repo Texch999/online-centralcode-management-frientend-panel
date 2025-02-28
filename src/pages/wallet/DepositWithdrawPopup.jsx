@@ -248,7 +248,7 @@ function DepositWithdrawPopup({
         </div>
 
         {ticketData?.uploadedFile ? <div className="w-100 border mt-2">
-          <img className="w-100 h-10vh" src={`${imgUrl}/deposits/${ticketData?.uploadedFile}`} alt="" />
+          <img className="w-100 h-50" src={`${imgUrl}/deposits/${ticketData?.uploadedFile}`} alt="" />
         </div> : null}
 
         <div className="row small-font">
@@ -274,7 +274,13 @@ function DepositWithdrawPopup({
                   <span className="yellow-font">{ticketData?.inrSportsChips ? rfloor(ticketData?.inrSportsChips, -2) : 0}</span>
                 </div> : null}
             </div>}
-
+          {ticketData?.tmpErr && (
+            <div>
+              <h6 className="mt-2 red-block">Rejection Reason</h6>
+              <div className="grey-box flex-between m-1 col">{ticketData?.tmpErr.description}</div>
+            </div>
+          )}
+                                                                                                                                                                                                                                                                                                                                                
           {fromPath === "tickets" ? <>
             {ticketData?.status === 0 ? (
               <>

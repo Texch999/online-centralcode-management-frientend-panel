@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { MdBlockFlipped, MdSwapVert } from "react-icons/md";
+import React, { useEffect, useRef, useState } from "react";
+import { MdBlockFlipped } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { BsPerson } from "react-icons/bs";
-import { SlPencil } from "react-icons/sl";
 import { FaSearch } from "react-icons/fa";
 import { Images } from "../../images/index";
 import Table from "../../components/Table";
@@ -10,21 +9,76 @@ import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { GiClick } from "react-icons/gi";
+import {
+  dwnlineDSASuspend,
+  managemnetViewDownlinelist,
+} from "../../api/apiMethods";
+import { useSelector } from "react-redux";
+import { CircleLoader } from "react-spinners";
+import { CgUnblock } from "react-icons/cg";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const DownlineList = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const role = localStorage.getItem("role");
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
-
+  const [error, setError] = useState([]);
+  const [downlineList, setDownlineList] = useState([]);
+  const dataFetched = useRef(false);
+  const allCountries = useSelector((item) => item?.allCountries);
+  const [loading, setLoading] = useState(false);
+  const [searchName, setSearchName] = useState("");
   const navigate = useNavigate();
-
-  const handleNaviagte = (director, website) => {
-    navigate(`/downline-list/${director}/${website}`);
+  const role_code = localStorage.getItem("role_name");
+  const [selectedRole, setSelectedRole] = useState("");
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [statusId, setStatusId] = useState(null);
+  const [errorPopup, setErrorPopup] = useState(false);
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value ? Number(e.target.value) : "");
   };
 
-  // const handleNavigateUserDashboard = (trasaction) => {
-  //   navigate(`/downline-list/${trasaction}`);
-  // };
+  const getCountry = (id) => {
+    const country = allCountries.find((c) => c?.id === id);
+    return country ? country?.name : "unknown";
+  };
+
+  const handleNavigateUserDashboard = (id) => {
+    navigate(`/user-profile-dashboard/${id}`);
+  };
+
+  const handleNaviagte = (user, userid, adminwebsite, adminwebsiteId) => {
+    navigate(
+      `/downline-list/${user}/${userid}/${adminwebsite}/${adminwebsiteId}`
+    );
+  };
+
+  const totalDeposit = downlineList?.reduce(
+    (sum, item) => sum + Number(item?.toatalCustomerDiposite || 0),
+    0
+  );
+
+  const totalWithdraw = downlineList?.reduce(
+    (sum, item) => sum + Number(item?.totalCustomerWithdrawl || 0),
+    0
+  );
+  const totalBal = downlineList?.reduce(
+    (sum, item) => sum + Number(item?.wall_bal || 0),
+    0
+  );
+  const options = [
+    { value: 1, name: "Director" },
+    { value: 2, name: "Super Admin" },
+  ];
+
+  const handleBlock = (id, name, status) => {
+    setOnBlockPopup(true);
+    setUserId(id);
+    setUserName(name);
+    setStatusId(status);
+  };
 
   const cardData = [
     {
@@ -110,6 +164,58 @@ const DownlineList = () => {
     );
   };
 
+  const fetchAllViewDownlineList = () => {
+    setLoading(true);
+    managemnetViewDownlinelist()
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response?.list);
+          setDownlineList(response?.list);
+        } else {
+          setError("something went wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 2000);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (role_code === "management") {
+      if (dataFetched.current) return;
+      dataFetched.current = true;
+      fetchAllViewDownlineList();
+    }
+  });
+
+  const suspend = () => {
+    dwnlineDSASuspend(userId)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response?.data);
+          fetchAllViewDownlineList();
+        } else {
+          setError("something went wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  const filterData = downlineList?.filter(
+    (item) =>
+      (selectedRole === "" || item?.roleId === Number(selectedRole)) &&
+      (searchName === "" ||
+        item?.name?.toLowerCase().includes(searchName.toLowerCase()))
+  );
+
   const ACCOUNT_COLUMNS = [
     { header: "Account", field: "account" },
     { header: "Website List", field: "websitelist" },
@@ -121,290 +227,179 @@ const DownlineList = () => {
     // { header: "Ref P/L", field: "referralPL" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
+  const data = filterData?.map((item) => ({
+    account: (
+      <div>
+        <div>
+          {item?.roleName} - {item?.name}
+        </div>
+        <div>{getCountry(item?.currency_id)}</div>
+      </div>
+    ),
 
-  const ACCOUNT_DATA = [
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      websitelist: (
-        <>
-          <div className="pointer" onClick={() => handleNaviagte("srinivas", "brahma")}>
-            brahma.com
+    websitelist: (
+      <div className="d-flex flex-column">
+        {item?.adminSName?.map((wbsite, index) => (
+          <div className="d-flex flex-column my-1">
+            <div
+              key={index}
+              className="d-flex align-items-center gap-2 pointer"
+              onClick={() =>
+                handleNaviagte(item?.name, item?.id, wbsite?.name, wbsite?.id)
+              }
+            >
+              <span>{wbsite?.name}</span>
+              <GiClick className="yellow-font mx-1" size={18} />
+            </div>
           </div>
-          <div className="pointer" onClick={() => handleNaviagte("vamsi", "ravana")}>ravan.com</div>
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
+        ))}
+      </div>
+    ),
+
+    totalCusD: <div>{item?.toatalCustomerDiposite}</div>,
+    totalCusW: <div>{item?.totalCustomerWithdrawl}</div>,
+    walletBalance: <span className="yellow-font">{item?.wall_bal}</span>,
+    action: (
+      <div className="d-flex flex-column justify-content-center gap-2 align-items-center">
+        {item?.status === 1 ? (
           <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
             Active
           </button>
-          <div className="d-flex">
-            <BsPerson
-              size={20}
-              className="icon-action me-2 pointer"
-              // onClick={profilepage}
-            />
-            <MdBlockFlipped
-              size={20}
-              className="icon-action me-2 pointer"
-              onClick={() => setOnBlockPopup(true)}
-            />
-            {/* <MdSwapVert
-              size={20}
-              className="icon-action pointer"
-              onClick={() => handleNaviagte("srinivas", "brahma")}
-            /> */}
-          </div>
+        ) : (
+          <button className="red-btn mb-1 p-2 badge rounded">In-Active</button>
+        )}
+
+        <div className="d-flex">
+          <BsPerson
+            size={20}
+            className="icon-action me-2 pointer"
+            onClick={() => handleNavigateUserDashboard(item?.id)}
+          />
+          <span>
+            {item?.status === 1 ? (
+              <CgUnblock
+                size={20}
+                className="icon-action me-2 pointer green-clr"
+                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
+              />
+            ) : (
+              <MdBlockFlipped
+                size={20}
+                className="icon-action me-2 pointer red-clr"
+                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
+              />
+            )}
+          </span>
         </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Super Admin - Lokesh</div>
-          <div>India - Delhi</div>
-        </div>
-      ),
-      creditRef: (
-        <>
-          0 <SlPencil className="icon-edit ms-2" size={15} />
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      // exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2" />
-            <MdBlockFlipped size={20} className="icon-action me-2" />
-            {/* <MdSwapVert
-              size={20}
-              className="icon-action"
-              onClick={() => handleNaviagte("srinivas", "brahma")}
-            /> */}
-          </div>
-        </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Super Admin - Jayanta</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      creditRef: (
-        <>
-          0 <SlPencil className="icon-edit ms-2" size={15} />
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2" />
-            <MdBlockFlipped size={20} className="icon-action me-2" />
-            {/* <MdSwapVert size={20} className="icon-action" /> */}
-          </div>
-        </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      creditRef: (
-        <>
-          0 <SlPencil className="icon-edit ms-2" size={15} />
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2" />
-            <MdBlockFlipped size={20} className="icon-action me-2" />
-            {/* <MdSwapVert size={20} className="icon-action" /> */}
-          </div>
-        </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      creditRef: (
-        <>
-          0 <SlPencil className="icon-edit ms-2" size={15} />
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2" />
-            <MdBlockFlipped size={20} className="icon-action me-2" />
-            {/* <MdSwapVert size={20} className="icon-action" /> */}
-          </div>
-        </div>
-      ),
-    },
-    {
-      account: (
-        <div>
-          <div>Director - Srinivas</div>
-          <div>India - Hyderabad</div>
-        </div>
-      ),
-      creditRef: (
-        <>
-          0 <SlPencil className="icon-edit ms-2" size={15} />
-        </>
-      ),
-      totalCusD: 10000,
-      totalCusW: 5000,
-      walletBalance: <span className="yellow-font">2000</span>,
-      exposure: <span className="red-font">1000</span>,
-      walletPlayingBalance: 1000,
-      referralPL: <div className="green-font">3000</div>,
-      action: (
-        <div className="d-flex flex-column justify-content-center align-items-center">
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-          <div className="d-flex">
-            <BsPerson size={20} className="icon-action me-2" />
-            <MdBlockFlipped size={20} className="icon-action me-2" />
-            {/* <MdSwapVert size={20} className="icon-action" /> */}
-          </div>
-        </div>
-      ),
-    },
-  ];
+      </div>
+    ),
+  }));
 
   const ACCOUNT_FOOTER = [
     { header: <span className="fw-700">Total</span> },
     { header: "" },
-    { header: <span className="fw-700">50000</span> },
-    { header: <span className="fw-700">25000</span> },
-    { header: <span className="fw-700 yellow-font">10000</span> },
+    { header: <span className="fw-700">{totalDeposit}</span> },
+    { header: <span className="fw-700">{totalWithdraw}</span> },
+    { header: <span className="fw-700 yellow-font">{totalBal}</span> },
     { header: "" },
   ];
 
   return (
     <div>
-      <div className="row d-flex justify-content-between align-items-center mb-3">
-        <div className="col-md-3">
-          <h6 className="yellow-font large-font mb-0">Downline List</h6>
-        </div>
+      {loading ? (
+        <>
+          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            <CircleLoader color="#3498db" size={40} />
+            <div className="medium-font black-font my-3">
+              Just a moment...............⏳
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <div className="row d-flex justify-content-between align-items-center mb-3">
+              <div className="col-md-3">
+                <h6 className="yellow-font medium-font mb-0">Downline List</h6>
+              </div>
 
-        <div className="col-md-9 d-flex flex-end align-items-center gap-3">
-          <select className="input-pill rounded-pill px-4 small-font">
-            <option value="all">All</option>
-          </select>
+              <div className="col-md-9 d-flex flex-end align-items-center gap-3">
+                <select
+                  className="input-pill rounded-pill px-4 small-font"
+                  value={selectedRole}
+                  onChange={handleRoleChange}
+                >
+                  <option value="">All</option>
+                  {options?.map((item) => (
+                    <option value={item?.value}>{item?.name}</option>
+                  ))}
+                </select>
 
-          <div className="input-pill d-flex align-items-center rounded-pill px-3">
-            <FaSearch size={18} className="grey-clr me-2" />
-            <input
-              className="small-font all-none w-100"
-              placeholder="Search..."
-              type="text"
+                <div className="input-pill d-flex align-items-center rounded-pill px-3">
+                  <FaSearch size={18} className="grey-clr me-2" />
+                  <input
+                    className="small-font all-none w-100"
+                    placeholder="Search..."
+                    type="text"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="row ps-2 gap-3">
+              <div className="col-10">
+                <div className="row">
+                  {cardData.map((card, index) => (
+                    <div className="col-3 px-1" key={index}>
+                      <Card
+                        title={card.title}
+                        backgroundColor={card.backgroundColor}
+                        value={card.value}
+                        valueClass={card.valueClass}
+                        icon={card.icon}
+                        bootstrapClassesTop={card.bootstrapClassesTop}
+                        bootstrapClassesBottom={card.bootstrapClassesBottom}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <Table
+                columns={ACCOUNT_COLUMNS}
+                data={data}
+                footer={ACCOUNT_FOOTER}
+                itemsPerPage={5}
+                rowColor={(row) =>
+                  row.walletBalance > 0 ? "orange-text" : "black-text"
+                }
+              />
+            </div>
+
+            <CreditReferencePopup
+              show={showCreditAmountPopup}
+              onHide={() => setShowCreditAmountPopup(false)}
+            />
+
+            <ConfirmationPopup
+              confirmationPopupOpen={onBlockPopup}
+              setConfirmationPopupOpen={() => setOnBlockPopup(false)}
+              discription={`Are you sure you want to Block this ${userName}`}
+              submitButton={"Block"}
+              onSubmit={suspend}
+            />
+            <ErrorPopup
+              discription={error}
+              errorPopupOpen={errorPopup}
+              setErrorPopupOpen={setErrorPopup}
             />
           </div>
-        </div>
-      </div>
-
-      <div className="row ps-2 gap-3">
-        <div className="col-10">
-          <div className="row">
-            {cardData.map((card, index) => (
-              <div className="col-3 px-1" key={index}>
-                <Card
-                  title={card.title}
-                  backgroundColor={card.backgroundColor}
-                  value={card.value}
-                  valueClass={card.valueClass}
-                  icon={card.icon}
-                  bootstrapClassesTop={card.bootstrapClassesTop}
-                  bootstrapClassesBottom={card.bootstrapClassesBottom}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-3">
-        <Table
-          columns={ACCOUNT_COLUMNS}
-          data={ACCOUNT_DATA}
-          footer={ACCOUNT_FOOTER}
-          itemsPerPage={5}
-          rowColor={(row) =>
-            row.walletBalance > 0 ? "orange-text" : "black-text"
-          }
-        />
-      </div>
-
-      <CreditReferencePopup
-        show={showCreditAmountPopup}
-        onHide={() => setShowCreditAmountPopup(false)}
-      />
-
-      <ConfirmationPopup
-        confirmationPopupOpen={onBlockPopup}
-        setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-        discription={"are you sure you want to block this Account?"}
-        submitButton={"Block"}
-      />
+        </>
+      )}
     </div>
   );
 };
