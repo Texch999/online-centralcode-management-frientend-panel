@@ -233,7 +233,7 @@ function SubHeader() {
       },
     ],
 
-    "digital marketing": [
+    promotions: [
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
@@ -320,28 +320,23 @@ function SubHeader() {
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
       },
     ],
-    promotions: [
-      {
-        label: "Wallet",
-        options: [
-          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-          {
-            label: "Offline Deposit/Withdraw",
-            path: "/offline-deposit-withdraw",
-          },
-          { label: "Tickets", path: "/tickets" },
-          { label: "Gateway Transactions", path: "/gateway-transactions" },
-        ],
-      },
-      {
-        label: "Reports",
-        options: [
-          { label: "Client Rental Sheet", path: "/client-rental-sheet" },
-        ],
-      },
+    designing_team: [
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
+      },
+      {
+        label: "Promotions",
+        options: [
+          {
+            label: "Create Promotions Type",
+            path: "/create-promotion-type",
+          },
+          { label: "Sports Promotions", path: "/sports-promotions" },
+          { label: "Casino Promotions", path: "/casino-promotions" },
+          { label: "Banners (Casino/Sports)", path: "/banners" },
+          { label: "Broadcasting", path: "/broadcasting" },
+        ],
       },
     ],
   };
