@@ -376,7 +376,7 @@ function EditNewDirector() {
     id,
     name,
   }));
-
+  console.log(adminRolesArray, "adminRolesArray");
   const transformData = (data) => {
     const adminMap = new Map();
 
@@ -542,7 +542,7 @@ function EditNewDirector() {
   const addAnotherForm = () => {
     const newForm = { id: Date.now() };
     setForms((prevForms) => [...prevForms, newForm]);
-  
+
     setAddWebsites((prevAddWebsites) => [
       ...prevAddWebsites,
       {
@@ -632,11 +632,24 @@ function EditNewDirector() {
                 onChange={(e) => setSelectedRole(e.target.value)}
               >
                 <option value="">Select</option>
-                {adminRolesArray.map((role) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name}
-                  </option>
-                ))}
+                {adminRolesArray
+                  .filter((role) => {
+                    if (selectedRole === "1") {
+                      // If Director is selected, exclude Director
+                      return role.name !== "director";
+                    } else if (selectedRole === "management") {
+                      // If Management is selected, show only Director and SuperAdmin
+                      return (
+                        role.name === "director" || role.name === "SuperAdmin"
+                      );
+                    }
+                    return true; // Default case, show all roles
+                  })
+                  .map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
               </select>
               {errors.selectedRole && (
                 <span className="text-danger small-font">
@@ -644,6 +657,7 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
+   
             <div className="col p-1">
               <label className="small-font my-1">Currency</label>
               <select
@@ -905,6 +919,8 @@ function EditNewDirector() {
 
             {forms.map((form, index) => (
               <>
+                            <h5 className="yellow-font fw-bold mb-0">ADD WEBSITE MARKET </h5>
+
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">

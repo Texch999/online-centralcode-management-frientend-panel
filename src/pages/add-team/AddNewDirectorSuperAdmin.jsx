@@ -56,7 +56,7 @@ function AddNewDirectorSuperAdmin() {
   const [selectedOption, setSelectedOption] = useState(null);
   console.log(userWebsitesList, "userWebsitesList");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-
+  console.log("currencyData", currencyData);
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -419,7 +419,7 @@ function AddNewDirectorSuperAdmin() {
     value: Number(value),
     label,
   }));
-
+  console.log(adminRoless, "adminRoless");
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
       value,
@@ -448,7 +448,14 @@ function AddNewDirectorSuperAdmin() {
   //     console.log("error");
   //   }
   // }, [role]);
-
+  const filteredRoles = adminRoless.filter((userRole) => {
+    if (role === "management") {
+      return userRole.label === "director" || userRole.label === "SuperAdmin";
+    } else if (role === "director") {
+      return userRole.label === "SuperAdmin";
+    }
+    return false; // Default case, if no condition matches
+  });
   return (
     <>
       <div>
@@ -497,7 +504,7 @@ function AddNewDirectorSuperAdmin() {
               onChange={handleRoleChange}
             >
               <option value="">Select</option>
-              {adminRoless.map((role, index) => (
+              {filteredRoles.map((role, index) => (
                 <option key={index} value={role.value}>
                   {role.label}
                 </option>
@@ -636,11 +643,10 @@ function AddNewDirectorSuperAdmin() {
         </div>
       </div>
       <div>
-        <h4 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h4>
-
         <form className="row align-items-center">
           {forms.map((form, index) => (
             <>
+              <h5 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h5>
               <div key={form.id}>
                 {role === "director" ? (
                   <div className="col-1">
@@ -1261,7 +1267,7 @@ function AddNewDirectorSuperAdmin() {
         </div>
         <div className="d-flex justify-content-end">
           <button
-            className="yellow-bg py-2 black-text2 border-none"
+            className="saffron-btn rounded py-2 black-text2 border-none"
             onClick={
               role === "management" ? handleSubmit : handleDirectorSubmit
             }
