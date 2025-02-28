@@ -296,7 +296,7 @@ function SubHeader() {
       },
     ],
 
-    accounts: [
+    "accounts": [
       {
         label: "Wallet",
         options: [
