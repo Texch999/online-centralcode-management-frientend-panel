@@ -570,7 +570,14 @@ function EditNewDirector() {
         }))
       )
     : [];
-
+  const filteredRoles = adminRolesArray.filter((userRole) => {
+    if (role === "management") {
+      return userRole.name === "director" || userRole.name === "SuperAdmin";
+    } else if (role === "director") {
+      return userRole.name === "SuperAdmin";
+    }
+    return false;
+  });
   return (
     <>
       <div>
@@ -632,7 +639,12 @@ function EditNewDirector() {
                 onChange={(e) => setSelectedRole(e.target.value)}
               >
                 <option value="">Select</option>
-                {adminRolesArray
+                {filteredRoles.map((role, index) => (
+                  <option key={index} value={role.value}>
+                    {role.name}
+                  </option>
+                ))}
+                {/* {adminRolesArray
                   .filter((role) => {
                     if (selectedRole === "1") {
                       // If Director is selected, exclude Director
@@ -649,7 +661,7 @@ function EditNewDirector() {
                     <option key={role.id} value={role.id}>
                       {role.name}
                     </option>
-                  ))}
+                  ))} */}
               </select>
               {errors.selectedRole && (
                 <span className="text-danger small-font">
@@ -667,7 +679,7 @@ function EditNewDirector() {
                 <option value="">Select</option>
                 {currencyData.map((currency) => (
                   <option key={currency.country_id} value={currency.country_id}>
-                    {currency.currency_name}
+                    {currency.currency_name}--- {currency.name}
                   </option>
                 ))}
               </select>
