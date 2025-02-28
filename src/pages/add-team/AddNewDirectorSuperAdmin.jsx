@@ -25,7 +25,6 @@ import SuccessPopup from "../popups/SuccessPopup";
 function AddNewDirectorSuperAdmin() {
   const navigate = useNavigate();
   const role = localStorage.getItem("role_code");
-  // const [role, setRole] = useState(localStorage.getItem("role_code") || ""); // Default to empty
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -166,126 +165,19 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
-  // const handleInputChange = (id, field, value) => {
-  //   setWebsiteDetails((prevDetails) => ({
-  //     ...prevDetails,
-  //     [id]: {
-  //       ...prevDetails[id],
-  //       [field]: value,
-  //     },
-  //   }));
-  // };
   const handleInputChange = (websiteId, field, value) => {
     setWebsiteDetails((prevDetails) => ({
-        ...prevDetails,
-        [websiteId]: {
-            ...prevDetails[websiteId],
-            [field]: value, // Ensure this line is correctly setting the field value
-        },
+      ...prevDetails,
+      [websiteId]: {
+        ...prevDetails[websiteId],
+        [field]: value,
+      },
     }));
-};
-
-  // const handleSubmit = (e) => {
-  //   // e?.preventDefault();
-
-  //   if (!validateForm()) {
-  //     return;
-  //   }
-
-  //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-  //     alert("Please select at least one Admin Website.");
-  //     return;
-  //   }
-  //   console.log(selectedWebsites, "selectedWebsites");
-  //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-  //     alert("Please select at least one User Website.");
-  //     return;
-  //   }
-
-  //   const selectedUserWebsites = forms.flatMap((form) => {
-  //     return userWebsitesList[form.id]?.map((userSite) => {
-  //       if (!selectedWebsites[form.id]?.[userSite.id]) return null;
-
-  //       const accotypeid = accountTypes[form.id]?.[userSite.id];
-  //       let websiteData = {
-  //         admin_panel_id: selectedAdmins[form.id]?.value,
-  //         user_paner_id: userSite.id,
-  //         commission_type: accotypeid,
-  //       };
-
-  //       if (accotypeid === "2") {
-  //         websiteData.share = parseFloat(
-  //           websiteDetails[userSite.id]?.share || 0
-  //         );
-  //         websiteData.caschip_values = parseFloat(
-  //           websiteDetails[userSite.id]?.caschip_values || 0
-  //         );
-  //         websiteData.downline_comm = parseFloat(
-  //           websiteDetails[userSite.id]?.downline_comm || 0
-  //         );
-  //       }
-
-  //       if (accotypeid === "1") {
-  //         websiteData.rent_start_date =
-  //           websiteDetails[userSite.id]?.rent_start_date || "";
-  //         websiteData.monthly_amount = parseInt(
-  //           websiteDetails[userSite.id]?.monthly_amount || 0
-  //         );
-  //         websiteData.chip_percentage = parseFloat(
-  //           websiteDetails[userSite.id]?.chip_percentage || 0
-  //         );
-  //         websiteData.max_chips_monthly = parseInt(
-  //           websiteDetails[userSite.id]?.max_chips_monthly || 0
-  //         );
-  //         websiteData.extra_chips_percentage = parseFloat(
-  //           websiteDetails[userSite.id]?.extra_chips_percentage || 0
-  //         );
-  //         websiteData.share = parseFloat(
-  //           websiteDetails[userSite.id]?.share || 0
-  //         );
-  //       }
-
-  //       return websiteData;
-  //     });
-  //   });
-  //   console.log(selectedUserWebsites, "selectedUserWebsites");
-  //   const validUserWebsites = selectedUserWebsites.filter(Boolean);
-
-  //   if (validUserWebsites.length === 0) {
-  //     alert("Please select at least one User Website.");
-  //     return;
-  //   }
-
-  //   const finalData = {
-  //     type: selectedRole,
-  //     name,
-  //     login_name: loginName,
-  //     password,
-  //     confirm_password: confirmPassword,
-  //     parent_password: managementPassword,
-  //     country_id: selectedCountryCode,
-  //     currency_id: selectedCurrencyCode,
-  //     accessWebsites: validUserWebsites,
-  //   };
-
-  //   createDirector(finalData)
-  //     .then((response) => {
-  //       if (response.status === true) {
-  //         setSuccessPopupOpen(true);
-  //         setTimeout(() => {
-  //           navigate("/director-admin");
-  //         }, 2000);
-  //       } else {
-  //         console.log("Something went wrong");
-  //       }
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
+  };
 
   const handleSubmit = (e) => {
-    e?.stopPropagation(); // Prevents event bubbling
-
-    if (!validateForm()) return;
+    e.preventDefault();
+    if (!validateForm()) return; // Only call validateForm() here
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
       alert("Please select at least one Admin Website.");
@@ -391,13 +283,9 @@ function AddNewDirectorSuperAdmin() {
   };
 
   const handleDirectorSubmit = (e) => {
-    // e.preventDefault();
     console.log(selectedWebsites, "selectedWebsites");
-
-    if (!validateForm()) {
-      return;
-    }
-
+    if (e) e.preventDefault(); // Only prevent default if `e` exists
+    if (!validateForm()) return;
     if (!selectedOption || Object.keys(selectedOption).length === 0) {
       alert("Please select at least one Admin Website.");
       return;
@@ -549,43 +437,17 @@ function AddNewDirectorSuperAdmin() {
 
   console.log(transformedOptions, "transformedOptions");
 
-  // const handleFormSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   if (!selectedRole) {
-  //     alert("Please select a role");
-  //     return;
-  //   }
-
-  //   if (selectedRole === "management") {
-  //     handleSubmit(e);
-  //     return;  // Prevent further execution
-  //   }
-
-  //   if (selectedRole === "director") {
-  //     handleDirectorSubmit(e);
-  //     return;
-  //   }
-  // };
   // useEffect(() => {
-  //   const storedRole = localStorage.getItem("role");
-  //   if (storedRole) {
-  //     setRole(storedRole); // Ensure state updates correctly
+  //   if (!role) return;
+
+  //   if (role === "management") {
+  //     handleSubmit();
+  //   } else if (role === "director") {
+  //     handleDirectorSubmit();
+  //   } else {
+  //     console.log("error");
   //   }
-  // }, []);
-  useEffect(() => {
-    if (!role) return; // Prevents running if role is undefined
-
-    console.log("🚀 Role changed to:", role);
-
-    if (role === "management") {
-      handleSubmit(); // Correctly call API
-    } else if (role === "director") {
-      handleDirectorSubmit(); // Correctly call API
-    } else {
-      console.log("error");
-    }
-  }, [role]); // Runs whenever `role` changes
+  // }, [role]);
 
   return (
     <>
@@ -602,7 +464,6 @@ function AddNewDirectorSuperAdmin() {
         </div>
 
         <div className="row">
-          {" "}
           <div className="col p-1">
             <label className="small-font my-1">Name</label>
             <input
@@ -611,7 +472,6 @@ function AddNewDirectorSuperAdmin() {
               className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
             {errors?.name && <span className="error">{errors?.name}</span>}
           </div>
@@ -778,8 +638,7 @@ function AddNewDirectorSuperAdmin() {
       <div>
         <h4 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h4>
 
-        {/* <form className="custom-form small-font p-3" onSubmit={handleSubmit}> */}
-        <div className="row align-items-center">
+        <form className="row align-items-center">
           {forms.map((form, index) => (
             <>
               <div key={form.id}>
@@ -1059,7 +918,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                          {accountTypes[form.id]?.[userSite.website_access_id] ===
+                        {accountTypes[form.id]?.[userSite.website_access_id] ===
                           "3" && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
@@ -1394,7 +1253,7 @@ function AddNewDirectorSuperAdmin() {
               </div>
             </>
           ))}
-        </div>
+        </form>
         <div className="text-end mb-3 w-100">
           <button type="button" className="cst-btn" onClick={addAnotherForm}>
             <FaPlus className="me-2" /> Add Another
