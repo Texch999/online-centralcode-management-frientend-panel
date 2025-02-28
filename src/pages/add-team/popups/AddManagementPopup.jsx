@@ -12,6 +12,7 @@ import {
 } from "../../../api/apiMethods";
 import "../style.css";
 import "../../../App.css";
+import SuccessPopup from "../../popups/SuccessPopup";
 
 const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [showPassword, setShowPassword] = useState({
@@ -26,7 +27,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [error, setError] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState(null);
 
-  console.log(roleOptions, "roleOptions");
+
 
   const {
     register,
@@ -60,7 +61,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
         setError(err.message || "Error fetching roles");
       });
   }, []);
-  
+
 
   const togglePasswordVisibility = (field) => {
     setShowPassword((prevState) => ({
@@ -83,17 +84,19 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
 
     addManagemnentTeam(payload)
       .then((response) => {
+        console.log(response, "response from API");
         if (response?.status === true) {
-          console.log(response, "response from API");
+        
           if (onSubmit) onSubmit();
         } else {
           setError("Something Went Wrong");
         }
       })
       .catch((error) => {
-        setError(error?.message || "Login failed");
+        setError(error?.message)
       });
   };
+
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
@@ -125,7 +128,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               <label className="small-font mb-1">Role</label>
 
               <Select
-                className="small-font"
+                className="small-font text-capitalize"
                 options={roleOptions}
                 value={roleOptions.find(
                   (option) => option.value === selectedRoleId
@@ -319,10 +322,17 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 Submit
               </Button>
             </div>
+            {error && (
+              <p className="text-danger small-font">
+                {error}
+              </p>
+            )}
           </div>
         </form>
       </Modal.Body>
+   
     </Modal>
+
   );
 };
 
