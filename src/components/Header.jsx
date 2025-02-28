@@ -22,6 +22,8 @@ import {
   getNotificationsforDirector,
   getNotificationsforManagement,
 } from "../api/apiMethods";
+import { MdEdit } from "react-icons/md";
+import ProfileUpdate from "./ProfileUpdate";
 
 function Header() {
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ function Header() {
   const [error, setError] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [updateProfile, setUpdateProfille] = useState(false);
 
   const id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role_name");
@@ -143,8 +146,9 @@ function Header() {
           <div className="d-flex align-items-center">
             {role_name === "owner" && (
               <div
-                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${isActiveBtn ? "active-saffron-btn white-text" : ""
-                  }`}
+                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
+                  isActiveBtn ? "active-saffron-btn white-text" : ""
+                }`}
                 onClick={handleRegisterBtn}
               >
                 <ImUserPlus size={18} />
@@ -153,23 +157,8 @@ function Header() {
                 </span>
               </div>
             )}
-            {/* <div className="relative inline-block">
-            <IoMdNotificationsOutline
-              onClick={() => console.log("Open notifications")}
-              size={24}
-              className="grey-clr me-2 mx-3 fw-800 cursor-pointer"
-            />
-
-            {/* Unread Badge (Only show if there are unread notifications) 
-            {unreadCount > 0 && (
-              <span className="absolute-top-2-right-1 bg-red-500 text-black text-xs font-bold px-2 py-0.5 rounded-full">
-                {unreadCount}
-              </span>
-            )}
-            </div> */}
             <div
               className="white-font fw-600 br-4px px-2 py-1 pointer postion-relative"
-              // onClick={() => setIsNotificationModalShow((prev) => !prev)}
               onClick={handleNotification}
             >
               <IoMdNotificationsOutline size={26} />
@@ -177,7 +166,26 @@ function Header() {
                 {unreadCount}
               </span>
             </div>
-            <img className="mx-3" src={Images?.ProfileImage} alt="Profile" />
+            <div
+              className="position-relative"
+              onClick={() => setUpdateProfille(true)}
+            >
+              <img
+                className="mx-3"
+                src={Images?.ProfileImage}
+                alt="Profile"
+                loading="lazy"
+              />
+            </div>
+            {updateProfile && (
+              <div className="pos-abs w-20">
+                <ProfileUpdate
+                  updateProfile={updateProfile}
+                  setUpdateProfille={setUpdateProfille}
+                />
+              </div>
+            )}
+
             <AiOutlineLogout
               size={24}
               title="Logout"
@@ -215,8 +223,9 @@ function Header() {
               <Dropdown onToggle={(isOpen) => setIsDropdownOpen(isOpen)}>
                 <Dropdown.Toggle
                   variant="none"
-                  className={`${!isDashboard ? "saffron-btn" : "white-btn"
-                    } br-0px d-flex align-items-center`}
+                  className={`${
+                    !isDashboard ? "saffron-btn" : "white-btn"
+                  } br-0px d-flex align-items-center`}
                   id="dropdown-autoclose-true"
                 >
                   <FaUserCog size={24} className="me-2" />
