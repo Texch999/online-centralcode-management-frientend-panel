@@ -390,7 +390,10 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
                   onClick={() => {
                     if (allowedRoles.includes(role_code)) {
                       resetPswdSubmitManagement();
-                    } else if (role_code === "director" || (dirEmpRoles.includes(role_code))) {
+                    } else if (
+                      role_code === "director" ||
+                      dirEmpRoles.includes(role_code)
+                    ) {
                       resetPswdSubmitDirector();
                     }
                   }}

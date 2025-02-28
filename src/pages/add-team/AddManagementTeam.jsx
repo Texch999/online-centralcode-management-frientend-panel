@@ -15,6 +15,7 @@ import {
 } from "../../api/apiMethods";
 import Roles from "../../utils/enum";
 import EditManagementPopup from "./popups/EditManagementPopup";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const AddManagementTeam = () => {
   const [tableData, setTableData] = useState([]);
@@ -26,7 +27,8 @@ const AddManagementTeam = () => {
     blockAccountId: null,
     deleteAccountId: null,
   });
-
+  const [discription, setDiscription] = useState("");
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingRowId, setEditingRowId] = useState(null);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
@@ -93,6 +95,8 @@ const AddManagementTeam = () => {
     });
     GetEmployee();
     toggleModal("showAddModal", false);
+    setDiscription("Created successfully")
+    setSuccessPopupOpen(true)
   };
 
   const handleBlockPopup = (id, name, status) => {
@@ -204,13 +208,12 @@ const AddManagementTeam = () => {
 
           <MdBlockFlipped
             size={18}
-            className={`pointer ${
-              employee.status === 1
-                ? "green-font"
-                : employee.status === 2
+            className={`pointer ${employee.status === 1
+              ? "green-font"
+              : employee.status === 2
                 ? "clr-red"
                 : ""
-            }`}
+              }`}
             onClick={() =>
               handleBlockPopup(employee.id, employee.name, employee.status)
             }
@@ -251,6 +254,7 @@ const AddManagementTeam = () => {
           show={modalState.showAddModal}
           onClose={() => toggleModal("showAddModal", false)}
           onSubmit={handleFormSubmit}
+
         />
       )}
       {EditShow && (
@@ -264,18 +268,16 @@ const AddManagementTeam = () => {
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
         setConfirmationPopupOpen={setBlockPopup}
-        discription={`Are you sure you want to ${
-          selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser}?`}
+        discription={`Are you sure you want to ${selectedUser?.status === 1 ? "block" : "unblock"
+          } ${selectedUser}?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
         setConfirmationPopupOpen={setBlockPopup}
-        discription={`Are you sure you want to ${
-          selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser?.name}?`}
+        discription={`Are you sure you want to ${selectedUser?.status === 1 ? "block" : "unblock"
+          } ${selectedUser?.name}?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
@@ -286,6 +288,13 @@ const AddManagementTeam = () => {
         IndividualpassowrdId={resetPasswordId}
         onSubmit={onEmployeePasswordSubmit}
       />
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={discription}
+        />
+      )}
     </div>
   );
 };
