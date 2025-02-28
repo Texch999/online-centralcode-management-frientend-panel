@@ -166,15 +166,24 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
-  const handleInputChange = (id, field, value) => {
+  // const handleInputChange = (id, field, value) => {
+  //   setWebsiteDetails((prevDetails) => ({
+  //     ...prevDetails,
+  //     [id]: {
+  //       ...prevDetails[id],
+  //       [field]: value,
+  //     },
+  //   }));
+  // };
+  const handleInputChange = (websiteId, field, value) => {
     setWebsiteDetails((prevDetails) => ({
-      ...prevDetails,
-      [id]: {
-        ...prevDetails[id],
-        [field]: value,
-      },
+        ...prevDetails,
+        [websiteId]: {
+            ...prevDetails[websiteId],
+            [field]: value, // Ensure this line is correctly setting the field value
+        },
     }));
-  };
+};
 
   // const handleSubmit = (e) => {
   //   // e?.preventDefault();
@@ -299,6 +308,17 @@ function AddNewDirectorSuperAdmin() {
           user_paner_id: userSite.id,
           commission_type: accotypeid,
         };
+        if (accotypeid === "3") {
+          websiteData.share = parseFloat(
+            websiteDetails[userSite.id]?.share || 0
+          );
+          websiteData.caschip_values = parseFloat(
+            websiteDetails[userSite.id]?.caschip_values || 0
+          );
+          websiteData.downline_comm = parseFloat(
+            websiteDetails[userSite.id]?.downline_comm || 0
+          );
+        }
 
         if (accotypeid === "2") {
           websiteData.share = parseFloat(
@@ -327,8 +347,8 @@ function AddNewDirectorSuperAdmin() {
           websiteData.extra_chips_percentage = parseFloat(
             websiteDetails[userSite.id]?.extra_chips_percentage || 0
           );
-          websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+          websiteData.downline_comm = parseFloat(
+            websiteDetails[userSite.id]?.downline_comm || 0
           );
         }
 
@@ -417,6 +437,7 @@ function AddNewDirectorSuperAdmin() {
         if (accotypeid === "1") {
           websiteData.rent_start_date =
             websiteDetails[userSite.website_access_id]?.rent_start_date || "";
+
           websiteData.monthly_amount = parseInt(
             websiteDetails[userSite.website_access_id]?.monthly_amount || 0
           );
@@ -430,8 +451,8 @@ function AddNewDirectorSuperAdmin() {
             websiteDetails[userSite.website_access_id]
               ?.extra_chips_percentage || 0
           );
-          websiteData.share = parseFloat(
-            websiteDetails[userSite.website_access_id]?.share || 0
+          websiteData.downline_comm = parseFloat(
+            websiteDetails[userSite.website_access_id]?.downline_comm || 0
           );
         }
 
@@ -580,183 +601,179 @@ function AddNewDirectorSuperAdmin() {
           <h5 className="yellow-font">Add Director & Super Admin</h5>
         </div>
 
-          <div className="row">
-            {" "}
-            <div className="col p-1">
-              <label className="small-font my-1">Name</label>
-              <input
-                type="text"
-                placeholder="Enter Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              {errors?.name && <span className="error">{errors?.name}</span>}
-            </div>
-            <div className="col p-1">
-              <label className="small-font my-1">Login Name</label>
-              <input
-                type="text"
-                placeholder="Enter Login Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
-                required
-              />
-              {errors?.loginName && (
-                <span className="x-small-font error">{errors?.loginName}</span>
-              )}
-            </div>
-            <div className="col p-1">
-              <label className="small-font my-1">Role</label>
-              <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
-                value={selectedRole}
-                onChange={handleRoleChange}
-              >
-                <option value="">Select</option>
-                {adminRoless.map((role, index) => (
-                  <option key={index} value={role.value}>
-                    {role.label}
-                  </option>
-                ))}
-              </select>
-              {errors?.selectedRole && (
-                <span className="x-small-font error">
-                  {errors?.selectedRole}
-                </span>
-              )}
-            </div>
-            <div className="col p-1">
-              <label className="small-font my-1">Country</label>
-              <select
-                className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
-                value={selectedCountryCode}
-                onChange={handleCountryChange}
-              >
-                <option value="">Select</option>
-                {countryData?.map((country, index) => (
-                  <option key={index} value={country.id}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-              {errors?.selectedCountryCode && (
-                <span className="x-small-font error">
-                  {errors?.selectedCountryCode}
-                </span>
-              )}
-            </div>
+        <div className="row">
+          {" "}
+          <div className="col p-1">
+            <label className="small-font my-1">Name</label>
+            <input
+              type="text"
+              placeholder="Enter Name"
+              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            {errors?.name && <span className="error">{errors?.name}</span>}
           </div>
-          <div className="row">
-            {" "}
-            <div className="col p-1">
-              <label className="small-font my-1">Currency</label>
-              <select
-                className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
-                value={selectedCurrencyCode}
-                onChange={handleCurrencyChange}
-              >
-                <option value="">Select </option>
-                {currencyData?.map((currency, index) => (
-                  <option key={index} value={currency.country_id}>
-                    {currency.currency_name}
-                  </option>
-                ))}
-              </select>
-              {errors?.selectedCurrencyCode && (
-                <span className="x-small-font error">
-                  {errors?.selectedCurrencyCode}
-                </span>
-              )}
-            </div>
-            {mode === "edit" ? null : (
-              <>
-                <div className="p-1 col position-relative">
-                  <label className="small-font my-1">Password</label>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                    placeholder="Enter"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <span
-                    className="position-absolute"
-                    style={{
-                      right: "1.5rem",
-                      top: "2.3rem",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => togglePasswordVisibility(setShowPassword)}
-                  >
-                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                  {errors?.password && (
-                    <span className="x-small-font error">
-                      {errors?.password}
-                    </span>
-                  )}
-                </div>
-                <div className="p-1 col position-relative">
-                  <label className="small-font my-1">Confirm Password</label>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                    placeholder="Enter"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                  <span
-                    className="position-absolute"
-                    style={{
-                      right: "1.5rem",
-                      top: "2.3rem",
-                      cursor: "pointer",
-                    }}
-                    onClick={() =>
-                      togglePasswordVisibility(setShowConfirmPassword)
-                    }
-                  >
-                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                  {errors?.confirmPassword && (
-                    <span className="x-small-font error">
-                      {errors?.confirmPassword}
-                    </span>
-                  )}
-                </div>
-              </>
+          <div className="col p-1">
+            <label className="small-font my-1">Login Name</label>
+            <input
+              type="text"
+              placeholder="Enter Login Name"
+              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+              value={loginName}
+              onChange={(e) => setLoginName(e.target.value)}
+              required
+            />
+            {errors?.loginName && (
+              <span className="x-small-font error">{errors?.loginName}</span>
             )}
-            <div className="p-1 col position-relative">
-              <label className="small-font my-1">Management Password</label>
-              <input
-                type="password"
-                className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
-                placeholder="Enter"
-                required
-                value={managementPassword}
-                onChange={(e) => setManagementPassword(e.target.value)}
-              />
-              <span
-                className="position-absolute"
-                style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
-                onClick={() =>
-                  togglePasswordVisibility(setShowManagementPassword)
-                }
-              >
-                {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
-              </span>
-              {errors?.managementPassword && (
-                <span className="x-small-font error">
-                  {errors?.managementPassword}
-                </span>
-              )}
-            </div>
           </div>
+          <div className="col p-1">
+            <label className="small-font my-1">Role</label>
+            <select
+              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+              value={selectedRole}
+              onChange={handleRoleChange}
+            >
+              <option value="">Select</option>
+              {adminRoless.map((role, index) => (
+                <option key={index} value={role.value}>
+                  {role.label}
+                </option>
+              ))}
+            </select>
+            {errors?.selectedRole && (
+              <span className="x-small-font error">{errors?.selectedRole}</span>
+            )}
+          </div>
+          <div className="col p-1">
+            <label className="small-font my-1">Country</label>
+            <select
+              className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
+              value={selectedCountryCode}
+              onChange={handleCountryChange}
+            >
+              <option value="">Select</option>
+              {countryData?.map((country, index) => (
+                <option key={index} value={country.id}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            {errors?.selectedCountryCode && (
+              <span className="x-small-font error">
+                {errors?.selectedCountryCode}
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="row">
+          {" "}
+          <div className="col p-1">
+            <label className="small-font my-1">Currency</label>
+            <select
+              className="small-font rounded all-none input-css white-bg  border-grey3 w-100"
+              value={selectedCurrencyCode}
+              onChange={handleCurrencyChange}
+            >
+              <option value="">Select </option>
+              {currencyData?.map((currency, index) => (
+                <option key={index} value={currency.country_id}>
+                  {currency.currency_name}
+                </option>
+              ))}
+            </select>
+            {errors?.selectedCurrencyCode && (
+              <span className="x-small-font error">
+                {errors?.selectedCurrencyCode}
+              </span>
+            )}
+          </div>
+          {mode === "edit" ? null : (
+            <>
+              <div className="p-1 col position-relative">
+                <label className="small-font my-1">Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                  placeholder="Enter"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="position-absolute"
+                  style={{
+                    right: "1.5rem",
+                    top: "2.3rem",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => togglePasswordVisibility(setShowPassword)}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+                {errors?.password && (
+                  <span className="x-small-font error">{errors?.password}</span>
+                )}
+              </div>
+              <div className="p-1 col position-relative">
+                <label className="small-font my-1">Confirm Password</label>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+                  placeholder="Enter"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="position-absolute"
+                  style={{
+                    right: "1.5rem",
+                    top: "2.3rem",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    togglePasswordVisibility(setShowConfirmPassword)
+                  }
+                >
+                  {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+                {errors?.confirmPassword && (
+                  <span className="x-small-font error">
+                    {errors?.confirmPassword}
+                  </span>
+                )}
+              </div>
+            </>
+          )}
+          <div className="p-1 col position-relative">
+            <label className="small-font my-1">Management Password</label>
+            <input
+              type="password"
+              className="border-grey3 small-font rounded all-none input-css white-bg  w-100"
+              placeholder="Enter"
+              required
+              value={managementPassword}
+              onChange={(e) => setManagementPassword(e.target.value)}
+            />
+            <span
+              className="position-absolute"
+              style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
+              onClick={() =>
+                togglePasswordVisibility(setShowManagementPassword)
+              }
+            >
+              {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
+            </span>
+            {errors?.managementPassword && (
+              <span className="x-small-font error">
+                {errors?.managementPassword}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
       <div>
         <h4 className="yellow-font fw-bold mb-0">WEBSITE MARKET </h4>
@@ -970,7 +987,7 @@ function AddNewDirectorSuperAdmin() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }
@@ -994,7 +1011,7 @@ function AddNewDirectorSuperAdmin() {
                                   onChange={(e) =>
                                     handleInputChange(
                                       userSite.website_access_id,
-                                      "downline_comm",
+                                      "share",
                                       e.target.value
                                     )
                                   }
@@ -1012,7 +1029,7 @@ function AddNewDirectorSuperAdmin() {
                                   onChange={(e) =>
                                     handleInputChange(
                                       userSite.website_access_id,
-                                      "share",
+                                      "downline_comm",
                                       e.target.value
                                     )
                                   }
@@ -1042,7 +1059,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           </div>
                         )}
-                        {accountTypes[form.id]?.[userSite.website_access_id] ===
+                          {accountTypes[form.id]?.[userSite.website_access_id] ===
                           "3" && (
                           <div className="col d-flex">
                             <div className="col position-relative mx-1">
@@ -1053,7 +1070,7 @@ function AddNewDirectorSuperAdmin() {
                                   onChange={(e) =>
                                     handleInputChange(
                                       userSite.website_access_id,
-                                      "downline_comm",
+                                      "share",
                                       e.target.value
                                     )
                                   }
@@ -1071,7 +1088,7 @@ function AddNewDirectorSuperAdmin() {
                                   onChange={(e) =>
                                     handleInputChange(
                                       userSite.website_access_id,
-                                      "share",
+                                      "downline_comm",
                                       e.target.value
                                     )
                                   }
@@ -1238,7 +1255,7 @@ function AddNewDirectorSuperAdmin() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
@@ -1261,7 +1278,7 @@ function AddNewDirectorSuperAdmin() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.id,
-                                        "downline_comm",
+                                        "share",
                                         e.target.value
                                       )
                                     }
@@ -1279,7 +1296,7 @@ function AddNewDirectorSuperAdmin() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }
@@ -1319,7 +1336,7 @@ function AddNewDirectorSuperAdmin() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.id,
-                                        "downline_comm",
+                                        "share",
                                         e.target.value
                                       )
                                     }
@@ -1337,7 +1354,7 @@ function AddNewDirectorSuperAdmin() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }

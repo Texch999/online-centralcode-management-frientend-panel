@@ -107,6 +107,13 @@ function EditNewDirector() {
                       case 3:
                         return {
                           ...basePayload,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      case 4:
+                        return {
+                          ...basePayload,
                           someField: site.someField || "",
                           anotherField: site.anotherField || "",
                         };
@@ -160,6 +167,13 @@ function EditNewDirector() {
                           caschip_values: site.caschip_values || "",
                         };
                       case 3:
+                        return {
+                          ...basePayload,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      case 4:
                         return {
                           ...basePayload,
                           someField: site.someField || "",
@@ -229,7 +243,8 @@ function EditNewDirector() {
             parseFloat(websiteDetails[key]?.chip_percentage) || null;
           websiteData.extra_chips_percentage =
             parseFloat(websiteDetails[key]?.extra_chips_percentage) || null;
-          websiteData.share = parseFloat(websiteDetails[key]?.share) || null;
+          websiteData.downline_comm =
+            parseFloat(websiteDetails[key]?.downline_comm) || null;
         } else if (commissionType === 2 || commissionType === 3) {
           websiteData.share = parseFloat(websiteDetails[key]?.share) || null;
           websiteData.caschip_values =
@@ -318,8 +333,8 @@ function EditNewDirector() {
                 websiteDetails[userSite.website_access_id]
                   ?.extra_chips_percentage || 0
               );
-              websiteData.share = parseFloat(
-                websiteDetails[userSite.website_access_id]?.share || 0
+              websiteData.downline_comm = parseFloat(
+                websiteDetails[userSite.website_access_id]?.downline_comm || 0
               );
             }
 
@@ -784,6 +799,61 @@ function EditNewDirector() {
                         </div>
                       </>
                     )}
+                    {userWebsite.commission_type === 3 && (
+                      <>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Downline Share
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.share || ""}
+                            onChange={(e) => {
+                              const updatedWebsites = [...userWebsites];
+                              updatedWebsites[userIndex] = {
+                                ...updatedWebsites[userIndex],
+                                share: e.target.value,
+                              };
+                              setUserWebsites(updatedWebsites);
+                            }}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Downline Comm
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.downline_comm || ""}
+                            onChange={(e) => {
+                              const updatedWebsites = [...userWebsites];
+                              updatedWebsites[userIndex] = {
+                                ...updatedWebsites[userIndex],
+                                downline_comm: e.target.value,
+                              };
+                              setUserWebsites(updatedWebsites);
+                            }}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <label className="small-font my-1">
+                            Caschip Values
+                          </label>
+                          <input
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.caschip_values || ""}
+                            onChange={(e) => {
+                              const updatedWebsites = [...userWebsites];
+                              updatedWebsites[userIndex] = {
+                                ...updatedWebsites[userIndex],
+                                caschip_values: e.target.value,
+                              };
+                              setUserWebsites(updatedWebsites);
+                            }}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
@@ -997,7 +1067,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.website_access_id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
@@ -1022,7 +1092,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "downline_comm",
+                                        "share",
                                         e.target.value
                                       )
                                     }
@@ -1040,7 +1110,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }
@@ -1082,7 +1152,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "downline_comm",
+                                        "share",
                                         e.target.value
                                       )
                                     }
@@ -1100,7 +1170,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }
@@ -1267,7 +1337,7 @@ function EditNewDirector() {
                                         onChange={(e) =>
                                           handleInputChange(
                                             userSite.id,
-                                            "share",
+                                            "downline_comm",
                                             e.target.value
                                           )
                                         }
@@ -1290,7 +1360,8 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "downline_comm",
+                                          "share",
+
                                           e.target.value
                                         )
                                       }
@@ -1308,7 +1379,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
@@ -1348,7 +1419,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "downline_comm",
+                                          "share",
                                           e.target.value
                                         )
                                       }
@@ -1366,7 +1437,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
