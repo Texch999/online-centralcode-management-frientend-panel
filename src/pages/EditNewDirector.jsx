@@ -40,6 +40,8 @@ function EditNewDirector() {
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
   console.log(userWebsites, "userWebsites");
+  console.log(selectedRole, "selectedRole");
+
   const [addWebsites, setAddWebsites] = useState([]);
   const [forms, setForms] = useState([]);
   const role = localStorage.getItem("role_code");
@@ -584,9 +586,6 @@ function EditNewDirector() {
         <div className="d-flex align-items-center justify-content-between">
           <h5 className="yellow-font fw-bold">
             {mode === "edit" ? `Edit  ${role}` : `Add ${role}`}
-            {/* {mode === "edit"
-              ? "Edit Director & Super Admin"
-              : "Add Director & Super Admin"} */}
           </h5>
           <span
             className="yellow-font cursor-pointer"
@@ -596,11 +595,8 @@ function EditNewDirector() {
           </span>
         </div>
 
-        {/* Input fields for director details */}
         <div className="p-1">
-          {" "}
           <div className="row">
-            {" "}
             <div className="col p-1">
               <label className="small-font my-1">Name</label>
               <input
@@ -644,24 +640,6 @@ function EditNewDirector() {
                     {role.name}
                   </option>
                 ))}
-                {/* {adminRolesArray
-                  .filter((role) => {
-                    if (selectedRole === "1") {
-                      // If Director is selected, exclude Director
-                      return role.name !== "director";
-                    } else if (selectedRole === "management") {
-                      // If Management is selected, show only Director and SuperAdmin
-                      return (
-                        role.name === "director" || role.name === "SuperAdmin"
-                      );
-                    }
-                    return true; // Default case, show all roles
-                  })
-                  .map((role) => (
-                    <option key={role.id} value={role.id}>
-                      {role.name}
-                    </option>
-                  ))} */}
               </select>
               {errors.selectedRole && (
                 <span className="text-danger small-font">
@@ -930,9 +908,7 @@ function EditNewDirector() {
 
             {forms.map((form, index) => (
               <>
-                <h5 className="yellow-font fw-bold mb-0">
-                  ADD WEBSITE MARKET{" "}
-                </h5>
+                <h5 className="yellow-font fw-bold mb-0">ADD WEBSITE MARKET</h5>
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">

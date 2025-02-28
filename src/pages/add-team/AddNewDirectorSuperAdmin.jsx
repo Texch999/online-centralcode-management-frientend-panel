@@ -415,11 +415,12 @@ function AddNewDirectorSuperAdmin() {
     setForms((prev) => [...prev, { id: Date.now() }]);
   };
 
-  const adminRoless = Object.entries(adminRoles).map(([value, label]) => ({
-    value: Number(value),
-    label,
+  const adminRolesArray = Object.entries(adminRoles).map(([key, value]) => ({
+    value: key,
+    label: value,
   }));
-  console.log(adminRoless, "adminRoless");
+  
+  console.log(adminRolesArray, "adminRolesArray");
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
       value,
@@ -437,7 +438,7 @@ function AddNewDirectorSuperAdmin() {
 
   console.log(transformedOptions, "transformedOptions");
 
-  const filteredRoles = adminRoless.filter((userRole) => {
+  const filteredRoles = adminRolesArray.filter((userRole) => {
     if (role === "management") {
       return userRole.label === "director" || userRole.label === "SuperAdmin";
     } else if (role === "director") {
@@ -486,23 +487,24 @@ function AddNewDirectorSuperAdmin() {
             )}
           </div>
           <div className="col p-1">
-            <label className="small-font my-1">Role</label>
-            <select
-              className="small-font rounded all-none input-css white-bg border-grey3 w-100"
-              value={selectedRole}
-              onChange={handleRoleChange}
-            >
-              <option value="">Select</option>
-              {filteredRoles.map((role, index) => (
-                <option key={index} value={role.value}>
-                  {role.label}
-                </option>
-              ))}
-            </select>
-            {errors?.selectedRole && (
-              <span className="x-small-font error">{errors?.selectedRole}</span>
-            )}
-          </div>
+  <label className="small-font my-1">Role</label>
+  <select
+    className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+    value={selectedRole}
+    onChange={(e) => setSelectedRole(e.target.value)}
+  >
+    <option value="">Select</option>
+    {filteredRoles.map((role, index) => (
+      <option key={index} value={role.value}>
+        {role.label}
+      </option>
+    ))}
+  </select>
+  {errors.selectedRole && (
+    <span className="text-danger small-font">{errors.selectedRole}</span>
+  )}
+</div>
+
           <div className="col p-1">
             <label className="small-font my-1">Country</label>
             <select
