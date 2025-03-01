@@ -44,11 +44,13 @@ function EditNewDirector() {
   const [websiteDetails, setWebsiteDetails] = useState({});
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
-
+  const [websiteEditErrors, setShowWebsiteEditErrors] = useState(null);
   const [addWebsites, setAddWebsites] = useState([]);
   const [forms, setForms] = useState([]);
   const role = localStorage.getItem("role_code");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
+
+  console.log(websiteEditErrors, "==>websiteEditErrors");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -366,7 +368,11 @@ function EditNewDirector() {
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
-      .catch((error) => console.error("Error updating director:", error));
+      .catch((error) => {
+        console.error("Error updating director:", error);
+
+        setShowWebsiteEditErrors(error.message[0].message || error.message[0]);
+      });
   };
 
   const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
@@ -623,7 +629,7 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-            <div className="col p-1">
+            {/* <div className="col p-1">
               <label className="small-font my-1">Role</label>
               <select
                 className="small-font rounded all-none input-css white-bg border-grey3 w-100"
@@ -642,7 +648,7 @@ function EditNewDirector() {
                   {errors.selectedRole}
                 </span>
               )}
-            </div>
+            </div> */}
             <div className="col p-1">
               <label className="small-font my-1">Currency</label>
               <select
@@ -689,7 +695,7 @@ function EditNewDirector() {
             <div className="p-1  col-3 position-relative">
               <label className="small-font my-1">Management Password</label>
               <input
-                type="password"
+                type={showManagementPassword ? "text" : "password"}
                 className="border-grey3 small-font rounded all-none input-css white-bg w-100"
                 placeholder="Enter"
                 required
@@ -1561,6 +1567,10 @@ function EditNewDirector() {
           </button>
         </div>
 
+
+        <div className="red-font  small-font fw-600 flex-center">
+            {websiteEditErrors}
+          </div>
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded"
@@ -1573,6 +1583,8 @@ function EditNewDirector() {
           >
             Update Details
           </button>
+
+         
         </div>
         <SuccessPopup
           successPopupOpen={successPopupOpen}

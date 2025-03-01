@@ -38,15 +38,64 @@ const apiRequest = (
         res(response?.data);
       })
       .catch((error) => {
+        console.log(error.response, "==> axios error");
+
         if (error.response) {
-          rej(error.response.data);
+          let status = error.response.status;
+          let message;
+
+          const errorMessage =
+            error.response.data?.message || "An unknown error occurred";
+
+          if (typeof errorMessage === "string") {
+            message = [errorMessage];
+          } else if (Array.isArray(errorMessage)) {
+            message = errorMessage;
+          } else if (typeof errorMessage === "object") {
+            message = Object.values(errorMessage).flat();
+          } else {
+            message = ["An unknown error occurred"];
+          }
+
+          switch (status) {
+            case 422:
+              rej({ status, message });
+              break;
+          
+            
+            case 429:
+              rej({
+                status,
+                message: ["Too many requests. Please try again later."],
+              });
+              break;
+            case 403:
+              rej({
+                status,
+                message: [
+                  "Forbidden: You do not have permission to access this resource.",
+                ],
+              });
+              break;
+            case 409:
+              rej({ status, message: ["Please try again later."] });
+              break;
+            case 500:
+            default:
+              rej({
+                status,
+                message: ["Network error or something went wrong."],
+              });
+              break;
+          }
         } else {
-          rej({ message: error.message });
+          rej({
+            status: 500,
+            message: ["Network error or no response received."],
+          });
         }
       });
   });
 };
 
 export default apiRequest;
-
-

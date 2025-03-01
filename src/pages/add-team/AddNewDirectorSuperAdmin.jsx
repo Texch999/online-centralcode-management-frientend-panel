@@ -40,7 +40,7 @@ function AddNewDirectorSuperAdmin() {
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
   const [countryData, setCountryData] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
-  const [forms, setForms] = useState([]);
+  const [forms, setForms] = useState([{ id: 1 }]);
   const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [selectedAdmins, setSelectedAdmins] = useState({});
   const [userWebsitesList, setUserWebsitesList] = useState({});
@@ -50,7 +50,9 @@ function AddNewDirectorSuperAdmin() {
   const [individualDirectorData, setIndividualDirectorData] = useState();
   const [selectedRole, setSelectedRole] = useState("");
   const [errors, setErrors] = useState({});
-  console.log(selectedAdmins, "selectedAdmins");
+  const [websiteCreationErrors, setShowWebsiteCreationErrors] = useState(null);
+  const [creationDescription,setCreateDescription]=useState("")
+  console.log(websiteCreationErrors, "websiteCreationErrors");
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId || null;
@@ -181,13 +183,13 @@ function AddNewDirectorSuperAdmin() {
     if (!validateForm()) return;
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-      alert("Please select at least one Admin Website.");
+      setShowWebsiteCreationErrors("Please select at least one Admin Website");
       return;
     }
 
     console.log(selectedWebsites, "selectedWebsites");
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -203,25 +205,25 @@ function AddNewDirectorSuperAdmin() {
         };
         if (accotypeid === "3") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+            websiteDetails[userSite.id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.id]?.caschip_values || 0
+            websiteDetails[userSite.id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
         if (accotypeid === "2") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+            websiteDetails[userSite.id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.id]?.caschip_values || 0
+            websiteDetails[userSite.id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
@@ -229,19 +231,19 @@ function AddNewDirectorSuperAdmin() {
           websiteData.rent_start_date =
             websiteDetails[userSite.id]?.rent_start_date || "";
           websiteData.monthly_amount = parseInt(
-            websiteDetails[userSite.id]?.monthly_amount || 0
+            websiteDetails[userSite.id]?.monthly_amount || null
           );
           websiteData.chip_percentage = parseFloat(
-            websiteDetails[userSite.id]?.chip_percentage || 0
+            websiteDetails[userSite.id]?.chip_percentage || null
           );
           websiteData.max_chips_monthly = parseInt(
-            websiteDetails[userSite.id]?.max_chips_monthly || 0
+            websiteDetails[userSite.id]?.max_chips_monthly || null
           );
           websiteData.extra_chips_percentage = parseFloat(
-            websiteDetails[userSite.id]?.extra_chips_percentage || 0
+            websiteDetails[userSite.id]?.extra_chips_percentage || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
@@ -253,7 +255,7 @@ function AddNewDirectorSuperAdmin() {
     const validUserWebsites = selectedUserWebsites.filter(Boolean);
 
     if (validUserWebsites.length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -273,6 +275,7 @@ function AddNewDirectorSuperAdmin() {
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
+          setCreateDescription("Director Added Successfully")
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
@@ -280,7 +283,20 @@ function AddNewDirectorSuperAdmin() {
           console.log("Something went wrong");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        // console.log(
+        //   error.message[0].data.message[0].message ||
+        //     error.message[0].data.message[0],
+        //   "==>in api call"
+        // );
+        // console.log(error.message[0].data.message[0],"==>in api call");
+
+        setShowWebsiteCreationErrors(
+          error.message[0].message || error.message[0]
+        );
+
+        // console.log(error.message[0].message || error.message[0],"==>error");
+      });
   };
 
   const handleDirectorSubmit = (e) => {
@@ -288,12 +304,12 @@ function AddNewDirectorSuperAdmin() {
     if (e) e.preventDefault();
     if (!validateForm()) return;
     if (!selectedOption || Object.keys(selectedOption).length === 0) {
-      alert("Please select at least one Admin Website.");
+      setShowWebsiteCreationErrors("Please select at least one Admin Website.");
       return;
     }
     console.log(selectedWebsites, "selectedWebsites");
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -313,13 +329,13 @@ function AddNewDirectorSuperAdmin() {
 
         if (accotypeid === "2" || accotypeid === "3") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.website_access_id]?.share || 0
+            websiteDetails[userSite.website_access_id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.website_access_id]?.caschip_values || 0
+            websiteDetails[userSite.website_access_id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+            websiteDetails[userSite.website_access_id]?.downline_comm || null
           );
         }
 
@@ -328,20 +344,21 @@ function AddNewDirectorSuperAdmin() {
             websiteDetails[userSite.website_access_id]?.rent_start_date || "";
 
           websiteData.monthly_amount = parseInt(
-            websiteDetails[userSite.website_access_id]?.monthly_amount || 0
+            websiteDetails[userSite.website_access_id]?.monthly_amount || null
           );
           websiteData.chip_percentage = parseFloat(
-            websiteDetails[userSite.website_access_id]?.chip_percentage || 0
+            websiteDetails[userSite.website_access_id]?.chip_percentage || null
           );
           websiteData.max_chips_monthly = parseInt(
-            websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
+            websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
+              null
           );
           websiteData.extra_chips_percentage = parseFloat(
             websiteDetails[userSite.website_access_id]
-              ?.extra_chips_percentage || 0
+              ?.extra_chips_percentage || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+            websiteDetails[userSite.website_access_id]?.downline_comm || null
           );
         }
 
@@ -352,7 +369,7 @@ function AddNewDirectorSuperAdmin() {
     const validUserWebsites = selectedUserWebsites.filter(Boolean);
 
     if (validUserWebsites.length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -372,6 +389,7 @@ function AddNewDirectorSuperAdmin() {
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
+          setCreateDescription("SuperAdmin Added Successfully")
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
@@ -379,7 +397,12 @@ function AddNewDirectorSuperAdmin() {
           console.log("Something went wrong");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setShowWebsiteCreationErrors(
+          error.message[0].message || error.message[0]
+        );
+      });
   };
   console.log(selectedOption, "selectedOption");
 
@@ -1266,7 +1289,6 @@ function AddNewDirectorSuperAdmin() {
                 </div>
               </div>
               <div className="d-flex py-2 align-items-center justify-content-end">
-                {" "}
                 <button
                   type="button"
                   className="cst-btn remove-btn"
@@ -1278,6 +1300,10 @@ function AddNewDirectorSuperAdmin() {
             </>
           ))}
         </form>
+
+        <div className="red-font  small-font fw-600 flex-center">
+          {websiteCreationErrors}
+        </div>
         <button type="button" className="cst-btn" onClick={addAnotherForm}>
           <FaPlus className="me-2" /> Add Another
         </button>
@@ -1294,7 +1320,7 @@ function AddNewDirectorSuperAdmin() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription="Added Director SuccessFully"
+          discription={creationDescription}
         />
       </div>
     </>
