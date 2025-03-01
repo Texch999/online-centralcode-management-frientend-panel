@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaEye, FaEyeSlash, FaPlus } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaPlus,
+  FaTrash,
+} from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getAdminWebsites,
@@ -102,6 +108,7 @@ function EditNewDirector() {
                       web_url: site.user_panel_url,
                       admin_panel_id: site.admin_panel_id,
                       commission_type: site.commission_type || "",
+                      status: site.status === 1 ? "Active" : "Inactive", // Add status field
                     };
 
                     switch (site.commission_type) {
@@ -164,6 +171,7 @@ function EditNewDirector() {
                       web_url: site.user_panel_url,
                       admin_panel_id: site.admin_panel_id,
                       commission_type: site.commission_type || "",
+                      status: site.status === 1 ? "Active" : "Inactive", // Add status field
                     };
 
                     switch (site.commission_type) {
@@ -543,6 +551,9 @@ function EditNewDirector() {
       },
     ]);
   };
+  const removeForm = (id) => {
+    setForms((prev) => prev.filter((form) => form.id !== id));
+  };
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
       value,
@@ -721,9 +732,8 @@ function EditNewDirector() {
                       <option value={data.web_name}>{data.web_name}</option>
                     </select>
                   </div>
-                
                 </div>
-              
+
                 {userWebsites?.map((userWebsite, userIndex) => (
                   <>
                     <div key={userIndex} className="w-100 mt-3 row">
@@ -894,6 +904,18 @@ function EditNewDirector() {
                           </div>
                         </>
                       )}
+                      <div className="col-1 text-end">
+                        status:
+                        <h6
+                          className={`my-1 ${
+                            userWebsite.status === "Active"
+                              ? "green-font"
+                              : "red-font"
+                          }`}
+                        >
+                          {userWebsite.status}
+                        </h6>
+                      </div>
                     </div>
                   </>
                 ))}
@@ -1518,6 +1540,16 @@ function EditNewDirector() {
                       )}
                     </div>
                   )}
+                </div>
+                <div className="d-flex py-2 align-items-center justify-content-end">
+                  {" "}
+                  <button
+                    type="button"
+                    className="cst-btn remove-btn"
+                    onClick={() => removeForm(form.id)}
+                  >
+                    <FaTrash className="me-2" /> Remove
+                  </button>
                 </div>
               </>
             ))}
