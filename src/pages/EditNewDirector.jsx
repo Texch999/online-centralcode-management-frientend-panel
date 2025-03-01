@@ -632,8 +632,8 @@ function EditNewDirector() {
                 placeholder="Enter Login Name"
                 className="border-grey3 small-font rounded all-none input-css white-bg w-100"
                 value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
-                required
+                // onChange={(e) => setLoginName(e.target.value)}
+                readOnly
               />
               {errors.loginName && (
                 <span className="text-danger small-font">

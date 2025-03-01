@@ -11,7 +11,7 @@ import {
 } from "../../../api/apiMethods";
 
 function AddDirectorPopup({
-    GetAllDirectorEmployees,
+  GetAllDirectorEmployees,
   selectedUser,
   onClose,
   show,
@@ -224,14 +224,25 @@ function AddDirectorPopup({
             </div>
             <div className="col">
               <label className="small-font mb-1">Login Name</label>
-              <input
-                type="text"
-                name="login_name"
-                value={formData.login_name}
-                onChange={handleChange}
-                className="small-font rounded input-css w-100"
-                placeholder="Enter"
-              />
+              {isEditMode ? (
+                <input
+                  type="text"
+                  name="login_name"
+                  value={formData.login_name}
+                  className="small-font rounded input-css w-100"
+                  readOnly
+                />
+              ) : (
+                <input
+                  type="text"
+                  name="login_name"
+                  value={formData.login_name}
+                  onChange={handleChange}
+                  className="small-font rounded input-css w-100"
+                  placeholder="Enter"
+                />
+              )}
+
               {errors.login_name && (
                 <p className="text-danger small-font">{errors.login_name}</p>
               )}
