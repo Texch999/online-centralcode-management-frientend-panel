@@ -203,25 +203,25 @@ function AddNewDirectorSuperAdmin() {
         };
         if (accotypeid === "3") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+            websiteDetails[userSite.id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.id]?.caschip_values || 0
+            websiteDetails[userSite.id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
         if (accotypeid === "2") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+            websiteDetails[userSite.id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.id]?.caschip_values || 0
+            websiteDetails[userSite.id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
@@ -229,19 +229,19 @@ function AddNewDirectorSuperAdmin() {
           websiteData.rent_start_date =
             websiteDetails[userSite.id]?.rent_start_date || "";
           websiteData.monthly_amount = parseInt(
-            websiteDetails[userSite.id]?.monthly_amount || 0
+            websiteDetails[userSite.id]?.monthly_amount || null
           );
           websiteData.chip_percentage = parseFloat(
-            websiteDetails[userSite.id]?.chip_percentage || 0
+            websiteDetails[userSite.id]?.chip_percentage || null
           );
           websiteData.max_chips_monthly = parseInt(
-            websiteDetails[userSite.id]?.max_chips_monthly || 0
+            websiteDetails[userSite.id]?.max_chips_monthly || null
           );
           websiteData.extra_chips_percentage = parseFloat(
-            websiteDetails[userSite.id]?.extra_chips_percentage || 0
+            websiteDetails[userSite.id]?.extra_chips_percentage || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
@@ -313,13 +313,13 @@ function AddNewDirectorSuperAdmin() {
 
         if (accotypeid === "2" || accotypeid === "3") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.website_access_id]?.share || 0
+            websiteDetails[userSite.website_access_id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.website_access_id]?.caschip_values || 0
+            websiteDetails[userSite.website_access_id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+            websiteDetails[userSite.website_access_id]?.downline_comm || null
           );
         }
 
@@ -328,20 +328,21 @@ function AddNewDirectorSuperAdmin() {
             websiteDetails[userSite.website_access_id]?.rent_start_date || "";
 
           websiteData.monthly_amount = parseInt(
-            websiteDetails[userSite.website_access_id]?.monthly_amount || 0
+            websiteDetails[userSite.website_access_id]?.monthly_amount || null
           );
           websiteData.chip_percentage = parseFloat(
-            websiteDetails[userSite.website_access_id]?.chip_percentage || 0
+            websiteDetails[userSite.website_access_id]?.chip_percentage || null
           );
           websiteData.max_chips_monthly = parseInt(
-            websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
+            websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
+              null
           );
           websiteData.extra_chips_percentage = parseFloat(
             websiteDetails[userSite.website_access_id]
-              ?.extra_chips_percentage || 0
+              ?.extra_chips_percentage || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+            websiteDetails[userSite.website_access_id]?.downline_comm || null
           );
         }
 
