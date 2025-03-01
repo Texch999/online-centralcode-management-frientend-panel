@@ -1,5 +1,7 @@
+
 const userID = () => {
   const id = localStorage.getItem("user_id");
+  console.log(id,"id")
   if (!id) {
     console.error("User ID is not available.");
     return null;
@@ -673,6 +675,20 @@ const endpoints = {
     method: "put",
     url: (id) => `/user/${userID()}/website/block-unblock/${id}`,
   },
+  resetPasswordMan: {
+    method: "put",
+    url: `/user/${userID()}/resetPassword`,
+  },
+  resetPswdDirector:{
+    method:"put",
+    url:`/director/${userID()}/directorresetPassword`
+    
+  },
+  
+  dirEmployeeResetPswd:{
+    method:"put",
+    url:`/director/${userID()}/dirEmpresetPassword`
+  }
 };
 
 export default endpoints;

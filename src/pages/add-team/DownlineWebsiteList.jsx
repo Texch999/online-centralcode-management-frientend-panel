@@ -32,8 +32,9 @@ const DownlineWebsiteList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
   const [wName, setWName] = useState("");
+  console.log(wName, "ww");
   const [statusId, setStatusId] = useState(null);
-  const[userWebsiteId,setUserWebsiteId]=useState(null)
+  const [userWebsiteId, setUserWebsiteId] = useState(null);
 
   const handleNavigateUserDashboard = (userwebisite) => {
     navigate(`/downline-list/${userwebisite}`);
@@ -80,18 +81,19 @@ const DownlineWebsiteList = () => {
     fetchDownlineUserWebsitesList();
   }, []);
 
-  const handleBlock = (id, wname, status) => {
+  const handleBlock = (id, name, status) => {
     setOnBlockPopup(true);
     setUserWebsiteId(id);
-    setWName(wname);
+    setWName(name);
     setStatusId(status);
   };
 
   const suspend = () => {
-    dwnlineUserWebsites()
+    dwnlineUserWebsites(userWebsiteId)
       .then((response) => {
         if (response.status === true) {
           console.log(response?.data);
+          fetchDownlineUserWebsitesList();
         } else {
           setError("something went wrong");
         }
@@ -126,14 +128,16 @@ const DownlineWebsiteList = () => {
                 size={20}
                 className="icon-action me-2 pointer green-clr"
                 onClick={() =>
-                  handleBlock(item?.id, item?.websiteName, item?.status)
+                  handleBlock(item?.webSiteId, item?.websiteName, item?.status)
                 }
               />
             ) : (
               <MdBlockFlipped
                 size={20}
-                className="icon-action me-2 pointer red-clr"
-                onClick={() => handleBlock(item?.id)}
+                className="icon-action red-font me-2 pointer red-clr"
+                onClick={() =>
+                  handleBlock(item?.webSiteId, item?.websiteName, item?.status)
+                }
               />
             )}
           </span>

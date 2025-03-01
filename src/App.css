@@ -68,6 +68,9 @@
   padding: 0.5rem !important;
   text-align: center !important;
 }
+.saffron-bg{
+  background-color: #ffa310;
+}
 
 .saffron-btn2 {
   background: #ffa310 !important;
@@ -783,7 +786,7 @@
 
 .cst-btn {
   transition: all 0.3s ease-in-out;
-  width: 15%;
+  width: 10%;
   background: white !important;
   border: 1.2px solid #00000033 !important;
   border-radius: 20px;
@@ -854,7 +857,7 @@ button.cst-btn:hover {
 }
 
 .white-clr {
-  color: "#ffffff";
+  color: "#FFFFFF";
 }
 
 .border-danger {
@@ -902,4 +905,38 @@ button.cst-btn:hover {
 .back-btn-bg {
   background-color: #ffa310;
   border-radius: 5px;
+}
+.pos-abs {
+  position: absolute;
+  top: 47%;
+  right: 1%;
+  z-index: 2;
+  /* transform: translateX(-50%); */
+}
+.black-bg {
+  background-color: #000000;
+}
+.position-relative {
+  position: relative;
+}
+.w-20vw {
+  width: 20vw;
+}
+.box-shadow2 {
+  box-shadow: rgba(50, 50, 93, 0.25) 4px 4px 4px 3px,
+    rgba(0, 0, 0, 0.3) 2px 3px 4px 2px;
+}
+.white-font{
+  color: #f1f1f1;
+}
+.black-font{
+  color: #000000;
+}
+.rounded-br{
+  border-radius: 30%;
+}
+.profile {
+  height: 10vh;
+  width: 6vw;
+  border-radius: 48%;
 }

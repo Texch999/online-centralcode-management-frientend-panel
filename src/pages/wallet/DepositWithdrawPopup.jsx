@@ -280,7 +280,7 @@ function DepositWithdrawPopup({
               <div className="grey-box flex-between m-1 col">{ticketData?.tmpErr.description}</div>
             </div>
           )}
-
+                                                                                                                                                                                                                                                                                                                                                
           {fromPath === "tickets" ? <>
             {ticketData?.status === 0 ? (
               <>

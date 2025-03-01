@@ -36,14 +36,12 @@ function EditNewDirector() {
   const [individualSuperAdminData, setIndividualSuperAdminData] =
     useState(null);
   const [websiteDetails, setWebsiteDetails] = useState({});
-  console.log(websiteDetails, "websiteDetails");
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
-  const [addWebsites, setAddWebsites] = useState([]);
-  const [forms, setForms] = useState([{ id: 1 }]);
-  const role = localStorage.getItem("role_code");
-  console.log(userWebsites, "userWebsites");
 
+  const [addWebsites, setAddWebsites] = useState([]);
+  const [forms, setForms] = useState([]);
+  const role = localStorage.getItem("role_code");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
 
   useEffect(() => {
@@ -65,7 +63,23 @@ function EditNewDirector() {
 
     fetchData();
   }, []);
+  const validateForm = () => {
+    const errors = {};
 
+    if (!name) errors.name = "Name is required";
+    if (!loginName) errors.loginName = "Login Name is required";
+    if (!selectedRole) errors.selectedRole = "Role is required";
+    if (!selectedCurrencyCode)
+      errors.selectedCurrencyCode = "Currency is required";
+    if (!selectedCountryCode)
+      errors.selectedCountryCode = "Country is required";
+    if (!managementPassword)
+      errors.managementPassword = "Management Password is required";
+
+    // Add more validation rules as needed
+
+    return errors;
+  };
   useEffect(() => {
     if (userId) {
       if (Role === "management") {
@@ -94,20 +108,28 @@ function EditNewDirector() {
                       case 1:
                         return {
                           ...basePayload,
-                          extra_chips_percentage: site.extra_chips_percentage,
+                          extra_chips_percentage:
+                            site.extra_chips_percentage || "",
                         };
                       case 2:
                         return {
                           ...basePayload,
-                          downline_comm: site.downline_comm,
-                          share: site.share,
-                          caschip_values: site.caschip_values,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
                         };
                       case 3:
                         return {
                           ...basePayload,
-                          someField: site.someField,
-                          anotherField: site.anotherField,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      case 4:
+                        return {
+                          ...basePayload,
+                          someField: site.someField || "",
+                          anotherField: site.anotherField || "",
                         };
                       default:
                         return basePayload;
@@ -148,20 +170,28 @@ function EditNewDirector() {
                       case 1:
                         return {
                           ...basePayload,
-                          extra_chips_percentage: site.extra_chips_percentage,
+                          extra_chips_percentage:
+                            site.extra_chips_percentage || "",
                         };
                       case 2:
                         return {
                           ...basePayload,
-                          downline_comm: site.downline_comm,
-                          share: site.share,
-                          caschip_values: site.caschip_values,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
                         };
                       case 3:
                         return {
                           ...basePayload,
-                          someField: site.someField,
-                          anotherField: site.anotherField,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      case 4:
+                        return {
+                          ...basePayload,
+                          someField: site.someField || "",
+                          anotherField: site.anotherField || "",
                         };
                       default:
                         return basePayload;
@@ -179,7 +209,6 @@ function EditNewDirector() {
       }
     }
   }, [mode, userId]);
-
   const handleManagementSubmit = () => {
     const payload = {
       type: parseInt(selectedRole),
@@ -188,19 +217,9 @@ function EditNewDirector() {
       name: name,
       login_name: loginName,
       parent_password: managementPassword,
-      // accessWebsites: userWebsites.map((site) => ({
-      //   id: site.id,
-      //   admin_panel_id: parseInt(site.admin_panel_id),
-      //   user_paner_id: parseInt(site.user_paner_id),
-      //   commission_type: parseInt(site.commission_type),
-      //   extra_chips_percentage: site.extra_chips_percentage || null,
-      //   share: site.share || null,
-      //   caschip_values: site.caschip_values || null,
-      //   downline_comm: site.downline_comm || null,
-      // })),
+
       accessWebsites: userWebsites.map((site) => {
         const commissionType = parseInt(site.commission_type);
-        console.log(commissionType, "commissionType");
         return {
           id: site.id,
           admin_panel_id: parseInt(site.admin_panel_id),
@@ -209,26 +228,22 @@ function EditNewDirector() {
           ...(commissionType === 1
             ? { extra_chips_percentage: site.extra_chips_percentage || null }
             : {
-                // extra_chips_percentage: site.extra_chips_percentage || null,
                 share: site.share || null,
-                // caschip_values: site.caschip_values || null,
+
                 downline_comm: site.downline_comm || null,
               }),
         };
       }),
       addWebsites: Object.keys(websiteDetails).map((key) => {
-        const commissionType = parseInt(accountTypes[1]?.[key]); // Get commission_type for the website
-        const adminPanelId = selectedAdmins[1]?.value; // Access the value from selectedAdmins
-        console.log(adminPanelId, "adminPanelId");
+        const commissionType = parseInt(accountTypes[1]?.[key]);
+        const adminPanelId = selectedAdmins[1]?.value;
 
         const websiteData = {
-          // adminPanelId
           admin_panel_id: adminPanelId,
           user_paner_id: parseInt(key),
           commission_type: commissionType,
         };
 
-        // Add fields based on commission_type
         if (commissionType === 1) {
           websiteData.rent_start_date =
             websiteDetails[key]?.rent_start_date || null;
@@ -240,7 +255,8 @@ function EditNewDirector() {
             parseFloat(websiteDetails[key]?.chip_percentage) || null;
           websiteData.extra_chips_percentage =
             parseFloat(websiteDetails[key]?.extra_chips_percentage) || null;
-          websiteData.share = parseFloat(websiteDetails[key]?.share) || null;
+          websiteData.downline_comm =
+            parseFloat(websiteDetails[key]?.downline_comm) || null;
         } else if (commissionType === 2 || commissionType === 3) {
           websiteData.share = parseFloat(websiteDetails[key]?.share) || null;
           websiteData.caschip_values =
@@ -265,10 +281,6 @@ function EditNewDirector() {
       .catch((error) => console.error("Error updating director:", error));
   };
   const handleDirectorSubmit = () => {
-    console.log("Selected Websites:", selectedWebsites);
-    console.log("Account Types:", accountTypes);
-    console.log("User Websites List:", userWebsitesList);
-
     const payload = {
       type: parseInt(selectedRole),
       country_id: parseInt(selectedCountryCode),
@@ -290,7 +302,6 @@ function EditNewDirector() {
 
             const accotypeid =
               accountTypes[form.id]?.[userSite.website_access_id];
-            console.log(userSite, "userSite");
             let websiteData = {
               admin_panel_id: selectedOption?.value,
               user_paner_id: userSite.user_WebSite_id,
@@ -329,116 +340,32 @@ function EditNewDirector() {
                 websiteDetails[userSite.website_access_id]
                   ?.extra_chips_percentage || 0
               );
-              websiteData.share = parseFloat(
-                websiteDetails[userSite.website_access_id]?.share || 0
+              websiteData.downline_comm = parseFloat(
+                websiteDetails[userSite.website_access_id]?.downline_comm || 0
               );
             }
 
             return websiteData;
           });
         })
-        .filter(Boolean), // Filter out null values
+        .filter(Boolean),
     };
-
-    console.log("Payload:", payload);
 
     updateSuperAdminByID(userId, payload)
       .then((response) => {
-        if (response.status) {
+        if (response.status === true) {
           setSuccessPopupOpen(true);
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
       .catch((error) => console.error("Error updating director:", error));
   };
-  // const handleDirectorSubmit = () => {
-  //   console.log("Selected Websites:", selectedWebsites);
-  //   console.log("Account Types:", accountTypes);
-  //   console.log("User Websites List:", userWebsitesList);
 
-  //   const payload = {
-  //     type: parseInt(selectedRole),
-  //     country_id: parseInt(selectedCountryCode),
-  //     currency_id: parseInt(selectedCurrencyCode),
-  //     name: name,
-  //     login_name: loginName,
-  //     parent_password: managementPassword,
-  //     accessWebsites: userWebsites.map((site) => ({
-  //       id: site.id,
-  //       admin_panel_id: parseInt(site.admin_panel_id),
-  //       user_paner_id: parseInt(site.user_paner_id),
-  //       commission_type: parseInt(site.commission_type),
-  //     })),
-  //     addWebsites: forms.flatMap((form) => {
-  //       return userWebsitesList[form.id]?.map((userSite) => {
-  //         if (!selectedWebsites[form.id]?.[userSite.website_access_id])
-  //           return null;
-
-  //         const accotypeid =
-  //           accountTypes[form.id]?.[userSite.website_access_id];
-  //         console.log(userSite, "userSite");
-  //         let websiteData = {
-  //           admin_panel_id: selectedOption?.value,
-  //           user_paner_id: userSite.user_WebSite_id,
-  //           commission_type: accotypeid,
-  //         };
-
-  //         console.log(websiteData, "websiteData");
-
-  //         if (accotypeid === "2" || accotypeid === "3") {
-  //           websiteData.share = parseFloat(
-  //             websiteDetails[userSite.website_access_id]?.share || 0
-  //           );
-  //           websiteData.caschip_values = parseFloat(
-  //             websiteDetails[userSite.website_access_id]?.caschip_values || 0
-  //           );
-  //           websiteData.downline_comm = parseFloat(
-  //             websiteDetails[userSite.website_access_id]?.downline_comm || 0
-  //           );
-  //         }
-
-  //         if (accotypeid === "1") {
-  //           websiteData.rent_start_date =
-  //             websiteDetails[userSite.website_access_id]?.rent_start_date || "";
-  //           websiteData.monthly_amount = parseInt(
-  //             websiteDetails[userSite.website_access_id]?.monthly_amount || 0
-  //           );
-  //           websiteData.chip_percentage = parseFloat(
-  //             websiteDetails[userSite.website_access_id]?.chip_percentage || 0
-  //           );
-  //           websiteData.max_chips_monthly = parseInt(
-  //             websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
-  //           );
-  //           websiteData.extra_chips_percentage = parseFloat(
-  //             websiteDetails[userSite.website_access_id]
-  //               ?.extra_chips_percentage || 0
-  //           );
-  //           websiteData.share = parseFloat(
-  //             websiteDetails[userSite.website_access_id]?.share || 0
-  //           );
-  //         }
-
-  //         return websiteData;
-  //       });
-  //     }),
-  //   };
-
-  //   console.log("Payload:", payload);
-
-  //   updateSuperAdminByID(userId, payload)
-  //     .then((response) => {
-  //       if (response.status) {
-  //         setSuccessPopupOpen(true);
-  //         setTimeout(() => navigate("/director-admin"), 2000);
-  //       }
-  //     })
-  //     .catch((error) => console.error("Error updating director:", error));
-  // };
   const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
     id,
     name,
   }));
-
+  console.log(adminRolesArray, "adminRolesArray");
   const transformData = (data) => {
     const adminMap = new Map();
 
@@ -478,10 +405,8 @@ function EditNewDirector() {
   const [accountTypes, setAccountTypes] = useState({});
 
   const [errors, setErrors] = useState({});
-  console.log(selectedAdmins, "selectedAdmins");
 
   const [selectedOption, setSelectedOption] = useState(null);
-  console.log(userWebsitesList, "userWebsitesList");
 
   const GetAllCountries = () => {
     getCountries()
@@ -601,7 +526,6 @@ function EditNewDirector() {
     }));
   };
   console.log(selectedOption, "selectedOption");
-
   const addAnotherForm = () => {
     const newForm = { id: Date.now() };
     setForms((prevForms) => [...prevForms, newForm]);
@@ -633,28 +557,20 @@ function EditNewDirector() {
         }))
       )
     : [];
-  // const handleCommissionTypeChange = (userIndex, newValue) => {
-  //   const updatedUserWebsites = [...data.userWebsites];
-  //   updatedUserWebsites[userIndex].commission_type = newValue;
-  //   setData({ ...data, userWebsites: updatedUserWebsites });
-  // };
-
-  // const handleExtraChipsChange = (userIndex, newValue) => {
-  //   const updatedUserWebsites = [...data.userWebsites];
-  //   updatedUserWebsites[userIndex].extra_chips_percentage = newValue;
-  //   setData({ ...data, userWebsites: updatedUserWebsites });
-  // };
-
-  // Similar handlers for other fields...
+  const filteredRoles = adminRolesArray.filter((userRole) => {
+    if (role === "management") {
+      return userRole.name === "director" || userRole.name === "SuperAdmin";
+    } else if (role === "director") {
+      return userRole.name === "SuperAdmin";
+    }
+    return false;
+  });
   return (
     <>
       <div>
         <div className="d-flex align-items-center justify-content-between">
           <h5 className="yellow-font fw-bold">
             {mode === "edit" ? `Edit  ${role}` : `Add ${role}`}
-            {/* {mode === "edit"
-              ? "Edit Director & Super Admin"
-              : "Add Director & Super Admin"} */}
           </h5>
           <span
             className="yellow-font cursor-pointer"
@@ -664,11 +580,8 @@ function EditNewDirector() {
           </span>
         </div>
 
-        {/* Input fields for director details */}
         <div className="p-1">
-          {" "}
           <div className="row">
-            {" "}
             <div className="col p-1">
               <label className="small-font my-1">Name</label>
               <input
@@ -679,6 +592,9 @@ function EditNewDirector() {
                 onChange={(e) => setName(e.target.value)}
                 required
               />
+              {errors.name && (
+                <span className="text-danger small-font">{errors.name}</span>
+              )}
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Login Name</label>
@@ -690,6 +606,11 @@ function EditNewDirector() {
                 onChange={(e) => setLoginName(e.target.value)}
                 required
               />
+              {errors.loginName && (
+                <span className="text-danger small-font">
+                  {errors.loginName}
+                </span>
+              )}
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Role</label>
@@ -699,12 +620,17 @@ function EditNewDirector() {
                 onChange={(e) => setSelectedRole(e.target.value)}
               >
                 <option value="">Select</option>
-                {adminRolesArray.map((role) => (
-                  <option key={role.id} value={role.id}>
+                {filteredRoles.map((role, index) => (
+                  <option key={index} value={role.value}>
                     {role.name}
                   </option>
                 ))}
               </select>
+              {errors.selectedRole && (
+                <span className="text-danger small-font">
+                  {errors.selectedRole}
+                </span>
+              )}
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Currency</label>
@@ -716,10 +642,15 @@ function EditNewDirector() {
                 <option value="">Select</option>
                 {currencyData.map((currency) => (
                   <option key={currency.country_id} value={currency.country_id}>
-                    {currency.currency_name}
+                    {currency.currency_name}--- {currency.name}
                   </option>
                 ))}
               </select>
+              {errors.selectedCurrencyCode && (
+                <span className="text-danger small-font">
+                  {errors.selectedCurrencyCode}
+                </span>
+              )}
             </div>
           </div>
           <div className="row">
@@ -737,6 +668,11 @@ function EditNewDirector() {
                   </option>
                 ))}
               </select>
+              {errors.selectedCountryCode && (
+                <span className="text-danger small-font">
+                  {errors.selectedCountryCode}
+                </span>
+              )}
             </div>
 
             <div className="p-1  col-3 position-relative">
@@ -759,6 +695,11 @@ function EditNewDirector() {
                 {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
+            {errors.managementPassword && (
+              <span className="text-danger small-font">
+                {errors.managementPassword}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -767,6 +708,7 @@ function EditNewDirector() {
         <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET</h3>
         <form className="custom-form small-font p-3">
           <div className="row align-items-center">
+            <div>Active</div>
             {adminWebsites?.map((data, index) => (
               <div key={index} className="box-shadow p-2 my-2 rounded">
                 <div className="w-15 no-cursor">
@@ -779,196 +721,188 @@ function EditNewDirector() {
                       <option value={data.web_name}>{data.web_name}</option>
                     </select>
                   </div>
+                
                 </div>
-
-                {/* {data.userWebsites?.map((userWebsite, userIndex) => (
-                  <div key={userIndex} className="w-100 mt-3 row">
-                    <div className="col-2 d-flex flex-column">
-                      <label className="small-font my-1">User Website</label>
-                      <select
-                        className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
-                        disabled
-                      >
-                        <option value={userWebsite.web_name}>
-                          {userWebsite.web_name}
-                        </option>
-                      </select>
-                    </div>
-                    <div className="col-2">
-                      <label className="small-font my-1">Commission Type</label>
-                      <div className="d-flex align-items-center">
-                        <input
-                          className="small-font white-bg rounded border-grey3 p-2 w-100 no-cursor"
-                          placeholder="Commission Type"
-                          value={
-                            commissionTypes[userWebsite.commission_type] ||
-                            "N/A"
-                          }
-                          readOnly
-                          disabled
-                        />
-                      </div>
-                    </div>
-                    {userWebsite.commission_type === 1 && (
-                      <div className="col-2">
-                        <label className="small-font my-1">Extra Chips %</label>
-                        <input
-                          className="small-font white-bg rounded border-grey3 p-2 w-100"
-                          value={userWebsite.extra_chips_percentage}
-                        />
-                      </div>
-                    )}
-                    {userWebsite.commission_type === 2 && (
-                      <>
-                        <div className="col-2">
-                          <label className="small-font my-1">
-                            Downline Share
-                          </label>
-                          <input
-                            className="small-font white-bg rounded border-grey3 p-2 w-100"
-                            value={userWebsite.share}
-                            readOnly
-                          />
-                        </div>
-                        <div className="col-2">
-                          <label className="small-font my-1">
-                            Downline Comm
-                          </label>
-                          <input
-                            className="small-font white-bg rounded border-grey3 p-2 w-100"
-                            value={userWebsite.downline_comm}
-                            readOnly
-                          />
-                        </div>
-                        <div className="col-2">
-                          <label className="small-font my-1">
-                            Caschip Values
-                          </label>
-                          <input
-                            className="small-font white-bg rounded border-grey3 p-2 w-100"
-                            value={userWebsite.caschip_values}
-                            readOnly
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))} */}
-                {data.userWebsites?.map((userWebsite, userIndex) => (
-                  <div key={userIndex} className="w-100 mt-3 row">
-                    <div className="col-2 d-flex flex-column">
-                      <label className="small-font my-1">User Website</label>
-                      <select
-                        className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
-                        disabled
-                      >
-                        <option value={userWebsite.web_name}>
-                          {userWebsite.web_name}
-                        </option>
-                      </select>
-                    </div>
-                    <div className="col-2">
-                      <label className="small-font my-1">Commission Type</label>
-                      <div className="d-flex align-items-center">
+              
+                {userWebsites?.map((userWebsite, userIndex) => (
+                  <>
+                    <div key={userIndex} className="w-100 mt-3 row">
+                      <div className="col-2 d-flex flex-column">
+                        {/* <label className="small-font my-1">User Website</label> */}
                         <select
-                          className="small-font white-bg rounded border-grey3 p-2 w-100"
-                          value={userWebsite.commission_type}
-                          onChange={(e) => {
-                            const updatedUserWebsites = [...data.userWebsites];
-                            updatedUserWebsites[userIndex].commission_type =
-                              e.target.value;
-                            // Update the state with the new commission type
-                            // You may need to update the state at a higher level depending on your structure
-                          }}
+                          className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
+                          disabled
                         >
-                          {Object.entries(commissionTypes).map(
-                            ([value, label]) => (
-                              <option key={value} value={value}>
-                                {label}
-                              </option>
-                            )
-                          )}
+                          <option value={userWebsite.web_url}>
+                            {userWebsite.web_url}
+                          </option>
                         </select>
                       </div>
-                    </div>
-                    {userWebsite.commission_type === 1 && (
                       <div className="col-2">
-                        <label className="small-font my-1">Extra Chips %</label>
-                        <input
-                          className="small-font white-bg rounded border-grey3 p-2 w-100"
-                          value={userWebsite.extra_chips_percentage}
-                          onChange={(e) => {
-                            const updatedUserWebsites = [...data.userWebsites];
-                            updatedUserWebsites[
-                              userIndex
-                            ].extra_chips_percentage = e.target.value;
-                            // Update the state with the new extra chips percentage
-                          }}
-                        />
+                        <label className="small-font my-1">
+                          Commission Type
+                        </label>
+                        <div className="d-flex align-items-center">
+                          <select
+                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                            value={userWebsite.commission_type}
+                            disabled
+                            onChange={(e) => {
+                              const updatedUserWebsites = [...userWebsites];
+                              updatedUserWebsites[userIndex].commission_type =
+                                e.target.value;
+                              setUserWebsites(updatedUserWebsites);
+                            }}
+                          >
+                            {Object.entries(commissionTypes).map(
+                              ([value, label]) => (
+                                <option key={value} value={value}>
+                                  {label}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </div>
                       </div>
-                    )}
-                    {userWebsite.commission_type === 2 && (
-                      <>
+
+                      {userWebsite.commission_type === 1 && (
                         <div className="col-2">
                           <label className="small-font my-1">
-                            Downline Share
+                            Extra Chips %
                           </label>
                           <input
                             className="small-font white-bg rounded border-grey3 p-2 w-100"
-                            value={userWebsite.share}
+                            value={userWebsite.extra_chips_percentage || ""}
                             onChange={(e) => {
-                              const updatedUserWebsites = [
-                                ...data.userWebsites,
-                              ];
-                              updatedUserWebsites[userIndex].share =
-                                e.target.value;
-                              // Update the state with the new share value
+                              const updatedWebsites = [...userWebsites];
+                              updatedWebsites[userIndex] = {
+                                ...updatedWebsites[userIndex],
+                                extra_chips_percentage: e.target.value,
+                              };
+                              setUserWebsites(updatedWebsites);
                             }}
                           />
                         </div>
-                        <div className="col-2">
-                          <label className="small-font my-1">
-                            Downline Comm
-                          </label>
-                          <input
-                            className="small-font white-bg rounded border-grey3 p-2 w-100"
-                            value={userWebsite.downline_comm}
-                            onChange={(e) => {
-                              const updatedUserWebsites = [
-                                ...data.userWebsites,
-                              ];
-                              updatedUserWebsites[userIndex].downline_comm =
-                                e.target.value;
-                              // Update the state with the new downline commission
-                            }}
-                          />
-                        </div>
-                        <div className="col-2">
-                          <label className="small-font my-1">
-                            Caschip Values
-                          </label>
-                          <input
-                            className="small-font white-bg rounded border-grey3 p-2 w-100"
-                            value={userWebsite.caschip_values}
-                            onChange={(e) => {
-                              const updatedUserWebsites = [
-                                ...data.userWebsites,
-                              ];
-                              updatedUserWebsites[userIndex].caschip_values =
-                                e.target.value;
-                              // Update the state with the new caschip values
-                            }}
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
+                      )}
+                      {userWebsite.commission_type === 2 && (
+                        <>
+                          <div className="col-2">
+                            <label className="small-font my-1">
+                              Downline Share
+                            </label>
+                            <input
+                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              value={userWebsite.share || ""}
+                              onChange={(e) => {
+                                const updatedWebsites = [...userWebsites];
+                                updatedWebsites[userIndex] = {
+                                  ...updatedWebsites[userIndex],
+                                  share: e.target.value,
+                                };
+                                setUserWebsites(updatedWebsites);
+                              }}
+                            />
+                          </div>
+                          <div className="col-2">
+                            <label className="small-font my-1">
+                              Downline Comm
+                            </label>
+                            <input
+                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              value={userWebsite.downline_comm || ""}
+                              onChange={(e) => {
+                                const updatedWebsites = [...userWebsites];
+                                updatedWebsites[userIndex] = {
+                                  ...updatedWebsites[userIndex],
+                                  downline_comm: e.target.value,
+                                };
+                                setUserWebsites(updatedWebsites);
+                              }}
+                            />
+                          </div>
+                          <div className="col-2">
+                            <label className="small-font my-1">
+                              Caschip Values
+                            </label>
+                            <input
+                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              value={userWebsite.caschip_values || ""}
+                              onChange={(e) => {
+                                const updatedWebsites = [...userWebsites];
+                                updatedWebsites[userIndex] = {
+                                  ...updatedWebsites[userIndex],
+                                  caschip_values: e.target.value,
+                                };
+                                setUserWebsites(updatedWebsites);
+                              }}
+                            />
+                          </div>
+                        </>
+                      )}
+                      {userWebsite.commission_type === 3 && (
+                        <>
+                          <div className="col-2">
+                            <label className="small-font my-1">
+                              Downline Share
+                            </label>
+                            <input
+                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              value={userWebsite.share || ""}
+                              onChange={(e) => {
+                                const updatedWebsites = [...userWebsites];
+                                updatedWebsites[userIndex] = {
+                                  ...updatedWebsites[userIndex],
+                                  share: e.target.value,
+                                };
+                                setUserWebsites(updatedWebsites);
+                              }}
+                            />
+                          </div>
+                          <div className="col-2">
+                            <label className="small-font my-1">
+                              Downline Comm
+                            </label>
+                            <input
+                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              value={userWebsite.downline_comm || ""}
+                              onChange={(e) => {
+                                const updatedWebsites = [...userWebsites];
+                                updatedWebsites[userIndex] = {
+                                  ...updatedWebsites[userIndex],
+                                  downline_comm: e.target.value,
+                                };
+                                setUserWebsites(updatedWebsites);
+                              }}
+                            />
+                          </div>
+                          <div className="col-2">
+                            <label className="small-font my-1">
+                              Caschip Values
+                            </label>
+                            <input
+                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              value={userWebsite.caschip_values || ""}
+                              onChange={(e) => {
+                                const updatedWebsites = [...userWebsites];
+                                updatedWebsites[userIndex] = {
+                                  ...updatedWebsites[userIndex],
+                                  caschip_values: e.target.value,
+                                };
+                                setUserWebsites(updatedWebsites);
+                              }}
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </>
                 ))}
               </div>
             ))}
 
             {forms.map((form, index) => (
               <>
+                <h5 className="yellow-font fw-bold mb-0">ADD WEBSITE MARKET</h5>
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">
@@ -1030,13 +964,15 @@ function EditNewDirector() {
                     </div>
                   )}
                 </div>
-
-                <div className="col-11">
-                  <label className="small-font my-1">User Website</label>
+                <div className="col-12">
+                  {/* <label className="small-font my-1">User Website</label> */}
                   {role === "director" && selectedOption ? (
                     userWebsitesList[form.id]?.length > 0 ? (
                       userWebsitesList[form.id].map((userSite) => (
-                        <div key={userSite.website_access_id} className="row">
+                        <div
+                          key={userSite.website_access_id}
+                          className="d-flex"
+                        >
                           {/* Checkbox for Selecting User Website */}
                           <div>hi:{userSite.user_panel}</div>
                           <span>{userSite.website_access_id}</span>
@@ -1066,7 +1002,7 @@ function EditNewDirector() {
                           {selectedWebsites[form.id]?.[
                             userSite.website_access_id
                           ] && (
-                            <div className="col-2 my-1">
+                            <div className="col-1 my-1">
                               <Select
                                 className="small-font white-bg"
                                 placeholder="Account Type"
@@ -1095,7 +1031,7 @@ function EditNewDirector() {
                             userSite.website_access_id
                           ] === "1" && (
                             <div className="col-9">
-                              <div className="row">
+                              <div className="d-flex">
                                 <div className="col">
                                   <input
                                     type="date"
@@ -1175,7 +1111,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.website_access_id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
@@ -1200,7 +1136,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "downline_comm",
+                                        "share",
                                         e.target.value
                                       )
                                     }
@@ -1218,7 +1154,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }
@@ -1260,7 +1196,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "downline_comm",
+                                        "share",
                                         e.target.value
                                       )
                                     }
@@ -1278,7 +1214,7 @@ function EditNewDirector() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "share",
+                                        "downline_comm",
                                         e.target.value
                                       )
                                     }
@@ -1314,13 +1250,13 @@ function EditNewDirector() {
                       <p className="small-font">No user websites available</p>
                     )
                   ) : (
-                    <div className="col-11">
+                    <div className="col-12">
                       <label className="small-font my-1">User Website</label>
                       {userWebsitesList[form.id]?.length > 0 ? (
                         userWebsitesList[form.id].map((userSite) => (
                           <div key={userSite.id} className="row">
                             {/* Checkbox for Selecting User Website */}
-                            <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
+                            <div className="col-1 input-css d-flex white-bg border-grey3 my-2">
                               <input
                                 type="checkbox"
                                 className="me-2"
@@ -1340,7 +1276,7 @@ function EditNewDirector() {
                               />
                             </div>
                             {selectedWebsites[form.id]?.[userSite.id] && (
-                              <div className="col-2 my-1">
+                              <div className="col-1 my-1">
                                 <Select
                                   className="small-font white-bg"
                                   placeholder="Account Type"
@@ -1364,7 +1300,7 @@ function EditNewDirector() {
                               </div>
                             )}
                             {accountTypes[form.id]?.[userSite.id] === "1" && (
-                              <div className="col-9">
+                              <div className="col-10">
                                 <div className="row">
                                   <div className="col">
                                     <input
@@ -1445,7 +1381,7 @@ function EditNewDirector() {
                                         onChange={(e) =>
                                           handleInputChange(
                                             userSite.id,
-                                            "share",
+                                            "downline_comm",
                                             e.target.value
                                           )
                                         }
@@ -1468,7 +1404,8 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "downline_comm",
+                                          "share",
+
                                           e.target.value
                                         )
                                       }
@@ -1486,7 +1423,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
@@ -1526,7 +1463,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "downline_comm",
+                                          "share",
                                           e.target.value
                                         )
                                       }
@@ -1544,7 +1481,7 @@ function EditNewDirector() {
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
-                                          "share",
+                                          "downline_comm",
                                           e.target.value
                                         )
                                       }
@@ -1585,27 +1522,26 @@ function EditNewDirector() {
               </>
             ))}
           </div>
-
-          <div className="text-end mb-3 w-100">
-            <button type="button" className="cst-btn" onClick={addAnotherForm}>
-              <FaPlus className="me-2" /> Add Another
-            </button>
-          </div>
-
-          <div className="d-flex justify-content-end">
-            <button
-              className="saffron-btn rounded"
-              type="button"
-              onClick={
-                Role === "management"
-                  ? handleManagementSubmit
-                  : handleDirectorSubmit
-              }
-            >
-              Update Details
-            </button>
-          </div>
         </form>
+        <div className="text-end mb-3 w-100">
+          <button type="button" className="cst-btn" onClick={addAnotherForm}>
+            <FaPlus className="me-2" /> Add Another
+          </button>
+        </div>
+
+        <div className="d-flex justify-content-end">
+          <button
+            className="saffron-btn rounded"
+            type="button"
+            onClick={
+              Role === "management"
+                ? handleManagementSubmit
+                : handleDirectorSubmit
+            }
+          >
+            Update Details
+          </button>
+        </div>
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}

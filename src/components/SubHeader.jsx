@@ -233,7 +233,7 @@ function SubHeader() {
       },
     ],
 
-    "digital marketing": [
+    promotions: [
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
@@ -320,6 +320,25 @@ function SubHeader() {
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
       },
     ],
+    designing_team: [
+      {
+        label: "Settings",
+        options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
+      },
+      {
+        label: "Promotions",
+        options: [
+          {
+            label: "Create Promotions Type",
+            path: "/create-promotion-type",
+          },
+          { label: "Sports Promotions", path: "/sports-promotions" },
+          { label: "Casino Promotions", path: "/casino-promotions" },
+          { label: "Banners (Casino/Sports)", path: "/banners" },
+          { label: "Broadcasting", path: "/broadcasting" },
+        ],
+      },
+    ],
   };
   const menuItems = menuConfig[role_code] || [];
 
@@ -355,8 +374,9 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
-                } br-0px flex-center w-100`}
+              className={`${
+                activeIndex === index ? "grey-btn" : "balck-btn"
+              } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>
