@@ -288,7 +288,11 @@ function EditNewDirector() {
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
-      .catch((error) => console.error("Error updating director:", error));
+      .catch((error) => {
+        console.error("Error updating director:", error);
+
+        setShowWebsiteEditErrors(error.message[0].message || error.message[0]);
+      });
   };
   const handleDirectorSubmit = () => {
     const payload = {
@@ -597,6 +601,14 @@ function EditNewDirector() {
           </span>
         </div>
 
+
+        {websiteEditErrors && (
+          <div className="error-popup-container col-6 p-1 br-5 m-2">
+            <ul>
+              <li className="fw-600 small-font">{websiteEditErrors}</li>
+            </ul>
+          </div>
+        )}
         <div className="p-1">
           <div className="row">
             <div className="col p-1">
@@ -1568,9 +1580,9 @@ function EditNewDirector() {
         </div>
 
 
-        <div className="red-font  small-font fw-600 flex-center">
+        {/* <div className="red-font  small-font fw-600 flex-center">
             {websiteEditErrors}
-          </div>
+          </div> */}
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded"

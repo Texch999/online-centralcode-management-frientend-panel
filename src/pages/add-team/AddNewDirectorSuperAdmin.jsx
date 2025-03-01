@@ -51,15 +51,16 @@ function AddNewDirectorSuperAdmin() {
   const [selectedRole, setSelectedRole] = useState("");
   const [errors, setErrors] = useState({});
   const [websiteCreationErrors, setShowWebsiteCreationErrors] = useState(null);
-  const [creationDescription,setCreateDescription]=useState("")
+  const [creationDescription, setCreateDescription] = useState("");
   console.log(websiteCreationErrors, "websiteCreationErrors");
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId || null;
   const [selectedOption, setSelectedOption] = useState(null);
-  console.log(userWebsitesList, "userWebsitesList");
+
+  console.log(adminWebsite, "adminWebsite 123");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-  console.log("currencyData", currencyData);
+
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -133,15 +134,33 @@ function AddNewDirectorSuperAdmin() {
     GetAllCurrencies();
   }, [userId]);
 
+  // const handleAdminRoleChange = (formId, selectedOption) => {
+  //   setSelectedAdmins((prev) => ({
+  //     ...prev,
+  //     [formId]: selectedOption,
+  //   }));
+
+  //   const adminData = adminWebsite.find(
+  //     (admin) => admin.id === selectedOption.value
+  //   );
+  //   setUserWebsitesList((prev) => ({
+  //     ...prev,
+  //     [formId]: adminData?.userWebsites || [],
+  //   }));
+  // };
+
   const handleAdminRoleChange = (formId, selectedOption) => {
     setSelectedAdmins((prev) => ({
       ...prev,
       [formId]: selectedOption,
     }));
 
+    // Find admin data based on selected option
     const adminData = adminWebsite.find(
       (admin) => admin.id === selectedOption.value
     );
+
+    // Update userWebsitesList for the corresponding form ID
     setUserWebsitesList((prev) => ({
       ...prev,
       [formId]: adminData?.userWebsites || [],
@@ -275,7 +294,7 @@ function AddNewDirectorSuperAdmin() {
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
-          setCreateDescription("Director Added Successfully")
+          setCreateDescription("Director Added Successfully");
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
@@ -389,7 +408,7 @@ function AddNewDirectorSuperAdmin() {
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
-          setCreateDescription("SuperAdmin Added Successfully")
+          setCreateDescription("SuperAdmin Added Successfully");
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
@@ -484,6 +503,14 @@ function AddNewDirectorSuperAdmin() {
             <FaArrowLeft /> Go Back
           </span>
         </div>
+        {websiteCreationErrors && (
+          <div className="error-popup-container col-6 p-1 br-5 m-2">
+            <ul>
+              <li className="fw-600 small-font">{websiteCreationErrors}</li>
+            </ul>
+          </div>
+        )}
+
         <div className="p-2">
           <div className="d-flex w-100">
             <div className="col p-1">
@@ -677,15 +704,21 @@ function AddNewDirectorSuperAdmin() {
                       <Select
                         className="small-font"
                         placeholder="Select"
-                        options={transformedOptions}
+                        options={transformedOptions.filter(
+                          (option) =>
+                            !Object.values(selectedAdmins || {}).some(
+                              (selected) => selected?.value === option.value
+                            )
+                        )}
                         value={selectedOption}
                         onChange={(selectedOption) => {
                           console.log("Selected Option:", selectedOption);
 
                           setSelectedOption(selectedOption);
 
+                          // Find the selected admin from allAccessWebsites
                           const selectedAdmin = allAccessWebsites
-                            .flatMap((access) => access.admin_websites)
+                            ?.flatMap((access) => access.admin_websites)
                             .find(
                               (admin) =>
                                 admin.admin_panel_id === selectedOption?.value
@@ -693,6 +726,13 @@ function AddNewDirectorSuperAdmin() {
 
                           console.log("Selected Admin:", selectedAdmin);
 
+                          // Update selectedAdmins for the form
+                          setSelectedAdmins((prev) => ({
+                            ...prev,
+                            [form.id]: selectedOption,
+                          }));
+
+                          // Update userWebsitesList for the form
                           setUserWebsitesList((prev) => {
                             const updatedList = {
                               ...prev,
@@ -717,10 +757,17 @@ function AddNewDirectorSuperAdmin() {
                       <Select
                         className="small-font"
                         placeholder="Select"
-                        options={adminWebsite?.map((admin) => ({
-                          value: admin.id,
-                          label: admin.web_name,
-                        }))}
+                        options={adminWebsite
+                          ?.filter(
+                            (admin) =>
+                              !Object.values(selectedAdmins).some(
+                                (sel) => sel?.value === admin.id
+                              )
+                          )
+                          .map((admin) => ({
+                            value: admin.id,
+                            label: admin.web_name,
+                          }))}
                         value={selectedAdmins[form.id] || null}
                         onChange={(selectedOption) =>
                           handleAdminRoleChange(form.id, selectedOption)
@@ -1301,12 +1348,13 @@ function AddNewDirectorSuperAdmin() {
           ))}
         </form>
 
-        <div className="red-font  small-font fw-600 flex-center">
+        {/* <div className="red-font  small-font fw-600 flex-center">
           {websiteCreationErrors}
-        </div>
+        </div> */}
         <button type="button" className="cst-btn" onClick={addAnotherForm}>
           <FaPlus className="me-2" /> Add Another
         </button>
+
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded py-2 col-1 black-text2 border-none"

@@ -10,7 +10,13 @@ import {
   updateDirectorEmployeeByID,
 } from "../../../api/apiMethods";
 
-function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
+function AddDirectorPopup({
+    GetAllDirectorEmployees,
+  selectedUser,
+  onClose,
+  show,
+  isEditMode,
+}) {
   const [formData, setFormData] = useState({
     role: "",
     name: "",
@@ -156,6 +162,9 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
       if (response?.status === true) {
         console.log("Operation successful", response);
         onClose();
+        if (!isEditMode) {
+          GetAllDirectorEmployees();
+        }
       } else {
         setBackendError(response?.message || "Operation failed");
       }
