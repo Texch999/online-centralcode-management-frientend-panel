@@ -25,6 +25,7 @@ import ErrorPopup from "../popups/ErrorPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import EditBannerPopup from "./EditBannerPopup";
 import { useSearchParams } from "react-router-dom";
+import Enums from "./Enum";
 
 const ACTIVE_BTNS = [
   { value: 1, label: "User" },
@@ -119,23 +120,20 @@ const SandCBanner = () => {
 
   const hasFetched = useRef(false);
 
-  const selectOptionsType = [
-    { value: 1, label: "Sports" },
-    { value: 2, label: "Casino" },
-  ];
-  const selectPages = [
-    { value: "home", label: "Home" },
-    { value: "description", label: "Description" },
-    { value: "wallet", label: "Wallet" },
-    { value: "login", label: "Login" },
-  ];
-  const selectPlace = [
-    { value: "top", label: "Top" },
-    { value: "center", label: "Center" },
-    { value: "botton", label: "Bottonm" },
-    { value: "right", label: "Right" },
-    { value: "left", label: "Left" },
-  ];
+  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(([key, value]) => ({
+    value,
+    label: key,
+  }));
+  const selectPages = Object.entries(Enums.diamondSelectPages).map(([key, value]) => ({
+    value,
+    label: key,
+  }));
+  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(([key, value]) => ({
+    value,
+    label: key,
+  }));
+
+  console.log("selectPlace",selectPlace)
 
   const selectOptionsWebsites = websitesList?.map((item) => ({
     value: item.id,
@@ -435,7 +433,7 @@ const SandCBanner = () => {
               const images = JSON.parse(banner.image);
               return (
                 <img
-                  src={`${imgUrl}/uploadBanner/${images[0]}`}
+                  src={`${imgUrl}/banner/${images[0]}`}
                   alt="Banner"
                   style={{ width: "200px", height: "150px", cursor: "pointer" }}
                   onClick={() => {
@@ -707,7 +705,7 @@ const SandCBanner = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
-        path={"uploadBanner"}
+        path={"banner"}
       />
       <SuccessPopup
         successPopupOpen={successPopupOpen}

@@ -161,6 +161,10 @@ const getPromotionsTypes = (params) => {
   console.log("params", params);
   return apiRequest("getPromotionsTypes", {}, params);
 };
+export const getPromotionsTypesDirector = (params) => {
+  console.log("params", params);
+  return apiRequest("getPromotionsTypesDirector", {}, params);
+};
 const getPromotionsImage = (params) => {
   console.log("params", params);
   return apiRequest("getPromotionsImage", {}, params);
