@@ -121,20 +121,26 @@ const SandCBanner = () => {
 
   const hasFetched = useRef(false);
 
-  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(([key, value]) => ({
-    value,
-    label: key,
-  }));
-  const selectPages = Object.entries(Enums.diamondSelectPages).map(([key, value]) => ({
-    value,
-    label: key,
-  }));
-  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(([key, value]) => ({
-    value,
-    label: key,
-  }));
+  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPages = Object.entries(Enums.diamondSelectPages).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
 
-  console.log("selectPlace",selectPlace)
+  console.log("selectPlace", selectPlace);
 
   const handleWebsitesType = (activeBtn) => {
     const panelType = activeBtn.value === 1 ? 2 : 1;
