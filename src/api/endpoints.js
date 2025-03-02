@@ -1,7 +1,6 @@
-
 const userID = () => {
   const id = localStorage.getItem("user_id");
-  console.log(id,"id")
+  console.log(id, "id");
   if (!id) {
     console.error("User ID is not available.");
     return null;
@@ -70,10 +69,13 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
+      const id = userID();
+      const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/promotionsTypes?${query}`;
+      return `/${user}/${id}/promotionsTypes?${query}`;
     },
   },
+
   statusPromotionsTypes: {
     method: "put",
     url: (id) => `/user/${userID()}/promotionTypes/${id}/status`,
@@ -81,17 +83,27 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
+      const id = userID();
+      const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/promotionsImages?${query}`;
+      return `/${user}/${id}/promotionsImages/${id}?${query}`;
     },
   },
   createPromotionImages: {
     method: "post",
-    url: () => `/user/${userID()}/promotionImage`,
+    url: () => {
+      const id = userID();
+      const user = id === "1" ? "director" : "user";
+      return `/${user}/${userID()}/promotionImage`;
+    },
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID()}/promotionImage/${id}`,
+    url: (id) => {
+      const userid = userID();
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/promotionImage/${id}`;
+    },
   },
   getBanner: {
     method: "get",
@@ -679,16 +691,15 @@ const endpoints = {
     method: "put",
     url: `/user/${userID()}/resetPassword`,
   },
-  resetPswdDirector:{
-    method:"put",
-    url:`/director/${userID()}/directorresetPassword`
-    
+  resetPswdDirector: {
+    method: "put",
+    url: `/director/${userID()}/directorresetPassword`,
   },
-  
-  dirEmployeeResetPswd:{
-    method:"put",
-    url:`/director/${userID()}/dirEmpresetPassword`
-  }
+
+  dirEmployeeResetPswd: {
+    method: "put",
+    url: `/director/${userID()}/dirEmpresetPassword`,
+  },
 };
 
 export default endpoints;

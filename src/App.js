@@ -64,8 +64,6 @@ import MarketResult from "./pages/market-result/MarketResult";
 
 import Offer from "./pages/promotions/Offer";
 import PromotionType from "./pages/promotions/PromotionType";
-import SportsPromotions from "./pages/promotions/SportsPromotions";
-import CasinoPromotions from "./pages/promotions/CasinoPromotions";
 import Broadcasting from "./pages/promotions/Broadcasting";
 import SandCBanner from "./pages/promotions/SandCBanner";
 
@@ -247,14 +245,6 @@ function App() {
                 <Route path="/client-rental-sheet" element={<ClientRental />} />
                 {/* Sports Routes */}
                 <Route path="/central-sports" element={<Sports />} />
-                <Route
-                  path="/sports-promotions"
-                  element={<SportsPromotions />}
-                />
-                <Route
-                  path="/casino-promotions"
-                  element={<CasinoPromotions />}
-                />
                 <Route path="/fancy-results" element={<FancyResult />} />
                 <Route path="/market-results" element={<MarketResult />} />
                 <Route
