@@ -159,9 +159,15 @@ function SubHeader() {
       },
       {
         label: "Promotions",
+
         options: [
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
+          {
+            label: "Create Promotions Type",
+            path: "/create-promotion-type",
+          },
+
+          { label: "Banners (Casino/Sports)", path: "/banners" },
+          { label: "Broadcasting", path: "/broadcasting" },
         ],
       },
     ],

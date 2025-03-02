@@ -14,6 +14,7 @@ import {
   createPromotionImages,
   deletePromotionsImages,
   getAdminWebsiteDetails,
+  getDirectorAccessWebites,
   getPromotionsImage,
   getPromotionsTypes,
   getUserWebsiteDetails,
@@ -31,6 +32,7 @@ const ACTIVE_BTNS = [
 ];
 
 const PromotionType = () => {
+  const user_id = parseInt(localStorage.getItem("user_id"));
   const [activeBtn, setActiveBtn] = useState(() => {
     const storedBtn = localStorage.getItem("activeBtn");
     if (storedBtn) {
@@ -78,6 +80,8 @@ const PromotionType = () => {
   });
   const [websitesList, setWebsitesList] = useState([]);
   const [userWebsitesList, setUserWebsitesList] = useState([]);
+  const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
+  const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectUserWebsites, setSelectUserWebsites] = useState(null);
 
@@ -88,17 +92,23 @@ const PromotionType = () => {
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
 
+  console.log("user_id", user_id);
+  console.log("directorAdminPanels", directorAdminPanels);
+  console.log("directorUserPanels", directorUserPanels);
   const hasFetched = useRef(false);
 
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-
     getPromotions();
     getPromotionsImages();
-    getWebsites();
-    getuserWebsites();
-  }, []);
+    if (user_id === 1) {
+      getDirectorWebsites();
+    } else {
+      getWebsites();
+      getuserWebsites();
+    }
+  }, [user_id]);
 
   useEffect(() => {
     localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
@@ -124,6 +134,40 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
+  const getDirectorWebsites = async () => {
+    try {
+      const response = await getDirectorAccessWebites();
+      console.log("Full Response:", response); // Debugging
+
+      if (response.status === true) {
+        const directorData = response.data;
+        console.log("Extracted directorData:", directorData); // Debugging
+
+        if (!Array.isArray(directorData) || directorData.length === 0) {
+          console.log("No director data found.");
+          return;
+        }
+
+        // Extract admin panels
+        const adminPanels = directorData.flatMap(
+          (director) => director.admin_websites || []
+        );
+        console.log("Extracted adminPanels:", adminPanels); // Debugging
+
+        // Extract user panels
+        const userPanels = adminPanels.flatMap((admin) => admin.users || []);
+        console.log("Extracted userPanels:", userPanels); // Debugging
+
+        // Set state only if data is valid
+        if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
+        if (userPanels.length > 0) setDirectorUserPanels(userPanels);
+      } else {
+        console.log("Invalid response structure:", response);
+      }
+    } catch (error) {
+      console.log("Error fetching director websites:", error);
+    }
+  };
 
   const selectOptionsWebsites = websitesList?.map((item) => ({
     value: item.id,
@@ -133,6 +177,23 @@ const PromotionType = () => {
     value: item.id,
     label: item.web_name,
   }));
+  const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
+    value: item.admin_WebSite_id,
+    label: item.admin_web_name,
+  }));
+
+  const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+    (item) => ({
+      value: item.user_WebSite_id,
+      label: item.user_web_name,
+    })
+  );
+
+  console.log("selectOptionsWebsitesDirectors", selectOptionsWebsitesDirectors);
+  console.log(
+    "selectOptionsUserWebsitesDirectors",
+    selectOptionsUserWebsitesDirectors
+  );
 
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
@@ -225,6 +286,7 @@ const PromotionType = () => {
     formData.append("promotionsId", selectedOption.value);
     formData.append("adminWebsite", selectWebsites.value);
     formData.append("userWebsite", selectUserWebsites.value);
+    formData.append("creatorId", user_id);
     formData.append("image", selectedFile);
 
     try {
@@ -420,7 +482,10 @@ const PromotionType = () => {
         <h6 className="yellow-font mb-0">Promotion</h6>
       </div>
       <div className="d-flex col small-font">
-        {ACTIVE_BTNS?.map((item, index) => (
+        {(user_id === 1
+          ? ACTIVE_BTNS.filter((item) => item.value === 2)
+          : ACTIVE_BTNS
+        ).map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
@@ -434,7 +499,8 @@ const PromotionType = () => {
           </div>
         ))}
       </div>
-      {activeBtn.value === 1 ? (
+
+      {user_id !== 1 && activeBtn.value === 1 ? (
         <>
           <div className="my-3">
             <Table
@@ -480,7 +546,6 @@ const PromotionType = () => {
                   )}
                 </div>
               </div>
-
               <div className="col fixed-width-field">
                 <label
                   htmlFor="Websites"
@@ -491,7 +556,11 @@ const PromotionType = () => {
                 <Select
                   id="Websites"
                   className="small-font fixed-select"
-                  options={selectOptionsWebsites}
+                  options={
+                    user_id === 1
+                      ? selectOptionsWebsitesDirectors
+                      : selectOptionsWebsites
+                  }
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
@@ -521,7 +590,12 @@ const PromotionType = () => {
                 <Select
                   id="Websites"
                   className="small-font fixed-select"
-                  options={selectOptionsUserWebsites}
+                  // options={selectOptionsUserWebsites}
+                  options={
+                    user_id === 1
+                      ? selectOptionsUserWebsitesDirectors
+                      : selectOptionsUserWebsites
+                  }
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
