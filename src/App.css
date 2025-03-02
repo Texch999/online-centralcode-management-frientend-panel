@@ -940,3 +940,7 @@ button.cst-btn:hover {
   width: 6vw;
   border-radius: 48%;
 }
+.error-popup-container{
+  color: #EE5787;
+  background-color: #FACCDB;
+}

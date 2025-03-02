@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaEye, FaEyeSlash, FaPlus } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaPlus,
+  FaTrash,
+} from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getAdminWebsites,
@@ -38,11 +44,13 @@ function EditNewDirector() {
   const [websiteDetails, setWebsiteDetails] = useState({});
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
-
+  const [websiteEditErrors, setShowWebsiteEditErrors] = useState(null);
   const [addWebsites, setAddWebsites] = useState([]);
   const [forms, setForms] = useState([]);
   const role = localStorage.getItem("role_code");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
+
+  console.log(websiteEditErrors, "==>websiteEditErrors");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,6 +110,7 @@ function EditNewDirector() {
                       web_url: site.user_panel_url,
                       admin_panel_id: site.admin_panel_id,
                       commission_type: site.commission_type || "",
+                      status: site.status === 1 ? "Active" : "Inactive", // Add status field
                     };
 
                     switch (site.commission_type) {
@@ -164,6 +173,7 @@ function EditNewDirector() {
                       web_url: site.user_panel_url,
                       admin_panel_id: site.admin_panel_id,
                       commission_type: site.commission_type || "",
+                      status: site.status === 1 ? "Active" : "Inactive", // Add status field
                     };
 
                     switch (site.commission_type) {
@@ -278,7 +288,11 @@ function EditNewDirector() {
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
-      .catch((error) => console.error("Error updating director:", error));
+      .catch((error) => {
+        console.error("Error updating director:", error);
+
+        setShowWebsiteEditErrors(error.message[0].message || error.message[0]);
+      });
   };
   const handleDirectorSubmit = () => {
     const payload = {
@@ -358,7 +372,11 @@ function EditNewDirector() {
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
-      .catch((error) => console.error("Error updating director:", error));
+      .catch((error) => {
+        console.error("Error updating director:", error);
+
+        setShowWebsiteEditErrors(error.message[0].message || error.message[0]);
+      });
   };
 
   const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
@@ -543,6 +561,9 @@ function EditNewDirector() {
       },
     ]);
   };
+  const removeForm = (id) => {
+    setForms((prev) => prev.filter((form) => form.id !== id));
+  };
   const commissionOptions = Object.entries(commissionTypes).map(
     ([value, label]) => ({
       value,
@@ -580,6 +601,14 @@ function EditNewDirector() {
           </span>
         </div>
 
+
+        {websiteEditErrors && (
+          <div className="error-popup-container col-6 p-1 br-5 m-2">
+            <ul>
+              <li className="fw-600 small-font">{websiteEditErrors}</li>
+            </ul>
+          </div>
+        )}
         <div className="p-1">
           <div className="row">
             <div className="col p-1">
@@ -603,8 +632,8 @@ function EditNewDirector() {
                 placeholder="Enter Login Name"
                 className="border-grey3 small-font rounded all-none input-css white-bg w-100"
                 value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
-                required
+                // onChange={(e) => setLoginName(e.target.value)}
+                readOnly
               />
               {errors.loginName && (
                 <span className="text-danger small-font">
@@ -612,7 +641,7 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-            <div className="col p-1">
+            {/* <div className="col p-1">
               <label className="small-font my-1">Role</label>
               <select
                 className="small-font rounded all-none input-css white-bg border-grey3 w-100"
@@ -631,7 +660,7 @@ function EditNewDirector() {
                   {errors.selectedRole}
                 </span>
               )}
-            </div>
+            </div> */}
             <div className="col p-1">
               <label className="small-font my-1">Currency</label>
               <select
@@ -678,7 +707,7 @@ function EditNewDirector() {
             <div className="p-1  col-3 position-relative">
               <label className="small-font my-1">Management Password</label>
               <input
-                type="password"
+                type={showManagementPassword ? "text" : "password"}
                 className="border-grey3 small-font rounded all-none input-css white-bg w-100"
                 placeholder="Enter"
                 required
@@ -721,9 +750,8 @@ function EditNewDirector() {
                       <option value={data.web_name}>{data.web_name}</option>
                     </select>
                   </div>
-                
                 </div>
-              
+
                 {userWebsites?.map((userWebsite, userIndex) => (
                   <>
                     <div key={userIndex} className="w-100 mt-3 row">
@@ -894,6 +922,18 @@ function EditNewDirector() {
                           </div>
                         </>
                       )}
+                      <div className="col-1 text-end">
+                        status:
+                        <h6
+                          className={`my-1 ${
+                            userWebsite.status === "Active"
+                              ? "green-font"
+                              : "red-font"
+                          }`}
+                        >
+                          {userWebsite.status}
+                        </h6>
+                      </div>
                     </div>
                   </>
                 ))}
@@ -1519,6 +1559,16 @@ function EditNewDirector() {
                     </div>
                   )}
                 </div>
+                <div className="d-flex py-2 align-items-center justify-content-end">
+                  {" "}
+                  <button
+                    type="button"
+                    className="cst-btn remove-btn"
+                    onClick={() => removeForm(form.id)}
+                  >
+                    <FaTrash className="me-2" /> Remove
+                  </button>
+                </div>
               </>
             ))}
           </div>
@@ -1529,6 +1579,10 @@ function EditNewDirector() {
           </button>
         </div>
 
+
+        {/* <div className="red-font  small-font fw-600 flex-center">
+            {websiteEditErrors}
+          </div> */}
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded"
@@ -1541,6 +1595,8 @@ function EditNewDirector() {
           >
             Update Details
           </button>
+
+         
         </div>
         <SuccessPopup
           successPopupOpen={successPopupOpen}

@@ -221,6 +221,7 @@ function AddDirectorTeam() {
         isEditMode={isEditMode}
         directorEmployeeId={directorEmployeeId}
         selectedUser={selectedUser}
+        GetAllDirectorEmployees={GetAllDirectorEmployees}
       />
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}

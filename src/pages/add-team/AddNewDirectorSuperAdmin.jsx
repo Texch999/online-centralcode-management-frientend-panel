@@ -50,14 +50,17 @@ function AddNewDirectorSuperAdmin() {
   const [individualDirectorData, setIndividualDirectorData] = useState();
   const [selectedRole, setSelectedRole] = useState("");
   const [errors, setErrors] = useState({});
-  console.log(selectedAdmins, "selectedAdmins");
+  const [websiteCreationErrors, setShowWebsiteCreationErrors] = useState(null);
+  const [creationDescription, setCreateDescription] = useState("");
+  console.log(websiteCreationErrors, "websiteCreationErrors");
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId || null;
   const [selectedOption, setSelectedOption] = useState(null);
-  console.log(userWebsitesList, "userWebsitesList");
+
+  console.log(adminWebsite, "adminWebsite 123");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-  console.log("currencyData", currencyData);
+
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -131,15 +134,33 @@ function AddNewDirectorSuperAdmin() {
     GetAllCurrencies();
   }, [userId]);
 
+  // const handleAdminRoleChange = (formId, selectedOption) => {
+  //   setSelectedAdmins((prev) => ({
+  //     ...prev,
+  //     [formId]: selectedOption,
+  //   }));
+
+  //   const adminData = adminWebsite.find(
+  //     (admin) => admin.id === selectedOption.value
+  //   );
+  //   setUserWebsitesList((prev) => ({
+  //     ...prev,
+  //     [formId]: adminData?.userWebsites || [],
+  //   }));
+  // };
+
   const handleAdminRoleChange = (formId, selectedOption) => {
     setSelectedAdmins((prev) => ({
       ...prev,
       [formId]: selectedOption,
     }));
 
+    // Find admin data based on selected option
     const adminData = adminWebsite.find(
       (admin) => admin.id === selectedOption.value
     );
+
+    // Update userWebsitesList for the corresponding form ID
     setUserWebsitesList((prev) => ({
       ...prev,
       [formId]: adminData?.userWebsites || [],
@@ -181,13 +202,13 @@ function AddNewDirectorSuperAdmin() {
     if (!validateForm()) return;
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-      alert("Please select at least one Admin Website.");
+      setShowWebsiteCreationErrors("Please select at least one Admin Website");
       return;
     }
 
     console.log(selectedWebsites, "selectedWebsites");
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -203,25 +224,25 @@ function AddNewDirectorSuperAdmin() {
         };
         if (accotypeid === "3") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+            websiteDetails[userSite.id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.id]?.caschip_values || 0
+            websiteDetails[userSite.id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
         if (accotypeid === "2") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.id]?.share || 0
+            websiteDetails[userSite.id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.id]?.caschip_values || 0
+            websiteDetails[userSite.id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
@@ -229,19 +250,19 @@ function AddNewDirectorSuperAdmin() {
           websiteData.rent_start_date =
             websiteDetails[userSite.id]?.rent_start_date || "";
           websiteData.monthly_amount = parseInt(
-            websiteDetails[userSite.id]?.monthly_amount || 0
+            websiteDetails[userSite.id]?.monthly_amount || null
           );
           websiteData.chip_percentage = parseFloat(
-            websiteDetails[userSite.id]?.chip_percentage || 0
+            websiteDetails[userSite.id]?.chip_percentage || null
           );
           websiteData.max_chips_monthly = parseInt(
-            websiteDetails[userSite.id]?.max_chips_monthly || 0
+            websiteDetails[userSite.id]?.max_chips_monthly || null
           );
           websiteData.extra_chips_percentage = parseFloat(
-            websiteDetails[userSite.id]?.extra_chips_percentage || 0
+            websiteDetails[userSite.id]?.extra_chips_percentage || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.id]?.downline_comm || 0
+            websiteDetails[userSite.id]?.downline_comm || null
           );
         }
 
@@ -253,7 +274,7 @@ function AddNewDirectorSuperAdmin() {
     const validUserWebsites = selectedUserWebsites.filter(Boolean);
 
     if (validUserWebsites.length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -273,6 +294,7 @@ function AddNewDirectorSuperAdmin() {
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
+          setCreateDescription("Director Added Successfully");
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
@@ -280,7 +302,20 @@ function AddNewDirectorSuperAdmin() {
           console.log("Something went wrong");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        // console.log(
+        //   error.message[0].data.message[0].message ||
+        //     error.message[0].data.message[0],
+        //   "==>in api call"
+        // );
+        // console.log(error.message[0].data.message[0],"==>in api call");
+
+        setShowWebsiteCreationErrors(
+          error.message[0].message || error.message[0]
+        );
+
+        // console.log(error.message[0].message || error.message[0],"==>error");
+      });
   };
 
   const handleDirectorSubmit = (e) => {
@@ -288,12 +323,12 @@ function AddNewDirectorSuperAdmin() {
     if (e) e.preventDefault();
     if (!validateForm()) return;
     if (!selectedOption || Object.keys(selectedOption).length === 0) {
-      alert("Please select at least one Admin Website.");
+      setShowWebsiteCreationErrors("Please select at least one Admin Website.");
       return;
     }
     console.log(selectedWebsites, "selectedWebsites");
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -313,13 +348,13 @@ function AddNewDirectorSuperAdmin() {
 
         if (accotypeid === "2" || accotypeid === "3") {
           websiteData.share = parseFloat(
-            websiteDetails[userSite.website_access_id]?.share || 0
+            websiteDetails[userSite.website_access_id]?.share || null
           );
           websiteData.caschip_values = parseFloat(
-            websiteDetails[userSite.website_access_id]?.caschip_values || 0
+            websiteDetails[userSite.website_access_id]?.caschip_values || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+            websiteDetails[userSite.website_access_id]?.downline_comm || null
           );
         }
 
@@ -328,20 +363,21 @@ function AddNewDirectorSuperAdmin() {
             websiteDetails[userSite.website_access_id]?.rent_start_date || "";
 
           websiteData.monthly_amount = parseInt(
-            websiteDetails[userSite.website_access_id]?.monthly_amount || 0
+            websiteDetails[userSite.website_access_id]?.monthly_amount || null
           );
           websiteData.chip_percentage = parseFloat(
-            websiteDetails[userSite.website_access_id]?.chip_percentage || 0
+            websiteDetails[userSite.website_access_id]?.chip_percentage || null
           );
           websiteData.max_chips_monthly = parseInt(
-            websiteDetails[userSite.website_access_id]?.max_chips_monthly || 0
+            websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
+              null
           );
           websiteData.extra_chips_percentage = parseFloat(
             websiteDetails[userSite.website_access_id]
-              ?.extra_chips_percentage || 0
+              ?.extra_chips_percentage || null
           );
           websiteData.downline_comm = parseFloat(
-            websiteDetails[userSite.website_access_id]?.downline_comm || 0
+            websiteDetails[userSite.website_access_id]?.downline_comm || null
           );
         }
 
@@ -352,7 +388,7 @@ function AddNewDirectorSuperAdmin() {
     const validUserWebsites = selectedUserWebsites.filter(Boolean);
 
     if (validUserWebsites.length === 0) {
-      alert("Please select at least one User Website.");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
       return;
     }
 
@@ -372,6 +408,7 @@ function AddNewDirectorSuperAdmin() {
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
+          setCreateDescription("SuperAdmin Added Successfully");
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
@@ -379,7 +416,12 @@ function AddNewDirectorSuperAdmin() {
           console.log("Something went wrong");
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        setShowWebsiteCreationErrors(
+          error.message[0].message || error.message[0]
+        );
+      });
   };
   console.log(selectedOption, "selectedOption");
 
@@ -461,6 +503,14 @@ function AddNewDirectorSuperAdmin() {
             <FaArrowLeft /> Go Back
           </span>
         </div>
+        {websiteCreationErrors && (
+          <div className="error-popup-container col-6 p-1 br-5 m-2">
+            <ul>
+              <li className="fw-600 small-font">{websiteCreationErrors}</li>
+            </ul>
+          </div>
+        )}
+
         <div className="p-2">
           <div className="d-flex w-100">
             <div className="col p-1">
@@ -654,15 +704,21 @@ function AddNewDirectorSuperAdmin() {
                       <Select
                         className="small-font"
                         placeholder="Select"
-                        options={transformedOptions}
+                        options={transformedOptions.filter(
+                          (option) =>
+                            !Object.values(selectedAdmins || {}).some(
+                              (selected) => selected?.value === option.value
+                            )
+                        )}
                         value={selectedOption}
                         onChange={(selectedOption) => {
                           console.log("Selected Option:", selectedOption);
 
                           setSelectedOption(selectedOption);
 
+                          // Find the selected admin from allAccessWebsites
                           const selectedAdmin = allAccessWebsites
-                            .flatMap((access) => access.admin_websites)
+                            ?.flatMap((access) => access.admin_websites)
                             .find(
                               (admin) =>
                                 admin.admin_panel_id === selectedOption?.value
@@ -670,6 +726,13 @@ function AddNewDirectorSuperAdmin() {
 
                           console.log("Selected Admin:", selectedAdmin);
 
+                          // Update selectedAdmins for the form
+                          setSelectedAdmins((prev) => ({
+                            ...prev,
+                            [form.id]: selectedOption,
+                          }));
+
+                          // Update userWebsitesList for the form
                           setUserWebsitesList((prev) => {
                             const updatedList = {
                               ...prev,
@@ -694,10 +757,17 @@ function AddNewDirectorSuperAdmin() {
                       <Select
                         className="small-font"
                         placeholder="Select"
-                        options={adminWebsite?.map((admin) => ({
-                          value: admin.id,
-                          label: admin.web_name,
-                        }))}
+                        options={adminWebsite
+                          ?.filter(
+                            (admin) =>
+                              !Object.values(selectedAdmins).some(
+                                (sel) => sel?.value === admin.id
+                              )
+                          )
+                          .map((admin) => ({
+                            value: admin.id,
+                            label: admin.web_name,
+                          }))}
                         value={selectedAdmins[form.id] || null}
                         onChange={(selectedOption) =>
                           handleAdminRoleChange(form.id, selectedOption)
@@ -1266,7 +1336,6 @@ function AddNewDirectorSuperAdmin() {
                 </div>
               </div>
               <div className="d-flex py-2 align-items-center justify-content-end">
-                {" "}
                 <button
                   type="button"
                   className="cst-btn remove-btn"
@@ -1278,9 +1347,14 @@ function AddNewDirectorSuperAdmin() {
             </>
           ))}
         </form>
+
+        {/* <div className="red-font  small-font fw-600 flex-center">
+          {websiteCreationErrors}
+        </div> */}
         <button type="button" className="cst-btn" onClick={addAnotherForm}>
           <FaPlus className="me-2" /> Add Another
         </button>
+
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded py-2 col-1 black-text2 border-none"
@@ -1294,7 +1368,7 @@ function AddNewDirectorSuperAdmin() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription="Added Director SuccessFully"
+          discription={creationDescription}
         />
       </div>
     </>
