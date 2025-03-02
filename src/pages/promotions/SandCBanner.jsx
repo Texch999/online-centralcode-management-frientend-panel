@@ -82,6 +82,7 @@ const SandCBanner = () => {
     }
     return ACTIVE_BTNS[0];
   });
+
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
@@ -120,25 +121,38 @@ const SandCBanner = () => {
 
   const hasFetched = useRef(false);
 
-  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(([key, value]) => ({
-    value,
-    label: key,
-  }));
-  const selectPages = Object.entries(Enums.diamondSelectPages).map(([key, value]) => ({
-    value,
-    label: key,
-  }));
-  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(([key, value]) => ({
-    value,
-    label: key,
-  }));
+  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPages = Object.entries(Enums.diamondSelectPages).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
 
-  console.log("selectPlace",selectPlace)
+  console.log("selectPlace", selectPlace);
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
-  }));
+  const handleWebsitesType = (activeBtn) => {
+    const panelType = activeBtn.value === 1 ? 2 : 1;
+    return websitesList
+      ?.filter((item) => item.panel_type === panelType) // Filter by panel_type
+      .map((item) => ({
+        value: item.id,
+        label: item.web_name,
+      }));
+  };
+
+  console.log(websitesList);
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
@@ -549,7 +563,7 @@ const SandCBanner = () => {
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
-            options={selectOptionsWebsites}
+            options={handleWebsitesType(activeBtn)}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
