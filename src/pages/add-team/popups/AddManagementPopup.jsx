@@ -12,6 +12,7 @@ import {
 } from "../../../api/apiMethods";
 import "../style.css";
 import "../../../App.css";
+import SuccessPopup from "../../popups/SuccessPopup";
 
 const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [showPassword, setShowPassword] = useState({
@@ -20,13 +21,14 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     managementPassword: false,
   });
 
-  const Role = localStorage.getItem("roleCode");
+  const Role = localStorage.getItem("role_code");
   console.log(editingRowId, "editingRowId");
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
-  const [selectedRoleId, setSelectedRoleId] = useState(3);
+  const [selectedRoleId, setSelectedRoleId] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(null);
 
-  console.log(roleOptions, "roleOptions");
+
 
   const {
     register,
@@ -43,11 +45,13 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     getRoles({ token })
       .then((response) => {
         if (response?.status === true && response.data) {
-          const roles = response.data.map((role) => ({
-            value: role.role,
-            label: role.name,
-          }));
-          console.log(roles, "roles");
+          const roles = response.data
+            .filter((role) => role.role !== 1 && role.role !== 2) // Exclude owner and management
+            .map((role) => ({
+              value: role.role,
+              label: role.name,
+            }));
+          console.log(roles, "Filtered roles");
           setRoleOptions(roles);
         } else {
           setError("Failed to fetch roles");
@@ -80,17 +84,20 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
 
     addManagemnentTeam(payload)
       .then((response) => {
+        console.log(response, "response from API");
         if (response?.status === true) {
-          console.log(response, "response from API");
+
           if (onSubmit) onSubmit();
+          setSuccessPopupOpen(true);
         } else {
           setError("Something Went Wrong");
         }
       })
       .catch((error) => {
-        setError(error?.message || "Login failed");
+        setError(error?.message)
       });
   };
+
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
@@ -122,7 +129,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               <label className="small-font mb-1">Role</label>
 
               <Select
-                className="small-font"
+                className="small-font text-capitalize"
                 options={roleOptions}
                 value={roleOptions.find(
                   (option) => option.value === selectedRoleId
@@ -140,7 +147,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               />
 
               {errors.role && (
-                <p className="text-danger small-font">{errors.role.message}</p>
+                <p className="text-danger small-font">
+                  {errors.role.message}
+                </p>
               )}
             </div>
 
@@ -153,7 +162,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 placeholder="Enter"
               />
               {errors.name && (
-                <p className="text-danger small-font">{errors.name.message}</p>
+                <p className="text-danger small-font">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -270,7 +281,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    value:
+                      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: "Enter a valid email address",
                   },
                 })}
@@ -278,7 +290,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 placeholder="Enter"
               />
               {errors.email && (
-                <p className="text-danger small-font">{errors.email.message}</p>
+                <p className="text-danger small-font">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -320,6 +334,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
         </form>
       </Modal.Body>
     </Modal>
+
+
   );
 };
 

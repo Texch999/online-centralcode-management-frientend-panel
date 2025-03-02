@@ -44,15 +44,15 @@ const PaymentGateway = () => {
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const [dirEditId, setDirEditId] = useState(null);
   const [dirGatewayId, setDirGatewayId] = useState(null);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(pages);
   const limit = itemsPerPage;
-  const offset = (currentPage-1)*itemsPerPage;
-  // const [currentLimit, setCurrentLimit] = useState(4);
-  // const [currentOffset, setCurrentOffset] = useState(0);
+  const offset = (currentPage - 1) * itemsPerPage;
+  const page = pages;
+  const pageSize = itemsPerPage;
   const [countryId, setCountryId] = useState(null);
 
   const gatewayTypeMap = {
@@ -108,7 +108,7 @@ const PaymentGateway = () => {
   const fetchManagementPaymentDetails = async (limit, offset) => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails({limit, offset});
+      const response = await getManagementPaymentDetails({ limit, offset });
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
         setTotalRecords(response?.meta?.totalCount);
@@ -257,23 +257,25 @@ const PaymentGateway = () => {
   };
 
   const [totalDirRecords, settotalDirRecords] = useState(null);
-  const page = currentPage;
-  const pageSize = itemsPerPage;
 
-  const handleDirPageChange = ({ limit, offset }) => {
+  const handleDirPageChange = () => {
     // setCurrentLimit(limit);
     // setCurrentOffset(offset);
+    const pages = currentPage;
+    const pageSize = itemsPerPage;
+
     if (role_code === "director") {
       getDirectorAccountData(pages, pageSize);
     }
   };
+
   const getDirectorAccountData = (page, pageSize) => {
     setLoading(true);
     getDirectorAccountDetails({ page, pageSize })
       .then((response) => {
         console.log("getDirectorAccountDetails success", response.data);
         setAccountList(response.data);
-        settotalDirRecords(response.meta?.totalCount);
+        settotalDirRecords(response?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
@@ -283,6 +285,7 @@ const PaymentGateway = () => {
         setLoading(false);
       });
   };
+
   useEffect(() => {
     if (role_code !== "management") {
       if (paymentDetailsDataFetched.current) return;
@@ -306,6 +309,7 @@ const PaymentGateway = () => {
         setLoading(false);
       });
   };
+
   useEffect(() => {
     getCountry();
   }, []);
@@ -315,6 +319,7 @@ const PaymentGateway = () => {
     setPaymentId(id);
     setStatusId(status);
   };
+
   const status_id = statusId === 1 ? 2 : 1;
 
   const suspendStatus = () => {

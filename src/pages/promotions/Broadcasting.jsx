@@ -62,9 +62,9 @@ const Broadcasting = () => {
   });
 
   useEffect(() => {
-      localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
-      getBroadCastingdata();
-    }, [activeBtn]);
+    localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
+    getBroadCastingdata();
+  }, [activeBtn]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
@@ -144,6 +144,7 @@ const Broadcasting = () => {
       console.log("error", error);
     }
   };
+  
   const getBroadCastingdata = async () => {
     const id = activeBtn.value;
     try {
@@ -333,11 +334,10 @@ const Broadcasting = () => {
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
-            className={`me-3 ${
-              activeBtn?.value === item.value
+            className={`me-3 ${activeBtn?.value === item.value
                 ? "saffron-btn2"
                 : "white-btn2 pointer"
-            }`}
+              }`}
             onClick={() => handleButtonClick(item)}
           >
             {item.label}
@@ -466,9 +466,8 @@ const Broadcasting = () => {
       <ConfirmationPopup
         confirmationPopupOpen={broadcastBlockModal}
         setConfirmationPopupOpen={() => setBroadcastBlockModal(false)}
-        discription={`are you sure you want to ${
-          selectedBroadcastStatus === 1 ? "Block" : "UnBlock"
-        } this Braodcast`}
+        discription={`Are you sure you want to ${selectedBroadcastStatus === 1 ? "Block" : "UnBlock"
+          } this Broadcast?`}
         selectedId={selectedBroadcastId}
         submitButton={selectedBroadcastStatus === 1 ? "Block" : "UnBlock"}
         onSubmit={BockOrUnblock}

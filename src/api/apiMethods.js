@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginManagement = (data) => {
@@ -35,6 +34,9 @@ const addDirectorTeam = (data) => {
 const createDirector = (data) => {
   return apiRequest("createDirector", data);
 };
+const createSuperAdmin = (data) => {
+  return apiRequest("createSuperAdmin", data);
+};
 const getRoles = (data) => {
   return apiRequest("getRoles", data);
 };
@@ -56,6 +58,9 @@ const resetEmployeePassword = (id, data) => {
 const resetDirectorPassword = (id, data) => {
   return apiRequest("resetDirectorPassword", data, id);
 };
+const resetSuperAdminPassword = (id, data) => {
+  return apiRequest("resetSuperAdminPassword", data, id);
+};
 const blockEmploye = (id, data) => {
   return apiRequest("blockEmploye", data, id);
 };
@@ -72,7 +77,9 @@ const updateEmployeeByID = (id, data) => {
 const updateDirectorByID = (id, data) => {
   return apiRequest("updateDirectorByID", data, id);
 };
-
+const updateSuperAdminByID = (id, data) => {
+  return apiRequest("updateSuperAdminByID", data, id);
+};
 // updateDirectorEmployeeByID
 const updateDirectorEmployeeByID = (id, data) => {
   return apiRequest("updateDirectorEmployeeByID", data, id);
@@ -87,6 +94,9 @@ const getDirectorEmployeeDetailsById = (id) => {
 const getDirectorDetailsById = (id) => {
   return apiRequest("getDirectorDetailsById", null, id);
 };
+const getSuperAdminDetailsById = (id) => {
+  return apiRequest("getSuperAdminDetailsById", null, id);
+};
 const resetDirectorPasswordInProfile = (id, data) => {
   return apiRequest("resetDirectorPasswordInProfile", data, id);
 };
@@ -95,8 +105,8 @@ const getDirectorEmployees = (params) => {
   return apiRequest("getDirectorEmployees", {}, params);
 };
 // const getWebsitesList = (params) => {
-const getDirectorAccountDetails = (data) => {
-  return apiRequest("getDirectorAccountDetails", data);
+const getDirectorAccountDetails = (params) => {
+  return apiRequest("getDirectorAccountDetails", {}, params);
 };
 
 const postDirectorAccountDetails = (data) => {
@@ -321,9 +331,11 @@ const updateManagementOfflinePaymentDetails = (id, data) => {
 const managementPaymentDetails = (data) => {
   return apiRequest("managementPaymentDetails", data);
 };
+
 const ownersAvailablePaymentsModes = (data) => {
   return apiRequest("ownersAvailablePaymentsModes", data);
 };
+
 const DirectorUpLinePaymentDetails = (data) => {
   return apiRequest("DirectorUpLinePaymentDetails", data);
 };
@@ -331,9 +343,14 @@ const DirectorUpLinePaymentDetails = (data) => {
 const getDirectorSites = (data) => {
   return apiRequest("getDirectorSites", data);
 };
-const managementDwnProfileDirPaymentDetails = (id, data) => {
-  return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+// const managementDwnProfileDirPaymentDetails = (id, data) => {
+//   return apiRequest("managementDwnProfileDirPaymentDetails", data, id);
+// };
+
+const managementDwnProfileDirPaymentDetails = (params) => {
+  return apiRequest("managementDwnProfileDirPaymentDetails", {}, params);
 };
+
 const UpdateProfileDirpaymentDetailsByMan = (id, data) => {
   return apiRequest("UpdateProfileDirpaymentDetailsByMan", data, id);
 };
@@ -343,9 +360,109 @@ const getDirPayDetailsByIdProfile = (id, data) => {
 const DirectorAvailablePaymentsModes = (data) => {
   return apiRequest("DirectorAvailablePaymentsModes", data);
 };
+
+const getNotificationsforManagement = (data) => {
+  return apiRequest("getNotificationsforManagement", data);
+};
+const getNotificationsforDirector = (data) => {
+  return apiRequest("getNotificationsforDirector", data);
+};
+const readNotificationsforManagement = (id, status) => {
+  return apiRequest("readNotificationsforManagement", id, { id, status });
+};
+
+const readNotificationsforDirector = (id, status) => {
+  return apiRequest("readNotificationsforDirector", id, { id, status });
+};
 const DirectorOffilneDepositTicket = (data) => {
   return apiRequest("DirectorOffilneDepositTicket", data);
 };
+
+const getDirectorDepositeTicketsList = (params) => {
+  return apiRequest("getDirectorDepositeTicketsList", {}, params);
+};
+
+const getOwnerDownlineDepositeTicketsList = (params) => {
+  return apiRequest("getOwnerDownlineDepositeTicketsList", {}, params);
+};
+
+const depositTikcetDetailsById = (id, data) => {
+  return apiRequest("depositTikcetDetailsById", data, id);
+};
+
+const managementDepositTikcetDetailsById = (id, data) => {
+  return apiRequest("managementDepositTikcetDetailsById", data, id);
+};
+
+const DeleteDirectorTicketsById = (id, data) => {
+  return apiRequest("DeleteDirectorTicketsById", data, id);
+};
+
+const ownerTicketApprove = (id, data) => {
+  return apiRequest("ownerTicketApprove", data, id);
+};
+
+const ownerTicketRejection = (id, data) => {
+  return apiRequest("ownerTicketRejection", data, id);
+};
+
+const DirectorWithdrawPaymentDetails = (id, data) => {
+  return apiRequest("DirectorWithdrawPaymentDetails", data, id);
+};
+
+const DirectorWithdrawTicketCreation = (data) => {
+  return apiRequest("DirectorWithdrawTicketCreation", data);
+};
+
+const ownerWithdrawTicketRejection = (id, data) => {
+  return apiRequest("ownerWithdrawTicketRejection", data, id);
+};
+
+const ownerWithdrawTicketApprove = (id, data) => {
+  return apiRequest("ownerWithdrawTicketApprove", data, id);
+};
+
+const getOwnerCurrencies = (data) => {
+  return apiRequest("getOwnerCurrencies", data);
+};
+
+// const ownerDowlineDirAndSADetails = (data) => {
+//   return apiRequest("ownerDowlineDirAndSADetails", data);
+// };
+
+const ownerDowlineDirAndSADetails = (params) => {
+  return apiRequest("ownerDowlineDirAndSADetails", {}, params);
+};
+
+const ManagementOfflineDepositeTicketCreation = (id, data) => {
+  return apiRequest("ManagementOfflineDepositeTicketCreation", data, id);
+};
+
+const ManagementOfflineWithdrawTicketCreation = (id, data) => {
+  return apiRequest("ManagementOfflineWithdrawTicketCreation", data, id);
+};
+const managemnetViewDownlinelist = (data) => {
+  return apiRequest("managemnetViewDownlinelist", data);
+};
+const dwnlineDSASuspend = (id, data) => {
+  return apiRequest("dwnlineDSASuspend", data, id);
+};
+const getDwnlineWebsiteList = (id, websiteId) => {
+  return apiRequest("getDwnlineWebsiteList", id, { id, websiteId });
+};
+const dwnlineUserWebsites = (id, data) => {
+  return apiRequest("dwnlineUserWebsites", data, id);
+};
+const resetPasswordMan = (data) => {
+  return apiRequest("resetPasswordMan", data);
+};
+const resetPswdDirector = (data) => {
+  return apiRequest("resetPswdDirector", data);
+};
+const dirEmployeeResetPswd = (data) => {
+  return apiRequest("dirEmployeeResetPswd", data);
+};
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -431,6 +548,36 @@ export {
   DirectorUpLinePaymentDetails,
   getBannerByUserId,
   getDirectorSites,
+  createSuperAdmin,
+  getSuperAdminDetailsById,
+  resetSuperAdminPassword,
+  updateSuperAdminByID,
   DirectorAvailablePaymentsModes,
+  getNotificationsforManagement,
+  getNotificationsforDirector,
   DirectorOffilneDepositTicket,
+  getDirectorDepositeTicketsList,
+  getOwnerDownlineDepositeTicketsList,
+  depositTikcetDetailsById,
+  managementDepositTikcetDetailsById,
+  DeleteDirectorTicketsById,
+  readNotificationsforDirector,
+  readNotificationsforManagement,
+  ownerTicketApprove,
+  ownerTicketRejection,
+  DirectorWithdrawPaymentDetails,
+  DirectorWithdrawTicketCreation,
+  ownerWithdrawTicketRejection,
+  ownerWithdrawTicketApprove,
+  getOwnerCurrencies,
+  ownerDowlineDirAndSADetails,
+  ManagementOfflineDepositeTicketCreation,
+  ManagementOfflineWithdrawTicketCreation,
+  managemnetViewDownlinelist,
+  dwnlineDSASuspend,
+  getDwnlineWebsiteList,
+  dwnlineUserWebsites,
+  resetPasswordMan,
+  resetPswdDirector,
+  dirEmployeeResetPswd,
 };

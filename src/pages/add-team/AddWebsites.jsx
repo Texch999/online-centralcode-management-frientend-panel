@@ -37,6 +37,7 @@ const AddWibsites = () => {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const allCountries = useSelector((item) => item?.allCountries);
+  console.log(allCountries, "====>allCountries")
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
       limit,
@@ -77,21 +78,34 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
+  // useEffect(() => {
+  //   if (isInitialRendering.current) {
+  //     isInitialRendering.current = false
+  //     return
+  //   }
+  //   if (filterName.trim() === "") {
+  //     const limit = itemsPerPage;
+  //     const offset = (page - 1) * itemsPerPage;
+  //     if (role === "management") {
+  //       getAllWebsiteList(limit, offset);
+  //     } else {
+  //       getAllDirectorWebsiteList(limit, offset);
+  //     }
+  //   }
+  // }, [filterName, role]);
+
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false
-      return
-    }
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    // Fetch data based on role and filterName
     if (filterName.trim() === "") {
-      const limit = itemsPerPage;
-      const offset = (currentPage - 1) * itemsPerPage;
       if (role === "management") {
         getAllWebsiteList(limit, offset);
       } else {
         getAllDirectorWebsiteList(limit, offset);
       }
     }
-  }, [filterName, role]);
+  }, [filterName, role, page, itemsPerPage]);
 
   const handlePageChange = ({ limit, offset }) => {
     if (role === "management") {
@@ -122,8 +136,8 @@ const AddWibsites = () => {
     admin: (
       <div>
         {" "}
-        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"} ( ${website?.panel_type === 1 ? "Admin" : "User"
-          } )`}
+        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
+          } `}
       </div>
     ),
     websiteName: website?.web_name,
@@ -190,18 +204,20 @@ const AddWibsites = () => {
     }))
   );
   const handleFiltration = async (e) => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     if (e.key === "Enter") {
       if (role === "management") {
         setError(null);
-        getAllWebsiteList();
+        getAllWebsiteList(limit, offset);
       } else {
-        getAllDirectorWebsiteList();
+        getAllDirectorWebsiteList(limit, offset);
       }
     }
   };
   const handleBlockAndUnblock = () => {
     const limit = itemsPerPage;
-    const offset = (currentPage - 1) * itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     blockAndUnblock(websiteId)
       .then((response) => {
         if (response?.status === true) {
@@ -226,7 +242,10 @@ const AddWibsites = () => {
         }, 2000);
       });
   };
-  const getWebsitesCallback = (limit, offset) => {
+  const getWebsitesCallback = () => {
+
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     getAllWebsiteList(limit, offset)
   }
   return (
@@ -239,7 +258,7 @@ const AddWibsites = () => {
             <FaSearch size={16} className="grey-clr me-2" />
             <input
               className="small-font all-none"
-              placeholder="Search..."
+              placeholder="Enter website name"
               onChange={(e) => setFilterName(e.target.value.trim())}
               onKeyDown={handleFiltration}
             />

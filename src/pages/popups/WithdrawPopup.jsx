@@ -4,14 +4,18 @@ import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { Images } from "../../images";
-import { getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
+import { getDirectorAccessWebites, getDirectorSites, DirectorWithdrawTicketCreation } from "../../api/apiMethods";
 import { MdContentCopy } from "react-icons/md";
+import { imgUrl } from "../../api/baseUrl";
+import { rround, rfloor, rceil } from "../../utils/mathFunctions";
+
 
 const WithdrawPopup = ({
     setWithdrawPopup,
     withdrawPopup,
-    actionType,
-    selectedPayment
+    selectedPayment,
+    handleSuccessPopupOpen,
+    setDiscription
 }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
@@ -19,6 +23,8 @@ const WithdrawPopup = ({
     const isInitialRender = useRef(true);
     const [directorSites, setDirectorSites] = useState([]);
     const [userWebsites, setUserWebsites] = useState([]);
+    const [directorCurrency, setDirectorCurrency] = useState(null);
+    const [fieldError, setFieldError] = useState(null);
     const [errors, setErrors] = useState({});
     const userName = localStorage.getItem("user_name");
     const userRole = localStorage.getItem("role_code");
@@ -33,9 +39,12 @@ const WithdrawPopup = ({
         accountNumber: "",
         ifscCode: "",
         upiId: "",
-        websiteName: "", // Add websiteName to formData
+        websiteName: "",
+        selectedChips: "",
+        cashHandoverName: "",
+        cashDes: ""
     });
-
+    const [apiErrors, setApiErrors] = useState(null);
     const [error, setError] = useState("");
     const [selectedWebDetails, setSelectedWebDetails] = useState(null);
 
@@ -44,23 +53,6 @@ const WithdrawPopup = ({
             .then((response) => {
                 if (response?.status === true) {
                     setDirectorWebsitesList(response.data);
-                    // Set the first admin website as default
-                    if (response.data.length > 0) {
-                        const firstAdmin = response.data[0].admin_websites[0];
-                        setSelectedAdmin({
-                            label: firstAdmin.admin_web_name,
-                            value: firstAdmin.admin_panel_id,
-                        });
-                        setUserWebsites(firstAdmin.users || []);
-                        // Set the first user website as default
-                        if (firstAdmin.users.length > 0) {
-                            setFormData((prev) => ({
-                                ...prev,
-                                websiteName: firstAdmin.users[0].website_access_id,
-                            }));
-                            getWebsiteDetailsByUserId(firstAdmin.users[0].website_access_id);
-                        }
-                    }
                 } else {
                     setError("Something Went Wrong");
                 }
@@ -74,7 +66,9 @@ const WithdrawPopup = ({
         getDirectorSites()
             .then((response) => {
                 if (response?.status === true) {
+                    const siteData = response.data
                     setDirectorSites(response.data);
+                    setDirectorCurrency(siteData[0])
                 } else {
                     setError("Something Went Wrong");
                 }
@@ -96,43 +90,86 @@ const WithdrawPopup = ({
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    // chips math function 
+
+    const shareChipValue = Number(formData.selectedChips * (selectedWebDetails?.share / 100));
+    const roundedShareChipValue = shareChipValue > 0 ? rfloor(shareChipValue, -3) : 0;
 
     const validateForm = () => {
+
         const newErrors = {};
+        if (selectedPayment?.avil_modes !== 4) {
+            if (!selectedAdmin?.value) newErrors.adminWebsiteId = "Admin Website is required";
+            if (!formData.websiteName) newErrors.userPanelId = "User Website is required";
+            if (!formData.selectedChips) newErrors.selectedChips = "Please enter chips";
 
-        if (!selectedAdmin) {
-            newErrors.admin = "Please select an Admin Website.";
+        } else {
+            if (!selectedAdmin?.value) newErrors.adminWebsiteId = "AdminWebsiteId is required";
+            if (!selectedWebDetails.user_paner_id) newErrors.userPanelId = "UserPanelId is required";
+            if (!formData.selectedChips) newErrors.selectedChips = "Please enter chips";
+            if (!formData.cashHandoverName) newErrors.cashHandoverName = "Cash handover name is required";
+            if (!formData.cashDes) newErrors.cashDes = "Description is required";
         }
-
-        if (!formData.websiteName) {
-            newErrors.user = "Please select a User Website.";
-        }
-
         setErrors(newErrors);
-
-        // Return true if there are no errors
         return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = () => {
-        if (validateForm()) {
-            console.log("Form Data:", formData);
-            // Proceed with your form submission logic here
-        } else {
-            console.log("Validation failed. Please check the form.");
+        if (!validateForm()) return;
+        let payload = {
+            adminPanelId: selectedAdmin?.value || null,
+            userPanelId: formData?.websiteName || null,
+            currency: directorCurrency?.county || "",
+            paymentId: selectedPayment?.gateway_type || null,
+            selctChips: Number(formData.selectedChips) || 0,
+            paidAmount: roundedShareChipValue,
+        };
+
+        if (selectedPayment?.avil_modes === 4) {
+            payload.cashDes = formData.cashDes;
         }
+
+        DirectorWithdrawTicketCreation(payload)
+            .then((response) => {
+                if (response?.status === true) {
+                    setWithdrawPopup(false);
+                    handleSuccessPopupOpen();
+                    setFormData({
+                        balanceAmount: "",
+                        netAmount: "",
+                        withdrawAmount: "",
+                        deployType: null,
+                        panelType: null,
+                        websiteName: "",
+                        selectedChips: "",
+                        cashHandoverName: "",
+                        cashDes: ""
+                    });
+                    setApiErrors(null);
+                    setDiscription("Withdraw ticket created successfully")
+                } else {
+                    setApiErrors(response?.errors || "Deposit failed. Please try again.");
+                }
+            })
+            .catch((error) => {
+                setApiErrors(error?.errors || error?.message || "API request failed");
+            });
     };
 
     const adminWebsitesList = directorWebsitesList.flatMap((ref) => ref.admin_websites);
 
     function getWebsiteDetailsByUserId(selectedUserId) {
-        const WebUserDetails = directorSites.filter(item => item.id === selectedUserId);
+        const WebUserDetails = directorSites.filter(item => item.user_paner_id === selectedUserId);
         setSelectedWebDetails(...WebUserDetails);
     }
+
     const handleClosePopup = () => {
         setWithdrawPopup(false)
         setSelectedWebDetails(null)
     }
+    const maxAllowed = selectedWebDetails?.total_chips !== null ? selectedWebDetails?.total_chips : 0
+
+
     return (
         <div>
             <Modal show={withdrawPopup} centered className="confirm-popup" size="md">
@@ -140,7 +177,7 @@ const WithdrawPopup = ({
                     <div className="d-flex justify-content-between align-items-center mb-2">
                         <div>
                             <img
-                                src={Images?.phonepe}
+                                src={`${imgUrl}/offlinepaymentsMode/${selectedPayment?.image}`}
                                 alt="Icon"
                                 className="me-3"
                                 style={{ width: "50px", height: "50px" }}
@@ -148,7 +185,7 @@ const WithdrawPopup = ({
                         </div>
                         <div className="d-flex justify-content-end flex-grow-1">
                             <div className="d-flex flex-column text-end">
-                                <h5 className="medium-font fw-600 mb-0 green-font">Withdraw in {selectedWebDetails?.currencyName}</h5>
+                                <h5 className="medium-font fw-600 mb-0 green-font">Withdraw in {directorCurrency?.currencyName}</h5>
                                 <p className="medium-font mb-0 dep-pop-clr"> {`${userName} - ${userRole} (Share-${selectedWebDetails?.share || 0}%)`} </p>
                             </div>
                         </div>
@@ -156,6 +193,19 @@ const WithdrawPopup = ({
                             <MdOutlineClose size={22} className="pointer ms-3" onClick={handleClosePopup} />
                         </div>
                     </div>
+                    {apiErrors && (
+                        <div className="alert alert-danger">
+                            {Array.isArray(apiErrors) ? (
+                                <ul>
+                                    {apiErrors.map((error, index) => (
+                                        <li className="small-font" key={index}>{error.message || error}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="small-font">{apiErrors.message || apiErrors}</p>
+                            )}
+                        </div>
+                    )}
                     <div className="row ">
                         <div className="col mb-2">
                             <label className="small-font mb-1">Admin Panel</label>
@@ -163,7 +213,7 @@ const WithdrawPopup = ({
                                 className="small-font white-bg input-border rounded"
                                 options={adminWebsitesList.map((admin) => ({
                                     label: admin.admin_web_name,
-                                    value: admin.admin_panel_id,
+                                    value: admin.admin_WebSite_id,
                                 }))}
                                 placeholder="Select Admin Website"
                                 styles={customStyles}
@@ -174,18 +224,9 @@ const WithdrawPopup = ({
                                         (admin) => admin.admin_panel_id === option.value
                                     );
                                     setUserWebsites(selectedAdminData?.users || []);
-                                    // Set the first user website as default
-                                    if (selectedAdminData?.users.length > 0) {
-                                        setFormData((prev) => ({
-                                            ...prev,
-                                            websiteName: selectedAdminData.users[0].website_access_id,
-                                        }));
-                                    }
-                                    // Clear the admin error when an option is selected
-                                    setErrors((prev) => ({ ...prev, admin: "" }));
                                 }}
                             />
-                            {errors.admin && <p className="text-danger small-font">{errors.admin}</p>}
+                            {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
                         </div>
                         <div className="col mb-2">
                             <label className="small-font mb-1">User Panel</label>
@@ -193,7 +234,7 @@ const WithdrawPopup = ({
                                 className="small-font white-bg input-border rounded"
                                 options={userWebsites.map((user) => ({
                                     label: user.user_web_name,
-                                    value: user.website_access_id,
+                                    value: user.user_WebSite_id,
                                 }))}
                                 placeholder="Select User Website"
                                 styles={customStyles}
@@ -202,12 +243,10 @@ const WithdrawPopup = ({
                                         ...prev,
                                         websiteName: option.value,
                                     }));
-                                    getWebsiteDetailsByUserId(option.value);
-                                    // Clear the user error when an option is selected
-                                    setErrors((prev) => ({ ...prev, user: "" }));
+                                    getWebsiteDetailsByUserId(option.value)
                                 }}
                             />
-                            {errors.user && <p className="text-danger small-font">{errors.user}</p>}
+                            {errors?.userPanelId && <p className="text-danger small-font">{errors?.userPanelId}</p>}
                         </div>
                     </div>
 
@@ -220,7 +259,7 @@ const WithdrawPopup = ({
                                 name="currency"
                                 className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
                                 placeholder="Enter Amount"
-                                value={selectedWebDetails?.currencyName || ""}
+                                value={directorCurrency?.currencyName || ""}
                                 onChange={handleChange}
                             />
                             {errors.amount && <p className="text-danger small-font">{errors.amount}</p>}
@@ -289,50 +328,82 @@ const WithdrawPopup = ({
                     {/* Withdraw Amount */}
                     <div className="row">
                         <div className="col">
-                            <label className="small-font mb-1">Wallet Chips Balance - {selectedWebDetails?.currencyName}</label>
+                            <label className="small-font mb-1">Wallet Chips Balance - {directorCurrency?.currencyName}</label>
                             <input
                                 type="text"
-                                name="withdrawAmount"
                                 className="w-100 small-font rounded input-css white-bg input-border"
                                 placeholder="Enter Withdraw Amount"
-                                value={formData.withdrawAmount}
+                                value={selectedWebDetails?.commission_type !== 1 ? selectedWebDetails?.total_chips : selectedWebDetails?.total_sport_chips}
                                 onChange={handleChange}
-                            />
-                        </div>
-                        <div className="col">
-                            <label className="small-font mb-1">Total Chips - {selectedWebDetails?.currencyName}</label>
-                            <input
-                                type="text"
-                                name="withdrawAmount"
-                                className="w-100 small-font rounded input-css  white-bg placeholder-red-clr input-border"
-                                placeholder="Enter Withdraw Amount"
-                                value={formData.withdrawAmount}
-                                onChange={handleChange}
+                                readOnly
                             />
                         </div>
                     </div>
-                    <div className="col">
-                        <label className="small-font mb-1">Amount ({selectedWebDetails?.share}%) - {selectedWebDetails?.currencyName}</label>
-                        <input
-                            type="text"
-                            name="withdrawAmount"
-                            className="w-100 small-font rounded input-css  white-bg input-border"
-                            placeholder="Enter Withdraw Amount"
-                            value={formData.withdrawAmount}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col">
-                        <label className="small-font mb-1">Enter Chips - {selectedWebDetails?.currencyName}</label>
-                        <input
-                            type="text"
-                            name="withdrawAmount"
-                            className="w-100 small-font rounded input-css  white-bg placeholder-red-clr input-border"
-                            placeholder="Enter Withdraw Amount"
-                            value={formData.withdrawAmount}
-                            onChange={handleChange}
-                        />
-                    </div>
+                    {selectedWebDetails?.commission_type !== 1 && selectedWebDetails?.commission_type !== 3 && (
+                        <div className="row">
+                            <div className="col">
+                                <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
+                                <input
+                                    type="text"
+                                    name="selectedChips"
+                                    className="w-100 small-font rounded input-css  white-bg placeholder-red-clr input-border"
+                                    placeholder="Enter Withdraw Amount"
+                                    value={formData.selectedChips}
+                                    onChange={(e) => {
+                                        if (Number(e.target.value) <= maxAllowed) {
+                                            handleChange(e);
+                                            setFieldError("")
+                                        } else {
+                                            setFieldError(`You cannot enter more than ${maxAllowed} chips.`);
+                                        }
+                                    }}
+                                />
+                                {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                                {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                            </div>
+                            <div className="col">
+                                <label className="small-font mb-1">Amount ({selectedWebDetails?.share}%) - {directorCurrency?.currencyName}</label>
+                                <input
+                                    type="text"
+                                    name="paidAmount"
+                                    className="w-100 small-font rounded input-css  white-bg input-border"
+                                    placeholder="Enter Withdraw Amount"
+                                    value={roundedShareChipValue}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+
+                    {selectedPayment?.avil_modes === 4 && (
+                        <>
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">Cash Handover Name</label>
+                                <input
+                                    type="text"
+                                    name="cashHandoverName"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                    placeholder="Enter Name"
+                                    value={formData.cashHandoverName}
+                                    onChange={handleChange}
+                                />
+                                {errors.cashHandoverName && <p className="text-danger small-font">{errors.cashHandoverName}</p>}
+                            </div>
+                            <div className="col mb-2">
+                                <label className="small-font mb-1">Description</label>
+                                <input
+                                    type="text"
+                                    name="cashDes"
+                                    className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                    placeholder="Enter Description"
+                                    value={formData.cashDes}
+                                    onChange={handleChange}
+                                />
+                                {errors.cashDes && <p className="text-danger small-font">{errors.cashDes}</p>}
+                            </div>
+                        </>
+                    )}
                     {selectedPayment?.avil_modes === 3 && (
                         <>
                             <div className="col mb-2">
@@ -350,11 +421,14 @@ const WithdrawPopup = ({
                         </>
                     )}
                     {/* Submit Button */}
-                    <div className="mt-3 d-flex flex-row w-100">
-                        <button className="saffron-btn small-font rounded col" onClick={handleSubmit}>
-                            Submit
-                        </button>
-                    </div>
+                    {selectedWebDetails?.commission_type !== 1 && selectedWebDetails?.commission_type !== 3 && (
+                        <div className="mt-3 d-flex flex-row w-100">
+                            <button className="saffron-btn small-font rounded col" onClick={handleSubmit}>
+                                Submit
+                            </button>
+                        </div>
+                    )}
+
                 </Modal.Body>
             </Modal>
         </div>

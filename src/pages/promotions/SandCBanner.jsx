@@ -720,9 +720,9 @@ const SandCBanner = () => {
       <ConfirmationPopup
         confirmationPopupOpen={bannerBlockModal}
         setConfirmationPopupOpen={() => setBannerBlockModal(false)}
-        discription={`are you sure you want to ${
+        discription={`Are you sure you want to ${
           selectedBannerStatus === 1 ? "Block" : "UnBlock"
-        } this Banner`}
+        } this Banner?`}
         selectedId={selectedBannerId}
         submitButton={selectedBannerStatus === 1 ? "Block" : "UnBlock"}
         onSubmit={BockOrUnblock}
@@ -730,7 +730,7 @@ const SandCBanner = () => {
       <ConfirmationPopup
         confirmationPopupOpen={bannerDeleteModal}
         setConfirmationPopupOpen={() => setBannerDeleteModal(false)}
-        discription={"are you sure you want to delete this Banner"}
+        discription={"Are you sure you want to delete this Banner?"}
         selectedId={selectedBannerId}
         submitButton={"Delete"}
         onSubmit={handleDeleteBanners}

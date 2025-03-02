@@ -3,6 +3,7 @@ import Table from "../../components/Table";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
+import { FaMobile } from "react-icons/fa";
 import { getDirectorLoginLogs, getLoggedInLogs, getDirectorEmployeesLoginLogsList } from "../../api/apiMethods";
 
 const ActivityLogs = () => {
@@ -150,10 +151,9 @@ const ActivityLogs = () => {
     { header: "Device", field: "device" },
     { header: "Date/Time", field: "dateTime" },
     { header: "User/Admin", field: "userAdmin" },
-    { header: "Duration", field: "duration" },
     { header: "Executable", field: "executable" },
+    { header: "Login Url", field: "loginurl" },
     { header: "Location", field: "location" },
-    { header: "URL", field: "url" },
     { header: "IP", field: "ip" },
     { header: "No of IP Login", field: "iplogin" },
     { header: "", field: "show" },
@@ -166,7 +166,7 @@ const ActivityLogs = () => {
     ),
     device: (
       <div>
-        <IoTv size={24} />
+        {item?.device_type === "Windows" ? <IoTv size={24} /> : <FaMobile size={24} />}
       </div>
     ),
     dateTime: (
@@ -190,14 +190,9 @@ const ActivityLogs = () => {
         {item.user_role}
       </div>
     ),
-    duration: (
-      <div>
-        <span>---</span>
-      </div>
-    ),
-    executable: <div>{item.browser_type || "Unknown Browser"}</div>,
-    location: <div>{item.location}</div>,
-    url: <div className="skyblue-clr">---</div>,
+    executable: <div>{item.browser_type || "--"}</div>,
+    loginurl: <div>{item.login_url || "--"}</div>,
+    location: <div>{item.location || "--"}</div>,
     ip: <div>{item.ip}</div>,
     iplogin: <div className="w-50 flex-center">{item.ip_count}</div>,
     show: (

@@ -36,10 +36,7 @@ function AddDirectorTeam() {
     setShowModal(true);
     setIsEditMode(false);
   };
-  // const handleEditModalOpen = (id) => {
-  //     setdirectorEmployeeId(id)
-  //     setShowEditModal(true)
-  // }
+
   const handleEditModalOpen = (data) => {
     setIsEditMode(true);
     setShowModal(true);
@@ -54,8 +51,11 @@ function AddDirectorTeam() {
   const handleEditModalClose = () => {
     setShowEditModal(false);
   };
-  const handleModalClose = () => {
+  const handleModalClose = (shouldRefresh = false) => {
     setShowModal(false);
+    if (shouldRefresh) {
+      GetAllDirectorEmployees();
+    }
   };
   const columns = [
     {
@@ -88,7 +88,7 @@ function AddDirectorTeam() {
   const isFetching = useRef(false);
 
   const GetAllDirectorEmployees = () => {
-    if (isFetching.current) return; // Prevent multiple calls
+    if (isFetching.current) return;
     isFetching.current = true;
     getDirectorEmployees({ limit: 10, offset: 0 })
       .then((response) => {
@@ -106,7 +106,7 @@ function AddDirectorTeam() {
         isFetching.current = false;
       });
   };
-  // useEffect(() => { GetAllDirectorEmployees() }, [])
+
   useEffect(() => {
     if (!tableData) GetAllDirectorEmployees();
   }, [tableData]);
@@ -148,29 +148,6 @@ function AddDirectorTeam() {
     ),
   }));
 
-  // const TableData = tableData?.map(user => ({
-  //     id: user.id,
-  //     role: directorEmployees[user.role] || "Unknown Role",
-  //     name: user.name,
-  //     login_name: user.login_name,
-  //     phone_no: user.phone_no,
-  //     email: user.email,
-
-  //     action: (
-  //         <div className="d-flex flex-around gap-3">
-  //             <SlPencil
-  //                 size={18}
-  //                 className="black-text pointer"
-  //                 onClick={() => handleEditModalOpen(user)}
-  //             />
-  //             <MdLockReset size={18} className="black-text pointer" onClick={() => handleResetPasswordPopup(user.id)} />
-  //             <MdBlockFlipped size={18} className={`pointer ${user.status === 1 ? 'green-font' : user.status === 2 ? 'clr-red' : ''}`}
-  //                 onClick={() => handleBlockPopup(user.id, user.name)} />
-
-  //         </div>
-  //     ),
-  // }));
-
   const onDirectorEmployeeResetPassword = (data) => {
     if (!directorEmployeeId) {
       alert("Invalid ID");
@@ -188,6 +165,7 @@ function AddDirectorTeam() {
           setTimeout(() => {
             setResetPasswordPopup(false);
           }, 1000);
+          GetAllDirectorEmployees(); // Refresh the table data
         } else {
           alert("Something went wrong");
         }
@@ -201,10 +179,10 @@ function AddDirectorTeam() {
     blockDirectorEmployee(directorEmployeeId)
       .then((response) => {
         if (response.status === true) {
-          console.log(response, "response");
           setTimeout(() => {
-            // setConfirmationPopupOpen(false);
+            setConfirmationPopup(false);
           }, 1000);
+          GetAllDirectorEmployees(); // Refresh the table data
         } else {
           alert("Something went wrong");
         }
@@ -213,7 +191,9 @@ function AddDirectorTeam() {
         console.log(error?.message || "Request failed");
       });
   };
-
+  useEffect(() => {
+    GetAllDirectorEmployees();
+  }, []);
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -241,6 +221,7 @@ function AddDirectorTeam() {
         isEditMode={isEditMode}
         directorEmployeeId={directorEmployeeId}
         selectedUser={selectedUser}
+        GetAllDirectorEmployees={GetAllDirectorEmployees}
       />
       <ResetPasswordPopup
         resetPasswordPopup={resetPasswordPopup}

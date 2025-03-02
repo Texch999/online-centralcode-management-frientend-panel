@@ -22,7 +22,7 @@ function ConfirmationPopup({
   };
 
   const handleSunmit = async () => {
-    onSubmit(pageSize,pageSize);
+    onSubmit(page,pageSize);
     setConfirmationPopupOpen(false);
   };
 

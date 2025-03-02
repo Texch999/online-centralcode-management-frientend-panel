@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaChevronLeft, FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { useParams } from "react-router-dom";
 import { FiChevronLeft } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const DownlineTrasactionHistory = () => {
   const { transactionHistory } = useParams();
+  const navigate = useNavigate();
+  const { userwebsite } = useParams();
 
   // State for active button
   const [activeButton, setActiveButton] = useState("All");
@@ -196,9 +199,13 @@ const DownlineTrasactionHistory = () => {
   return (
     <div>
       <div className="row d-flex justify-content-between align-items-center mb-4 mt-2">
-        <h6 className="col-3 mb-0 d-flex align-items-center">
-          <FiChevronLeft className="medium-font black-text" />
-          <span className="yellow-font medium-font">{transactionHistory}</span>
+        <h6 className="col-3 mb-0 d-flex align-items-center" onClick={()=>navigate(-1)}>
+          <span>
+            <FaChevronLeft className="mx-1 pointer yellow-font" />
+          </span>
+          <span className="yellow-font medium-font">
+            {userwebsite} Transaction History
+          </span>
         </h6>
         <div className="col-4 d-flex justify-content-end gap-3 medium-font">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 w-60">
@@ -214,8 +221,11 @@ const DownlineTrasactionHistory = () => {
             <button
               key={button}
               className={`col-3 col-lg-2
-                ${button === activeButton ? "saffron-btn rounded" : "white-btn rounded"}`
-              }
+                ${
+                  button === activeButton
+                    ? "saffron-btn rounded"
+                    : "white-btn rounded"
+                }`}
               onClick={() => handleButtonClick(button)}
             >
               {button}
@@ -228,7 +238,6 @@ const DownlineTrasactionHistory = () => {
           <input type="date" className="input-css2 clr-white" />
           <button className="saffron-btn w-25 rounded">Submit</button>
         </div>
-        
       </div>
 
       <div className="mt-3">
@@ -245,4 +254,3 @@ const DownlineTrasactionHistory = () => {
 };
 
 export default DownlineTrasactionHistory;
-

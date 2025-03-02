@@ -4,6 +4,7 @@ import {
   ownersAvailablePaymentsModes,
   DirectorAvailablePaymentsModes,
   managementPaymentDetails,
+  DirectorWithdrawPaymentDetails,
 } from "../../../src/api/apiMethods";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
@@ -17,13 +18,16 @@ import PaymentModes from "../../components/PaymentModes";
 import SuccessPopup from "../popups/SuccessPopup";
 
 const AddNePaymentGateway = () => {
+
   const [error, setError] = useState(null);
-  const [selectedCountryId, setSelectedCountryId] = useState(107);
+  const country_id = parseInt(localStorage.getItem("currency_id"))
+  const [selectedCountryId, setSelectedCountryId] = useState(country_id);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
   const [AddPaymentGatewayModal, setOnAddPaymentGateway] = useState(false);
   const userRole = localStorage.getItem("role_code");
+  const userId = localStorage.getItem("user_id");
   const [depositePopup, setDepositePopup] = useState(false);
   const [withdrawPopup, setWithdrawPopup] = useState(false);
   const [addpaymentId, setAddPaymentId] = useState();
@@ -33,17 +37,20 @@ const AddNePaymentGateway = () => {
   const [offlinePaymentModes, setOfflinePaymentModes] = useState([]);
   const [combinedPaymentModes, setCombinedPaymentModes] = useState([]);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false)
-  const [discription, setDiscription] = useState("Deposit Ticket Successfully Created")
+  const [discription, setDiscription] = useState("")
   const isInitialRendering = useRef(true)
   const location = useLocation();
   const { actionType } = location.state || {};
+
+
   const handleAddModal = (id, country, available_id) => {
+    console.log("add paymnetdetails popup")
     setAddPaymentId(id);
     setCountryId(country);
     setOnAddPaymentGateway(true);
     setAvailablePaymentModeId(available_id);
   };
-  const tabNames = ["Offline Payment Modes", "Payment Gateway"];
+  const tabNames = ["All", "Bank Transfe", "E-Wallets", 'QR Codes', "Cash", "Payment Gateway"];
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -53,26 +60,32 @@ const AddNePaymentGateway = () => {
   ];
   const getOwnersPaymentModes = () => {
     setLoading(true);
-    let fetchPaymentModes;
+    let fetchPaymentModes = null;
+
     if (userRole === "director") {
-      if (actionType === "Withdraw" || "Deposit") {
+      if (actionType === "Deposit") {
         fetchPaymentModes = managementPaymentDetails();
+      } else if (actionType === "Withdraw") {
+        fetchPaymentModes = DirectorWithdrawPaymentDetails(userId);
       }
-    } else {
-      fetchPaymentModes = ownersAvailablePaymentsModes();
     }
 
-    fetchPaymentModes
-      .then((response) => {
-        setPaymentModes(response?.data);
-      })
-      .catch((error) => {
-        setError(error?.message);
-        console.log("getDirectorAccountDetails error", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (fetchPaymentModes) {
+      fetchPaymentModes
+        .then((response) => {
+          setPaymentModes(response?.data);
+        })
+        .catch((error) => {
+          setError(error?.message);
+          console.log("getDirectorAccountDetails error", error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+      console.log("No valid fetch function executed");
+    }
   };
 
 
@@ -84,6 +97,7 @@ const AddNePaymentGateway = () => {
     } else {
       fetchPaymentModes = ownersAvailablePaymentsModes();
     }
+
     fetchPaymentModes
       .then((response) => {
         setOfflinePaymentModes(response?.data);
@@ -105,26 +119,34 @@ const AddNePaymentGateway = () => {
     getOwnersPaymentModes();
   }, [isInitialRendering]);
 
+
+
   useEffect(() => {
     if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
-      const combinedData = offlinePaymentModes.map((offlineMode) => {
-        // Slice the offlineMode.id to remove the first 3 and last 3 characters
-        const slicedId = Number(offlineMode.id.slice(3, -3));
-        // Find the corresponding paymentMode for the sliced offlineMode.id
-        const paymentMode = paymentModes.find(
-          (paymentMode) => paymentMode.payment_mode_id === slicedId
+      const combinedData = offlinePaymentModes.flatMap((offlineMode) => {
 
+        // Extract the numeric payment_mode_id from offlineMode.id
+        const slicedId = Number(offlineMode.id.slice(3, -3));
+
+        // Find all paymentModes that match the slicedId
+        const matchingPaymentModes = paymentModes.filter(
+          (paymentMode) => paymentMode.payment_mode_id === slicedId
         );
-        return {
-          ...offlineMode,
-          ...paymentMode,
-          isEnabled: !!paymentMode,
-        };
+
+        // If matching records exist, merge them, otherwise keep offlineMode as is
+        return matchingPaymentModes.length > 0
+          ? matchingPaymentModes.map((paymentMode) => ({
+            ...offlineMode,
+            ...paymentMode,
+            isEnabled: true,
+          }))
+          : [{ ...offlineMode, isEnabled: false }];
       });
 
       setCombinedPaymentModes(combinedData);
     }
   }, [offlinePaymentModes, paymentModes]);
+
 
   const allCountries = useSelector((item) => item?.allCountries);
   const formattedCountries = allCountries.map((country) => ({
@@ -132,13 +154,17 @@ const AddNePaymentGateway = () => {
     label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
   }));
 
-  const filteredPaymentModes = combinedPaymentModes.filter(
+  const asignData = actionType === "Deposit" || actionType === "Withdraw" ?
+    combinedPaymentModes : offlinePaymentModes
+
+  const filteredPaymentModes = asignData?.filter(
     (mode) => mode.country_id === selectedCountryId
   );
 
   const hasNoRecords = filteredPaymentModes.length === 0;
 
   const handleDepositAndWithdraw = (paymentDetails) => {
+
     if (actionType === "Deposit") {
       setDepositePopup(true);
       setSelectedPayment(paymentDetails);
@@ -147,13 +173,21 @@ const AddNePaymentGateway = () => {
       setSelectedPayment(paymentDetails);
     }
   };
+
   const handleSuccessPopupOpen = () => {
     setSuccessPopupOpen(true)
   }
+
   return (
     <div>
-      <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0">Add New Gateway</h6>
+      <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
+        <div className="yellow-font medium-font mb-0">Add New Gateway</div>
+
+        <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
+          <span className="small-font" style={{ color: "#fff" }} >
+            Back
+          </span>
+        </div>
       </div>
       <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
         <div className="row mb-3">
@@ -196,7 +230,7 @@ const AddNePaymentGateway = () => {
                 {tabNames.map((tabName, index) => (
                   <div
                     key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 " : ""
+                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 px2" : "rounded"
                       }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => setSelectedTab(index)}
@@ -238,6 +272,7 @@ const AddNePaymentGateway = () => {
           actionType={actionType}
           selectedPayment={selectedPayment}
           handleSuccessPopupOpen={handleSuccessPopupOpen}
+          setDiscription={setDiscription}
         />
       )}
 
@@ -247,6 +282,8 @@ const AddNePaymentGateway = () => {
           withdrawPopup={withdrawPopup}
           actionType={actionType}
           selectedPayment={selectedPayment}
+          handleSuccessPopupOpen={handleSuccessPopupOpen}
+          setDiscription={setDiscription}
         />
       )}
       <SuccessPopup

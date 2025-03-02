@@ -14,7 +14,6 @@ function SubHeader() {
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
 
   const menuConfig = {
-    // Management
     management: [
       {
         label: "Adding",
@@ -52,12 +51,12 @@ function SubHeader() {
         label: "Wallet",
         options: [
           { label: "My Vendors Account", path: "/my-vendors-account" },
-          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+          // { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           {
             label: "Offline Deposit/Withdraw",
             path: "/offline-deposit-withdraw",
           },
-          { label: "Tickets", path: "/tickets" },
+          { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
         ],
       },
@@ -89,16 +88,13 @@ function SubHeader() {
             label: "Create Promotions Type",
             path: "/create-promotion-type",
           },
-          // { label: "Sports Promotions", path: "/sports-promotions" },
-          // { label: "Casino Promotions", path: "/casino-promotions" },
-          // { label: "Offers", path: "/offers" },
+
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
       },
     ],
 
-    // Director
     director: [
       {
         label: "Adding",
@@ -135,7 +131,7 @@ function SubHeader() {
         label: "Wallet",
         options: [
           { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-          { label: "Tickets", path: "/tickets" },
+          { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
         ],
       },
@@ -170,7 +166,6 @@ function SubHeader() {
       },
     ],
 
-    // Super Admin
     super_admin: [
       {
         label: "Adding",
@@ -238,8 +233,7 @@ function SubHeader() {
       },
     ],
 
-    // Designing Team
-    designing_team: [
+    promotions: [
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
@@ -259,8 +253,7 @@ function SubHeader() {
       },
     ],
 
-    // Risk Team
-    risk_team: [
+    "risk management": [
       {
         label: "Live/Block",
         options: [
@@ -303,8 +296,7 @@ function SubHeader() {
       },
     ],
 
-    // Accounts Team
-    accounts_team: [
+    accounts: [
       {
         label: "Wallet",
         options: [
@@ -326,6 +318,25 @@ function SubHeader() {
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
+      },
+    ],
+    designing_team: [
+      {
+        label: "Settings",
+        options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
+      },
+      {
+        label: "Promotions",
+        options: [
+          {
+            label: "Create Promotions Type",
+            path: "/create-promotion-type",
+          },
+          { label: "Sports Promotions", path: "/sports-promotions" },
+          { label: "Casino Promotions", path: "/casino-promotions" },
+          { label: "Banners (Casino/Sports)", path: "/banners" },
+          { label: "Broadcasting", path: "/broadcasting" },
+        ],
       },
     ],
   };
@@ -358,7 +369,6 @@ function SubHeader() {
           key={index}
         >
           <Dropdown
-            // onToggle={(isOpen) => handleDropdownToggle(index, isOpen)}
             className="w-100"
             onClick={(isOpen) => handleDropdownToggle(index, isOpen)}
           >

@@ -20,10 +20,9 @@ import SelectWebsitePopUp from "./SelectWebsitePopUp";
 import ActiveInActiveModal from "../popups/ActiveInActiveModal";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
-import { useCountries } from "../../context/CountriesContext";
 
 const PrivacyPolicy = () => {
-  const { countries, refreshCountries } = useCountries();
+  const [countries, setCountries] = useState([]);
   console.log(countries, "ggggg");
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -91,23 +90,24 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.web_name,
   }));
+  console.log(availablePrivacyWebsiteId,"gg")
 
   const hanldeWebsites = (id) => {
     setSelectWebsite(true);
     setAvailablePrivacyWebsiteId(id);
   };
 
-  // const getAllCountries = () => {
-  //   getCountries()
-  //     .then((response) => {
-  //       const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
-  //       setCountries(updatedCountries);
-  //       setCountriesData(response?.data);
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message);
-  //     });
-  // };
+  const getAllCountries = () => {
+    getCountries()
+      .then((response) => {
+        // const updatedCountries = [{ id: 0, name: "All" }, ...response.data];
+        setCountries(response?.data);
+        setCountriesData(response?.data);
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
 
   const getAllWebsites = () => {
     if (websites.length > 0) return;
@@ -129,7 +129,7 @@ const PrivacyPolicy = () => {
     getPrivacyPolicy({ page, pageSize })
       .then((response) => {
         if (response?.status === true) {
-          setPrivacyList(response.data);
+          setPrivacyList(response?.data);
         } else {
           setError("Something Went Wrong");
         }
@@ -147,7 +147,7 @@ const PrivacyPolicy = () => {
       if (dataFetched.current) return;
       dataFetched.current = true;
       getPolicyPrivacyData(page, pageSize);
-      // getAllCountries();
+      getAllCountries();
     }
   }, []);
 

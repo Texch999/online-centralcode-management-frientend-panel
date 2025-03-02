@@ -621,14 +621,14 @@ const PromotionType = () => {
       <ConfirmationPopup
         confirmationPopupOpen={promotionDeleteModal}
         setConfirmationPopupOpen={() => setPromotionDeleteModal(false)}
-        discription={"are you sure you want to delete this Promotion"}
+        discription={"Are you sure you want to delete this promotion?"}
         submitButton={"Delete"}
       />
 
       <ConfirmationPopup
         confirmationPopupOpen={promotionBlockModal}
         setConfirmationPopupOpen={() => setPromotionBlockModal(false)}
-        discription={`are you sure you want to ${
+        discription={`Are you sure you want to ${
           selectedPromotionStatus === 1 ? "Block" : "UnBlock"
         } this Promotion`}
         selectedId={selectedPromotionId}
@@ -639,7 +639,7 @@ const PromotionType = () => {
       <ConfirmationPopup
         confirmationPopupOpen={posterDeleteModal}
         setConfirmationPopupOpen={() => setPosterDeleteModal(false)}
-        discription={"are you sure you want to delete this Poster"}
+        discription={"Are you sure you want to delete this Poster?"}
         selectedId={selectedPromotionId}
         submitButton={"Delete"}
         onSubmit={DeletePoster}

@@ -39,7 +39,7 @@ const ReferenceData = () => {
     setActiveBtn(item);
   };
   const role_code = localStorage.getItem("role_code");
-  const itemsPerPage = 4;
+  const itemsPerPage = 2;
   const page = intialpage;
   const pageSize = itemsPerPage;
   const status = selectStatus;
@@ -59,10 +59,14 @@ const ReferenceData = () => {
 
   const getSecurityQuestions = (page, pageSize) => {
     setLoading(true);
-    getAllSecurityQuestions({ page, pageSize, status })
+    const params = { page, pageSize };
+    if (status !== "0") {
+      params.status = status;
+    }
+    getAllSecurityQuestions(params)
       .then((response) => {
         setSecurityQuestions(response?.data);
-        setTotalRecordsSecQns(response.meta?.totalCount);
+        setTotalRecordsSecQns(response?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
@@ -86,7 +90,11 @@ const ReferenceData = () => {
 
   const getRejReasons = (page, pageSize) => {
     setLoading(true);
-    getAllRejectionReasons({ page, pageSize, status })
+    const params = { page, pageSize };
+    if (status !== "0") {
+      params.status = status;
+    }
+    getAllRejectionReasons(params)
       .then((response) => {
         setRejReasonsData(response?.data);
         setTotalRecords(response?.totalCount);
@@ -231,17 +239,20 @@ const ReferenceData = () => {
               maxMenuHeight={120}
               menuPlacement="auto"
               classNamePrefix="custom-react-select"
-              value={selectOptions.find((opt) => opt.value === setSelectStatus)}
+              // value={selectOptions.find((opt) => opt.value === setSelectStatus)}
+              Copyvalue={selectOptions.find(
+                (opt) => opt.value === selectStatus
+              )}
               onChange={handleStatusChange}
             />
           </div>
           <div
             title="please select a option"
             className={`saffron-btn2 small-font pointer col-3 mx-2 ${
-              !selectStatus || selectStatus === "0" ? "disabled-btn" : ""
+              !selectStatus ? "disabled-btn" : ""
             }`}
             onClick={() => {
-              if (selectStatus && selectStatus !== "0") {
+              if (selectStatus) {
                 handleSubmit();
               }
             }}

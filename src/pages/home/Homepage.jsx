@@ -335,26 +335,6 @@ function Homepage() {
     },
   };
 
-  // get all countries api
-  const getAllCountries = () => {
-    getCountries()
-      .then((response) => {
-        if (response?.status === true) {
-          dispatch(setAllCountries(response?.data));
-        } else {
-          setError("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message || "API request failed");
-      });
-  };
-  useEffect(() => {
-    if (countriesDataFetched.current) return;
-    countriesDataFetched.current = true;
-    getAllCountries();
-  }, []);
-
   return (
     <div className="p-2">
       <h4 className="blck-text">Welcome Sri</h4>
