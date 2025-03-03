@@ -176,7 +176,6 @@ const PromotionType = () => {
     })
   );
 
-
   const selectOptionsWebsites = websitesList?.map((item) => ({
     value: item.id,
     label: item.web_name,

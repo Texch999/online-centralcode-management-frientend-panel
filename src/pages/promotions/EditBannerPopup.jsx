@@ -294,7 +294,7 @@ const EditBannerPopup = ({
                 {formData.existingImages.map((image, idx) => (
                   <div key={idx} className="position-relative">
                     <img
-                      src={`${imgUrl}/uploadBanner/${image}`}
+                      src={`${imgUrl}/banner/${image}`}
                       alt={`preview-${idx}`}
                       className="img-thumbnail"
                       style={{
