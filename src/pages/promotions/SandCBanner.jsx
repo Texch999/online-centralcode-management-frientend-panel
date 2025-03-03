@@ -105,11 +105,13 @@ const SandCBanner = () => {
     setStartDT("");
     setEndDT("");
     setSelectedFiles([]);
+    
   };
 
   useEffect(() => {
     getBanners();
   }, [activeBtn]);
+  
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -317,6 +319,7 @@ const SandCBanner = () => {
         setLoading(false);
         setSelectedFiles([]);
         setSuccessPopupOpen(true);
+        getBanners();
       }
     } catch (error) {
       setMessage(error.message);
@@ -800,7 +803,10 @@ const SandCBanner = () => {
         selectedBannerId={selectedBannerId}
         setSelectedBannerId={setSelectedBannerId}
         setMessage={setMessage}
+        selectOptionsWebsitesDirectors={selectOptionsWebsitesDirectors}
+        selectOptionsUserWebsitesDirectors={selectOptionsUserWebsitesDirectors}
         websitesList={websitesList}
+        emp_role_id={emp_role_id}
         onSubmit={getBanners}
         onSubmitResult={handleEditResult}
       />
