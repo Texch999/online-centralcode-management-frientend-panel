@@ -13,7 +13,6 @@ import {
 } from "../api/apiMethods";
 import { IoMdAdd, IoMdEye, IoMdEyeOff } from "react-icons/io";
 import SuccessPopup from "../pages/popups/SuccessPopup";
-import { all } from "axios";
 import { useSelector } from "react-redux";
 
 const ProfileUpdate = ({ setUpdateProfille }) => {
@@ -118,10 +117,11 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
 
   const handleResponse = (response) => {
     if (response?.status === true) {
+      setMsg(response?.message);
       setOldPaswd("");
       setNewPaswd("");
       setConfirmPaswd("");
-      setMsg(response?.message);
+      setUpdateProfille(false);
       setSuccessPopupOpen(true);
       setTimeout(() => setSuccessPopupOpen(false), 2000);
     } else {
@@ -132,84 +132,6 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const handleError = (error) => {
     setError(error?.message);
   };
-
-  // const resetPswdSubmitManagement = () => {
-  //   if (!validatePasswords()) return;
-
-  //   if (allowedRoles.includes(role_code)) {
-  //     const payload = {
-  //       old_password: oldPswd,
-  //       new_password: newPswd,
-  //       confirm_new_password: confirmPswd,
-  //     };
-
-  //     resetPasswordMan(payload)
-  //       .then((response) => {
-  //         if (response?.status === true) {
-  //           console.log(response?.data);
-  //           setMsg(response?.message);
-  //           setSuccessPopupOpen(true);
-  //           setUpdateProfille(false);
-  //           setTimeout(() => {
-  //             setSuccessPopupOpen(false);
-  //           }, 2000);
-  //         } else {
-  //           setError("Something went wrong");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setError(error?.message);
-  //       });
-  //   }
-  // };
-
-  // const resetPswdSubmitDirector = () => {
-  //   if (!validatePasswords()) return;
-
-  //   const payload = {
-  //     old_password: oldPswd,
-  //     new_password: newPswd,
-  //     confirm_new_password: confirmPswd,
-  //   };
-
-  //   if (role_code === "director") {
-  //     resetPswdDirector(payload)
-  //       .then((response) => {
-  //         if (response?.status === true) {
-  //           console.log(response?.data);
-  //           setMsg(response?.message);
-  //           setUpdateProfille(false);
-  //           setSuccessPopupOpen(true);
-  //           setTimeout(() => {
-  //             setSuccessPopupOpen(false);
-  //           }, 2000);
-  //         } else {
-  //           setError("Something went wrong");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setError(error?.message);
-  //       });
-  //   } else if (parent_role_name === "director") {
-  //     dirEmployeeResetPswd(payload)
-  //       .then((response) => {
-  //         if (response?.status === true) {
-  //           console.log(response?.data);
-  //           setMsg(response?.message);
-  //           setUpdateProfille(false);
-  //           setSuccessPopupOpen(true);
-  //           setTimeout(() => {
-  //             setSuccessPopupOpen(false);
-  //           }, 2000);
-  //         } else {
-  //           setError("Something went wrong");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         setError(error?.message);
-  //       });
-  //   }
-  // };
 
   const editProfile = () => {
     if (!selectedFile) {
@@ -233,84 +155,82 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       setError("Unauthorized role.");
     }
   };
-
   const handleEditResponse = (response) => {
     if (response?.status === true) {
+      setMsg(response?.message);
       setOldPaswd("");
       setNewPaswd("");
       setConfirmPaswd("");
-      setMsg(response?.message);
+      setUpdateProfille(false);
       setSuccessPopupOpen(true);
       setTimeout(() => setSuccessPopupOpen(false), 2000);
     } else {
       setError("Something went wrong");
     }
   };
-
   const handleEditError = (error) => {
     setError(error?.message);
   };
 
-  const manEditProfile = () => {
-    if (!selectedFile) {
-      setError("Please select an image.");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("photo", selectedFile);
+  //   if (!selectedFile) {
+  //     setError("Please select an image.");
+  //     return;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append("photo", selectedFile);
 
-    managementEditProfile(formData)
-      .then((response) => {
-        if (response.status === true) {
-          console.log(response?.data);
-          setMsg(response?.message);
-          setSuccessPopupOpen(true);
-          setTimeout(() => {
-            setSuccessPopupOpen(false);
-          }, 2000);
-        } else {
-          setError("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
+  //   managementEditProfile(formData)
+  //     .then((response) => {
+  //       if (response.status === true) {
+  //         console.log(response?.data);
+  //         setMsg(response?.message);
+  //         setSuccessPopupOpen(true);
+  //         setTimeout(() => {
+  //           setSuccessPopupOpen(false);
+  //         }, 2000);
+  //       } else {
+  //         setError("Something went wrong");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
 
-  const directorEmpEditProfile = () => {
-    if (!selectedFile) {
-      setError("Please select an image.");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("photo", selectedFile);
-    let apiCallEditDirEmp;
+  // const directorEmpEditProfile = () => {
+  //   if (!selectedFile) {
+  //     setError("Please select an image.");
+  //     return;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append("photo", selectedFile);
+  //   let apiCallEditDirEmp;
 
-    if (role_code === "director") {
-      apiCallEditDirEmp = dirEditProfile(formData);
-    } else if (dirEmpRoles.includes(role_code)) {
-      apiCallEditDirEmp = dirEmpEditProfile(formData);
-    } else {
-      setError("Unauthorized role.");
-      return;
-    }
-    apiCallEditDirEmp
-      .then((response) => {
-        if (response.status === true) {
-          console.log(response?.data);
-          setMsg(response?.message);
-          setSuccessPopupOpen(true);
-          setTimeout(() => {
-            setSuccessPopupOpen(false);
-          }, 2000);
-        } else {
-          setError("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
+  //   if (role_code === "director") {
+  //     apiCallEditDirEmp = dirEditProfile(formData);
+  //   } else if (dirEmpRoles.includes(role_code)) {
+  //     apiCallEditDirEmp = dirEmpEditProfile(formData);
+  //   } else {
+  //     setError("Unauthorized role.");
+  //     return;
+  //   }
+  //   apiCallEditDirEmp
+  //     .then((response) => {
+  //       if (response.status === true) {
+  //         console.log(response?.data);
+  //         setMsg(response?.message);
+  //         setSuccessPopupOpen(true);
+  //         setTimeout(() => {
+  //           setSuccessPopupOpen(false);
+  //         }, 2000);
+  //       } else {
+  //         setError("Something went wrong");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
   return (
     <div>
       <div className="white-bg box-shadow2 br-10 pb-3">
@@ -346,7 +266,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
 
           {profileImg ? (
             <div
-              className="saffron-btn rounded d-flex small-font align-items-center pointer"
+              className="saffron-btn rounded d-flex my-2 small-font align-items-center pointer"
               // onClick={() => {
               //   if (allowedRoles.includes(role_code)) {
               //     manEditProfile();
