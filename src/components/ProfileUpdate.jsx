@@ -262,7 +262,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
             className="saffron-bg pos-abs-profile d-flex align-items-center justify-content-center"
             onClick={() => fileInputRef.current.click()}
           >
-            <IoMdAdd size={25} className="white-font fw-bold" />
+            <IoMdAdd size={28} className="white-font fw-bold" />
           </div>
           <input
             type="file"
