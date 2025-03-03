@@ -294,6 +294,9 @@ const statusUpdateBanner = (id, data) => {
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
 };
+export const getDirectorAccessWebitesForBanners = (params) => {
+  return apiRequest("getDirectorAccessWebitesForBanners", {}, params);
+};
 const resetDirectorEmployeePassword = (id, data) => {
   return apiRequest("resetDirectorEmployeePassword", data, id);
 };

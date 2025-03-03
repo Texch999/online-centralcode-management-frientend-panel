@@ -117,13 +117,15 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/banners/user/${id}${
+        query ? `?${query}` : ""
+      }`;
     },
   },
 
   createBanner: {
     method: "post",
-    url: () =>{
+    url: () => {
       const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       return `/${user}/${userID()}/banner`;
@@ -132,15 +134,27 @@ const endpoints = {
 
   editBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/banner/${id}`,
+    url: (id) => {
+      const userId = localStorage.getItem("emp_role_id");
+      const user = userId === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner/${id}`;
+  }
   },
   deleteBanner: {
     method: "delete",
-    url: (id) => `/user/${userID()}/banner/${id}`,
+    url: (id) => {
+      const userId = localStorage.getItem("emp_role_id");
+      const user = userId === "1" ? "director" : "user";
+      return`/${user}/${userID()}/banner/${id}`;
+    },
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/banner/${id}/status`,
+    url: (id) =>{
+      const userId = localStorage.getItem("emp_role_id");
+      const user = userId === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner/${id}/status`;
+    },
   },
 
   loginUser: { method: "post", url: () => "/master/login" },
@@ -341,25 +355,40 @@ const endpoints = {
 
   createBroadCasting: {
     method: "post",
-    url: () => `/user/${userID()}/broadcasting`,
+    url: () => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/broadcasting`;
+    },
   },
+
   getBroadCasting: {
     method: "get",
     url: (params) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
     },
   },
 
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/broadcasting/statusBroadcastUpdate/${id}`;
+    }
   },
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/${id}`,
+    url: (id) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/broadcasting/${id}`;
+    }
   },
 
   getDirectorAccountDetails: {
@@ -398,6 +427,13 @@ const endpoints = {
     url: (params) => {
       const query = new URLSearchParams(params).toString();
       return `/director/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+    },
+  },
+  getDirectorAccessWebitesForBanners: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/directorEncodedAccessedWebsite/${userID()}?${query}`;
     },
   },
 

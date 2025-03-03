@@ -9,6 +9,7 @@ import "../add-team/style.css";
 import {
   createBroadCasting,
   getBroadCasting,
+  getDirectorAccessWebitesForBanners,
   getWebsitesList,
   statusBroadCasting,
 } from "../../api/apiMethods";
@@ -25,6 +26,9 @@ const ACTIVE_BTNS = [
 ];
 
 const Broadcasting = () => {
+  const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
+  const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectLocations, setSelectLocations] = useState(null);
@@ -99,10 +103,10 @@ const Broadcasting = () => {
     { value: 2, label: "Casino" },
   ];
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
-  }));
+  // const selectOptionsWebsites = websitesList?.map((item) => ({
+  //   value: item.id,
+  //   label: item.web_name,
+  // }));
 
   const selectOptionsLocations = [{ value: 1, label: "Home" }];
 
@@ -129,9 +133,13 @@ const Broadcasting = () => {
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-    getWebsites();
     getBroadCastingdata();
-  }, []);
+    if (emp_role_id === 1) {
+      getDirectorWebsites();
+    } else {
+      getWebsites();
+    }
+  }, [emp_role_id]);
 
   const getWebsites = async () => {
     try {
@@ -144,7 +152,61 @@ const Broadcasting = () => {
       console.log("error", error);
     }
   };
-  
+
+  const getDirectorWebsites = async () => {
+    try {
+      const response = await getDirectorAccessWebitesForBanners();
+
+      if (response.status === true) {
+        const directorData = response.data;
+        if (!Array.isArray(directorData) || directorData.length === 0) {
+          return;
+        }
+
+        const adminPanels = directorData.flatMap(
+          (director) => director.admin_websites || []
+        );
+
+        const userPanels = adminPanels.flatMap((admin) => admin.users || []);
+
+        if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
+        if (userPanels.length > 0) setDirectorUserPanels(userPanels);
+      } else {
+        console.log("Invalid response structure:", response);
+      }
+    } catch (error) {
+      console.log("Error fetching director websites:", error);
+    }
+  };
+
+  const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
+    value: item.admin_WebSite_id,
+    label: item.admin_web_name,
+  }));
+  const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+    (item) => ({
+      value: item.user_WebSite_id,
+      label: item.user_web_name,
+    })
+  );
+
+  const handleWebsitesType = (activeBtn) => {
+    const panelType = activeBtn.value === 1 ? 2 : 1;
+
+    if (emp_role_id === 1) {
+      return panelType === 1
+        ? selectOptionsWebsitesDirectors
+        : selectOptionsUserWebsitesDirectors;
+    } else {
+      return websitesList
+        ?.filter((item) => item.panel_type === panelType)
+        .map((item) => ({
+          value: item.id,
+          label: item.web_name,
+        }));
+    }
+  };
+
   const getBroadCastingdata = async () => {
     const id = activeBtn.value;
     try {
@@ -334,10 +396,11 @@ const Broadcasting = () => {
         {ACTIVE_BTNS?.map((item, index) => (
           <div
             key={index}
-            className={`me-3 ${activeBtn?.value === item.value
+            className={`me-3 ${
+              activeBtn?.value === item.value
                 ? "saffron-btn2"
                 : "white-btn2 pointer"
-              }`}
+            }`}
             onClick={() => handleButtonClick(item)}
           >
             {item.label}
@@ -368,7 +431,8 @@ const Broadcasting = () => {
           <label className="black-text4 small-font mb-1">Websites</label>
           <Select
             className="small-font"
-            options={selectOptionsWebsites}
+            // options={selectOptionsWebsites}
+            options={handleWebsitesType(activeBtn)}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
@@ -466,8 +530,9 @@ const Broadcasting = () => {
       <ConfirmationPopup
         confirmationPopupOpen={broadcastBlockModal}
         setConfirmationPopupOpen={() => setBroadcastBlockModal(false)}
-        discription={`Are you sure you want to ${selectedBroadcastStatus === 1 ? "Block" : "UnBlock"
-          } this Broadcast?`}
+        discription={`Are you sure you want to ${
+          selectedBroadcastStatus === 1 ? "Block" : "UnBlock"
+        } this Broadcast?`}
         selectedId={selectedBroadcastId}
         submitButton={selectedBroadcastStatus === 1 ? "Block" : "UnBlock"}
         onSubmit={BockOrUnblock}

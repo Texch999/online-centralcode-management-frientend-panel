@@ -13,10 +13,8 @@ import "../add-team/style.css";
 import {
   createBanner,
   deleteBanner,
-  editBanner,
-  getBanner,
   getBannerByUserId,
-  getDirectorAccessWebites,
+  getDirectorAccessWebitesForBanners,
   getWebsitesList,
   statusUpdateBanner,
 } from "../../api/apiMethods";
@@ -104,14 +102,10 @@ const SandCBanner = () => {
     setSelectedFiles([]);
     setActiveBtn(btn);
     localStorage.setItem("activeBtn", JSON.stringify(btn));
-  };
-
-  useEffect(() => {
-    localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
     getBanners();
     setBanners([]);
     setTotalRecords("");
-  }, [activeBtn]);
+  };
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -145,17 +139,24 @@ const SandCBanner = () => {
 
   const handleWebsitesType = (activeBtn) => {
     const panelType = activeBtn.value === 1 ? 2 : 1;
-    return websitesList
-      ?.filter((item) => item.panel_type === panelType)
-      .map((item) => ({
-        value: item.id,
-        label: item.web_name,
-      }));
+
+    if (emp_role_id === 1) {
+      return panelType === 1
+        ? selectOptionsWebsitesDirectors
+        : selectOptionsUserWebsitesDirectors;
+    } else {
+      return websitesList
+        ?.filter((item) => item.panel_type === panelType)
+        .map((item) => ({
+          value: item.id,
+          label: item.web_name,
+        }));
+    }
   };
 
   const getDirectorWebsites = async () => {
     try {
-      const response = await getDirectorAccessWebites();
+      const response = await getDirectorAccessWebitesForBanners();
 
       if (response.status === true) {
         const directorData = response.data;
@@ -183,7 +184,7 @@ const SandCBanner = () => {
     value: item.admin_WebSite_id,
     label: item.admin_web_name,
   }));
-    const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+  const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
     (item) => ({
       value: item.user_WebSite_id,
       label: item.user_web_name,
