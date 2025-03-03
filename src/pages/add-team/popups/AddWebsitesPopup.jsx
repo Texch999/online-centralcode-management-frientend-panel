@@ -125,7 +125,8 @@ const AddWebsitesPopup = ({ show, onHide,
 
   const validateForm = () => {
     const newErrors = {};
-
+    const pattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
+    const validTLDs = /\.(com|net|org|io|co|in|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i;
     if (!formData.deployType) {
       newErrors.deployType = "Deploy Type is required.";
     }
@@ -160,11 +161,23 @@ const AddWebsitesPopup = ({ show, onHide,
 
     if (!formData.websiteURL.trim()) {
       newErrors.websiteURL = "Website URL is required.";
-    } else if (
-      !/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/.test(formData.websiteURL) ||
-      !/\.(com|net|org|io|co|in|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i.test(formData.websiteURL)
-    ) {
-      newErrors.websiteURL = "Invalid website URL. Please enter a valid URL with a supported top-level domain (e.g., .com, .net, .org).";
+    } else {
+      // Regex to validate the URL structure (requires http:// or https://)
+      const urlPattern = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
+    
+      // List of valid TLDs
+      const validTLDs = [".com", ".net", ".org", ".io", ".co", ".in", ".edu", ".gov", ".mil", ".biz", ".info", ".mobi", ".name", ".aero", ".asia", ".jobs", ".museum"];
+    
+      // Check if the URL matches the pattern
+      if (!urlPattern.test(formData.websiteURL)) {
+        newErrors.websiteURL = "Invalid website URL. Please include http:// or https://.";
+      } else {
+        // Extract the TLD from the URL
+        const tld = formData.websiteURL.match(/\.[a-zA-Z]{2,}$/);
+        if (!tld || !validTLDs.includes(tld[0].toLowerCase())) {
+          newErrors.websiteURL = "Invalid top-level domain. Please use a supported domain like .com, .net, .org, etc.";
+        }
+      }
     }
 
     setErrors(newErrors);

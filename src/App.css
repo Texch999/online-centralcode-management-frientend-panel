@@ -940,13 +940,18 @@ button.cst-btn:hover {
   width: 11vh;
   border-radius: 50%;
 }
-.pos-abs-profile{
+.pos-abs-profile {
   position: absolute;
   left: 56%;
   top: 60%;
   border-radius: 50%;
 }
-.error-popup-container{
-  color: #EE5787;
-  background-color: #FACCDB;
+.error-popup-container {
+  color: #ee5787;
+  background-color: #faccdb;
+}
+.head-profile {
+  height: 6vh;
+  width: 6vh;
+  border-radius: 50%;
 }
