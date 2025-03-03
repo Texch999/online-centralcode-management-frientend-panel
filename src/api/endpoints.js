@@ -69,7 +69,7 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
-      const id = userID();
+      const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
       return `/${user}/${id}/promotionsTypes?${query}`;
@@ -83,7 +83,7 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
-      const id = userID();
+      const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
       return `/${user}/${id}/promotionsImages/${id}?${query}`;
@@ -92,7 +92,7 @@ const endpoints = {
   createPromotionImages: {
     method: "post",
     url: () => {
-      const id = userID();
+      const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       return `/${user}/${userID()}/promotionImage`;
     },
@@ -100,7 +100,7 @@ const endpoints = {
   deletePromotionsImages: {
     method: "delete",
     url: (id) => {
-      const userid = userID();
+      const userid = localStorage.getItem("emp_role_id");
       const user = userid === "1" ? "director" : "user";
       return `/${user}/${userID()}/promotionImage/${id}`;
     },
@@ -113,27 +113,48 @@ const endpoints = {
   getBannerByUserId: {
     method: "get",
     url: (params) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/banners/user/${id}${
+        query ? `?${query}` : ""
+      }`;
     },
   },
 
   createBanner: {
     method: "post",
-    url: () => `/user/${userID()}/banner`,
+    url: () => {
+      const id = localStorage.getItem("emp_role_id");
+      const user = id === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner`;
+    },
   },
+
   editBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/banner/${id}`,
+    url: (id) => {
+      const userId = localStorage.getItem("emp_role_id");
+      const user = userId === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner/${id}`;
+  }
   },
   deleteBanner: {
     method: "delete",
-    url: (id) => `/user/${userID()}/banner/${id}`,
+    url: (id) => {
+      const userId = localStorage.getItem("emp_role_id");
+      const user = userId === "1" ? "director" : "user";
+      return`/${user}/${userID()}/banner/${id}`;
+    },
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) => `/user/${userID()}/banner/${id}/status`,
+    url: (id) =>{
+      const userId = localStorage.getItem("emp_role_id");
+      const user = userId === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner/${id}/status`;
+    },
   },
 
   loginUser: { method: "post", url: () => "/master/login" },
@@ -334,25 +355,40 @@ const endpoints = {
 
   createBroadCasting: {
     method: "post",
-    url: () => `/user/${userID()}/broadcasting`,
+    url: () => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/broadcasting`;
+    },
   },
+
   getBroadCasting: {
     method: "get",
     url: (params) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/user/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
     },
   },
 
   statusBroadcastUpdate: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/statusBroadcastUpdate/${id}`,
+    url: (id) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/broadcasting/statusBroadcastUpdate/${id}`;
+    }
   },
 
   editBroadCasting: {
     method: "put",
-    url: (id) => `/user/${userID()}/broadcasting/${id}`,
+    url: (id) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/broadcasting/${id}`;
+    }
   },
 
   getDirectorAccountDetails: {
@@ -391,6 +427,13 @@ const endpoints = {
     url: (params) => {
       const query = new URLSearchParams(params).toString();
       return `/director/${userID()}/directorAccessedWebsite/${userID()}?${query}`;
+    },
+  },
+  getDirectorAccessWebitesForBanners: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/director/${userID()}/directorEncodedAccessedWebsite/${userID()}?${query}`;
     },
   },
 
@@ -699,6 +742,18 @@ const endpoints = {
   dirEmployeeResetPswd: {
     method: "put",
     url: `/director/${userID()}/dirEmpresetPassword`,
+  },
+  managementEditProfile: {
+    method: "put",
+    url: `/user/${userID()}/updateProfilePhoto`,
+  },
+  dirEmpEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/editProfilePhoto`,
+  },
+  dirEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/directorProfileUpdate`,
   },
 };
 

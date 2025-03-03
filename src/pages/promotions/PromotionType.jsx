@@ -32,21 +32,30 @@ const ACTIVE_BTNS = [
 ];
 
 const PromotionType = () => {
-  const user_id = parseInt(localStorage.getItem("user_id"));
+  const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const roleCode = localStorage.getItem("role_code");
   const [activeBtn, setActiveBtn] = useState(() => {
     const storedBtn = localStorage.getItem("activeBtn");
+
     if (storedBtn) {
       try {
         const parsedBtn = JSON.parse(storedBtn);
-        return (
-          ACTIVE_BTNS.find((btn) => btn.value === parsedBtn.value) ||
-          ACTIVE_BTNS[0]
+        const foundBtn = ACTIVE_BTNS.find(
+          (btn) => btn.value === parsedBtn.value
         );
+        if (foundBtn) return foundBtn;
       } catch (error) {
         console.error("Error parsing stored activeBtn:", error);
-        return ACTIVE_BTNS[0];
       }
     }
+
+    // Default active button logic based on role
+    if (roleCode === "management") {
+      return ACTIVE_BTNS[0];
+    } else if (roleCode === "director") {
+      return ACTIVE_BTNS[1];
+    }
+
     return ACTIVE_BTNS[0];
   });
   const [fullPoster, setFullPoster] = useState(false);
@@ -92,9 +101,6 @@ const PromotionType = () => {
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
 
-  console.log("user_id", user_id);
-  console.log("directorAdminPanels", directorAdminPanels);
-  console.log("directorUserPanels", directorUserPanels);
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -102,13 +108,13 @@ const PromotionType = () => {
     hasFetched.current = true;
     getPromotions();
     getPromotionsImages();
-    if (user_id === 1) {
+    if (emp_role_id === 1) {
       getDirectorWebsites();
     } else {
       getWebsites();
       getuserWebsites();
     }
-  }, [user_id]);
+  }, [emp_role_id]);
 
   useEffect(() => {
     localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
@@ -137,28 +143,17 @@ const PromotionType = () => {
   const getDirectorWebsites = async () => {
     try {
       const response = await getDirectorAccessWebites();
-      console.log("Full Response:", response); // Debugging
-
       if (response.status === true) {
         const directorData = response.data;
-        console.log("Extracted directorData:", directorData); // Debugging
 
         if (!Array.isArray(directorData) || directorData.length === 0) {
-          console.log("No director data found.");
           return;
         }
 
-        // Extract admin panels
         const adminPanels = directorData.flatMap(
           (director) => director.admin_websites || []
         );
-        console.log("Extracted adminPanels:", adminPanels); // Debugging
-
-        // Extract user panels
         const userPanels = adminPanels.flatMap((admin) => admin.users || []);
-        console.log("Extracted userPanels:", userPanels); // Debugging
-
-        // Set state only if data is valid
         if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
         if (userPanels.length > 0) setDirectorUserPanels(userPanels);
       } else {
@@ -169,14 +164,6 @@ const PromotionType = () => {
     }
   };
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
-  }));
-  const selectOptionsUserWebsites = userWebsitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
-  }));
   const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
     value: item.admin_WebSite_id,
     label: item.admin_web_name,
@@ -189,11 +176,14 @@ const PromotionType = () => {
     })
   );
 
-  console.log("selectOptionsWebsitesDirectors", selectOptionsWebsitesDirectors);
-  console.log(
-    "selectOptionsUserWebsitesDirectors",
-    selectOptionsUserWebsitesDirectors
-  );
+  const selectOptionsWebsites = websitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
+  const selectOptionsUserWebsites = userWebsitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
 
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
@@ -286,7 +276,7 @@ const PromotionType = () => {
     formData.append("promotionsId", selectedOption.value);
     formData.append("adminWebsite", selectWebsites.value);
     formData.append("userWebsite", selectUserWebsites.value);
-    formData.append("creatorId", user_id);
+    formData.append("creatorId", emp_role_id);
     formData.append("image", selectedFile);
 
     try {
@@ -482,7 +472,7 @@ const PromotionType = () => {
         <h6 className="yellow-font mb-0">Promotion</h6>
       </div>
       <div className="d-flex col small-font">
-        {(user_id === 1
+        {(emp_role_id === 1
           ? ACTIVE_BTNS.filter((item) => item.value === 2)
           : ACTIVE_BTNS
         ).map((item, index) => (
@@ -500,7 +490,7 @@ const PromotionType = () => {
         ))}
       </div>
 
-      {user_id !== 1 && activeBtn.value === 1 ? (
+      {emp_role_id !== 1 && activeBtn.value === 1 ? (
         <>
           <div className="my-3">
             <Table
@@ -557,7 +547,7 @@ const PromotionType = () => {
                   id="Websites"
                   className="small-font fixed-select"
                   options={
-                    user_id === 1
+                    emp_role_id === 1
                       ? selectOptionsWebsitesDirectors
                       : selectOptionsWebsites
                   }
@@ -592,7 +582,7 @@ const PromotionType = () => {
                   className="small-font fixed-select"
                   // options={selectOptionsUserWebsites}
                   options={
-                    user_id === 1
+                    emp_role_id === 1
                       ? selectOptionsUserWebsitesDirectors
                       : selectOptionsUserWebsites
                   }
