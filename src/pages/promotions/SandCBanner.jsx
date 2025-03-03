@@ -93,6 +93,11 @@ const SandCBanner = () => {
   const offset = (currentPage - 1) * itemsPerPage;
 
   const handleButtonClick = (btn) => {
+    if (activeBtn.value === btn.value) return;
+    setActiveBtn(btn);
+    localStorage.setItem("activeBtn", JSON.stringify(btn));
+    setBanners([]);
+    setTotalRecords("");
     setSelectType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
@@ -100,12 +105,11 @@ const SandCBanner = () => {
     setStartDT("");
     setEndDT("");
     setSelectedFiles([]);
-    setActiveBtn(btn);
-    localStorage.setItem("activeBtn", JSON.stringify(btn));
-    getBanners();
-    setBanners([]);
-    setTotalRecords("");
   };
+
+  useEffect(() => {
+    getBanners();
+  }, [activeBtn]);
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -312,7 +316,6 @@ const SandCBanner = () => {
         setEndDT("");
         setLoading(false);
         setSelectedFiles([]);
-        getBanners();
         setSuccessPopupOpen(true);
       }
     } catch (error) {
