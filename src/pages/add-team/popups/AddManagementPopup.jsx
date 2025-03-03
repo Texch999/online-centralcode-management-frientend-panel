@@ -120,6 +120,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             aria-label="Close"
           />
         </div>
+        <div className="red-font small-font">{error}</div>
         <form
           className="add-management-popup-form mt-2"
           onSubmit={handleSubmit(onSubmitHandler)}

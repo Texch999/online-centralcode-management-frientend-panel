@@ -16,6 +16,7 @@ import {
   editBanner,
   getBanner,
   getBannerByUserId,
+  getDirectorAccessWebites,
   getWebsitesList,
   statusUpdateBanner,
 } from "../../api/apiMethods";
@@ -25,6 +26,7 @@ import ErrorPopup from "../popups/ErrorPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import EditBannerPopup from "./EditBannerPopup";
 import { useSearchParams } from "react-router-dom";
+import Enums from "./Enum";
 
 const ACTIVE_BTNS = [
   { value: 1, label: "User" },
@@ -36,7 +38,9 @@ const SHEDULE_BTNS = [
 ];
 
 const SandCBanner = () => {
-  // const [activeBtn, setActiveBtn] = useState(ACTIVE_BTNS[0]);
+  const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
+  const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [scheduleBtn, setScheduleBtn] = useState(SHEDULE_BTNS[0]);
   const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
@@ -81,6 +85,7 @@ const SandCBanner = () => {
     }
     return ACTIVE_BTNS[0];
   });
+
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
@@ -119,28 +124,71 @@ const SandCBanner = () => {
 
   const hasFetched = useRef(false);
 
-  const selectOptionsType = [
-    { value: 1, label: "Sports" },
-    { value: 2, label: "Casino" },
-  ];
-  const selectPages = [
-    { value: "home", label: "Home" },
-    { value: "description", label: "Description" },
-    { value: "wallet", label: "Wallet" },
-    { value: "login", label: "Login" },
-  ];
-  const selectPlace = [
-    { value: "top", label: "Top" },
-    { value: "center", label: "Center" },
-    { value: "botton", label: "Bottonm" },
-    { value: "right", label: "Right" },
-    { value: "left", label: "Left" },
-  ];
+  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPages = Object.entries(Enums.diamondSelectPages).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
+  const handleWebsitesType = (activeBtn) => {
+    const panelType = activeBtn.value === 1 ? 2 : 1;
+    return websitesList
+      ?.filter((item) => item.panel_type === panelType)
+      .map((item) => ({
+        value: item.id,
+        label: item.web_name,
+      }));
+  };
+
+  const getDirectorWebsites = async () => {
+    try {
+      const response = await getDirectorAccessWebites();
+
+      if (response.status === true) {
+        const directorData = response.data;
+        if (!Array.isArray(directorData) || directorData.length === 0) {
+          return;
+        }
+
+        const adminPanels = directorData.flatMap(
+          (director) => director.admin_websites || []
+        );
+
+        const userPanels = adminPanels.flatMap((admin) => admin.users || []);
+
+        if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
+        if (userPanels.length > 0) setDirectorUserPanels(userPanels);
+      } else {
+        console.log("Invalid response structure:", response);
+      }
+    } catch (error) {
+      console.log("Error fetching director websites:", error);
+    }
+  };
+
+  const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
+    value: item.admin_WebSite_id,
+    label: item.admin_web_name,
   }));
+    const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+    (item) => ({
+      value: item.user_WebSite_id,
+      label: item.user_web_name,
+    })
+  );
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
@@ -278,8 +326,12 @@ const SandCBanner = () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     getBanners();
-    getWebsites();
-  }, []);
+    if (emp_role_id === 1) {
+      getDirectorWebsites();
+    } else {
+      getWebsites();
+    }
+  }, [emp_role_id]);
 
   const getBanners = async () => {
     const id = activeBtn.value;
@@ -435,7 +487,7 @@ const SandCBanner = () => {
               const images = JSON.parse(banner.image);
               return (
                 <img
-                  src={`${imgUrl}/uploadBanner/${images[0]}`}
+                  src={`${imgUrl}/banner/${images[0]}`}
                   alt="Banner"
                   style={{ width: "200px", height: "150px", cursor: "pointer" }}
                   onClick={() => {
@@ -551,7 +603,7 @@ const SandCBanner = () => {
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
-            options={selectOptionsWebsites}
+            options={handleWebsitesType(activeBtn)}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
@@ -707,7 +759,7 @@ const SandCBanner = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
-        path={"uploadBanner"}
+        path={"banner"}
       />
       <SuccessPopup
         successPopupOpen={successPopupOpen}

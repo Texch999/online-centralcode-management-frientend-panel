@@ -69,10 +69,13 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
+      const id = localStorage.getItem("emp_role_id");
+      const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/promotionsTypes?${query}`;
+      return `/${user}/${id}/promotionsTypes?${query}`;
     },
   },
+
   statusPromotionsTypes: {
     method: "put",
     url: (id) => `/user/${userID()}/promotionTypes/${id}/status`,
@@ -80,17 +83,27 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
+      const id = localStorage.getItem("emp_role_id");
+      const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
-      return `/user/${userID()}/promotionsImages?${query}`;
+      return `/${user}/${id}/promotionsImages/${id}?${query}`;
     },
   },
   createPromotionImages: {
     method: "post",
-    url: () => `/user/${userID()}/promotionImage`,
+    url: () => {
+      const id = localStorage.getItem("emp_role_id");
+      const user = id === "1" ? "director" : "user";
+      return `/${user}/${userID()}/promotionImage`;
+    },
   },
   deletePromotionsImages: {
     method: "delete",
-    url: (id) => `/user/${userID()}/promotionImage/${id}`,
+    url: (id) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
+      return `/${user}/${userID()}/promotionImage/${id}`;
+    },
   },
   getBanner: {
     method: "get",
@@ -100,16 +113,23 @@ const endpoints = {
   getBannerByUserId: {
     method: "get",
     url: (params) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
     },
   },
 
   createBanner: {
     method: "post",
-    url: () => `/user/${userID()}/banner`,
+    url: () =>{
+      const id = localStorage.getItem("emp_role_id");
+      const user = id === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner`;
+    },
   },
+
   editBanner: {
     method: "put",
     url: (id) => `/user/${userID()}/banner/${id}`,

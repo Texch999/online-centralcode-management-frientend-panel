@@ -10,7 +10,13 @@ import {
   updateDirectorEmployeeByID,
 } from "../../../api/apiMethods";
 
-function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
+function AddDirectorPopup({
+  GetAllDirectorEmployees,
+  selectedUser,
+  onClose,
+  show,
+  isEditMode,
+}) {
   const [formData, setFormData] = useState({
     role: "",
     name: "",
@@ -156,6 +162,9 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
       if (response?.status === true) {
         console.log("Operation successful", response);
         onClose();
+        if (!isEditMode) {
+          GetAllDirectorEmployees();
+        }
       } else {
         setBackendError(response?.message || "Operation failed");
       }
@@ -215,14 +224,25 @@ function AddDirectorPopup({ selectedUser, onClose, show, isEditMode }) {
             </div>
             <div className="col">
               <label className="small-font mb-1">Login Name</label>
-              <input
-                type="text"
-                name="login_name"
-                value={formData.login_name}
-                onChange={handleChange}
-                className="small-font rounded input-css w-100"
-                placeholder="Enter"
-              />
+              {isEditMode ? (
+                <input
+                  type="text"
+                  name="login_name"
+                  value={formData.login_name}
+                  className="small-font rounded input-css w-100"
+                  readOnly
+                />
+              ) : (
+                <input
+                  type="text"
+                  name="login_name"
+                  value={formData.login_name}
+                  onChange={handleChange}
+                  className="small-font rounded input-css w-100"
+                  placeholder="Enter"
+                />
+              )}
+
               {errors.login_name && (
                 <p className="text-danger small-font">{errors.login_name}</p>
               )}
