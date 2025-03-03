@@ -51,12 +51,12 @@ const PromotionType = () => {
 
     // Default active button logic based on role
     if (roleCode === "management") {
-      return ACTIVE_BTNS[0]; // Promotion Type (Default for Management)
+      return ACTIVE_BTNS[0];
     } else if (roleCode === "director") {
-      return ACTIVE_BTNS[1]; // Poster Templates (Default for Director)
+      return ACTIVE_BTNS[1];
     }
 
-    return ACTIVE_BTNS[0]; // Fallback
+    return ACTIVE_BTNS[0];
   });
   const [fullPoster, setFullPoster] = useState(false);
 
