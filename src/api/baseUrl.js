@@ -5,4 +5,3 @@ export const imgUrl = "http://localhost:9001/uploads";
 
 
 
-    
