@@ -39,6 +39,16 @@ function Header() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [updateProfile, setUpdateProfille] = useState(false);
+  const profilePhoto = localStorage.getItem("photo");
+  const parent_role_name = localStorage.getItem("parent_role");
+  const allowedRoles = [
+    "owner",
+    "management",
+    "accounts",
+    "promotion",
+    "risk management",
+  ];
+  const isDirectorEmployee = parent_role_name === "director";
 
   const id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role_name");
@@ -126,6 +136,15 @@ function Header() {
     countriesDataFetched.current = true;
     getAllCountries();
   }, []);
+
+  const profileSrc =
+    role_code === "director"
+      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      : isDirectorEmployee
+      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      : allowedRoles.includes(role_code)
+      ? `${imgUrl}/employeeProfiles/${profilePhoto}`
+      : Images?.ProfileImage;
   return (
     <>
       <div className="header">
@@ -160,22 +179,28 @@ function Header() {
               </div>
             )}
             <div
-              className="white-font fw-600 br-4px px-2 py-1 pointer postion-relative"
+              className="fw-600 br-4px px-2 py-1 pointer postion-relative"
               onClick={handleNotification}
             >
-              <IoMdNotificationsOutline size={26} />
-              <span className="notification-count d-flex flex-center white-text small-font px-1">
+              {/* <IoMdNotificationsOutline size={26} className="black-clr" /> */}
+              {unreadCount === 0 ? (
+                <IoMdNotificationsOutline size={26} className="black-clr" />
+              ) : (
+                <span className="notification-count d-flex flex-center white-text small-font px-1">
+                  {unreadCount}
+                </span>
+              )}
+              {/* <span className="notification-count d-flex flex-center white-text small-font px-1">
                 {unreadCount}
-              </span>
+              </span> */}
             </div>
             <div
               className="position-relative"
               onClick={() => setUpdateProfille(true)}
             >
               <img
-                className="mx-3"
-                src={`${imgUrl}/employeeProfiles/${loginData?.photo}`}
-                // src={loginData?.photo || Images?.ProfileImage}
+                className="mx-3 head-profile"
+                src={profileSrc}
                 alt="Profile"
                 loading="lazy"
               />
@@ -192,7 +217,7 @@ function Header() {
             <AiOutlineLogout
               size={24}
               title="Logout"
-              className="grey-clr mx-2 fw-800 pointer"
+              className="black-clr mx-2 fw-800 pointer"
               onClick={handleLogout}
             />
           </div>

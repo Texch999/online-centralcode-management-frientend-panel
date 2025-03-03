@@ -14,6 +14,7 @@ import {
 import { IoMdAdd, IoMdEye, IoMdEyeOff } from "react-icons/io";
 import SuccessPopup from "../pages/popups/SuccessPopup";
 import { useSelector } from "react-redux";
+import { imgUrl } from "../api/baseUrl";
 
 const ProfileUpdate = ({ setUpdateProfille }) => {
   const [openResetDropdown, setResetDropdown] = useState(false);
@@ -32,6 +33,9 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const [msg, setMsg] = useState("");
   const fileInputRef = useRef(null);
   const parent_role_name = localStorage.getItem("parent_role");
+  const profilePhoto = localStorage.getItem("photo");
+
+  console.log("profilePhoto", profilePhoto)
   const handleOldPswdVisible = () => {
     setOldPswdVisible((prev) => !prev);
   };
@@ -44,10 +48,6 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const handleResetSection = (prev) => {
     setResetDropdown((prev) => !prev);
   };
-
-  const loginData = useSelector((item) => item?.loginData);
-
-  console.log(loginData, "=====kkkkk");
   const allowedRoles = [
     "owner",
     "management",
@@ -172,6 +172,15 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
     setError(error?.message);
   };
 
+  const profileSrc =
+    role_code === "director"
+      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      : isDirectorEmployee
+      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      : allowedRoles.includes(role_code)
+      ? `${imgUrl}/employeeProfiles/${profilePhoto}`
+      : Images?.ProfileImage;
+
   //   if (!selectedFile) {
   //     setError("Please select an image.");
   //     return;
@@ -244,12 +253,11 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
           <div className="">
             <img
               className="mx-3 my-3 profile br-10 "
-              src={loginData?.photo || Images?.ProfileImage}
+              src={profileSrc}
               alt="Profile"
               loading="lazy"
             />
           </div>
-
           <div
             className="saffron-bg pos-abs-profile d-flex align-items-center justify-content-center"
             onClick={() => fileInputRef.current.click()}

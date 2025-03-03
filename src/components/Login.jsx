@@ -88,7 +88,7 @@ function Login() {
       setLoading(false);
 
       if (response?.status === true) {
-        dispatch(setLoginData(response?.user));
+        dispatch(setLoginData(response));
         console.log(response, "====>response?.token");
         // await setSecureItem("jwt_token", response?.token);
         localStorage.setItem("jwt_token", response?.token);
@@ -109,6 +109,7 @@ function Login() {
         localStorage.setItem("user_id", response?.user?.id);
         localStorage.setItem("user_name", response?.user?.name);
         localStorage.setItem("parent_role", response?.user?.parent_role);
+        localStorage.setItem("photo", response?.user?.photo);
 
         navigate("/");
       } else {
