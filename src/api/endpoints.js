@@ -113,16 +113,23 @@ const endpoints = {
   getBannerByUserId: {
     method: "get",
     url: (params) => {
+      const userid = localStorage.getItem("emp_role_id");
+      const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/user/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/banners/user/${id}${query ? `?${query}` : ""}`;
     },
   },
 
   createBanner: {
     method: "post",
-    url: () => `/user/${userID()}/banner`,
+    url: () =>{
+      const id = localStorage.getItem("emp_role_id");
+      const user = id === "1" ? "director" : "user";
+      return `/${user}/${userID()}/banner`;
+    },
   },
+
   editBanner: {
     method: "put",
     url: (id) => `/user/${userID()}/banner/${id}`,

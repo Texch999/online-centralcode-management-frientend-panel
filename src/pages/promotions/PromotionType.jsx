@@ -92,9 +92,6 @@ const PromotionType = () => {
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
 
-  console.log("emp_role_id", emp_role_id);
-  console.log("directorAdminPanels", directorAdminPanels);
-  console.log("directorUserPanels", directorUserPanels);
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -137,28 +134,17 @@ const PromotionType = () => {
   const getDirectorWebsites = async () => {
     try {
       const response = await getDirectorAccessWebites();
-      console.log("Full Response:", response); // Debugging
-
       if (response.status === true) {
         const directorData = response.data;
-        console.log("Extracted directorData:", directorData); // Debugging
 
         if (!Array.isArray(directorData) || directorData.length === 0) {
-          console.log("No director data found.");
           return;
         }
 
-        // Extract admin panels
         const adminPanels = directorData.flatMap(
           (director) => director.admin_websites || []
         );
-        console.log("Extracted adminPanels:", adminPanels); // Debugging
-
-        // Extract user panels
         const userPanels = adminPanels.flatMap((admin) => admin.users || []);
-        console.log("Extracted userPanels:", userPanels); // Debugging
-
-        // Set state only if data is valid
         if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
         if (userPanels.length > 0) setDirectorUserPanels(userPanels);
       } else {
@@ -169,14 +155,6 @@ const PromotionType = () => {
     }
   };
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
-  }));
-  const selectOptionsUserWebsites = userWebsitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
-  }));
   const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
     value: item.admin_WebSite_id,
     label: item.admin_web_name,
@@ -189,11 +167,15 @@ const PromotionType = () => {
     })
   );
 
-  console.log("selectOptionsWebsitesDirectors", selectOptionsWebsitesDirectors);
-  console.log(
-    "selectOptionsUserWebsitesDirectors",
-    selectOptionsUserWebsitesDirectors
-  );
+
+  const selectOptionsWebsites = websitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
+  const selectOptionsUserWebsites = userWebsitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
 
   const handleSelectChange = (selected) => {
     setSelectedOption(selected);
