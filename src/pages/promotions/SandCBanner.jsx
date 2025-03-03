@@ -183,7 +183,8 @@ const SandCBanner = () => {
     value: item.admin_WebSite_id,
     label: item.admin_web_name,
   }));
-    const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+
+  const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
     (item) => ({
       value: item.user_WebSite_id,
       label: item.user_web_name,
