@@ -69,7 +69,7 @@ const endpoints = {
   getPromotionsTypes: {
     method: "get",
     url: (params) => {
-      const id = userID();
+      const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
       return `/${user}/${id}/promotionsTypes?${query}`;
@@ -83,7 +83,7 @@ const endpoints = {
   getPromotionsImage: {
     method: "get",
     url: (params) => {
-      const id = userID();
+      const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
       return `/${user}/${id}/promotionsImages/${id}?${query}`;
@@ -92,7 +92,7 @@ const endpoints = {
   createPromotionImages: {
     method: "post",
     url: () => {
-      const id = userID();
+      const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       return `/${user}/${userID()}/promotionImage`;
     },
@@ -100,7 +100,7 @@ const endpoints = {
   deletePromotionsImages: {
     method: "delete",
     url: (id) => {
-      const userid = userID();
+      const userid = localStorage.getItem("emp_role_id");
       const user = userid === "1" ? "director" : "user";
       return `/${user}/${userID()}/promotionImage/${id}`;
     },
