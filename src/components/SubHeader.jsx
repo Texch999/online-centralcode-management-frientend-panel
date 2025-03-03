@@ -133,6 +133,10 @@ function SubHeader() {
           { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
+          {
+            label: "Offline Deposit/Withdraw",
+            path: "/offline-deposit-withdraw",
+          },
         ],
       },
       {
@@ -380,9 +384,8 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${
-                activeIndex === index ? "grey-btn" : "balck-btn"
-              } br-0px flex-center w-100`}
+              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
+                } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>
