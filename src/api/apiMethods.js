@@ -462,6 +462,15 @@ const resetPswdDirector = (data) => {
 const dirEmployeeResetPswd = (data) => {
   return apiRequest("dirEmployeeResetPswd", data);
 };
+const managementEditProfile = (data) => {
+  return apiRequest("managementEditProfile", data);
+};
+const dirEmpEditProfile = (data) => {
+  return apiRequest("dirEmpEditProfile", data);
+};
+const dirEditProfile = (data) => {
+  return apiRequest("dirEditProfile", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -580,4 +589,7 @@ export {
   resetPasswordMan,
   resetPswdDirector,
   dirEmployeeResetPswd,
+  managementEditProfile,
+  dirEmpEditProfile,
+  dirEditProfile,
 };

@@ -68,7 +68,7 @@
   padding: 0.5rem !important;
   text-align: center !important;
 }
-.saffron-bg{
+.saffron-bg {
   background-color: #ffa310;
 }
 
@@ -926,17 +926,23 @@ button.cst-btn:hover {
   box-shadow: rgba(50, 50, 93, 0.25) 4px 4px 4px 3px,
     rgba(0, 0, 0, 0.3) 2px 3px 4px 2px;
 }
-.white-font{
+.white-font {
   color: #f1f1f1;
 }
-.black-font{
+.black-font {
   color: #000000;
 }
-.rounded-br{
+.rounded-br {
   border-radius: 30%;
 }
 .profile {
-  height: 10vh;
-  width: 6vw;
-  border-radius: 48%;
+  height: 11vh;
+  width: 11vh;
+  border-radius: 50%;
+}
+.pos-abs-profile{
+  position: absolute;
+  left: 55%;
+  top: 45%;
+  border-radius: 50%;
 }

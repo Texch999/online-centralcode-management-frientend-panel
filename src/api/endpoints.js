@@ -1,7 +1,6 @@
-
 const userID = () => {
   const id = localStorage.getItem("user_id");
-  console.log(id,"id")
+  console.log(id, "id");
   if (!id) {
     console.error("User ID is not available.");
     return null;
@@ -679,16 +678,27 @@ const endpoints = {
     method: "put",
     url: `/user/${userID()}/resetPassword`,
   },
-  resetPswdDirector:{
-    method:"put",
-    url:`/director/${userID()}/directorresetPassword`
-    
+  resetPswdDirector: {
+    method: "put",
+    url: `/director/${userID()}/directorresetPassword`,
   },
-  
-  dirEmployeeResetPswd:{
-    method:"put",
-    url:`/director/${userID()}/dirEmpresetPassword`
-  }
+
+  dirEmployeeResetPswd: {
+    method: "put",
+    url: `/director/${userID()}/dirEmpresetPassword`,
+  },
+  managementEditProfile: {
+    method: "put",
+    url: `/user/${userID()}/updateProfilePhoto`,
+  },
+  dirEmpEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/editProfilePhoto`,
+  },
+  dirEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/directorProfileUpdate`,
+  },
 };
 
 export default endpoints;
