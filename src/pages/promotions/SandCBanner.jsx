@@ -105,13 +105,11 @@ const SandCBanner = () => {
     setStartDT("");
     setEndDT("");
     setSelectedFiles([]);
-    
   };
 
   useEffect(() => {
     getBanners();
   }, [activeBtn]);
-  
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -130,12 +128,14 @@ const SandCBanner = () => {
       label: key,
     })
   );
+
   const selectPages = Object.entries(Enums.diamondSelectPages).map(
     ([key, value]) => ({
       value,
       label: key,
     })
   );
+
   const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
     ([key, value]) => ({
       value,
@@ -481,10 +481,29 @@ const SandCBanner = () => {
         }).format(new Date(banner.created_at))}
       </div>
     ),
-    type: <div>{banner.type}</div>,
+    type: (
+      <div>
+        {selectOptionsType.find(
+          (option) => Number(option.value) === Number(banner.type)
+        )?.label || "Unknown"}
+      </div>
+    ),
+
     website: <div>{banner.website_id}</div>,
-    posterPage: <div>{banner.page}</div>,
-    posterLocation: <div>{banner.place}</div>,
+    posterPage: (
+      <div>
+        {selectPages.find((page) => Number(page.value) === Number(banner.page))
+          ?.label || "Unknown"}
+      </div>
+    ),
+    posterLocation: (
+      <div>
+        {selectPlace.find(
+          (place) => Number(place.value) === Number(banner.place)
+        )?.label || "Unknown"}
+      </div>
+    ),
+
     schedule: <div>{banner.schedule}</div>,
     Poster: (
       <div className="flex-center">

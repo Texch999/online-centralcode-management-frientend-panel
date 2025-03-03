@@ -359,7 +359,13 @@ const Broadcasting = () => {
         }).format(new Date(broadCast.created_date))}
       </div>
     ),
-    type: <div>{broadCast.type}</div>,
+    type: (
+      <div>
+        {selectOptionsType.find(
+          (option) => Number(option.value) === Number(broadCast.type)
+        )?.label || "Unknown"}
+      </div>
+    ),
     website: <div>{broadCast.website_id}</div>,
     broadcastingLocation: <div>{broadCast.location_type}</div>,
     broadcastingMessage: <div>{broadCast.message}</div>,
