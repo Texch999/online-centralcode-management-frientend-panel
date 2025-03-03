@@ -33,6 +33,7 @@ const ACTIVE_BTNS = [
 
 const PromotionType = () => {
   const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const user_id = parseInt(localStorage.getItem("user_id"));
   const roleCode = localStorage.getItem("role_code");
   const [activeBtn, setActiveBtn] = useState(() => {
     const storedBtn = localStorage.getItem("activeBtn");
@@ -276,7 +277,7 @@ const PromotionType = () => {
     formData.append("promotionsId", selectedOption.value);
     formData.append("adminWebsite", selectWebsites.value);
     formData.append("userWebsite", selectUserWebsites.value);
-    formData.append("creatorId", emp_role_id);
+    formData.append("creatorId", user_id);
     formData.append("image", selectedFile);
 
     try {
