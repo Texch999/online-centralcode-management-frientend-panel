@@ -14,7 +14,7 @@ import { ImUserPlus } from "react-icons/im";
 import { Images } from "../images";
 import SubHeader from "./SubHeader";
 import { getCountries } from "../api/apiMethods";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAllCountries } from "../redux/action";
 import NotificationsPopup from "../pages/popups/NotificationsPopup";
 import { AiOutlineLogout } from "react-icons/ai";
@@ -24,6 +24,7 @@ import {
 } from "../api/apiMethods";
 import { MdEdit } from "react-icons/md";
 import ProfileUpdate from "./ProfileUpdate";
+import { imgUrl } from "../api/baseUrl";
 
 function Header() {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ function Header() {
     role_code === "white_label" && navigate("/white-label-setting");
   };
 
+  const loginData = useSelector((item) => item?.loginData);
   const handleRegisterBtn = () => {
     setIsActiveBtn(true);
     const path =
@@ -172,7 +174,8 @@ function Header() {
             >
               <img
                 className="mx-3"
-                src={Images?.ProfileImage}
+                src={`${imgUrl}/employeeProfiles/${loginData?.photo}`}
+                // src={loginData?.photo || Images?.ProfileImage}
                 alt="Profile"
                 loading="lazy"
               />

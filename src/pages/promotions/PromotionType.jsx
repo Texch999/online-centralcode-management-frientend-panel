@@ -33,20 +33,29 @@ const ACTIVE_BTNS = [
 
 const PromotionType = () => {
   const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const roleCode = localStorage.getItem("role_code");
   const [activeBtn, setActiveBtn] = useState(() => {
     const storedBtn = localStorage.getItem("activeBtn");
+
     if (storedBtn) {
       try {
         const parsedBtn = JSON.parse(storedBtn);
-        return (
-          ACTIVE_BTNS.find((btn) => btn.value === parsedBtn.value) ||
-          ACTIVE_BTNS[0]
+        const foundBtn = ACTIVE_BTNS.find(
+          (btn) => btn.value === parsedBtn.value
         );
+        if (foundBtn) return foundBtn;
       } catch (error) {
         console.error("Error parsing stored activeBtn:", error);
-        return ACTIVE_BTNS[0];
       }
     }
+
+    // Default active button logic based on role
+    if (roleCode === "management") {
+      return ACTIVE_BTNS[0];
+    } else if (roleCode === "director") {
+      return ACTIVE_BTNS[1];
+    }
+
     return ACTIVE_BTNS[0];
   });
   const [fullPoster, setFullPoster] = useState(false);

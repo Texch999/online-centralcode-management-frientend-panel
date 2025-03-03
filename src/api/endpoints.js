@@ -743,6 +743,18 @@ const endpoints = {
     method: "put",
     url: `/director/${userID()}/dirEmpresetPassword`,
   },
+  managementEditProfile: {
+    method: "put",
+    url: `/user/${userID()}/updateProfilePhoto`,
+  },
+  dirEmpEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/editProfilePhoto`,
+  },
+  dirEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/directorProfileUpdate`,
+  },
 };
 
 export default endpoints;
