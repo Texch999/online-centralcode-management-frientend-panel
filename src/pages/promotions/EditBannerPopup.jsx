@@ -8,6 +8,7 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
 import { imgUrl } from "../../api/baseUrl";
 import { editBannerApi } from "../../api/apiMethods";
+import Enums from "./Enum";
 
 const EditBannerPopup = ({
   editBanner,
@@ -16,11 +17,13 @@ const EditBannerPopup = ({
   selectedBannerId,
   setSelectedBannerId,
   setMessage,
+  selectOptionsWebsitesDirectors,
+  selectOptionsUserWebsitesDirectors,
   websitesList,
+  emp_role_id,
   onSubmit,
   onSubmitResult,
 }) => {
-  console.log("selectedBannerId", selectedBannerId);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     register_id: null,
@@ -35,6 +38,15 @@ const EditBannerPopup = ({
     end: "",
     existingImages: [],
   });
+
+  const directorsWebsites = [
+    ...(Array.isArray(selectOptionsWebsitesDirectors)
+      ? selectOptionsWebsitesDirectors
+      : []),
+    ...(Array.isArray(selectOptionsUserWebsitesDirectors)
+      ? selectOptionsUserWebsitesDirectors
+      : []),
+  ];
 
   useEffect(() => {
     if (selectedBannerId) {
@@ -136,26 +148,54 @@ const EditBannerPopup = ({
     { value: 2, label: "Casino" },
   ];
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: Number(item?.id.slice(3, -3)),
-    label: item.web_name,
-  }));
+  let weblist;
+  if (emp_role_id === 1) {
+    weblist = directorsWebsites;
+  } else {
+    weblist = websitesList;
+  }
 
-  const selectPages = [
-    { value: "home", label: "Home" },
-    { value: "description", label: "Description" },
-    { value: "wallet", label: "Wallet" },
-    { value: "login", label: "Login" },
-  ];
+  const selectOptionsWebsites = weblist
+    ?.map((item) => ({
+      value:
+        typeof item?.value === "string"
+          ? Number(item.value.slice(3, -3))
+          : null,
+      label: item?.label || "Unknown",
+    }))
+    .filter((item) => item.value !== null);
 
-  const selectPlace = [
-    { value: "top", label: "Top" },
-    { value: "center", label: "Center" },
-    { value: "bottom", label: "Bottom" },
-    { value: "right", label: "Right" },
-    { value: "left", label: "Left" },
-  ];
+  // const selectPages = [
+  //   { value: "home", label: "Home" },
+  //   { value: "description", label: "Description" },
+  //   { value: "wallet", label: "Wallet" },
+  //   { value: "login", label: "Login" },
+  // ];
 
+  // const selectPlace = [
+  //   { value: "top", label: "Top" },
+  //   { value: "center", label: "Center" },
+  //   { value: "bottom", label: "Bottom" },
+  //   { value: "right", label: "Right" },
+  //   { value: "left", label: "Left" },
+  // ];
+
+  const selectPages = Object.entries(Enums.diamondSelectPages).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+
+  console.log("selectedBannerId", selectedBannerId);
+  console.log("selectPages", selectPages);
+  console.log("selectPlace", selectPlace);
   const handleClose = () => {
     setEditBanner(false);
   };
@@ -223,11 +263,9 @@ const EditBannerPopup = ({
                   })
                 }
                 value={
-                  formData.page
-                    ? selectPages.find(
-                        (option) => option.value === formData.page
-                      )
-                    : null
+                  selectPages.find(
+                    (option) => option.value === formData.page
+                  ) || null
                 }
               />
             </div>
@@ -251,11 +289,9 @@ const EditBannerPopup = ({
                   })
                 }
                 value={
-                  formData.place
-                    ? selectPlace.find(
-                        (option) => option.value === formData.place
-                      )
-                    : null
+                  selectPlace.find(
+                    (option) => option.value === formData.place
+                  ) || null
                 }
               />
             </div>

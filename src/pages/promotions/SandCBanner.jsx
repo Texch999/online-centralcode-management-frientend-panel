@@ -93,6 +93,11 @@ const SandCBanner = () => {
   const offset = (currentPage - 1) * itemsPerPage;
 
   const handleButtonClick = (btn) => {
+    if (activeBtn.value === btn.value) return;
+    setActiveBtn(btn);
+    localStorage.setItem("activeBtn", JSON.stringify(btn));
+    setBanners([]);
+    setTotalRecords("");
     setSelectType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
@@ -100,12 +105,11 @@ const SandCBanner = () => {
     setStartDT("");
     setEndDT("");
     setSelectedFiles([]);
-    setActiveBtn(btn);
-    localStorage.setItem("activeBtn", JSON.stringify(btn));
-    getBanners();
-    setBanners([]);
-    setTotalRecords("");
   };
+
+  useEffect(() => {
+    getBanners();
+  }, [activeBtn]);
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -124,12 +128,14 @@ const SandCBanner = () => {
       label: key,
     })
   );
+
   const selectPages = Object.entries(Enums.diamondSelectPages).map(
     ([key, value]) => ({
       value,
       label: key,
     })
   );
+
   const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
     ([key, value]) => ({
       value,
@@ -312,8 +318,8 @@ const SandCBanner = () => {
         setEndDT("");
         setLoading(false);
         setSelectedFiles([]);
-        getBanners();
         setSuccessPopupOpen(true);
+        getBanners();
       }
     } catch (error) {
       setMessage(error.message);
@@ -475,10 +481,37 @@ const SandCBanner = () => {
         }).format(new Date(banner.created_at))}
       </div>
     ),
-    type: <div>{banner.type}</div>,
-    website: <div>{banner.website_id}</div>,
-    posterPage: <div>{banner.page}</div>,
-    posterLocation: <div>{banner.place}</div>,
+    type: (
+      <div>
+        {selectOptionsType.find(
+          (option) => Number(option.value) === Number(banner.type)
+        )?.label || "Unknown"}
+      </div>
+    ),
+
+    // website: <div>{banner.website_id}</div>,
+    website: (
+      <div>
+        {websitesList.find(
+          (site) => site.id.slice(3, -3) === String(banner.website_id)
+        )?.web_name || "Unknown"}
+      </div>
+    ),
+
+    posterPage: (
+      <div>
+        {selectPages.find((page) => Number(page.value) === Number(banner.page))
+          ?.label || "Unknown"}
+      </div>
+    ),
+    posterLocation: (
+      <div>
+        {selectPlace.find(
+          (place) => Number(place.value) === Number(banner.place)
+        )?.label || "Unknown"}
+      </div>
+    ),
+
     schedule: <div>{banner.schedule}</div>,
     Poster: (
       <div className="flex-center">
@@ -797,7 +830,10 @@ const SandCBanner = () => {
         selectedBannerId={selectedBannerId}
         setSelectedBannerId={setSelectedBannerId}
         setMessage={setMessage}
+        selectOptionsWebsitesDirectors={selectOptionsWebsitesDirectors}
+        selectOptionsUserWebsitesDirectors={selectOptionsUserWebsitesDirectors}
         websitesList={websitesList}
+        emp_role_id={emp_role_id}
         onSubmit={getBanners}
         onSubmitResult={handleEditResult}
       />
