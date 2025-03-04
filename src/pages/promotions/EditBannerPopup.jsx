@@ -48,6 +48,8 @@ const EditBannerPopup = ({
       : []),
   ];
 
+  console.log("===========================>selectedBannerId", selectedBannerId);
+
   useEffect(() => {
     if (selectedBannerId) {
       const formatDate = (dateString) => {
@@ -156,13 +158,14 @@ const EditBannerPopup = ({
   }
 
   const selectOptionsWebsites = weblist
-    ?.map((item) => ({
-      value:
-        typeof item?.value === "string"
-          ? Number(item.value.slice(3, -3))
-          : null,
-      label: item?.label || "Unknown",
-    }))
+    .map((item) => {
+      const slicedValue = item.id.length > 6 ? item.id.slice(3, -3) : null;
+
+      return {
+        value: slicedValue ? Number(slicedValue) : null,
+        label: item.web_name,
+      };
+    })
     .filter((item) => item.value !== null);
 
   // const selectPages = [
@@ -244,6 +247,10 @@ const EditBannerPopup = ({
                 }
                 readOnly
               />
+              {console.log(
+                "formData.website_id=======================>",
+                selectOptionsWebsites
+              )}
             </div>
 
             <div className="col-4 flex-column me-3">
@@ -264,10 +271,11 @@ const EditBannerPopup = ({
                 }
                 value={
                   selectPages.find(
-                    (option) => option.value === formData.page
+                    (option) => option.value === Number(formData.page)
                   ) || null
                 }
               />
+              {console.log(selectPages)}
             </div>
           </div>
 
@@ -288,11 +296,9 @@ const EditBannerPopup = ({
                     place: selected ? selected.value : null,
                   })
                 }
-                value={
-                  selectPlace.find(
-                    (option) => option.value === formData.place
-                  ) || null
-                }
+                value={selectPlace.find(
+                  (option) => option.value === Number(formData.place)
+                )}
               />
             </div>
 
