@@ -35,8 +35,8 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const fileInputRef = useRef(null);
   const parent_role_name = localStorage.getItem("parent_role");
   const isDirectorEmployee = parent_role_name === "director";
-  const [photoPath, setPhotoPath] = useState(null);
-  const dispatch = useDispatch();
+  const storedPhoto =localStorage.getItem("photo")
+  const [photoPath, setPhotoPath] = useState(storedPhoto);
 
   const handleOldPswdVisible = () => {
     setOldPswdVisible((prev) => !prev);
@@ -194,7 +194,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         const file = response?.data?.[0]?.fileName;
         console.log(file, "fileee");
         setPhotoPath(file);
-        dispatch(setProfilePhoto(file))
+        localStorage.setItem("photo",file)
         setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => setSuccessPopupOpen(false), 2000);

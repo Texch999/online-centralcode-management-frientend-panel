@@ -17,11 +17,6 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loginData: action.payload,
       };
-    case "SET_PROFILE_PHOTO":
-      return {
-        ...state,
-        profilePic: action.payload,
-      };
 
     default:
       return state;
