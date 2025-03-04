@@ -141,11 +141,11 @@ function Header() {
 
   const profileSrc =
     role_code === "director"
-      ? `${imgUrl}/directorProfilePhotos/${profilePic}`
+      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
       : isDirectorEmployee
-      ? `${imgUrl}/directorProfilePhotos/${profilePic}`
+      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
       : allowedRoles.includes(role_code)
-      ? `${imgUrl}/employeeProfiles/${profilePic}`
+      ? `${imgUrl}/employeeProfiles/${profilePhoto}`
       : Images?.ProfileImage;
   return (
     <>
