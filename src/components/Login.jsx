@@ -109,6 +109,7 @@ function Login() {
         localStorage.setItem("user_id", response?.user?.id);
         localStorage.setItem("user_name", response?.user?.name);
         localStorage.setItem("parent_role", response?.user?.parent_role);
+        localStorage.setItem("photo", response?.user?.photo);
 
         navigate("/");
       } else {
