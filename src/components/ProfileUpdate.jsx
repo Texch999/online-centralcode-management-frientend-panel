@@ -13,8 +13,9 @@ import {
 } from "../api/apiMethods";
 import { IoMdAdd, IoMdEye, IoMdEyeOff } from "react-icons/io";
 import SuccessPopup from "../pages/popups/SuccessPopup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { imgUrl } from "../api/baseUrl";
+import { setProfilePhoto } from "../redux/action";
 
 const ProfileUpdate = ({ setUpdateProfille }) => {
   const [openResetDropdown, setResetDropdown] = useState(false);
@@ -33,10 +34,10 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const [msg, setMsg] = useState("");
   const fileInputRef = useRef(null);
   const parent_role_name = localStorage.getItem("parent_role");
-  const profilePhoto = localStorage.getItem("photo");
   const isDirectorEmployee = parent_role_name === "director";
+  const [photoPath, setPhotoPath] = useState(null);
+  const dispatch = useDispatch();
 
-  console.log("profilePhoto", profilePhoto);
   const handleOldPswdVisible = () => {
     setOldPswdVisible((prev) => !prev);
   };
@@ -95,11 +96,11 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
 
   const profileSrc =
     role_code === "director"
-      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      ? `${imgUrl}/directorProfilePhotos/${photoPath}`
       : isDirectorEmployee
-      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      ? `${imgUrl}/directorProfilePhotos/${photoPath}`
       : allowedRoles.includes(role_code)
-      ? `${imgUrl}/employeeProfiles/${profilePhoto}`
+      ? `${imgUrl}/employeeProfiles/${photoPath}`
       : Images?.ProfileImage;
 
   const validatePasswords = () => {
@@ -154,8 +155,6 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         setOldPaswd("");
         setNewPaswd("");
         setConfirmPaswd("");
-        setUpdateProfille(false);
-
         setSuccessPopupOpen(true);
         setTimeout(() => setSuccessPopupOpen(false), 3000);
       } else {
@@ -192,11 +191,11 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       }
 
       if (response?.status === true) {
+        const file = response?.data?.[0]?.fileName;
+        console.log(file, "fileee");
+        setPhotoPath(file);
+        dispatch(setProfilePhoto(file))
         setMsg(response?.message);
-        setOldPaswd("");
-        setNewPaswd("");
-        setConfirmPaswd("");
-        setUpdateProfille(false);
         setSuccessPopupOpen(true);
         setTimeout(() => setSuccessPopupOpen(false), 2000);
       } else {
