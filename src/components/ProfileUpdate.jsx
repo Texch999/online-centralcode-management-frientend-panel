@@ -13,8 +13,9 @@ import {
 } from "../api/apiMethods";
 import { IoMdAdd, IoMdEye, IoMdEyeOff } from "react-icons/io";
 import SuccessPopup from "../pages/popups/SuccessPopup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { imgUrl } from "../api/baseUrl";
+import { setProfilePhoto } from "../redux/action";
 
 const ProfileUpdate = ({ setUpdateProfille }) => {
   const [openResetDropdown, setResetDropdown] = useState(false);
@@ -33,9 +34,10 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const [msg, setMsg] = useState("");
   const fileInputRef = useRef(null);
   const parent_role_name = localStorage.getItem("parent_role");
-  const profilePhoto = localStorage.getItem("photo");
+  const isDirectorEmployee = parent_role_name === "director";
+  const [photoPath, setPhotoPath] = useState(null);
+  const dispatch = useDispatch();
 
-  console.log("profilePhoto", profilePhoto)
   const handleOldPswdVisible = () => {
     setOldPswdVisible((prev) => !prev);
   };
@@ -71,31 +73,61 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
     }
   };
 
+  const handleOldPasswordChange = (e) => {
+    setOldPaswd(e.target.value);
+    if (e.target.value) setError("");
+  };
+
+  const handleNewPasswordChange = (e) => {
+    setNewPaswd(e.target.value);
+    if (passwordPattern.test(e.target.value)) {
+      setNewPswdError("");
+      setConfirmPswdError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPaswd(e.target.value);
+    if (e.target.value === newPswd) {
+      setConfirmPswdError("");
+      setNewPswdError("");
+    }
+  };
+
+  const profileSrc =
+    role_code === "director"
+      ? `${imgUrl}/directorProfilePhotos/${photoPath}`
+      : isDirectorEmployee
+      ? `${imgUrl}/directorProfilePhotos/${photoPath}`
+      : allowedRoles.includes(role_code)
+      ? `${imgUrl}/employeeProfiles/${photoPath}`
+      : Images?.ProfileImage;
+
   const validatePasswords = () => {
     let isValid = true;
 
     if (!passwordPattern.test(newPswd)) {
       setNewPswdError(
-        "password should be in 6-15 chars, and sould conatins 1 uppercase, 1 lowercase, 1 number, 1 special character."
+        "Password should be 6-15 characters and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."
       );
       isValid = false;
     } else {
       setNewPswdError("");
+      setConfirmPswdError("");
     }
 
     if (newPswd !== confirmPswd) {
       setConfirmPswdError("Passwords do not match.");
       isValid = false;
     } else {
+      setNewPswdError("");
       setConfirmPswdError("");
     }
 
     return isValid;
   };
 
-  const isDirectorEmployee = parent_role_name === "director";
-
-  const resetPassword = () => {
+  const resetPassword = async () => {
     if (!validatePasswords()) return;
 
     const payload = {
@@ -104,142 +136,117 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       confirm_new_password: confirmPswd,
     };
 
-    if (role_code === "director") {
-      resetPswdDirector(payload).then(handleResponse).catch(handleError);
-    } else if (isDirectorEmployee) {
-      dirEmployeeResetPswd(payload).then(handleResponse).catch(handleError);
-    } else if (allowedRoles.includes(role_code)) {
-      resetPasswordMan(payload).then(handleResponse).catch(handleError);
-    } else {
-      setError("Unauthorized role.");
+    try {
+      let response;
+
+      if (role_code === "director") {
+        response = await resetPswdDirector(payload);
+      } else if (isDirectorEmployee) {
+        response = await dirEmployeeResetPswd(payload);
+      } else if (allowedRoles.includes(role_code)) {
+        response = await resetPasswordMan(payload);
+      } else {
+        setError("Unauthorized role.");
+        return;
+      }
+
+      if (response?.status === true) {
+        setMsg(response?.message);
+        setOldPaswd("");
+        setNewPaswd("");
+        setConfirmPaswd("");
+        setSuccessPopupOpen(true);
+        setTimeout(() => setSuccessPopupOpen(false), 3000);
+      } else {
+        setError(response?.message);
+      }
+    } catch (error) {
+      setError(
+        error?.message || "An error occurred while resetting the password."
+      );
     }
   };
 
-  const handleResponse = (response) => {
-    if (response?.status === true) {
-      setMsg(response?.message);
-      setOldPaswd("");
-      setNewPaswd("");
-      setConfirmPaswd("");
-      setUpdateProfille(false);
-      setSuccessPopupOpen(true);
-      setTimeout(() => setSuccessPopupOpen(false), 2000);
-    } else {
-      setError("Something went wrong");
-    }
-  };
-
-  const handleError = (error) => {
-    setError(error?.message);
-  };
-
-  const editProfile = () => {
+  const editProfile = async () => {
     if (!selectedFile) {
       setError("Please select an image.");
       return;
     }
+
     const formData = new FormData();
     formData.append("photo", selectedFile);
 
-    if (role_code === "director") {
-      dirEditProfile(formData).then(handleEditResponse).catch(handleEditError);
-    } else if (isDirectorEmployee) {
-      dirEmpEditProfile(formData)
-        .then(handleEditResponse)
-        .catch(handleEditError);
-    } else if (allowedRoles.includes(role_code)) {
-      managementEditProfile(formData)
-        .then(handleEditResponse)
-        .catch(handleEditError);
-    } else {
-      setError("Unauthorized role.");
+    try {
+      let response;
+
+      if (role_code === "director") {
+        response = await dirEditProfile(formData);
+      } else if (isDirectorEmployee) {
+        response = await dirEmpEditProfile(formData);
+      } else if (allowedRoles.includes(role_code)) {
+        response = await managementEditProfile(formData);
+      } else {
+        setError("Unauthorized role.");
+        return;
+      }
+
+      if (response?.status === true) {
+        const file = response?.data?.[0]?.fileName;
+        console.log(file, "fileee");
+        setPhotoPath(file);
+        dispatch(setProfilePhoto(file))
+        setMsg(response?.message);
+        setSuccessPopupOpen(true);
+        setTimeout(() => setSuccessPopupOpen(false), 2000);
+      } else {
+        setError(response?.message || "Something went wrong.");
+      }
+    } catch (error) {
+      setError(
+        error?.message || "An error occurred while updating the profile."
+      );
     }
   };
-  const handleEditResponse = (response) => {
-    if (response?.status === true) {
-      setMsg(response?.message);
-      setOldPaswd("");
-      setNewPaswd("");
-      setConfirmPaswd("");
-      setUpdateProfille(false);
-      setSuccessPopupOpen(true);
-      setTimeout(() => setSuccessPopupOpen(false), 2000);
-    } else {
-      setError("Something went wrong");
-    }
-  };
-  const handleEditError = (error) => {
-    setError(error?.message);
-  };
 
-  const profileSrc =
-    role_code === "director"
-      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
-      : isDirectorEmployee
-      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
-      : allowedRoles.includes(role_code)
-      ? `${imgUrl}/employeeProfiles/${profilePhoto}`
-      : Images?.ProfileImage;
-
+  // const editProfile = () => {
   //   if (!selectedFile) {
   //     setError("Please select an image.");
   //     return;
   //   }
   //   const formData = new FormData();
   //   formData.append("photo", selectedFile);
-
-  //   managementEditProfile(formData)
-  //     .then((response) => {
-  //       if (response.status === true) {
-  //         console.log(response?.data);
-  //         setMsg(response?.message);
-  //         setSuccessPopupOpen(true);
-  //         setTimeout(() => {
-  //           setSuccessPopupOpen(false);
-  //         }, 2000);
-  //       } else {
-  //         setError("Something went wrong");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message);
-  //     });
-  // };
-
-  // const directorEmpEditProfile = () => {
-  //   if (!selectedFile) {
-  //     setError("Please select an image.");
-  //     return;
-  //   }
-  //   const formData = new FormData();
-  //   formData.append("photo", selectedFile);
-  //   let apiCallEditDirEmp;
 
   //   if (role_code === "director") {
-  //     apiCallEditDirEmp = dirEditProfile(formData);
-  //   } else if (dirEmpRoles.includes(role_code)) {
-  //     apiCallEditDirEmp = dirEmpEditProfile(formData);
+  //     dirEditProfile(formData).then(handleEditResponse).catch(handleEditError);
+  //   } else if (isDirectorEmployee) {
+  //     dirEmpEditProfile(formData)
+  //       .then(handleEditResponse)
+  //       .catch(handleEditError);
+  //   } else if (allowedRoles.includes(role_code)) {
+  //     managementEditProfile(formData)
+  //       .then(handleEditResponse)
+  //       .catch(handleEditError);
   //   } else {
   //     setError("Unauthorized role.");
-  //     return;
   //   }
-  //   apiCallEditDirEmp
-  //     .then((response) => {
-  //       if (response.status === true) {
-  //         console.log(response?.data);
-  //         setMsg(response?.message);
-  //         setSuccessPopupOpen(true);
-  //         setTimeout(() => {
-  //           setSuccessPopupOpen(false);
-  //         }, 2000);
-  //       } else {
-  //         setError("Something went wrong");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message);
-  //     });
   // };
+  // const handleEditResponse = (response) => {
+  //   if (response?.status === true) {
+  //     setMsg(response?.message);
+  //     setOldPaswd("");
+  //     setNewPaswd("");
+  //     setConfirmPaswd("");
+  //     setUpdateProfille(false);
+  //     setSuccessPopupOpen(true);
+  //     setTimeout(() => setSuccessPopupOpen(false), 2000);
+  //   } else {
+  //     setError("Something went wrong");
+  //   }
+  // };
+  // const handleEditError = (error) => {
+  //   setError(error?.message);
+  // };
+
   return (
     <div>
       <div className="white-bg box-shadow2 br-10 pb-3">
@@ -249,20 +256,21 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         >
           <IoClose className="black-font my-1 mx-2" size={25} />
         </div>
-        <div className="d-flex flex-column flex-center position-relative">
-          <div className="">
+        <div className="d-flex flex-column flex-center ">
+          <div className="position-relative">
             <img
-              className="mx-3 my-3 profile br-10 "
+              className="mx-3 my-1 profile br-10 "
               src={profileSrc}
               alt="Profile"
               loading="lazy"
             />
-          </div>
-          <div
-            className="saffron-bg pos-abs-profile d-flex align-items-center justify-content-center"
-            onClick={() => fileInputRef.current.click()}
-          >
-            <IoMdAdd size={25} className="white-font fw-bold" />
+
+            <div
+              className="saffron-bg pos-abs-profile d-flex align-items-center justify-content-center"
+              onClick={() => fileInputRef.current.click()}
+            >
+              <IoMdAdd size={28} className="white-font fw-bold" />
+            </div>
           </div>
           <input
             type="file"
@@ -274,17 +282,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
 
           {profileImg ? (
             <div
-              className="saffron-btn rounded d-flex my-2 small-font align-items-center pointer"
-              // onClick={() => {
-              //   if (allowedRoles.includes(role_code)) {
-              //     manEditProfile();
-              //   } else if (
-              //     role_code === "director" ||
-              //     parent_role_name === "director"
-              //   ) {
-              //     directorEmpEditProfile();
-              //   }
-              // }}
+              className="saffron-btn rounded d-flex mt-4 small-font align-items-center pointer"
               onClick={editProfile}
             >
               Save Profile
@@ -321,16 +319,16 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
                   className="small-font rounded w-100 all-none"
                   placeholder="Enter"
                   value={oldPswd}
-                  onChange={(e) => setOldPaswd(e.target.value)}
+                  onChange={handleOldPasswordChange}
                 />
                 {oldPswdVisible ? (
-                  <IoMdEyeOff
+                  <IoMdEye
                     className="black-font"
                     size={20}
                     onClick={handleOldPswdVisible}
                   />
                 ) : (
-                  <IoMdEye
+                  <IoMdEyeOff
                     className="black-font"
                     size={20}
                     onClick={handleOldPswdVisible}
@@ -350,16 +348,16 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
                   className="small-font rounded w-100 all-none"
                   placeholder="Enter"
                   value={newPswd}
-                  onChange={(e) => setNewPaswd(e.target.value)}
+                  onChange={handleNewPasswordChange}
                 />
                 {newPswdVisible ? (
-                  <IoMdEyeOff
+                  <IoMdEye
                     className="black-font"
                     size={20}
                     onClick={handleNewPswdVisible}
                   />
                 ) : (
-                  <IoMdEye
+                  <IoMdEyeOff
                     className="black-font"
                     size={20}
                     onClick={handleNewPswdVisible}
@@ -379,16 +377,16 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
                   className="small-font rounded w-100 all-none"
                   placeholder="Enter"
                   value={confirmPswd}
-                  onChange={(e) => setConfirmPaswd(e.target.value)}
+                  onChange={handleConfirmPasswordChange}
                 />
                 {confirmPswdVisible ? (
-                  <IoMdEyeOff
+                  <IoMdEye
                     className="black-font"
                     size={20}
                     onClick={handleConfirmPswdVisible}
                   />
                 ) : (
-                  <IoMdEye
+                  <IoMdEyeOff
                     className="black-font"
                     size={20}
                     onClick={handleConfirmPswdVisible}
@@ -404,21 +402,16 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
               <div className="">
                 <button
                   type="button"
-                  className={`w-100 saffron-btn rounded small-font ${
-                    error ? "disabled-btn" : "pointer"
+                  // className={`w-100 saffron-btn rounded small-font ${
+                  //   error ? "disabled-btn" : "pointer"
+                  // }`}
+                  className={`w-100  small-font ${
+                    !oldPswd || !newPswd || !confirmPswd
+                      ? "disabled-btn py-2 rounded "
+                      : "pointer rounded  saffron-btn"
                   }`}
                   onClick={resetPassword}
-                  // onClick={() => {
-                  //   if (allowedRoles.includes(role_code)) {
-                  //     resetPswdSubmitManagement();
-                  //   } else if (
-                  //     role_code === "director" ||
-                  //     parent_role_name === "director"
-                  //   ) {
-                  //     resetPswdSubmitDirector();
-                  //   }
-                  // }}
-                  // disabled={!!error}
+                  disabled={!oldPswd || !newPswd || !confirmPswd}
                 >
                   Submit
                 </button>

@@ -56,6 +56,8 @@ function Header() {
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
   };
+  const profilePic =useSelector((item)=>item?.profilePic)
+  console.log(profilePic,"profi")
 
   const loginData = useSelector((item) => item?.loginData);
   const handleRegisterBtn = () => {
@@ -139,11 +141,11 @@ function Header() {
 
   const profileSrc =
     role_code === "director"
-      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      ? `${imgUrl}/directorProfilePhotos/${profilePic}`
       : isDirectorEmployee
-      ? `${imgUrl}/directorProfilePhotos/${profilePhoto}`
+      ? `${imgUrl}/directorProfilePhotos/${profilePic}`
       : allowedRoles.includes(role_code)
-      ? `${imgUrl}/employeeProfiles/${profilePhoto}`
+      ? `${imgUrl}/employeeProfiles/${profilePic}`
       : Images?.ProfileImage;
   return (
     <>
