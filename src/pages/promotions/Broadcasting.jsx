@@ -144,7 +144,7 @@ const Broadcasting = () => {
   const getWebsites = async () => {
     try {
       const response = await getWebsitesList();
-      console.log(response, "redlknoshc");
+      // console.log(response, "redlknoshc");
       if ((response.status = 200)) {
         setWebsitesList(response?.data);
       }
@@ -367,7 +367,21 @@ const Broadcasting = () => {
       </div>
     ),
     website: <div>{broadCast.website_id}</div>,
-    broadcastingLocation: <div>{broadCast.location_type}</div>,
+    website: (
+      <div>
+        {websitesList.find(
+          (site) => site.id.slice(3, -3) === String(broadCast.website_id)
+        )?.web_name || "Unknown"}
+      </div>
+    ),
+    broadcastingLocation: (
+      <div>
+        {selectOptionsLocations.find(
+          (location) =>
+            Number(location.value) === Number(broadCast.location_type)
+        )?.label || "Unknown"}
+      </div>
+    ),
     broadcastingMessage: <div>{broadCast.message}</div>,
 
     icons: (

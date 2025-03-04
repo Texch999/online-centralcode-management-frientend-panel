@@ -489,7 +489,15 @@ const SandCBanner = () => {
       </div>
     ),
 
-    website: <div>{banner.website_id}</div>,
+    // website: <div>{banner.website_id}</div>,
+    website: (
+      <div>
+        {websitesList.find(
+          (site) => site.id.slice(3, -3) === String(banner.website_id)
+        )?.web_name || "Unknown"}
+      </div>
+    ),
+
     posterPage: (
       <div>
         {selectPages.find((page) => Number(page.value) === Number(banner.page))
