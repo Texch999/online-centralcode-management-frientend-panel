@@ -1,6 +1,8 @@
 import { applyMiddleware, createStore } from "redux";
 const initialState = {
   allCountries: [],
+  loginData: [],
+  profilePic: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -9,6 +11,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         allCountries: action.payload,
+      };
+    case "SET_LOGIN_DATA":
+      return {
+        ...state,
+        loginData: action.payload,
       };
 
     default:

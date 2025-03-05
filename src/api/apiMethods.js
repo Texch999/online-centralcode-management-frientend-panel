@@ -161,6 +161,10 @@ const getPromotionsTypes = (params) => {
   console.log("params", params);
   return apiRequest("getPromotionsTypes", {}, params);
 };
+export const getPromotionsTypesDirector = (params) => {
+  console.log("params", params);
+  return apiRequest("getPromotionsTypesDirector", {}, params);
+};
 const getPromotionsImage = (params) => {
   console.log("params", params);
   return apiRequest("getPromotionsImage", {}, params);
@@ -289,6 +293,9 @@ const statusUpdateBanner = (id, data) => {
 
 const getDirectorAccessWebites = (params) => {
   return apiRequest("getDirectorAccessWebites", {}, params);
+};
+export const getDirectorAccessWebitesForBanners = (params) => {
+  return apiRequest("getDirectorAccessWebitesForBanners", {}, params);
 };
 const resetDirectorEmployeePassword = (id, data) => {
   return apiRequest("resetDirectorEmployeePassword", data, id);
@@ -462,6 +469,15 @@ const resetPswdDirector = (data) => {
 const dirEmployeeResetPswd = (data) => {
   return apiRequest("dirEmployeeResetPswd", data);
 };
+const managementEditProfile = (data) => {
+  return apiRequest("managementEditProfile", data);
+};
+const dirEmpEditProfile = (data) => {
+  return apiRequest("dirEmpEditProfile", data);
+};
+const dirEditProfile = (data) => {
+  return apiRequest("dirEditProfile", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -580,4 +596,7 @@ export {
   resetPasswordMan,
   resetPswdDirector,
   dirEmployeeResetPswd,
+  managementEditProfile,
+  dirEmpEditProfile,
+  dirEditProfile,
 };

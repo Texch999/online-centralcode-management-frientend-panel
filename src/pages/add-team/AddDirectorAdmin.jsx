@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import { MdLockReset, MdBlockFlipped } from "react-icons/md";
@@ -37,11 +37,15 @@ const AddDirectorAdmin = () => {
     setSelectedSuperAdminId(id);
     setResetPasswordPopup(true);
   };
-
+  const itemsPerPage = 6;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
   const handleResetPasswordClose = () => {
     setResetPasswordPopup(false);
   };
   const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(null);
   const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] =
     useState(null);
 
@@ -83,8 +87,8 @@ const AddDirectorAdmin = () => {
       width: "8%",
     },
   ];
-  const GetAllSuperAdmin = () => {
-    getDirectorDwnList({ limit: 10, offset: 0 })
+  const GetAllSuperAdmin = (limit,offset) => {
+    getDirectorDwnList({ limit, offset })
       .then((response) => {
         if (response.status === true) {
           setTableSuperAdminData(response.directorsWithWebsites);
@@ -100,12 +104,13 @@ const AddDirectorAdmin = () => {
       });
   };
   console.log(tableSuperAdminData, "tableSuperAdminData");
-  const GetAllDirectors = () => {
+  const GetAllDirectors = (limit, offset ) => {
     setLoading(true);
-    getDirectors({ limit: 10, offset: 0 })
+    getDirectors({ limit, offset })
       .then((response) => {
         if (response.status === true) {
           setTableData(response.directorsWithWebsites);
+          setTotalRecords(response?.meta.totalCount);
         } else {
           console.error("Something Went Wrong");
         }
@@ -119,10 +124,12 @@ const AddDirectorAdmin = () => {
   };
 
   useEffect(() => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     if (role === "director") {
-      GetAllSuperAdmin();
+      GetAllSuperAdmin(limit,offset);
     } else if (role === "management") {
-      GetAllDirectors();
+      GetAllDirectors(limit,offset);
     }
   }, [role]); // Runs when role changes
 
@@ -427,6 +434,14 @@ const AddDirectorAdmin = () => {
     };
   });
 
+  const handlePageChange = ({ limit, offset }) => {
+    if (role === "management") {
+      GetAllDirectors(limit, offset);
+    } else {
+      GetAllSuperAdmin(limit, offset);
+    }
+  };
+  console.log(totalRecords,"==totalRecords")
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -468,7 +483,13 @@ const AddDirectorAdmin = () => {
           {role === "management" ? (
             <>
               {" "}
-              <Table data={TableData} columns={columns} itemsPerPage={7} />
+              <Table
+                data={TableData}
+                columns={columns}
+                itemsPerPage={itemsPerPage}
+                onPageChange={handlePageChange}
+                totalRecords={totalRecords}
+              />
             </>
           ) : (
             <>
@@ -476,7 +497,9 @@ const AddDirectorAdmin = () => {
               <Table
                 data={directorTableData}
                 columns={columns}
-                itemsPerPage={7}
+                itemsPerPage={itemsPerPage}
+                onPageChange={handlePageChange}
+                totalRecords={totalRecords}
               />
             </>
           )}
