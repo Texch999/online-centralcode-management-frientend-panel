@@ -133,6 +133,10 @@ function SubHeader() {
           { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
+          {
+            label: "Offline Deposit/Withdraw",
+            path: "/offline-deposit-withdraw",
+          },
         ],
       },
       {
@@ -159,9 +163,15 @@ function SubHeader() {
       },
       {
         label: "Promotions",
+
         options: [
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
+          {
+            label: "Create Promotions Type",
+            path: "/create-promotion-type",
+          },
+
+          { label: "Banners (Casino/Sports)", path: "/banners" },
+          { label: "Broadcasting", path: "/broadcasting" },
         ],
       },
     ],
@@ -374,9 +384,8 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${
-                activeIndex === index ? "grey-btn" : "balck-btn"
-              } br-0px flex-center w-100`}
+              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
+                } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>

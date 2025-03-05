@@ -14,6 +14,8 @@ import {
   getSecureItem,
   removeSecureItem,
 } from "../utils/secureStorage";
+import { useDispatch } from "react-redux";
+import { setLoginData } from "../redux/action";
 
 function Login() {
   const {
@@ -27,6 +29,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   // useEffect(() => {  if (loginData) {
   //   // Only run this logic if loginData is set
   //   if (loginData?.status === true) {
@@ -85,6 +88,7 @@ function Login() {
       setLoading(false);
 
       if (response?.status === true) {
+        dispatch(setLoginData(response));
         console.log(response, "====>response?.token");
         // await setSecureItem("jwt_token", response?.token);
         localStorage.setItem("jwt_token", response?.token);
@@ -104,6 +108,8 @@ function Login() {
         }
         localStorage.setItem("user_id", response?.user?.id);
         localStorage.setItem("user_name", response?.user?.name);
+        localStorage.setItem("parent_role", response?.user?.parent_role);
+        localStorage.setItem("photo", response?.user?.photo);
 
         navigate("/");
       } else {

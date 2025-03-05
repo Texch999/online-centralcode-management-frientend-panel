@@ -38,6 +38,7 @@ const AddWibsites = () => {
   const [currentPage, setCurrentPage] = useState(page);
   const allCountries = useSelector((item) => item?.allCountries);
   console.log(allCountries, "====>allCountries")
+
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
       limit,
@@ -78,21 +79,6 @@ const AddWibsites = () => {
         setError(error?.message || "API request failed");
       });
   };
-  // useEffect(() => {
-  //   if (isInitialRendering.current) {
-  //     isInitialRendering.current = false
-  //     return
-  //   }
-  //   if (filterName.trim() === "") {
-  //     const limit = itemsPerPage;
-  //     const offset = (page - 1) * itemsPerPage;
-  //     if (role === "management") {
-  //       getAllWebsiteList(limit, offset);
-  //     } else {
-  //       getAllDirectorWebsiteList(limit, offset);
-  //     }
-  //   }
-  // }, [filterName, role]);
 
   useEffect(() => {
     const limit = itemsPerPage;
