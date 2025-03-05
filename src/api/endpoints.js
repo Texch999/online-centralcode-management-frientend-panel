@@ -72,7 +72,7 @@ const endpoints = {
       const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
-      return `/${user}/${id}/promotionsTypes?${query}`;
+      return `/${user}/${userID()}/promotionsTypes?${query}`;
     },
   },
 
@@ -86,7 +86,7 @@ const endpoints = {
       const id = localStorage.getItem("emp_role_id");
       const user = id === "1" ? "director" : "user";
       const query = new URLSearchParams(params).toString();
-      return `/${user}/${id}/promotionsImages/${id}?${query}`;
+      return `/${user}/${userID()}/promotionsImages?${query}`;
     },
   },
   createPromotionImages: {
@@ -742,18 +742,6 @@ const endpoints = {
   dirEmployeeResetPswd: {
     method: "put",
     url: `/director/${userID()}/dirEmpresetPassword`,
-  },
-  managementEditProfile: {
-    method: "put",
-    url: `/user/${userID()}/updateProfilePhoto`,
-  },
-  dirEmpEditProfile: {
-    method: "put",
-    url: `/director/${userID()}/editProfilePhoto`,
-  },
-  dirEditProfile: {
-    method: "put",
-    url: `/director/${userID()}/directorProfileUpdate`,
   },
 };
 

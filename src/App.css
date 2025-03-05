@@ -705,7 +705,7 @@
 .disabled-btn {
   background-color: #d3d3d3;
   cursor: not-allowed;
-  color: #a0a0a0;
+  color: #787676;
 }
 
 .green-block {
@@ -936,14 +936,15 @@ button.cst-btn:hover {
   border-radius: 30%;
 }
 .profile {
-  height: 11vh;
-  width: 11vh;
+  height: 9vh;
+  width: 9vh;
   border-radius: 50%;
 }
 .pos-abs-profile {
   position: absolute;
-  left: 56%;
-  top: 60%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  top: 85%;
   border-radius: 50%;
 }
 .error-popup-container {

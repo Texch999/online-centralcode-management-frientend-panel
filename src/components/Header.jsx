@@ -56,6 +56,8 @@ function Header() {
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
   };
+  const profilePic =useSelector((item)=>item?.profilePic)
+  console.log(profilePic,"profi")
 
   const loginData = useSelector((item) => item?.loginData);
   const handleRegisterBtn = () => {

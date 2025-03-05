@@ -2,6 +2,7 @@ import { applyMiddleware, createStore } from "redux";
 const initialState = {
   allCountries: [],
   loginData: [],
+  profilePic: null,
 };
 
 const authReducer = (state = initialState, action) => {
