@@ -6,11 +6,9 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { VscCloudUpload } from "react-icons/vsc";
 import { DirectorOffilneDepositTicket, getDirectorAccessWebites, getDirectorSites } from "../../api/apiMethods";
-import { Images } from "../../images";
 import { MdContentCopy } from "react-icons/md";
 import { imgUrl } from "../../api/baseUrl";
-import SuccessPopup from "./SuccessPopup";
-import { rround, rfloor, rceil } from "../../utils/mathFunctions";
+import { rceil } from "../../utils/mathFunctions";
 const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen, selectedPayment, setDiscription }) => {
     const [selectedDepositDetails, setSelectedDepositDetails] = useState({});
     const [directorWebsitesList, setDirectorWebsitesList] = useState([]);
@@ -118,7 +116,8 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
     const roundedRentChipValue = rentChipValue >= 0 ? rceil(rentChipValue, -3) : 0;
 
     // Sum the rounded values
-    const totalValue = roundedExternalChipValue + roundedRentChipValue;
+    // const totalValue = roundedExternalChipValue + roundedRentChipValue;
+    const totalValue = roundedRentChipValue;
 
     // chip calculation for the share & royality
     console.log(roundedRentChipValue, "====>selected chips")
@@ -154,7 +153,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                 paymentId: selectedPayment?.gateway_id || null,
                 selctChips: Number(formData.selectedChips) || null,
                 paidAmount: totalValue,
-                selctSpcChips: Number(formData.selectedSportsChips),
+                // selctSpcChips: Number(formData.selectedSportsChips),
             };
         } else {
             payload = {
@@ -412,20 +411,11 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         style={{ pointerEvents: "none" }}
                                     />
                                 </div>
-
                             </div>
 
                             <div className="row">
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
-                                    {/* <input
-                                        type="number"
-                                        name="selectedChips"
-                                        className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                        placeholder="Enter Chips"
-                                        value={formData.selectedChips}
-                                        onChange={handleChange}
-                                    /> */}
                                     <input
                                         type="number"
                                         name="selectedChips"
@@ -491,7 +481,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter"
                                         value={roundedRentChipValue}
-                                        // value={(formData.selectedChips * (selectedWebDetails?.rentPercentage / 100))}
                                         onChange={handleChange}
                                         style={{ pointerEvents: "none" }}
                                         readOnly
@@ -500,7 +489,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                             </div>
 
 
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Enter Extra SP Chips </label>
                                     <input
@@ -526,7 +515,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         style={{ pointerEvents: "none" }}
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="row">
                                 <div className="col mb-2">
                                     <label className="small-font mb-1">Total Chips - {directorCurrency?.currencyName} </label>
@@ -535,7 +524,7 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
                                         name="upi"
                                         className="w-100 small-font rounded input-css all-none white-bg input-border"
                                         placeholder="Enter "
-                                        value={Number(formData.selectedChips) + Number(formData.selectedSportsChips)}
+                                        value={Number(formData.selectedChips)}
                                         onChange={handleChange}
                                         readOnly
                                         style={{ pointerEvents: "none" }}
