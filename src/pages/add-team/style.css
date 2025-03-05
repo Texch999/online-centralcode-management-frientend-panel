@@ -31,6 +31,7 @@
   position: relative;
   display: inline-block;
   width: 100%;
+ 
 }
 
 .dw-active-btn {
@@ -236,4 +237,7 @@
 
 .error-text {
   color: tomato;
+}
+.check-bg{
+  background-color: yellow;
 }
