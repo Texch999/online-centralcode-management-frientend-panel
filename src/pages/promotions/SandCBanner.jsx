@@ -169,7 +169,6 @@ const SandCBanner = () => {
         if (!Array.isArray(directorData) || directorData.length === 0) {
           return;
         }
-
         const adminPanels = directorData.flatMap(
           (director) => director.admin_websites || []
         );
@@ -190,12 +189,14 @@ const SandCBanner = () => {
     value: item.admin_WebSite_id,
     label: item.admin_web_name,
   }));
+
   const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
     (item) => ({
       value: item.user_WebSite_id,
       label: item.user_web_name,
     })
   );
+
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
@@ -334,8 +335,10 @@ const SandCBanner = () => {
     hasFetched.current = true;
     getBanners();
     if (emp_role_id === 1) {
+      console.log("director");
       getDirectorWebsites();
     } else {
+      console.log("management");
       getWebsites();
     }
   }, [emp_role_id]);
@@ -449,6 +452,43 @@ const SandCBanner = () => {
     }
   };
 
+  const websitelistdetailed = websitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name
+        }));
+
+  const directorsWebsites = [
+    ...(Array.isArray(selectOptionsWebsitesDirectors)
+    ? selectOptionsWebsitesDirectors
+    : []),
+    ...(Array.isArray(selectOptionsUserWebsitesDirectors)
+    ? selectOptionsUserWebsitesDirectors
+    : []),
+    ];
+    let weblist;
+    if (emp_role_id === 1) {
+    weblist = directorsWebsites;
+    } else {
+    weblist = websitelistdetailed;
+    }
+     
+
+    console.log("directorsWebsites", directorsWebsites)
+    console.log("websitesList", websitesList)
+    
+
+   
+    const selectOptionsWebsites = weblist
+    ?.map((item) => ({
+    value:
+    typeof item?.value === "string"
+    ? Number(item.value.slice(3, -3))
+    : null,
+    label: item?.label || "Unknown",
+    }))
+    .filter((item) => item.value !== null);
+     
+    
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
@@ -471,6 +511,8 @@ const SandCBanner = () => {
     },
   ];
 
+  
+
   const CRICKET_DATA = banners?.map((banner) => ({
     dateTime: (
       <div>
@@ -488,15 +530,22 @@ const SandCBanner = () => {
         )?.label || "Unknown"}
       </div>
     ),
+    // website: (
+    //   <div>
+    //     {websitesList.find(
+    //       (site) => site.id.slice(3, -3) === String(banner.website_id)
+    //     )?.web_name || "Unknown"}
+    //   </div>
+    // ),
 
-    // website: <div>{banner.website_id}</div>,
+
     website: (
       <div>
-        {websitesList.find(
-          (site) => site.id.slice(3, -3) === String(banner.website_id)
-        )?.web_name || "Unknown"}
+      {selectOptionsWebsites.find(
+      (site) => String(site.value) === String(banner.website_id)
+      )?.label || "Unknown"}
       </div>
-    ),
+      ),
 
     posterPage: (
       <div>
@@ -563,7 +612,7 @@ const SandCBanner = () => {
         <SlPencil
           size={18}
           className="mx-3 pointer"
-          onClick={() => handleEditBanners(banner.id)}
+          onClick={() => handleEditBanners(banner?.id)}
         />
 
         <FaRegTrashCan
@@ -578,6 +627,8 @@ const SandCBanner = () => {
   const handlePageChange = ({ limit, offset }) => {
     getBanners(limit, offset);
   };
+
+  console.log(websitesList, "====>webistess");
 
   return (
     <div>

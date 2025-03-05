@@ -48,8 +48,6 @@ const EditBannerPopup = ({
       : []),
   ];
 
-  console.log("===========================>selectedBannerId", selectedBannerId);
-
   useEffect(() => {
     if (selectedBannerId) {
       const formatDate = (dateString) => {
@@ -157,13 +155,53 @@ const EditBannerPopup = ({
     weblist = websitesList;
   }
 
+  // const master_data_formatt = [
+  //   {
+  //     city: "hyderabad",
+  //     created_by: 2,
+  //     deploy_type: 1,
+  //     id: "7701166",
+  //     location_id: 107,
+  //     panel_type: 1,
+  //     ref_type: 2,
+  //     status: 1,
+  //     web_name: "brahma",
+  //     web_url: "brahma.co",
+  //   },
+  // ];
+
+  // const director_data_formatt = [{ label: "brahma", value: "79611bb" }];
+
+  // const selectOptionsWebsites = weblist
+  //   .map((item) => {
+  //     const slicedValue =
+  //       item?.value?.length > 6 ? item.value.slice(3, -3) : null;
+
+  //     return {
+  //       value: slicedValue ? Number(slicedValue) : null,
+  //       label: item.label,
+  //     };
+  //   })
+  //   .filter((item) => item.value !== null);
+
   const selectOptionsWebsites = weblist
     .map((item) => {
-      const slicedValue = item.id.length > 6 ? item.id.slice(3, -3) : null;
+      let slicedValue = null;
+      let label = "";
+
+      if (item?.value) {
+        // Case: emp_role_id === 1 (Already formatted data)
+        slicedValue = item.value.length > 6 ? item.value.slice(3, -3) : null;
+        label = item.label;
+      } else if (item?.id) {
+        // Case: emp_role_id === 2 (Needs transformation)
+        slicedValue = item.id.length > 6 ? item.id.slice(3, -3) : null;
+        label = item.web_name;
+      }
 
       return {
         value: slicedValue ? Number(slicedValue) : null,
-        label: item.web_name,
+        label: label,
       };
     })
     .filter((item) => item.value !== null);
@@ -196,9 +234,6 @@ const EditBannerPopup = ({
     })
   );
 
-  console.log("selectedBannerId", selectedBannerId);
-  console.log("selectPages", selectPages);
-  console.log("selectPlace", selectPlace);
   const handleClose = () => {
     setEditBanner(false);
   };
