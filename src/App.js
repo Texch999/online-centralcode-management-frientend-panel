@@ -123,7 +123,7 @@ function App() {
             <Route path="/master/login" element={<Login />} />
             <Route path="/director/login" element={<Login />} />
             <Route path="/director/employee/login" element={<Login />} />
-            <Route path="*" element={<PageNotFound />} />{" "}
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         ) : (
           <div>

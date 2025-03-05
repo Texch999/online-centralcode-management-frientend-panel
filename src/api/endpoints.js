@@ -138,19 +138,19 @@ const endpoints = {
       const userId = localStorage.getItem("emp_role_id");
       const user = userId === "1" ? "director" : "user";
       return `/${user}/${userID()}/banner/${id}`;
-  }
+    },
   },
   deleteBanner: {
     method: "delete",
     url: (id) => {
       const userId = localStorage.getItem("emp_role_id");
       const user = userId === "1" ? "director" : "user";
-      return`/${user}/${userID()}/banner/${id}`;
+      return `/${user}/${userID()}/banner/${id}`;
     },
   },
   statusUpdateBanner: {
     method: "put",
-    url: (id) =>{
+    url: (id) => {
       const userId = localStorage.getItem("emp_role_id");
       const user = userId === "1" ? "director" : "user";
       return `/${user}/${userID()}/banner/${id}/status`;
@@ -369,7 +369,9 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/broadcastings/${id}${query ? `?${query}` : ""}`;
+      return `/${user}/${userID()}/broadcastings/${id}${
+        query ? `?${query}` : ""
+      }`;
     },
   },
 
@@ -379,7 +381,7 @@ const endpoints = {
       const userid = localStorage.getItem("emp_role_id");
       const user = userid === "1" ? "director" : "user";
       return `/${user}/${userID()}/broadcasting/statusBroadcastUpdate/${id}`;
-    }
+    },
   },
 
   editBroadCasting: {
@@ -388,7 +390,7 @@ const endpoints = {
       const userid = localStorage.getItem("emp_role_id");
       const user = userid === "1" ? "director" : "user";
       return `/${user}/${userID()}/broadcasting/${id}`;
-    }
+    },
   },
 
   getDirectorAccountDetails: {
@@ -742,6 +744,19 @@ const endpoints = {
   dirEmployeeResetPswd: {
     method: "put",
     url: `/director/${userID()}/dirEmpresetPassword`,
+  },
+
+  managementEditProfile: {
+    method: "put",
+    url: `/user/${userID()}/updateProfilePhoto`,
+  },
+  dirEmpEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/editProfilePhoto`,
+  },
+  dirEditProfile: {
+    method: "put",
+    url: `/director/${userID()}/directorProfileUpdate`,
   },
 };
 
