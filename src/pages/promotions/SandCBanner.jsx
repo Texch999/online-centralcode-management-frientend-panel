@@ -83,7 +83,7 @@ const SandCBanner = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
-  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
@@ -394,7 +394,7 @@ const SandCBanner = () => {
   const handleEditResult = (result) => {
     if (result === "success") {
       setErrorPopupOpen(false);
-      setSuccessPopupOpen(true);``
+      setSuccessPopupOpen(true);
     } else {
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
