@@ -394,7 +394,7 @@ const SandCBanner = () => {
   const handleEditResult = (result) => {
     if (result === "success") {
       setErrorPopupOpen(false);
-      setSuccessPopupOpen(true);
+      setSuccessPopupOpen(true);``
     } else {
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
