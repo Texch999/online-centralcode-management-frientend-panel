@@ -277,16 +277,21 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id) || null,
           user_paner_id: parseInt(site.user_paner_id) || null,
           commission_type: parseInt(site.commission_type) || null,
-          monthly_amount: parseInt(site.monthly_amount) || null,
-          max_chips_monthly: parseInt(site.max_chips_monthly) || null,
-          chip_percentage: parseFloat(site.chip_percentage) || null,
+          downline_comm: parseFloat(site.downline_comm) || null,
+          ...(site.commission_type == 1
+            ? {
+              monthly_amount: parseInt(site.monthly_amount) || null,
+              max_chips_monthly: parseInt(site.max_chips_monthly) || null,
+              chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
+            }
+            : {
+              share: parseFloat(site.share) || null,
+              caschip_values: parseFloat(site.caschip_values) || null,
+            }),
           is_casino: site.is_casino ? 1 : 2,
           ...(site.is_casino === 1
             ? { caschip_values: parseFloat(site.caschip_values) || null }
             : {}),
-          share: parseFloat(site.share) || null,
-          downline_comm: parseFloat(site.downline_comm) || null,
-          caschip_values: parseFloat(site.caschip_values) || null,
         }))
         : [],
     };
@@ -431,22 +436,36 @@ function EditNewDirector() {
     GetAllCurrencies();
   }, [userId]);
 
+  // const handleAdminRoleChange = (formId, selectedOption) => {
+  //   setSelectedAdmins((prev) => ({
+  //     ...prev,
+  //     [formId]: selectedOption,
+  //   }));
+
+  //   const adminData = adminWebsite.find(
+  //     (admin) => admin.id === selectedOption.value
+  //   );
+  //   setUserWebsitesList((prev) => ({
+  //     ...prev,
+  //     [formId]: adminData?.userWebsites || [],
+  //   }));
+  // };
+
   const handleAdminRoleChange = (formId, selectedOption) => {
     setSelectedAdmins((prev) => ({
       ...prev,
       [formId]: selectedOption,
     }));
 
-    const adminData = adminWebsite.find(
-      (admin) => admin.id === selectedOption.value
-    );
+    const remainingUserWebsites = getRemainingUserWebsites(selectedOption.value);
     setUserWebsitesList((prev) => ({
       ...prev,
-      [formId]: adminData?.userWebsites || [],
+      [formId]: remainingUserWebsites,
     }));
   };
 
-  const handleCheckboxChange = (formId, userSiteId) => {
+
+  const handleCheckboxChange = (formId, userSiteId, user_web_id) => {
     setSelectedWebsites((prev) => ({
       ...prev,
       [formId]: {
@@ -469,7 +488,7 @@ function EditNewDirector() {
         {
           id: userSiteId,
           admin_panel_id: adminPanelId,
-          user_paner_id: userSiteId,
+          user_paner_id: user_web_id ? user_web_id : userSiteId,
           commission_type: null,
           share: null,
           is_casino: null,
@@ -556,19 +575,16 @@ function EditNewDirector() {
     const expiry = new Date(expiryDate);
     return expiry < today;
   };
-
-  const calculateRentChipPercentage = (userSiteId) => {
-    const monthlyAmount = parseInt(websiteDetails[userSiteId]?.monthly_amount) || 0;
-    const maxChipsMonthly = parseInt(websiteDetails[userSiteId]?.max_chips_monthly) || 0;
-
-    if (maxChipsMonthly === 0) return 0; // Avoid division by zero
-
-    const rentChipPercentage = ((monthlyAmount / maxChipsMonthly) * 100).toFixed(2);
-    console.log(rentChipPercentage, "rentChipPercentage");
-    return rentChipPercentage;
+  const getRemainingUserWebsites = (adminId) => {
+    const assignedUserWebsiteIds = userWebsites.map((site) => site.user_paner_id);
+    const adminData = adminWebsite.find((admin) => admin.id === adminId);
+    return adminData?.userWebsites.filter((site) => !assignedUserWebsiteIds.includes(site.id)) || [];
   };
 
-  console.log(addWebsites, "===adirectorsite")
+  const hasRemainingUserWebsites = () => {
+    return adminWebsite.some((admin) => getRemainingUserWebsites(admin.id).length > 0);
+  };
+  console.log(hasRemainingUserWebsites,"===>hasRemainingUserWebsites")
   return (
     <>
       <div>
@@ -1065,7 +1081,8 @@ function EditNewDirector() {
                               onChange={() =>
                                 handleCheckboxChange(
                                   form.id,
-                                  userSite.website_access_id
+                                  userSite.website_access_id,
+                                  userSite.user_WebSite_id,
                                 )
                               }
                             />
@@ -1142,7 +1159,7 @@ function EditNewDirector() {
                                       type="text"
                                       className="small-font white-bg rounded border-grey3 p-2 w-100"
                                       placeholder="Chip %"
-                                      value={(parseInt(websiteDetails[userSite.website_access_id]?.monthly_amount)/parseInt(websiteDetails[userSite.website_access_id]?.max_chips_monthly)*100)}
+                                      value={(parseInt(addWebsites.find((site) => site.id === userSite.website_access_id).monthly_amount) / parseInt(addWebsites.find((site) => site.id === userSite.website_access_id).max_chips_monthly) * 100)}
                                       readOnly
                                     />
                                   </div>
@@ -1170,7 +1187,7 @@ function EditNewDirector() {
                                     <label className="small-font me-2">Casino Allowed</label>
                                     <input
                                       type="checkbox"
-                                      checked={websiteDetails[userSite.website_access_id]?.casino_allowed || false}
+                                      checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_casino === 1}
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.website_access_id,
@@ -1180,9 +1197,7 @@ function EditNewDirector() {
                                       }
                                     />
                                   </div>
-
-                                  {/* Add "Casino Chip Value" Field (Conditional Rendering) */}
-                                  {websiteDetails[userSite.website_access_id]?.is_casino && (
+                                  {addWebsites.find((site) => site.id === userSite.website_access_id)?.is_casino === 1 && (
                                     <div className="col">
                                       <input
                                         type="text"
@@ -1198,6 +1213,8 @@ function EditNewDirector() {
                                       />
                                     </div>
                                   )}
+
+
                                 </div>
                               </div>
                             )}
@@ -1630,12 +1647,18 @@ function EditNewDirector() {
             ))}
           </div>
         </form>
-        <div className="text-end mb-3 w-100">
+        {/* <div className="text-end mb-3 w-100">
           <button type="button" className="cst-btn" onClick={addAnotherForm}>
             <FaPlus className="me-2" /> Add Another
           </button>
-        </div>
-
+        </div> */}
+        {hasRemainingUserWebsites() && (
+          <div className="text-end mb-3 w-100">
+            <button type="button" className="cst-btn" onClick={addAnotherForm}>
+              <FaPlus className="me-2" /> Add Another
+            </button>
+          </div>
+        )}
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded"
