@@ -41,7 +41,8 @@ const PaymentModes = ({
                 {filteredPayments?.map((card, index) => (
                   <div key={`${card.id}-${index}`} className="col-2">
                     <div
-                      className="card h-100"
+                      className={`card h-100 pointer ${!card.isEnabled ? "no-cursor" : "cursor-pointer"}`}
+                      onClick={() => handleModelActions(card)}
                       style={{
                         opacity:
                           (actionType === "Deposit" || actionType === "Withdraw") &&
@@ -64,7 +65,6 @@ const PaymentModes = ({
                         }}
                       >
                         <img
-                          onClick={() => handleModelActions(card)}
                           src={`${imgUrl}/offlinepaymentsMode/${card.image}`}
                           alt={card.name}
                           className="text-nowrap"

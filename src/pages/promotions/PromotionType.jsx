@@ -14,6 +14,7 @@ import {
   createPromotionImages,
   deletePromotionsImages,
   getAdminWebsiteDetails,
+  getDirectorAccessWebites,
   getPromotionsImage,
   getPromotionsTypes,
   getUserWebsiteDetails,
@@ -31,20 +32,31 @@ const ACTIVE_BTNS = [
 ];
 
 const PromotionType = () => {
+  const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const user_id = parseInt(localStorage.getItem("user_id"));
+  const roleCode = localStorage.getItem("role_code");
   const [activeBtn, setActiveBtn] = useState(() => {
     const storedBtn = localStorage.getItem("activeBtn");
+
     if (storedBtn) {
       try {
         const parsedBtn = JSON.parse(storedBtn);
-        return (
-          ACTIVE_BTNS.find((btn) => btn.value === parsedBtn.value) ||
-          ACTIVE_BTNS[0]
+        const foundBtn = ACTIVE_BTNS.find(
+          (btn) => btn.value === parsedBtn.value
         );
+        if (foundBtn) return foundBtn;
       } catch (error) {
         console.error("Error parsing stored activeBtn:", error);
-        return ACTIVE_BTNS[0];
       }
     }
+
+    // Default active button logic based on role
+    if (roleCode === "management") {
+      return ACTIVE_BTNS[0];
+    } else if (roleCode === "director") {
+      return ACTIVE_BTNS[1];
+    }
+
     return ACTIVE_BTNS[0];
   });
   const [fullPoster, setFullPoster] = useState(false);
@@ -78,6 +90,8 @@ const PromotionType = () => {
   });
   const [websitesList, setWebsitesList] = useState([]);
   const [userWebsitesList, setUserWebsitesList] = useState([]);
+  const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
+  const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectUserWebsites, setSelectUserWebsites] = useState(null);
 
@@ -93,12 +107,15 @@ const PromotionType = () => {
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-
     getPromotions();
     getPromotionsImages();
-    getWebsites();
-    getuserWebsites();
-  }, []);
+    if (emp_role_id === 1) {
+      getDirectorWebsites();
+    } else {
+      getWebsites();
+      getuserWebsites();
+    }
+  }, [emp_role_id]);
 
   useEffect(() => {
     localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
@@ -124,6 +141,41 @@ const PromotionType = () => {
       console.log("error", error);
     }
   };
+  const getDirectorWebsites = async () => {
+    try {
+      const response = await getDirectorAccessWebites();
+      if (response.status === true) {
+        const directorData = response.data;
+
+        if (!Array.isArray(directorData) || directorData.length === 0) {
+          return;
+        }
+
+        const adminPanels = directorData.flatMap(
+          (director) => director.admin_websites || []
+        );
+        const userPanels = adminPanels.flatMap((admin) => admin.users || []);
+        if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
+        if (userPanels.length > 0) setDirectorUserPanels(userPanels);
+      } else {
+        console.log("Invalid response structure:", response);
+      }
+    } catch (error) {
+      console.log("Error fetching director websites:", error);
+    }
+  };
+
+  const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
+    value: item.admin_WebSite_id,
+    label: item.admin_web_name,
+  }));
+
+  const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+    (item) => ({
+      value: item.user_WebSite_id,
+      label: item.user_web_name,
+    })
+  );
 
   const selectOptionsWebsites = websitesList?.map((item) => ({
     value: item.id,
@@ -225,6 +277,7 @@ const PromotionType = () => {
     formData.append("promotionsId", selectedOption.value);
     formData.append("adminWebsite", selectWebsites.value);
     formData.append("userWebsite", selectUserWebsites.value);
+    formData.append("creatorId", user_id);
     formData.append("image", selectedFile);
 
     try {
@@ -420,7 +473,10 @@ const PromotionType = () => {
         <h6 className="yellow-font mb-0">Promotion</h6>
       </div>
       <div className="d-flex col small-font">
-        {ACTIVE_BTNS?.map((item, index) => (
+        {(emp_role_id === 1
+          ? ACTIVE_BTNS.filter((item) => item.value === 2)
+          : ACTIVE_BTNS
+        ).map((item, index) => (
           <div
             key={index}
             className={`me-3 ${
@@ -434,7 +490,8 @@ const PromotionType = () => {
           </div>
         ))}
       </div>
-      {activeBtn.value === 1 ? (
+
+      {emp_role_id !== 1 && activeBtn.value === 1 ? (
         <>
           <div className="my-3">
             <Table
@@ -480,7 +537,6 @@ const PromotionType = () => {
                   )}
                 </div>
               </div>
-
               <div className="col fixed-width-field">
                 <label
                   htmlFor="Websites"
@@ -491,7 +547,11 @@ const PromotionType = () => {
                 <Select
                   id="Websites"
                   className="small-font fixed-select"
-                  options={selectOptionsWebsites}
+                  options={
+                    emp_role_id === 1
+                      ? selectOptionsWebsitesDirectors
+                      : selectOptionsWebsites
+                  }
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
@@ -521,7 +581,12 @@ const PromotionType = () => {
                 <Select
                   id="Websites"
                   className="small-font fixed-select"
-                  options={selectOptionsUserWebsites}
+                  // options={selectOptionsUserWebsites}
+                  options={
+                    emp_role_id === 1
+                      ? selectOptionsUserWebsitesDirectors
+                      : selectOptionsUserWebsites
+                  }
                   placeholder="Select"
                   styles={customStyles}
                   maxMenuHeight={120}
