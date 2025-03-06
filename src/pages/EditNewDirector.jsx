@@ -208,7 +208,7 @@ function EditNewDirector() {
               monthly_amount: parseInt(site.monthly_amount) || null,
               max_chips_monthly: parseInt(site.max_chips_monthly) || null,
               chip_percentage: parseFloat(site.chip_percentage) || null,
-              is_casino: site.is_casino ? 1 : 2,
+              is_casino: site.is_casino === 1 ? 1 : 2,
               ...(site.is_casino === 1
                 ? { caschip_values: parseFloat(site.caschip_values) || null }
                 : {}),
@@ -234,7 +234,7 @@ function EditNewDirector() {
             share: parseFloat(site.share) || null,
             caschip_values: parseFloat(site.caschip_values) || null,
           }),
-        is_casino: site.is_casino ? 1 : 2,
+        is_casino: site.is_casino === 1 ? 1 : 2,
         ...(site.is_casino === 1
           ? { caschip_values: parseFloat(site.caschip_values) || null }
           : {}),
@@ -289,7 +289,7 @@ function EditNewDirector() {
               share: parseFloat(site.share) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
             }),
-          is_casino: site.is_casino ? 1 : 2,
+          is_casino: site.is_casino === 1? 1 : 2,
           ...(site.is_casino === 1
             ? { caschip_values: parseFloat(site.caschip_values) || null }
             : {}),
