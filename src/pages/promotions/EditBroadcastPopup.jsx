@@ -18,6 +18,9 @@ const EditBroadcastPopup = ({
   onSubmitResult,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [textMessage, setTextMessage] = useState("");
+
   const [formData, setFormData] = useState({
     type: null,
     website: null,
@@ -40,7 +43,7 @@ const EditBroadcastPopup = ({
     { value: 2, label: "Casino" },
   ];
   const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: Number(item?.id.slice(3, -3)),  // Slicing the ID correctly
+    value: Number(item?.id.slice(3, -3)), // Slicing the ID correctly
     label: item.web_name,
   }));
 
@@ -52,8 +55,11 @@ const EditBroadcastPopup = ({
 
     const { website, location, ...formDataWithoutWebsiteAndLocation } =
       formData;
-console.log("formDataWithoutWebsiteAndLocation",formDataWithoutWebsiteAndLocation);
-console.log("id",id);
+    console.log(
+      "formDataWithoutWebsiteAndLocation",
+      formDataWithoutWebsiteAndLocation
+    );
+    console.log("id", id);
 
     try {
       const response = await editBroadCasting(
@@ -75,6 +81,23 @@ console.log("id",id);
       onSubmit();
       setEditBroadcast(false);
     }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    // Remove special characters while typing
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, "");
+
+    // Show error if the length is less than 2 characters
+    if (sanitizedValue.length > 0 && sanitizedValue.length < 2) {
+      setError("Message must be at least 2 characters long.");
+    } else {
+      setError(""); // Clear error if valid
+    }
+
+    // ✅ Update formData.message
+    setFormData((prev) => ({ ...prev, message: sanitizedValue }));
   };
 
   const handleClose = () => {
@@ -103,10 +126,10 @@ console.log("id",id);
                   formData.type
                     ? selectOptionsType.find(
                         (option) => option.value === formData.type
-                      )?.label ||""
+                      )?.label || ""
                     : null
                 }
-                readOnly 
+                readOnly
               />
             </div>
 
@@ -118,12 +141,13 @@ console.log("id",id);
                 placeholder="Enter website"
                 value={
                   formData.website
-                    ? selectOptionsWebsites.find(
-                        (option) => option.value === formData.website
-                      )?.label || ""
+                    ? selectOptionsWebsites
+                        .find((option) => option.value === formData.website)
+                        ?.label?.replace(/^./, (char) => char.toUpperCase()) ||
+                      ""
                     : ""
                 }
-                readOnly 
+                readOnly
               />
             </div>
 
@@ -142,7 +166,7 @@ console.log("id",id);
                       )?.label || ""
                     : ""
                 }
-                readOnly 
+                readOnly
               />
             </div>
           </div>
@@ -157,11 +181,11 @@ console.log("id",id);
                 className="all-none input-css2 small-font p-2 rounded"
                 rows="4"
                 style={{ resize: "none" }}
-                onChange={(e) =>
-                  setFormData({ ...formData, message: e.target.value })
-                }
+                onChange={handleChange}
                 value={formData.message}
               />
+
+              {error && <span className="text-danger small-font">{error}</span>}
             </div>
 
             <div className="col-6 flex-end ml-10">
@@ -169,7 +193,7 @@ console.log("id",id);
                 className="saffron-btn2 small-font pointer ms-2 w-100 mr-2"
                 onClick={handleSubmit}
               >
-                {loading ? "Loading...": "Update"}
+                {loading ? "Loading..." : "Update"}
               </div>
             </div>
           </div>
