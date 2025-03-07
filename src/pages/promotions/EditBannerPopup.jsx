@@ -282,10 +282,6 @@ const EditBannerPopup = ({
                 }
                 readOnly
               />
-              {console.log(
-                "formData.website_id=======================>",
-                selectOptionsWebsites
-              )}
             </div>
 
             <div className="col-4 flex-column me-3">
@@ -310,7 +306,6 @@ const EditBannerPopup = ({
                   ) || null
                 }
               />
-              {console.log(selectPages)}
             </div>
           </div>
 

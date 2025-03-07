@@ -22,13 +22,10 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   });
 
   const Role = localStorage.getItem("role_code");
-  console.log(editingRowId, "editingRowId");
   const [roleOptions, setRoleOptions] = useState([]);
   const [error, setError] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(null);
-
-
 
   const {
     register,
@@ -51,7 +48,6 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               value: role.role,
               label: role.name,
             }));
-          console.log(roles, "Filtered roles");
           setRoleOptions(roles);
         } else {
           setError("Failed to fetch roles");
@@ -84,9 +80,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
 
     addManagemnentTeam(payload)
       .then((response) => {
-        console.log(response, "response from API");
         if (response?.status === true) {
-
           if (onSubmit) onSubmit();
           setSuccessPopupOpen(true);
         } else {
@@ -94,10 +88,19 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
         }
       })
       .catch((error) => {
-        setError(error?.message)
+        setError(error?.message);
       });
   };
 
+  // Prevent numbers in the name field
+  const handleNameInput = (e) => {
+    e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, "");
+  };
+
+  // Prevent text in the phone number field
+  const handlePhoneInput = (e) => {
+    e.target.value = e.target.value.replace(/\D/g, "");
+  };
 
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
@@ -128,7 +131,6 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
           <div className="row mb-3">
             <div className="col">
               <label className="small-font mb-1">Role</label>
-
               <Select
                 className="small-font text-capitalize"
                 options={roleOptions}
@@ -139,6 +141,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
+                isSearchable={false} // Disable typing in the dropdown
                 onChange={(selectedOption) => {
                   setSelectedRoleId(selectedOption?.value);
                   setValue("role", selectedOption?.value, {
@@ -146,11 +149,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                   });
                 }}
               />
-
               {errors.role && (
-                <p className="text-danger small-font">
-                  {errors.role.message}
-                </p>
+                <p className="text-danger small-font">{errors.role.message}</p>
               )}
             </div>
 
@@ -158,14 +158,28 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               <label className="small-font mb-1">Name</label>
               <input
                 type="text"
-                {...register("name", { required: "Name is required" })}
+                {...register("name", {
+                  required: "Name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Name must be at least 2 characters",
+                  },
+                  maxLength: {
+                    value: 60,
+                    message: "Name cannot exceed 60 characters",
+                  },
+                  pattern: {
+                    value: /^[A-Za-z\s]+$/,
+                    message: "Name should contain only letters and spaces",
+                  },
+                })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
+                maxLength={60}
+                onInput={handleNameInput} // Prevent numbers
               />
               {errors.name && (
-                <p className="text-danger small-font">
-                  {errors.name.message}
-                </p>
+                <p className="text-danger small-font">{errors.name.message}</p>
               )}
             </div>
 
@@ -175,9 +189,23 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 type="text"
                 {...register("loginName", {
                   required: "Login Name is required",
+                  minLength: {
+                    value: 5,
+                    message: "Login Name must be at least 5 characters",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Login Name cannot exceed 15 characters",
+                  },
+                  pattern: {
+                    value: /^[A-Za-z0-9_]+$/,
+                    message:
+                      "Login Name should contain only letters, numbers, and underscores",
+                  },
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
+                maxLength={15}
               />
               {errors.loginName && (
                 <p className="text-danger small-font">
@@ -194,13 +222,23 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 type="text"
                 {...register("phoneNumber", {
                   required: "Phone Number is required",
+                  minLength: {
+                    value: 10,
+                    message: "Phone Number must be at least 10 digits",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Phone Number cannot exceed 15 digits",
+                  },
                   pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Enter a valid 10-digit phone number",
+                    value: /^[0-9]+$/,
+                    message: "Phone Number should contain only numbers",
                   },
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
+                maxLength={15}
+                onInput={handlePhoneInput} // Prevent text
               />
               {errors.phoneNumber && (
                 <p className="text-danger small-font">
@@ -217,11 +255,16 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                   required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: "Password must be at least 6 characters long",
+                    message: "Password must be at least 6 characters",
+                  },
+                  maxLength: {
+                    value: 36,
+                    message: "Password cannot exceed 36 characters",
                   },
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter Password"
+                maxLength={36}
               />
               <span
                 className="eye-icon"
@@ -253,6 +296,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Re-enter Password"
+                maxLength={36}
               />
               <span
                 className="eye-icon"
@@ -281,19 +325,25 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 type="email"
                 {...register("email", {
                   required: "Email is required",
+                  minLength: {
+                    value: 6,
+                    message: "Email must be at least 6 characters",
+                  },
+                  maxLength: {
+                    value: 100,
+                    message: "Email cannot exceed 100 characters",
+                  },
                   pattern: {
-                    value:
-                      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: "Enter a valid email address",
                   },
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
+                maxLength={100}
               />
               {errors.email && (
-                <p className="text-danger small-font">
-                  {errors.email.message}
-                </p>
+                <p className="text-danger small-font">{errors.email.message}</p>
               )}
             </div>
 
@@ -335,8 +385,6 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
         </form>
       </Modal.Body>
     </Modal>
-
-
   );
 };
 
