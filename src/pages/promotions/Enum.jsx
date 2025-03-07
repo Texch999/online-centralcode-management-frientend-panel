@@ -4,6 +4,19 @@ const Enums = {
     Casino: 2,
   },
   
+  brahmaSelectPages: {
+    "HOME": 1,
+    "IN PLAY": 2,
+    "ELECTIONS": 3,
+    "CRICKET": 4,
+    "FOOT BALL": 5,
+    "TENNIS": 6,
+    "GREY HOUND": 7,
+    "HOURSE RACING": 8,
+    "CASINO": 9,
+    "SOCCER": 10,
+  },
+
   diamondSelectPages: {
     "HOME": 1,
     "IN PLAY": 2,
@@ -77,6 +90,9 @@ const Enums = {
     // "ICE HOCKEY": 14,
     // "VOLLEY BALL": 15,
     // "TABLE TENNIS": 16,
+  },
+  brahmaSelectPlace: {
+    MAIN: 1,
   },
   diamondSelectPlace: {
     MAIN: 1,
