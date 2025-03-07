@@ -1375,7 +1375,7 @@ function AddNewDirectorSuperAdmin() {
                 </div>
               </div>
 
-              <div className="d-flex py-2  align-items-center justify-content-end">
+              <div className="d-flex py-2  align-items-center ">
                 <button
                   type="button"
                   className="cst-btn remove-btn"
@@ -1389,9 +1389,9 @@ function AddNewDirectorSuperAdmin() {
         </form>
 
      
-        <div className="d-flex justify-content-end check-bg">
-        <button type="button" className="cst-btn" onClick={addAnotherForm}>
-          <FaPlus className="me-2" /> Add Another
+        <div className="d-flex justify-content-end ">
+        <button type="button" className="cst-btn me-4" onClick={addAnotherForm}>
+          <FaPlus className="me-2  " /> Add Another
         </button>
 
           <button
