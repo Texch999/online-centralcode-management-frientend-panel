@@ -60,6 +60,10 @@ const SandCBanner = () => {
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [selectedBannerId, setSelectedBannerId] = useState(null);
   const [selectedBannerStatus, setSelectedBannerStatus] = useState(null);
+  const [sportsInput, setSportsInput] = useState("");
+  const [websiteInput, setWebsiteInput] = useState("");
+  const [pageInput, setPageInput] = useState("");
+  const [placeInput, setPlaceInput] = useState("");
   const [bannerBlockModal, setBannerBlockModal] = useState(false);
   const [editBanner, setEditBanner] = useState(false);
   const [bannerDeleteModal, setBannerDeleteModal] = useState(false);
@@ -183,28 +187,28 @@ const SandCBanner = () => {
   // };
 
   const pageMappings = {
-    "brahma": Enums.brahmaSelectPages,
-    "diamond": Enums.diamondSelectPages,
-    "sparkbook": Enums.sparkbookSelectPages,
+    brahma: Enums.brahmaSelectPages,
+    diamond: Enums.diamondSelectPages,
+    sparkbook: Enums.sparkbookSelectPages,
     "9exchange": Enums.nineExchangeSelectPages,
-    "texchange": Enums.texchangeSelectPages,
+    texchange: Enums.texchangeSelectPages,
   };
   const placeMappings = {
-    "brahma": Enums.brahmaSelectPlace,
-    "diamond": Enums.diamondSelectPlace,
-    "sparkbook": Enums.sparkbookSelectPlace,
+    brahma: Enums.brahmaSelectPlace,
+    diamond: Enums.diamondSelectPlace,
+    sparkbook: Enums.sparkbookSelectPlace,
     "9exchange": Enums.nineExchangeSelectPlace,
-    "texchange": Enums.texchangeSelectPlace,
+    texchange: Enums.texchangeSelectPlace,
   };
 
   const handleSelectWebsites = (selected) => {
-    console.log("selected", selected)
+    console.log("selected", selected);
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
 
     const selectedWebsiteId = selected?.value.slice(3, -3);
     const selectedWebsitelabel = selected?.label;
-    console.log("selectedWebsitelabel", selectedWebsitelabel)
+    console.log("selectedWebsitelabel", selectedWebsitelabel);
 
     const selectedPages = pageMappings[selectedWebsitelabel] || {};
     const selectedPlace = placeMappings[selectedWebsitelabel] || {};
@@ -453,7 +457,7 @@ const SandCBanner = () => {
 
   const handleDeleteBanners = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await deleteBanner(selectedBannerId);
       if (response?.status === 200) {
         setMessage(response?.message);
@@ -503,7 +507,7 @@ const SandCBanner = () => {
 
   const BockOrUnblock = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await statusUpdateBanner(selectedBannerId);
       if (response?.status === 200) {
         setMessage(response?.message);
@@ -548,13 +552,14 @@ const SandCBanner = () => {
       label: item?.label || "Unknown",
     }))
     .filter((item) => item.value !== null);
+  console.log(selectOptionsWebsites);
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
     { header: "Website", field: "website", width: "15%" },
-    { header: "Poster Page", field: "posterPage", width: "15%" },
-    { header: "Poster Location", field: "posterLocation", width: "15%" },
+    { header: "Banner/Poster Page", field: "posterPage", width: "15%" },
+    { header: "Banner/Poster Location", field: "posterLocation", width: "15%" },
     { header: "Schedule", field: "schedule", width: "15%" },
     {
       header: <div className="flex-center">Poster</div>,
@@ -570,10 +575,6 @@ const SandCBanner = () => {
       width: "10%",
     },
   ];
-
-
- 
-
 
   const CRICKET_DATA = banners?.map((banner) => ({
     dateTime: (
@@ -602,58 +603,53 @@ const SandCBanner = () => {
 
     website: (
       <div>
-        {selectOptionsWebsites.find(
-          (site) => String(site.value) === String(banner.website_id)
-        )?.label || "Unknown"}
+        {selectOptionsWebsites
+          .find((site) => String(site.value) === String(banner.website_id))
+          ?.label?.replace(/^./, (char) => char.toUpperCase()) || "Unknown"}
       </div>
     ),
 
     posterPage: (
       <div>
-        {
-          (() => {
-          
-            const websiteLabel = selectOptionsWebsites.find(
-              (site) => String(site.value) === String(banner.website_id)
-            )?.label;
-    
-            const selectedPageMapping = pageMappings[websiteLabel?.toLowerCase()];
-    
-            if (selectedPageMapping) {
-              return (
-                Object.keys(selectedPageMapping).find(
-                  (key) => selectedPageMapping[key] === Number(banner?.page)
-                ) || "Unknown"
-              );
-            }
-    
-            return "Unknown";
-          })()
-        }
+        {(() => {
+          const websiteLabel = selectOptionsWebsites.find(
+            (site) => String(site.value) === String(banner.website_id)
+          )?.label;
+
+          const selectedPageMapping = pageMappings[websiteLabel?.toLowerCase()];
+
+          if (selectedPageMapping) {
+            return (
+              Object.keys(selectedPageMapping).find(
+                (key) => selectedPageMapping[key] === Number(banner?.page)
+              ) || "Unknown"
+            );
+          }
+
+          return "Unknown";
+        })()}
       </div>
     ),
     posterLocation: (
       <div>
-        {
-          (() => {
-          
-            const websiteLabel = selectOptionsWebsites.find(
-              (site) => String(site.value) === String(banner.website_id)
-            )?.label;
-    
-            const selectedPlaceMapping = placeMappings[websiteLabel?.toLowerCase()];
-    
-            if (selectedPlaceMapping) {
-              return (
-                Object.keys(selectedPlaceMapping).find(
-                  (key) => selectedPlaceMapping[key] === Number(banner?.place)
-                ) || "Unknown"
-              );
-            }
-    
-            return "Unknown";
-          })()
-        }
+        {(() => {
+          const websiteLabel = selectOptionsWebsites.find(
+            (site) => String(site.value) === String(banner.website_id)
+          )?.label;
+
+          const selectedPlaceMapping =
+            placeMappings[websiteLabel?.toLowerCase()];
+
+          if (selectedPlaceMapping) {
+            return (
+              Object.keys(selectedPlaceMapping).find(
+                (key) => selectedPlaceMapping[key] === Number(banner?.place)
+              ) || "Unknown"
+            );
+          }
+
+          return "Unknown";
+        })()}
       </div>
     ),
     // posterLocation: (
@@ -669,7 +665,9 @@ const SandCBanner = () => {
     //   </div>
     // ),
 
-    schedule: <div>{banner.schedule}</div>,
+    schedule: (
+      <div>{banner.schedule?.replace(/^./, (char) => char.toUpperCase())}</div>
+    ),
     Poster: (
       <div className="flex-center">
         <div className="relative poster-img">
@@ -797,6 +795,12 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectType}
             onChange={handleSelectType}
+            inputValue={sportsInput} // Unique state
+            onInputChange={(value, { action }) => {
+              if (action === "input-change") {
+                setSportsInput(value.replace(/[^a-zA-Z0-9]/g, ""));
+              }
+            }}
           />
           {errors.selectType && (
             <span className="text-danger small-font">{errors.selectType}</span>
@@ -814,6 +818,12 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectWebsites}
             onChange={handleSelectWebsites}
+            inputValue={websiteInput} // Unique state
+            onInputChange={(value, { action }) => {
+              if (action === "input-change") {
+                setWebsiteInput(value.replace(/[^a-zA-Z0-9]/g, ""));
+              }
+            }}
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -823,7 +833,7 @@ const SandCBanner = () => {
         </div>
 
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Poster Page</label>
+          <label className="black-text4 mb-1">Banner/Poster Page</label>
           <Select
             className="small-font"
             options={selectPages || []}
@@ -834,6 +844,12 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectedPage}
             onChange={handleSelectPage}
+            inputValue={pageInput} // Unique state
+            onInputChange={(value, { action }) => {
+              if (action === "input-change") {
+                setPageInput(value.replace(/[^a-zA-Z0-9]/g, ""));
+              }
+            }}
           />
           {errors.selectedPage && (
             <span className="text-danger small-font">
@@ -842,7 +858,7 @@ const SandCBanner = () => {
           )}
         </div>
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Poster Location</label>
+          <label className="black-text4 mb-1">Banner/Poster Location</label>
           <Select
             className="small-font"
             options={selectPlace || []}
@@ -853,6 +869,12 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectedPlace}
             onChange={handleSelectPlace}
+            inputValue={placeInput} // Unique state
+            onInputChange={(value, { action }) => {
+              if (action === "input-change") {
+                setPlaceInput(value.replace(/[^a-zA-Z0-9]/g, ""));
+              }
+            }}
           />
           {errors.selectedPlace && (
             <span className="text-danger small-font">
