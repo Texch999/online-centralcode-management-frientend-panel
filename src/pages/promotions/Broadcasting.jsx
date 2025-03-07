@@ -461,13 +461,8 @@ const Broadcasting = () => {
             value={selectType}
             // onChange={handleSelectType}
             onChange={setSelectType}
-            inputValue={typeInputValue} // Restricts input dynamically
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                const sanitizedValue = value.replace(/[^a-zA-Z0-9 ]/g, ""); // Only letters, numbers, and spaces
-                setTypeInputValue(sanitizedValue);
-              }
-            }}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectType && (
             <span className="text-danger small-font">{errors.selectType}</span>
@@ -486,13 +481,8 @@ const Broadcasting = () => {
             classNamePrefix="custom-react-select"
             value={selectWebsites}
             onChange={handleSelectWebsites}
-            inputValue={websitesInputValue} // Use specific state
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                const sanitizedValue = value.replace(/[^a-zA-Z0-9 ]/g, "");
-                setWebsitesInputValue(sanitizedValue);
-              }
-            }}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -515,13 +505,8 @@ const Broadcasting = () => {
             classNamePrefix="custom-react-select"
             value={selectLocations}
             onChange={handleSelectLocations}
-            inputValue={locationsInputValue} // Use specific state
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                const sanitizedValue = value.replace(/[^a-zA-Z0-9 ]/g, "");
-                setLocationsInputValue(sanitizedValue);
-              }
-            }}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectLocations && (
             <span className="text-danger small-font">
