@@ -13,9 +13,8 @@ import "../add-team/style.css";
 import {
   createBanner,
   deleteBanner,
-  editBanner,
-  getBanner,
   getBannerByUserId,
+  getDirectorAccessWebitesForBanners,
   getWebsitesList,
   statusUpdateBanner,
 } from "../../api/apiMethods";
@@ -25,6 +24,7 @@ import ErrorPopup from "../popups/ErrorPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import EditBannerPopup from "./EditBannerPopup";
 import { useSearchParams } from "react-router-dom";
+import Enums from "./Enum";
 
 const ACTIVE_BTNS = [
   { value: 1, label: "User" },
@@ -36,7 +36,9 @@ const SHEDULE_BTNS = [
 ];
 
 const SandCBanner = () => {
-  // const [activeBtn, setActiveBtn] = useState(ACTIVE_BTNS[0]);
+  const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
+  const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
+  const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [scheduleBtn, setScheduleBtn] = useState(SHEDULE_BTNS[0]);
   const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
@@ -44,25 +46,21 @@ const SandCBanner = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [startDT, setStartDT] = useState("");
   const [endDT, setEndDT] = useState("");
-
   const [banners, setBanners] = useState([]);
   const [websitesList, setWebsitesList] = useState([]);
   const [fullPoster, setFullPoster] = useState(false);
   const [fullPosterImage, setFullPosterImage] = useState(false);
-  const [editPoster, setEditPoster] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
   const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
-
   const [totalRecords, setTotalRecords] = useState("");
+  const [selectPages, setSelectPages] = useState(null);
+  const [selectPlace, setSelectPlace] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-
   const [selectedBannerId, setSelectedBannerId] = useState(null);
   const [selectedBannerStatus, setSelectedBannerStatus] = useState(null);
   const [bannerBlockModal, setBannerBlockModal] = useState(false);
-
   const [editBanner, setEditBanner] = useState(false);
   const [bannerDeleteModal, setBannerDeleteModal] = useState(false);
   const [activeBtn, setActiveBtn] = useState(() => {
@@ -81,15 +79,20 @@ const SandCBanner = () => {
     }
     return ACTIVE_BTNS[0];
   });
+
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
-  const [itemsPerPage, setItemsPerPage] = useState(2);
-
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
 
   const handleButtonClick = (btn) => {
+    if (activeBtn.value === btn.value) return;
+    setActiveBtn(btn);
+    localStorage.setItem("activeBtn", JSON.stringify(btn));
+    setBanners([]);
+    setTotalRecords("");
     setSelectType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
@@ -97,16 +100,7 @@ const SandCBanner = () => {
     setStartDT("");
     setEndDT("");
     setSelectedFiles([]);
-    setActiveBtn(btn);
-    localStorage.setItem("activeBtn", JSON.stringify(btn));
   };
-
-  useEffect(() => {
-    localStorage.setItem("activeBtn", JSON.stringify(activeBtn));
-    getBanners();
-    setBanners([]);
-    setTotalRecords("");
-  }, [activeBtn]);
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -119,38 +113,119 @@ const SandCBanner = () => {
 
   const hasFetched = useRef(false);
 
-  const selectOptionsType = [
-    { value: 1, label: "Sports" },
-    { value: 2, label: "Casino" },
-  ];
-  const selectPages = [
-    { value: "home", label: "Home" },
-    { value: "description", label: "Description" },
-    { value: "wallet", label: "Wallet" },
-    { value: "login", label: "Login" },
-  ];
-  const selectPlace = [
-    { value: "top", label: "Top" },
-    { value: "center", label: "Center" },
-    { value: "botton", label: "Bottonm" },
-    { value: "right", label: "Right" },
-    { value: "left", label: "Left" },
-  ];
+  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
 
-  const selectOptionsWebsites = websitesList?.map((item) => ({
-    value: item.id,
-    label: item.web_name,
+  const handleWebsitesType = (activeBtn) => {
+    const panelType = activeBtn.value === 1 ? 2 : 1;
+
+    if (emp_role_id === 1) {
+      return panelType === 1
+        ? selectOptionsWebsitesDirectors
+        : selectOptionsUserWebsitesDirectors;
+    } else {
+      return websitesList
+        ?.filter((item) => item.panel_type === panelType)
+        .map((item) => ({
+          value: item.id,
+          label: item.web_name,
+        }));
+    }
+  };
+
+  const getDirectorWebsites = async () => {
+    try {
+      const response = await getDirectorAccessWebitesForBanners();
+
+      if (response.status === true) {
+        const directorData = response.data;
+        if (!Array.isArray(directorData) || directorData.length === 0) {
+          return;
+        }
+        const adminPanels = directorData.flatMap(
+          (director) => director.admin_websites || []
+        );
+
+        const userPanels = adminPanels.flatMap((admin) => admin.users || []);
+
+        if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
+        if (userPanels.length > 0) setDirectorUserPanels(userPanels);
+      }
+    } catch (error) {
+      console.log("Error fetching director websites:", error);
+    }
+  };
+
+  const selectOptionsWebsitesDirectors = directorAdminPanels?.map((item) => ({
+    value: item.admin_WebSite_id,
+    label: item.admin_web_name,
   }));
+
+  const selectOptionsUserWebsitesDirectors = directorUserPanels?.map(
+    (item) => ({
+      value: item.user_WebSite_id,
+      label: item.user_web_name,
+    })
+  );
 
   const handleSelectType = (selected) => {
     setSelectType(selected);
     setErrors((pre) => ({ ...pre, selectType: "" }));
   };
 
+  // const handleSelectWebsites = (selected) => {
+  //   setSelectWebsites(selected);
+  //   setErrors((prev) => ({ ...prev, selectWebsites: "" }));
+  // };
+
+  const pageMappings = {
+    "brahma": Enums.brahmaSelectPages,
+    "diamond": Enums.diamondSelectPages,
+    "sparkbook": Enums.sparkbookSelectPages,
+    "9exchange": Enums.nineExchangeSelectPages,
+    "texchange": Enums.texchangeSelectPages,
+  };
+  const placeMappings = {
+    "brahma": Enums.brahmaSelectPlace,
+    "diamond": Enums.diamondSelectPlace,
+    "sparkbook": Enums.sparkbookSelectPlace,
+    "9exchange": Enums.nineExchangeSelectPlace,
+    "texchange": Enums.texchangeSelectPlace,
+  };
+
   const handleSelectWebsites = (selected) => {
+    console.log("selected", selected)
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
+
+    const selectedWebsiteId = selected?.value.slice(3, -3);
+    const selectedWebsitelabel = selected?.label;
+    console.log("selectedWebsitelabel", selectedWebsitelabel)
+
+    const selectedPages = pageMappings[selectedWebsitelabel] || {};
+    const selectedPlace = placeMappings[selectedWebsitelabel] || {};
+
+    const updatedSelectPages = Object.entries(selectedPages).map(
+      ([key, value]) => ({
+        value,
+        label: key,
+      })
+    );
+    const updatedSelectPlace = Object.entries(selectedPlace).map(
+      ([key, value]) => ({
+        value,
+        label: key,
+      })
+    );
+
+    setSelectPages(updatedSelectPages);
+    setSelectPlace(updatedSelectPlace);
   };
+
   const handleSelectPage = (selected) => {
     setSelectedPage(selected);
     setErrors((prev) => ({ ...prev, selectedPage: "" }));
@@ -159,10 +234,58 @@ const SandCBanner = () => {
     setSelectedPlace(selected);
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
+  // const handleFileChange = (event) => {
+  //   const files = Array.from(event.target.files);
+  //   const maxSize = 2 * 1024 * 1024;
+  //   const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+  //   let validFiles = [];
+  //   let errorMessages = [];
+
+  //   if (files.length > 5) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       selectedFiles: "You can only upload up to 5 images.",
+  //     }));
+  //     return;
+  //   }
+
+  //   files.forEach((file) => {
+  //     if (!allowedTypes.includes(file.type)) {
+  //       errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
+  //     } else if (file.size > maxSize) {
+  //       errorMessages.push("Each file should not exceed 2MB.");
+  //     } else {
+  //       validFiles.push(file);
+  //     }
+  //   });
+
+  //   if (errorMessages.length > 0) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       selectedFiles: errorMessages.join(" "),
+  //     }));
+  //     return;
+  //   }
+
+  //   setSelectedFiles(validFiles);
+  //   setErrors((prev) => ({ ...prev, selectedFiles: "" }));
+  // };
+
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const maxSize = 2 * 1024 * 1024;
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp", // Images
+      "video/mp4",
+      "video/quicktime",
+      "video/x-msvideo",
+      "video/x-matroska",
+      "video/webm", // Videos
+    ];
 
     let validFiles = [];
     let errorMessages = [];
@@ -170,16 +293,16 @@ const SandCBanner = () => {
     if (files.length > 5) {
       setErrors((prev) => ({
         ...prev,
-        selectedFiles: "You can only upload up to 5 images.",
+        selectedFiles: "You can only upload up to 5 files.",
       }));
       return;
     }
 
     files.forEach((file) => {
       if (!allowedTypes.includes(file.type)) {
-        errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
+        errorMessages.push("Invalid Formate");
       } else if (file.size > maxSize) {
-        errorMessages.push("Each file should not exceed 2MB.");
+        errorMessages.push(`File ${file.name} exceeds 2MB.`);
       } else {
         validFiles.push(file);
       }
@@ -263,8 +386,8 @@ const SandCBanner = () => {
         setEndDT("");
         setLoading(false);
         setSelectedFiles([]);
-        getBanners();
         setSuccessPopupOpen(true);
+        getBanners();
       }
     } catch (error) {
       setMessage(error.message);
@@ -275,11 +398,17 @@ const SandCBanner = () => {
   };
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
     getBanners();
-    getWebsites();
-  }, []);
+  }, [activeBtn]);
+
+  useEffect(() => {
+    getBanners();
+    if (emp_role_id === 1) {
+      getDirectorWebsites();
+    } else {
+      getWebsites();
+    }
+  }, [emp_role_id]);
 
   const getBanners = async () => {
     const id = activeBtn.value;
@@ -390,6 +519,36 @@ const SandCBanner = () => {
     }
   };
 
+  const websitelistdetailed = websitesList?.map((item) => ({
+    value: item.id,
+    label: item.web_name,
+  }));
+
+  const directorsWebsites = [
+    ...(Array.isArray(selectOptionsWebsitesDirectors)
+      ? selectOptionsWebsitesDirectors
+      : []),
+    ...(Array.isArray(selectOptionsUserWebsitesDirectors)
+      ? selectOptionsUserWebsitesDirectors
+      : []),
+  ];
+  let weblist;
+  if (emp_role_id === 1) {
+    weblist = directorsWebsites;
+  } else {
+    weblist = websitelistdetailed;
+  }
+
+  const selectOptionsWebsites = weblist
+    ?.map((item) => ({
+      value:
+        typeof item?.value === "string"
+          ? Number(item.value.slice(3, -3))
+          : null,
+      label: item?.label || "Unknown",
+    }))
+    .filter((item) => item.value !== null);
+
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
     { header: "Type", field: "type", width: "10%" },
@@ -412,6 +571,10 @@ const SandCBanner = () => {
     },
   ];
 
+
+ 
+
+
   const CRICKET_DATA = banners?.map((banner) => ({
     dateTime: (
       <div>
@@ -422,10 +585,90 @@ const SandCBanner = () => {
         }).format(new Date(banner.created_at))}
       </div>
     ),
-    type: <div>{banner.type}</div>,
-    website: <div>{banner.website_id}</div>,
-    posterPage: <div>{banner.page}</div>,
-    posterLocation: <div>{banner.place}</div>,
+    type: (
+      <div>
+        {selectOptionsType.find(
+          (option) => Number(option.value) === Number(banner.type)
+        )?.label || "Unknown"}
+      </div>
+    ),
+    // website: (
+    //   <div>
+    //     {websitesList.find(
+    //       (site) => site.id.slice(3, -3) === String(banner.website_id)
+    //     )?.web_name || "Unknown"}
+    //   </div>
+    // ),
+
+    website: (
+      <div>
+        {selectOptionsWebsites.find(
+          (site) => String(site.value) === String(banner.website_id)
+        )?.label || "Unknown"}
+      </div>
+    ),
+
+    posterPage: (
+      <div>
+        {
+          (() => {
+          
+            const websiteLabel = selectOptionsWebsites.find(
+              (site) => String(site.value) === String(banner.website_id)
+            )?.label;
+    
+            const selectedPageMapping = pageMappings[websiteLabel?.toLowerCase()];
+    
+            if (selectedPageMapping) {
+              return (
+                Object.keys(selectedPageMapping).find(
+                  (key) => selectedPageMapping[key] === Number(banner?.page)
+                ) || "Unknown"
+              );
+            }
+    
+            return "Unknown";
+          })()
+        }
+      </div>
+    ),
+    posterLocation: (
+      <div>
+        {
+          (() => {
+          
+            const websiteLabel = selectOptionsWebsites.find(
+              (site) => String(site.value) === String(banner.website_id)
+            )?.label;
+    
+            const selectedPlaceMapping = placeMappings[websiteLabel?.toLowerCase()];
+    
+            if (selectedPlaceMapping) {
+              return (
+                Object.keys(selectedPlaceMapping).find(
+                  (key) => selectedPlaceMapping[key] === Number(banner?.place)
+                ) || "Unknown"
+              );
+            }
+    
+            return "Unknown";
+          })()
+        }
+      </div>
+    ),
+    // posterLocation: (
+    //   <div>
+    //     {/* {selectPlace.find(
+    //       (place) => Number(place.value) === Number(banner.place)
+    //     )?.label || "Unknown"} */}
+    //     {selectPlace?.length > 0
+    //       ? selectPlace.find(
+    //           (page) => Number(page.value) === Number(banner?.page)
+    //         )?.label || "Unknown"
+    //       : "No pages available"}
+    //   </div>
+    // ),
+
     schedule: <div>{banner.schedule}</div>,
     Poster: (
       <div className="flex-center">
@@ -433,15 +676,27 @@ const SandCBanner = () => {
           {banner.image &&
             (() => {
               const images = JSON.parse(banner.image);
-              return (
+              const firstMedia = images[0];
+              const isVideo =
+                firstMedia.endsWith(".mp4") ||
+                firstMedia.endsWith(".mov") ||
+                firstMedia.endsWith(".avi") ||
+                firstMedia.endsWith(".mkv") ||
+                firstMedia.endsWith(".webm");
+
+              return isVideo ? (
+                <video
+                  src={`${imgUrl}/banner/${firstMedia}`}
+                  style={{ width: "200px", height: "150px", cursor: "pointer" }}
+                  controls
+                  onClick={() => handleFullScreen(images)}
+                />
+              ) : (
                 <img
-                  src={`${imgUrl}/uploadBanner/${images[0]}`}
+                  src={`${imgUrl}/banner/${firstMedia}`}
                   alt="Banner"
                   style={{ width: "200px", height: "150px", cursor: "pointer" }}
-                  onClick={() => {
-                    const images = JSON.parse(banner.image);
-                    handleFullScreen(images);
-                  }}
+                  onClick={() => handleFullScreen(images)}
                 />
               );
             })()}
@@ -477,7 +732,7 @@ const SandCBanner = () => {
         <SlPencil
           size={18}
           className="mx-3 pointer"
-          onClick={() => handleEditBanners(banner.id)}
+          onClick={() => handleEditBanners(banner?.id)}
         />
 
         <FaRegTrashCan
@@ -551,7 +806,7 @@ const SandCBanner = () => {
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
-            options={selectOptionsWebsites}
+            options={handleWebsitesType(activeBtn)}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
@@ -571,7 +826,7 @@ const SandCBanner = () => {
           <label className="black-text4 mb-1">Poster Page</label>
           <Select
             className="small-font"
-            options={selectPages}
+            options={selectPages || []}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
@@ -590,7 +845,7 @@ const SandCBanner = () => {
           <label className="black-text4 mb-1">Poster Location</label>
           <Select
             className="small-font"
-            options={selectPlace}
+            options={selectPlace || []}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
@@ -707,7 +962,7 @@ const SandCBanner = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
-        path={"uploadBanner"}
+        path={"banner"}
       />
       <SuccessPopup
         successPopupOpen={successPopupOpen}
@@ -744,7 +999,10 @@ const SandCBanner = () => {
         selectedBannerId={selectedBannerId}
         setSelectedBannerId={setSelectedBannerId}
         setMessage={setMessage}
+        selectOptionsWebsitesDirectors={selectOptionsWebsitesDirectors}
+        selectOptionsUserWebsitesDirectors={selectOptionsUserWebsitesDirectors}
         websitesList={websitesList}
+        emp_role_id={emp_role_id}
         onSubmit={getBanners}
         onSubmitResult={handleEditResult}
       />
