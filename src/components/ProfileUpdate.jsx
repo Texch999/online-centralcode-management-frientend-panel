@@ -35,7 +35,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const fileInputRef = useRef(null);
   const parent_role_name = localStorage.getItem("parent_role");
   const isDirectorEmployee = parent_role_name === "director";
-  const storedPhoto =localStorage.getItem("photo")
+  const storedPhoto = localStorage.getItem("photo");
   const [photoPath, setPhotoPath] = useState(storedPhoto);
 
   const handleOldPswdVisible = () => {
@@ -50,6 +50,35 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   const handleResetSection = (prev) => {
     setResetDropdown((prev) => !prev);
   };
+
+  const handleNewPasswordChange = (e) => {
+    const value = e.target.value;
+    setNewPaswd(value);
+
+    if (value.length < 6 || value.length > 15) {
+      setNewPswdError("Password must be between 6-15 characters.");
+    } else if (!passwordPattern.test(value)) {
+      setNewPswdError(
+        "Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."
+      );
+    } else {
+      setNewPswdError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPaswd(value);
+
+    if (value !== newPswd) {
+      setConfirmPswdError("Passwords do not match.");
+    } else if (value.length < 6 || value.length > 15) {
+      setConfirmPswdError("Password must be between 6-15 characters.");
+    } else {
+      setConfirmPswdError("");
+    }
+  };
+
   const allowedRoles = [
     "owner",
     "management",
@@ -78,21 +107,21 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
     if (e.target.value) setError("");
   };
 
-  const handleNewPasswordChange = (e) => {
-    setNewPaswd(e.target.value);
-    if (passwordPattern.test(e.target.value)) {
-      setNewPswdError("");
-      setConfirmPswdError("");
-    }
-  };
+  // const handleNewPasswordChange = (e) => {
+  //   setNewPaswd(e.target.value);
+  //   if (passwordPattern.test(e.target.value)) {
+  //     setNewPswdError("");
+  //     setConfirmPswdError("");
+  //   }
+  // };
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPaswd(e.target.value);
-    if (e.target.value === newPswd) {
-      setConfirmPswdError("");
-      setNewPswdError("");
-    }
-  };
+  // const handleConfirmPasswordChange = (e) => {
+  //   setConfirmPaswd(e.target.value);
+  //   if (e.target.value === newPswd) {
+  //     setConfirmPswdError("");
+  //     setNewPswdError("");
+  //   }
+  // };
 
   const profileSrc =
     role_code === "director"
@@ -194,7 +223,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         const file = response?.data?.[0]?.fileName;
         console.log(file, "fileee");
         setPhotoPath(file);
-        localStorage.setItem("photo",file)
+        localStorage.setItem("photo", file);
         setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => setSuccessPopupOpen(false), 2000);
