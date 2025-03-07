@@ -36,11 +36,11 @@ const SHEDULE_BTNS = [
 ];
 
 const SandCBanner = () => {
+  const hasFetched = useRef(false);
   const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
   const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
   const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [scheduleBtn, setScheduleBtn] = useState(SHEDULE_BTNS[0]);
-  const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectedPage, setSelectedPage] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -97,7 +97,6 @@ const SandCBanner = () => {
     localStorage.setItem("activeBtn", JSON.stringify(btn));
     setBanners([]);
     setTotalRecords("");
-    setSelectType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
     setSelectedPlace(null);
@@ -107,22 +106,12 @@ const SandCBanner = () => {
   };
 
   const [errors, setErrors] = useState({
-    selectType: "",
     selectWebsites: "",
     selectedPage: "",
     selectedPlace: "",
     selectedFiles: "",
     endDT: "",
   });
-
-  const hasFetched = useRef(false);
-
-  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
 
   const handleWebsitesType = (activeBtn) => {
     const panelType = activeBtn.value === 1 ? 2 : 1;
@@ -175,17 +164,6 @@ const SandCBanner = () => {
       label: item.user_web_name,
     })
   );
-
-  const handleSelectType = (selected) => {
-    setSelectType(selected);
-    setErrors((pre) => ({ ...pre, selectType: "" }));
-  };
-
-  // const handleSelectWebsites = (selected) => {
-  //   setSelectWebsites(selected);
-  //   setErrors((prev) => ({ ...prev, selectWebsites: "" }));
-  // };
-
   const pageMappings = {
     brahma: Enums.brahmaSelectPages,
     diamond: Enums.diamondSelectPages,
@@ -205,10 +183,7 @@ const SandCBanner = () => {
     console.log("selected", selected);
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
-
-    const selectedWebsiteId = selected?.value.slice(3, -3);
     const selectedWebsitelabel = selected?.label;
-    console.log("selectedWebsitelabel", selectedWebsitelabel);
 
     const selectedPages = pageMappings[selectedWebsitelabel] || {};
     const selectedPlace = placeMappings[selectedWebsitelabel] || {};
@@ -327,9 +302,6 @@ const SandCBanner = () => {
   const handleCreateBanner = async () => {
     let newErrors = {};
 
-    if (!selectType) {
-      newErrors.selectType = "Type is required.";
-    }
     if (!selectWebsites) {
       newErrors.selectWebsites = "Website is required.";
     }
@@ -352,7 +324,6 @@ const SandCBanner = () => {
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
     formData.append("schedule", scheduleBtn.value);
-    formData.append("type", selectType?.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
 
@@ -382,7 +353,6 @@ const SandCBanner = () => {
       if (response.status === 200) {
         setMessage(response.message);
         setErrorPopupOpen(false);
-        setSelectType(null);
         setSelectWebsites(null);
         setSelectedPage(null);
         setSelectedPlace(null);
@@ -406,6 +376,8 @@ const SandCBanner = () => {
   }, [activeBtn]);
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getBanners();
     if (emp_role_id === 1) {
       getDirectorWebsites();
@@ -556,7 +528,6 @@ const SandCBanner = () => {
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
-    { header: "Type", field: "type", width: "10%" },
     { header: "Website", field: "website", width: "15%" },
     { header: "Banner/Poster Page", field: "posterPage", width: "15%" },
     { header: "Banner/Poster Location", field: "posterLocation", width: "15%" },
@@ -586,20 +557,6 @@ const SandCBanner = () => {
         }).format(new Date(banner.created_at))}
       </div>
     ),
-    type: (
-      <div>
-        {selectOptionsType.find(
-          (option) => Number(option.value) === Number(banner.type)
-        )?.label || "Unknown"}
-      </div>
-    ),
-    // website: (
-    //   <div>
-    //     {websitesList.find(
-    //       (site) => site.id.slice(3, -3) === String(banner.website_id)
-    //     )?.web_name || "Unknown"}
-    //   </div>
-    // ),
 
     website: (
       <div>
@@ -783,29 +740,6 @@ const SandCBanner = () => {
       </div>
 
       <div className="w-100 d-flex small-font">
-        <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Sports/Casino</label>
-          <Select
-            className="small-font"
-            options={selectOptionsType}
-            placeholder="Select"
-            styles={customStyles}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-            classNamePrefix="custom-react-select"
-            value={selectType}
-            onChange={handleSelectType}
-            inputValue={sportsInput} // Unique state
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                setSportsInput(value.replace(/[^a-zA-Z0-9]/g, ""));
-              }
-            }}
-          />
-          {errors.selectType && (
-            <span className="text-danger small-font">{errors.selectType}</span>
-          )}
-        </div>
         <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Websites</label>
           <Select
