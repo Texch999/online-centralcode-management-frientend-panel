@@ -217,12 +217,7 @@ const SandCBanner = () => {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const maxSize = 2 * 1024 * 1024;
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "video/mp4",
-    ];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "video/mp4"];
 
     let validFiles = [];
     let errorMessages = [];
@@ -699,24 +694,6 @@ const SandCBanner = () => {
 
       <div className="w-100 d-flex small-font">
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Sports/Casino</label>
-          <Select
-            className="small-font"
-            options={selectOptionsType}
-            placeholder="Select"
-            styles={customStyles}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-            classNamePrefix="custom-react-select"
-            value={selectType}
-            onChange={handleSelectType}
-            isSearchable={false} // Disable typing
-            />
-          {errors.selectType && (
-            <span className="text-danger small-font">{errors.selectType}</span>
-          )}
-        </div>
-        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
@@ -729,7 +706,6 @@ const SandCBanner = () => {
             value={selectWebsites}
             onChange={handleSelectWebsites}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -751,7 +727,6 @@ const SandCBanner = () => {
             value={selectedPage}
             onChange={handleSelectPage}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectedPage && (
             <span className="text-danger small-font">
@@ -772,7 +747,6 @@ const SandCBanner = () => {
             value={selectedPlace}
             onChange={handleSelectPlace}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectedPlace && (
             <span className="text-danger small-font">
