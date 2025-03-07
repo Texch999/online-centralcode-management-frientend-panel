@@ -182,7 +182,6 @@ function AddDirectorPopup({
           </h5>
           <MdOutlineClose size={20} type="button" onClick={onClose} />
         </div>
-
         <form
           onSubmit={onSubmitHandler}
           className="add-management-popup-form mt-2"
