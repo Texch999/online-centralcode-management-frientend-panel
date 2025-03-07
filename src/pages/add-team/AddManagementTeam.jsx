@@ -13,9 +13,9 @@ import {
   getEmployees,
   resetEmployeePassword,
 } from "../../api/apiMethods";
-import Roles from "../../utils/enum";
 import EditManagementPopup from "./popups/EditManagementPopup";
 import SuccessPopup from "../popups/SuccessPopup";
+import { Roles } from "../../utils/enum";
 
 const AddManagementTeam = () => {
   const [tableData, setTableData] = useState([]);
@@ -95,8 +95,8 @@ const AddManagementTeam = () => {
     });
     GetEmployee();
     toggleModal("showAddModal", false);
-    setDiscription("Created successfully")
-    setSuccessPopupOpen(true)
+    setDiscription("Created successfully");
+    setSuccessPopupOpen(true);
   };
 
   const handleBlockPopup = (id, name, status) => {
@@ -182,14 +182,16 @@ const AddManagementTeam = () => {
       });
   };
   const TableData = tableData.map((employee) => {
-    const role = Roles[Number(employee.role)] || "Unknown";
+    const roleId = Number(employee.role);
+    const role = Roles[roleId] || "Unknown";
+
     return {
       id: employee.id,
       name: employee.name,
       login_name: employee.login_name,
       phone_no: employee.phone_no,
       email: employee.email,
-      role: employee.role,
+      role: <div>{role}</div>,
       status: employee.status === 1 ? "green-clr" : "clr-red",
       created_date: new Date(employee.created_date).toLocaleString(),
       updated_date: new Date(employee.updated_date).toLocaleString(),
@@ -205,15 +207,15 @@ const AddManagementTeam = () => {
             className="pointer black-text"
             onClick={() => handleResetPasswordPopup(employee.id)}
           />
-
           <MdBlockFlipped
             size={18}
-            className={`pointer ${employee.status === 1
-              ? "green-font"
-              : employee.status === 2
+            className={`pointer ${
+              employee.status === 1
+                ? "green-font"
+                : employee.status === 2
                 ? "clr-red"
                 : ""
-              }`}
+            }`}
             onClick={() =>
               handleBlockPopup(employee.id, employee.name, employee.status)
             }
@@ -254,7 +256,6 @@ const AddManagementTeam = () => {
           show={modalState.showAddModal}
           onClose={() => toggleModal("showAddModal", false)}
           onSubmit={handleFormSubmit}
-
         />
       )}
       {EditShow && (
@@ -268,16 +269,18 @@ const AddManagementTeam = () => {
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
         setConfirmationPopupOpen={setBlockPopup}
-        discription={`Are you sure you want to ${selectedUser?.status === 1 ? "block" : "unblock"
-          } ${selectedUser}?`}
+        discription={`Are you sure you want to ${
+          selectedUser?.status === 1 ? "block" : "unblock"
+        } ${selectedUser}?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
         setConfirmationPopupOpen={setBlockPopup}
-        discription={`Are you sure you want to ${selectedUser?.status === 1 ? "block" : "unblock"
-          } ${selectedUser?.name}?`}
+        discription={`Are you sure you want to ${
+          selectedUser?.status === 1 ? "block" : "unblock"
+        } ${selectedUser?.name}?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />

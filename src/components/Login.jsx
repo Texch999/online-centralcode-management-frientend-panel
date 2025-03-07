@@ -204,9 +204,9 @@ function Login() {
                   style={{ cursor: "pointer" }}
                 >
                   {passwordVisible ? (
-                    <FiEyeOff size={22} />
+                    < FiEye size={22} />
                   ) : (
-                    <FiEye size={22} />
+                    <FiEyeOff size={22} />
                   )}
                 </span>
               </div>
