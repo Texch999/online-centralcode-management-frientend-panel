@@ -182,27 +182,32 @@ const SandCBanner = () => {
   //   setErrors((prev) => ({ ...prev, selectWebsites: "" }));
   // };
 
+  const pageMappings = {
+    "brahma": Enums.brahmaSelectPages,
+    "diamond": Enums.diamondSelectPages,
+    "sparkbook": Enums.sparkbookSelectPages,
+    "9exchange": Enums.nineExchangeSelectPages,
+    "texchange": Enums.texchangeSelectPages,
+  };
+  const placeMappings = {
+    "brahma": Enums.brahmaSelectPlace,
+    "diamond": Enums.diamondSelectPlace,
+    "sparkbook": Enums.sparkbookSelectPlace,
+    "9exchange": Enums.nineExchangeSelectPlace,
+    "texchange": Enums.texchangeSelectPlace,
+  };
+
   const handleSelectWebsites = (selected) => {
+    console.log("selected", selected)
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
 
     const selectedWebsiteId = selected?.value.slice(3, -3);
+    const selectedWebsitelabel = selected?.label;
+    console.log("selectedWebsitelabel", selectedWebsitelabel)
 
-    const pageMappings = {
-      4: Enums.diamondSelectPages,
-      5: Enums.sparkbookSelectPages,
-      6: Enums.nineExchangeSelectPages,
-      7: Enums.texchangeSelectPages,
-    };
-    const placeMappings = {
-      4: Enums.diamondSelectPlace,
-      5: Enums.sparkbookSelectPlace,
-      6: Enums.nineExchangeSelectPlace,
-      7: Enums.texchangeSelectPlace,
-    };
-
-    const selectedPages = pageMappings[selectedWebsiteId] || {};
-    const selectedPlace = placeMappings[selectedWebsiteId] || {};
+    const selectedPages = pageMappings[selectedWebsitelabel] || {};
+    const selectedPlace = placeMappings[selectedWebsitelabel] || {};
 
     const updatedSelectPages = Object.entries(selectedPages).map(
       ([key, value]) => ({
@@ -567,6 +572,10 @@ const SandCBanner = () => {
     },
   ];
 
+
+ 
+
+
   const CRICKET_DATA = banners?.map((banner) => ({
     dateTime: (
       <div>
@@ -602,25 +611,64 @@ const SandCBanner = () => {
 
     posterPage: (
       <div>
-        {selectPages?.length > 0
-          ? selectPages.find(
-              (page) => Number(page.value) === Number(banner?.page)
-            )?.label || "Unknown"
-          : "No pages available"}
+        {
+          (() => {
+          
+            const websiteLabel = selectOptionsWebsites.find(
+              (site) => String(site.value) === String(banner.website_id)
+            )?.label;
+    
+            const selectedPageMapping = pageMappings[websiteLabel?.toLowerCase()];
+    
+            if (selectedPageMapping) {
+              return (
+                Object.keys(selectedPageMapping).find(
+                  (key) => selectedPageMapping[key] === Number(banner?.page)
+                ) || "Unknown"
+              );
+            }
+    
+            return "Unknown";
+          })()
+        }
       </div>
     ),
     posterLocation: (
       <div>
-        {/* {selectPlace.find(
-          (place) => Number(place.value) === Number(banner.place)
-        )?.label || "Unknown"} */}
-        {selectPlace?.length > 0
-          ? selectPlace.find(
-              (page) => Number(page.value) === Number(banner?.page)
-            )?.label || "Unknown"
-          : "No pages available"}
+        {
+          (() => {
+          
+            const websiteLabel = selectOptionsWebsites.find(
+              (site) => String(site.value) === String(banner.website_id)
+            )?.label;
+    
+            const selectedPlaceMapping = placeMappings[websiteLabel?.toLowerCase()];
+    
+            if (selectedPlaceMapping) {
+              return (
+                Object.keys(selectedPlaceMapping).find(
+                  (key) => selectedPlaceMapping[key] === Number(banner?.place)
+                ) || "Unknown"
+              );
+            }
+    
+            return "Unknown";
+          })()
+        }
       </div>
     ),
+    // posterLocation: (
+    //   <div>
+    //     {/* {selectPlace.find(
+    //       (place) => Number(place.value) === Number(banner.place)
+    //     )?.label || "Unknown"} */}
+    //     {selectPlace?.length > 0
+    //       ? selectPlace.find(
+    //           (page) => Number(page.value) === Number(banner?.page)
+    //         )?.label || "Unknown"
+    //       : "No pages available"}
+    //   </div>
+    // ),
 
     schedule: <div>{banner.schedule}</div>,
     Poster: (
