@@ -64,16 +64,96 @@ const AddWebsitesPopup = ({ show, onHide,
       .join(" "),
   }));
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear backend errors when the user starts typing
-    if (e.target.name === "websiteName") {
-      setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "" }));
-    } else if (e.target.name === "websiteURL") {
-      setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "" }));
-    }
-  };
+  // const handleChange = (e) => {
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  //   // Clear backend errors when the user starts typing
+  //   if (e.target.name === "websiteName") {
+  //     setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "" }));
+  //   } else if (e.target.name === "websiteURL") {
+  //     setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "" }));
+  //   }
+  // };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+  
+    // Filter out numbers and special characters for the city field
+    if (name === "city") {
+      const filteredValue = value.replace(/[^a-zA-Z\s]/g, ""); // Allow only letters and spaces
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: filteredValue, // Update the form data with the filtered value
+      }));
+  
+      // Validate the city field
+      validateField(name, filteredValue);
+      return; // Stop further execution for the city field
+    }
+  
+    // For other fields, update the form data as usual
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  
+    // Validate the field dynamically
+    validateField(name, value);
+  };
+  
+  const validateField = (fieldName, value) => {
+    const newErrors = { ...errors };
+  
+    switch (fieldName) {
+      case "city":
+        if (!value.trim()) {
+          newErrors.city = "City is required.";
+        } else if (value.length < 4 || value.length > 45) {
+          newErrors.city = "City must be between 4 and 45 characters.";
+        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+          newErrors.city = "City can only contain letters and spaces.";
+        } else {
+          delete newErrors.city; // Clear the error if validation passes
+        }
+        break;
+  
+      case "websiteName":
+        if (!value.trim()) {
+          newErrors.websiteName = "Website Name is required.";
+        } else if (value.length < 2 || value.length > 100) {
+          newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
+        } else if (!/^[a-zA-Z0-9-]+$/.test(value)) {
+          newErrors.websiteName = "Website Name can only contain letters, numbers, and hyphens.";
+        } else {
+          delete newErrors.websiteName; // Clear the error if validation passes
+        }
+        break;
+  
+      case "websiteURL":
+        if (!value.trim()) {
+          newErrors.websiteURL = "Website URL is required.";
+        } else {
+          const urlPattern = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
+  
+          if (!urlPattern.test(value)) {
+            newErrors.websiteURL = "Invalid website URL. Please include http:// or https://.";
+          } else {
+            const tld = value.match(/\.[a-zA-Z]{2,}$/);
+            if (!tld) {
+              newErrors.websiteURL = "Invalid top-level domain.";
+            } else {
+              delete newErrors.websiteURL; // Clear the error if validation passes
+            }
+          }
+        }
+        break;
+  
+      default:
+        break;
+    }
+  
+    // Update the errors state
+    setErrors(newErrors);
+  };
   const handleSelectChange = (field, selectedOption) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -164,10 +244,10 @@ const AddWebsitesPopup = ({ show, onHide,
     } else {
       // Regex to validate the URL structure (requires http:// or https://)
       const urlPattern = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
-    
+
       // List of valid TLDs
       const validTLDs = [".com", ".net", ".org", ".io", ".co", ".in", ".edu", ".gov", ".mil", ".biz", ".info", ".mobi", ".name", ".aero", ".asia", ".jobs", ".museum"];
-    
+
       // Check if the URL matches the pattern
       if (!urlPattern.test(formData.websiteURL)) {
         newErrors.websiteURL = "Invalid website URL. Please include http:// or https://.";
