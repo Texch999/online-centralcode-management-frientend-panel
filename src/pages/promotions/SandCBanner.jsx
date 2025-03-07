@@ -83,8 +83,7 @@ const SandCBanner = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
-  const [itemsPerPage, setItemsPerPage] = useState(2);
-
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
 
@@ -102,10 +101,6 @@ const SandCBanner = () => {
     setEndDT("");
     setSelectedFiles([]);
   };
-
-  useEffect(() => {
-    getBanners();
-  }, [activeBtn]);
 
   const [errors, setErrors] = useState({
     selectType: "",
@@ -234,10 +229,58 @@ const SandCBanner = () => {
     setSelectedPlace(selected);
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
+  // const handleFileChange = (event) => {
+  //   const files = Array.from(event.target.files);
+  //   const maxSize = 2 * 1024 * 1024;
+  //   const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+  //   let validFiles = [];
+  //   let errorMessages = [];
+
+  //   if (files.length > 5) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       selectedFiles: "You can only upload up to 5 images.",
+  //     }));
+  //     return;
+  //   }
+
+  //   files.forEach((file) => {
+  //     if (!allowedTypes.includes(file.type)) {
+  //       errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
+  //     } else if (file.size > maxSize) {
+  //       errorMessages.push("Each file should not exceed 2MB.");
+  //     } else {
+  //       validFiles.push(file);
+  //     }
+  //   });
+
+  //   if (errorMessages.length > 0) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       selectedFiles: errorMessages.join(" "),
+  //     }));
+  //     return;
+  //   }
+
+  //   setSelectedFiles(validFiles);
+  //   setErrors((prev) => ({ ...prev, selectedFiles: "" }));
+  // };
+
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const maxSize = 2 * 1024 * 1024;
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp", // Images
+      "video/mp4",
+      "video/quicktime",
+      "video/x-msvideo",
+      "video/x-matroska",
+      "video/webm", // Videos
+    ];
 
     let validFiles = [];
     let errorMessages = [];
@@ -245,16 +288,16 @@ const SandCBanner = () => {
     if (files.length > 5) {
       setErrors((prev) => ({
         ...prev,
-        selectedFiles: "You can only upload up to 5 images.",
+        selectedFiles: "You can only upload up to 5 files.",
       }));
       return;
     }
 
     files.forEach((file) => {
       if (!allowedTypes.includes(file.type)) {
-        errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
+        errorMessages.push("Invalid Formate");
       } else if (file.size > maxSize) {
-        errorMessages.push("Each file should not exceed 2MB.");
+        errorMessages.push(`File ${file.name} exceeds 2MB.`);
       } else {
         validFiles.push(file);
       }
@@ -353,6 +396,9 @@ const SandCBanner = () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     getBanners();
+  }, [activeBtn]);
+
+  useEffect(() => {
     if (emp_role_id === 1) {
       getDirectorWebsites();
     } else {
@@ -394,7 +440,7 @@ const SandCBanner = () => {
   const handleEditResult = (result) => {
     if (result === "success") {
       setErrorPopupOpen(false);
-      setSuccessPopupOpen(true);``
+      setSuccessPopupOpen(true);
     } else {
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
@@ -583,15 +629,27 @@ const SandCBanner = () => {
           {banner.image &&
             (() => {
               const images = JSON.parse(banner.image);
-              return (
+              const firstMedia = images[0];
+              const isVideo =
+                firstMedia.endsWith(".mp4") ||
+                firstMedia.endsWith(".mov") ||
+                firstMedia.endsWith(".avi") ||
+                firstMedia.endsWith(".mkv") ||
+                firstMedia.endsWith(".webm");
+
+              return isVideo ? (
+                <video
+                  src={`${imgUrl}/banner/${firstMedia}`}
+                  style={{ width: "200px", height: "150px", cursor: "pointer" }}
+                  controls
+                  onClick={() => handleFullScreen(images)}
+                />
+              ) : (
                 <img
-                  src={`${imgUrl}/banner/${images[0]}`}
+                  src={`${imgUrl}/banner/${firstMedia}`}
                   alt="Banner"
                   style={{ width: "200px", height: "150px", cursor: "pointer" }}
-                  onClick={() => {
-                    const images = JSON.parse(banner.image);
-                    handleFullScreen(images);
-                  }}
+                  onClick={() => handleFullScreen(images)}
                 />
               );
             })()}
