@@ -6,7 +6,6 @@ import { imgUrl } from "../../api/baseUrl";
 import { FaForward } from "react-icons/fa6";
 
 const FullPosterPopUp = ({ fullPoster, setFullPoster, fullPosterImage, path }) => {
-  console.log("fullPosterImage", fullPosterImage);
   const [currentIndex, setCurrentIndex] = useState(0);
   const images = Array.isArray(fullPosterImage) ? fullPosterImage : [fullPosterImage];
 
