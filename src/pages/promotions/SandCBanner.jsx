@@ -398,12 +398,11 @@ const SandCBanner = () => {
   };
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
     getBanners();
   }, [activeBtn]);
 
   useEffect(() => {
+    getBanners();
     if (emp_role_id === 1) {
       getDirectorWebsites();
     } else {
