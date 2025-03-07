@@ -107,9 +107,9 @@ const AddWebsitesPopup = ({ show, onHide,
         if (!value.trim()) {
           newErrors.city = "City is required.";
         } else if (value.length < 3 || value.length > 45) {
-          newErrors.city = "City must be between 4 and 45 characters.";
-        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-          newErrors.city = "City can only contain letters and spaces.";
+          newErrors.city = "City must be between 3 and 45 characters.";
+        } else if (!/^[a-zA-Z0-9\s]+$/.test(value)) {
+          newErrors.city = "City can only contain letters, numbers, and spaces.";
         } else {
           delete newErrors.city; // Clear the error if validation passes
         }
