@@ -213,43 +213,6 @@ const SandCBanner = () => {
     setSelectedPlace(selected);
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
-  // const handleFileChange = (event) => {
-  //   const files = Array.from(event.target.files);
-  //   const maxSize = 2 * 1024 * 1024;
-  //   const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-
-  //   let validFiles = [];
-  //   let errorMessages = [];
-
-  //   if (files.length > 5) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       selectedFiles: "You can only upload up to 5 images.",
-  //     }));
-  //     return;
-  //   }
-
-  //   files.forEach((file) => {
-  //     if (!allowedTypes.includes(file.type)) {
-  //       errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
-  //     } else if (file.size > maxSize) {
-  //       errorMessages.push("Each file should not exceed 2MB.");
-  //     } else {
-  //       validFiles.push(file);
-  //     }
-  //   });
-
-  //   if (errorMessages.length > 0) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       selectedFiles: errorMessages.join(" "),
-  //     }));
-  //     return;
-  //   }
-
-  //   setSelectedFiles(validFiles);
-  //   setErrors((prev) => ({ ...prev, selectedFiles: "" }));
-  // };
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -257,13 +220,8 @@ const SandCBanner = () => {
     const allowedTypes = [
       "image/jpeg",
       "image/png",
-      "image/gif",
-      "image/webp", // Images
+      "image/webp",
       "video/mp4",
-      "video/quicktime",
-      "video/x-msvideo",
-      "video/x-matroska",
-      "video/webm", // Videos
     ];
 
     let validFiles = [];
