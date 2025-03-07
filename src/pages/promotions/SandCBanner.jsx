@@ -398,8 +398,6 @@ const SandCBanner = () => {
   };
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
     getBanners();
   }, [activeBtn]);
 
