@@ -208,7 +208,7 @@ function EditNewDirector() {
               monthly_amount: parseInt(site.monthly_amount) || null,
               max_chips_monthly: parseInt(site.max_chips_monthly) || null,
               chip_percentage: parseFloat(site.chip_percentage) || null,
-              is_casino: site.is_casino ? 1 : 2,
+              is_casino: site.is_casino === 1 ? 1 : 2,
               ...(site.is_casino === 1
                 ? { caschip_values: parseFloat(site.caschip_values) || null }
                 : {}),
@@ -234,7 +234,7 @@ function EditNewDirector() {
             share: parseFloat(site.share) || null,
             caschip_values: parseFloat(site.caschip_values) || null,
           }),
-        is_casino: site.is_casino ? 1 : 2,
+        is_casino: site.is_casino === 1 ? 1 : 2,
         ...(site.is_casino === 1
           ? { caschip_values: parseFloat(site.caschip_values) || null }
           : {}),
@@ -270,6 +270,7 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
+          chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
         })),
       ],
       addWebsites: addWebsites.length > 0
@@ -288,7 +289,7 @@ function EditNewDirector() {
               share: parseFloat(site.share) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
             }),
-          is_casino: site.is_casino ? 1 : 2,
+          is_casino: site.is_casino === 1? 1 : 2,
           ...(site.is_casino === 1
             ? { caschip_values: parseFloat(site.caschip_values) || null }
             : {}),
@@ -584,7 +585,7 @@ function EditNewDirector() {
   const hasRemainingUserWebsites = () => {
     return adminWebsite.some((admin) => getRemainingUserWebsites(admin.id).length > 0);
   };
-  console.log(hasRemainingUserWebsites,"===>hasRemainingUserWebsites")
+  console.log(hasRemainingUserWebsites, "===>hasRemainingUserWebsites")
   return (
     <>
       <div>
@@ -817,15 +818,16 @@ function EditNewDirector() {
                               <input
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                value={userWebsite.chip_percentage || ""}
-                                onChange={(e) => {
-                                  const updatedWebsites = [...userWebsites];
-                                  updatedWebsites[userIndex] = {
-                                    ...updatedWebsites[userIndex],
-                                    chip_percentage: e.target.value,
-                                  };
-                                  setUserWebsites(updatedWebsites);
-                                }}
+                                value={(userWebsite.monthly_amount / userWebsite.max_chips_monthly) * 100}
+                                // onChange={(e) => {
+                                //   const updatedWebsites = [...userWebsites];
+                                //   updatedWebsites[userIndex] = {
+                                //     ...updatedWebsites[userIndex],
+                                //     chip_percentage: e.target.value,
+                                //   };
+                                //   setUserWebsites(updatedWebsites);
+                                // }}
+                                readOnly
                                 disabled={isExpired(userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null)}
                               />
                             </div>
