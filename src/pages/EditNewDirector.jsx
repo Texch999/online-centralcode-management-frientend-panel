@@ -750,7 +750,7 @@ function EditNewDirector() {
                             <select
                               className="small-font white-bg rounded border-grey3 p-2 w-100"
                               value={userWebsite.commission_type}
-                              disabled={isExpired(userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null)}
+                              // disabled={isExpired(userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null)}
                             >
                               {Object.entries(commissionTypes).map(([value, label]) => (
                                 <option key={value} value={value}>
@@ -769,6 +769,7 @@ function EditNewDirector() {
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
                                 value={userWebsite.rent_start_date || ""}
+                                readOnly
                               />
                             </div>
                             <div className="col-2">
@@ -777,6 +778,7 @@ function EditNewDirector() {
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
                                 value={userWebsite.rent_expiry_date || ""}
+                                readOnly
                               />
                             </div>
                             <div className="col-2">
