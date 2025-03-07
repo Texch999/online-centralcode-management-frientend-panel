@@ -82,9 +82,7 @@ const PromotionType = () => {
   const [totalRecords, setTotalRecords] = useState("");
   const [promotionsImgTotalRecords, setpromotionsImgTotalRecords] =
     useState("");
-  const [promotionTypeInput, setPromotionTypeInput] = useState("");
-  const [adminWebsitesInput, setAdminWebsitesInput] = useState("");
-  const [userWebsitesInput, setUserWebsitesInput] = useState("");
+
 
   const [errors, setErrors] = useState({
     promotionType: "",
@@ -529,17 +527,10 @@ const PromotionType = () => {
                   classNamePrefix="custom-react-select"
                   value={selectedOption}
                   onChange={handleSelectChange}
-                  inputValue={promotionTypeInput} // Use specific state
-                  onInputChange={(value, { action }) => {
-                    if (action === "input-change") {
-                      const sanitizedValue = value.replace(
-                        /[^a-zA-Z0-9 ]/g,
-                        ""
-                      ); // Allow only letters, numbers, and spaces
-                      setPromotionTypeInput(sanitizedValue);
-                    }
-                  }}
+                  isSearchable={false} // Disable typing
+
                 />
+
                 <div
                   className="position-absolute"
                   style={{ minHeight: "20px" }}
@@ -573,16 +564,8 @@ const PromotionType = () => {
                   classNamePrefix="custom-react-select"
                   value={selectWebsites}
                   onChange={handleSelectWebsites}
-                  inputValue={adminWebsitesInput} // Use specific state
-                  onInputChange={(value, { action }) => {
-                    if (action === "input-change") {
-                      const sanitizedValue = value.replace(
-                        /[^a-zA-Z0-9 ]/g,
-                        ""
-                      );
-                      setAdminWebsitesInput(sanitizedValue);
-                    }
-                  }}
+                  isSearchable={false} // Disable typing
+
                 />
                 <div
                   className="position-absolute"
@@ -618,16 +601,8 @@ const PromotionType = () => {
                   classNamePrefix="custom-react-select"
                   value={selectUserWebsites}
                   onChange={handleSelectUserWebsites}
-                  inputValue={userWebsitesInput} // Use specific state
-                  onInputChange={(value, { action }) => {
-                    if (action === "input-change") {
-                      const sanitizedValue = value.replace(
-                        /[^a-zA-Z0-9 ]/g,
-                        ""
-                      );
-                      setUserWebsitesInput(sanitizedValue);
-                    }
-                  }}
+                  isSearchable={false} // Disable typing
+
                 />
                 <div
                   className="position-absolute"

@@ -699,6 +699,24 @@ const SandCBanner = () => {
 
       <div className="w-100 d-flex small-font">
         <div className="col flex-column me-3 fixed-width-field1">
+          <label className="black-text4 mb-1">Sports/Casino</label>
+          <Select
+            className="small-font"
+            options={selectOptionsType}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+            value={selectType}
+            onChange={handleSelectType}
+            isSearchable={false} // Disable typing
+            />
+          {errors.selectType && (
+            <span className="text-danger small-font">{errors.selectType}</span>
+          )}
+        </div>
+        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
@@ -710,12 +728,8 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectWebsites}
             onChange={handleSelectWebsites}
-            inputValue={websiteInput} // Unique state
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                setWebsiteInput(value.replace(/[^a-zA-Z0-9]/g, ""));
-              }
-            }}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -736,12 +750,8 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectedPage}
             onChange={handleSelectPage}
-            inputValue={pageInput} // Unique state
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                setPageInput(value.replace(/[^a-zA-Z0-9]/g, ""));
-              }
-            }}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectedPage && (
             <span className="text-danger small-font">
@@ -761,12 +771,8 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectedPlace}
             onChange={handleSelectPlace}
-            inputValue={placeInput} // Unique state
-            onInputChange={(value, { action }) => {
-              if (action === "input-change") {
-                setPlaceInput(value.replace(/[^a-zA-Z0-9]/g, ""));
-              }
-            }}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectedPlace && (
             <span className="text-danger small-font">
