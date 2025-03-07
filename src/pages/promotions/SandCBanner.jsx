@@ -402,6 +402,7 @@ const SandCBanner = () => {
   }, [activeBtn]);
 
   useEffect(() => {
+    getBanners();
     if (emp_role_id === 1) {
       getDirectorWebsites();
     } else {
