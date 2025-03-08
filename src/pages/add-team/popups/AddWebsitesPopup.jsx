@@ -102,7 +102,7 @@ const AddWebsitesPopup = ({ show, onHide,
         } else if (!/^[a-zA-Z0-9\s]+$/.test(value)) {
           newErrors.city = "City can only contain letters, numbers, and spaces.";
         } else {
-          delete newErrors.city; // Clear the error if validation passes
+          delete newErrors.city; 
         }
         break;
 
