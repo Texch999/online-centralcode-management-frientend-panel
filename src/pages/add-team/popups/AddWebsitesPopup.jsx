@@ -53,7 +53,6 @@ const AddWebsitesPopup = ({ show, onHide,
   ];
   const DeployOptions = [
     { value: 1, label: "Company" },
-    { value: 2, label: "White Label" },
   ];
   const [status, setStatus] = useState(null);
   const formattedCountries = countries?.map((country) => ({
@@ -64,19 +63,10 @@ const AddWebsitesPopup = ({ show, onHide,
       .join(" "),
   }));
 
-  // const handleChange = (e) => {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  //   // Clear backend errors when the user starts typing
-  //   if (e.target.name === "websiteName") {
-  //     setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "" }));
-  //   } else if (e.target.name === "websiteURL") {
-  //     setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "" }));
-  //   }
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Filter out numbers and special characters for the city field
     if (name === "city") {
       const filteredValue = value.replace(/[^a-zA-Z\s]/g, ""); // Allow only letters and spaces
@@ -84,73 +74,67 @@ const AddWebsitesPopup = ({ show, onHide,
         ...prevData,
         [name]: filteredValue, // Update the form data with the filtered value
       }));
-  
+
       // Validate the city field
       validateField(name, filteredValue);
       return; // Stop further execution for the city field
     }
-  
+
     // For other fields, update the form data as usual
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  
+
     // Validate the field dynamically
     validateField(name, value);
   };
-  
+
   const validateField = (fieldName, value) => {
     const newErrors = { ...errors };
-  
+
     switch (fieldName) {
       case "city":
         if (!value.trim()) {
           newErrors.city = "City is required.";
-        } else if (value.length < 4 || value.length > 45) {
-          newErrors.city = "City must be between 4 and 45 characters.";
-        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-          newErrors.city = "City can only contain letters and spaces.";
+        } else if (value.length < 3 || value.length > 45) {
+          newErrors.city = "City must be between 3 and 45 characters.";
+        } else if (!/^[a-zA-Z0-9\s]+$/.test(value)) {
+          newErrors.city = "City can only contain letters, numbers, and spaces.";
         } else {
           delete newErrors.city; // Clear the error if validation passes
         }
         break;
-  
+
       case "websiteName":
         if (!value.trim()) {
           newErrors.websiteName = "Website Name is required.";
         } else if (value.length < 2 || value.length > 100) {
           newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
-        } else if (!/^[a-zA-Z0-9-]+$/.test(value)) {
-          newErrors.websiteName = "Website Name can only contain letters, numbers, and hyphens.";
+        } else if (/^[a-zA-Z0-9._]+$/.test(value)) {
+          newErrors.websiteName = "Website Name can only contain letters, numbers, dots, and underscores.";
         } else {
           delete newErrors.websiteName; // Clear the error if validation passes
         }
         break;
-  
+
       case "websiteURL":
         if (!value.trim()) {
           newErrors.websiteURL = "Website URL is required.";
         } else {
-          const urlPattern = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
-  
+          const urlPattern = /^(?!https?:\/\/|www\.)[\w.-]+\.\w{2,}$/i;
           if (!urlPattern.test(value)) {
-            newErrors.websiteURL = "Invalid website URL. Please include http:// or https://.";
+            newErrors.websiteURL = "Invalid website URL. Please not include http://, https://, www or spl char";
           } else {
-            const tld = value.match(/\.[a-zA-Z]{2,}$/);
-            if (!tld) {
-              newErrors.websiteURL = "Invalid top-level domain.";
-            } else {
-              delete newErrors.websiteURL; // Clear the error if validation passes
-            }
+            delete newErrors.websiteURL; // Clear the error if validation passes
           }
         }
         break;
-  
+
       default:
         break;
     }
-  
+
     // Update the errors state
     setErrors(newErrors);
   };
@@ -176,7 +160,7 @@ const AddWebsitesPopup = ({ show, onHide,
               location: formattedCountries.find((opt) => opt.value === data?.location_id) || null,
               city: data?.city || "",
               websiteName: data?.web_name || "",
-              websiteURL: data?.web_url || "",
+              websiteURL: data?.web_url.replace(/^https?:\/\//i, "") || "",
               created_by: data?.created_by || null,
               ref_type: refTypesOptions.find((opt) => opt.value === data?.ref_type) || null,
             });
@@ -205,8 +189,7 @@ const AddWebsitesPopup = ({ show, onHide,
 
   const validateForm = () => {
     const newErrors = {};
-    const pattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
-    const validTLDs = /\.(com|net|org|io|co|in|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i;
+
     if (!formData.deployType) {
       newErrors.deployType = "Deploy Type is required.";
     }
@@ -219,13 +202,9 @@ const AddWebsitesPopup = ({ show, onHide,
       newErrors.location = "Location is required.";
     }
 
-    if (!formData.ref_type) {
-      newErrors.ref_type = "Reference Type is required.";
-    }
-
     if (!formData.city.trim()) {
       newErrors.city = "City is required.";
-    } else if (formData.city.length < 4 || formData.city.length > 45) {
+    } else if (formData.city.length < 3 || formData.city.length > 45) {
       newErrors.city = "City must be between 4 and 45 characters.";
     } else if (!/^[a-zA-Z\s]+$/.test(formData.city)) {
       newErrors.city = "City can only contain letters.";
@@ -242,21 +221,9 @@ const AddWebsitesPopup = ({ show, onHide,
     if (!formData.websiteURL.trim()) {
       newErrors.websiteURL = "Website URL is required.";
     } else {
-      // Regex to validate the URL structure (requires http:// or https://)
-      const urlPattern = /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
-
-      // List of valid TLDs
-      const validTLDs = [".com", ".net", ".org", ".io", ".co", ".in", ".edu", ".gov", ".mil", ".biz", ".info", ".mobi", ".name", ".aero", ".asia", ".jobs", ".museum"];
-
-      // Check if the URL matches the pattern
-      if (!urlPattern.test(formData.websiteURL)) {
+      const urlPattern = /^(?!https?:\/\/|www\.)[\w.-]+\.\w{2,}$/i;
+      if (!urlPattern.test(formData.websiteURL.replace(/^https?:\/\//i, ""))) {
         newErrors.websiteURL = "Invalid website URL. Please include http:// or https://.";
-      } else {
-        // Extract the TLD from the URL
-        const tld = formData.websiteURL.match(/\.[a-zA-Z]{2,}$/);
-        if (!tld || !validTLDs.includes(tld[0].toLowerCase())) {
-          newErrors.websiteURL = "Invalid top-level domain. Please use a supported domain like .com, .net, .org, etc.";
-        }
       }
     }
 
@@ -273,7 +240,6 @@ const AddWebsitesPopup = ({ show, onHide,
       city: "",
       websiteName: "",
       websiteURL: "",
-      ref_type: null
     });
     setErrors({
       deployType: "",
@@ -305,13 +271,12 @@ const AddWebsitesPopup = ({ show, onHide,
         deploy_type: formData?.deployType?.value,
         panel_type: formData?.panelType?.value,
         web_name: formData?.websiteName,
-        web_url: formData?.websiteURL,
+        web_url: formData?.websiteURL.replace(/^https?:\/\//i, ""),
         location_id: formData?.location?.value,
         prefix: "TXE",
         city: formData?.city,
         status: status,
         created_by: formData.created_by,
-        ref_type: formData.ref_type?.value
       } : {
         deploy_type: formData?.deployType?.value,
         panel_type: formData?.panelType?.value,
@@ -321,7 +286,6 @@ const AddWebsitesPopup = ({ show, onHide,
         prefix: "TXE",
         city: formData?.city,
         created_by: userId,
-        ref_type: formData.ref_type?.value
       };
 
       const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData);
@@ -408,7 +372,7 @@ const AddWebsitesPopup = ({ show, onHide,
             </div>
 
             {/* Reference Type Dropdown */}
-            <div className="col-4">
+            {/* <div className="col-4">
               <label className="small-font mb-1">Reference Type</label>
               <Select
                 className="small-font"
@@ -419,11 +383,11 @@ const AddWebsitesPopup = ({ show, onHide,
                 onChange={(option) => handleSelectChange("ref_type", option)}
               />
               {errors.ref_type && <p className="text-danger small-font">{errors.ref_type}</p>}
-            </div>
+            </div> */}
 
             {/* Location Dropdown */}
             <div className="col-4">
-              <label className="small-font mb-1">Location</label>
+              <label className="small-font mb-1">Country</label>
               <Select
                 className="small-font"
                 options={formattedCountries}
@@ -460,6 +424,7 @@ const AddWebsitesPopup = ({ show, onHide,
                 value={formData.websiteName}
                 onChange={handleChange}
               />
+              {console.log(errors.websiteName, "===>websiteName")}
               {errors.websiteName && <p className="text-danger small-font">{errors.websiteName}</p>}
               {errors.websiteNameExists && <p className="text-danger small-font">{errors.websiteNameExists}</p>}
             </div>
