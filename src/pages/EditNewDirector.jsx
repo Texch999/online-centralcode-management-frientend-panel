@@ -2325,6 +2325,7 @@ function EditNewDirector() {
         });
       }
       adminMap.get(adminKey).userWebsites.push({
+        
         id: site.website_access_id,
         web_name: site.user_panel_name,
         web_url: site.user_panel_url,
