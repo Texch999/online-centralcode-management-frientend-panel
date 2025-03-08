@@ -820,7 +820,7 @@
 }
 
 .input-css3.fixed-upload {
-  max-width:11.375rem;
+  max-width: 11.375rem;
   /* 150px */
   min-width: 6.25rem;
   /* 100px */
@@ -955,4 +955,16 @@
   height: 6vh;
   width: 6vh;
   border-radius: 50%;
+}
+.hr-line-grey {
+  border: 1.2px dashed #00000066;
+  position: absolute;
+  width: 88%;
+  bottom: 43%;
+  z-index: 999999;
+  left: 10%;
+}
+.br-right {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
