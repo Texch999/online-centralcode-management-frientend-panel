@@ -63,15 +63,6 @@ const AddWebsitesPopup = ({ show, onHide,
       .join(" "),
   }));
 
-  // const handleChange = (e) => {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  //   // Clear backend errors when the user starts typing
-  //   if (e.target.name === "websiteName") {
-  //     setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "" }));
-  //   } else if (e.target.name === "websiteURL") {
-  //     setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "" }));
-  //   }
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -120,7 +111,7 @@ const AddWebsitesPopup = ({ show, onHide,
           newErrors.websiteName = "Website Name is required.";
         } else if (value.length < 2 || value.length > 100) {
           newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
-        } else if (!/^[a-zA-Z0-9._]+$/.test(value)) {
+        } else if (/^[a-zA-Z0-9._]+$/.test(value)) {
           newErrors.websiteName = "Website Name can only contain letters, numbers, dots, and underscores.";
         } else {
           delete newErrors.websiteName; // Clear the error if validation passes
@@ -133,7 +124,7 @@ const AddWebsitesPopup = ({ show, onHide,
         } else {
           const urlPattern = /^(?!https?:\/\/|www\.)[\w.-]+\.\w{2,}$/i;
           if (!urlPattern.test(value)) {
-            newErrors.websiteURL = "Invalid website URL. Please include http://, https://, or www.";
+            newErrors.websiteURL = "Invalid website URL. Please not include http://, https://, www or spl char";
           } else {
             delete newErrors.websiteURL; // Clear the error if validation passes
           }
