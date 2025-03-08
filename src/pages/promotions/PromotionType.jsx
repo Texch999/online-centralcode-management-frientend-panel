@@ -65,7 +65,7 @@ const PromotionType = () => {
   const [fullPosterImage, setFullPosterImage] = useState(false);
   const [promotionDeleteModal, setPromotionDeleteModal] = useState(false);
   const [posterDeleteModal, setPosterDeleteModal] = useState(false);
-
+  const [inputValue, setInputValue] = useState("");
   const [promotionsTypes, setPromotionsTypes] = useState([]);
   const [selectedPromotionId, setSelectedPromotionId] = useState(null);
   const [selectedPromotionStatus, setSelectedPromotionStatus] = useState(null);
@@ -82,6 +82,8 @@ const PromotionType = () => {
   const [totalRecords, setTotalRecords] = useState("");
   const [promotionsImgTotalRecords, setpromotionsImgTotalRecords] =
     useState("");
+
+
   const [errors, setErrors] = useState({
     promotionType: "",
     image: "",
@@ -525,7 +527,10 @@ const PromotionType = () => {
                   classNamePrefix="custom-react-select"
                   value={selectedOption}
                   onChange={handleSelectChange}
+                  isSearchable={false} // Disable typing
+
                 />
+
                 <div
                   className="position-absolute"
                   style={{ minHeight: "20px" }}
@@ -559,6 +564,8 @@ const PromotionType = () => {
                   classNamePrefix="custom-react-select"
                   value={selectWebsites}
                   onChange={handleSelectWebsites}
+                  isSearchable={false} // Disable typing
+
                 />
                 <div
                   className="position-absolute"
@@ -594,6 +601,8 @@ const PromotionType = () => {
                   classNamePrefix="custom-react-select"
                   value={selectUserWebsites}
                   onChange={handleSelectUserWebsites}
+                  isSearchable={false} // Disable typing
+
                 />
                 <div
                   className="position-absolute"

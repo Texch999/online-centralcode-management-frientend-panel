@@ -33,7 +33,7 @@ function EditNewDirector() {
   const [forms, setForms] = useState([]);
   const role = localStorage.getItem("role_code");
   const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-
+  const [commissionTypeChanges, setCommissionTypeChanges] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,7 +74,7 @@ function EditNewDirector() {
           .then((response) => {
             if (response.status) {
               setIndividualDirectorData(response.data);
-              setName(response.data.login_name || "");
+              setName(response.data.name || "");
               setLoginName(response.data.login_name || "");
               setSelectedCountryCode(response.data.county || "");
               setSelectedRole(response.data.type || "");
@@ -203,11 +203,11 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          ...(site.commission_type === 1
+          ...(site.commission_type == 1
             ? {
               monthly_amount: parseInt(site.monthly_amount) || null,
               max_chips_monthly: parseInt(site.max_chips_monthly) || null,
-              chip_percentage: parseFloat(site.chip_percentage) || null,
+              chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100 || null,
               is_casino: site.is_casino === 1 ? 1 : 2,
               ...(site.is_casino === 1
                 ? { caschip_values: parseFloat(site.caschip_values) || null }
@@ -242,7 +242,6 @@ function EditNewDirector() {
         downline_comm: parseFloat(site.downline_comm) || null,
       })) : [],
     };
-
 
     updateDirectorByID(userId, payload)
       .then((response) => {
@@ -289,7 +288,7 @@ function EditNewDirector() {
               share: parseFloat(site.share) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
             }),
-          is_casino: site.is_casino === 1? 1 : 2,
+          is_casino: site.is_casino === 1 ? 1 : 2,
           ...(site.is_casino === 1
             ? { caschip_values: parseFloat(site.caschip_values) || null }
             : {}),
@@ -437,20 +436,7 @@ function EditNewDirector() {
     GetAllCurrencies();
   }, [userId]);
 
-  // const handleAdminRoleChange = (formId, selectedOption) => {
-  //   setSelectedAdmins((prev) => ({
-  //     ...prev,
-  //     [formId]: selectedOption,
-  //   }));
 
-  //   const adminData = adminWebsite.find(
-  //     (admin) => admin.id === selectedOption.value
-  //   );
-  //   setUserWebsitesList((prev) => ({
-  //     ...prev,
-  //     [formId]: adminData?.userWebsites || [],
-  //   }));
-  // };
 
   const handleAdminRoleChange = (formId, selectedOption) => {
     setSelectedAdmins((prev) => ({
@@ -585,7 +571,21 @@ function EditNewDirector() {
   const hasRemainingUserWebsites = () => {
     return adminWebsite.some((admin) => getRemainingUserWebsites(admin.id).length > 0);
   };
-  console.log(hasRemainingUserWebsites, "===>hasRemainingUserWebsites")
+  const handleCommissionTypeChange = (websiteId, newCommissionType) => {
+    setCommissionTypeChanges((prev) => ({
+      ...prev,
+      [websiteId]: newCommissionType,
+    }));
+
+    // Update the userWebsites state with the new commission type
+    setUserWebsites((prevWebsites) =>
+      prevWebsites.map((website) =>
+        website.website_access_id === websiteId
+          ? { ...website, commission_type: newCommissionType }
+          : website
+      )
+    );
+  };
   return (
     <>
       <div>
@@ -731,7 +731,7 @@ function EditNewDirector() {
                   </div>
                 </div>
 
-                {userWebsites?.map((userWebsite, userIndex) => {
+                {/* {userWebsites?.map((userWebsite, userIndex) => {
                   if (userWebsite.admin_panel_id == data.web_admin_id) {
                     return (
                       <div key={userIndex} className="w-100 mt-3 row">
@@ -747,7 +747,7 @@ function EditNewDirector() {
                         <div className="col-2">
                           <label className="small-font my-1">Commission Type</label>
                           <div className="d-flex align-items-center">
-                            <select
+                         <select
                               className="small-font white-bg rounded border-grey3 p-2 w-100"
                               value={userWebsite.commission_type}
                               disabled={isExpired(userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null)}
@@ -758,6 +758,8 @@ function EditNewDirector() {
                                 </option>
                               ))}
                             </select>
+
+                          
                           </div>
                         </div>
 
@@ -1003,7 +1005,299 @@ function EditNewDirector() {
                       </div>
                     );
                   }
-                })}
+                })} */}
+
+
+                {
+                  userWebsites?.map((userWebsite, userIndex) => {
+                    if (userWebsite.admin_panel_id == data.web_admin_id) {
+                      const currentCommissionType =
+                        commissionTypeChanges[userWebsite.website_access_id] ||
+                        userWebsite.commission_type;
+
+                      return (
+                        <div key={userIndex} className="w-100 mt-3 row">
+                          <div className="col-2 d-flex flex-column">
+                            <select
+                              className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
+                              disabled
+                            >
+                              <option value={userWebsite.web_url}>{userWebsite.web_url}</option>
+                            </select>
+                          </div>
+
+                          <div className="col-2">
+                            <label className="small-font my-1">Commission Type</label>
+                            <div className="d-flex align-items-center">
+                              {console.log(currentCommissionType, "===>currentCommissionType")}
+                              <select
+                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                value={currentCommissionType}
+                                onChange={(e) =>
+                                  handleCommissionTypeChange(
+                                    userWebsite.website_access_id,
+                                    e.target.value
+                                  )
+                                }
+                                disabled={isExpired(
+                                  userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                )}
+                              >
+                                {Object.entries(commissionTypes).map(([value, label]) => (
+                                  <option key={value} value={value}>
+                                    {label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          {currentCommissionType == "1" && (
+                            <>
+                              <div className="col-2">
+                                <label className="small-font my-1">Rent Start Date</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.rent_start_date || ""}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Rent Expiry Date</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.rent_expiry_date || ""}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Monthly Amount</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.monthly_amount || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      monthly_amount: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                  disabled={isExpired(
+                                    userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  )}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Max Chips Monthly</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.max_chips_monthly || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      max_chips_monthly: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                  disabled={isExpired(
+                                    userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  )}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Chip Percentage</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={
+                                    (userWebsite.monthly_amount / userWebsite.max_chips_monthly) * 100
+                                  }
+                                  readOnly
+                                  disabled={isExpired(
+                                    userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  )}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Downline Comm</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                  disabled={isExpired(
+                                    userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  )}
+                                />
+                              </div>
+
+                              <div className="col-2">
+                                <label className="small-font my-1">Casino Allowed</label>
+                                <input
+                                  type="checkbox"
+                                  checked={userWebsite.is_casino === 1}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      is_casino: e.target.checked ? 1 : 2,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+
+                              {userWebsite.is_casino === 1 && (
+                                <div className="col-2">
+                                  <label className="small-font my-1">Casino Chip Value</label>
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    value={userWebsite.caschip_values || ""}
+                                    onChange={(e) => {
+                                      const updatedWebsites = [...userWebsites];
+                                      updatedWebsites[userIndex] = {
+                                        ...updatedWebsites[userIndex],
+                                        caschip_values: e.target.value,
+                                      };
+                                      setUserWebsites(updatedWebsites);
+                                    }}
+                                  />
+                                </div>
+                              )}
+                            </>
+                          )}
+
+                          {currentCommissionType == "2" && (
+                            <>
+                              <div className="col-2">
+                                <label className="small-font my-1">Downline Share</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.share || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      share: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Downline Comm</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Caschip Values</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.caschip_values || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      caschip_values: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+                            </>
+                          )}
+
+                          {currentCommissionType == "3" && (
+                            <>
+                              <div className="col-2">
+                                <label className="small-font my-1">Downline Share</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.share || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      share: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Downline Comm</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+                              <div className="col-2">
+                                <label className="small-font my-1">Caschip Values</label>
+                                <input
+                                  type="text"
+                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.caschip_values || ""}
+                                  onChange={(e) => {
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      caschip_values: e.target.value,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                              </div>
+                            </>
+                          )}
+
+                          <div className="col-1 text-end">
+                            <h6
+                              className={`my-1 row ${userWebsite.status === "Active" ? "green-font" : "red-font"
+                                }`}
+                            >
+                              status: <span className="small-font fw-600"> {userWebsite.status} </span>
+                            </h6>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })
+                }
               </div>
             ))}
 

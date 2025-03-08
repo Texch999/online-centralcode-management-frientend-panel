@@ -133,7 +133,7 @@ const AddWibsites = () => {
           }, ${getLocationName(website?.location_id)}`}{" "}
       </div>
     ),
-    url: website.web_url.toLowerCase(),
+    url: website.web_url.replace(/^https?:\/\//i, "").toLowerCase(),
     action: (
       <div className="flex-end gap-4">
         <div>

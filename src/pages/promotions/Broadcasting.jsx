@@ -33,6 +33,7 @@ const Broadcasting = () => {
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectLocations, setSelectLocations] = useState(null);
   const [textMessage, setTextMessage] = useState("");
+
   const [broadCastingdata, setBroadCastingdata] = useState([]);
 
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,10 @@ const Broadcasting = () => {
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [editBroadcast, setEditBroadcast] = useState(false);
-
+  const [error, setError] = useState("");
+  const [typeInputValue, setTypeInputValue] = useState("");
+  const [websitesInputValue, setWebsitesInputValue] = useState("");
+  const [locationsInputValue, setLocationsInputValue] = useState("");
   const [websitesList, setWebsitesList] = useState([]);
 
   const [selectedBroadcastId, setSelectedBroadcastId] = useState();
@@ -125,9 +129,24 @@ const Broadcasting = () => {
     setErrors((pre) => ({ ...pre, selectLocations }));
   };
 
-  const handleMessageChange = (event) => {
-    setTextMessage(event.target.value);
-    setErrors((pre) => ({ ...pre, textMessage: "" }));
+  // const handleMessageChange = (event) => {
+  //   setTextMessage(event.target.value);
+  //   setErrors((pre) => ({ ...pre, textMessage: "" }));
+  // };
+  const handleMessageChange = (e) => {
+    const value = e.target.value;
+
+    // Remove special characters while typing
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9.,()/\-' ?’]/g, "");
+
+    // Show error if the length is less than 2 characters
+    if (sanitizedValue.length > 0 && sanitizedValue.length < 2) {
+      setError("Message must be at least 2 characters long.");
+    } else {
+      setError(""); // Clear error if valid
+    }
+
+    setTextMessage(sanitizedValue); // Update input field
   };
 
   useEffect(() => {
@@ -293,7 +312,7 @@ const Broadcasting = () => {
 
   const BockOrUnblock = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await statusBroadCasting(selectedBroadcastId);
       if (response?.status === 200) {
         setMessage(response?.message);
@@ -369,9 +388,9 @@ const Broadcasting = () => {
     website: <div>{broadCast.website_id}</div>,
     website: (
       <div>
-        {websitesList.find(
-          (site) => site.id.slice(3, -3) === String(broadCast.website_id)
-        )?.web_name || "Unknown"}
+        {websitesList
+          .find((site) => site.id.slice(3, -3) === String(broadCast.website_id))
+          ?.web_name?.replace(/^./, (char) => char.toUpperCase()) || "Unknown"}
       </div>
     ),
     broadcastingLocation: (
@@ -440,7 +459,10 @@ const Broadcasting = () => {
             menuPlacement="auto"
             classNamePrefix="custom-react-select"
             value={selectType}
-            onChange={handleSelectType}
+            // onChange={handleSelectType}
+            onChange={setSelectType}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectType && (
             <span className="text-danger small-font">{errors.selectType}</span>
@@ -451,7 +473,6 @@ const Broadcasting = () => {
           <label className="black-text4 small-font mb-1">Websites</label>
           <Select
             className="small-font"
-            // options={selectOptionsWebsites}
             options={handleWebsitesType(activeBtn)}
             placeholder="Select"
             styles={customStyles}
@@ -460,6 +481,8 @@ const Broadcasting = () => {
             classNamePrefix="custom-react-select"
             value={selectWebsites}
             onChange={handleSelectWebsites}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -482,6 +505,8 @@ const Broadcasting = () => {
             classNamePrefix="custom-react-select"
             value={selectLocations}
             onChange={handleSelectLocations}
+            isSearchable={false} // Disable typing
+
           />
           {errors.selectLocations && (
             <span className="text-danger small-font">
@@ -513,9 +538,7 @@ const Broadcasting = () => {
             }}
           ></textarea>
 
-          {errors.textMessage && (
-            <span className="text-danger small-font">{errors.textMessage}</span>
-          )}
+          {error && <span className="text-danger small-font">{error}</span>}
         </div>
 
         <div className="col-2 mt-4">
