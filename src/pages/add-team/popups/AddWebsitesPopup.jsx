@@ -68,17 +68,17 @@ const AddWebsitesPopup = ({ show, onHide,
     const { name, value } = e.target;
 
     // Filter out numbers and special characters for the city field
-    if (name === "city") {
-      const filteredValue = value.replace(/[^a-zA-Z\s]/g, ""); // Allow only letters and spaces
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: filteredValue, // Update the form data with the filtered value
-      }));
+    // if (name === "city") {
+    //   const filteredValue = value.replace(/[^a-zA-Z\s]/g, ""); // Allow only letters and spaces
+    //   setFormData((prevData) => ({
+    //     ...prevData,
+    //     [name]: filteredValue, // Update the form data with the filtered value
+    //   }));
 
-      // Validate the city field
-      validateField(name, filteredValue);
-      return; // Stop further execution for the city field
-    }
+    //   // Validate the city field
+    //   validateField(name, filteredValue);
+    //   return; // Stop further execution for the city field
+    // }
 
     // For other fields, update the form data as usual
     setFormData((prevData) => ({
@@ -111,7 +111,7 @@ const AddWebsitesPopup = ({ show, onHide,
           newErrors.websiteName = "Website Name is required.";
         } else if (value.length < 2 || value.length > 100) {
           newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
-        } else if (/^[a-zA-Z0-9._]+$/.test(value)) {
+        } else if (!/^[a-zA-Z0-9._\s-]+$/.test(value)) {
           newErrors.websiteName = "Website Name can only contain letters, numbers, dots, and underscores.";
         } else {
           delete newErrors.websiteName; // Clear the error if validation passes
@@ -138,12 +138,30 @@ const AddWebsitesPopup = ({ show, onHide,
     // Update the errors state
     setErrors(newErrors);
   };
+  const filteredOptions = DeployOptions.filter((option) =>
+    /^[A-Za-z]+$/.test(option.label)
+  );
+  const filteredPanels = PanelOptions.filter((option) =>
+    /^[A-Za-z\s]+$/.test(option.label)
+  );
+  const filterCountries = formattedCountries.filter((option) =>
+    /^[A-Za-z\s]+$/.test(option.label)
+  );
+
   const handleSelectChange = (field, selectedOption) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: selectedOption,
-    }));
+    if (selectedOption && /^[A-Za-z\s]+$/.test(selectedOption.label)) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: selectedOption,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: null,
+      }));
+    }
   };
+
   useEffect(() => {
     if (isInitialRendering.current) {
       isInitialRendering.current = false
@@ -214,7 +232,7 @@ const AddWebsitesPopup = ({ show, onHide,
       newErrors.websiteName = "Website Name is required.";
     } else if (formData.websiteName.length < 2 || formData.websiteName.length > 100) {
       newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
-    } else if (!/^[a-zA-Z0-9-]+$/.test(formData.websiteName)) {
+    } else if (!/^[a-zA-Z0-9._\s-]+$/.test(formData.websiteName)) {
       newErrors.websiteName = "Website Name can only contain letters, numbers, and hyphens.";
     }
 
@@ -346,13 +364,31 @@ const AddWebsitesPopup = ({ show, onHide,
             {/* Deploy Type Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Deploy Type</label>
-              <Select
+              {/* <Select
                 className="small-font"
-                options={DeployOptions}
+                options={filteredOptions} // Use filtered options
                 placeholder="Select"
                 styles={customStyles}
                 value={formData.deployType}
                 onChange={(option) => handleSelectChange("deployType", option)}
+              />; */}
+              <Select
+                className="small-font"
+                options={filteredOptions} // Use the filtered options
+                placeholder="Select"
+                styles={customStyles}
+                value={formData.deployType}
+                onChange={(option) => handleSelectChange("deployType", option)}
+                filterOption={(option, inputValue) => {
+                  if (!inputValue) return true;
+                  return /^[A-Za-z]+$/.test(inputValue) && option.label.toLowerCase().includes(inputValue.toLowerCase());
+                }}
+                onInputChange={(inputValue, { action }) => {
+                  if (action === "input-change" && !/^[A-Za-z]*$/.test(inputValue)) {
+                    return inputValue.replace(/[^A-Za-z]/g, "");
+                  }
+                  return inputValue;
+                }}
               />
               {errors.deployType && <p className="text-danger small-font">{errors.deployType}</p>}
             </div>
@@ -360,18 +396,43 @@ const AddWebsitesPopup = ({ show, onHide,
             {/* Panel Type Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Panel Type</label>
-              <Select
+              {/* <Select
                 className="small-font"
                 options={PanelOptions}
                 placeholder="Select"
                 styles={customStyles}
                 value={formData.panelType}
                 onChange={(option) => handleSelectChange("panelType", option)}
+              /> */}
+
+              <Select
+                className="small-font"
+                options={filteredPanels} // Use the filtered options
+                placeholder="Select"
+                styles={customStyles} // Apply custom styles
+                value={formData.panelType}
+                onChange={(option) => handleSelectChange("panelType", option)}
+                filterOption={(option, inputValue) => {
+                  if (!inputValue) return true; // Show all options when the input is empty
+                  return (
+                    /^[A-Za-z\s]+$/.test(inputValue) && // Allow alphabetic characters and spaces
+                    option.label.toLowerCase().includes(inputValue.toLowerCase())
+                  );
+                }}
+                onInputChange={(inputValue, { action }) => {
+                  if (action === "input-change" && !/^[A-Za-z\s]*$/.test(inputValue)) {
+                    return inputValue.replace(/[^A-Za-z\s]/g, ""); // Remove non-alphabetic characters (except spaces)
+                  }
+                  return inputValue;
+                }}
+                noOptionsMessage={({ inputValue }) =>
+                  inputValue ? "No matching options" : "No options available"
+                }
               />
               {errors.panelType && <p className="text-danger small-font">{errors.panelType}</p>}
             </div>
 
-            {/* Reference Type Dropdown */}
+            {/* Reference Type  */}
             {/* <div className="col-4">
               <label className="small-font mb-1">Reference Type</label>
               <Select
@@ -388,13 +449,37 @@ const AddWebsitesPopup = ({ show, onHide,
             {/* Location Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Country</label>
-              <Select
+              {/* <Select
                 className="small-font"
                 options={formattedCountries}
                 placeholder="Select"
                 styles={customStyles}
                 value={formData.location}
                 onChange={(option) => handleSelectChange("location", option)}
+              /> */}
+              <Select
+                className="small-font"
+                options={filterCountries} // Use the formatted countries
+                placeholder="Select"
+                styles={customStyles}
+                value={formData.location}
+                onChange={(option) => handleSelectChange("location", option)}
+                filterOption={(option, inputValue) => {
+                  if (!inputValue) return true; // Show all options when the input is empty
+                  return (
+                    /^[A-Za-z\s]+$/.test(inputValue) && // Allow alphabetic characters and spaces
+                    option.label.toLowerCase().includes(inputValue.toLowerCase())
+                  );
+                }}
+                onInputChange={(inputValue, { action }) => {
+                  if (action === "input-change" && !/^[A-Za-z\s]*$/.test(inputValue)) {
+                    return inputValue.replace(/[^A-Za-z\s]/g, ""); // Remove non-alphabetic characters (except spaces)
+                  }
+                  return inputValue;
+                }}
+                noOptionsMessage={({ inputValue }) =>
+                  inputValue ? "No matching options" : "No options available"
+                }
               />
               {errors.location && <p className="text-danger small-font">{errors.location}</p>}
             </div>
@@ -424,7 +509,6 @@ const AddWebsitesPopup = ({ show, onHide,
                 value={formData.websiteName}
                 onChange={handleChange}
               />
-              {console.log(errors.websiteName, "===>websiteName")}
               {errors.websiteName && <p className="text-danger small-font">{errors.websiteName}</p>}
               {errors.websiteNameExists && <p className="text-danger small-font">{errors.websiteNameExists}</p>}
             </div>
