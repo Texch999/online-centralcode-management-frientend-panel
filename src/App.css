@@ -300,6 +300,16 @@
   border-radius: 0.35rem;
 }
 
+.input-css4 {
+  background: #f2f2f2;
+  border: 2px solid #f2f2f2;
+  outline: none;
+  color: #1c1c1c;
+  font-weight: 500;
+  
+  border-radius: 0.35rem;
+}
+
 .orange-btn {
   background: #fc9b4e;
   border-radius: 0.35rem;

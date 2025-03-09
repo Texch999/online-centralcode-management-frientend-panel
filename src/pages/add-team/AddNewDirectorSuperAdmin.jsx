@@ -1890,7 +1890,7 @@
 //     if (accotypeid === "2" || accotypeid === "3") {
 //       return (
 //         <div className="w-80  flex-between position-relative mx-1 d-flex align-items-center">
-        
+
 //           <input
 //             type="checkbox"
 //             checked={websiteDetails[userSiteId]?.isPrimary || false}
@@ -2177,7 +2177,7 @@
 //                   </div>
 //                 )}
 //                 <div className="position-relative mt-4">
-              
+
 //                   <div className="hr-line-grey"></div>
 //                   <div className="d-flex w-100 my-2">
 //                     <div className="small-font black-font my-2">
@@ -2765,7 +2765,7 @@
 //                                     userSite.id
 //                                   )}
 //                                   </div>
-                                  
+
 //                                 </div>
 //                               )}
 //                               {accountTypes[form.id]?.[userSite.id] === "3" && (
@@ -2840,7 +2840,7 @@
 //                                     userSite.id
 //                                   )}
 //                                   </div>
-                                 
+
 //                                 </div>
 //                               )}
 //                             </div>
@@ -2899,7 +2899,6 @@
 
 // export default AddNewDirectorSuperAdmin;
 
-
 import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
@@ -2926,7 +2925,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SuccessPopup from "../popups/SuccessPopup";
 
 function AddNewDirectorSuperAdmin() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const role = localStorage.getItem("role_code");
 
   const [showPassword, setShowPassword] = useState(false);
@@ -3376,7 +3375,6 @@ function AddNewDirectorSuperAdmin() {
     if (accotypeid === "2" || accotypeid === "3") {
       return (
         <div className="w-80  flex-between position-relative mx-1 d-flex align-items-center">
-        
           <input
             type="checkbox"
             checked={websiteDetails[userSiteId]?.isPrimary || false}
@@ -3384,7 +3382,7 @@ function AddNewDirectorSuperAdmin() {
               handleInputChange(userSiteId, "isPrimary", e.target.checked)
             }
           />
-            <label className="small-font me-2">IS PRIMARY</label>
+          <label className="small-font me-2">IS PRIMARY</label>
         </div>
       );
     }
@@ -3536,14 +3534,16 @@ function AddNewDirectorSuperAdmin() {
               <>
                 <div className="p-1 col position-relative my-2">
                   <label className="small-font my-1">Password</label>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    className="small-font rounded all-none input-css  w-100"
-                    placeholder="Enter"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div className="w-100 input-css4">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="small-font rounded all-none input-css  w-90"
+                      placeholder="Enter"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
                   <span
                     className="position-absolute"
                     style={{
@@ -3561,18 +3561,21 @@ function AddNewDirectorSuperAdmin() {
                     </span>
                   )}
                 </div>
-                <div className="p-1 col position-relative my-2">
+                <div className="p-1 col position-relative my-2 ">
                   <label className="small-font my-1">Confirm Password</label>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    className=" small-font rounded all-none input-css  w-100"
-                    placeholder="Enter"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
+
+                  <div className="w-100 input-css4">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      className=" small-font rounded all-none input-css  w-90"
+                      placeholder="Enter"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
                   <span
-                    className="position-absolute"
+                    className="position-absolute "
                     style={{
                       right: "1.5rem",
                       top: "2.3rem",
@@ -3594,14 +3597,17 @@ function AddNewDirectorSuperAdmin() {
             )}
             <div className="p-1 col position-relative my-2">
               <label className="small-font my-1">Management Password</label>
-              <input
-                type={showManagementPassword ? "text" : "password"}
-                className=" small-font rounded all-none input-css  w-100"
-                placeholder="Enter"
-                required
-                value={managementPassword}
-                onChange={(e) => setManagementPassword(e.target.value)}
-              />
+
+              <div className="w-100 input-css4">
+                <input
+                  type={showManagementPassword ? "text" : "password"}
+                  className=" small-font rounded all-none input-css  w-90"
+                  placeholder="Enter"
+                  required
+                  value={managementPassword}
+                  onChange={(e) => setManagementPassword(e.target.value)}
+                />
+              </div>
               <span
                 className="position-absolute"
                 style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
@@ -3694,7 +3700,6 @@ function AddNewDirectorSuperAdmin() {
                   </div>
                 )}
                 <div className="position-relative mt-4">
-              
                   <div className="hr-line-grey"></div>
                   <div className="d-flex w-100 my-2">
                     <div className="small-font black-font my-2">
@@ -3868,8 +3873,9 @@ function AddNewDirectorSuperAdmin() {
                                           }
                                         />
                                       </div>
-                                      {websiteDetails[userSite.website_access_id]
-                                        ?.casino_allowed && (
+                                      {websiteDetails[
+                                        userSite.website_access_id
+                                      ]?.casino_allowed && (
                                         <div className="col-2">
                                           <input
                                             type="text"
@@ -3963,7 +3969,9 @@ function AddNewDirectorSuperAdmin() {
                                           }
                                         />
                                         <span className="small-font text-center border-left3 px-1">
-                                          <b className="mx-1">Cas. Chip Val 20</b>
+                                          <b className="mx-1">
+                                            Cas. Chip Val 20
+                                          </b>
                                         </span>
                                       </div>
                                     </div>
@@ -4030,7 +4038,9 @@ function AddNewDirectorSuperAdmin() {
                                           }
                                         />
                                         <span className="small-font text-center border-left3 px-1">
-                                          <b className="mx-1">Cas. Chip Val 20</b>
+                                          <b className="mx-1">
+                                            Cas. Chip Val 20
+                                          </b>
                                         </span>
                                       </div>
                                     </div>
@@ -4056,7 +4066,7 @@ function AddNewDirectorSuperAdmin() {
                               key={userSite.id}
                               className="d-flex white-bg flex-column"
                             >
-                              <div className="d-flex">
+                              <div className="d-flex ">
                                 <div className="col-2 input-css d-flex border-grey3 my-2">
                                   <input
                                     type="checkbox"
@@ -4078,11 +4088,11 @@ function AddNewDirectorSuperAdmin() {
                                   />
                                 </div>
                                 {selectedWebsites[form.id]?.[userSite.id] && (
-                                  <>
+                                  <div className=" col flex-between">
                                     {/* Commission Type Dropdown */}
-                                    <div className="col-2 my-2 mx-2">
+                                    <div className="col-5   my-2 mx-2 d-flex">
                                       <Select
-                                        className="small-font white-bg"
+                                        className="small-font col-4 white-bg"
                                         placeholder="Account Type"
                                         options={commissionOptions}
                                         styles={customStyles}
@@ -4097,31 +4107,32 @@ function AddNewDirectorSuperAdmin() {
                                           commissionOptions.find(
                                             (option) =>
                                               option.value ===
-                                              accountTypes[form.id]?.[userSite.id]
+                                              accountTypes[form.id]?.[
+                                                userSite.id
+                                              ]
                                           ) || null
                                         }
                                       />
-                                       <div className="col-2 my-2 mx-2">
-                                      <button
-                                        type="button"
-                                        className="cst-btn remove-btn"
-                                        onClick={() =>
-                                          handleDeleteUserSite(
-                                            form.id,
-                                            userSite.id
-                                          )
-                                        }
-                                      >
-                                        <FaTrash className="me-2" /> Delete
-                                      </button>
-                                    </div>
-                                    </div>
 
-                                    {/* Delete Button */}
-                                   
+                                      <div className="col  my-2 mx-2">
+                                        <button
+                                          type="button"
+                                          className="cst-btn remove-btn"
+                                          onClick={() =>
+                                            handleDeleteUserSite(
+                                              form.id,
+                                              userSite.id
+                                            )
+                                          }
+                                        >
+                                          <FaTrash className="me-2" /> Delete
+                                        </button>
+                                      </div>
+                                    </div>
 
                                     {/* Fields for Commission Type 1 */}
-                                    {accountTypes[form.id]?.[userSite.id] === "1" && (
+                                    {accountTypes[form.id]?.[userSite.id] ===
+                                      "1" && (
                                       <div className="col-12 my-4">
                                         <div className="row d-flex align-items-center">
                                           <div className="col-2 ">
@@ -4255,7 +4266,8 @@ function AddNewDirectorSuperAdmin() {
                                     )}
 
                                     {/* Fields for Commission Type 2 */}
-                                    {accountTypes[form.id]?.[userSite.id] === "2" && (
+                                    {accountTypes[form.id]?.[userSite.id] ===
+                                      "2" && (
                                       <div className="col d-flex my-4 ">
                                         <div className="col-2 position-relative mx-1">
                                           <label className="fw-600 my-1 small-font">
@@ -4273,7 +4285,7 @@ function AddNewDirectorSuperAdmin() {
                                                 )
                                               }
                                             />
-                                            <span  className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
                                               <b>My Share 10%</b>
                                             </span>
                                           </div>
@@ -4294,7 +4306,7 @@ function AddNewDirectorSuperAdmin() {
                                                 )
                                               }
                                             />
-                                            <span  className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
                                               <b>My Comm.. 1%</b>
                                             </span>
                                           </div>
@@ -4315,29 +4327,31 @@ function AddNewDirectorSuperAdmin() {
                                                 )
                                               }
                                             />
-                                            <span  className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b className="mx-1">Cas. Chip Val 20</b>
+                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                              <b className="mx-1">
+                                                Cas. Chip Val 20
+                                              </b>
                                             </span>
                                           </div>
                                         </div>
                                         {/* Render "Is Primary" checkbox for account types 2 and 3 */}
                                         <div className="w-10 flex-between input-css ms-2 d-flex border-grey3 mt-4">
-                                        {renderIsPrimaryCheckbox(
-                                          form.id,
-                                          userSite.id
-                                        )}
+                                          {renderIsPrimaryCheckbox(
+                                            form.id,
+                                            userSite.id
+                                          )}
                                         </div>
-                                        
                                       </div>
                                     )}
 
                                     {/* Fields for Commission Type 3 */}
-                                    {accountTypes[form.id]?.[userSite.id] === "3" && (
+                                    {accountTypes[form.id]?.[userSite.id] ===
+                                      "3" && (
                                       <div className="col d-flex my-4">
                                         <div className="col-2 position-relative mx-1">
-                                        <label className="fw-600 my-1 small-font">
-                                              * Downline Sharing
-                                            </label>
+                                          <label className="fw-600 my-1 small-font">
+                                            * Downline Sharing
+                                          </label>
                                           <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                             <input
                                               className="small-font bg-none p-2 w-75"
@@ -4350,15 +4364,15 @@ function AddNewDirectorSuperAdmin() {
                                                 )
                                               }
                                             />
-                                            <span  className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
                                               <b>My Share 10%</b>
                                             </span>
                                           </div>
                                         </div>
                                         <div className="col-2 position-relative mx-3">
-                                        <label className="fw-600 my-1 small-font">
-                                              * Enter Commission: M.0
-                                            </label>
+                                          <label className="fw-600 my-1 small-font">
+                                            * Enter Commission: M.0
+                                          </label>
                                           <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                             <input
                                               className="small-font bg-none p-2 w-75"
@@ -4371,15 +4385,15 @@ function AddNewDirectorSuperAdmin() {
                                                 )
                                               }
                                             />
-                                            <span  className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
                                               <b>My Comm.. 1%</b>
                                             </span>
                                           </div>
                                         </div>
                                         <div className="col-2 position-relative mx-3">
-                                        <label className="fw-600 my-1 small-font">
-                                              * Casino Chip Value
-                                            </label>
+                                          <label className="fw-600 my-1 small-font">
+                                            * Casino Chip Value
+                                          </label>
                                           <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                             <input
                                               className="small-font bg-none p-2 w-75"
@@ -4392,22 +4406,23 @@ function AddNewDirectorSuperAdmin() {
                                                 )
                                               }
                                             />
-                                            <span  className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b className="mx-1">Cas. Chip Val 20</b>
+                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                              <b className="mx-1">
+                                                Cas. Chip Val 20
+                                              </b>
                                             </span>
                                           </div>
                                         </div>
                                         {/* Render "Is Primary" checkbox for account types 2 and 3 */}
                                         <div className="w-10 flex-between input-css ms-2 d-flex border-grey3 mt-4 mx-2">
-                                        {renderIsPrimaryCheckbox(
-                                          form.id,
-                                          userSite.id
-                                        )}
+                                          {renderIsPrimaryCheckbox(
+                                            form.id,
+                                            userSite.id
+                                          )}
                                         </div>
-                                        
                                       </div>
                                     )}
-                                  </>
+                                  </div>
                                 )}
                               </div>
                             </div>
