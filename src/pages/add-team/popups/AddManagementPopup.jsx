@@ -112,7 +112,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
         <div className="d-flex justify-content-between align-items-center">
           {Role === "management" ? (
             <h6 className="yellow-font mb-0 py-2 border-bottom-grey">
-              Add Management Team
+              Add Management Team 
             </h6>
           ) : (
             <h5 className="yellow-font mb-0 py-2 border-bottom-grey">

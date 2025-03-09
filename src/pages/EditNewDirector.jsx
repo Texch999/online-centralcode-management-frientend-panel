@@ -2191,7 +2191,6 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          is_primary: site.is_primary || false, // Include is_primary in the payload
           ...(site.commission_type == 1
             ? {
               monthly_amount: parseInt(site.monthly_amount) || null,
@@ -2206,6 +2205,7 @@ function EditNewDirector() {
               share: parseFloat(site.share) || null,
               downline_comm: parseFloat(site.downline_comm) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
+              is_primary: site.is_primary, // Include is_primary in the payload
             }),
         })),
       ],
@@ -2616,8 +2616,8 @@ function EditNewDirector() {
             </ul>
           </div>
         )}
-        <div className="p-1">
-          <div className="row">
+        <div className="white-bg br-10 login-box-shadow w-100 p-2 m-2">
+          <div className="row p-2">
             <div className="col p-1">
               <label className="small-font my-1">Name</label>
               <input
@@ -2669,7 +2669,7 @@ function EditNewDirector() {
               )}
             </div>
           </div>
-          <div className="row">
+          <div className="row p-2">
             <div className="col-3 p-1">
               <label className="small-font my-1">Country</label>
               <select
@@ -2726,7 +2726,7 @@ function EditNewDirector() {
           <div className="row align-items-center">
             <div>Active</div>
             {adminWebsites?.map((data, index) => (
-              <div key={index} className="box-shadow p-2 my-2 rounded">
+              <div key={index} className="login-box-shadow white-bg p-2 my-2 rounded">
                 <div className="w-15 no-cursor">
                   <label className="small-font my-1">Admin Website</label>
                   <div className="d-flex align-items-center">

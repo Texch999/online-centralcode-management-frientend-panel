@@ -2923,6 +2923,7 @@ import { adminRoles, commissionTypes } from "../../utils/enum";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { useLocation, useNavigate } from "react-router-dom";
 import SuccessPopup from "../popups/SuccessPopup";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 function AddNewDirectorSuperAdmin() {
   const navigate = useNavigate();
@@ -3324,6 +3325,12 @@ function AddNewDirectorSuperAdmin() {
       newErrors.selectedCountryCode = "Country is required.";
     if (!selectedCurrencyCode)
       newErrors.selectedCurrencyCode = "Currency is required.";
+    if (!password) {
+      newErrors.password = " Password is required.";
+    }
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Confirm Password is required.";
+    }
     if (!managementPassword) {
       newErrors.managementPassword = "Management Password is required.";
     }
@@ -3426,10 +3433,10 @@ function AddNewDirectorSuperAdmin() {
         <div className="d-flex align-items-center justify-content-between py-2">
           <h5 className="yellow-font">Add Director & Super Admin</h5>
           <span
-            className="yellow-font me-2 cursor-pointer"
+            className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft /> Go Back
+            <FaArrowLeft className="mx-2"/> Back
           </span>
         </div>
         {websiteCreationErrors && (
@@ -3469,18 +3476,19 @@ function AddNewDirectorSuperAdmin() {
             </div>
             <div className="col p-1">
               <label className="small-font my-1">Role</label>
-              <select
-                className="small-font rounded all-none input-css  w-100"
-                value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value)}
-              >
-                <option value="">Select</option>
-                {filteredRoles.map((role, index) => (
-                  <option key={index} value={role.value}>
-                    {role.label}
-                  </option>
-                ))}
-              </select>
+              <Select
+                className="small-font rounded all-none  w-100"
+                placeholder="Select"
+                options={filteredRoles}
+                isSearchable={false}
+                value={filteredRoles.find(
+                  (role) => role.value === selectedRole
+                )}
+                onChange={(selectedOption) =>
+                  setSelectedRole(selectedOption?.value)
+                }
+                styles={customStyles}
+              />
               {errors.selectedRole && (
                 <span className="text-danger small-font">
                   {errors.selectedRole}
@@ -3502,6 +3510,7 @@ function AddNewDirectorSuperAdmin() {
                   </option>
                 ))}
               </select>
+
               {errors?.selectedCountryCode && (
                 <span className="x-small-font error">
                   {errors?.selectedCountryCode}
@@ -3644,6 +3653,7 @@ function AddNewDirectorSuperAdmin() {
                       <Select
                         className="small-font"
                         placeholder="Select"
+                        isSearchable={false}
                         options={transformedOptions.filter(
                           (option) =>
                             !Object.values(selectedAdmins || {}).some(
@@ -3702,14 +3712,14 @@ function AddNewDirectorSuperAdmin() {
                 <div className="position-relative mt-4">
                   <div className="hr-line-grey"></div>
                   <div className="d-flex w-100 my-2">
-                    <div className="small-font black-font my-2">
+                    <div className="small-font black-font my-2 ">
                       User Website Details
                     </div>
                     <hr />
                   </div>
                 </div>
 
-                <div className="row">
+                <div className="row ">
                   <div className="col-12">
                     {role === "director" && selectedOption ? (
                       userWebsitesList[form.id]?.length > 0 ? (
@@ -3719,11 +3729,11 @@ function AddNewDirectorSuperAdmin() {
                             className="d-flex flex-column"
                           >
                             <div className="dashed-grey-border"></div>
-                            <label className="small-font my-1">
+                            <label className="small-font my-1 ">
                               User Website
                             </label>
 
-                            <div className="col-2 input-css d-flex white-bg border-grey3 my-2">
+                            <div className="col-2  input-css d-flex white-bg border-grey3 my-2">
                               <input
                                 type="checkbox"
                                 className="me-2"
@@ -3751,7 +3761,7 @@ function AddNewDirectorSuperAdmin() {
                             ] && (
                               <>
                                 {/* Commission Type Dropdown */}
-                                <div className="col-2 my-1">
+                                <div className="col-4 my-1">
                                   <Select
                                     className="small-font white-bg"
                                     placeholder="Account Type"
@@ -3777,7 +3787,7 @@ function AddNewDirectorSuperAdmin() {
                                 </div>
 
                                 {/* Delete Button */}
-                                <div className="col-2 my-1">
+                                <div className="col-4   my-1">
                                   <button
                                     type="button"
                                     className="cst-btn remove-btn"
@@ -3796,7 +3806,7 @@ function AddNewDirectorSuperAdmin() {
                                 {accountTypes[form.id]?.[
                                   userSite.website_access_id
                                 ] === "1" && (
-                                  <div className="col-12">
+                                  <div className="col-12 ">
                                     <div className="row">
                                       <div className="col-2">
                                         <input
@@ -4056,7 +4066,7 @@ function AddNewDirectorSuperAdmin() {
                           </div>
                         ))
                       ) : (
-                        <p className="small-font">No user websites available</p>
+                        <p className="small-font">""</p>
                       )
                     ) : (
                       <>
@@ -4064,10 +4074,10 @@ function AddNewDirectorSuperAdmin() {
                           userWebsitesList[form.id].map((userSite) => (
                             <div
                               key={userSite.id}
-                              className="d-flex white-bg flex-column"
+                              className="d-flex white-bg mb-4 flex-column "
                             >
-                              <div className="d-flex ">
-                                <div className="col-2 input-css d-flex border-grey3 my-2">
+                              <div>
+                                <div className="col-2 input-css   d-flex border-grey3 my-2">
                                   <input
                                     type="checkbox"
                                     className="me-2"
@@ -4087,12 +4097,13 @@ function AddNewDirectorSuperAdmin() {
                                     readOnly
                                   />
                                 </div>
+
                                 {selectedWebsites[form.id]?.[userSite.id] && (
-                                  <div className=" col flex-between">
+                                  <div className="  flex-row d-flex  w-100 ">
                                     {/* Commission Type Dropdown */}
-                                    <div className="col-5   my-2 mx-2 d-flex">
+                                    <div className="mt-4 col-2 mx-2 d-flex">
                                       <Select
-                                        className="small-font col-4 white-bg"
+                                        className="small-font col white-bg"
                                         placeholder="Account Type"
                                         options={commissionOptions}
                                         styles={customStyles}
@@ -4113,102 +4124,193 @@ function AddNewDirectorSuperAdmin() {
                                           ) || null
                                         }
                                       />
-
-                                      <div className="col  my-2 mx-2">
-                                        <button
-                                          type="button"
-                                          className="cst-btn remove-btn"
-                                          onClick={() =>
-                                            handleDeleteUserSite(
-                                              form.id,
-                                              userSite.id
-                                            )
-                                          }
-                                        >
-                                          <FaTrash className="me-2" /> Delete
-                                        </button>
-                                      </div>
                                     </div>
 
-                                    {/* Fields for Commission Type 1 */}
-                                    {accountTypes[form.id]?.[userSite.id] ===
-                                      "1" && (
-                                      <div className="col-12 my-4">
-                                        <div className="row d-flex align-items-center">
-                                          <div className="col-2 ">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Monthly Amount
-                                            </label>
-                                            <input
-                                              type="text"
-                                              className="small-font white-bg rounded border-grey3 p-2 w-100 "
-                                              placeholder="Monthly Amnt"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "monthly_amount",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                          </div>
-                                          <div className="col-2 ">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Max Chips Monthly
-                                            </label>
+                                    <div className="col-1  mt-4 mx-2">
+                                      <button
+                                        type="button"
+                                        className="cst-btn remove-btn w-100"
+                                        onClick={() =>
+                                          handleDeleteUserSite(
+                                            form.id,
+                                            userSite.id
+                                          )
+                                        }
+                                      >
+                                        <FaTrash className="me-2" /> Delete
+                                      </button>
+                                    </div>
 
-                                            <input
-                                              type="text"
-                                              className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                              placeholder="Max Chips Monthly"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "max_chips_monthly",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                          </div>
-                                          <div className="col-1">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Chips (%)
-                                            </label>
+                                    <div className="col-9  ">
+                                      {/* Fields for Commission Type 1 */}
+                                      {accountTypes[form.id]?.[userSite.id] ===
+                                        "1" && (
+                                        <div>
+                                          <div className="d-flex ">
+                                            <div className="col-2  mx-2">
+                                              <label className="fw-600 my-1 small-font">
+                                                * Monthly Amount
+                                              </label>
+                                              <input
+                                                type="text"
+                                                className="small-font white-bg rounded border-grey3 p-2 w-100 "
+                                                placeholder="Monthly Amnt"
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "monthly_amount",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                            </div>
+                                            <div className="col-2  mx-2">
+                                              <label className="fw-600 my-1 small-font">
+                                                * Max Chips Monthly
+                                              </label>
 
-                                            <input
-                                              type="text"
-                                              className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                              placeholder="Chip %"
-                                              value={
-                                                (parseFloat(
-                                                  websiteDetails[userSite.id]
-                                                    ?.monthly_amount
-                                                ) /
-                                                  parseFloat(
+                                              <input
+                                                type="text"
+                                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                placeholder="Max Chips Monthly"
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "max_chips_monthly",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                            </div>
+                                            <div className="col-1  mx-2">
+                                              <label className="fw-600 my-1 small-font">
+                                                * Chips (%)
+                                              </label>
+
+                                              <input
+                                                type="text"
+                                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                placeholder="Chip %"
+                                                value={
+                                                  (parseFloat(
                                                     websiteDetails[userSite.id]
-                                                      ?.max_chips_monthly
-                                                  )) *
-                                                100
-                                              }
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "chip_percentage",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                          </div>
+                                                      ?.monthly_amount
+                                                  ) /
+                                                    parseFloat(
+                                                      websiteDetails[
+                                                        userSite.id
+                                                      ]?.max_chips_monthly
+                                                    )) *
+                                                  100
+                                                }
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "chip_percentage",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                            </div>
 
-                                          <div className="col-1">
+                                            <div className="col-2  mx-2">
+                                              <label className="fw-600 my-1 small-font">
+                                                * Commission (%)
+                                              </label>
+                                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                                <input
+                                                  type="text"
+                                                  className="small-font bg-none p-2 w-75"
+                                                  placeholder="Commission(%)"
+                                                  onChange={(e) =>
+                                                    handleInputChange(
+                                                      userSite.id,
+                                                      "downline_comm",
+                                                      e.target.value
+                                                    )
+                                                  }
+                                                />
+                                                <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-600">
+                                                  <div>My Comm.. 99%</div>
+                                                </span>
+                                              </div>
+                                            </div>
+                                            <div className=" col-2 flex-between input-css d-flex border-grey3 mt-4  mx-2">
+                                              <input
+                                                type="checkbox"
+                                                checked={
+                                                  websiteDetails[userSite.id]
+                                                    ?.casino_allowed || false
+                                                }
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "casino_allowed",
+                                                    e.target.checked
+                                                  )
+                                                }
+                                              />
+                                              <label className="small-font me-2  white-space ">
+                                                Casino Allowed
+                                              </label>
+                                            </div>
+                                            {websiteDetails[userSite.id]
+                                              ?.casino_allowed && (
+                                              <div className="col-1">
+                                                <label className="fw-600 my-1 white-space small-font">
+                                                  * Casino Chip Value (%)
+                                                </label>
+                                                <input
+                                                  type="text"
+                                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                  placeholder="Casino Chip Value"
+                                                  onChange={(e) =>
+                                                    handleInputChange(
+                                                      userSite.id,
+                                                      "casino_chip_value",
+                                                      e.target.value
+                                                    )
+                                                  }
+                                                />
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {/* Fields for Commission Type 2 */}
+                                      {accountTypes[form.id]?.[userSite.id] ===
+                                        "2" && (
+                                        <div className="col d-flex  ">
+                                          <div className="col-2 position-relative mx-1">
                                             <label className="fw-600 my-1 small-font">
-                                              * Commission (%)
+                                              * Share
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                type="text"
                                                 className="small-font bg-none p-2 w-75"
-                                                placeholder="Commission(%)"
+                                                placeholder="Downline Sharing"
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "share",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                                <b>My Share 10%</b>
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="col-2 position-relative mx-3">
+                                            <label className="fw-600 my-1 small-font">
+                                              * Enter Commission
+                                            </label>
+                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                              <input
+                                                className="small-font bg-none p-2 w-75"
+                                                placeholder="Enter Commission: M.0"
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,
@@ -4217,211 +4319,126 @@ function AddNewDirectorSuperAdmin() {
                                                   )
                                                 }
                                               />
-                                              <span className="small-font text-center  px-1  yellow-bg py-2 br-right  fw-600">
-                                                <div>My Comm.. 99%</div>
+                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                                <b>My Comm.. 1%</b>
                                               </span>
                                             </div>
                                           </div>
-                                          <div className=" w-10 flex-between input-css d-flex border-grey3 mt-4">
-                                            <input
-                                              type="checkbox"
-                                              checked={
-                                                websiteDetails[userSite.id]
-                                                  ?.casino_allowed || false
-                                              }
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "casino_allowed",
-                                                  e.target.checked
-                                                )
-                                              }
-                                            />
-                                            <label className="small-font me-2">
-                                              Casino Allowed
+                                          <div className="col-2 position-relative mx-3">
+                                            <label className="fw-600 my-1 small-font">
+                                              * Cas Chip Value
                                             </label>
-                                          </div>
-                                          {websiteDetails[userSite.id]
-                                            ?.casino_allowed && (
-                                            <div className="col-1">
-                                              <label className="fw-600 my-1 small-font">
-                                                * Casino Chip Value (%)
-                                              </label>
+                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                type="text"
-                                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                className="small-font bg-none p-2 w-75"
                                                 placeholder="Casino Chip Value"
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,
-                                                    "casino_chip_value",
+                                                    "caschip_values",
                                                     e.target.value
                                                   )
                                                 }
                                               />
+                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                                <b className="mx-1">
+                                                  Cas. Chip Val 20
+                                                </b>
+                                              </span>
                                             </div>
-                                          )}
-                                        </div>
-                                      </div>
-                                    )}
+                                          </div>
 
-                                    {/* Fields for Commission Type 2 */}
-                                    {accountTypes[form.id]?.[userSite.id] ===
-                                      "2" && (
-                                      <div className="col d-flex my-4 ">
-                                        <div className="col-2 position-relative mx-1">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Share
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              className="small-font bg-none p-2 w-75"
-                                              placeholder="Downline Sharing"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "share",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b>My Share 10%</b>
-                                            </span>
+                                          {/* Render "Is Primary" checkbox for account types 2 and 3 */}
+                                          <div className="w-10 flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                                            {renderIsPrimaryCheckbox(
+                                              form.id,
+                                              userSite.id
+                                            )}
                                           </div>
                                         </div>
-                                        <div className="col-2 position-relative mx-3">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Enter Commission
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              className="small-font bg-none p-2 w-75"
-                                              placeholder="Enter Commission: M.0"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "downline_comm",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b>My Comm.. 1%</b>
-                                            </span>
-                                          </div>
-                                        </div>
-                                        <div className="col-2 position-relative mx-3">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Cas Chip Value
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              className="small-font bg-none p-2 w-75"
-                                              placeholder="Casino Chip Value"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "caschip_values",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b className="mx-1">
-                                                Cas. Chip Val 20
-                                              </b>
-                                            </span>
-                                          </div>
-                                        </div>
-                                        {/* Render "Is Primary" checkbox for account types 2 and 3 */}
-                                        <div className="w-10 flex-between input-css ms-2 d-flex border-grey3 mt-4">
-                                          {renderIsPrimaryCheckbox(
-                                            form.id,
-                                            userSite.id
-                                          )}
-                                        </div>
-                                      </div>
-                                    )}
+                                      )}
 
-                                    {/* Fields for Commission Type 3 */}
-                                    {accountTypes[form.id]?.[userSite.id] ===
-                                      "3" && (
-                                      <div className="col d-flex my-4">
-                                        <div className="col-2 position-relative mx-1">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Downline Sharing
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              className="small-font bg-none p-2 w-75"
-                                              placeholder="Downline Sharing"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "share",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b>My Share 10%</b>
-                                            </span>
+                                      {/* Fields for Commission Type 3 */}
+                                      {accountTypes[form.id]?.[userSite.id] ===
+                                        "3" && (
+                                        <div className="col d-flex ">
+                                          <div className="col-2 position-relative mx-1">
+                                            <label className="fw-600 my-1 small-font">
+                                              * Downline Sharing
+                                            </label>
+                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                              <input
+                                                className="small-font bg-none p-2 w-75"
+                                                placeholder="Downline Sharing"
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "share",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                                <b>My Share 10%</b>
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="col-2 position-relative mx-3">
+                                            <label className="fw-600 my-1 small-font">
+                                              * Enter Commission: M.0
+                                            </label>
+                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                              <input
+                                                className="small-font bg-none p-2 w-75"
+                                                placeholder="Enter Commission: M.0"
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "downline_comm",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                                <b>My Comm.. 1%</b>
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="col-2 position-relative mx-3">
+                                            <label className="fw-600 my-1 small-font">
+                                              * Casino Chip Value
+                                            </label>
+                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                              <input
+                                                className="small-font bg-none p-2 w-75"
+                                                placeholder="Casino Chip Value"
+                                                onChange={(e) =>
+                                                  handleInputChange(
+                                                    userSite.id,
+                                                    "caschip_values",
+                                                    e.target.value
+                                                  )
+                                                }
+                                              />
+                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                                <b className="mx-1">
+                                                  Cas. Chip Val 20
+                                                </b>
+                                              </span>
+                                            </div>
+                                          </div>
+                                          {/* Render "Is Primary" checkbox for account types 2 and 3 */}
+                                          <div className="w-10 flex-between input-css white-space ms-2 d-flex border-grey3 mt-4 mx-2">
+                                            {renderIsPrimaryCheckbox(
+                                              form.id,
+                                              userSite.id
+                                            )}
                                           </div>
                                         </div>
-                                        <div className="col-2 position-relative mx-3">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Enter Commission: M.0
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              className="small-font bg-none p-2 w-75"
-                                              placeholder="Enter Commission: M.0"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "downline_comm",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b>My Comm.. 1%</b>
-                                            </span>
-                                          </div>
-                                        </div>
-                                        <div className="col-2 position-relative mx-3">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Casino Chip Value
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              className="small-font bg-none p-2 w-75"
-                                              placeholder="Casino Chip Value"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  userSite.id,
-                                                  "caschip_values",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                            <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                              <b className="mx-1">
-                                                Cas. Chip Val 20
-                                              </b>
-                                            </span>
-                                          </div>
-                                        </div>
-                                        {/* Render "Is Primary" checkbox for account types 2 and 3 */}
-                                        <div className="w-10 flex-between input-css ms-2 d-flex border-grey3 mt-4 mx-2">
-                                          {renderIsPrimaryCheckbox(
-                                            form.id,
-                                            userSite.id
-                                          )}
-                                        </div>
-                                      </div>
-                                    )}
+                                      )}
+                                    </div>
+
+                                    <div></div>
                                   </div>
                                 )}
                               </div>
@@ -4429,7 +4446,7 @@ function AddNewDirectorSuperAdmin() {
                           ))
                         ) : (
                           <p className="small-font">
-                            No user websites available
+                           
                           </p>
                         )}
                       </>
@@ -4441,7 +4458,7 @@ function AddNewDirectorSuperAdmin() {
               <div className="d-flex py-2  align-items-center ">
                 <button
                   type="button"
-                  className="cst-btn remove-btn"
+                  className="cst-btn2 "
                   onClick={() => removeForm(form.id)}
                 >
                   <FaTrash className="me-2" /> Remove
