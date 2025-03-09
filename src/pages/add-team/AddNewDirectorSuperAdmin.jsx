@@ -3436,7 +3436,7 @@ function AddNewDirectorSuperAdmin() {
             className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="mx-2"/> Back
+            <FaArrowLeft className="mx-2" /> Back
           </span>
         </div>
         {websiteCreationErrors && (
@@ -3685,11 +3685,12 @@ function AddNewDirectorSuperAdmin() {
                   </div>
                 ) : (
                   <div className="col-2 ">
-                    <label className="small-font my-1">Admin Website</label>
+                    <label className="small-font my-1">Admin Website </label>
                     <div className="custom-select-wrapper">
                       <Select
                         className="small-font"
                         placeholder="Select"
+                        styles={customStyles}
                         options={adminWebsite
                           ?.filter(
                             (admin) =>
@@ -4153,8 +4154,17 @@ function AddNewDirectorSuperAdmin() {
                                               </label>
                                               <input
                                                 type="text"
-                                                className="small-font white-bg rounded border-grey3 p-2 w-100 "
+                                                className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
                                                 placeholder="Monthly Amnt"
+                                                onKeyPress={(e) => {
+                                                  if (
+                                                    e.charCode < 48 ||
+                                                    e.charCode > 57
+                                                  ) {
+                                                    e.preventDefault();
+                                                  }
+                                                }}
+                                                maxLength={9}
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,
@@ -4171,8 +4181,13 @@ function AddNewDirectorSuperAdmin() {
 
                                               <input
                                                 type="text"
-                                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
                                                 placeholder="Max Chips Monthly"
+                                                onKeyPress={(e) => {
+                                                  if (e.charCode < 48 || e.charCode > 57) {
+                                                    e.preventDefault();
+                                                  }
+                                                }}
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,
@@ -4189,19 +4204,37 @@ function AddNewDirectorSuperAdmin() {
 
                                               <input
                                                 type="text"
-                                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
                                                 placeholder="Chip %"
+                                                readOnly
                                                 value={
-                                                  (parseFloat(
-                                                    websiteDetails[userSite.id]
-                                                      ?.monthly_amount
-                                                  ) /
-                                                    parseFloat(
+                                                  isNaN(
+                                                    (parseFloat(
                                                       websiteDetails[
                                                         userSite.id
-                                                      ]?.max_chips_monthly
-                                                    )) *
-                                                  100
+                                                      ]?.monthly_amount
+                                                    ) /
+                                                      parseFloat(
+                                                        websiteDetails[
+                                                          userSite.id
+                                                        ]?.max_chips_monthly
+                                                      )) *
+                                                      100
+                                                  )
+                                                    ? "0%"
+                                                    : (
+                                                        (parseFloat(
+                                                          websiteDetails[
+                                                            userSite.id
+                                                          ]?.monthly_amount
+                                                        ) /
+                                                          parseFloat(
+                                                            websiteDetails[
+                                                              userSite.id
+                                                            ]?.max_chips_monthly
+                                                          )) *
+                                                        100
+                                                      ).toFixed(2) + "%"
                                                 }
                                                 onChange={(e) =>
                                                   handleInputChange(
@@ -4212,30 +4245,28 @@ function AddNewDirectorSuperAdmin() {
                                                 }
                                               />
                                             </div>
+                                            <div className="col-2 mx-2">
+  <label className="fw-600 my-1 small-font">* Commission (%)</label>
+  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+    <input
+      type="text"
+      className="small-font bg-none all-none p-2 w-50"
+      value={websiteDetails[userSite.id]?.downline_comm || ""}
+      onChange={(e) => {
+        let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
+        if (value.length > 3) return; // Restrict input to max 3 digits
+        if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
+        handleInputChange(userSite.id, "downline_comm", value);
+      }}
+    />
+    <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+      <div>My Comm.. {100 - (parseInt(websiteDetails[userSite.id]?.downline_comm) || 0)}%</div>
+    </span>
+  </div>
+</div>
 
-                                            <div className="col-2  mx-2">
-                                              <label className="fw-600 my-1 small-font">
-                                                * Commission (%)
-                                              </label>
-                                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                                <input
-                                                  type="text"
-                                                  className="small-font bg-none p-2 w-75"
-                                                  placeholder="Commission(%)"
-                                                  onChange={(e) =>
-                                                    handleInputChange(
-                                                      userSite.id,
-                                                      "downline_comm",
-                                                      e.target.value
-                                                    )
-                                                  }
-                                                />
-                                                <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-600">
-                                                  <div>My Comm.. 99%</div>
-                                                </span>
-                                              </div>
-                                            </div>
-                                            <div className=" col-2 flex-between input-css d-flex border-grey3 mt-4  mx-2">
+
+                                            <div className="  flex-between input-css d-flex border-grey3 mt-4  mx-2">
                                               <input
                                                 type="checkbox"
                                                 checked={
@@ -4250,20 +4281,25 @@ function AddNewDirectorSuperAdmin() {
                                                   )
                                                 }
                                               />
-                                              <label className="small-font me-2  white-space ">
-                                                Casino Allowed
+                                              <label className="small-font ms-2  white-space ">
+                                                Casino Allowed 
                                               </label>
                                             </div>
                                             {websiteDetails[userSite.id]
                                               ?.casino_allowed && (
-                                              <div className="col-1">
+                                              <div className="col-2">
                                                 <label className="fw-600 my-1 white-space small-font">
                                                   * Casino Chip Value (%)
                                                 </label>
                                                 <input
                                                   type="text"
-                                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                                  className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                                   placeholder="Casino Chip Value"
+                                                  onKeyPress={(e) => {
+                                                    if (e.charCode < 48 || e.charCode > 57) {
+                                                      e.preventDefault();
+                                                    }
+                                                  }}
                                                   onChange={(e) =>
                                                     handleInputChange(
                                                       userSite.id,
@@ -4445,9 +4481,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
                           ))
                         ) : (
-                          <p className="small-font">
-                           
-                          </p>
+                          <p className="small-font"></p>
                         )}
                       </>
                     )}

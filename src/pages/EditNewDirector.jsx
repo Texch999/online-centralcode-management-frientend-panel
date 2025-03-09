@@ -2076,7 +2076,7 @@ function EditNewDirector() {
                     commission_type: site.commission_type || "",
                     status: site.status === 1 ? "Active" : "Inactive",
                     website_access_id: site.website_access_id,
-                    is_primary: site.is_primary || false, // Add is_primary to the payload
+                    is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
                   };
                   switch (site.commission_type) {
                     case 1:
@@ -2135,7 +2135,7 @@ function EditNewDirector() {
                     admin_panel_id: site.admin_panel_id,
                     commission_type: site.commission_type || "",
                     status: response.data.status === 1 ? "Active" : "Inactive",
-                    is_primary: site.is_primary || false, // Add is_primary to the payload
+                    is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
                   };
                   switch (site.commission_type) {
                     case 1:
@@ -2191,6 +2191,7 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
+          // Include is_primary in the payload
           ...(site.commission_type == 1
             ? {
               monthly_amount: parseInt(site.monthly_amount) || null,
@@ -2202,6 +2203,7 @@ function EditNewDirector() {
                 : {}),
             }
             : {
+              is_primary: site.is_primary == 1 ? 1 : 2,
               share: parseFloat(site.share) || null,
               downline_comm: parseFloat(site.downline_comm) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
@@ -2213,7 +2215,6 @@ function EditNewDirector() {
         admin_panel_id: parseInt(site.admin_panel_id) || null,
         user_paner_id: parseInt(site.user_paner_id) || null,
         commission_type: parseInt(site.commission_type) || null,
-        is_primary: site.is_primary || false, // Include is_primary in the payload
         ...(site.commission_type == 1
           ? {
             monthly_amount: parseInt(site.monthly_amount) || null,
@@ -2221,9 +2222,10 @@ function EditNewDirector() {
             chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
           }
           : {
+            is_primary: site.is_primary == 1 ? 1 : 2,
             share: parseFloat(site.share) || null,
             caschip_values: parseFloat(site.caschip_values) || null,
-          }),
+          }), 
         is_casino: site.is_casino === 1 ? 1 : 2,
         ...(site.is_casino === 1
           ? { caschip_values: parseFloat(site.caschip_values) || null }
@@ -2259,7 +2261,11 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          is_primary: site.is_primary || false, // Include is_primary in the payload
+          ...(site.commission_type != 1
+            ? {
+              is_primary: site.is_primary == 1 ? 1 : 2,
+            }
+            : {}),
           chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
         })),
       ],
@@ -2268,7 +2274,7 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id) || null,
           user_paner_id: parseInt(site.user_paner_id) || null,
           commission_type: parseInt(site.commission_type) || null,
-          is_primary: site.is_primary || false, // Include is_primary in the payload
+          is_primary: site.is_primary == 1 ? 1 : 2, // Include is_primary in the payload
           downline_comm: parseFloat(site.downline_comm) || null,
           ...(site.commission_type == 1
             ? {
@@ -2334,7 +2340,7 @@ function EditNewDirector() {
         downline_comm: site.downline_comm,
         share: site.share,
         status: site.status,
-        is_primary: site.is_primary || false, // Add is_primary to the payload
+        is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
         website_access_id: site.id ? site.id : site.website_access_id,
       });
     });
@@ -2477,7 +2483,7 @@ function EditNewDirector() {
           chip_percentage: null,
           caschip_values: null,
           is_casino: 2,
-          is_primary: false, // Default is_primary value for new websites
+          is_primary: 2, // Default is_primary value for new websites
           form_id: formId
         },
       ]);
@@ -2598,7 +2604,7 @@ function EditNewDirector() {
     <>
       <div>
         <div className="d-flex align-items-center justify-content-between">
-          <h5 className="yellow-font fw-bold">
+          <h5 className="yellow-font ">
             {role === "management" ? `Edit Director/SuperAdmin` : `Edit SuperAdmin `}
           </h5>
           <span
@@ -2721,7 +2727,7 @@ function EditNewDirector() {
       </div>
 
       <div>
-        <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET</h3>
+        <h3 className="yellow-font medium-font mt-4 ">WEBSITE MARKET</h3>
         <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             <div>Active</div>
@@ -2746,8 +2752,10 @@ function EditNewDirector() {
                       userWebsite.commission_type;
 
                     return (
-                      <div key={userIndex} className="w-100 mt-3 row">
-                        <div className="col-2 d-flex flex-column">
+                      <div key={userIndex} className="w-100 mt-3 my-2 row">
+
+
+                        <div className="col-2 d-flex flex-column mt-4">
                           <select
                             className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
                             disabled
@@ -2756,7 +2764,7 @@ function EditNewDirector() {
                           </select>
                         </div>
 
-                        <div className="col-2">
+                        <div className="col-2  ">
                           <label className="small-font my-1">Commission Type</label>
                           <div className="d-flex align-items-center">
                             <select
@@ -2783,7 +2791,10 @@ function EditNewDirector() {
 
                         {currentCommissionType == "1" && (
                           <>
-                            <div className="col-2">
+                          {userWebsite.rent_start_date && (
+                            <>
+                            
+                            <div className="col-2  ">
                               <label className="small-font my-1">Rent Start Date</label>
                               <input
                                 type="text"
@@ -2798,7 +2809,10 @@ function EditNewDirector() {
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
                                 value={userWebsite.rent_expiry_date || ""}
                               />
-                            </div>
+                            </div></>
+
+                          )}
+                           
                             <div className="col-2">
                               <label className="small-font my-1">Monthly Amount</label>
                               <input
@@ -2851,7 +2865,7 @@ function EditNewDirector() {
                                 )}
                               />
                             </div>
-                            <div className="col-2">
+                            <div className="col-2 ">
                               <label className="small-font my-1">Downline Comm</label>
                               <input
                                 type="text"
@@ -2871,10 +2885,14 @@ function EditNewDirector() {
                               />
                             </div>
 
-                            <div className="col-2">
-                              <label className="small-font my-1">Casino Allowed</label>
+                            <div className="col-2  mt-4 ">
+                              
+
+                              <div className="light-white-bg br-5 ">
+                                
                               <input
                                 type="checkbox"
+                                className="ms-2"
                                 checked={userWebsite.is_casino === 1}
                                 onChange={(e) => {
                                   const updatedWebsites = [...userWebsites];
@@ -2885,6 +2903,9 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              <label className="small-font p-2 mt-1">Casino Allowed</label>
+                              </div>
+                              
                             </div>
 
                             {userWebsite.is_casino === 1 && (
@@ -2943,7 +2964,7 @@ function EditNewDirector() {
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Caschip Values</label>
+                              <label className="small-font my-1">Caschip  Values</label>
                               <input
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
@@ -2960,8 +2981,8 @@ function EditNewDirector() {
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
-                            <div className="col position-relative mx-1 d-flex align-items-center">
-                              <label className="small-font me-2">Is Primary</label>
+                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                             
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary === 1}
@@ -2974,13 +2995,14 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                               <label className="small-font me-2">Is Primary </label>
                             </div>
                           </>
                         )}
 
                         {currentCommissionType == "3" && (
                           <>
-                            <div className="col-2">
+                            <div className="col-2 ">
                               <label className="small-font my-1">Downline Share</label>
                               <input
                                 type="text"
@@ -3013,7 +3035,7 @@ function EditNewDirector() {
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Caschip Values</label>
+                              <label className="small-font my-1">Caschip Values </label>
                               <input
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
@@ -3029,8 +3051,8 @@ function EditNewDirector() {
                               />
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                            <div className="col position-relative mx-1 d-flex align-items-center">
-                              <label className="small-font me-2">Is Primary</label>
+                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                              
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary == 1}
@@ -3043,17 +3065,19 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              <label className="small-font me-2">Is Primary</label>
                             </div>
                           </>
                         )}
 
-                        <div className="col-1 text-end">
-                          <h6
-                            className={`my-1 row ${userWebsite.status === "Active" ? "green-font" : "red-font"
-                              }`}
+                        <div className="col-1 ms-2 ">
+                          <div
+                            className={`my-1 row 
+                            `}
                           >
-                            status: <span className="small-font fw-600"> {userWebsite.status} </span>
-                          </h6>
+                            status
+                            <div className={`small-font fw-600 input-css text-center ${userWebsite.status === "Active" ? "green-font" : "red-font"} `}> {userWebsite.status} </div>
+                          </div>
                         </div>
                       </div>
                     );
@@ -3068,7 +3092,7 @@ function EditNewDirector() {
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">
-                      <label className="small-font my-1">Admin Website</label>
+                      <label className="small-font my-2">Admin Website</label>
                       <div className="custom-select-wrapper">
                         <Select
                           className="small-font"
@@ -3333,10 +3357,10 @@ function EditNewDirector() {
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                                  <label className="small-font me-2">Is Primary  </label>
                                   <input
                                     type="checkbox"
-                                    checked={userSite.is_primary == 1}
+                                    checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_primary == 1}
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
@@ -3409,10 +3433,10 @@ function EditNewDirector() {
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                                  <label className="small-font me-2">Is Primary  </label>
                                   <input
                                     type="checkbox"
-                                    checked={userSite.is_primary == 1}
+                                    checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_primary == 1}
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
@@ -3560,7 +3584,7 @@ function EditNewDirector() {
 
                                   {/* Casino Allowed Checkbox */}
                                   <div className="col d-flex align-items-center">
-                                    <label className="small-font me-2">Casino Allowed</label>
+                                    <label className="small-font me-2 ">Casino Allowed</label>
                                     <input
                                       type="checkbox"
                                       checked={addWebsites.find((site) => site.id === userSite.id)?.is_casino === 1}
@@ -3651,10 +3675,20 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                {renderIsPrimaryCheckbox(
-                                  userSite.id,
-                                  addWebsites.find((site) => site.id === userSite.id)?.is_primary || false
-                                )}
+                                <div className="col position-relative mx-1 d-flex align-items-center">
+                                  <label className="small-font me-2">Is Primary </label>
+                                  <input
+                                    type="checkbox"
+                                    checked={addWebsites.find((site) => site.id === userSite.id)?.is_primary == 1}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.id,
+                                        "is_primary",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
 
                               </div>
                             )}
@@ -3715,10 +3749,20 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                {renderIsPrimaryCheckbox(
-                                  userSite.id,
-                                  addWebsites.find((site) => site.id === userSite.id)?.is_primary || false
-                                )}
+                                <div className="col position-relative mx-1 d-flex align-items-center">
+                                  <label className="small-font me-2">Is Primary </label>
+                                  <input
+                                    type="checkbox"
+                                    checked={addWebsites.find((site) => site.id === userSite.id)?.is_primary == 1}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.id,
+                                        "is_primary",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
                               </div>
                             )}
                           </div>
