@@ -216,29 +216,46 @@ const SandCBanner = () => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const maxSize = 2 * 1024 * 1024;
+    const maxSizeImage = 2 * 1024 * 1024; // 2MB for images
+    const maxSizeVideo = 5 * 1024 * 1024; // 5MB for videos
     const allowedTypes = ["image/jpeg", "image/png", "image/webp", "video/mp4"];
 
-    let validFiles = [];
+    let validImages = [];
+    let validVideos = [];
     let errorMessages = [];
 
-    if (files.length > 5) {
-      setErrors((prev) => ({
-        ...prev,
-        selectedFiles: "You can only upload up to 5 files.",
-      }));
-      return;
-    }
-
     files.forEach((file) => {
+      console.log(
+        `File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(
+          2
+        )} MB, Type: ${file.type}`
+      );
+
       if (!allowedTypes.includes(file.type)) {
-        errorMessages.push("Invalid Formate");
-      } else if (file.size > maxSize) {
-        errorMessages.push(`File ${file.name} exceeds 2MB.`);
+        errorMessages.push(`Invalid format: ${file.name}`);
+      } else if (file.type.startsWith("image/") && file.size > maxSizeImage) {
+        errorMessages.push(`Image ${file.name} exceeds 2MB.`);
+      } else if (file.type === "video/mp4" && file.size > maxSizeVideo) {
+        errorMessages.push(`Video ${file.name} exceeds 5MB.`);
       } else {
-        validFiles.push(file);
+        if (file.type.startsWith("image/")) {
+          validImages.push(file);
+        } else if (file.type === "video/mp4") {
+          validVideos.push(file);
+        }
       }
     });
+
+    // Enforce max limits: 5 images, 2 videos
+    if (validImages.length > 5) {
+      errorMessages.push("You can only upload up to 5 images.");
+      validImages = validImages.slice(0, 5);
+    }
+
+    if (validVideos.length > 2) {
+      errorMessages.push("You can only upload up to 2 videos.");
+      validVideos = validVideos.slice(0, 2);
+    }
 
     if (errorMessages.length > 0) {
       setErrors((prev) => ({
@@ -248,7 +265,7 @@ const SandCBanner = () => {
       return;
     }
 
-    setSelectedFiles(validFiles);
+    setSelectedFiles([...validImages, ...validVideos]);
     setErrors((prev) => ({ ...prev, selectedFiles: "" }));
   };
 
@@ -794,7 +811,7 @@ const SandCBanner = () => {
               type="file"
               id="poster"
               multiple
-              accept="image/*"
+              accept="*"
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
