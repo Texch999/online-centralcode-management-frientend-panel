@@ -6,8 +6,15 @@ import {
   updateEmployeeByID,
 } from "../../../api/apiMethods";
 import { Roles } from "../../../utils/enum";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
+function EditManagementPopup({
+  EditShow,
+  handleEditShowClose,
+  editingRowId,
+  setDiscription,
+  setSuccessPopupOpen,
+}) {
   const [employeeData, setEmployeeData] = useState();
   const [formData, setFormData] = useState({
     role: "",
@@ -18,6 +25,12 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
     management_password: "",
   });
   const [errors, setErrors] = useState({});
+  const [backendErrors, setBackendErrors] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = (field) => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     if (editingRowId) {
@@ -65,12 +78,8 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Invalid email format";
     }
-    if (
-      !formData.management_password ||
-      formData.management_password.length < 6
-    ) {
-      errors.management_password =
-        "Password must be at least 6 characters long";
+    if (!formData.management_password) {
+      errors.management_password = "Password is required";
     }
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -85,10 +94,16 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
     if (!validateForm()) return;
 
     updateEmployeeByID(editingRowId, formData)
-      .then(() => handleEditShowClose())
+      .then(() => {
+        setDiscription("Updated Successfully"); // Set success message
+        setSuccessPopupOpen(true); // Open success popup
+        handleEditShowClose(); // Close the edit modal
+      })
       .catch((error) => {
         if (error) {
           setErrors(error);
+          console.log("update clicked");
+          setBackendErrors(error?.message);
         } else {
           setErrors("Something Went Wrong");
         }
@@ -98,19 +113,21 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
   return (
     <Modal show={EditShow} onHide={handleEditShowClose} size="md" centered>
       <Modal.Body>
-        <div className="d-flex justify-content-between align-items-center">
-          Edit Management Team
+        <div className="d-flex  justify-content-between align-items-center fw-600">
+          <span className="yellow-font"> Edit Management Team </span>
           <MdOutlineClose
             size={20}
             type="button"
             onClick={handleEditShowClose}
           />
         </div>
+
         <form
           className="add-management-popup-form mt-2"
           onSubmit={handleSubmit}
         >
           <div className="row mb-3 align-items-start">
+            <div className="red-font small-font mt-2">{backendErrors}</div>
             <div className="col">
               <label className="small-font mb-1">Role</label>
               <select
@@ -136,6 +153,9 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
                 placeholder="Enter"
                 value={formData.name}
                 onChange={handleChange}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, ""); // Allows only letters and spaces
+                }}
               />
               {errors.name && (
                 <p className="text-danger x-small-font">{errors.name}</p>
@@ -153,6 +173,9 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
                 placeholder="Enter"
                 value={formData.login_name}
                 onChange={handleChange}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, ""); // Allows only letters, numbers, and underscores (no spaces)
+                }}
               />
               {errors.login_name && (
                 <p className="text-danger x-small-font">{errors.login_name}</p>
@@ -166,7 +189,11 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
                 className="small-font rounded input-css w-100"
                 placeholder="Enter"
                 value={formData.phone_no}
+                maxLength={15}
                 onChange={handleChange}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allows only numbers
+                }}
               />
               {errors.phone_no && (
                 <p className="text-danger x-small-font">{errors.phone_no}</p>
@@ -190,25 +217,40 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
               )}
             </div>
 
-            <div className="col">
+            <div className="col relative">
               <label className="small-font mb-1">Management Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="management_password"
                 className="small-font rounded input-css w-100"
                 placeholder="Enter Management Password"
                 value={formData.management_password}
                 onChange={handleChange}
               />
+              <span
+                className="eye-icon"
+                onClick={() => togglePasswordVisibility("management_password")}
+                style={{
+                  position: "absolute",
+                  right: "20px",
+                  // top: "73%",
+                  top: "45%",
+                  transform: "translateY(-30%)",
+                  cursor: "pointer",
+                }}
+              >
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+
               {errors.management_password && (
-                <p className="text-danger x-small-font">
+                <p className="text-danger small-font">
                   {errors.management_password}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="col d-flex justify-content-center">
+          <div className="col my-2 d-flex justify-content-center">
             <Button className="saffron-btn w-100" type="submit">
               Submit
             </Button>

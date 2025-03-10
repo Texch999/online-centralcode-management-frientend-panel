@@ -36,11 +36,11 @@ const SHEDULE_BTNS = [
 ];
 
 const SandCBanner = () => {
+  const hasFetched = useRef(false);
   const emp_role_id = parseInt(localStorage.getItem("emp_role_id"));
   const [directorAdminPanels, setDirectorAdminPanels] = useState([]);
   const [directorUserPanels, setDirectorUserPanels] = useState([]);
   const [scheduleBtn, setScheduleBtn] = useState(SHEDULE_BTNS[0]);
-  const [selectType, setSelectType] = useState(null);
   const [selectWebsites, setSelectWebsites] = useState(null);
   const [selectedPage, setSelectedPage] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -60,6 +60,10 @@ const SandCBanner = () => {
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [selectedBannerId, setSelectedBannerId] = useState(null);
   const [selectedBannerStatus, setSelectedBannerStatus] = useState(null);
+  const [sportsInput, setSportsInput] = useState("");
+  const [websiteInput, setWebsiteInput] = useState("");
+  const [pageInput, setPageInput] = useState("");
+  const [placeInput, setPlaceInput] = useState("");
   const [bannerBlockModal, setBannerBlockModal] = useState(false);
   const [editBanner, setEditBanner] = useState(false);
   const [bannerDeleteModal, setBannerDeleteModal] = useState(false);
@@ -93,7 +97,6 @@ const SandCBanner = () => {
     localStorage.setItem("activeBtn", JSON.stringify(btn));
     setBanners([]);
     setTotalRecords("");
-    setSelectType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
     setSelectedPlace(null);
@@ -103,22 +106,12 @@ const SandCBanner = () => {
   };
 
   const [errors, setErrors] = useState({
-    selectType: "",
     selectWebsites: "",
     selectedPage: "",
     selectedPlace: "",
     selectedFiles: "",
     endDT: "",
   });
-
-  const hasFetched = useRef(false);
-
-  const selectOptionsType = Object.entries(Enums.selectOptionsType).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
 
   const handleWebsitesType = (activeBtn) => {
     const panelType = activeBtn.value === 1 ? 2 : 1;
@@ -171,40 +164,26 @@ const SandCBanner = () => {
       label: item.user_web_name,
     })
   );
-
-  const handleSelectType = (selected) => {
-    setSelectType(selected);
-    setErrors((pre) => ({ ...pre, selectType: "" }));
-  };
-
-  // const handleSelectWebsites = (selected) => {
-  //   setSelectWebsites(selected);
-  //   setErrors((prev) => ({ ...prev, selectWebsites: "" }));
-  // };
-
   const pageMappings = {
-    "brahma": Enums.brahmaSelectPages,
-    "diamond": Enums.diamondSelectPages,
-    "sparkbook": Enums.sparkbookSelectPages,
+    brahma: Enums.brahmaSelectPages,
+    diamond: Enums.diamondSelectPages,
+    sparkbook: Enums.sparkbookSelectPages,
     "9exchange": Enums.nineExchangeSelectPages,
-    "texchange": Enums.texchangeSelectPages,
+    texchange: Enums.texchangeSelectPages,
   };
   const placeMappings = {
-    "brahma": Enums.brahmaSelectPlace,
-    "diamond": Enums.diamondSelectPlace,
-    "sparkbook": Enums.sparkbookSelectPlace,
+    brahma: Enums.brahmaSelectPlace,
+    diamond: Enums.diamondSelectPlace,
+    sparkbook: Enums.sparkbookSelectPlace,
     "9exchange": Enums.nineExchangeSelectPlace,
-    "texchange": Enums.texchangeSelectPlace,
+    texchange: Enums.texchangeSelectPlace,
   };
 
   const handleSelectWebsites = (selected) => {
-    console.log("selected", selected)
+    console.log("selected", selected);
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
-
-    const selectedWebsiteId = selected?.value.slice(3, -3);
     const selectedWebsitelabel = selected?.label;
-    console.log("selectedWebsitelabel", selectedWebsitelabel)
 
     const selectedPages = pageMappings[selectedWebsitelabel] || {};
     const selectedPlace = placeMappings[selectedWebsitelabel] || {};
@@ -234,79 +213,49 @@ const SandCBanner = () => {
     setSelectedPlace(selected);
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
-  // const handleFileChange = (event) => {
-  //   const files = Array.from(event.target.files);
-  //   const maxSize = 2 * 1024 * 1024;
-  //   const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-
-  //   let validFiles = [];
-  //   let errorMessages = [];
-
-  //   if (files.length > 5) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       selectedFiles: "You can only upload up to 5 images.",
-  //     }));
-  //     return;
-  //   }
-
-  //   files.forEach((file) => {
-  //     if (!allowedTypes.includes(file.type)) {
-  //       errorMessages.push("Only JPG, PNG, GIF, and WEBP images are allowed.");
-  //     } else if (file.size > maxSize) {
-  //       errorMessages.push("Each file should not exceed 2MB.");
-  //     } else {
-  //       validFiles.push(file);
-  //     }
-  //   });
-
-  //   if (errorMessages.length > 0) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       selectedFiles: errorMessages.join(" "),
-  //     }));
-  //     return;
-  //   }
-
-  //   setSelectedFiles(validFiles);
-  //   setErrors((prev) => ({ ...prev, selectedFiles: "" }));
-  // };
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const maxSize = 2 * 1024 * 1024;
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp", // Images
-      "video/mp4",
-      "video/quicktime",
-      "video/x-msvideo",
-      "video/x-matroska",
-      "video/webm", // Videos
-    ];
+    const maxSizeImage = 2 * 1024 * 1024; // 2MB for images
+    const maxSizeVideo = 5 * 1024 * 1024; // 5MB for videos
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "video/mp4"];
 
-    let validFiles = [];
+    let validImages = [];
+    let validVideos = [];
     let errorMessages = [];
 
-    if (files.length > 5) {
-      setErrors((prev) => ({
-        ...prev,
-        selectedFiles: "You can only upload up to 5 files.",
-      }));
-      return;
-    }
-
     files.forEach((file) => {
+      console.log(
+        `File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(
+          2
+        )} MB, Type: ${file.type}`
+      );
+
       if (!allowedTypes.includes(file.type)) {
-        errorMessages.push("Invalid Formate");
-      } else if (file.size > maxSize) {
-        errorMessages.push(`File ${file.name} exceeds 2MB.`);
+        errorMessages.push(`Invalid format: ${file.name}`);
+      } else if (file.type.startsWith("image/") && file.size > maxSizeImage) {
+        errorMessages.push(`Image ${file.name} exceeds 2MB.`);
+      } else if (file.type === "video/mp4" && file.size > maxSizeVideo) {
+        errorMessages.push(`Video ${file.name} exceeds 5MB.`);
       } else {
-        validFiles.push(file);
+        if (file.type.startsWith("image/")) {
+          validImages.push(file);
+        } else if (file.type === "video/mp4") {
+          validVideos.push(file);
+        }
       }
     });
+
+    // Enforce max limits: 5 images, 2 videos
+    if (validImages.length > 5) {
+      errorMessages.push("You can only upload up to 5 images.");
+      validImages = validImages.slice(0, 5);
+    }
+
+    if (validVideos.length > 2) {
+      errorMessages.push("You can only upload up to 2 videos.");
+      validVideos = validVideos.slice(0, 2);
+    }
 
     if (errorMessages.length > 0) {
       setErrors((prev) => ({
@@ -316,16 +265,13 @@ const SandCBanner = () => {
       return;
     }
 
-    setSelectedFiles(validFiles);
+    setSelectedFiles([...validImages, ...validVideos]);
     setErrors((prev) => ({ ...prev, selectedFiles: "" }));
   };
 
   const handleCreateBanner = async () => {
     let newErrors = {};
 
-    if (!selectType) {
-      newErrors.selectType = "Type is required.";
-    }
     if (!selectWebsites) {
       newErrors.selectWebsites = "Website is required.";
     }
@@ -348,7 +294,6 @@ const SandCBanner = () => {
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
     formData.append("schedule", scheduleBtn.value);
-    formData.append("type", selectType?.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
 
@@ -378,7 +323,6 @@ const SandCBanner = () => {
       if (response.status === 200) {
         setMessage(response.message);
         setErrorPopupOpen(false);
-        setSelectType(null);
         setSelectWebsites(null);
         setSelectedPage(null);
         setSelectedPlace(null);
@@ -402,6 +346,8 @@ const SandCBanner = () => {
   }, [activeBtn]);
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getBanners();
     if (emp_role_id === 1) {
       getDirectorWebsites();
@@ -453,7 +399,7 @@ const SandCBanner = () => {
 
   const handleDeleteBanners = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await deleteBanner(selectedBannerId);
       if (response?.status === 200) {
         setMessage(response?.message);
@@ -503,7 +449,7 @@ const SandCBanner = () => {
 
   const BockOrUnblock = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await statusUpdateBanner(selectedBannerId);
       if (response?.status === 200) {
         setMessage(response?.message);
@@ -548,13 +494,13 @@ const SandCBanner = () => {
       label: item?.label || "Unknown",
     }))
     .filter((item) => item.value !== null);
+  console.log(selectOptionsWebsites);
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },
-    { header: "Type", field: "type", width: "10%" },
     { header: "Website", field: "website", width: "15%" },
-    { header: "Poster Page", field: "posterPage", width: "15%" },
-    { header: "Poster Location", field: "posterLocation", width: "15%" },
+    { header: "Banner/Poster Page", field: "posterPage", width: "15%" },
+    { header: "Banner/Poster Location", field: "posterLocation", width: "15%" },
     { header: "Schedule", field: "schedule", width: "15%" },
     {
       header: <div className="flex-center">Poster</div>,
@@ -571,10 +517,6 @@ const SandCBanner = () => {
     },
   ];
 
-
- 
-
-
   const CRICKET_DATA = banners?.map((banner) => ({
     dateTime: (
       <div>
@@ -585,75 +527,56 @@ const SandCBanner = () => {
         }).format(new Date(banner.created_at))}
       </div>
     ),
-    type: (
-      <div>
-        {selectOptionsType.find(
-          (option) => Number(option.value) === Number(banner.type)
-        )?.label || "Unknown"}
-      </div>
-    ),
-    // website: (
-    //   <div>
-    //     {websitesList.find(
-    //       (site) => site.id.slice(3, -3) === String(banner.website_id)
-    //     )?.web_name || "Unknown"}
-    //   </div>
-    // ),
 
     website: (
       <div>
-        {selectOptionsWebsites.find(
-          (site) => String(site.value) === String(banner.website_id)
-        )?.label || "Unknown"}
+        {selectOptionsWebsites
+          .find((site) => String(site.value) === String(banner.website_id))
+          ?.label?.replace(/^./, (char) => char.toUpperCase()) || "Unknown"}
       </div>
     ),
 
     posterPage: (
       <div>
-        {
-          (() => {
-          
-            const websiteLabel = selectOptionsWebsites.find(
-              (site) => String(site.value) === String(banner.website_id)
-            )?.label;
-    
-            const selectedPageMapping = pageMappings[websiteLabel?.toLowerCase()];
-    
-            if (selectedPageMapping) {
-              return (
-                Object.keys(selectedPageMapping).find(
-                  (key) => selectedPageMapping[key] === Number(banner?.page)
-                ) || "Unknown"
-              );
-            }
-    
-            return "Unknown";
-          })()
-        }
+        {(() => {
+          const websiteLabel = selectOptionsWebsites.find(
+            (site) => String(site.value) === String(banner.website_id)
+          )?.label;
+
+          const selectedPageMapping = pageMappings[websiteLabel?.toLowerCase()];
+
+          if (selectedPageMapping) {
+            return (
+              Object.keys(selectedPageMapping).find(
+                (key) => selectedPageMapping[key] === Number(banner?.page)
+              ) || "Unknown"
+            );
+          }
+
+          return "Unknown";
+        })()}
       </div>
     ),
     posterLocation: (
       <div>
-        {
-          (() => {
-          
-            const websiteLabel = selectOptionsWebsites.find(
-              (site) => String(site.value) === String(banner.website_id)
-            )?.label;
-    
-            const selectedPlaceMapping = placeMappings[websiteLabel?.toLowerCase()];
-    
-            if (selectedPlaceMapping) {
-              return (
-                Object.keys(selectedPlaceMapping).find(
-                  (key) => selectedPlaceMapping[key] === Number(banner?.place)
-                ) || "Unknown"
-              );
-            }
-    
-            return "Unknown";
-          })()
-        }
+        {(() => {
+          const websiteLabel = selectOptionsWebsites.find(
+            (site) => String(site.value) === String(banner.website_id)
+          )?.label;
+
+          const selectedPlaceMapping =
+            placeMappings[websiteLabel?.toLowerCase()];
+
+          if (selectedPlaceMapping) {
+            return (
+              Object.keys(selectedPlaceMapping).find(
+                (key) => selectedPlaceMapping[key] === Number(banner?.place)
+              ) || "Unknown"
+            );
+          }
+
+          return "Unknown";
+        })()}
       </div>
     ),
     // posterLocation: (
@@ -669,7 +592,9 @@ const SandCBanner = () => {
     //   </div>
     // ),
 
-    schedule: <div>{banner.schedule}</div>,
+    schedule: (
+      <div>{banner.schedule?.replace(/^./, (char) => char.toUpperCase())}</div>
+    ),
     Poster: (
       <div className="flex-center">
         <div className="relative poster-img">
@@ -786,23 +711,6 @@ const SandCBanner = () => {
 
       <div className="w-100 d-flex small-font">
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Sports/Casino</label>
-          <Select
-            className="small-font"
-            options={selectOptionsType}
-            placeholder="Select"
-            styles={customStyles}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-            classNamePrefix="custom-react-select"
-            value={selectType}
-            onChange={handleSelectType}
-          />
-          {errors.selectType && (
-            <span className="text-danger small-font">{errors.selectType}</span>
-          )}
-        </div>
-        <div className="col flex-column me-3 fixed-width-field1">
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
@@ -814,6 +722,7 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectWebsites}
             onChange={handleSelectWebsites}
+            isSearchable={false} // Disable typing
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -823,7 +732,7 @@ const SandCBanner = () => {
         </div>
 
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Poster Page</label>
+          <label className="black-text4 mb-1">Banner/Poster Page</label>
           <Select
             className="small-font"
             options={selectPages || []}
@@ -834,6 +743,7 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectedPage}
             onChange={handleSelectPage}
+            isSearchable={false} // Disable typing
           />
           {errors.selectedPage && (
             <span className="text-danger small-font">
@@ -842,7 +752,7 @@ const SandCBanner = () => {
           )}
         </div>
         <div className="col flex-column me-3 fixed-width-field1">
-          <label className="black-text4 mb-1">Poster Location</label>
+          <label className="black-text4 mb-1">Banner/Poster Location</label>
           <Select
             className="small-font"
             options={selectPlace || []}
@@ -853,6 +763,7 @@ const SandCBanner = () => {
             classNamePrefix="custom-react-select"
             value={selectedPlace}
             onChange={handleSelectPlace}
+            isSearchable={false} // Disable typing
           />
           {errors.selectedPlace && (
             <span className="text-danger small-font">
@@ -900,7 +811,7 @@ const SandCBanner = () => {
               type="file"
               id="poster"
               multiple
-              accept="image/*"
+              accept="*"
               style={{ display: "none" }}
               onChange={handleFileChange}
             />

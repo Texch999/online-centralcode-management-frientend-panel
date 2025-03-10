@@ -3,13 +3,15 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { resetEmployeePassword } from "../../api/apiMethods";
+
 
 function ResetPasswordPopup({
   resetPasswordPopup,
   setResetPasswordPopup,
   IndividualpassowrdId,
   onSubmit,
+  resetPasswordErrrors
+ 
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -35,6 +37,10 @@ function ResetPasswordPopup({
     setShowSuccessPopup(false);
     setResetPasswordPopup(false);
   };
+
+ 
+  console.log(" resetPasswordErrrors", resetPasswordErrrors);
+  
 
   return (
     <>
@@ -67,14 +73,14 @@ function ResetPasswordPopup({
                   })}
                 />
                 {showPassword ? (
-                  <FaEyeSlash
+                  < FaEye
                     className="black-text4"
                     size={18}
                     onClick={() => setShowPassword(false)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <FaEye
+                  <FaEyeSlash
                     className="black-text4"
                     size={18}
                     onClick={() => setShowPassword(true)}
@@ -103,14 +109,14 @@ function ResetPasswordPopup({
                   })}
                 />
                 {showConfirmPassword ? (
-                  <FaEyeSlash
+                  < FaEye
                     className="black-text4"
                     size={18}
                     onClick={() => setShowConfirmPassword(false)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <FaEye
+                  <FaEyeSlash
                     className="black-text4"
                     size={18}
                     onClick={() => setShowConfirmPassword(true)}
@@ -140,14 +146,14 @@ function ResetPasswordPopup({
                   })}
                 />
                 {showManagementPassword ? (
-                  <FaEyeSlash
+                  < FaEye
                     className="black-text4"
                     size={18}
                     onClick={() => setShowManagementPassword(false)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <FaEye
+                  <FaEyeSlash
                     className="black-text4"
                     size={18}
                     onClick={() => setShowManagementPassword(true)}
@@ -161,6 +167,7 @@ function ResetPasswordPopup({
                 </span>
               )}
             </div>
+            <div className="red-font my-2">{resetPasswordErrrors}</div>
 
             <div className="col-12 mt-3">
               <button

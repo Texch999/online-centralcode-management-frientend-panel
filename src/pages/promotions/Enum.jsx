@@ -14,7 +14,6 @@ const Enums = {
     "GREY HOUND": 7,
     "HOURSE RACING": 8,
     "CASINO": 9,
-    "SOCCER": 10,
   },
 
   diamondSelectPages: {
@@ -27,7 +26,6 @@ const Enums = {
     "GREY HOUND": 7,
     "HOURSE RACING": 8,
     "CASINO": 9,
-    "SOCCER": 10,
 
     // "MULTI MARKET": 10,
     // "BASCKET BALL": 12,
@@ -65,31 +63,9 @@ const Enums = {
     "HOURSE RACING": 7,
     "KABADDI": 8,
     "CASINO": 9,
-    // "MULTI MARKET": 10,
-    // "SOCCER": 11,
-    // "BASCKET BALL": 12,
-    
-    // "ICE HOCKEY": 14,
-    // "VOLLEY BALL": 15,
-    // "TABLE TENNIS": 16,
   },
   texchangeSelectPages: {
     "HOME": 1,
-    // "IN PLAY": 2,
-    // "ELECTIONS": 3,
-    // "CRICKET": 4,
-    // "FOOT BALL": 5,
-    // "TENNIS": 6,
-    // "GREY HOUND": 7,
-    // "HOURSE RACING": 8,
-    // "CASINO": 9,
-    // "MULTI MARKET": 10,
-    // "SOCCER": 11,
-    // "BASCKET BALL": 12,
-    // "KABADDI": 13,
-    // "ICE HOCKEY": 14,
-    // "VOLLEY BALL": 15,
-    // "TABLE TENNIS": 16,
   },
   brahmaSelectPlace: {
     MAIN: 1,

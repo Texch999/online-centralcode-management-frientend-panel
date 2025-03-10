@@ -58,4 +58,6 @@ export const Images = {
   ErrorImage: "/assets/404Errorr.webp",
   defaultProfileImage: "/assets/defaultProfileImage.jpg",
   emptyNotifications: "/assets/EmptyNotifications.svg",
+  question2: "/assets/question2.svg",
+  
 };

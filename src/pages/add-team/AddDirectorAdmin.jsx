@@ -527,7 +527,7 @@ const AddDirectorAdmin = () => {
                 onSubmit={blockUnblock}
                 discription={`Do you want to ${
                   selectedDirectorStatus === 1 ? "Block" : "Unblock"
-                } this director?`}
+                } ?`}
                 submitButton={
                   selectedDirectorStatus === 1 ? "Block" : "Unblock"
                 }
