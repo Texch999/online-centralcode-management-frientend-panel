@@ -150,7 +150,9 @@ const AddNewOfflinePaymentModal = ({
         console.log("error");
       }
     } catch (error) {
-      setErrorMsg(error?.message);
+      setErrorMsg(error?.message[0]?.message);
+   
+      
       setShowAddModal(false);
       setErrorPopupOpen(true);
       setTimeout(() => {
@@ -177,7 +179,7 @@ const AddNewOfflinePaymentModal = ({
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">
-              {`${isEdit ? "Edit" : "Add"}`} Offline Payment Modes
+              {`${isEdit ? "Edit" : "Add"}`} Offline Payment Cards
             </h5>
             <MdOutlineClose
               size={22}
@@ -187,78 +189,92 @@ const AddNewOfflinePaymentModal = ({
           </div>
 
           <div className="row mb-3">
-            <div className="col-6">
-              <label className="small-font mb-1">Select Currency</label>
-              <Select
-                className="small-font text-capitalize"
-                options={currencyOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                value={
-                  currencyOptions.find(
-                    (option) => option.value === selectedCurrency
-                  ) || selectedCurrency
-                }
-                // value={selectedCurrency}
-                onChange={(option) => {
-                  setSelectedCurrency(option.value);
-                  setErrors((prev) => ({
-                    ...prev,
-                    currency: option ? "" : prev.currency,
-                  }));
-                }}
-                formatOptionLabel={(option) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      textTransform: "text-capitalize",
-                    }}
-                  >
-                    <span>{option.label.split(" - ")[0]}</span>
-                    <span>{option.label.split(" - ")[1]}</span>
-                  </div>
-                )}
-              />
-
-
-
-
-
-
-
-              {errors.currency && (
-                <p className="text-danger small-font">{errors.currency}</p>
-              )}
-            </div>
-            <div className="col-6">
-              <label className="small-font mb-1">Select Type</label>
-              <Select
-                className="small-font"
-                options={typeOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                value={
-                  typeOptions.find((option) => option.value === selectedType) ||
-                  selectedType
-                }
-                // value={selectedType}
-                onChange={(option) => {
-                  setSelectedType(option.value);
-                  setErrors((prev) => ({
-                    ...prev,
-                    type: option ? "" : prev.type,
-                  }));
-                }}
-              />
-              {errors.type && (
-                <p className="text-danger small-font">{errors.type}</p>
-              )}
-            </div>
+          <div className="col-6">
+  <label className="small-font mb-1">Select Currency</label>
+  <Select
+    className="small-font text-capitalize"
+    options={currencyOptions}
+    placeholder="Select"
+    styles={customStyles}
+    maxMenuHeight={120}
+    menuPlacement="auto"
+    value={
+      currencyOptions.find(
+        (option) => option.value === selectedCurrency
+      ) || selectedCurrency
+    }
+    onChange={(option) => {
+      setSelectedCurrency(option.value);
+      setErrors((prev) => ({
+        ...prev,
+        currency: option ? "" : prev.currency,
+      }));
+    }}
+    filterOption={(option, inputValue) => {
+      // Allow filtering only if the input contains text (letters)
+      if (!inputValue) return true;
+      return /^[A-Za-z]+$/.test(inputValue) && option.label.toLowerCase().includes(inputValue.toLowerCase());
+    }}
+    onInputChange={(inputValue, { action }) => {
+      // Restrict input to only text (letters)
+      if (action === "input-change" && !/^[A-Za-z]*$/.test(inputValue)) {
+        return inputValue.replace(/[^A-Za-z]/g, "");
+      }
+      return inputValue;
+    }}
+    formatOptionLabel={(option) => (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          textTransform: "text-capitalize",
+        }}
+      >
+        <span>{option.label.split(" - ")[0]}</span>
+        <span>{option.label.split(" - ")[1]}</span>
+      </div>
+    )}
+  />
+  {errors.currency && (
+    <p className="text-danger small-font">{errors.currency}</p>
+  )}
+</div>
+<div className="col-6">
+  <label className="small-font mb-1">Select Type</label>
+  <Select
+    className="small-font"
+    options={typeOptions}
+    placeholder="Select"
+    styles={customStyles}
+    maxMenuHeight={120}
+    menuPlacement="auto"
+    value={
+      typeOptions.find((option) => option.value === selectedType) || selectedType
+    }
+    onChange={(option) => {
+      setSelectedType(option.value);
+      setErrors((prev) => ({
+        ...prev,
+        type: option ? "" : prev.type,
+      }));
+    }}
+    filterOption={(option, inputValue) => {
+      // Allow filtering only if the input contains text (letters)
+      if (!inputValue) return true;
+      return /^[A-Za-z]+$/.test(inputValue) && option.label.toLowerCase().includes(inputValue.toLowerCase());
+    }}
+    onInputChange={(inputValue, { action }) => {
+      // Restrict input to only text (letters)
+      if (action === "input-change" && !/^[A-Za-z]*$/.test(inputValue)) {
+        return inputValue.replace(/[^A-Za-z]/g, "");
+      }
+      return inputValue;
+    }}
+  />
+  {errors.type && (
+    <p className="text-danger small-font">{errors.type}</p>
+  )}
+</div>
           </div>
 
           <div className="row my-3">
