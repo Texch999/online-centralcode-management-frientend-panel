@@ -17,6 +17,7 @@ import {
 } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -48,7 +49,16 @@ const AddDirectorAdmin = () => {
   const [totalRecords, setTotalRecords] = useState(null);
   const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] =
     useState(null);
+  const [resetPasswordErrrors, setResetPasswordErrors] = useState(null);
 
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredData = tableData?.filter((user) =>
+    user.login_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const handleBlockUserOpen = (login_name, id) => {
     const director = tableData.find((user) => user.id === id);
     if (director) {
@@ -87,7 +97,7 @@ const AddDirectorAdmin = () => {
       width: "8%",
     },
   ];
-  const GetAllSuperAdmin = (limit,offset) => {
+  const GetAllSuperAdmin = (limit, offset) => {
     getDirectorDwnList({ limit, offset })
       .then((response) => {
         if (response.status === true) {
@@ -104,7 +114,7 @@ const AddDirectorAdmin = () => {
       });
   };
   console.log(tableSuperAdminData, "tableSuperAdminData");
-  const GetAllDirectors = (limit, offset ) => {
+  const GetAllDirectors = (limit, offset) => {
     setLoading(true);
     getDirectors({ limit, offset })
       .then((response) => {
@@ -127,15 +137,15 @@ const AddDirectorAdmin = () => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
     if (role === "director") {
-      GetAllSuperAdmin(limit,offset);
+      GetAllSuperAdmin(limit, offset);
     } else if (role === "management") {
-      GetAllDirectors(limit,offset);
+      GetAllDirectors(limit, offset);
     }
   }, [role]); // Runs when role changes
 
   const onDirectorResetPassword = (data) => {
     if (!selectedDirectorId) {
-      alert("Invalid ID");
+      setResetPasswordErrors("Invalid ID");
       return;
     }
 
@@ -147,22 +157,26 @@ const AddDirectorAdmin = () => {
 
     resetDirectorPassword(selectedDirectorId, requestData)
       .then((response) => {
+        setResetPasswordPopup(false);
+        setSuccessPopupOpen(true);
+        setDiscription("Password reset successfully");
+
         if (response) {
           setTimeout(() => {
             setResetPasswordPopup(false);
           }, 1000);
         } else {
-          alert("Something went wrong");
+          setResetPasswordErrors("Something went wrong");
         }
       })
       .catch((error) => {
-        alert(error?.message || "Request failed");
+        setResetPasswordErrors(error?.message || "Request failed");
       });
   };
 
   const onSuperAdminResetPassword = (data) => {
     if (!selectedSuperAdminId) {
-      alert("Invalid ID");
+      setResetPasswordErrors("Invalid ID");
       return;
     }
 
@@ -179,11 +193,11 @@ const AddDirectorAdmin = () => {
             setResetPasswordPopup(false);
           }, 1000);
         } else {
-          alert("Something went wrong");
+          setResetPasswordErrors("Something went wrong");
         }
       })
       .catch((error) => {
-        alert(error?.message || "Request failed");
+        setResetPasswordErrors(error?.message || "Request failed");
       });
   };
   const blockUnblock = () => {
@@ -213,7 +227,7 @@ const AddDirectorAdmin = () => {
         console.error(error?.message || "Failed to block/unblock director");
       });
   };
-  const TableData = tableData?.map((user) => {
+  const TableData = filteredData?.map((user) => {
     const linkWebsites = user.accessWebsites.map((website) => ({
       name: website.user_panel_name,
       url: website.user_panel_url,
@@ -323,6 +337,7 @@ const AddDirectorAdmin = () => {
       ),
     };
   });
+
   const directorTableData = tableSuperAdminData?.map((user) => {
     const linkWebsites = user.accessWebsites.map((website) => ({
       name: website.user_panel_name || "N/A",
@@ -441,7 +456,7 @@ const AddDirectorAdmin = () => {
       GetAllSuperAdmin(limit, offset);
     }
   };
-  console.log(totalRecords,"==totalRecords")
+  console.log(totalRecords, "==totalRecords");
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -455,7 +470,12 @@ const AddDirectorAdmin = () => {
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
+            <input
+              className="small-font all-none"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
           <button
             className="small-font rounded-pill input-pill blue-font px-3 py-1"
@@ -509,6 +529,7 @@ const AddDirectorAdmin = () => {
         <ResetPasswordPopup
           resetPasswordPopup={resetPasswordPopup}
           setResetPasswordPopup={handleResetPasswordClose}
+          resetPasswordErrrors={resetPasswordErrrors}
           onSubmit={
             role === "management"
               ? onDirectorResetPassword
@@ -517,6 +538,13 @@ const AddDirectorAdmin = () => {
         />
       )}
 
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={discription}
+        />
+      )}
       {confirmationPopup && (
         <>
           {role === "management" ? (

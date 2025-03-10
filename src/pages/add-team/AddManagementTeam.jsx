@@ -229,6 +229,62 @@ const AddManagementTeam = () => {
     };
   });
 
+
+  const [searchText, setSearchText] = useState("");
+
+  // Function to handle search input change
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value.toLowerCase());
+  };
+
+
+  const filteredTableData = tableData
+  .filter((employee) => employee.name.toLowerCase().includes(searchText))
+  .map((employee) => {
+    const roleId = Number(employee.role);
+    const role = Roles[roleId] || "Unknown";
+
+    return {
+      id: employee.id,
+      name: employee.name,
+      login_name: employee.login_name,
+      phone_no: employee.phone_no,
+      email: employee.email,
+      role: <div>{role}</div>,
+      status: employee.status === 1 ? "green-clr" : "clr-red",
+      created_date: new Date(employee.created_date).toLocaleString(),
+      updated_date: new Date(employee.updated_date).toLocaleString(),
+      action: (
+        <div className="d-flex gap-3 flex-center">
+          <SlPencil
+            size={18}
+            className="pointer black-text"
+            onClick={() => handleEditShow(employee.id)}
+          />
+          <MdLockReset
+            size={18}
+            className="pointer black-text"
+            onClick={() => handleResetPasswordPopup(employee.id)}
+          />
+          <MdBlockFlipped
+            size={18}
+            className={`pointer ${
+              employee.status === 1
+                ? "green-font"
+                : employee.status === 2
+                ? "clr-red"
+                : ""
+            }`}
+            onClick={() =>
+              handleBlockPopup(employee.id, employee.name, employee.status)
+            }
+          />
+        </div>
+      ),
+    };
+  });
+
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -236,7 +292,8 @@ const AddManagementTeam = () => {
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
+            <input className="small-font all-none" placeholder="Search..."value={searchText}
+          onChange={handleSearchChange} />
           </div>
           <button
             className="small-font rounded-pill input-pill blue-font px-3 py-1"
@@ -248,12 +305,12 @@ const AddManagementTeam = () => {
         </div>
       </div>
       <div className="management-team-wrapper rounded-bg">
-        <Table
-          className="black-text"
-          data={TableData}
-          columns={columns}
-          itemsPerPage={5}
-        />
+      <Table
+        className="black-text"
+        data={filteredTableData}
+        columns={columns}
+        itemsPerPage={5}
+      />
       </div>
       {modalState.showAddModal && (
         <AddManagementPopup

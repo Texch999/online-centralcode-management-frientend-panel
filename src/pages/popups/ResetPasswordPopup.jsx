@@ -39,7 +39,7 @@ function ResetPasswordPopup({
   };
 
  
-  console.log(" resetPasswordErrrors", resetPasswordErrrors);
+
   
 
   return (

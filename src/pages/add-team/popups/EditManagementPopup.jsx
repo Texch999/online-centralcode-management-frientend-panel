@@ -72,9 +72,10 @@ function EditManagementPopup({
     if (!formData.login_name || formData.login_name.length < 3) {
       errors.login_name = "Login name must be at least 3 characters long";
     }
-    if (!formData.phone_no || !/^\d{10}$/.test(formData.phone_no)) {
-      errors.phone_no = "Phone number must be 10 digits";
+    if (!formData.phone_no || formData.phone_no.length < 10) {
+      errors.phone_no = "Number must be at least 10 digits";
     }
+    
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Invalid email format";
     }
@@ -171,6 +172,7 @@ function EditManagementPopup({
                 name="login_name"
                 className="small-font rounded input-css w-100"
                 placeholder="Enter"
+                maxLength={15}
                 value={formData.login_name}
                 onChange={handleChange}
                 onInput={(e) => {
@@ -196,10 +198,10 @@ function EditManagementPopup({
                 }}
               />
               {errors.phone_no && (
-                <p className="text-danger x-small-font">{errors.phone_no}</p>
+                <div className="text-danger small-font">{errors.phone_no}</div>
               )}
             </div>
-          </div>
+          </div>  
 
           <div className="row mb-3 align-items-start">
             <div className="col">
