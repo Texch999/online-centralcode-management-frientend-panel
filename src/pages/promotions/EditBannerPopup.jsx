@@ -29,7 +29,6 @@ const EditBannerPopup = ({
     register_id: null,
     userfor: "",
     schedule: "",
-    type: null,
     website_id: null,
     place: "",
     page: "",
@@ -59,7 +58,6 @@ const EditBannerPopup = ({
         register_id: selectedBannerId.register_id || null,
         userfor: selectedBannerId.userfor || "",
         schedule: selectedBannerId.schedule || "",
-        type: selectedBannerId.type || "",
         website_id: selectedBannerId.website_id || "",
         page: selectedBannerId.page || "",
         place: selectedBannerId.place || "",
@@ -143,10 +141,6 @@ const EditBannerPopup = ({
     }
   };
 
-  const selectOptionsType = [
-    { value: 1, label: "Sports" },
-    { value: 2, label: "Casino" },
-  ];
 
   let weblist;
   if (emp_role_id === 1) {
@@ -155,46 +149,15 @@ const EditBannerPopup = ({
     weblist = websitesList;
   }
 
-  // const master_data_formatt = [
-  //   {
-  //     city: "hyderabad",
-  //     created_by: 2,
-  //     deploy_type: 1,
-  //     id: "7701166",
-  //     location_id: 107,
-  //     panel_type: 1,
-  //     ref_type: 2,
-  //     status: 1,
-  //     web_name: "brahma",
-  //     web_url: "brahma.co",
-  //   },
-  // ];
-
-  // const director_data_formatt = [{ label: "brahma", value: "79611bb" }];
-
-  // const selectOptionsWebsites = weblist
-  //   .map((item) => {
-  //     const slicedValue =
-  //       item?.value?.length > 6 ? item.value.slice(3, -3) : null;
-
-  //     return {
-  //       value: slicedValue ? Number(slicedValue) : null,
-  //       label: item.label,
-  //     };
-  //   })
-  //   .filter((item) => item.value !== null);
-
   const selectOptionsWebsites = weblist
     .map((item) => {
       let slicedValue = null;
       let label = "";
 
       if (item?.value) {
-        // Case: emp_role_id === 1 (Already formatted data)
         slicedValue = item.value.length > 6 ? item.value.slice(3, -3) : null;
         label = item.label;
       } else if (item?.id) {
-        // Case: emp_role_id === 2 (Needs transformation)
         slicedValue = item.id.length > 6 ? item.id.slice(3, -3) : null;
         label = item.web_name;
       }
@@ -205,21 +168,6 @@ const EditBannerPopup = ({
       };
     })
     .filter((item) => item.value !== null);
-
-  // const selectPages = [
-  //   { value: "home", label: "Home" },
-  //   { value: "description", label: "Description" },
-  //   { value: "wallet", label: "Wallet" },
-  //   { value: "login", label: "Login" },
-  // ];
-
-  // const selectPlace = [
-  //   { value: "top", label: "Top" },
-  //   { value: "center", label: "Center" },
-  //   { value: "bottom", label: "Bottom" },
-  //   { value: "right", label: "Right" },
-  //   { value: "left", label: "Left" },
-  // ];
 
   const selectPages = Object.entries(Enums.diamondSelectPages).map(
     ([key, value]) => ({
@@ -248,24 +196,6 @@ const EditBannerPopup = ({
 
         <div className="row mt-3 small-font d-flex justify-content-spacebetween">
           <div className="d-flex w-80 mt-3">
-            <div className="col-4 flex-column me-3">
-              <label className="black-text4 small-font mb-1">
-                Sports/Casino
-              </label>
-              <input
-                className="all-none input-css2 small-font p-2 rounded"
-                type="text"
-                placeholder="Enter Sports/Casino"
-                value={
-                  formData.type
-                    ? selectOptionsType.find(
-                        (option) => option.value === formData.type
-                      )?.label || ""
-                    : ""
-                }
-                readOnly
-              />
-            </div>
 
             <div className="col-4 flex-column me-3">
               <label className="black-text4 small-font mb-1">Websites</label>
