@@ -521,7 +521,7 @@ const Broadcasting = () => {
           </label>
           <textarea
             placeholder="Enter"
-            className="all-none input-css2 small-font p-2 rounded"
+            className="all-none input-css2 small-font rounded"
             rows="1"
             style={{
               resize: "none",
