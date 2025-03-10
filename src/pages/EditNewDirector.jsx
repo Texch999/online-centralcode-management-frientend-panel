@@ -2178,6 +2178,8 @@ function EditNewDirector() {
   }, [mode, userId]);
 
   const handleManagementSubmit = () => {
+
+
     const payload = {
       type: parseInt(selectedRole),
       country_id: parseInt(selectedCountryCode),
@@ -2207,6 +2209,7 @@ function EditNewDirector() {
               share: parseFloat(site.share) || null,
               downline_comm: parseFloat(site.downline_comm) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
+              is_primary: site.is_primary, // Include is_primary in the payload
             }),
         })),
       ],
@@ -2604,15 +2607,15 @@ function EditNewDirector() {
     <>
       <div>
         <div className="d-flex align-items-center justify-content-between">
-          <h5 className="yellow-font fw-bold">
+          <h5 className="yellow-font ">
             {role === "management" ? `Edit Director/SuperAdmin` : `Edit SuperAdmin `}
           </h5>
-          <span
-            className="yellow-font cursor-pointer"
-            onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft /> Go Back
-          </span>
+         <span
+                    className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
+                    onClick={() => navigate(-1)}
+                  >
+                    <FaArrowLeft className="mx-2" /> Back
+                  </span>
         </div>
 
         {websiteEditErrors && (
@@ -2622,14 +2625,14 @@ function EditNewDirector() {
             </ul>
           </div>
         )}
-        <div className="p-1">
-          <div className="row">
-            <div className="col p-1">
+        <div className="white-bg br-10 login-box-shadow w-100 p-2 m-2">
+          <div className="row p-2">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Name</label>
               <input
                 type="text"
                 placeholder="Enter Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="border-grey3 small-font rounded all-none input-css w-100 input-css" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -2638,12 +2641,12 @@ function EditNewDirector() {
                 <span className="text-danger small-font">{errors.name}</span>
               )}
             </div>
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Login Name</label>
               <input
                 type="text"
                 placeholder="Enter Login Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="border-grey3 small-font rounded all-none input-css w-100"
                 value={loginName}
                 readOnly
               />
@@ -2653,10 +2656,10 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Currency</label>
               <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100 no-cursor"
+                className="small-font rounded all-none input-css  border-grey3 w-100 no-cursor"
                 value={selectedCurrencyCode}
                 onChange={(e) => setSelectedCurrencyCode(e.target.value)}
                 disabled
@@ -2674,12 +2677,10 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-          </div>
-          <div className="row">
-            <div className="col-3 p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Country</label>
               <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                className="small-font rounded all-none input-css border-grey3 w-100"
                 value={selectedCountryCode}
                 onChange={(e) => setSelectedCountryCode(e.target.value)}
               >
@@ -2697,16 +2698,17 @@ function EditNewDirector() {
               )}
             </div>
 
-            <div className="p-1  col-3 position-relative">
+            <div className="p-1   col-2 position-relative">
               <label className="small-font my-1">Management Password</label>
-              <input
+              <div className="w-100 rounded border-grey3  input-css4"><input
                 type={showManagementPassword ? "text" : "password"}
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="  all-none p-1  w-80"
                 placeholder="Enter"
                 required
                 value={managementPassword}
                 onChange={(e) => setManagementPassword(e.target.value)}
-              />
+              /></div>
+              
               <span
                 className="position-absolute"
                 style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
@@ -2717,22 +2719,21 @@ function EditNewDirector() {
                 {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
-            {errors.managementPassword && (
-              <span className="text-danger small-font">
-                {errors.managementPassword}
-              </span>
-            )}
+          </div>
+          <div className="row p-2">
+            
+           
           </div>
         </div>
       </div>
 
       <div>
-        <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET</h3>
+        <h3 className="yellow-font medium-font mt-4 ">WEBSITE MARKET</h3>
         <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             <div>Active</div>
             {adminWebsites?.map((data, index) => (
-              <div key={index} className="box-shadow p-2 my-2 rounded">
+              <div key={index} className="login-box-shadow white-bg p-2 my-2 rounded">
                 <div className="w-15 no-cursor">
                   <label className="small-font my-1">Admin Website</label>
                   <div className="d-flex align-items-center">
@@ -2752,8 +2753,10 @@ function EditNewDirector() {
                       userWebsite.commission_type;
 
                     return (
-                      <div key={userIndex} className="w-100 mt-3 row">
-                        <div className="col-2 d-flex flex-column">
+                      <div key={userIndex} className="w-100 mt-3 my-2 row">
+
+
+                        <div className="col-2 d-flex flex-column mt-4">
                           <select
                             className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
                             disabled
@@ -2762,7 +2765,7 @@ function EditNewDirector() {
                           </select>
                         </div>
 
-                        <div className="col-2">
+                        <div className="col-2  ">
                           <label className="small-font my-1">Commission Type</label>
                           <div className="d-flex align-items-center">
                             <select
@@ -2789,7 +2792,10 @@ function EditNewDirector() {
 
                         {currentCommissionType == "1" && (
                           <>
-                            <div className="col-2">
+                          {userWebsite.rent_start_date && (
+                            <>
+                            
+                            <div className="col-2  ">
                               <label className="small-font my-1">Rent Start Date</label>
                               <input
                                 type="text"
@@ -2804,7 +2810,10 @@ function EditNewDirector() {
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
                                 value={userWebsite.rent_expiry_date || ""}
                               />
-                            </div>
+                            </div></>
+
+                          )}
+                           
                             <div className="col-2">
                               <label className="small-font my-1">Monthly Amount</label>
                               <input
@@ -2857,7 +2866,7 @@ function EditNewDirector() {
                                 )}
                               />
                             </div>
-                            <div className="col-2">
+                            <div className="col-2 ">
                               <label className="small-font my-1">Downline Comm</label>
                               <input
                                 type="text"
@@ -2877,10 +2886,14 @@ function EditNewDirector() {
                               />
                             </div>
 
-                            <div className="col-2">
-                              <label className="small-font my-1">Casino Allowed</label>
+                            <div className="col-2  mt-4 ">
+                              
+
+                              <div className="light-white-bg br-5 ">
+                                
                               <input
                                 type="checkbox"
+                                className="ms-2"
                                 checked={userWebsite.is_casino === 1}
                                 onChange={(e) => {
                                   const updatedWebsites = [...userWebsites];
@@ -2891,6 +2904,9 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              <label className="small-font p-2 mt-1">Casino Allowed</label>
+                              </div>
+                              
                             </div>
 
                             {userWebsite.is_casino === 1 && (
@@ -2949,7 +2965,7 @@ function EditNewDirector() {
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Caschip Values</label>
+                              <label className="small-font my-1">Caschip  Values</label>
                               <input
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
@@ -2966,8 +2982,8 @@ function EditNewDirector() {
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
-                            <div className="col position-relative mx-1 d-flex align-items-center">
-                              <label className="small-font me-2">Is Primary</label>
+                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                             
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary === 1}
@@ -2980,13 +2996,14 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                               <label className="small-font me-2">Is Primary </label>
                             </div>
                           </>
                         )}
 
                         {currentCommissionType == "3" && (
                           <>
-                            <div className="col-2">
+                            <div className="col-2 ">
                               <label className="small-font my-1">Downline Share</label>
                               <input
                                 type="text"
@@ -3019,7 +3036,7 @@ function EditNewDirector() {
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Caschip Values</label>
+                              <label className="small-font my-1">Caschip Values </label>
                               <input
                                 type="text"
                                 className="small-font white-bg rounded border-grey3 p-2 w-100"
@@ -3035,8 +3052,8 @@ function EditNewDirector() {
                               />
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                            <div className="col position-relative mx-1 d-flex align-items-center">
-                              <label className="small-font me-2">Is Primary</label>
+                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                              
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary == 1}
@@ -3049,17 +3066,19 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              <label className="small-font me-2">Is Primary</label>
                             </div>
                           </>
                         )}
 
-                        <div className="col-1 text-end">
-                          <h6
-                            className={`my-1 row ${userWebsite.status === "Active" ? "green-font" : "red-font"
-                              }`}
+                        <div className="col-1 ms-2 ">
+                          <div
+                            className={`my-1 row 
+                            `}
                           >
-                            status: <span className="small-font fw-600"> {userWebsite.status} </span>
-                          </h6>
+                            status
+                            <div className={`small-font fw-600 input-css text-center ${userWebsite.status === "Active" ? "green-font" : "red-font"} `}> {userWebsite.status} </div>
+                          </div>
                         </div>
                       </div>
                     );
@@ -3074,7 +3093,7 @@ function EditNewDirector() {
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">
-                      <label className="small-font my-1">Admin Website</label>
+                      <label className="small-font my-2">Admin Website</label>
                       <div className="custom-select-wrapper">
                         <Select
                           className="small-font"
@@ -3339,7 +3358,7 @@ function EditNewDirector() {
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                                  <label className="small-font me-2">Is Primary  </label>
                                   <input
                                     type="checkbox"
                                     checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_primary == 1}
@@ -3415,7 +3434,7 @@ function EditNewDirector() {
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                                  <label className="small-font me-2">Is Primary  </label>
                                   <input
                                     type="checkbox"
                                     checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_primary == 1}
@@ -3566,7 +3585,7 @@ function EditNewDirector() {
 
                                   {/* Casino Allowed Checkbox */}
                                   <div className="col d-flex align-items-center">
-                                    <label className="small-font me-2">Casino Allowed</label>
+                                    <label className="small-font me-2 ">Casino Allowed</label>
                                     <input
                                       type="checkbox"
                                       checked={addWebsites.find((site) => site.id === userSite.id)?.is_casino === 1}
@@ -3658,7 +3677,7 @@ function EditNewDirector() {
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                                  <label className="small-font me-2">Is Primary </label>
                                   <input
                                     type="checkbox"
                                     checked={addWebsites.find((site) => site.id === userSite.id)?.is_primary == 1}
@@ -3732,7 +3751,7 @@ function EditNewDirector() {
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                                  <label className="small-font me-2">Is Primary </label>
                                   <input
                                     type="checkbox"
                                     checked={addWebsites.find((site) => site.id === userSite.id)?.is_primary == 1}
