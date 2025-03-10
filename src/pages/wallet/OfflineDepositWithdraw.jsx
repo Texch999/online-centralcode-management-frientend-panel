@@ -18,6 +18,7 @@ function OfflineDepositWithdraw() {
   const [discription, setDiscription] = useState("")
   const [errors, setErrors] = useState({});
   const [totalRecords, setTotalRecords] = useState(null)
+  const [duration, setDuration] = useState("")
   const [inputData, setInputData] = useState({
     adminWeb: "",
     userWeb: "",
@@ -37,7 +38,12 @@ function OfflineDepositWithdraw() {
   const itemsPerPage = 4
   const limit = itemsPerPage
   const offset = (currentPage - 1) * itemsPerPage
-
+  const durationOptions = [
+    { value: 30, label: "30day" },
+    { value: 90, label: "90day" },
+    { value: 180, label: "180day" },
+    { value: 365, label: "365day" },
+  ]
   useEffect(() => {
     fetchOwnerDownlineDirectorAndSuperAdminDetails(limit, offset);
   }, []);
@@ -222,23 +228,12 @@ function OfflineDepositWithdraw() {
       newErrors.inrChips = "INR Chips value is required";
     }
 
-    // Validate Extended INR Chips (only if commission_type is 1 and actionType is not WITHDRAW)
-    // if (
-    //   siteData?.selectedUserDetails?.commission_type === 1 &&
-    //   actionType !== "WITHDRAW" &&
-    //   (!inputData?.extChips)
-    // ) {
-    //   newErrors.extChips = "Extended INR Chips value is required and must be greater than zero";
-    // }
-    // Set errors in state
     setErrors(newErrors);
 
-    // Return true if no errors, false otherwise
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (siteData) => {
-    console.log("hello")
     if (!validateForm(siteData)) return
     const payload = {
       adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
@@ -348,7 +343,6 @@ function OfflineDepositWithdraw() {
         <div className="w-100">
           <div className="row col-12">
             <div className="col-5">
-
               <AdminSiteDropdown
                 options={adminSites}
                 onChange={(value) => handleAdminSiteChange(index, value)}
@@ -361,7 +355,6 @@ function OfflineDepositWithdraw() {
                     : null
                 }
               />
-
               {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
             </div>
             <div className="col-6">
@@ -388,198 +381,6 @@ function OfflineDepositWithdraw() {
               {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
             </div>
           </div>
-          {/* {row.showChildRow && (
-            <div className="w-100 d-flex flex-column justify-content-start p-2 mt-2 border-top">
-              <div className="d-flex flex-row justify-content-between align-items-center col-4">
-                <div className="black-text2">
-                  Avl D/W:
-                  <span className="black-text2 medium-font fw-600">
-                    {" "}{row.selectedUserDetails?.commission_type === 1
-                      ? (row.selectedUserDetails ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
-                      : (row.selectedUserDetails ? Number(row.selectedUserDetails?.inrChips).toFixed(2) : 0)}
-                  </span>
-                </div>
-                <div className="ps-2 black-text2">
-                  Exposure: <span className="black-text2  medium-font fw-600">0</span>
-                </div>
-              </div>
-              <div className="d-flex flex-column mt-2">
-                <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
-                  <div className="flex-grow-1 w-100">
-                    <label>Enter Chips in INR </label>
-                    <input
-                      type="text"
-                      name="inrChips"
-                      className="small-font input-css all-none rounded white-bg input-border w-100"
-                      placeholder="Enter Chips"
-                      onChange={handleInputChange}
-                      value={inputData.inrChips}
-                    />
-                    {errors.inrChips && <p className="text-danger small-font">{errors.inrChips}</p>}
-                  </div>
-                  <div className="flex-grow-1 w-100">
-                    <label>
-                      Paid Amt In INR -{" "}
-                      {row.selectedUserDetails?.commission_type === 1
-                        ? row.selectedUserDetails?.chip_percentage
-                        : row.selectedUserDetails?.share}
-                      %:
-                    </label>
-                    <input
-                      type="text"
-                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                      placeholder="Enter Chips"
-                      value={inputData.inrChips ? calculatePaidAmount(
-                        Number(inputData.inrChips),
-                        row.selectedUserDetails?.commission_type === 1
-                          ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage
-                          : row.selectedUserDetails?.share
-                      ).toFixed(2) : 0}
-                      readOnly
-                    />
-                  </div>
-                  <div className="flex-grow-1 w-100">
-                    <label>Chips In {getCurrency(row?.currency_id)}</label>
-                    <input
-                      type="text"
-                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                      placeholder="Enter Chips"
-                      value={inputData.inrChips ? currencyConvert(
-                        Number(inputData.inrChips),
-                        getCurrencyRate(107),
-                        getCurrencyRate(row?.currency_id)
-                      ).toFixed(4) : 0}
-                      readOnly
-                    />
-                  </div>
-                  <div className="flex-grow-1 w-100">
-                    <label>
-                      Paid Amt {getCurrency(row?.currency_id)} -{" "}
-                      {row.selectedUserDetails?.commission_type === 1
-                        ? row.selectedUserDetails?.chip_percentage
-                        : row.selectedUserDetails?.share}
-                      %
-                    </label>
-                    <input
-                      type="text"
-                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                      placeholder="Enter Chips"
-                      value={inputData.inrChips ? (
-                        currencyConvert(
-                          Number(inputData.inrChips),
-                          getCurrencyRate(107),
-                          getCurrencyRate(row?.currency_id)
-                        ) *
-                        (row.selectedUserDetails?.commission_type === 1
-                          ? row.selectedUserDetails?.chip_percentage / 100
-                          : row.selectedUserDetails?.share / 100)
-                      ).toFixed(4) : 0}
-                      readOnly
-                    />
-                  </div>
-                </div>
-                {row.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW" && (
-                  <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
-                    <div className="flex-grow-1 w-100">
-                      <label className="text-nowrap">Enter Ext Sp Chips</label>
-                      <input
-                        type="text"
-                        name="extChips"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                        placeholder="Enter Chips"
-                        onChange={handleInputChange}
-                        value={inputData.extChips}
-                      />
-                      {errors.extChips && <p className="text-danger small-font">{errors.extChips}</p>}
-                    </div>
-                    <div className="flex-grow-1 w-100">
-                      <label>
-                        Paid Amt In INR{" "}
-                        {row.selectedUserDetails?.extra_chips_percentage}%
-                      </label>
-                      <input
-                        type="text"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                        placeholder="Enter Chips"
-                        value={inputData.extChips ? calculatePaidAmount(
-                          Number(inputData.extChips),
-                          row.selectedUserDetails?.extra_chips_percentage
-                        ).toFixed(2) : 0}
-                        readOnly
-                      />
-                    </div>
-                    <div className="flex-grow-1 w-100">
-                      <label>Chips In {getCurrency(row?.currency_id)}</label>
-                      <input
-                        type="text"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                        placeholder="Enter Chips"
-                        value={inputData.extChips ? currencyConvert(
-                          Number(inputData.extChips),
-                          getCurrencyRate(107),
-                          getCurrencyRate(row?.currency_id)
-                        ).toFixed(4) : 0}
-                        readOnly
-                      />
-                    </div>
-                    <div className="flex-grow-1 w-100">
-                      <label>
-                        Paid Amt In {getCurrency(row?.currency_id)} -{" "}
-                        {row.selectedUserDetails?.extra_chips_percentage}%
-                      </label>
-                      <input
-                        type="text"
-                        className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                        placeholder="Enter Chips"
-                        value={inputData.extChips ? (
-                          currencyConvert(
-                            Number(inputData.extChips),
-                            getCurrencyRate(107),
-                            getCurrencyRate(row?.currency_id)
-                          ) *
-                          (row.selectedUserDetails?.extra_chips_percentage / 100)
-                        ).toFixed(4) : 0}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="d-flex flex-row justify-content-end align-items-cente">
-
-                <div className="d-flex flex-row justify-content-end align-items-center">
-                  <button className="me-3 saffron-btn2 px-3" onClick={() => handleCancel(index)}>Cancel</button>
-                </div>
-
-                {actionType === "WITHDRAW" && row.selectedUserDetails?.commission_type === 2 && (
-                  <div className="d-flex flex-row justify-content-end align-items-center">
-                    <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
-                  </div>
-                )}
-
-                {actionType !== "WITHDRAW" && (
-                  <div className="d-flex flex-row justify-content-end align-items-center">
-                    <button className="me-3 saffron-btn2 px-3" onClick={() => handleSubmit(row)}>Submit</button>
-                  </div>
-                )}
-              </div>
-
-              {apiErrors && (
-                <div className="alert alert-danger mt-1">
-                  {Array.isArray(apiErrors) ? (
-                    <ul className="ps-2 mb-0">
-                      {apiErrors.map((error, index) => (
-                        <li className="small-font" key={index}>{error.message || error}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="small-font ps-2">{apiErrors.message || apiErrors}</p>
-                  )}
-                </div>
-              )}
-            </div>
-          )} */}
           {row.showChildRow && (
             <div className="w-100 d-flex flex-column justify-content-start p-2 mt-2 border-top">
               {/* Avl D/W and Exposure Section */}
@@ -703,19 +504,22 @@ function OfflineDepositWithdraw() {
                 </div>
 
                 {/* Extra Chips Section (Conditional) */}
-                {row.selectedUserDetails?.commission_type === 1 &&
+                {row.selectedUserDetails?.commission_type == 1 &&
                   actionType !== "WITHDRAW" && (
                     <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
                       {/* Enter Ext Sp Chips */}
                       <div className="flex-grow-1 w-100 position-relative">
-                        <label className="text-nowrap">Enter Ext Sp Chips</label>
-                        <input
-                          type="text"
-                          name="extChips"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                          placeholder="Enter Chips"
-                          onChange={handleInputChange}
-                          value={inputData.extChips}
+                        <label className="text-nowrap">Duration</label>
+                        <Select
+                          className="small-font white-bg input-border rounded text-capitalize text-nowrap"
+                          placeholder="Select User Website"
+                          styles={customStyles}
+                          // menuPortalTarget={document.body}
+                          onChange={(option) => setDuration(option.value)}
+                          options={durationOptions}
+                          value={duration}
+                          maxMenuHeight={120}
+                          menuPlacement="auto"
                         />
                         {errors.extChips && (
                           <p className="text-danger small-font position-absolute mt-1">

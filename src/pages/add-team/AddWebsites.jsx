@@ -118,7 +118,7 @@ const AddWibsites = () => {
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
   const data = websites.map((website) => ({
-    type: website?.deploy_type === 1 ? "Comapny" : "White Lable",
+    type: website?.deploy_type === 1 ? "Company" : "White Lable",
     admin: (
       <div>
         {" "}

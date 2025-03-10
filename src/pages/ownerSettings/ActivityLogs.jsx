@@ -113,6 +113,7 @@ const ActivityLogs = () => {
   };
 
   const handleTabClick = (tab, type) => {
+    console.log(type, "==>/activity-logs")
     setType(type);
     setActiveTab(tab);
   };

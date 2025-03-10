@@ -2041,14 +2041,20 @@ function EditNewDirector() {
   }, []);
 
   const validateForm = () => {
-    const errors = {};
+    let newErrors = {};
 
     // if (!name) errors.name = "Name is required";
     // if (!loginName) errors.loginName = "Login Name is required";
     // if (!selectedRole) errors.selectedRole = "Role is required";
     // if (!selectedCurrencyCode) errors.selectedCurrencyCode = "Currency is required";
     // if (!selectedCountryCode) errors.selectedCountryCode = "Country is required";
-    if (!managementPassword) errors.managementPassword = "Management Password is required";
+    // if (!managementPassword) errors.managementPassword = "Management Password is required";
+
+    if (!managementPassword) {
+      newErrors.managementPassword = "Management Password is required.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
 
     return errors;
   };
@@ -2328,6 +2334,7 @@ function EditNewDirector() {
         });
       }
       adminMap.get(adminKey).userWebsites.push({
+        
         id: site.website_access_id,
         web_name: site.user_panel_name,
         web_url: site.user_panel_url,
@@ -2717,7 +2724,13 @@ function EditNewDirector() {
               >
                 {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
+              {errors?.managementPassword && (
+                <span className="x-small-font fw-600 error">
+                  {errors?.managementPassword}
+                </span>
+              )}
             </div>
+            
           </div>
           <div className="row p-2">
             
