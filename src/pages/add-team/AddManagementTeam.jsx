@@ -48,6 +48,7 @@ const AddManagementTeam = () => {
     confirmPassword: "",
     managementPassword: "",
   });
+  const [resetPasswordErrrors,setResetPasswordErrors] = useState([])
 
   const GetEmployee = () => {
     getEmployees({ limit: 10, offset: 0 })
@@ -65,6 +66,9 @@ const AddManagementTeam = () => {
     GetEmployee();
   }, []);
 
+
+  console.log(resetPasswordErrrors, "resetPasswordErrrors in main component");
+  
   const toggleModal = (modalName, value) => {
     setModalState((prev) => ({ ...prev, [modalName]: value }));
   };
@@ -147,17 +151,17 @@ const AddManagementTeam = () => {
 
     resetEmployeePassword(resetPasswordId, requestData)
       .then((response) => {
+        setSuccessPopupOpen(true);
+        setDiscription("Password reset successfully")
         if (response) {
-          setTimeout(() => {
-            setResetPasswordPopup(false);
-          }, 1000);
+          setResetPasswordPopup(false);
           GetEmployee();
         } else {
-          alert("Something went wrong");
+          setResetPasswordErrors("Something went wrong");
         }
       })
       .catch((error) => {
-        alert(error?.message || "Request failed");
+        setResetPasswordErrors(error?.message || "Request failed");
       });
   };
 
@@ -263,6 +267,10 @@ const AddManagementTeam = () => {
           EditShow={EditShow}
           handleEditShowClose={handleEditShowClose}
           editingRowId={editingRowId}
+          setDiscription={setDiscription}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+         
+      
         />
       )}
 
@@ -290,6 +298,8 @@ const AddManagementTeam = () => {
         setResetPasswordPopup={setResetPasswordPopup}
         IndividualpassowrdId={resetPasswordId}
         onSubmit={onEmployeePasswordSubmit}
+        resetPasswordErrrors={resetPasswordErrrors}
+    
       />
       {successPopupOpen && (
         <SuccessPopup

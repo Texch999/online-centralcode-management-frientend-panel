@@ -8,7 +8,13 @@ import {
 import { Roles } from "../../../utils/enum";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
+function EditManagementPopup({
+  EditShow,
+  handleEditShowClose,
+  editingRowId,
+  setDiscription,
+  setSuccessPopupOpen,
+}) {
   const [employeeData, setEmployeeData] = useState();
   const [formData, setFormData] = useState({
     role: "",
@@ -72,13 +78,9 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Invalid email format";
     }
-    // if (
-    //   !formData.management_password ||
-    //   formData.management_password.length < 6
-    // ) {
-    //   errors.management_password =
-    //     "Password must be at least 6 characters long";
-    // }
+    if (!formData.management_password) {
+      errors.management_password = "Password is required";
+    }
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -92,11 +94,15 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
     if (!validateForm()) return;
 
     updateEmployeeByID(editingRowId, formData)
-      .then(() => handleEditShowClose())
+      .then(() => {
+        setDiscription("Updated Successfully"); // Set success message
+        setSuccessPopupOpen(true); // Open success popup
+        handleEditShowClose(); // Close the edit modal
+      })
       .catch((error) => {
         if (error) {
           setErrors(error);
-          console.log("update clicke");
+          console.log("update clicked");
           setBackendErrors(error?.message);
         } else {
           setErrors("Something Went Wrong");
@@ -107,8 +113,8 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
   return (
     <Modal show={EditShow} onHide={handleEditShowClose} size="md" centered>
       <Modal.Body>
-        <div className="d-flex justify-content-between align-items-center fw-600">
-          Edit Management Team
+        <div className="d-flex  justify-content-between align-items-center fw-600">
+          <span className="yellow-font"> Edit Management Team </span>
           <MdOutlineClose
             size={20}
             type="button"
@@ -211,7 +217,7 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
               )}
             </div>
 
-            <div className="col">
+            <div className="col relative">
               <label className="small-font mb-1">Management Password</label>
               <input
                 type={showPassword ? "text" : "password"}
@@ -227,7 +233,8 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
                 style={{
                   position: "absolute",
                   right: "20px",
-                  top: "73%",
+                  // top: "73%",
+                  top: "45%",
                   transform: "translateY(-30%)",
                   cursor: "pointer",
                 }}
@@ -243,7 +250,7 @@ function EditManagementPopup({ EditShow, handleEditShowClose, editingRowId }) {
             </div>
           </div>
 
-          <div className="col d-flex justify-content-center">
+          <div className="col my-2 d-flex justify-content-center">
             <Button className="saffron-btn w-100" type="submit">
               Submit
             </Button>
