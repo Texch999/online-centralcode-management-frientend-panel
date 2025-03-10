@@ -2292,7 +2292,7 @@ function AddNewDirectorSuperAdmin() {
                                                 userSite.website_access_id
                                               ]?.max_chips_monthly || 0
                                             )) *
-                                          100
+                                          100 || 0
                                         }
                                         onChange={(e) =>
                                           handleInputChange(
