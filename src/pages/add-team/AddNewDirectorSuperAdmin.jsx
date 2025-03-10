@@ -4319,55 +4319,52 @@ function AddNewDirectorSuperAdmin() {
                                         "2" && (
                                         <div className="col d-flex  ">
                                           <div className="col-2 position-relative mx-1">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Share
-                                            </label>
-                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                              <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Downline Sharing"
-                                                onChange={(e) =>
-                                                  handleInputChange(
-                                                    userSite.id,
-                                                    "share",
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Share 10%</b>
-                                              </span>
-                                            </div>
-                                          </div>
-                                          <div className="col-2 position-relative mx-3">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Enter Commission
-                                            </label>
-                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                              <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Enter Commission: M.0"
-                                                onChange={(e) =>
-                                                  handleInputChange(
-                                                    userSite.id,
-                                                    "downline_comm",
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Comm.. 1%</b>
-                                              </span>
-                                            </div>
-                                          </div>
+      <label className="fw-600 my-1 small-font">* Share (%)</label>
+      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+        <input
+          type="text"
+          className="small-font bg-none p-2 all-none w-50"
+          value={websiteDetails[userSite.id]?.share || ""}
+          onChange={(e) => {
+            let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
+            if (value.length > 3) return; // Restrict input to max 3 digits
+            if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
+            handleInputChange(userSite.id, "share", value);
+          }}
+        />
+        <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+          <div className="fw-600">My Share {100 - (parseInt(websiteDetails[userSite.id]?.share) || 0)}%</div>
+        </span>
+      </div>
+    </div>
+    <div className="col-2 position-relative mx-3">
+      <label className="fw-600 my-1 small-font">* Enter Commission</label>
+      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+        <input
+          type="text"
+          className="small-font bg-none p-2 w-75 all-none"
+          // placeholder="Enter Commission: M.0"
+          value={websiteDetails[userSite.id]?.downline_comm || ""}
+          onChange={(e) => {
+            let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
+            if (value.length > 3) return; // Restrict input to max 3 digits
+            if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
+            handleInputChange(userSite.id, "downline_comm", value);
+          }}
+        />
+        <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+          <b>My Comm.. {100 - (parseInt(websiteDetails[userSite.id]?.downline_comm) || 0)}%</b>
+        </span>
+      </div>
+    </div>
                                           <div className="col-2 position-relative mx-3">
                                             <label className="fw-600 my-1 small-font">
                                               * Cas Chip Value
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Casino Chip Value"
+                                                className="small-font bg-none all-none p-2 w-75"
+                                                // placeholder="Casino Chip Value"
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,
@@ -4398,56 +4395,54 @@ function AddNewDirectorSuperAdmin() {
                                       {accountTypes[form.id]?.[userSite.id] ===
                                         "3" && (
                                         <div className="col d-flex ">
-                                          <div className="col-2 position-relative mx-1">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Downline Sharing
-                                            </label>
-                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                              <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Downline Sharing"
-                                                onChange={(e) =>
-                                                  handleInputChange(
-                                                    userSite.id,
-                                                    "share",
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Share 10%</b>
-                                              </span>
-                                            </div>
-                                          </div>
-                                          <div className="col-2 position-relative mx-3">
-                                            <label className="fw-600 my-1 small-font">
-                                              * Enter Commission: M.0
-                                            </label>
-                                            <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                              <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Enter Commission: M.0"
-                                                onChange={(e) =>
-                                                  handleInputChange(
-                                                    userSite.id,
-                                                    "downline_comm",
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Comm.. 1%</b>
-                                              </span>
-                                            </div>
-                                          </div>
+                                        <div className="col-2 position-relative mx-1">
+      <label className="fw-600 my-1 small-font">* Downline Sharing</label>
+      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+        <input
+          type="text"
+          className="small-font bg-none all-none p-2 w-75"
+          // placeholder="Downline Sharing"
+          value={websiteDetails[userSite.id]?.share || ""}
+          onChange={(e) => {
+            let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
+            if (value.length > 3) return; // Restrict input to max 3 digits
+            if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
+            handleInputChange(userSite.id, "share", value);
+          }}
+        />
+        <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+          <b>My Share {100 - (parseInt(websiteDetails[userSite.id]?.share) || 0)}%</b>
+        </span>
+      </div>
+    </div>
+    <div className="col-2 position-relative mx-3">
+      <label className="fw-600 my-1 small-font">* Enter Commission: M.0</label>
+      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+        <input
+          type="text"
+          className="small-font bg-none all-none p-2 w-75"
+          // placeholder="Enter Commission: M.0"
+          value={websiteDetails[userSite.id]?.downline_comm || ""}
+          onChange={(e) => {
+            let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
+            if (value.length > 3) return; // Restrict input to max 3 digits
+            if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
+            handleInputChange(userSite.id, "downline_comm", value);
+          }}
+        />
+        <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+          <b>My Comm.. {100 - (parseInt(websiteDetails[userSite.id]?.downline_comm) || 1)}%</b>
+        </span>
+      </div>
+    </div>
                                           <div className="col-2 position-relative mx-3">
                                             <label className="fw-600 my-1 small-font">
                                               * Casino Chip Value
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Casino Chip Value"
+                                                className="small-font bg-none p-2 all-none w-75"
+                                                // placeholder="Casino Chip Value"
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,

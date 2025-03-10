@@ -2178,6 +2178,8 @@ function EditNewDirector() {
   }, [mode, userId]);
 
   const handleManagementSubmit = () => {
+
+
     const payload = {
       type: parseInt(selectedRole),
       country_id: parseInt(selectedCountryCode),
@@ -2607,12 +2609,12 @@ function EditNewDirector() {
           <h5 className="yellow-font ">
             {role === "management" ? `Edit Director/SuperAdmin` : `Edit SuperAdmin `}
           </h5>
-          <span
-            className="yellow-font cursor-pointer"
-            onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft /> Go Back
-          </span>
+         <span
+                    className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
+                    onClick={() => navigate(-1)}
+                  >
+                    <FaArrowLeft className="mx-2" /> Back
+                  </span>
         </div>
 
         {websiteEditErrors && (
@@ -2624,12 +2626,12 @@ function EditNewDirector() {
         )}
         <div className="white-bg br-10 login-box-shadow w-100 p-2 m-2">
           <div className="row p-2">
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Name</label>
               <input
                 type="text"
                 placeholder="Enter Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="border-grey3 small-font rounded all-none input-css w-100 input-css" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -2638,12 +2640,12 @@ function EditNewDirector() {
                 <span className="text-danger small-font">{errors.name}</span>
               )}
             </div>
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Login Name</label>
               <input
                 type="text"
                 placeholder="Enter Login Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="border-grey3 small-font rounded all-none input-css w-100"
                 value={loginName}
                 readOnly
               />
@@ -2653,10 +2655,10 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Currency</label>
               <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100 no-cursor"
+                className="small-font rounded all-none input-css  border-grey3 w-100 no-cursor"
                 value={selectedCurrencyCode}
                 onChange={(e) => setSelectedCurrencyCode(e.target.value)}
                 disabled
@@ -2674,12 +2676,10 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-          </div>
-          <div className="row p-2">
-            <div className="col-3 p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Country</label>
               <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                className="small-font rounded all-none input-css border-grey3 w-100"
                 value={selectedCountryCode}
                 onChange={(e) => setSelectedCountryCode(e.target.value)}
               >
@@ -2697,16 +2697,17 @@ function EditNewDirector() {
               )}
             </div>
 
-            <div className="p-1  col-3 position-relative">
+            <div className="p-1   col-2 position-relative">
               <label className="small-font my-1">Management Password</label>
-              <input
+              <div className="w-100 rounded border-grey3  input-css4"><input
                 type={showManagementPassword ? "text" : "password"}
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="  all-none p-1  w-80"
                 placeholder="Enter"
                 required
                 value={managementPassword}
                 onChange={(e) => setManagementPassword(e.target.value)}
-              />
+              /></div>
+              
               <span
                 className="position-absolute"
                 style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
@@ -2717,11 +2718,10 @@ function EditNewDirector() {
                 {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
-            {errors.managementPassword && (
-              <span className="text-danger small-font">
-                {errors.managementPassword}
-              </span>
-            )}
+          </div>
+          <div className="row p-2">
+            
+           
           </div>
         </div>
       </div>
