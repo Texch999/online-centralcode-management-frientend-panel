@@ -2043,11 +2043,11 @@ function EditNewDirector() {
   const validateForm = () => {
     const errors = {};
 
-    if (!name) errors.name = "Name is required";
-    if (!loginName) errors.loginName = "Login Name is required";
-    if (!selectedRole) errors.selectedRole = "Role is required";
-    if (!selectedCurrencyCode) errors.selectedCurrencyCode = "Currency is required";
-    if (!selectedCountryCode) errors.selectedCountryCode = "Country is required";
+    // if (!name) errors.name = "Name is required";
+    // if (!loginName) errors.loginName = "Login Name is required";
+    // if (!selectedRole) errors.selectedRole = "Role is required";
+    // if (!selectedCurrencyCode) errors.selectedCurrencyCode = "Currency is required";
+    // if (!selectedCountryCode) errors.selectedCountryCode = "Country is required";
     if (!managementPassword) errors.managementPassword = "Management Password is required";
 
     return errors;
@@ -2178,7 +2178,7 @@ function EditNewDirector() {
   }, [mode, userId]);
 
   const handleManagementSubmit = () => {
-
+    if (!validateForm()) return;
 
     const payload = {
       type: parseInt(selectedRole),
