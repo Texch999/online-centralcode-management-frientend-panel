@@ -134,6 +134,7 @@ const AddNewOfflinePaymentModal = ({
       if (response.status === true) {
         console.log("resposne successs", response);
         setMsg(response?.message);
+        getAllManPaymentModes(page, pageSize);
         setImage(null);
         setImgName(null);
         setSelectedType(null);
@@ -145,7 +146,6 @@ const AddNewOfflinePaymentModal = ({
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 2000);
-        getAllManPaymentModes(page, pageSize);
       } else {
         console.log("error");
       }
