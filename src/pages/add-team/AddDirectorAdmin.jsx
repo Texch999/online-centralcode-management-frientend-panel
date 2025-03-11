@@ -530,6 +530,7 @@ const AddDirectorAdmin = () => {
           resetPasswordPopup={resetPasswordPopup}
           setResetPasswordPopup={handleResetPasswordClose}
           resetPasswordErrrors={resetPasswordErrrors}
+          setResetPasswordErrors={setResetPasswordErrors}
           onSubmit={
             role === "management"
               ? onDirectorResetPassword
