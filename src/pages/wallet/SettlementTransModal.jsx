@@ -13,7 +13,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
         <div className="d-flex flex-between align-items-center">
           <div className="black-br-btn px-2 py-2 br-5">Director - Abhi</div>
           <div className="d-flex gap-3 align-items-center">
-            <div className="green-font fw-bold light-bg br-5 px-3 py-2">
+            <div className="green-font fw-bold light-bg br-5 font-20 px-3 py-2">
               Settlement
             </div>
             <IoClose
@@ -35,13 +35,13 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
           <div className="col-6">
             <label>Total Credit</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font" />
             </div>
           </div>
           <div className="col-6">
             <label>Paid</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font" />
             </div>
           </div>
         </div>
@@ -49,13 +49,13 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
           <div className="col-6">
             <label>Bal. Credit</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font small-font" />
             </div>
           </div>
           <div className="col-6">
             <label>Enter Paid Amount</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font" />
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
         <div className="col-12 mt-2 flex-column d-flex">
           <label>Net Credit Bal.</label>
           <div className="light-bg br-5 mt-1 px-2 py-2">
-            <input type="text" placeholder="1000" className="all-none" />
+            <input type="text" placeholder="1000" className="all-none small-font small-font" />
           </div>
         </div>
 
@@ -73,20 +73,21 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
             <textarea
               type="text"
               placeholder="remarks"
-              className="all-none"
-              rows={3}
+              className="all-none small-font"
+              rows={2}
             />
           </div>
         </div>
-
-        <div className="col-12 flex-column mt-2 d-flex">
-          <label>Enter Password</label>
-          <div className="light-bg br-5 mt-1 px-2 py-2">
-            <input type="text" placeholder="password" className="all-none" />
+        <div className="row mt-2">
+          <div className="col-6 flex-column d-flex">
+            <label>Enter Password</label>
+            <div className="light-bg br-5 mt-1 px-2 py-2">
+              <input type="text" placeholder="password" className="all-none small-font" />
+            </div>
           </div>
-        </div>
-        <div className="d-flex flex-end mt-2 ">
-          <div className="saffron-btn br-5 px-3 pointer">submit</div>
+          <div className="col-6 flex-column mt-2 align-self-end d-flex">
+            <div className="saffron-btn br-5 px-4 pointer">submit</div>
+          </div>
         </div>
       </div>
     </Modal>
