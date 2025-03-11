@@ -19,6 +19,7 @@ function OfflineDepositWithdraw() {
   const [errors, setErrors] = useState({});
   const [totalRecords, setTotalRecords] = useState(null)
   const [duration, setDuration] = useState("")
+  const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState({
     adminWeb: "",
     userWeb: "",
@@ -29,7 +30,8 @@ function OfflineDepositWithdraw() {
     selectedUserSiteId: null,
     selectedCommissionType: null,
   });
-
+  const [isCredit, setIsCredit] = useState(false); // State for credit checkbox
+  const [creditAmount, setCreditAmount] = useState(0);
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
   const allCountries = useSelector((state) => state?.allCountries);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,7 +50,6 @@ function OfflineDepositWithdraw() {
     fetchOwnerDownlineDirectorAndSuperAdminDetails(limit, offset);
   }, []);
 
-  // Fetch owner downline director and super admin details
   const fetchOwnerDownlineDirectorAndSuperAdminDetails = async (limit, offset) => {
     try {
       const response = await ownerDowlineDirAndSADetails({ limit, offset });
@@ -192,6 +193,7 @@ function OfflineDepositWithdraw() {
       inrChips: 0,
       extChips: 0,
     });
+    setCreditAmount(0);
     setActionType(action)
     setErrors({})
     setApiErrors(null);
@@ -227,87 +229,184 @@ function OfflineDepositWithdraw() {
     if (!inputData?.inrChips || inputData?.inrChips <= 0) {
       newErrors.inrChips = "INR Chips value is required";
     }
+    if (!inputData?.inrChips || inputData?.inrChips <= 0) {
+      newErrors.inrChips = "INR Chips value is required";
+    }
 
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   };
 
+  // const handleSubmit = (siteData) => {
+  //   if (!validateForm(siteData)) return
+  //   const payload = {
+  //     adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
+  //     userPanelId: siteData?.selectedUserDetails?.user_paner_id,
+  //     currency: siteData?.currency_id,
+  //     selctChips: (inputData.inrChips ? currencyConvert(
+  //       Number(inputData.inrChips),
+  //       getCurrencyRate(107),
+  //       getCurrencyRate(siteData?.currency_id)
+  //     ) : 0),
+
+  //   };
+
+  //   if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
+  //     payload.selctSpcChips = (inputData.extChips ? currencyConvert(
+  //       Number(inputData.extChips),
+  //       getCurrencyRate(107),
+  //       getCurrencyRate(siteData?.currency_id)
+  //     ) : 0)
+
+  //     payload.paidAmount = rceil((inputData.inrChips ? (
+  //       currencyConvert(
+  //         Number(inputData.inrChips),
+  //         getCurrencyRate(107),
+  //         getCurrencyRate(siteData?.currency_id)
+  //       ) *
+  //       (siteData.selectedUserDetails?.commission_type === 1
+  //         ? siteData.selectedUserDetails?.chip_percentage / 100
+  //         : siteData.selectedUserDetails?.share / 100)
+  //     ) : 0) +
+  //       (inputData.extChips ? currencyConvert(
+  //         Number(inputData.extChips),
+  //         getCurrencyRate(107),
+  //         getCurrencyRate(siteData?.currency_id)
+  //       ) : 0), -3)
+  //   } else {
+  //     payload.paidAmount = rceil((inputData.inrChips ? (
+  //       currencyConvert(
+  //         Number(inputData.inrChips),
+  //         getCurrencyRate(107),
+  //         getCurrencyRate(siteData?.currency_id)
+  //       ) *
+  //       (siteData.selectedUserDetails?.commission_type === 1
+  //         ? siteData.selectedUserDetails?.chip_percentage / 100
+  //         : siteData.selectedUserDetails?.share / 100)
+  //     ) : 0), -3)
+
+  //   }
+  //   let apiCall
+  //   if (actionType === "DEPOSIT") {
+  //     apiCall = ManagementOfflineDepositeTicketCreation
+
+  //   } else {
+  //     apiCall = ManagementOfflineWithdrawTicketCreation
+  //   }
+  //   apiCall(siteData?.id, payload)
+  //     .then((response) => {
+  //       if (response?.status === true) {
+  //         setSuccessPopupOpen(true);
+  //         setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "WIthdraw"} Created Successfully`)
+  //         setInputData({
+  //           inrChips: 0,
+  //           extChips: 0,
+  //         });
+  //         setApiErrors(null);
+  //         setErrors({})
+  //       } else {
+  //         setApiErrors(response?.errors || "Deposit failed. Please try again.");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setApiErrors(error?.errors || error?.message || "API request failed");
+  //     });
+  // }
+
   const handleSubmit = (siteData) => {
-    if (!validateForm(siteData)) return
+    if (!validateForm(siteData)) return;
+
+    // Calculate the total amount based on INR chips and currency conversion
+    const totalChips = inputData.inrChips
+      ? currencyConvert(
+        Number(inputData.inrChips),
+        getCurrencyRate(107),
+        getCurrencyRate(siteData?.currency_id)
+      )
+      : 0;
+
+    // Calculate the paid amount based on commission type
+    const paidAmount = rceil(
+      totalChips *
+      (siteData.selectedUserDetails?.commission_type === 1
+        ? siteData.selectedUserDetails?.chip_percentage / 100
+        : siteData.selectedUserDetails?.share / 100),
+      -3
+    );
+
+    // Adjust the paid amount if credit is selected
+    const finalPaidAmount = isCredit ? paidAmount - creditAmount : paidAmount;
+
     const payload = {
       adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
       userPanelId: siteData?.selectedUserDetails?.user_paner_id,
       currency: siteData?.currency_id,
-      selctChips: (inputData.inrChips ? currencyConvert(
-        Number(inputData.inrChips),
-        getCurrencyRate(107),
-        getCurrencyRate(siteData?.currency_id)
-      ) : 0),
-
+      selctChips: totalChips,
+      TotalPaidAmount: paidAmount,
+      // Pass 1 if credit is selected, otherwise 2
+      // creditAmount: isCredit ? creditAmount : 0, // Pass credit amount if credit is selected
     };
+    if (isCredit && actionType !== "WITHDRAW") {
+      payload.isCredit = isCredit ? 1 : 2
+      payload.paidAmount = finalPaidAmount
+      payload.creditAmount = creditAmount
+    }
 
+    // Add extra chips data if commission type is 1 and action is not WITHDRAW
     if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
-      payload.selctSpcChips = (inputData.extChips ? currencyConvert(
-        Number(inputData.extChips),
-        getCurrencyRate(107),
-        getCurrencyRate(siteData?.currency_id)
-      ) : 0)
-
-      payload.paidAmount = rceil((inputData.inrChips ? (
-        currencyConvert(
-          Number(inputData.inrChips),
-          getCurrencyRate(107),
-          getCurrencyRate(siteData?.currency_id)
-        ) *
-        (siteData.selectedUserDetails?.commission_type === 1
-          ? siteData.selectedUserDetails?.chip_percentage / 100
-          : siteData.selectedUserDetails?.share / 100)
-      ) : 0) +
-        (inputData.extChips ? currencyConvert(
-          Number(inputData.extChips),
-          getCurrencyRate(107),
-          getCurrencyRate(siteData?.currency_id)
-        ) : 0), -3)
-    } else {
-      payload.paidAmount = rceil((inputData.inrChips ? (
-        currencyConvert(
-          Number(inputData.inrChips),
-          getCurrencyRate(107),
-          getCurrencyRate(siteData?.currency_id)
-        ) *
-        (siteData.selectedUserDetails?.commission_type === 1
-          ? siteData.selectedUserDetails?.chip_percentage / 100
-          : siteData.selectedUserDetails?.share / 100)
-      ) : 0), -3)
-
+      payload.duration = duration
+      payload.paidAmount = rceil(
+        (inputData.inrChips
+          ? currencyConvert(
+            Number(inputData.inrChips),
+            getCurrencyRate(107),
+            getCurrencyRate(siteData?.currency_id)
+          ) *
+          (siteData.selectedUserDetails?.commission_type === 1
+            ? siteData.selectedUserDetails?.chip_percentage / 100
+            : siteData.selectedUserDetails?.share / 100)
+          : 0) +
+        (inputData.extChips
+          ? currencyConvert(
+            Number(inputData.extChips),
+            getCurrencyRate(107),
+            getCurrencyRate(siteData?.currency_id)
+          )
+          : 0),
+        -3
+      );
     }
-    let apiCall
+
+    let apiCall;
     if (actionType === "DEPOSIT") {
-      apiCall = ManagementOfflineDepositeTicketCreation
-
+      apiCall = ManagementOfflineDepositeTicketCreation;
     } else {
-      apiCall = ManagementOfflineWithdrawTicketCreation
+      apiCall = ManagementOfflineWithdrawTicketCreation;
     }
+    setLoading(true)
     apiCall(siteData?.id, payload)
       .then((response) => {
         if (response?.status === true) {
           setSuccessPopupOpen(true);
-          setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "WIthdraw"} Created Successfully`)
+          setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Created Successfully`);
           setInputData({
             inrChips: 0,
             extChips: 0,
           });
           setApiErrors(null);
-          setErrors({})
-        } else {
+          setLoading(false)
+          setErrors({});
+        } else if (response?.status == 422) {
+          setLoading(false)
           setApiErrors(response?.errors || "Deposit failed. Please try again.");
         }
       })
       .catch((error) => {
-        setApiErrors(error?.errors || error?.message || "API request failed");
+        setLoading(false)
+        setApiErrors(error?.message || "API request failed");
       });
-  }
+  };
 
   const handleCancel = (index) => {
     setDirAndSADetails((prevData) =>
@@ -338,7 +437,7 @@ function OfflineDepositWithdraw() {
 
     return {
       ...row,
-      uid: <div>{`${index + 1}. ${row.name}`}</div>,
+      uid: <div>{`${row.name}`}</div>,
       details: (
         <div className="w-100">
           <div className="row col-12">
@@ -390,7 +489,7 @@ function OfflineDepositWithdraw() {
                   <span className="black-text2 medium-font fw-600">
                     {" "}
                     {row.selectedUserDetails?.commission_type === 1
-                      ? row.selectedUserDetails
+                      ? row.selectedUserDetails?.inrSportChips 
                         ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2)
                         : 0
                       : row.selectedUserDetails
@@ -403,7 +502,6 @@ function OfflineDepositWithdraw() {
                 </div>
               </div>
 
-              {/* Input Fields Section */}
               <div className="d-flex flex-column mt-2">
                 <div className={`d-flex flex-column flex-md-row align-items-center gap-2 ${errors.inrChips ? "mb-4" : "mb-2"}`}>
                   {/* Enter Chips in INR */}
@@ -415,7 +513,7 @@ function OfflineDepositWithdraw() {
                       className="small-font input-css all-none rounded white-bg input-border w-100"
                       placeholder="Enter Chips"
                       onChange={handleInputChange}
-                      value={inputData.inrChips}
+                      value={Number(inputData.inrChips)}
                     />
                     {errors.inrChips && (
                       <p className="text-danger small-font position-absolute mt-1">
@@ -492,7 +590,7 @@ function OfflineDepositWithdraw() {
                               getCurrencyRate(107),
                               getCurrencyRate(row?.currency_id)
                             ) *
-                            (row.selectedUserDetails?.commission_type === 1
+                            (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
                               ? row.selectedUserDetails?.chip_percentage / 100
                               : row.selectedUserDetails?.share / 100)
                           ).toFixed(4)
@@ -504,99 +602,176 @@ function OfflineDepositWithdraw() {
                 </div>
 
                 {/* Extra Chips Section (Conditional) */}
-                {row.selectedUserDetails?.commission_type == 1 &&
-                  actionType !== "WITHDRAW" && (
-                    <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
-                      {/* Enter Ext Sp Chips */}
-                      <div className="flex-grow-1 w-100 position-relative">
-                        <label className="text-nowrap">Duration</label>
-                        <Select
-                          className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                          placeholder="Select User Website"
-                          styles={customStyles}
-                          // menuPortalTarget={document.body}
-                          onChange={(option) => setDuration(option.value)}
-                          options={durationOptions}
-                          value={duration}
-                          maxMenuHeight={120}
-                          menuPlacement="auto"
-                        />
-                        {errors.extChips && (
-                          <p className="text-danger small-font position-absolute mt-1">
-                            {errors.extChips}
-                          </p>
-                        )}
-                      </div>
+                {actionType !== "WITHDRAW" &&
+                  row.selectedUserDetails?.commission_type == 1 ? (
+                  <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
+                    {/* Enter Ext Sp Chips */}
+                    <div className="flex-grow-1 w-100 position-relative">
+                      <label className="text-nowrap">Duration</label>
+                      <Select
+                        className="small-font white-bg input-border rounded text-capitalize text-nowrap"
+                        placeholder="Select Duration"
+                        styles={customStyles}
+                        onChange={(option) => setDuration(option.value)} // Set selected value
+                        options={durationOptions}
+                        value={durationOptions.find((option) => option.value === duration)} // Show selected value
+                        maxMenuHeight={120}
+                        menuPlacement="auto"
+                      />
+                    </div>
+                    <div className="flex-grow-1 w-100 position-relative d-flex align-items-center">
+                      <input
+                        type="checkbox"
+                        checked={isCredit}
+                        onChange={(e) => setIsCredit(e.target.checked)}
+                        className="me-2"
+                      />
+                      <label>Is Credit</label>
+                    </div>
 
-                      {/* Paid Amt In INR for Extra Chips */}
-                      <div className="flex-grow-1 w-100 position-relative">
-                        <label>
-                          Paid Amt In INR{" "}
-                          {row.selectedUserDetails?.extra_chips_percentage}%
-                        </label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                          placeholder="Enter Chips"
-                          value={
-                            inputData.extChips
-                              ? calculatePaidAmount(
-                                Number(inputData.extChips),
-                                row.selectedUserDetails?.extra_chips_percentage
-                              ).toFixed(2)
-                              : 0
-                          }
-                          readOnly
-                        />
-                      </div>
-
-                      {/* Chips in Currency for Extra Chips */}
-                      <div className="flex-grow-1 w-100 position-relative">
-                        <label>Chips In {getCurrency(row?.currency_id)}</label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                          placeholder="Enter Chips"
-                          value={
-                            inputData.extChips
-                              ? currencyConvert(
-                                Number(inputData.extChips),
-                                getCurrencyRate(107),
-                                getCurrencyRate(row?.currency_id)
-                              ).toFixed(4)
-                              : 0
-                          }
-                          readOnly
-                        />
-                      </div>
-
-                      {/* Paid Amt in Currency for Extra Chips */}
-                      <div className="flex-grow-1 w-100 position-relative">
-                        <label>
-                          Paid Amt In {getCurrency(row?.currency_id)} -{" "}
-                          {row.selectedUserDetails?.extra_chips_percentage}%
-                        </label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                          placeholder="Enter Chips"
-                          value={
-                            inputData.extChips
-                              ? (
-                                currencyConvert(
-                                  Number(inputData.extChips),
+                    {isCredit && (
+                      <>
+                        <div className="flex-grow-1 w-100 position-relative">
+                          <label>Credit Amount</label>
+                          <input
+                            type="text"
+                            className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                            placeholder="Enter Credit Amount"
+                            value={Number(creditAmount)}
+                            onChange={(e) => setCreditAmount(Number(e.target.value))}
+                          />
+                        </div>
+                        <div className="flex-grow-1 w-100 position-relative">
+                          <label>
+                            Paid Amt In {getCurrency(row?.currency_id)} -{" "}
+                            {row.selectedUserDetails?.chip_percentage}%
+                          </label>
+                          <input
+                            type="text"
+                            className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                            placeholder="Paid Amount"
+                            // value={
+                            //   isCredit && inputData.inrChips
+                            //   && (
+                            //     calculatePaidAmount(
+                            //       Number(inputData.inrChips),
+                            //       row.selectedUserDetails?.chip_percentage
+                            //     ) - Number(creditAmount)
+                            //   ).toFixed(2)
+                            // }
+                            value={
+                              inputData.inrChips
+                                ? (
+                                  (currencyConvert(
+                                    Number(inputData.inrChips),
+                                    getCurrencyRate(107),
+                                    getCurrencyRate(row?.currency_id)
+                                  ) *
+                                    (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
+                                      ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage / 100 || 0
+                                      : row.selectedUserDetails && row.selectedUserDetails?.share / 100 || 0)
+                                  ) - Number(creditAmount)).toFixed(4)
+                                : (currencyConvert(
+                                  Number(inputData.inrChips),
                                   getCurrencyRate(107),
                                   getCurrencyRate(row?.currency_id)
                                 ) *
-                                (row.selectedUserDetails?.extra_chips_percentage / 100)
-                              ).toFixed(4)
-                              : 0
+                                  (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
+                                    ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage / 100 || 0
+                                    : row.selectedUserDetails && row.selectedUserDetails?.share / 100 || 0)
+                                )
+                            }
+                            readOnly
+                          />
+                        </div>
+                      </>
+                    )}
+
+                  </div>
+                ) : <div className="d-flex flex-row flex-md-row align-items-center mb-2 gap-2">
+                  {/* Enter Ext Sp Chips */}
+                  {/* <div className="flex-grow-1 w-100 position-relative">
+                    <label className="text-nowrap">Duration</label>
+                    <Select
+                      className="small-font white-bg input-border rounded text-capitalize text-nowrap"
+                      placeholder="Select Duration"
+                      styles={customStyles}
+                      onChange={(option) => setDuration(option.value)} // Set selected value
+                      options={durationOptions}
+                      value={durationOptions.find((option) => option.value === duration)} // Show selected value
+                      maxMenuHeight={120}
+                      menuPlacement="auto"
+                    />
+                  </div> */}
+                  <div className="flex-grow-1 w-100 position-relative d-flex align-items-center">
+                    <input
+                      type="checkbox"
+                      checked={isCredit}
+                      onChange={(e) => setIsCredit(e.target.checked)}
+                      className="me-2"
+                    />
+                    <label>Is Credit</label>
+                  </div>
+
+                  {isCredit && (
+                    <>
+                      <div className="flex-grow-1 w-100 position-relative">
+                        <label>Credit Amount</label>
+                        <input
+                          type="text"
+                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                          placeholder="Enter Credit Amount"
+                          value={Number(creditAmount)}
+                          onChange={(e) => setCreditAmount(Number(e.target.value))}
+                        />
+                      </div>
+                      <div className="flex-grow-1 w-100 position-relative">
+                        <label>
+                          Paid Amt In {getCurrency(row?.currency_id)} -{" "}
+                          {row.selectedUserDetails?.chip_percentage}%
+                        </label>
+                        <input
+                          type="text"
+                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
+                          placeholder="Paid Amount"
+                          // value={
+                          //   isCredit && inputData.inrChips
+                          //   && (
+                          //     calculatePaidAmount(
+                          //       Number(inputData.inrChips),
+                          //       row.selectedUserDetails?.chip_percentage
+                          //     ) - Number(creditAmount)
+                          //   ).toFixed(2)
+                          // }
+                          value={
+                            inputData.inrChips
+                              ? (
+                                (currencyConvert(
+                                  Number(inputData.inrChips),
+                                  getCurrencyRate(107),
+                                  getCurrencyRate(row?.currency_id)
+                                ) *
+                                  (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
+                                    ? row.selectedUserDetails?.chip_percentage / 100
+                                    : row.selectedUserDetails?.share / 100)
+                                ) - Number(creditAmount)).toFixed(4)
+                              : (currencyConvert(
+                                Number(inputData.inrChips),
+                                getCurrencyRate(107),
+                                getCurrencyRate(row?.currency_id)
+                              ) *
+                                (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
+                                  ? row.selectedUserDetails?.chip_percentage / 100
+                                  : row.selectedUserDetails?.share / 100)
+                              )
                           }
                           readOnly
                         />
                       </div>
-                    </div>
+                    </>
                   )}
+
+                </div>}
               </div>
 
               {/* Buttons Section */}
@@ -613,7 +788,7 @@ function OfflineDepositWithdraw() {
                       className="me-3 saffron-btn2 px-3"
                       onClick={() => handleSubmit(row)}
                     >
-                      Submit
+                      {loading ? <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <span> {`Submit ...`}</span> </> : "Submit"}
                     </button>
                   ))}
               </div>
@@ -621,6 +796,7 @@ function OfflineDepositWithdraw() {
               {/* API Errors Section */}
               {apiErrors && (
                 <div className="alert alert-danger mt-1">
+                  {console.log(apiErrors, "==>apiErrors")}
                   {Array.isArray(apiErrors) ? (
                     <ul className="ps-2 mb-0">
                       {apiErrors.map((error, index) => (
@@ -640,9 +816,12 @@ function OfflineDepositWithdraw() {
       ),
       usdChips: (
         <div>
+          {/* {row.selectedUserDetails?.commission_type === 1
+            ? (row.selectedUserDetails.inrSportChips  ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
+            : row.selectedUserDetails.inrChips ? (Number(row.selectedUserDetails?.inrChips).toFixed(2)) : 0} */}
           {row.selectedUserDetails?.commission_type === 1
-            ? (row.selectedUserDetails ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
-            : row.selectedUserDetails ? (Number(row.selectedUserDetails?.inrChips).toFixed(2)) : 0}
+            && (row.selectedUserDetails.inrSportChips ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
+            || 0}
           <br /> {getCurrency(107)}
         </div>
       ),
