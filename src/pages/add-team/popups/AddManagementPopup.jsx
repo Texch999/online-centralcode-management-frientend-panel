@@ -26,6 +26,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [error, setError] = useState("");
   const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(null);
+  const [focusedField, setFocusedField] = useState(null);
 
   const {
     register,
@@ -33,6 +34,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     watch,
     setValue,
     formState: { errors },
+    trigger,
   } = useForm();
 
   const password = watch("password");
@@ -43,7 +45,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       .then((response) => {
         if (response?.status === true && response.data) {
           const roles = response.data
-            .filter((role) => role.role !== 1 && role.role !== 2) // Exclude owner and management
+            .filter((role) => role.role !== 1 && role.role !== 2)
             .map((role) => ({
               value: role.role,
               label: role.name,
@@ -92,12 +94,14 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       });
   };
 
-  // Prevent numbers in the name field
   const handleNameInput = (e) => {
     e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, "");
   };
 
-  // Prevent text in the phone number field
+  const handleLoginNameInput = (e) => {
+    e.target.value = e.target.value.replace(/\s/g, ""); // Remove spaces
+  };
+
   const handlePhoneInput = (e) => {
     e.target.value = e.target.value.replace(/\D/g, "");
   };
@@ -123,7 +127,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             aria-label="Close"
           />
         </div>
-        <div className="red-font small-font">{error}</div>
+        <div className="red-font small-font mt-2">{error}</div>
         <form
           className="add-management-popup-form mt-2"
           onSubmit={handleSubmit(onSubmitHandler)}
@@ -141,16 +145,19 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
-                isSearchable={false} // Disable typing in the dropdown
+                isSearchable={false}
                 onChange={(selectedOption) => {
                   setSelectedRoleId(selectedOption?.value);
                   setValue("role", selectedOption?.value, {
                     shouldValidate: true,
                   });
+                  trigger("role");
                 }}
               />
               {errors.role && (
-                <p className="text-danger small-font">{errors.role.message}</p>
+                <span className="text-danger small-font">
+                  {errors.role.message}
+                </span>
               )}
             </div>
 
@@ -176,10 +183,15 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
                 maxLength={60}
-                onInput={handleNameInput} // Prevent numbers
+                onInput={handleNameInput}
+                onBlur={() => trigger("name")}
               />
+
+              <br />
               {errors.name && (
-                <p className="text-danger small-font">{errors.name.message}</p>
+                <span className="text-danger small-font">
+                  {errors.name.message}
+                </span>
               )}
             </div>
 
@@ -197,20 +209,23 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     value: 15,
                     message: "Login Name cannot exceed 15 characters",
                   },
-                  pattern: {
-                    value: /^[A-Za-z0-9_]+$/,
-                    message:
-                      "Login Name should contain only letters, numbers, and underscores",
-                  },
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
                 maxLength={15}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, ""); // Allows only letters, numbers, and underscores
+                }}
+                onBlur={() => trigger("loginName")}
               />
+
+            
+
+              <br />
               {errors.loginName && (
-                <p className="text-danger small-font">
+                <span className="text-danger small-font">
                   {errors.loginName.message}
-                </p>
+                </span>
               )}
             </div>
           </div>
@@ -238,83 +253,103 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
                 maxLength={15}
-                onInput={handlePhoneInput} // Prevent text
+                onInput={handlePhoneInput}
+                onBlur={() => trigger("phoneNumber")}
+         
+              
               />
+             
+              
               {errors.phoneNumber && (
-                <p className="text-danger small-font">
+                <span className="text-danger small-font">
                   {errors.phoneNumber.message}
-                </p>
+                </span>
               )}
             </div>
-
-            <div className="col-md-4 position-relative">
-              <label className="small-font mb-1">Password</label>
-              <input
-                type={showPassword.password ? "text" : "password"}
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
-                  maxLength: {
-                    value: 36,
-                    message: "Password cannot exceed 36 characters",
-                  },
-                })}
-                className="small-font rounded all-none input-css w-100"
-                placeholder="Enter Password"
-                maxLength={36}
-              />
-              <span
-                className="eye-icon"
-                onClick={() => togglePasswordVisibility("password")}
-                style={{
-                  position: "absolute",
-                  right: "10%",
-                  top: "50%",
-                  cursor: "pointer",
-                }}
-              >
-                {showPassword.password ? <FaEyeSlash /> : <FaEye />}
-              </span>
+            <div className="col-md-4 ">
+              <div className="position-relative">
+                <label className="small-font mb-1">Password</label>
+<div className="input-css w-100 rounded">
+                <input
+                  type={showPassword.password ? "text" : "password"}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                    maxLength: {
+                      value: 36,
+                      message: "Password cannot exceed 36 characters",
+                    },
+                  })}
+                  className="small-font rounded all-none  w-80"
+                  placeholder="Enter Password"
+                  maxLength={36}
+                  onBlur={() => trigger("password")}
+               
+                />
+                <span
+                  className="eye-icon"
+                  onClick={() => togglePasswordVisibility("password")}
+                  style={{
+                    position: "absolute",
+                    right: "10%",
+                    top: "50%",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showPassword.password ? <FaEye /> :   <FaEyeSlash />}
+                </span>
+              </div>
+              </div>
+           
+              <div>
               {errors.password && (
-                <p className="text-danger small-font">
+                <span className="text-danger small-font">
                   {errors.password.message}
-                </p>
+                </span>
+              )}
+              </div>
+             
+            </div>
+            <div className="col-md-4 ">
+              <div className="position-relative">
+                <label className="small-font mb-1">Confirm Password</label>
+                <div  className="input-css w-100 rounded">
+                <input
+                  type={showPassword.confirmPassword ? "text" : "password"}
+                  {...register("confirmPassword", {
+                    required: "Confirm Password is required",
+                    validate: (value) =>
+                      value === password || "Passwords do not match",
+                  })}
+                  className="small-font rounded all-none  w-80"
+                  placeholder="Re-enter Password"
+                  maxLength={36}
+                  onBlur={() => trigger("confirmPassword")}
+               
+                />
+                <span
+                  className="eye-icon"
+                  onClick={() => togglePasswordVisibility("confirmPassword")}
+                  style={{
+                    position: "absolute",
+                    right: "10%",
+                    top: "40%",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showPassword.confirmPassword ? <FaEye /> :    <FaEyeSlash />}
+                </span>
+              </div>
+          
+              {errors.confirmPassword && (
+                <span className="text-danger small-font">
+                  {errors.confirmPassword.message}
+                </span>
               )}
             </div>
-
-            <div className="col-md-4 position-relative">
-              <label className="small-font mb-1">Confirm Password</label>
-              <input
-                type={showPassword.confirmPassword ? "text" : "password"}
-                {...register("confirmPassword", {
-                  required: "Confirm Password is required",
-                  validate: (value) =>
-                    value === password || "Passwords do not match",
-                })}
-                className="small-font rounded all-none input-css w-100"
-                placeholder="Re-enter Password"
-                maxLength={36}
-              />
-              <span
-                className="eye-icon"
-                onClick={() => togglePasswordVisibility("confirmPassword")}
-                style={{
-                  position: "absolute",
-                  right: "10%",
-                  top: "50%",
-                  cursor: "pointer",
-                }}
-              >
-                {showPassword.confirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
-              {errors.confirmPassword && (
-                <p className="text-danger small-font">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
             </div>
           </div>
 
@@ -341,38 +376,49 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
                 maxLength={100}
+                onBlur={() => trigger("email")}
+               
               />
+             
               {errors.email && (
-                <p className="text-danger small-font">{errors.email.message}</p>
+                <span className="text-danger small-font">
+                  {errors.email.message}
+                </span>
               )}
             </div>
+            <div className="col-md-4">
+              <div className="position-relative">
+                <label className="small-font mb-1">Management Password</label>
 
-            <div className="col-md-4 position-relative">
-              <label className="small-font mb-1">Management Password</label>
-              <input
-                type={showPassword.managementPassword ? "text" : "password"}
-                {...register("managementPassword", {
-                  required: "Management Password is required",
-                })}
-                className="small-font rounded all-none input-css w-100"
-                placeholder="Enter Password"
-              />
-              <span
-                className="eye-icon"
-                onClick={() => togglePasswordVisibility("managementPassword")}
-                style={{
-                  position: "absolute",
-                  right: "10%",
-                  top: "50%",
-                  cursor: "pointer",
-                }}
-              >
-                {showPassword.managementPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
+                <div className="input-css w-100 rounded">
+                <input
+                  type={showPassword.managementPassword ? "text" : "password"}
+                  {...register("managementPassword", {
+                    required: "Management Password is required",
+                  })}
+                  className="small-font rounded all-none  w-80"
+                  placeholder="Enter Password"
+                  onBlur={() => trigger("managementPassword")}
+                  onFocus={() => setFocusedField("managementPassword")}
+                />
+                <span
+                  className="eye-icon"
+                  onClick={() => togglePasswordVisibility("managementPassword")}
+                  style={{
+                    position: "absolute",
+                    right: "10%",
+                    top: "50%",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showPassword.managementPassword ?<FaEye />  :   <FaEyeSlash />}
+                </span>
+              </div>
+              </div>
               {errors.managementPassword && (
-                <p className="text-danger small-font">
+                <span className="text-danger small-font">
                   {errors.managementPassword.message}
-                </p>
+                </span>
               )}
             </div>
 

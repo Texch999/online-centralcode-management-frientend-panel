@@ -184,7 +184,7 @@ function Header() {
               className="fw-600 br-4px px-2 py-1 pointer postion-relative"
               onClick={handleNotification}
             >
-              {/* <IoMdNotificationsOutline size={26} className="black-clr" /> */}
+              <IoMdNotificationsOutline size={26} className="black-clr" />
               {unreadCount === 0 ? (
                 <IoMdNotificationsOutline size={26} className="black-clr" />
               ) : (

@@ -413,7 +413,7 @@ const endpoints = {
 
   updateDirectorProfileDetails: {
     method: "put",
-    url: (id) => `/director/${userID()}/directorProfileUpdate/${id}`,
+    url: (id) => `/user/${userID()}/directorProfileUpdate/${id}`,
   },
   updateDirectorAccountDetails: {
     method: "put",
