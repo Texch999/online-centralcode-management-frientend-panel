@@ -127,7 +127,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             aria-label="Close"
           />
         </div>
-        <div className="red-font small-font">{error}</div>
+        <div className="red-font small-font mt-2">{error}</div>
         <form
           className="add-management-popup-form mt-2"
           onSubmit={handleSubmit(onSubmitHandler)}
@@ -185,13 +185,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 maxLength={60}
                 onInput={handleNameInput}
                 onBlur={() => trigger("name")}
-                onFocus={() => setFocusedField("name")}
               />
-              {focusedField === "name" && (
-                <span className="text-muted small-font">
-                  Min: 2, Max: 60 characters
-                </span>
-              )}{" "}
+
               <br />
               {errors.name && (
                 <span className="text-danger small-font">
@@ -214,24 +209,18 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     value: 15,
                     message: "Login Name cannot exceed 15 characters",
                   },
-                  pattern: {
-                    value: /^[A-Za-z0-9_]+$/,
-                    message:
-                      "Login Name should contain only letters, numbers, and underscores",
-                  },
                 })}
                 className="small-font rounded all-none input-css w-100"
                 placeholder="Enter"
                 maxLength={15}
-                onInput={handleLoginNameInput}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^A-Za-z0-9_]/g, ""); // Allows only letters, numbers, and underscores
+                }}
                 onBlur={() => trigger("loginName")}
-                onFocus={() => setFocusedField("loginName")}
               />
-              {focusedField === "loginName" && (
-                <span className="text-muted small-font">
-                  Min: 5, Max: 15 characters (No spaces allowed)
-                </span>
-              )}{" "}
+
+            
+
               <br />
               {errors.loginName && (
                 <span className="text-danger small-font">
@@ -266,14 +255,11 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 maxLength={15}
                 onInput={handlePhoneInput}
                 onBlur={() => trigger("phoneNumber")}
-                onFocus={() => setFocusedField("phoneNumber")}
+         
+              
               />
-              {focusedField === "phoneNumber" && (
-                <span className="text-muted small-font">
-                  Min: 10, Max: 15 digits
-                </span>
-              )}{" "}
-              <br />
+             
+              
               {errors.phoneNumber && (
                 <span className="text-danger small-font">
                   {errors.phoneNumber.message}
@@ -283,6 +269,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             <div className="col-md-4 ">
               <div className="position-relative">
                 <label className="small-font mb-1">Password</label>
+<div className="input-css w-100 rounded">
                 <input
                   type={showPassword.password ? "text" : "password"}
                   {...register("password", {
@@ -296,11 +283,11 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                       message: "Password cannot exceed 36 characters",
                     },
                   })}
-                  className="small-font rounded all-none input-css w-100"
+                  className="small-font rounded all-none  w-80"
                   placeholder="Enter Password"
                   maxLength={36}
                   onBlur={() => trigger("password")}
-                  onFocus={() => setFocusedField("password")}
+               
                 />
                 <span
                   className="eye-icon"
@@ -312,24 +299,24 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     cursor: "pointer",
                   }}
                 >
-                  {showPassword.password ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword.password ? <FaEye /> :   <FaEyeSlash />}
                 </span>
               </div>
-              {focusedField === "password" && (
-                <span className="text-muted small-font">
-                  Min: 6, Max: 36 characters
-                </span>
-              )}{" "}
-              <br />
+              </div>
+           
+              <div>
               {errors.password && (
                 <span className="text-danger small-font">
                   {errors.password.message}
                 </span>
               )}
+              </div>
+             
             </div>
             <div className="col-md-4 ">
               <div className="position-relative">
                 <label className="small-font mb-1">Confirm Password</label>
+                <div  className="input-css w-100 rounded">
                 <input
                   type={showPassword.confirmPassword ? "text" : "password"}
                   {...register("confirmPassword", {
@@ -337,11 +324,11 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     validate: (value) =>
                       value === password || "Passwords do not match",
                   })}
-                  className="small-font rounded all-none input-css w-100"
+                  className="small-font rounded all-none  w-80"
                   placeholder="Re-enter Password"
                   maxLength={36}
                   onBlur={() => trigger("confirmPassword")}
-                  onFocus={() => setFocusedField("confirmPassword")}
+               
                 />
                 <span
                   className="eye-icon"
@@ -349,24 +336,20 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                   style={{
                     position: "absolute",
                     right: "10%",
-                    top: "50%",
+                    top: "40%",
                     cursor: "pointer",
                   }}
                 >
-                  {showPassword.confirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword.confirmPassword ? <FaEye /> :    <FaEyeSlash />}
                 </span>
               </div>
-              {focusedField === "confirmPassword" && (
-                <span className="text-muted small-font">
-                  Min: 6, Max: 36 characters
-                </span>
-              )}{" "}
-              <br />
+          
               {errors.confirmPassword && (
                 <span className="text-danger small-font">
                   {errors.confirmPassword.message}
                 </span>
               )}
+            </div>
             </div>
           </div>
 
@@ -394,14 +377,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 placeholder="Enter"
                 maxLength={100}
                 onBlur={() => trigger("email")}
-                onFocus={() => setFocusedField("email")}
+               
               />
-              {focusedField === "email" && (
-                <span className="text-muted small-font">
-                  Min: 6, Max: 100 characters
-                </span>
-              )}
-              <br />
+             
               {errors.email && (
                 <span className="text-danger small-font">
                   {errors.email.message}
@@ -411,12 +389,14 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             <div className="col-md-4">
               <div className="position-relative">
                 <label className="small-font mb-1">Management Password</label>
+
+                <div className="input-css w-100 rounded">
                 <input
                   type={showPassword.managementPassword ? "text" : "password"}
                   {...register("managementPassword", {
                     required: "Management Password is required",
                   })}
-                  className="small-font rounded all-none input-css w-100"
+                  className="small-font rounded all-none  w-80"
                   placeholder="Enter Password"
                   onBlur={() => trigger("managementPassword")}
                   onFocus={() => setFocusedField("managementPassword")}
@@ -431,15 +411,10 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     cursor: "pointer",
                   }}
                 >
-                  {showPassword.managementPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword.managementPassword ?<FaEye />  :   <FaEyeSlash />}
                 </span>
               </div>
-              {focusedField === "managementPassword" && (
-                <span className="text-muted small-font">
-                  Min: 6, Max: 36 characters
-                </span>
-              )}{" "}
-              <br />
+              </div>
               {errors.managementPassword && (
                 <span className="text-danger small-font">
                   {errors.managementPassword.message}

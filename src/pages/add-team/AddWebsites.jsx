@@ -118,11 +118,13 @@ const AddWibsites = () => {
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
   const data = websites.map((website) => ({
-    type: website?.deploy_type === 1 ? "Comapny" : "White Lable",
+    type: website?.deploy_type === 1 ? "Company" : "White Lable",
     admin: (
       <div>
         {" "}
-        {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
+        {/* {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
+          } `} */}
+        {`${website?.panel_type === 1 ? "Admin" : "User"
           } `}
       </div>
     ),
@@ -295,11 +297,10 @@ const AddWibsites = () => {
         setEditMode={setEditMode}
         setWebsiteId={setWebsiteId}
       />
-
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopupOpen}
         setConfirmationPopupOpen={setConfirmationPopupOpen}
-        discription="Are you sure you want to block this website?"
+        discription={`Are you sure you want to ${status === 1 ? "block" : "unblock"} this website?`}
         submitButton={status === 1 ? "Block" : "Unblock"}
         onSubmit={handleBlockAndUnblock}
       />

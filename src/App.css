@@ -300,6 +300,18 @@
   border-radius: 0.35rem;
 }
 
+.input-css4 {
+  background: #f2f2f2;
+  border: 2px solid #f2f2f2;
+  outline: none;
+  color: #1c1c1c;
+  font-weight: 500;
+  
+  border-radius: 0.35rem;
+}
+
+
+
 .orange-btn {
   background: #fc9b4e;
   border-radius: 0.35rem;
@@ -774,6 +786,10 @@
 
   /* Light border */
 }
+.light-white-bg{
+ 
+  background-color: #f2f2f2 ;
+}
 
 .custom-file-upload:hover {
   background: #e9ecef;
@@ -789,8 +805,19 @@
   width: 10%;
 
   border: 1.2px solid #00000033 !important;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #ffa310 !important;
+  padding: 0.5rem !important;
+}
+
+.cst-btn2 {
+  transition: all 0.3s ease-in-out;
+  width: 10%;
+
+  border: 1.2px solid #00000033 !important;
+  border-radius: 5px;
+  color: #1B1B1B;
+background-color: none;
   padding: 0.5rem !important;
 }
 
@@ -820,7 +847,7 @@
 }
 
 .input-css3.fixed-upload {
-  max-width:11.375rem;
+  max-width: 11.375rem;
   /* 150px */
   min-width: 6.25rem;
   /* 100px */
@@ -951,8 +978,24 @@
   color: #ee5787;
   background-color: #faccdb;
 }
+.error-popup-container1{
+  color: #FFFFFF;
+  background-color: #FF2C2C;
+}
 .head-profile {
   height: 6vh;
   width: 6vh;
   border-radius: 50%;
+}
+.hr-line-grey {
+  border: 1.2px dashed #00000066;
+  position: absolute;
+  width: 88%;
+  bottom: 43%;
+  z-index: 999999;
+  left: 10%;
+}
+.br-right {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }

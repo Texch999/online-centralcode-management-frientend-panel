@@ -436,8 +436,6 @@
 //     GetAllCurrencies();
 //   }, [userId]);
 
-
-
 //   const handleAdminRoleChange = (formId, selectedOption) => {
 //     setSelectedAdmins((prev) => ({
 //       ...prev,
@@ -450,7 +448,6 @@
 //       [formId]: remainingUserWebsites,
 //     }));
 //   };
-
 
 //   const handleCheckboxChange = (formId, userSiteId, user_web_id) => {
 //     setSelectedWebsites((prev) => ({
@@ -759,7 +756,6 @@
 //                               ))}
 //                             </select>
 
-
 //                           </div>
 //                         </div>
 
@@ -1006,7 +1002,6 @@
 //                     );
 //                   }
 //                 })} */}
-
 
 //                 {
 //                   userWebsites?.map((userWebsite, userIndex) => {
@@ -1510,7 +1505,6 @@
 //                                     </div>
 //                                   )}
 
-
 //                                 </div>
 //                               </div>
 //                             )}
@@ -1747,8 +1741,6 @@
 //                                     />
 //                                   </div>
 
-
-
 //                                   {/* Commission */}
 //                                   <div className="col-3">
 //                                     <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -1980,13 +1972,25 @@
 
 // export default EditNewDirector;
 
-
-
-
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft, FaEye, FaEyeSlash, FaPlus, FaTrash } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaPlus,
+  FaTrash,
+} from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getAdminWebsites, getCountries, getCurrencies, getDirectorAccessWebites, getDirectorDetailsById, getSuperAdminDetailsById, updateDirectorByID, updateSuperAdminByID } from "../api/apiMethods";
+import {
+  getAdminWebsites,
+  getCountries,
+  getCurrencies,
+  getDirectorAccessWebites,
+  getDirectorDetailsById,
+  getSuperAdminDetailsById,
+  updateDirectorByID,
+  updateSuperAdminByID,
+} from "../api/apiMethods";
 import { adminRoles, commissionTypes } from "../utils/enum";
 import SuccessPopup from "./popups/SuccessPopup";
 import Select from "react-select";
@@ -2009,7 +2013,8 @@ function EditNewDirector() {
   const [currencyData, setCurrencyData] = useState([]);
   const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [individualDirectorData, setIndividualDirectorData] = useState(null);
-  const [individualSuperAdminData, setIndividualSuperAdminData] = useState(null);
+  const [individualSuperAdminData, setIndividualSuperAdminData] =
+    useState(null);
   const [websiteDetails, setWebsiteDetails] = useState({});
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
@@ -2041,14 +2046,20 @@ function EditNewDirector() {
   }, []);
 
   const validateForm = () => {
-    const errors = {};
+    let newErrors = {};
 
-    if (!name) errors.name = "Name is required";
-    if (!loginName) errors.loginName = "Login Name is required";
-    if (!selectedRole) errors.selectedRole = "Role is required";
-    if (!selectedCurrencyCode) errors.selectedCurrencyCode = "Currency is required";
-    if (!selectedCountryCode) errors.selectedCountryCode = "Country is required";
-    if (!managementPassword) errors.managementPassword = "Management Password is required";
+    // if (!name) errors.name = "Name is required";
+    // if (!loginName) errors.loginName = "Login Name is required";
+    // if (!selectedRole) errors.selectedRole = "Role is required";
+    // if (!selectedCurrencyCode) errors.selectedCurrencyCode = "Currency is required";
+    // if (!selectedCountryCode) errors.selectedCountryCode = "Country is required";
+    // if (!managementPassword) errors.managementPassword = "Management Password is required";
+
+    if (!managementPassword) {
+      newErrors.managementPassword = "Management Password is required.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
 
     return errors;
   };
@@ -2067,54 +2078,58 @@ function EditNewDirector() {
               setSelectedCurrencyCode(response.data.currency_id || "");
 
               if (response.data.accessWebsites.length > 0) {
-                const updatedUserWebsites = response.data.accessWebsites.map((site) => {
-                  const basePayload = {
-                    id: site.website_access_id,
-                    user_paner_id: site.user_paner_id,
-                    web_url: site.user_panel_url,
-                    admin_panel_id: site.admin_panel_id,
-                    commission_type: site.commission_type || "",
-                    status: site.status === 1 ? "Active" : "Inactive",
-                    website_access_id: site.website_access_id,
-                    is_primary: site.is_primary || false, // Add is_primary to the payload
-                  };
-                  switch (site.commission_type) {
-                    case 1:
-                      return {
-                        ...basePayload,
-                        rent_start_date: site.rent_start_date || "",
-                        rent_expiry_date: site.rent_expiry_date || "",
-                        monthly_amount: site.monthly_amount || "",
-                        max_chips_monthly: site.max_chips_monthly || "",
-                        chip_percentage: site.chip_percentage || "",
-                        is_casino: site.is_casino || false,
-                        caschip_values: site.caschip_values || "",
-                        downline_comm: site.downline_comm || "",
-                      };
-                    case 2:
-                      return {
-                        ...basePayload,
-                        downline_comm: site.downline_comm || "",
-                        share: site.share || "",
-                        caschip_values: site.caschip_values || "",
-                      };
-                    case 3:
-                      return {
-                        ...basePayload,
-                        downline_comm: site.downline_comm || "",
-                        share: site.share || "",
-                        caschip_values: site.caschip_values || "",
-                      };
-                    default:
-                      return basePayload;
+                const updatedUserWebsites = response.data.accessWebsites.map(
+                  (site) => {
+                    const basePayload = {
+                      id: site.website_access_id,
+                      user_paner_id: site.user_paner_id,
+                      web_url: site.user_panel_url,
+                      admin_panel_id: site.admin_panel_id,
+                      commission_type: site.commission_type || "",
+                      status: site.status === 1 ? "Active" : "Inactive",
+                      website_access_id: site.website_access_id,
+                      is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
+                    };
+                    switch (site.commission_type) {
+                      case 1:
+                        return {
+                          ...basePayload,
+                          rent_start_date: site.rent_start_date || "",
+                          rent_expiry_date: site.rent_expiry_date || "",
+                          monthly_amount: site.monthly_amount || "",
+                          max_chips_monthly: site.max_chips_monthly || "",
+                          chip_percentage: site.chip_percentage || "",
+                          is_casino: site.is_casino || false,
+                          caschip_values: site.caschip_values || "",
+                          downline_comm: site.downline_comm || "",
+                        };
+                      case 2:
+                        return {
+                          ...basePayload,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      case 3:
+                        return {
+                          ...basePayload,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      default:
+                        return basePayload;
+                    }
                   }
-                });
+                );
 
                 setUserWebsites(updatedUserWebsites);
               }
             }
           })
-          .catch((error) => console.error("Error fetching director details:", error));
+          .catch((error) =>
+            console.error("Error fetching director details:", error)
+          );
       } else if (Role === "director") {
         getSuperAdminDetailsById(userId)
           .then((response) => {
@@ -2127,57 +2142,64 @@ function EditNewDirector() {
               setSelectedCurrencyCode(response.data.currency_id || "");
 
               if (response.data.accessWebsites.length > 0) {
-                const updatedUserWebsites = response.data.accessWebsites.map((site) => {
-                  const basePayload = {
-                    id: site.id,
-                    user_paner_id: site.user_paner_id,
-                    web_url: site.user_panel_url,
-                    admin_panel_id: site.admin_panel_id,
-                    commission_type: site.commission_type || "",
-                    status: response.data.status === 1 ? "Active" : "Inactive",
-                    is_primary: site.is_primary || false, // Add is_primary to the payload
-                  };
-                  switch (site.commission_type) {
-                    case 1:
-                      return {
-                        ...basePayload,
-                        rent_start_date: site.rent_start_date || "",
-                        rent_expiry_date: site.rent_expiry_date || "",
-                        monthly_amount: site.rentAmount || "",
-                        max_chips_monthly: site.max_chips_rent || "",
-                        chip_percentage: site.rentPercentage || "",
-                        is_casino: site.is_casino || false,
-                        caschip_values: site.caschip_values || "",
-                        downline_comm: site.downline_comm || "",
-                      };
-                    case 2:
-                      return {
-                        ...basePayload,
-                        downline_comm: site.downline_comm || "",
-                        share: site.share || "",
-                        caschip_values: site.caschip_values || "",
-                      };
-                    case 3:
-                      return {
-                        ...basePayload,
-                        downline_comm: site.downline_comm || "",
-                        share: site.share || "",
-                        caschip_values: site.caschip_values || "",
-                      };
-                    default:
-                      return basePayload;
+                const updatedUserWebsites = response.data.accessWebsites.map(
+                  (site) => {
+                    const basePayload = {
+                      id: site.id,
+                      user_paner_id: site.user_paner_id,
+                      web_url: site.user_panel_url,
+                      admin_panel_id: site.admin_panel_id,
+                      commission_type: site.commission_type || "",
+                      status:
+                        response.data.status === 1 ? "Active" : "Inactive",
+                      is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
+                    };
+                    switch (site.commission_type) {
+                      case 1:
+                        return {
+                          ...basePayload,
+                          rent_start_date: site.rent_start_date || "",
+                          rent_expiry_date: site.rent_expiry_date || "",
+                          monthly_amount: site.rentAmount || "",
+                          max_chips_monthly: site.max_chips_rent || "",
+                          chip_percentage: site.rentPercentage || "",
+                          is_casino: site.is_casino || false,
+                          caschip_values: site.caschip_values || "",
+                          downline_comm: site.downline_comm || "",
+                        };
+                      case 2:
+                        return {
+                          ...basePayload,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      case 3:
+                        return {
+                          ...basePayload,
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
+                        };
+                      default:
+                        return basePayload;
+                    }
                   }
-                });
+                );
                 setUserWebsites(updatedUserWebsites);
               }
             }
           })
-          .catch((error) => console.error("Error fetching super admin details:", error));
+          .catch((error) =>
+            console.error("Error fetching super admin details:", error)
+          );
       }
     }
   }, [mode, userId]);
 
   const handleManagementSubmit = () => {
+    if (!validateForm()) return;
+
     const payload = {
       type: parseInt(selectedRole),
       country_id: parseInt(selectedCountryCode),
@@ -2191,46 +2213,57 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          is_primary: site.is_primary || false, // Include is_primary in the payload
+          // Include is_primary in the payload
           ...(site.commission_type == 1
             ? {
-              monthly_amount: parseInt(site.monthly_amount) || null,
-              max_chips_monthly: parseInt(site.max_chips_monthly) || null,
-              chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100 || null,
+                monthly_amount: parseInt(site.monthly_amount) || null,
+                max_chips_monthly: parseInt(site.max_chips_monthly) || null,
+                chip_percentage:
+                  (parseInt(site.monthly_amount) /
+                    parseInt(site.max_chips_monthly)) *
+                    100 || null,
+                is_casino: site.is_casino === 1 ? 1 : 2,
+                ...(site.is_casino === 1
+                  ? { caschip_values: parseFloat(site.caschip_values) || null }
+                  : {}),
+              }
+            : {
+                is_primary: site.is_primary == 1 ? 1 : 2,
+                share: parseFloat(site.share) || null,
+                downline_comm: parseFloat(site.downline_comm) || null,
+                caschip_values: parseFloat(site.caschip_values) || null,
+                is_primary: site.is_primary, // Include is_primary in the payload
+              }),
+        })),
+      ],
+      addWebsites:
+        addWebsites.length > 0
+          ? addWebsites.map((site) => ({
+              admin_panel_id: parseInt(site.admin_panel_id) || null,
+              user_paner_id: parseInt(site.user_paner_id) || null,
+              commission_type: parseInt(site.commission_type) || null,
+              ...(site.commission_type == 1
+                ? {
+                    monthly_amount: parseInt(site.monthly_amount) || null,
+                    max_chips_monthly: parseInt(site.max_chips_monthly) || null,
+                    chip_percentage:
+                      (parseInt(site.monthly_amount) /
+                        parseInt(site.max_chips_monthly)) *
+                      100,
+                  }
+                : {
+                    is_primary: site.is_primary == 1 ? 1 : 2,
+                    share: parseFloat(site.share) || null,
+                    caschip_values: parseFloat(site.caschip_values) || null,
+                  }),
               is_casino: site.is_casino === 1 ? 1 : 2,
               ...(site.is_casino === 1
                 ? { caschip_values: parseFloat(site.caschip_values) || null }
                 : {}),
-            }
-            : {
-              share: parseFloat(site.share) || null,
-              downline_comm: parseFloat(site.downline_comm) || null,
-              caschip_values: parseFloat(site.caschip_values) || null,
-            }),
-        })),
-      ],
-      addWebsites: addWebsites.length > 0 ? addWebsites.map((site) => ({
-        admin_panel_id: parseInt(site.admin_panel_id) || null,
-        user_paner_id: parseInt(site.user_paner_id) || null,
-        commission_type: parseInt(site.commission_type) || null,
-        is_primary: site.is_primary || false, // Include is_primary in the payload
-        ...(site.commission_type == 1
-          ? {
-            monthly_amount: parseInt(site.monthly_amount) || null,
-            max_chips_monthly: parseInt(site.max_chips_monthly) || null,
-            chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
-          }
-          : {
-            share: parseFloat(site.share) || null,
-            caschip_values: parseFloat(site.caschip_values) || null,
-          }),
-        is_casino: site.is_casino === 1 ? 1 : 2,
-        ...(site.is_casino === 1
-          ? { caschip_values: parseFloat(site.caschip_values) || null }
-          : {}),
 
-        downline_comm: parseFloat(site.downline_comm) || null,
-      })) : [],
+              downline_comm: parseFloat(site.downline_comm) || null,
+            }))
+          : [],
     };
 
     updateDirectorByID(userId, payload)
@@ -2259,33 +2292,43 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          is_primary: site.is_primary || false, // Include is_primary in the payload
-          chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
+          ...(site.commission_type != 1
+            ? {
+                is_primary: site.is_primary == 1 ? 1 : 2,
+              }
+            : {}),
+          chip_percentage:
+            (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) *
+            100,
         })),
       ],
-      addWebsites: addWebsites.length > 0
-        ? addWebsites.map((site) => ({
-          admin_panel_id: parseInt(site.admin_panel_id) || null,
-          user_paner_id: parseInt(site.user_paner_id) || null,
-          commission_type: parseInt(site.commission_type) || null,
-          is_primary: site.is_primary || false, // Include is_primary in the payload
-          downline_comm: parseFloat(site.downline_comm) || null,
-          ...(site.commission_type == 1
-            ? {
-              monthly_amount: parseInt(site.monthly_amount) || null,
-              max_chips_monthly: parseInt(site.max_chips_monthly) || null,
-              chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
-            }
-            : {
-              share: parseFloat(site.share) || null,
-              caschip_values: parseFloat(site.caschip_values) || null,
-            }),
-          is_casino: site.is_casino === 1 ? 1 : 2,
-          ...(site.is_casino === 1
-            ? { caschip_values: parseFloat(site.caschip_values) || null }
-            : {}),
-        }))
-        : [],
+      addWebsites:
+        addWebsites.length > 0
+          ? addWebsites.map((site) => ({
+              admin_panel_id: parseInt(site.admin_panel_id) || null,
+              user_paner_id: parseInt(site.user_paner_id) || null,
+              commission_type: parseInt(site.commission_type) || null,
+              is_primary: site.is_primary == 1 ? 1 : 2, // Include is_primary in the payload
+              downline_comm: parseFloat(site.downline_comm) || null,
+              ...(site.commission_type == 1
+                ? {
+                    monthly_amount: parseInt(site.monthly_amount) || null,
+                    max_chips_monthly: parseInt(site.max_chips_monthly) || null,
+                    chip_percentage:
+                      (parseInt(site.monthly_amount) /
+                        parseInt(site.max_chips_monthly)) *
+                      100,
+                  }
+                : {
+                    share: parseFloat(site.share) || null,
+                    caschip_values: parseFloat(site.caschip_values) || null,
+                  }),
+              is_casino: site.is_casino === 1 ? 1 : 2,
+              ...(site.is_casino === 1
+                ? { caschip_values: parseFloat(site.caschip_values) || null }
+                : {}),
+            }))
+          : [],
     };
 
     updateSuperAdminByID(userId, payload)
@@ -2334,7 +2377,7 @@ function EditNewDirector() {
         downline_comm: site.downline_comm,
         share: site.share,
         status: site.status,
-        is_primary: site.is_primary || false, // Add is_primary to the payload
+        is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
         website_access_id: site.id ? site.id : site.website_access_id,
       });
     });
@@ -2436,7 +2479,9 @@ function EditNewDirector() {
       [formId]: selectedOption,
     }));
 
-    const remainingUserWebsites = getRemainingUserWebsites(selectedOption.value);
+    const remainingUserWebsites = getRemainingUserWebsites(
+      selectedOption.value
+    );
     setUserWebsitesList((prev) => ({
       ...prev,
       [formId]: remainingUserWebsites,
@@ -2460,7 +2505,7 @@ function EditNewDirector() {
     } else {
       // Add the user site to addWebsites if checked
       const adminPanelId = selectedAdmins[formId]?.value || null;
-      console.log(adminPanelId, userSiteId, "===>adminPanelId")
+      console.log(adminPanelId, userSiteId, "===>adminPanelId");
       setAddWebsites((prevAddWebsites) => [
         ...prevAddWebsites,
         {
@@ -2477,8 +2522,8 @@ function EditNewDirector() {
           chip_percentage: null,
           caschip_values: null,
           is_casino: 2,
-          is_primary: false, // Default is_primary value for new websites
-          form_id: formId
+          is_primary: 2, // Default is_primary value for new websites
+          form_id: formId,
         },
       ]);
     }
@@ -2515,7 +2560,7 @@ function EditNewDirector() {
     setForms((prevForms) => [...prevForms, newForm]);
   };
 
-  const removeForm = (id,) => {
+  const removeForm = (id) => {
     setForms((prevForms) => prevForms.filter((form) => form.id !== id));
 
     setAddWebsites((prevAddWebsites) =>
@@ -2531,11 +2576,11 @@ function EditNewDirector() {
 
   const transformedOptions = Array.isArray(allAccessWebsites)
     ? allAccessWebsites.flatMap((item) =>
-      item.admin_websites.map((admin) => ({
-        label: admin.admin_web_name,
-        value: admin.admin_panel_id,
-      }))
-    )
+        item.admin_websites.map((admin) => ({
+          label: admin.admin_web_name,
+          value: admin.admin_panel_id,
+        }))
+      )
     : [];
 
   const filteredRoles = adminRolesArray.filter((userRole) => {
@@ -2554,13 +2599,21 @@ function EditNewDirector() {
     return expiry < today;
   };
   const getRemainingUserWebsites = (adminId) => {
-    const assignedUserWebsiteIds = userWebsites.map((site) => site.user_paner_id);
+    const assignedUserWebsiteIds = userWebsites.map(
+      (site) => site.user_paner_id
+    );
     const adminData = adminWebsite.find((admin) => admin.id === adminId);
-    return adminData?.userWebsites.filter((site) => !assignedUserWebsiteIds.includes(site.id)) || [];
+    return (
+      adminData?.userWebsites.filter(
+        (site) => !assignedUserWebsiteIds.includes(site.id)
+      ) || []
+    );
   };
 
   const hasRemainingUserWebsites = () => {
-    return adminWebsite.some((admin) => getRemainingUserWebsites(admin.id).length > 0);
+    return adminWebsite.some(
+      (admin) => getRemainingUserWebsites(admin.id).length > 0
+    );
   };
   const handleCommissionTypeChange = (websiteId, newCommissionType) => {
     setCommissionTypeChanges((prev) => ({
@@ -2598,14 +2651,16 @@ function EditNewDirector() {
     <>
       <div>
         <div className="d-flex align-items-center justify-content-between">
-          <h5 className="yellow-font fw-bold">
-            {role === "management" ? `Edit Director/SuperAdmin` : `Edit SuperAdmin `}
+          <h5 className="yellow-font ">
+            {role === "management"
+              ? `Edit Director/SuperAdmin`
+              : `Edit SuperAdmin `}
           </h5>
           <span
-            className="yellow-font cursor-pointer"
+            className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft /> Go Back
+            <FaArrowLeft className="mx-2" /> Back
           </span>
         </div>
 
@@ -2616,28 +2671,33 @@ function EditNewDirector() {
             </ul>
           </div>
         )}
-        <div className="p-1">
-          <div className="row">
-            <div className="col p-1">
+        <div className="white-bg br-10 login-box-shadow w-100 p-2 m-2">
+          <div className="row p-2">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Name</label>
               <input
                 type="text"
                 placeholder="Enter Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="border-grey3 small-font rounded all-none input-css w-100 input-css"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  // Allow only letters and spaces using a regular expression
+                  const filteredValue = inputValue.replace(/[^A-Za-z\s]/g, "");
+                  setName(filteredValue);
+                }}
                 required
               />
               {errors.name && (
                 <span className="text-danger small-font">{errors.name}</span>
               )}
             </div>
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Login Name</label>
               <input
                 type="text"
                 placeholder="Enter Login Name"
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
+                className="border-grey3 small-font rounded all-none input-css w-100"
                 value={loginName}
                 readOnly
               />
@@ -2647,10 +2707,10 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-            <div className="col p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Currency</label>
               <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100 no-cursor"
+                className="small-font rounded all-none input-css  border-grey3 w-100 no-cursor"
                 value={selectedCurrencyCode}
                 onChange={(e) => setSelectedCurrencyCode(e.target.value)}
                 disabled
@@ -2668,12 +2728,10 @@ function EditNewDirector() {
                 </span>
               )}
             </div>
-          </div>
-          <div className="row">
-            <div className="col-3 p-1">
+            <div className="col-2 p-1">
               <label className="small-font my-1">Country</label>
               <select
-                className="small-font rounded all-none input-css white-bg border-grey3 w-100"
+                className="small-font rounded all-none input-css border-grey3 w-100"
                 value={selectedCountryCode}
                 onChange={(e) => setSelectedCountryCode(e.target.value)}
               >
@@ -2691,16 +2749,19 @@ function EditNewDirector() {
               )}
             </div>
 
-            <div className="p-1  col-3 position-relative">
+            <div className="p-1   col-2 position-relative">
               <label className="small-font my-1">Management Password</label>
-              <input
-                type={showManagementPassword ? "text" : "password"}
-                className="border-grey3 small-font rounded all-none input-css white-bg w-100"
-                placeholder="Enter"
-                required
-                value={managementPassword}
-                onChange={(e) => setManagementPassword(e.target.value)}
-              />
+              <div className="w-100 rounded border-grey3  input-css4">
+                <input
+                  type={showManagementPassword ? "text" : "password"}
+                  className="  all-none p-1  w-80"
+                  placeholder="Enter"
+                  required
+                  value={managementPassword}
+                  onChange={(e) => setManagementPassword(e.target.value)}
+                />
+              </div>
+
               <span
                 className="position-absolute"
                 style={{ right: "1.5rem", top: "2.3rem", cursor: "pointer" }}
@@ -2710,23 +2771,27 @@ function EditNewDirector() {
               >
                 {showManagementPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
+              {errors?.managementPassword && (
+                <span className="x-small-font fw-600 error">
+                  {errors?.managementPassword}
+                </span>
+              )}
             </div>
-            {errors.managementPassword && (
-              <span className="text-danger small-font">
-                {errors.managementPassword}
-              </span>
-            )}
           </div>
+          <div className="row p-2"></div>
         </div>
       </div>
 
       <div>
-        <h3 className="yellow-font medium-font mb-0">WEBSITE MARKET</h3>
+        <h3 className="yellow-font medium-font mt-4 ">WEBSITE MARKET</h3>
         <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             <div>Active</div>
             {adminWebsites?.map((data, index) => (
-              <div key={index} className="box-shadow p-2 my-2 rounded">
+              <div
+                key={index}
+                className="login-box-shadow white-bg p-2 my-2 rounded"
+              >
                 <div className="w-15 no-cursor">
                   <label className="small-font my-1">Admin Website</label>
                   <div className="d-flex align-items-center">
@@ -2746,18 +2811,22 @@ function EditNewDirector() {
                       userWebsite.commission_type;
 
                     return (
-                      <div key={userIndex} className="w-100 mt-3 row">
-                        <div className="col-2 d-flex flex-column">
+                      <div key={userIndex} className="w-100 mt-3 my-2 row">
+                        <div className="col-2 d-flex flex-column mt-4">
                           <select
                             className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
                             disabled
                           >
-                            <option value={userWebsite.web_url}>{userWebsite.web_url}</option>
+                            <option value={userWebsite.web_url}>
+                              {userWebsite.web_url}
+                            </option>
                           </select>
                         </div>
 
-                        <div className="col-2">
-                          <label className="small-font my-1">Commission Type</label>
+                        <div className="col-2  ">
+                          <label className="small-font my-1">
+                            Commission Type
+                          </label>
                           <div className="d-flex align-items-center">
                             <select
                               className="small-font white-bg rounded border-grey3 p-2 w-100"
@@ -2769,136 +2838,230 @@ function EditNewDirector() {
                                 )
                               }
                               disabled={isExpired(
-                                userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                userWebsite.rent_expiry_date
+                                  ? userWebsite.rent_expiry_date
+                                  : null
                               )}
                             >
-                              {Object.entries(commissionTypes).map(([value, label]) => (
-                                <option key={value} value={value}>
-                                  {label}
-                                </option>
-                              ))}
+                              {Object.entries(commissionTypes).map(
+                                ([value, label]) => (
+                                  <option key={value} value={value}>
+                                    {label}
+                                  </option>
+                                )
+                              )}
                             </select>
                           </div>
                         </div>
 
                         {currentCommissionType == "1" && (
                           <>
+                            {userWebsite.rent_start_date && (
+                              <>
+                                <div className="col-2  ">
+                                  <label className="small-font my-1">
+                                    Rent Start Date
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    value={userWebsite.rent_start_date || ""}
+                                  />
+                                </div>
+                                <div className="col-2">
+                                  <label className="small-font my-1">
+                                    Rent Expiry Date
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    value={userWebsite.rent_expiry_date || ""}
+                                  />
+                                </div>
+                              </>
+                            )}
+
                             <div className="col-2">
-                              <label className="small-font my-1">Rent Start Date</label>
+                              <label className="small-font my-1">
+                                Monthly Amount
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                value={userWebsite.rent_start_date || ""}
-                              />
-                            </div>
-                            <div className="col-2">
-                              <label className="small-font my-1">Rent Expiry Date</label>
-                              <input
-                                type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                value={userWebsite.rent_expiry_date || ""}
-                              />
-                            </div>
-                            <div className="col-2">
-                              <label className="small-font my-1">Monthly Amount</label>
-                              <input
-                                type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                maxLength={10}
+                                className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                 value={userWebsite.monthly_amount || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    monthly_amount: e.target.value,
+                                    monthly_amount: numericValue, // Set the filtered value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                                 disabled={isExpired(
-                                  userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  userWebsite.rent_expiry_date
+                                    ? userWebsite.rent_expiry_date
+                                    : null
                                 )}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Max Chips Monthly</label>
+                              <label className="small-font my-1">
+                                Max Chips Monthly
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.max_chips_monthly || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    max_chips_monthly: e.target.value,
+                                    max_chips_monthly: numericValue, // Set the filtered value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                                 disabled={isExpired(
-                                  userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  userWebsite.rent_expiry_date
+                                    ? userWebsite.rent_expiry_date
+                                    : null
                                 )}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Chip Percentage</label>
+                              <label className="small-font my-1">
+                                Chip Percentage
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={
-                                  (userWebsite.monthly_amount / userWebsite.max_chips_monthly) * 100
+                                  userWebsite.max_chips_monthly === 0 ||
+                                  isNaN(
+                                    (userWebsite.monthly_amount /
+                                      userWebsite.max_chips_monthly) *
+                                      100
+                                  ) ||
+                                  !isFinite(
+                                    (userWebsite.monthly_amount /
+                                      userWebsite.max_chips_monthly) *
+                                      100
+                                  )
+                                    ? "0%" // Show 0% if max_chips_monthly is 0, the value is NaN, or the value is Infinity
+                                    : `${(
+                                        (userWebsite.monthly_amount /
+                                          userWebsite.max_chips_monthly) *
+                                        100
+                                      ).toFixed(2)}%` // Otherwise, show the calculated percentage with 2 decimal places
                                 }
                                 readOnly
                                 disabled={isExpired(
-                                  userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  userWebsite.rent_expiry_date
+                                    ? userWebsite.rent_expiry_date
+                                    : null
                                 )}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Downline Comm</label>
+                              <label className="small-font my-1">
+                                Downline Comm
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+
+                                  // Restrict input to 2 digits unless the value is exactly 100
+                                  let finalValue = numericValue;
+                                  if (
+                                    numericValue.length > 2 &&
+                                    numericValue !== "100"
+                                  ) {
+                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                  }
+
+                                  // Ensure the value is between 0 and 100
+                                  const clampedValue = Math.min(
+                                    Math.max(Number(finalValue), 0),
+                                    100
+                                  );
+
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    downline_comm: e.target.value,
+                                    downline_comm: clampedValue, // Set the clamped value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                                 disabled={isExpired(
-                                  userWebsite.rent_expiry_date ? userWebsite.rent_expiry_date : null
+                                  userWebsite.rent_expiry_date
+                                    ? userWebsite.rent_expiry_date
+                                    : null
                                 )}
                               />
                             </div>
 
-                            <div className="col-2">
-                              <label className="small-font my-1">Casino Allowed</label>
-                              <input
-                                type="checkbox"
-                                checked={userWebsite.is_casino === 1}
-                                onChange={(e) => {
-                                  const updatedWebsites = [...userWebsites];
-                                  updatedWebsites[userIndex] = {
-                                    ...updatedWebsites[userIndex],
-                                    is_casino: e.target.checked ? 1 : 2,
-                                  };
-                                  setUserWebsites(updatedWebsites);
-                                }}
-                              />
-                            </div>
-
-                            {userWebsite.is_casino === 1 && (
-                              <div className="col-2">
-                                <label className="small-font my-1">Casino Chip Value</label>
+                            <div className="col-2  mt-4 ">
+                              <div className="light-white-bg br-5 ">
                                 <input
-                                  type="text"
-                                  className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                  value={userWebsite.caschip_values || ""}
+                                  type="checkbox"
+                                  className="ms-2"
+                                  checked={userWebsite.is_casino === 1}
                                   onChange={(e) => {
                                     const updatedWebsites = [...userWebsites];
                                     updatedWebsites[userIndex] = {
                                       ...updatedWebsites[userIndex],
-                                      caschip_values: e.target.value,
+                                      is_casino: e.target.checked ? 1 : 2,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                                <label className="small-font p-2 mt-1">
+                                  Casino Allowed
+                                </label>
+                              </div>
+                            </div>
+
+                            {userWebsite.is_casino === 1 && (
+                              <div className="col-2">
+                                <label className="small-font my-1">
+                                  Casino Chip Value
+                                </label>
+                                <input
+                                  type="text"
+                                  maxLength={4}
+                                  className="small-font all-none white-bg rounded border-grey3 p-2 w-100"
+                                  value={userWebsite.caschip_values || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    // Allow only numbers using a regular expression
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9]/g,
+                                      ""
+                                    );
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      caschip_values: numericValue, // Set the filtered value
                                     };
                                     setUserWebsites(updatedWebsites);
                                   }}
@@ -2911,48 +3074,105 @@ function EditNewDirector() {
                         {currentCommissionType == "2" && (
                           <>
                             <div className="col-2">
-                              <label className="small-font my-1">Downline Share</label>
+                              <label className="small-font my-1">
+                                Downline Share
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.share || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+
+                                  // Restrict input to 2 digits unless the value is exactly 100
+                                  let finalValue = numericValue;
+                                  if (
+                                    numericValue.length > 2 &&
+                                    numericValue !== "100"
+                                  ) {
+                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                  }
+
+                                  // Ensure the value is between 0 and 100
+                                  const clampedValue = Math.min(
+                                    Math.max(Number(finalValue), 0),
+                                    100
+                                  );
+
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    share: e.target.value,
+                                    share: clampedValue, // Set the clamped value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Downline Comm</label>
+                              <label className="small-font my-1">
+                                Downline Comm
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+
+                                  // Restrict input to 2 digits unless the value is exactly 100
+                                  let finalValue = numericValue;
+                                  if (
+                                    numericValue.length > 2 &&
+                                    numericValue !== "100"
+                                  ) {
+                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                  }
+
+                                  // Ensure the value is between 0 and 100
+                                  const clampedValue = Math.min(
+                                    Math.max(Number(finalValue), 0),
+                                    100
+                                  );
+
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    downline_comm: e.target.value,
+                                    downline_comm: clampedValue, // Set the clamped value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Caschip Values</label>
+                              <label className="small-font my-1">
+                                Caschip Values
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                maxLength={4}
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.caschip_values || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    caschip_values: e.target.value,
+                                    caschip_values: numericValue, // Set the filtered value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
@@ -2960,8 +3180,7 @@ function EditNewDirector() {
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
-                            <div className="col position-relative mx-1 d-flex align-items-center">
-                              <label className="small-font me-2">Is Primary</label>
+                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary === 1}
@@ -2974,6 +3193,9 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              <label className="small-font me-2">
+                                Is Primary{" "}
+                              </label>
                             </div>
                           </>
                         )}
@@ -2981,56 +3203,112 @@ function EditNewDirector() {
                         {currentCommissionType == "3" && (
                           <>
                             <div className="col-2">
-                              <label className="small-font my-1">Downline Share</label>
+                              <label className="small-font my-1">
+                                Downline Share
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.share || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+
+                                  // Restrict input to 2 digits unless the value is exactly 100
+                                  let finalValue = numericValue;
+                                  if (
+                                    numericValue.length > 2 &&
+                                    numericValue !== "100"
+                                  ) {
+                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                  }
+
+                                  // Ensure the value is between 0 and 100
+                                  const clampedValue = Math.min(
+                                    Math.max(Number(finalValue), 0),
+                                    100
+                                  );
+
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    share: e.target.value,
+                                    share: clampedValue, // Set the clamped value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Downline Comm</label>
+                              <label className="small-font my-1">
+                                Downline Comm
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
+
+                                  // Restrict input to 2 digits unless the value is exactly 100
+                                  let finalValue = numericValue;
+                                  if (
+                                    numericValue.length > 2 &&
+                                    numericValue !== "100"
+                                  ) {
+                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                  }
+
+                                  // Ensure the value is between 0 and 100
+                                  const clampedValue = Math.min(
+                                    Math.max(Number(finalValue), 0),
+                                    100
+                                  );
+
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    downline_comm: e.target.value,
+                                    downline_comm: clampedValue, // Set the clamped value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">Caschip Values</label>
+                              <label className="small-font my-1">
+                                Caschip Values
+                              </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                maxLength={4}
+                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
                                 value={userWebsite.caschip_values || ""}
                                 onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  // Allow only numbers using a regular expression
+                                  const numericValue = inputValue.replace(
+                                    /[^0-9]/g,
+                                    ""
+                                  );
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    caschip_values: e.target.value,
+                                    caschip_values: numericValue, // Set the filtered value
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                            <div className="col position-relative mx-1 d-flex align-items-center">
-                              <label className="small-font me-2">Is Primary</label>
+                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary == 1}
@@ -3043,17 +3321,30 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              <label className="small-font me-2">
+                                Is Primary
+                              </label>
                             </div>
                           </>
                         )}
 
-                        <div className="col-1 text-end">
-                          <h6
-                            className={`my-1 row ${userWebsite.status === "Active" ? "green-font" : "red-font"
-                              }`}
+                        <div className="col-1 ms-2 ">
+                          <div
+                            className={`my-1 row 
+                            `}
                           >
-                            status: <span className="small-font fw-600"> {userWebsite.status} </span>
-                          </h6>
+                            status
+                            <div
+                              className={`small-font fw-600 input-css text-center ${
+                                userWebsite.status === "Active"
+                                  ? "green-font"
+                                  : "red-font"
+                              } `}
+                            >
+                              {" "}
+                              {userWebsite.status}{" "}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     );
@@ -3068,7 +3359,7 @@ function EditNewDirector() {
                 <div key={form.id}>
                   {role === "director" ? (
                     <div className="col-1">
-                      <label className="small-font my-1">Admin Website</label>
+                      <label className="small-font my-2">Admin Website</label>
                       <div className="custom-select-wrapper">
                         <Select
                           className="small-font"
@@ -3077,7 +3368,7 @@ function EditNewDirector() {
                           value={selectedOption}
                           onChange={(selectedOption) => {
                             setSelectedOption(selectedOption);
-                            handleAdminRoleChange(form.id, selectedOption)
+                            handleAdminRoleChange(form.id, selectedOption);
                             const selectedAdmin = allAccessWebsites
                               .flatMap((access) => access.admin_websites)
                               .find(
@@ -3132,14 +3423,14 @@ function EditNewDirector() {
                               className="me-2"
                               checked={
                                 selectedWebsites[form.id]?.[
-                                userSite.website_access_id
+                                  userSite.website_access_id
                                 ] || false
                               }
                               onChange={() =>
                                 handleCheckboxChange(
                                   form.id,
                                   userSite.website_access_id,
-                                  userSite.user_WebSite_id,
+                                  userSite.user_WebSite_id
                                 )
                               }
                             />
@@ -3153,277 +3444,316 @@ function EditNewDirector() {
                           {selectedWebsites[form.id]?.[
                             userSite.website_access_id
                           ] && (
-                              <div className="col-1 my-1">
-                                <Select
-                                  className="small-font white-bg"
-                                  placeholder="Account Type"
-                                  options={commissionOptions}
-                                  styles={customStyles}
-                                  onChange={(selectedOption) =>
-                                    handleAccountTypeChange(
-                                      form.id,
-                                      userSite.website_access_id,
-                                      selectedOption
-                                    )
-                                  }
-                                  value={
-                                    commissionOptions.find(
-                                      (option) =>
-                                        option.value ===
-                                        accountTypes[form.id]?.[
+                            <div className="col-1 my-1">
+                              <Select
+                                className="small-font white-bg"
+                                placeholder="Account Type"
+                                options={commissionOptions}
+                                styles={customStyles}
+                                onChange={(selectedOption) =>
+                                  handleAccountTypeChange(
+                                    form.id,
+                                    userSite.website_access_id,
+                                    selectedOption
+                                  )
+                                }
+                                value={
+                                  commissionOptions.find(
+                                    (option) =>
+                                      option.value ===
+                                      accountTypes[form.id]?.[
                                         userSite.website_access_id
-                                        ]
-                                    ) || null
-                                  }
-                                />
-                              </div>
-                            )}
+                                      ]
+                                  ) || null
+                                }
+                              />
+                            </div>
+                          )}
                           {accountTypes[form.id]?.[
                             userSite.website_access_id
                           ] === "1" && (
-                              <div className="col-9">
-                                <div className="d-flex">
-                                  <div className="col">
-                                    <input
-                                      type="text"
-                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                      placeholder="Monthly Amnt"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "monthly_amount",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                  <div className="col">
-                                    <input
-                                      type="text"
-                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                      placeholder="Max Chips Monthly"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "max_chips_monthly",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                  <div className="col">
-                                    <input
-                                      type="text"
-                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                      placeholder="Chip %"
-                                      value={(parseInt(addWebsites.find((site) => site.id === userSite.website_access_id).monthly_amount) / parseInt(addWebsites.find((site) => site.id === userSite.website_access_id).max_chips_monthly) * 100)}
-                                      readOnly
-                                    />
-                                  </div>
-
-                                  <div className="col-3">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        type="text"
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Commission(%)"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            userSite.website_access_id,
-                                            "downline_comm",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b>My Comm.. 1%</b>
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className="col d-flex align-items-center">
-                                    <label className="small-font me-2">Casino Allowed</label>
-                                    <input
-                                      type="checkbox"
-                                      checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_casino === 1}
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "is_casino",
-                                          e.target.checked ? 1 : 2
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                  {addWebsites.find((site) => site.id === userSite.website_access_id)?.is_casino === 1 && (
-                                    <div className="col">
-                                      <input
-                                        type="text"
-                                        className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                        placeholder="Casino Chip Value"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            userSite.website_access_id,
-                                            "caschip_values",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  )}
+                            <div className="col-9">
+                              <div className="d-flex">
+                                <div className="col">
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    placeholder="Monthly Amnt"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "monthly_amount",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
                                 </div>
+                                <div className="col">
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    placeholder="Max Chips Monthly"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "max_chips_monthly",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>
+                                <div className="col">
+                                  <input
+                                    type="text"
+                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    placeholder="Chip %"
+                                    value={
+                                      (parseInt(
+                                        addWebsites.find(
+                                          (site) =>
+                                            site.id ===
+                                            userSite.website_access_id
+                                        ).monthly_amount
+                                      ) /
+                                        parseInt(
+                                          addWebsites.find(
+                                            (site) =>
+                                              site.id ===
+                                              userSite.website_access_id
+                                          ).max_chips_monthly
+                                        )) *
+                                      100
+                                    }
+                                    readOnly
+                                  />
+                                </div>
+
+                                <div className="col-3">
+                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      type="text"
+                                      className="small-font bg-none p-2 w-75"
+                                      placeholder="Commission(%)"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.website_access_id,
+                                          "downline_comm",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                    <span className="small-font text-center border-left3 px-1">
+                                      <b>My Comm.. 1%</b>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="col d-flex align-items-center">
+                                  <label className="small-font me-2">
+                                    Casino Allowed
+                                  </label>
+                                  <input
+                                    type="checkbox"
+                                    checked={
+                                      addWebsites.find(
+                                        (site) =>
+                                          site.id === userSite.website_access_id
+                                      )?.is_casino === 1
+                                    }
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "is_casino",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
+                                {addWebsites.find(
+                                  (site) =>
+                                    site.id === userSite.website_access_id
+                                )?.is_casino === 1 && (
+                                  <div className="col">
+                                    <input
+                                      type="text"
+                                      className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                      placeholder="Casino Chip Value"
+                                      onChange={(e) =>
+                                        handleInputChange(
+                                          userSite.website_access_id,
+                                          "caschip_values",
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                )}
                               </div>
-                            )}
+                            </div>
+                          )}
                           {accountTypes[form.id]?.[
                             userSite.website_access_id
                           ] === "2" && (
-                              <div className="col d-flex">
-                                <div className="col position-relative mx-1">
-                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none p-2 w-75"
-                                      placeholder="Downline Sharing"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "share",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <span className="small-font text-center border-left3 px-1">
-                                      <b>My Share 10%</b>
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="col position-relative mx-1">
-                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none p-2 w-75"
-                                      placeholder="Enter Commission: M.0"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "downline_comm",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <span className="small-font text-center border-left3 px-1">
-                                      <b>My Comm.. 1%</b>
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="col position-relative mx-1">
-                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none p-2 w-75"
-                                      placeholder="Casino Chip Value"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "caschip_values",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <span className="small-font text-center border-left3 px-1">
-                                      <b className="mx-1">Cas. Chip Val 20</b>
-                                    </span>
-                                  </div>
-                                </div>
-                                {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                            <div className="col d-flex">
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                   <input
-                                    type="checkbox"
-                                    checked={userSite.is_primary == 1}
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Downline Sharing"
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "is_primary",
-                                        e.target.checked ? 1 : 2
+                                        "share",
+                                        e.target.value
                                       )
                                     }
                                   />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Share 10%</b>
+                                  </span>
                                 </div>
-
                               </div>
-                            )}
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Enter Commission: M.0"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "downline_comm",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Comm.. 1%</b>
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Casino Chip Value"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "caschip_values",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b className="mx-1">Cas. Chip Val 20</b>
+                                  </span>
+                                </div>
+                              </div>
+                              {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
+                              <div className="col position-relative mx-1 d-flex align-items-center">
+                                <label className="small-font me-2">
+                                  Is Primary{" "}
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  checked={
+                                    addWebsites.find(
+                                      (site) =>
+                                        site.id === userSite.website_access_id
+                                    )?.is_primary == 1
+                                  }
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      userSite.website_access_id,
+                                      "is_primary",
+                                      e.target.checked ? 1 : 2
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          )}
                           {accountTypes[form.id]?.[
                             userSite.website_access_id
                           ] === "3" && (
-                              <div className="col d-flex">
-                                <div className="col position-relative mx-1">
-                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none p-2 w-75"
-                                      placeholder="Downline Sharing"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "share",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <span className="small-font text-center border-left3 px-1">
-                                      <b>My Share 10%</b>
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="col position-relative mx-1">
-                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none p-2 w-75"
-                                      placeholder="Enter Commission: M.0"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "downline_comm",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <span className="small-font text-center border-left3 px-1">
-                                      <b>My Comm.. 1%</b>
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="col position-relative mx-1">
-                                  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none p-2 w-75"
-                                      placeholder="Casino Chip Value"
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          userSite.website_access_id,
-                                          "caschip_values",
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <span className="small-font text-center border-left3 px-1">
-                                      <b className="mx-1">Cas. Chip Val 20</b>
-                                    </span>
-                                  </div>
-                                </div>
-                                {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                <div className="col position-relative mx-1 d-flex align-items-center">
-                                  <label className="small-font me-2">Is Primary</label>
+                            <div className="col d-flex">
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                   <input
-                                    type="checkbox"
-                                    checked={userSite.is_primary == 1}
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Downline Sharing"
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
-                                        "is_primary",
-                                        e.target.checked ? 1 : 2
+                                        "share",
+                                        e.target.value
                                       )
                                     }
                                   />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Share 10%</b>
+                                  </span>
                                 </div>
                               </div>
-                            )}
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Enter Commission: M.0"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "downline_comm",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b>My Comm.. 1%</b>
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="col position-relative mx-1">
+                                <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                  <input
+                                    className="small-font bg-none p-2 w-75"
+                                    placeholder="Casino Chip Value"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.website_access_id,
+                                        "caschip_values",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                  <span className="small-font text-center border-left3 px-1">
+                                    <b className="mx-1">Cas. Chip Val 20</b>
+                                  </span>
+                                </div>
+                              </div>
+                              {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
+                              <div className="col position-relative mx-1 d-flex align-items-center">
+                                <label className="small-font me-2">
+                                  Is Primary{" "}
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  checked={
+                                    addWebsites.find(
+                                      (site) =>
+                                        site.id === userSite.website_access_id
+                                    )?.is_primary == 1
+                                  }
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      userSite.website_access_id,
+                                      "is_primary",
+                                      e.target.checked ? 1 : 2
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          )}
                         </div>
                       ))
                     ) : (
@@ -3520,17 +3850,27 @@ function EditNewDirector() {
                                       className="small-font white-bg rounded border-grey3 p-2 w-100"
                                       placeholder="Rent Percentage"
                                       value={
-                                        addWebsites.find((site) => site.id === userSite.id)?.monthly_amount &&
-                                          addWebsites.find((site) => site.id === userSite.id)?.max_chips_monthly
+                                        addWebsites.find(
+                                          (site) => site.id === userSite.id
+                                        )?.monthly_amount &&
+                                        addWebsites.find(
+                                          (site) => site.id === userSite.id
+                                        )?.max_chips_monthly
                                           ? (
-                                            (parseFloat(
-                                              addWebsites.find((site) => site.id === userSite.id)?.monthly_amount
-                                            ) /
-                                              parseFloat(
-                                                addWebsites.find((site) => site.id === userSite.id)?.max_chips_monthly
-                                              )) *
-                                            100
-                                          ).toFixed(2)
+                                              (parseFloat(
+                                                addWebsites.find(
+                                                  (site) =>
+                                                    site.id === userSite.id
+                                                )?.monthly_amount
+                                              ) /
+                                                parseFloat(
+                                                  addWebsites.find(
+                                                    (site) =>
+                                                      site.id === userSite.id
+                                                  )?.max_chips_monthly
+                                                )) *
+                                              100
+                                            ).toFixed(2)
                                           : ""
                                       }
                                       readOnly
@@ -3560,10 +3900,16 @@ function EditNewDirector() {
 
                                   {/* Casino Allowed Checkbox */}
                                   <div className="col d-flex align-items-center">
-                                    <label className="small-font me-2">Casino Allowed</label>
+                                    <label className="small-font me-2 ">
+                                      Casino Allowed
+                                    </label>
                                     <input
                                       type="checkbox"
-                                      checked={addWebsites.find((site) => site.id === userSite.id)?.is_casino === 1}
+                                      checked={
+                                        addWebsites.find(
+                                          (site) => site.id === userSite.id
+                                        )?.is_casino === 1
+                                      }
                                       onChange={(e) =>
                                         handleInputChange(
                                           userSite.id,
@@ -3575,7 +3921,9 @@ function EditNewDirector() {
                                   </div>
 
                                   {/* Casino Chip Value (Conditional Rendering) */}
-                                  {addWebsites.find((site) => site.id === userSite.id)?.is_casino === 1 && (
+                                  {addWebsites.find(
+                                    (site) => site.id === userSite.id
+                                  )?.is_casino === 1 && (
                                     <div className="col">
                                       <input
                                         type="text"
@@ -3651,11 +3999,26 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                {renderIsPrimaryCheckbox(
-                                  userSite.id,
-                                  addWebsites.find((site) => site.id === userSite.id)?.is_primary || false
-                                )}
-
+                                <div className="col position-relative mx-1 d-flex align-items-center">
+                                  <label className="small-font me-2">
+                                    Is Primary{" "}
+                                  </label>
+                                  <input
+                                    type="checkbox"
+                                    checked={
+                                      addWebsites.find(
+                                        (site) => site.id === userSite.id
+                                      )?.is_primary == 1
+                                    }
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.id,
+                                        "is_primary",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
                               </div>
                             )}
                             {accountTypes[form.id]?.[userSite.id] === "3" && (
@@ -3715,10 +4078,26 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                {renderIsPrimaryCheckbox(
-                                  userSite.id,
-                                  addWebsites.find((site) => site.id === userSite.id)?.is_primary || false
-                                )}
+                                <div className="col position-relative mx-1 d-flex align-items-center">
+                                  <label className="small-font me-2">
+                                    Is Primary{" "}
+                                  </label>
+                                  <input
+                                    type="checkbox"
+                                    checked={
+                                      addWebsites.find(
+                                        (site) => site.id === userSite.id
+                                      )?.is_primary == 1
+                                    }
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.id,
+                                        "is_primary",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
                               </div>
                             )}
                           </div>
