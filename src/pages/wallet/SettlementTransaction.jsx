@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import Table from "../../components/Table";
+import SettlementTransModal from "./SettlementTransModal";
 
 const SettlementTransaction = () => {
+  const [settleModalShow, setSettleModalShow] = useState(false);
   const adminOptions = [
     { value: "Option 1", label: "Director-Jayanta" },
     { value: "Option 2", label: "Director-Jayanta" },
@@ -204,7 +206,7 @@ const SettlementTransaction = () => {
             <button className="saffron-btn2">Submit</button>
           </div>
 
-          <div className="col-1 me-3 align-self-end">
+          <div className="col-1 me-3 align-self-end" onClick={()=>setSettleModalShow(true)}>
             <div className="white-bg br-5 px-1 py-2 text-center black-border">
               Settlement
             </div>
@@ -214,6 +216,8 @@ const SettlementTransaction = () => {
       <div className="mt-3 py-2">
         <Table columns={COLUMNS} data={DATA} itemsPerPage={4} footer={FOOTER} />
       </div>
+
+      <SettlementTransModal setSettleModalShow={setSettleModalShow} settleModalShow={settleModalShow}/>
     </div>
   );
 };
