@@ -432,7 +432,7 @@ const PromotionType = () => {
       setLoading(true);
       const response = await statusPromotionsTypes(selectedPromotionId);
       if (response?.status === 200) {
-        setMessage(response?.message);
+        setMessage(`Promotion Type ${response?.newStatus === 1 ? "Un Blocked" : "Blocked"} Successfully`);
         setLoading(false);
         getPromotions();
         setErrorPopupOpen(false);

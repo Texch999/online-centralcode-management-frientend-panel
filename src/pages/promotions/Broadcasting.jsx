@@ -315,7 +315,11 @@ const Broadcasting = () => {
       // setLoading(true);
       const response = await statusBroadCasting(selectedBroadcastId);
       if (response?.status === 200) {
-        setMessage(response?.message);
+        setMessage(
+          `Banner ${
+            response?.newStatus === 1 ? "Un Blocked" : "Blocked"
+          } Successfully`
+        );
         setLoading(false);
         getBroadCastingdata();
         setErrorPopupOpen(false);
@@ -462,7 +466,6 @@ const Broadcasting = () => {
             // onChange={handleSelectType}
             onChange={setSelectType}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectType && (
             <span className="text-danger small-font">{errors.selectType}</span>
@@ -482,7 +485,6 @@ const Broadcasting = () => {
             value={selectWebsites}
             onChange={handleSelectWebsites}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -506,7 +508,6 @@ const Broadcasting = () => {
             value={selectLocations}
             onChange={handleSelectLocations}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectLocations && (
             <span className="text-danger small-font">
