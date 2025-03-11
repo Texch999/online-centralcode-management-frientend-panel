@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { rceil } from "../../utils/mathFunctions";
 import SuccessPopup from "../popups/SuccessPopup";
 import { useSearchParams } from "react-router-dom";
+import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
 
 function OfflineDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
@@ -32,6 +33,8 @@ function OfflineDepositWithdraw() {
   });
   const [isCredit, setIsCredit] = useState(false); // State for credit checkbox
   const [creditAmount, setCreditAmount] = useState(0);
+  const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
+  const [selectedDetails, setSelectedDetails] = useState(null);
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
   const allCountries = useSelector((state) => state?.allCountries);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -123,10 +126,13 @@ function OfflineDepositWithdraw() {
   // Action buttons component
   const ActionButtons = ({ onDeposit, onWithdraw }) => (
     <div className="d-flex flex-row justify-content-center align-items-center">
-      <button className="me-3 dark-green-bg px-3" onClick={onDeposit}>
+      <button className="saffron-btn3 px-2" style={{ borderTopLeftRadius: "8px", borderBottomLeftRadius: "8px" }} onClick={onDeposit}>
         D/C
       </button>
-      <button className="me-3 saffron-btn2 px-3" onClick={onWithdraw}>
+      <div className="saffron-btn3 white-text" style={{ pointerEvents: "none" }}>
+        |
+      </div>
+      <button className="me-3 saffron-btn3 px-2 " style={{ borderTopRightRadius: "8px", borderBottomRightRadius: "8px" }} onClick={onWithdraw}>
         W
       </button>
     </div>
@@ -182,20 +188,16 @@ function OfflineDepositWithdraw() {
   };
 
   // Toggle child row visibility
-  const toggleChildRow = (index, action) => {
+  const toggleChildRow = (index, action, siteDetails) => {
+    setSelectedDetails(siteDetails)
+    setDepositWithdrawPopup(true)
     setDirAndSADetails((prevData) =>
       prevData.map((row, i) => ({
         ...row,
         showChildRow: i === index ? !row.showChildRow : false,
       }))
     );
-    setInputData({
-      inrChips: 0,
-      extChips: 0,
-    });
-    setCreditAmount(0);
     setActionType(action)
-    setErrors({})
     setApiErrors(null);
   };
 
@@ -204,13 +206,7 @@ function OfflineDepositWithdraw() {
     return percentage !== undefined ? amount * (percentage / 100) : amount;
   };
 
-  // Table columns
-  const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
-    { header: "UID", field: "uid" },
-    { header: "Details", field: "details" },
-    { header: "Chips", field: "usdChips" },
-    { header: <div className="text-center">Action</div>, field: "action" },
-  ];
+
 
   const validateForm = (siteData) => {
     const newErrors = {};
@@ -314,114 +310,39 @@ function OfflineDepositWithdraw() {
   //     });
   // }
 
-  const handleSubmit = (siteData) => {
-    if (!validateForm(siteData)) return;
 
-    // Calculate the total amount based on INR chips and currency conversion
-    const totalChips = inputData.inrChips
-      ? currencyConvert(
-        Number(inputData.inrChips),
-        getCurrencyRate(107),
-        getCurrencyRate(siteData?.currency_id)
-      )
-      : 0;
 
-    // Calculate the paid amount based on commission type
-    const paidAmount = rceil(
-      totalChips *
-      (siteData.selectedUserDetails?.commission_type === 1
-        ? siteData.selectedUserDetails?.chip_percentage / 100
-        : siteData.selectedUserDetails?.share / 100),
-      -3
-    );
+  // const handleCancel = (index) => {
+  //   setDirAndSADetails((prevData) =>
+  //     prevData.map((row, i) => ({
+  //       ...row,
+  //       showChildRow: i === index ? !row.showChildRow : false,
+  //     }))
+  //   );
+  //   setInputData({
+  //     inrChips: 0,
+  //     extChips: 0,
+  //   });
+  //   setErrors({})
+  //   setApiErrors(null);
+  // }
 
-    // Adjust the paid amount if credit is selected
-    const finalPaidAmount = isCredit ? paidAmount - creditAmount : paidAmount;
+  // Table columns
+  const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
+    { header: "Name & Role", field: "nameRole" },
+    { header: "Balance", field: "totalBalance" },
+    { header: "Available", field: "totalAvailable" },
+    { header: <div className="text-end">Exposure</div>, field: "totalExposure" },
+    { header: <div className="text-end">Ref P/L</div>, field: "referencePL" },
+    { header: "Admin Site", field: "adminSites" },
+    { header: "User Site", field: "userSites" },
+    { header: "Credit Ref", field: "creditReference" },
+    { header: "Avai Bal.", field: "userSiteAvaiBal" },
+    { header: "Exposure", field: "userSitexposure" },
+    { header: <div className="text-center">Action</div>, field: "action" },
+  ];
 
-    const payload = {
-      adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
-      userPanelId: siteData?.selectedUserDetails?.user_paner_id,
-      currency: siteData?.currency_id,
-      selctChips: totalChips,
-      TotalPaidAmount: paidAmount,
-      // Pass 1 if credit is selected, otherwise 2
-      // creditAmount: isCredit ? creditAmount : 0, // Pass credit amount if credit is selected
-    };
-    if (isCredit && actionType !== "WITHDRAW") {
-      payload.isCredit = isCredit ? 1 : 2
-      payload.paidAmount = finalPaidAmount
-      payload.creditAmount = creditAmount
-    }
 
-    // Add extra chips data if commission type is 1 and action is not WITHDRAW
-    if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
-      payload.duration = duration
-      payload.paidAmount = rceil(
-        (inputData.inrChips
-          ? currencyConvert(
-            Number(inputData.inrChips),
-            getCurrencyRate(107),
-            getCurrencyRate(siteData?.currency_id)
-          ) *
-          (siteData.selectedUserDetails?.commission_type === 1
-            ? siteData.selectedUserDetails?.chip_percentage / 100
-            : siteData.selectedUserDetails?.share / 100)
-          : 0) +
-        (inputData.extChips
-          ? currencyConvert(
-            Number(inputData.extChips),
-            getCurrencyRate(107),
-            getCurrencyRate(siteData?.currency_id)
-          )
-          : 0),
-        -3
-      );
-    }
-
-    let apiCall;
-    if (actionType === "DEPOSIT") {
-      apiCall = ManagementOfflineDepositeTicketCreation;
-    } else {
-      apiCall = ManagementOfflineWithdrawTicketCreation;
-    }
-    setLoading(true)
-    apiCall(siteData?.id, payload)
-      .then((response) => {
-        if (response?.status === true) {
-          setSuccessPopupOpen(true);
-          setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Created Successfully`);
-          setInputData({
-            inrChips: 0,
-            extChips: 0,
-          });
-          setApiErrors(null);
-          setLoading(false)
-          setErrors({});
-        } else if (response?.status == 422) {
-          setLoading(false)
-          setApiErrors(response?.errors || "Deposit failed. Please try again.");
-        }
-      })
-      .catch((error) => {
-        setLoading(false)
-        setApiErrors(error?.message || "API request failed");
-      });
-  };
-
-  const handleCancel = (index) => {
-    setDirAndSADetails((prevData) =>
-      prevData.map((row, i) => ({
-        ...row,
-        showChildRow: i === index ? !row.showChildRow : false,
-      }))
-    );
-    setInputData({
-      inrChips: 0,
-      extChips: 0,
-    });
-    setErrors({})
-    setApiErrors(null);
-  }
 
   // Prepare table data
   const tableData = dirAndSADetails.map((row, index) => {
@@ -437,398 +358,64 @@ function OfflineDepositWithdraw() {
 
     return {
       ...row,
-      uid: <div>{`${row.name}`}</div>,
-      details: (
-        <div className="w-100">
-          <div className="row col-12">
-            <div className="col-5">
-              <AdminSiteDropdown
-                options={adminSites}
-                onChange={(value) => handleAdminSiteChange(index, value)}
-                value={
-                  row.selectedAdminSite && row.selectedAdminName
-                    ? {
-                      value: row.selectedAdminSite,
-                      label: row.selectedAdminName,
-                    }
-                    : null
-                }
-              />
-              {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
-            </div>
-            <div className="col-6">
-              <UserSiteDropdown
-                options={
-                  row.selectedAdminSite
-                    ? adminSites.find((a) => a.value === row.selectedAdminSite)
-                      ?.userSites
-                    : []
-                }
-                onChange={(value) => handleUserSiteChange(index, value)}
-                value={
-                  row.selectedUserSite
-                    ? {
-                      label:
-                        row.selectedUserDetails.commission_type !== 1
-                          ? `${row.selectedUserDetails?.usrPnl}/ Share ${row.selectedUserDetails?.share}% - ${getCurrency(row?.currency_id)}`
-                          : `${row.selectedUserDetails?.usrPnl}/ Rental ${row.selectedUserDetails?.chip_percentage}% - Ext- Chip ${row.selectedUserDetails?.extra_chips_percentage}% - ${getCurrency(row?.currency_id)}`,
-                      value: row.selectedUserSite,
-                    }
-                    : null
-                }
-              />
-              {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
-            </div>
-          </div>
-          {row.showChildRow && (
-            <div className="w-100 d-flex flex-column justify-content-start p-2 mt-2 border-top">
-              {/* Avl D/W and Exposure Section */}
-              <div className="d-flex flex-row justify-content-between align-items-center col-4">
-                <div className="black-text2">
-                  Avl D/W:
-                  <span className="black-text2 medium-font fw-600">
-                    {" "}
-                    {row.selectedUserDetails?.commission_type === 1
-                      ? row.selectedUserDetails?.inrSportChips 
-                        ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2)
-                        : 0
-                      : row.selectedUserDetails
-                        ? Number(row.selectedUserDetails?.inrChips).toFixed(2)
-                        : 0}
-                  </span>
-                </div>
-                <div className="ps-2 black-text2">
-                  Exposure: <span className="black-text2 medium-font fw-600">0</span>
-                </div>
-              </div>
-
-              <div className="d-flex flex-column mt-2">
-                <div className={`d-flex flex-column flex-md-row align-items-center gap-2 ${errors.inrChips ? "mb-4" : "mb-2"}`}>
-                  {/* Enter Chips in INR */}
-                  <div className="flex-grow-1 w-100 position-relative">
-                    <label>Enter Chips in INR </label>
-                    <input
-                      type="text"
-                      name="inrChips"
-                      className="small-font input-css all-none rounded white-bg input-border w-100"
-                      placeholder="Enter Chips"
-                      onChange={handleInputChange}
-                      value={Number(inputData.inrChips)}
-                    />
-                    {errors.inrChips && (
-                      <p className="text-danger small-font position-absolute mt-1">
-                        {errors.inrChips}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Paid Amt In INR */}
-                  <div className="flex-grow-1 w-100 position-relative">
-                    <label>
-                      Paid Amt In INR -{" "}
-                      {row.selectedUserDetails?.commission_type === 1
-                        ? row.selectedUserDetails?.chip_percentage
-                        : row.selectedUserDetails?.share}
-                      %:
-                    </label>
-                    <input
-                      type="text"
-                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                      placeholder="Enter Chips"
-                      value={
-                        inputData.inrChips
-                          ? calculatePaidAmount(
-                            Number(inputData.inrChips),
-                            row.selectedUserDetails?.commission_type === 1
-                              ? row.selectedUserDetails?.chip_percentage
-                              : row.selectedUserDetails?.share
-                          ).toFixed(2)
-                          : 0
-                      }
-                      readOnly
-                    />
-                  </div>
-
-                  {/* Chips in Currency */}
-                  <div className="flex-grow-1 w-100 position-relative">
-                    <label>Chips In {getCurrency(row?.currency_id)}</label>
-                    <input
-                      type="text"
-                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                      placeholder="Enter Chips"
-                      value={
-                        inputData.inrChips
-                          ? currencyConvert(
-                            Number(inputData.inrChips),
-                            getCurrencyRate(107),
-                            getCurrencyRate(row?.currency_id)
-                          ).toFixed(4)
-                          : 0
-                      }
-                      readOnly
-                    />
-                  </div>
-
-                  {/* Paid Amt in Currency */}
-                  <div className="flex-grow-1 w-100 position-relative">
-                    <label>
-                      Paid Amt {getCurrency(row?.currency_id)} -{" "}
-                      {row.selectedUserDetails?.commission_type === 1
-                        ? row.selectedUserDetails?.chip_percentage
-                        : row.selectedUserDetails?.share}
-                      %
-                    </label>
-                    <input
-                      type="text"
-                      className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                      placeholder="Enter Chips"
-                      value={
-                        inputData.inrChips
-                          ? (
-                            currencyConvert(
-                              Number(inputData.inrChips),
-                              getCurrencyRate(107),
-                              getCurrencyRate(row?.currency_id)
-                            ) *
-                            (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
-                              ? row.selectedUserDetails?.chip_percentage / 100
-                              : row.selectedUserDetails?.share / 100)
-                          ).toFixed(4)
-                          : 0
-                      }
-                      readOnly
-                    />
-                  </div>
-                </div>
-
-                {/* Extra Chips Section (Conditional) */}
-                {actionType !== "WITHDRAW" &&
-                  row.selectedUserDetails?.commission_type == 1 ? (
-                  <div className="d-flex flex-column flex-md-row align-items-center mb-2 gap-2">
-                    {/* Enter Ext Sp Chips */}
-                    <div className="flex-grow-1 w-100 position-relative">
-                      <label className="text-nowrap">Duration</label>
-                      <Select
-                        className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                        placeholder="Select Duration"
-                        styles={customStyles}
-                        onChange={(option) => setDuration(option.value)} // Set selected value
-                        options={durationOptions}
-                        value={durationOptions.find((option) => option.value === duration)} // Show selected value
-                        maxMenuHeight={120}
-                        menuPlacement="auto"
-                      />
-                    </div>
-                    <div className="flex-grow-1 w-100 position-relative d-flex align-items-center">
-                      <input
-                        type="checkbox"
-                        checked={isCredit}
-                        onChange={(e) => setIsCredit(e.target.checked)}
-                        className="me-2"
-                      />
-                      <label>Is Credit</label>
-                    </div>
-
-                    {isCredit && (
-                      <>
-                        <div className="flex-grow-1 w-100 position-relative">
-                          <label>Credit Amount</label>
-                          <input
-                            type="text"
-                            className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                            placeholder="Enter Credit Amount"
-                            value={Number(creditAmount)}
-                            onChange={(e) => setCreditAmount(Number(e.target.value))}
-                          />
-                        </div>
-                        <div className="flex-grow-1 w-100 position-relative">
-                          <label>
-                            Paid Amt In {getCurrency(row?.currency_id)} -{" "}
-                            {row.selectedUserDetails?.chip_percentage}%
-                          </label>
-                          <input
-                            type="text"
-                            className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                            placeholder="Paid Amount"
-                            // value={
-                            //   isCredit && inputData.inrChips
-                            //   && (
-                            //     calculatePaidAmount(
-                            //       Number(inputData.inrChips),
-                            //       row.selectedUserDetails?.chip_percentage
-                            //     ) - Number(creditAmount)
-                            //   ).toFixed(2)
-                            // }
-                            value={
-                              inputData.inrChips
-                                ? (
-                                  (currencyConvert(
-                                    Number(inputData.inrChips),
-                                    getCurrencyRate(107),
-                                    getCurrencyRate(row?.currency_id)
-                                  ) *
-                                    (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
-                                      ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage / 100 || 0
-                                      : row.selectedUserDetails && row.selectedUserDetails?.share / 100 || 0)
-                                  ) - Number(creditAmount)).toFixed(4)
-                                : (currencyConvert(
-                                  Number(inputData.inrChips),
-                                  getCurrencyRate(107),
-                                  getCurrencyRate(row?.currency_id)
-                                ) *
-                                  (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
-                                    ? row.selectedUserDetails && row.selectedUserDetails?.chip_percentage / 100 || 0
-                                    : row.selectedUserDetails && row.selectedUserDetails?.share / 100 || 0)
-                                )
-                            }
-                            readOnly
-                          />
-                        </div>
-                      </>
-                    )}
-
-                  </div>
-                ) : <div className="d-flex flex-row flex-md-row align-items-center mb-2 gap-2">
-                  {/* Enter Ext Sp Chips */}
-                  {/* <div className="flex-grow-1 w-100 position-relative">
-                    <label className="text-nowrap">Duration</label>
-                    <Select
-                      className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                      placeholder="Select Duration"
-                      styles={customStyles}
-                      onChange={(option) => setDuration(option.value)} // Set selected value
-                      options={durationOptions}
-                      value={durationOptions.find((option) => option.value === duration)} // Show selected value
-                      maxMenuHeight={120}
-                      menuPlacement="auto"
-                    />
-                  </div> */}
-                  <div className="flex-grow-1 w-100 position-relative d-flex align-items-center">
-                    <input
-                      type="checkbox"
-                      checked={isCredit}
-                      onChange={(e) => setIsCredit(e.target.checked)}
-                      className="me-2"
-                    />
-                    <label>Is Credit</label>
-                  </div>
-
-                  {isCredit && (
-                    <>
-                      <div className="flex-grow-1 w-100 position-relative">
-                        <label>Credit Amount</label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                          placeholder="Enter Credit Amount"
-                          value={Number(creditAmount)}
-                          onChange={(e) => setCreditAmount(Number(e.target.value))}
-                        />
-                      </div>
-                      <div className="flex-grow-1 w-100 position-relative">
-                        <label>
-                          Paid Amt In {getCurrency(row?.currency_id)} -{" "}
-                          {row.selectedUserDetails?.chip_percentage}%
-                        </label>
-                        <input
-                          type="text"
-                          className="small-font input-css all-none rounded white-bg input-border input-cevent-stop w-100"
-                          placeholder="Paid Amount"
-                          // value={
-                          //   isCredit && inputData.inrChips
-                          //   && (
-                          //     calculatePaidAmount(
-                          //       Number(inputData.inrChips),
-                          //       row.selectedUserDetails?.chip_percentage
-                          //     ) - Number(creditAmount)
-                          //   ).toFixed(2)
-                          // }
-                          value={
-                            inputData.inrChips
-                              ? (
-                                (currencyConvert(
-                                  Number(inputData.inrChips),
-                                  getCurrencyRate(107),
-                                  getCurrencyRate(row?.currency_id)
-                                ) *
-                                  (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
-                                    ? row.selectedUserDetails?.chip_percentage / 100
-                                    : row.selectedUserDetails?.share / 100)
-                                ) - Number(creditAmount)).toFixed(4)
-                              : (currencyConvert(
-                                Number(inputData.inrChips),
-                                getCurrencyRate(107),
-                                getCurrencyRate(row?.currency_id)
-                              ) *
-                                (row.selectedUserDetails && row.selectedUserDetails?.commission_type === 1
-                                  ? row.selectedUserDetails?.chip_percentage / 100
-                                  : row.selectedUserDetails?.share / 100)
-                              )
-                          }
-                          readOnly
-                        />
-                      </div>
-                    </>
-                  )}
-
-                </div>}
-              </div>
-
-              {/* Buttons Section */}
-              <div className="d-flex flex-row justify-content-end align-items-center">
-                <button
-                  className="me-3 saffron-btn2 px-3"
-                  onClick={() => handleCancel(index)}
-                >
-                  Cancel
-                </button>
-                {(actionType === "WITHDRAW" && row.selectedUserDetails?.commission_type === 2) ||
-                  (actionType !== "WITHDRAW" && (
-                    <button
-                      className="me-3 saffron-btn2 px-3"
-                      onClick={() => handleSubmit(row)}
-                    >
-                      {loading ? <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <span> {`Submit ...`}</span> </> : "Submit"}
-                    </button>
-                  ))}
-              </div>
-
-              {/* API Errors Section */}
-              {apiErrors && (
-                <div className="alert alert-danger mt-1">
-                  {console.log(apiErrors, "==>apiErrors")}
-                  {Array.isArray(apiErrors) ? (
-                    <ul className="ps-2 mb-0">
-                      {apiErrors.map((error, index) => (
-                        <li className="small-font" key={index}>
-                          {error.message || error}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="small-font ps-2">{apiErrors.message || apiErrors}</p>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      ),
-      usdChips: (
+      nameRole: <div>{`${row.name}`} <br /> Director</div>,
+      totalBalance: <div>{`${row.name}`}</div>,
+      Available: <div>{`${row.name}`}</div>,
+      totalAvailable: <div>{`${row.name}`}</div>,
+      totalExposure: <div>{`${row.name}`}</div>,
+      referencePL: <div className=" text-end">{`${row.name}`}</div>,
+      adminSites: <div >
+        <AdminSiteDropdown
+          options={adminSites}
+          onChange={(value) => handleAdminSiteChange(index, value)}
+          value={
+            row.selectedAdminSite && row.selectedAdminName
+              ? {
+                value: row.selectedAdminSite,
+                label: row.selectedAdminName,
+              }
+              : null
+          }
+        />
+        {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
+      </div>,
+      userSites: <div >
+        <UserSiteDropdown
+          options={
+            row.selectedAdminSite
+              ? adminSites.find((a) => a.value === row.selectedAdminSite)
+                ?.userSites
+              : []
+          }
+          onChange={(value) => handleUserSiteChange(index, value)}
+          value={
+            row.selectedUserSite
+              ? {
+                label:
+                  row.selectedUserDetails.commission_type !== 1
+                    ? `${row.selectedUserDetails?.usrPnl}/ Share ${row.selectedUserDetails?.share}% - ${getCurrency(row?.currency_id)}`
+                    : `${row.selectedUserDetails?.usrPnl}/ Rental ${row.selectedUserDetails?.chip_percentage}% - ${getCurrency(row?.currency_id)}`,
+                value: row.selectedUserSite,
+              }
+              : null
+          }
+        />
+        {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
+      </div>,
+      creditReference: <div className="w-100 d-flex justify-content-between align-items-center gap-3">
+        <div>150000</div>
         <div>
-          {/* {row.selectedUserDetails?.commission_type === 1
-            ? (row.selectedUserDetails.inrSportChips  ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
-            : row.selectedUserDetails.inrChips ? (Number(row.selectedUserDetails?.inrChips).toFixed(2)) : 0} */}
-          {row.selectedUserDetails?.commission_type === 1
-            && (row.selectedUserDetails.inrSportChips ? Number(row.selectedUserDetails?.inrSportChips).toFixed(2) : 0)
-            || 0}
-          <br /> {getCurrency(107)}
+          <button className="me-3 saffron-btn2 px-3" >
+            Edit
+          </button>
         </div>
-      ),
+      </div>,
+      userSiteAvaiBal: <div>{row.selectedUserDetails ? row.selectedUserDetails?.totalChips : <div> {`--`}</div>}</div>,
+      userSitexposure: <div>{row.selectedUserDetails ? row.selectedUserDetails?.totalChips : <div> {`--`}</div>}</div>,
       action: (
         <ActionButtons
-          onDeposit={() => toggleChildRow(index, "DEPOSIT")}
-          onWithdraw={() => toggleChildRow(index, "WITHDRAW")}
+          onDeposit={() => toggleChildRow(index, "DEPOSIT", row.selectedUserDetails)}
+          onWithdraw={() => toggleChildRow(index, "WITHDRAW", row.selectedUserDetails)}
         />
       ),
     };
@@ -877,6 +464,13 @@ function OfflineDepositWithdraw() {
           discription={discription}
         />
       )}
+      <OfflineDepositWithdrawPopup
+        actionType={actionType}
+        depositWithdrawPopup={depositWithdrawPopup}
+        selectedDetails={selectedDetails}
+        setDepositWithdrawPopup={setDepositWithdrawPopup}
+      />
+
     </>
   );
 }

@@ -68,6 +68,7 @@
   padding: 0.5rem !important;
   text-align: center !important;
 }
+
 .saffron-bg {
   background-color: #ffa310;
 }
@@ -306,7 +307,7 @@
   outline: none;
   color: #1c1c1c;
   font-weight: 500;
-  
+
   border-radius: 0.35rem;
 }
 
@@ -786,9 +787,10 @@
 
   /* Light border */
 }
-.light-white-bg{
- 
-  background-color: #f2f2f2 ;
+
+.light-white-bg {
+
+  background-color: #f2f2f2;
 }
 
 .custom-file-upload:hover {
@@ -817,7 +819,7 @@
   border: 1.2px solid #00000033 !important;
   border-radius: 5px;
   color: #1B1B1B;
-background-color: none;
+  background-color: none;
   padding: 0.5rem !important;
 }
 
@@ -902,7 +904,7 @@ background-color: none;
 }
 
 .dep-pop-clr {
-  color: "#222A4C";
+  color: #222A4C;
 }
 
 .text-size {
@@ -933,6 +935,7 @@ background-color: none;
   background-color: #ffa310;
   border-radius: 5px;
 }
+
 .pos-abs {
   position: absolute;
   top: 47%;
@@ -940,33 +943,42 @@ background-color: none;
   z-index: 2;
   /* transform: translateX(-50%); */
 }
+
 .black-bg {
   background-color: #000000;
 }
+
 .position-relative {
   position: relative;
 }
+
 .w-20vw {
   width: 20vw;
 }
+
 .box-shadow2 {
   box-shadow: rgba(50, 50, 93, 0.25) 4px 4px 4px 3px,
     rgba(0, 0, 0, 0.3) 2px 3px 4px 2px;
 }
+
 .white-font {
   color: #f1f1f1;
 }
+
 .black-font {
   color: #000000;
 }
+
 .rounded-br {
   border-radius: 30%;
 }
+
 .profile {
   height: 9vh;
   width: 9vh;
   border-radius: 50%;
 }
+
 .pos-abs-profile {
   position: absolute;
   left: 75%;
@@ -974,19 +986,23 @@ background-color: none;
   top: 85%;
   border-radius: 50%;
 }
+
 .error-popup-container {
   color: #ee5787;
   background-color: #faccdb;
 }
-.error-popup-container1{
+
+.error-popup-container1 {
   color: #FFFFFF;
   background-color: #FF2C2C;
 }
+
 .head-profile {
   height: 6vh;
   width: 6vh;
   border-radius: 50%;
 }
+
 .hr-line-grey {
   border: 1.2px dashed #00000066;
   position: absolute;
@@ -995,7 +1011,25 @@ background-color: none;
   z-index: 999999;
   left: 10%;
 }
+
 .br-right {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+
+.saffron-btn3 {
+  background: #ffa310 !important;
+  border: 1px solid #ffa310 !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 0.6rem;
+  text-align: center !important;
+}
+
+.auto-border {
+  border: 2px solid rgb(0, 0, 0, 0.1);
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
 }
