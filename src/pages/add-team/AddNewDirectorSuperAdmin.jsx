@@ -4190,6 +4190,7 @@ function AddNewDirectorSuperAdmin() {
                                                 type="text"
                                                 className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
                                                 placeholder="Max Chips Monthly"
+                                                maxLength={9}
                                                 onKeyPress={(e) => {
                                                   if (
                                                     e.charCode < 48 ||
@@ -4263,6 +4264,7 @@ function AddNewDirectorSuperAdmin() {
                                                 <input
                                                   type="text"
                                                   className="small-font bg-none all-none p-2 w-50"
+                                                  maxLength={2}
                                                   value={
                                                     websiteDetails[userSite.id]
                                                       ?.downline_comm || ""
@@ -4286,18 +4288,18 @@ function AddNewDirectorSuperAdmin() {
                                                     );
                                                   }}
                                                 />
-                                                <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+                                                {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
                                                   <div>
                                                     My Comm..{" "}
-                                                    {100 -
+                                                    {
                                                       (parseInt(
                                                         websiteDetails[
                                                           userSite.id
                                                         ]?.downline_comm
-                                                      ) || 0)}
+                                                      ) )}
                                                     %
                                                   </div>
-                                                </span>
+                                                </span> */}
                                               </div>
                                             </div>
 
@@ -4324,12 +4326,13 @@ function AddNewDirectorSuperAdmin() {
                                               ?.casino_allowed && (
                                               <div className="col-2">
                                                 <label className="fw-600 my-1 white-space small-font">
-                                                  * Casino Chip Value (%)
+                                                  * Casino Chip Value 
                                                 </label>
                                                 <input
                                                   type="text"
                                                   className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                                   placeholder="Casino Chip Value"
+                                                  maxLength={4}
                                                   onKeyPress={(e) => {
                                                     if (
                                                       e.charCode < 48 ||
@@ -4405,6 +4408,7 @@ function AddNewDirectorSuperAdmin() {
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
                                                 type="text"
+                                                maxLength={2}
                                                 className="small-font bg-none p-2 w-75 all-none"
                                                 // placeholder="Enter Commission: M.0"
                                                 value={
@@ -4427,7 +4431,7 @@ function AddNewDirectorSuperAdmin() {
                                                   );
                                                 }}
                                               />
-                                              <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+                                              {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
                                                 <b>
                                                   My Comm..{" "}
                                                   {100 -
@@ -4438,12 +4442,12 @@ function AddNewDirectorSuperAdmin() {
                                                     ) || 0)}
                                                   %
                                                 </b>
-                                              </span>
+                                              </span> */}
                                             </div>
                                           </div>
                                           <div className="col-2 position-relative mx-3">
                                             <label className="fw-600 my-1 small-font">
-                                              * Cas Chip Value
+                                            * Casino Chip Value
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                             <input
@@ -4451,6 +4455,7 @@ function AddNewDirectorSuperAdmin() {
   type="text"
   inputMode="numeric"
   pattern="[0-9]*"
+  maxLength={4}
   onKeyPress={(event) => {
     if (event.charCode < 48 || event.charCode > 57) {
       event.preventDefault(); // Prevent non-numeric characters
@@ -4528,11 +4533,12 @@ function AddNewDirectorSuperAdmin() {
                                           </div>
                                           <div className="col-2 position-relative mx-3">
                                             <label className="fw-600 my-1 small-font">
-                                              * Enter Commission: M.0
+                                            * Commission (%)
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
                                                 type="text"
+                                                maxLength={2}
                                                 className="small-font bg-none all-none p-2 w-75"
                                                 // placeholder="Enter Commission: M.0"
                                                 value={
@@ -4555,7 +4561,7 @@ function AddNewDirectorSuperAdmin() {
                                                   );
                                                 }}
                                               />
-                                              <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+                                              {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
                                                 <b>
                                                   My Comm..{" "}
                                                   {100 -
@@ -4563,19 +4569,20 @@ function AddNewDirectorSuperAdmin() {
                                                       websiteDetails[
                                                         userSite.id
                                                       ]?.downline_comm
-                                                    ) || 1)}
+                                                    ) || 0)}
                                                   %
                                                 </b>
-                                              </span>
+                                              </span> */}
                                             </div>
                                           </div>
                                           <div className="col-2 position-relative mx-3">
                                             <label className="fw-600 my-1 small-font">
-                                              * Casino Chip Value
+                                            * Casino Chip Value 
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
                                                 className="small-font bg-none p-2 all-none w-100"
+                                                maxLength={4}
                                                 // placeholder="Casino Chip Value"
                                                 onKeyPress={(e) => {
                                                   if (

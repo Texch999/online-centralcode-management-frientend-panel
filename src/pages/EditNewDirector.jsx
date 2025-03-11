@@ -2942,7 +2942,7 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
-                                Chip Percentage
+                                Chip (%)
                               </label>
                               <input
                                 type="text"
@@ -2976,10 +2976,10 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
-                                Downline Comm
+                              * Commission (%)
                               </label>
                               <input
-                                type="text"
+                                type="text" 
                                 className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
