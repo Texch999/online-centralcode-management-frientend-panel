@@ -978,6 +978,10 @@ background-color: none;
   color: #ee5787;
   background-color: #faccdb;
 }
+.error-popup-container1{
+  color: #FFFFFF;
+  background-color: #FF2C2C;
+}
 .head-profile {
   height: 6vh;
   width: 6vh;

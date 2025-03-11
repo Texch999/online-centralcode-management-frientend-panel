@@ -85,7 +85,7 @@ const AddWebsitesPopup = ({ show, onHide,
         } else if (value.length < 3 || value.length > 45) {
           newErrors.city = "City must be between 3 and 45 characters.";
         } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-          newErrors.city = "City can only contain letters, numbers, and spaces.";
+          newErrors.city = "City can only contain letters, and spaces.";
         } else {
           delete newErrors.city;
         }
@@ -471,17 +471,22 @@ const AddWebsitesPopup = ({ show, onHide,
 
             {/* City Input */}
             <div className="col-4">
-              <label className="small-font mb-1">City</label>
-              <input
-                type="text"
-                name="city"
-                className="w-100 small-font rounded input-css all-none"
-                placeholder="Enter"
-                value={formData.city}
-                onChange={handleChange}
-              />
-              {errors.city && <p className="text-danger small-font">{errors.city}</p>}
-            </div>
+  <label className="small-font mb-1">City</label>
+  <input
+    type="text"
+    name="city"
+    className="w-100 small-font rounded input-css all-none"
+    placeholder="Enter"
+    value={formData.city}
+    onChange={(e) => {
+      // Remove any character that is not a letter or space
+      const filteredValue = e.target.value.replace(/[^A-Za-z\s]/g, "");
+      handleChange({ target: { name: "city", value: filteredValue } });
+    }}
+  />
+  {errors.city && <p className="text-danger small-font">{errors.city}</p>}
+</div>
+
 
             {/* Website Name Input */}
             <div className="col-4">

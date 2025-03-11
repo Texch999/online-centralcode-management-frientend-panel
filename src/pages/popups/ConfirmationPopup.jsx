@@ -44,7 +44,7 @@ function ConfirmationPopup({
           </div>
           <center>
             <img
-              src={Images?.qnmark}
+              src={Images?.question2}
               alt="Q_Mark"
               style={{ height: "90px", width: "90px" }}
             />
