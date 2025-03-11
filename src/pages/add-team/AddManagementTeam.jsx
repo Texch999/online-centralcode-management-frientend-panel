@@ -37,6 +37,7 @@ const AddManagementTeam = () => {
   const [blockPopup, setBlockPopup] = useState(false);
   const [EditShow, setEditShow] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [resetData,setResetData]=useState(false)
   console.log(selectedUser, "selectedUser");
   const [formData, setFormData] = useState({
     role: "",
@@ -48,6 +49,9 @@ const AddManagementTeam = () => {
     confirmPassword: "",
     managementPassword: "",
   });
+
+  console.log(selectedUser,"==>selectedUser");
+  
   const [resetPasswordErrrors,setResetPasswordErrors] = useState([])
 
   const GetEmployee = () => {
@@ -103,10 +107,10 @@ const AddManagementTeam = () => {
     setSuccessPopupOpen(true);
   };
 
-  const handleBlockPopup = (id, name, status) => {
+  const handleBlockPopup = (id, name, status,loginName) => {
     setBlockTeamManagementId(id);
     setBlockPopup(true);
-    setSelectedUser({ name, status });
+    setSelectedUser({ name, status ,loginName});
   };
 
   const handleResetPasswordPopup = (id) => {
@@ -153,6 +157,7 @@ const AddManagementTeam = () => {
       .then((response) => {
         setSuccessPopupOpen(true);
         setDiscription("Password reset successfully")
+        setResetData(true)
         if (response) {
           setResetPasswordPopup(false);
           GetEmployee();
@@ -221,7 +226,7 @@ const AddManagementTeam = () => {
                 : ""
             }`}
             onClick={() =>
-              handleBlockPopup(employee.id, employee.name, employee.status)
+              handleBlockPopup(employee.id, employee.name, employee.status ,employee.login_name)
             }
           />
         </div>
@@ -239,7 +244,7 @@ const AddManagementTeam = () => {
 
 
   const filteredTableData = tableData
-  .filter((employee) => employee.name.toLowerCase().includes(searchText))
+  .filter((employee) => employee.login_name?.toLowerCase().includes(searchText))
   .map((employee) => {
     const roleId = Number(employee.role);
     const role = Roles[roleId] || "Unknown";
@@ -276,7 +281,7 @@ const AddManagementTeam = () => {
                 : ""
             }`}
             onClick={() =>
-              handleBlockPopup(employee.id, employee.name, employee.status)
+              handleBlockPopup(employee.id, employee.name, employee.status,employee.login_name)
             }
           />
         </div>
@@ -288,7 +293,7 @@ const AddManagementTeam = () => {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font medium-font mb-0">Add Management Team</h6>
+        <h6 className="yellow-font medium-font mb-0">Add Management Team </h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
@@ -336,7 +341,7 @@ const AddManagementTeam = () => {
         setConfirmationPopupOpen={setBlockPopup}
         discription={`Are you sure you want to ${
           selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser}?`}
+        } ${selectedUser} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
@@ -345,7 +350,7 @@ const AddManagementTeam = () => {
         setConfirmationPopupOpen={setBlockPopup}
         discription={`Are you sure you want to ${
           selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser?.name}?`}
+        } ${selectedUser?.name} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
@@ -356,6 +361,7 @@ const AddManagementTeam = () => {
         IndividualpassowrdId={resetPasswordId}
         onSubmit={onEmployeePasswordSubmit}
         resetPasswordErrrors={resetPasswordErrrors}
+        resetData={resetData}
     
       />
       {successPopupOpen && (

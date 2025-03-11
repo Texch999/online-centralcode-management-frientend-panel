@@ -327,7 +327,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         >
           <div className="d-flex gap-2">
             <MdLockReset className="white-font" size={18} />
-            Reset Password
+            Reset Password 
           </div>
 
           <span>

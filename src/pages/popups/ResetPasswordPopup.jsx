@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -10,7 +10,8 @@ function ResetPasswordPopup({
   setResetPasswordPopup,
   IndividualpassowrdId,
   onSubmit,
-  resetPasswordErrrors
+  resetPasswordErrrors,
+  resetData
  
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,19 +28,32 @@ function ResetPasswordPopup({
     handleSubmit,
     formState: { errors },
     getValues, // Now properly destructured
+    reset,
   } = useForm();
 
   const handleCancel = () => {
     setResetPasswordPopup(false);
+    reset();
   };
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
     setResetPasswordPopup(false);
+    reset();
   };
 
- 
-
+  useEffect(() => {
+    if (!resetPasswordPopup) {
+      reset({
+        password: "",
+        confirmPassword: "",
+        managementPassword: "",
+      }); // Explicitly reset form fields
+    
+    }
+  }, [resetPasswordPopup, reset]); // Ensure reset function is included in dependencies
+  
+  
   
 
   return (
