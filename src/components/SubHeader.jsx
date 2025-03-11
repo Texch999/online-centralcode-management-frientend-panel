@@ -58,6 +58,7 @@ function SubHeader() {
           },
           { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
+          {label:"Settlement Transaction",path:"/settlement-transaction"}
         ],
       },
       {
