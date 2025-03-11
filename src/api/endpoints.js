@@ -770,6 +770,10 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/adminPanel/${id}`,
   },
+  suspendInActiveUsers:{
+    method:"post",
+    url:(data)=>`/user/${userID()}/website/${data.websiteId}/blockUser/${data.id}/status`
+  }
 };
 
 export default endpoints;

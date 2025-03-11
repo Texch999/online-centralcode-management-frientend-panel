@@ -9,17 +9,18 @@ import {
   getAdminUserWebsites,
   getInActiveUsers,
   getWebsites,
+  suspendInActiveUsers,
 } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import moment from "moment/moment";
 import { useSearchParams } from "react-router-dom";
+import SuccessPopup from "../popups/SuccessPopup";
 
 function InActiveUsers() {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [error, setError] = useState("");
   const [selectedUserWebsite, setSelectedUserWebsite] = useState("");
   const [selectedAdminWebsite, setSelectedAdminWebsite] = useState(null);
-  console.log(selectedAdminWebsite, "selectedAdminWebsite");
   const [websites, setWebsites] = useState([]);
   const dataFetched = useRef(false);
   const [loading, setLoading] = useState(false);
@@ -30,17 +31,29 @@ function InActiveUsers() {
   const [currentPage, setCurrentPage] = useState(page);
   const limit = itemsPerPage;
   const offset = (page - 1) * itemsPerPage;
-  const website_id = selectedUserWebsite.slice(3, -3);
+  const website_id = selectedAdminWebsite
+    ? selectedUserWebsite
+    : selectedUserWebsite.slice(3, -3);
   const [usersData, setUsersData] = useState([]);
   const [adminWebsiteData, setAdminWebsiteData] = useState([]);
+  const [statusId, setStatusId] = useState(null);
+  const [websiteId, setWebsiteId] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const adminOptions = websites
     ?.filter((item) => item?.panel_type === 1)
     .map((item) => ({ value: item?.id, label: item?.web_name }));
 
-  const userOptions = websites
-    ?.filter((item) => item?.panel_type === 2)
-    .map((item) => ({ value: item?.id, label: item?.web_name }));
+  const userOptions = selectedAdminWebsite
+    ? adminWebsiteData
+        ?.filter((item) => item?.panel_type === 2)
+        .map((item) => ({ value: item?.id, label: item?.web_name }))
+    : websites
+        ?.filter((item) => item?.panel_type === 2)
+        .map((item) => ({ value: item?.id, label: item?.web_name }));
 
   const INACTIVE_USER_COLUMNS = [
     { header: "Role/Name", field: "roleName" },
@@ -55,6 +68,13 @@ function InActiveUsers() {
     { header: <div className="ms-2">Action</div>, field: "action", width: "" },
   ];
 
+  const handleSuspend = (webid, id, status, name) => {
+    setShowDeletePopup(true);
+    setStatusId(status);
+    setWebsiteId(webid);
+    setUserName(name);
+    setUserId(id);
+  };
   const data = usersData?.map((item) => ({
     roleName: (
       <div className="flex-column black-font">
@@ -88,11 +108,17 @@ function InActiveUsers() {
         ) : (
           <div className="col-8 col-lg-7 red-btn">In-Active</div>
         )}
-
         <MdDeleteOutline
           size={25}
           className="large-font pointer ms-2"
-          onClick={() => setShowDeletePopup(true)}
+          onClick={() =>
+            handleSuspend(
+              item?.web_site_id,
+              item?.id,
+              item?.status,
+              item?.userid
+            )
+          }
         />
       </div>
     ),
@@ -159,7 +185,7 @@ function InActiveUsers() {
     getAdminUserWebsites(selectedAdminWebsite)
       .then((response) => {
         if (response?.status === true) {
-          console.log(response?.data);
+          setAdminWebsiteData(response?.data);
         } else {
           setError("something wnet wrong");
         }
@@ -173,6 +199,26 @@ function InActiveUsers() {
       fetchAdminUserWebs(selectedAdminWebsite);
     }
   }, [selectedAdminWebsite]);
+
+  const suspendUsers = () => {
+    suspendInActiveUsers(websiteId, userId)
+      .then((response) => {
+        if (response.status === true) {
+          console.log(response?.data);
+          fetchAllUsers(limit,offset,website_id);
+          setMsg(response?.message);
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+          }, [2000]);
+        } else {
+          setError("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
 
   return (
     <div>
@@ -231,7 +277,7 @@ function InActiveUsers() {
       ) : (
         <div>
           {!selectedUserWebsite ? (
-            <div>Please Select User Website To Display Inactive Users</div>
+            <div className="mx-2 my-3">Please Select a User Website to View Active/Inactive Users</div>
           ) : (
             <Table
               columns={INACTIVE_USER_COLUMNS}
@@ -247,8 +293,16 @@ function InActiveUsers() {
       <ConfirmationPopup
         confirmationPopupOpen={showDeletePopup}
         setConfirmationPopupOpen={setShowDeletePopup}
-        discription={"Are You Sure to Delete this Match"}
-        submitButton={"Delete"}
+        discription={`Are You Sure to ${
+          statusId === 1 ? "In-Active" : "Active"
+        } this ${userName}`}
+        submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
+        onSubmit={suspendUsers}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={msg}
       />
     </div>
   );
