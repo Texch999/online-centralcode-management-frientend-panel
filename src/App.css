@@ -306,11 +306,9 @@
   outline: none;
   color: #1c1c1c;
   font-weight: 500;
-  
+
   border-radius: 0.35rem;
 }
-
-
 
 .orange-btn {
   background: #fc9b4e;
@@ -786,9 +784,8 @@
 
   /* Light border */
 }
-.light-white-bg{
- 
-  background-color: #f2f2f2 ;
+.light-white-bg {
+  background-color: #f2f2f2;
 }
 
 .custom-file-upload:hover {
@@ -816,8 +813,8 @@
 
   border: 1.2px solid #00000033 !important;
   border-radius: 5px;
-  color: #1B1B1B;
-background-color: none;
+  color: #1b1b1b;
+  background-color: none;
   padding: 0.5rem !important;
 }
 
@@ -978,6 +975,10 @@ background-color: none;
   color: #ee5787;
   background-color: #faccdb;
 }
+.error-popup-container1 {
+  color: #ffffff;
+  background-color: #ff2c2c;
+}
 .head-profile {
   height: 6vh;
   width: 6vh;
@@ -994,4 +995,11 @@ background-color: none;
 .br-right {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+.black-br-btn {
+  border: 1.2px solid #00000033;
+  background-color: #ffffff;
+}
+.light-bg{
+  background-color: #F2F2F2;
 }

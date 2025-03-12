@@ -2924,6 +2924,7 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import { useLocation, useNavigate } from "react-router-dom";
 import SuccessPopup from "../popups/SuccessPopup";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { BiSolidMessageAltError } from "react-icons/bi";
 
 function AddNewDirectorSuperAdmin() {
   const navigate = useNavigate();
@@ -3389,7 +3390,7 @@ function AddNewDirectorSuperAdmin() {
               handleInputChange(userSiteId, "isPrimary", e.target.checked)
             }
           />
-          <label className="small-font me-2">IS PRIMARY</label>
+          <label className="small-font mx-2">IS PRIMARY</label>
         </div>
       );
     }
@@ -3439,13 +3440,6 @@ function AddNewDirectorSuperAdmin() {
             <FaArrowLeft className="mx-2" /> Back
           </span>
         </div>
-        {websiteCreationErrors && (
-          <div className="error-popup-container col-6 p-1 br-5 m-2">
-            <ul>
-              <li className="fw-600 small-font">{websiteCreationErrors}</li>
-            </ul>
-          </div>
-        )}
 
         <div className="p-3 white-bg br-10 login-box-shadow">
           <div className="row">
@@ -3454,26 +3448,39 @@ function AddNewDirectorSuperAdmin() {
               <input
                 type="text"
                 placeholder="Enter Name"
-                className=" small-font rounded all-none input-css   w-100"
+                className="small-font rounded all-none input-css w-100"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z\s]*$/.test(value)) {
+                    setName(value);
+                  }
+                }}
               />
               {errors?.name && <span className="error">{errors?.name}</span>}
             </div>
+
             <div className="col p-1">
               <label className="small-font my-1">Login Name</label>
               <input
                 type="text"
                 placeholder="Enter Login Name"
-                className=" small-font rounded all-none input-css   w-100"
+                className="small-font rounded all-none input-css w-100"
                 value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
+                maxLength={15}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z0-9_]*$/.test(value)) {
+                    setLoginName(value);
+                  }
+                }}
                 required
               />
               {errors?.loginName && (
                 <span className="x-small-font error">{errors?.loginName}</span>
               )}
             </div>
+
             <div className="col p-1">
               <label className="small-font my-1">Role</label>
               <Select
@@ -4127,10 +4134,10 @@ function AddNewDirectorSuperAdmin() {
                                       />
                                     </div>
 
-                                    <div className="col-1  mt-4 mx-2">
+                                    <div className="w-10  mt-4 mx-2">
                                       <button
                                         type="button"
-                                        className="cst-btn remove-btn w-100"
+                                        className="all-none remove-btn w-100"
                                         onClick={() =>
                                           handleDeleteUserSite(
                                             form.id,
@@ -4138,7 +4145,7 @@ function AddNewDirectorSuperAdmin() {
                                           )
                                         }
                                       >
-                                        <FaTrash className="me-2" /> Delete
+                                        <FaTrash className="me-2  " size={20}/> 
                                       </button>
                                     </div>
 
@@ -4184,7 +4191,10 @@ function AddNewDirectorSuperAdmin() {
                                                 className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
                                                 placeholder="Max Chips Monthly"
                                                 onKeyPress={(e) => {
-                                                  if (e.charCode < 48 || e.charCode > 57) {
+                                                  if (
+                                                    e.charCode < 48 ||
+                                                    e.charCode > 57
+                                                  ) {
                                                     e.preventDefault();
                                                   }
                                                 }}
@@ -4199,7 +4209,7 @@ function AddNewDirectorSuperAdmin() {
                                             </div>
                                             <div className="col-1  mx-2">
                                               <label className="fw-600 my-1 small-font">
-                                                * Chips (%)
+                                                 Chips (%)
                                               </label>
 
                                               <input
@@ -4246,25 +4256,50 @@ function AddNewDirectorSuperAdmin() {
                                               />
                                             </div>
                                             <div className="col-2 mx-2">
-  <label className="fw-600 my-1 small-font">* Commission (%)</label>
-  <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-    <input
-      type="text"
-      className="small-font bg-none all-none p-2 w-50"
-      value={websiteDetails[userSite.id]?.downline_comm || ""}
-      onChange={(e) => {
-        let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
-        if (value.length > 3) return; // Restrict input to max 3 digits
-        if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
-        handleInputChange(userSite.id, "downline_comm", value);
-      }}
-    />
-    <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
-      <div>My Comm.. {100 - (parseInt(websiteDetails[userSite.id]?.downline_comm) || 0)}%</div>
-    </span>
-  </div>
-</div>
-
+                                              <label className="fw-600 my-1 small-font">
+                                                * Commission (%)
+                                              </label>
+                                              <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                                <input
+                                                  type="text"
+                                                  className="small-font bg-none all-none p-2 w-50"
+                                                  value={
+                                                    websiteDetails[userSite.id]
+                                                      ?.downline_comm || ""
+                                                  }
+                                                  onChange={(e) => {
+                                                    let value =
+                                                      e.target.value.replace(
+                                                        /\D/g,
+                                                        ""
+                                                      ); // Allow only numbers
+                                                    if (value.length > 3)
+                                                      return; // Restrict input to max 3 digits
+                                                    if (
+                                                      parseInt(value, 10) > 100
+                                                    )
+                                                      return; // Prevent values greater than 100
+                                                    handleInputChange(
+                                                      userSite.id,
+                                                      "downline_comm",
+                                                      value
+                                                    );
+                                                  }}
+                                                />
+                                                <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+                                                  <div>
+                                                    My Comm..{" "}
+                                                    {100 -
+                                                      (parseInt(
+                                                        websiteDetails[
+                                                          userSite.id
+                                                        ]?.downline_comm
+                                                      ) || 0)}
+                                                    %
+                                                  </div>
+                                                </span>
+                                              </div>
+                                            </div>
 
                                             <div className="  flex-between input-css d-flex border-grey3 mt-4  mx-2">
                                               <input
@@ -4282,7 +4317,7 @@ function AddNewDirectorSuperAdmin() {
                                                 }
                                               />
                                               <label className="small-font ms-2  white-space ">
-                                                Casino Allowed 
+                                                Casino Allowed
                                               </label>
                                             </div>
                                             {websiteDetails[userSite.id]
@@ -4296,7 +4331,10 @@ function AddNewDirectorSuperAdmin() {
                                                   className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                                   placeholder="Casino Chip Value"
                                                   onKeyPress={(e) => {
-                                                    if (e.charCode < 48 || e.charCode > 57) {
+                                                    if (
+                                                      e.charCode < 48 ||
+                                                      e.charCode > 57
+                                                    ) {
                                                       e.preventDefault();
                                                     }
                                                   }}
@@ -4320,22 +4358,43 @@ function AddNewDirectorSuperAdmin() {
                                         <div className="col d-flex  ">
                                           <div className="col-2 position-relative mx-1">
                                             <label className="fw-600 my-1 small-font">
-                                              * Share
+                                              * Share (%)
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Downline Sharing"
-                                                onChange={(e) =>
+                                                type="text"
+                                                className="small-font bg-none p-2 all-none w-50"
+                                                value={
+                                                  websiteDetails[userSite.id]
+                                                    ?.share || ""
+                                                }
+                                                onChange={(e) => {
+                                                  let value =
+                                                    e.target.value.replace(
+                                                      /\D/g,
+                                                      ""
+                                                    ); // Allow only numbers
+                                                  if (value.length > 3) return; // Restrict input to max 3 digits
+                                                  if (parseInt(value, 10) > 100)
+                                                    return; // Prevent values greater than 100
                                                   handleInputChange(
                                                     userSite.id,
                                                     "share",
-                                                    e.target.value
-                                                  )
-                                                }
+                                                    value
+                                                  );
+                                                }}
                                               />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Share 10%</b>
+                                              <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+                                                <div className="fw-600">
+                                                  My Share{" "}
+                                                  {100 -
+                                                    (parseInt(
+                                                      websiteDetails[
+                                                        userSite.id
+                                                      ]?.share
+                                                    ) || 0)}
+                                                  %
+                                                </div>
                                               </span>
                                             </div>
                                           </div>
@@ -4345,18 +4404,40 @@ function AddNewDirectorSuperAdmin() {
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Enter Commission: M.0"
-                                                onChange={(e) =>
+                                                type="text"
+                                                className="small-font bg-none p-2 w-75 all-none"
+                                                // placeholder="Enter Commission: M.0"
+                                                value={
+                                                  websiteDetails[userSite.id]
+                                                    ?.downline_comm || ""
+                                                }
+                                                onChange={(e) => {
+                                                  let value =
+                                                    e.target.value.replace(
+                                                      /\D/g,
+                                                      ""
+                                                    ); // Allow only numbers
+                                                  if (value.length > 3) return; // Restrict input to max 3 digits
+                                                  if (parseInt(value, 10) > 100)
+                                                    return; // Prevent values greater than 100
                                                   handleInputChange(
                                                     userSite.id,
                                                     "downline_comm",
-                                                    e.target.value
-                                                  )
-                                                }
+                                                    value
+                                                  );
+                                                }}
                                               />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Comm.. 1%</b>
+                                              <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+                                                <b>
+                                                  My Comm..{" "}
+                                                  {100 -
+                                                    (parseInt(
+                                                      websiteDetails[
+                                                        userSite.id
+                                                      ]?.downline_comm
+                                                    ) || 0)}
+                                                  %
+                                                </b>
                                               </span>
                                             </div>
                                           </div>
@@ -4365,23 +4446,27 @@ function AddNewDirectorSuperAdmin() {
                                               * Cas Chip Value
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                              <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Casino Chip Value"
-                                                onChange={(e) =>
-                                                  handleInputChange(
-                                                    userSite.id,
-                                                    "caschip_values",
-                                                    e.target.value
-                                                  )
-                                                }
-                                              />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b className="mx-1">
-                                                  Cas. Chip Val 20
-                                                </b>
-                                              </span>
-                                            </div>
+                                            <input
+  className="small-font bg-none all-none p-2 w-100"
+  type="text"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  onKeyPress={(event) => {
+    if (event.charCode < 48 || event.charCode > 57) {
+      event.preventDefault(); // Prevent non-numeric characters
+    }
+  }}
+  onChange={(e) => {
+    const numericValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    handleInputChange(userSite.id, "caschip_values", numericValue);
+  }}
+/>
+
+  {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+    <b className="mx-1">Cas. Chip Val 20</b>
+  </span> */}
+</div>
+
                                           </div>
 
                                           {/* Render "Is Primary" checkbox for account types 2 and 3 */}
@@ -4404,18 +4489,40 @@ function AddNewDirectorSuperAdmin() {
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Downline Sharing"
-                                                onChange={(e) =>
+                                                type="text"
+                                                className="small-font bg-none all-none p-2 w-75"
+                                                // placeholder="Downline Sharing"
+                                                value={
+                                                  websiteDetails[userSite.id]
+                                                    ?.share || ""
+                                                }
+                                                onChange={(e) => {
+                                                  let value =
+                                                    e.target.value.replace(
+                                                      /\D/g,
+                                                      ""
+                                                    ); // Allow only numbers
+                                                  if (value.length > 3) return; // Restrict input to max 3 digits
+                                                  if (parseInt(value, 10) > 100)
+                                                    return; // Prevent values greater than 100
                                                   handleInputChange(
                                                     userSite.id,
                                                     "share",
-                                                    e.target.value
-                                                  )
-                                                }
+                                                    value
+                                                  );
+                                                }}
                                               />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Share 10%</b>
+                                              <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+                                                <b>
+                                                  My Share{" "}
+                                                  {100 -
+                                                    (parseInt(
+                                                      websiteDetails[
+                                                        userSite.id
+                                                      ]?.share
+                                                    ) || 0)}
+                                                  %
+                                                </b>
                                               </span>
                                             </div>
                                           </div>
@@ -4425,18 +4532,40 @@ function AddNewDirectorSuperAdmin() {
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Enter Commission: M.0"
-                                                onChange={(e) =>
+                                                type="text"
+                                                className="small-font bg-none all-none p-2 w-75"
+                                                // placeholder="Enter Commission: M.0"
+                                                value={
+                                                  websiteDetails[userSite.id]
+                                                    ?.downline_comm || ""
+                                                }
+                                                onChange={(e) => {
+                                                  let value =
+                                                    e.target.value.replace(
+                                                      /\D/g,
+                                                      ""
+                                                    ); // Allow only numbers
+                                                  if (value.length > 3) return; // Restrict input to max 3 digits
+                                                  if (parseInt(value, 10) > 100)
+                                                    return; // Prevent values greater than 100
                                                   handleInputChange(
                                                     userSite.id,
                                                     "downline_comm",
-                                                    e.target.value
-                                                  )
-                                                }
+                                                    value
+                                                  );
+                                                }}
                                               />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
-                                                <b>My Comm.. 1%</b>
+                                              <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-500">
+                                                <b>
+                                                  My Comm..{" "}
+                                                  {100 -
+                                                    (parseInt(
+                                                      websiteDetails[
+                                                        userSite.id
+                                                      ]?.downline_comm
+                                                    ) || 1)}
+                                                  %
+                                                </b>
                                               </span>
                                             </div>
                                           </div>
@@ -4446,8 +4575,16 @@ function AddNewDirectorSuperAdmin() {
                                             </label>
                                             <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                               <input
-                                                className="small-font bg-none p-2 w-75"
-                                                placeholder="Casino Chip Value"
+                                                className="small-font bg-none p-2 all-none w-100"
+                                                // placeholder="Casino Chip Value"
+                                                onKeyPress={(e) => {
+                                                  if (
+                                                    e.charCode < 48 ||
+                                                    e.charCode > 57
+                                                  ) {
+                                                    e.preventDefault();
+                                                  }
+                                                }}
                                                 onChange={(e) =>
                                                   handleInputChange(
                                                     userSite.id,
@@ -4456,11 +4593,11 @@ function AddNewDirectorSuperAdmin() {
                                                   )
                                                 }
                                               />
-                                              <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
+                                              {/* <span className="small-font text-center  px-1 white-space yellow-bg py-2 br-right  fw-500">
                                                 <b className="mx-1">
                                                   Cas. Chip Val 20
                                                 </b>
-                                              </span>
+                                              </span> */}
                                             </div>
                                           </div>
                                           {/* Render "Is Primary" checkbox for account types 2 and 3 */}
@@ -4488,6 +4625,16 @@ function AddNewDirectorSuperAdmin() {
                   </div>
                 </div>
               </div>
+
+              {websiteCreationErrors && (
+                <div className="w-100 d-flex">
+                  {" "}
+                  <div className="error-popup-container1 col-4 py-3 small-font fw-600 p-1 br-5 m-2 px-4">
+                  <BiSolidMessageAltError  className="me-3"/>
+                  {websiteCreationErrors}
+                  </div>
+                </div>
+              )}
 
               <div className="d-flex py-2  align-items-center ">
                 <button

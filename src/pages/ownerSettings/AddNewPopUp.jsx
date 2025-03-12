@@ -45,6 +45,8 @@ const AddNewPopUp = ({
   const handleStatusChange = (selectedOption) => {
     setSelectedStatus(selectedOption.value);
   };
+  const [reasonError, setReasonError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
   const [rejReason, setRejReason] = useState("");
   const [rejReasonDescription, setRejReasonDescription] = useState("");
   const [secQnsByIdData, setSecQnsByIdData] = useState([]);
@@ -52,6 +54,7 @@ const AddNewPopUp = ({
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
   const [errorPopup, setErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [questionError, setQuestionError] = useState("");
 
   const selectOptions = [
     { value: 1, label: "Active" },
@@ -136,7 +139,10 @@ const AddNewPopUp = ({
   useEffect(() => {
     if (isEdit && selectedQnsId) {
       getSecQusetionsById(selectedQnsId).then((response) => {
-        setValue("securityQns", isEdit === true ? response?.data?.questions : "");
+        setValue(
+          "securityQns",
+          isEdit === true ? response?.data?.questions : ""
+        );
         setValue(
           "status",
           selectOptions.find((opt) => opt.value === response?.data?.status)
@@ -177,6 +183,55 @@ const AddNewPopUp = ({
         setIsSubmitting(false);
       });
   };
+
+  const handleReasonChange = (e) => {
+    const value = e.target.value;
+
+    if (value.length === 0) {
+      setReasonError("Reason is required");
+    } else if (value.length < 2) {
+      setReasonError("Reason must be at least 2 characters");
+    } else if (value.length > 100) {
+      setReasonError("Reason cannot exceed 100 characters");
+    } else {
+      setReasonError(""); // Clear error when valid
+    }
+
+    setValue("reason", value, { shouldValidate: true });
+  };
+
+  const handleQuestionChange = (e) => {
+    const value = e.target.value;
+
+    if (value.length === 0) {
+      setQuestionError("Question is required");
+    } else if (value.length < 2) {
+      setQuestionError("Question must be at least 2 characters");
+    } else if (value.length > 100) {
+      setQuestionError("Question cannot exceed 100 characters");
+    } else {
+      setQuestionError(""); // Clear error when valid
+    }
+
+    setValue("securityQns", value, { shouldValidate: true });
+  };
+
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+
+    if (value.length === 0) {
+      setDescriptionError("Description is required");
+    } else if (value.length < 2) {
+      setDescriptionError("Description must be at least 2 characters");
+    } else if (value.length > 255) {
+      setDescriptionError("Description cannot exceed 255 characters");
+    } else {
+      setDescriptionError(""); // Clear error when valid
+    }
+
+    setValue("description", value, { shouldValidate: true });
+  };
+
   return (
     <>
       {addNewModalRejection && (
@@ -236,6 +291,7 @@ const AddNewPopUp = ({
                         shouldValidate: true,
                       })
                     }
+                    isSearchable={false} // Disable typing
                   />
                   {errors.status && (
                     <p className="text-danger small-font">
@@ -244,7 +300,7 @@ const AddNewPopUp = ({
                   )}
                 </div>
 
-                <div className="col-8 flex-column">
+                {/* <div className="col-8 flex-column">
                   <label className="black-text4 mb-1">Reason</label>
                   <input
                     type="text"
@@ -256,6 +312,20 @@ const AddNewPopUp = ({
                     <p className="text-danger small-font">
                       {errors.reason.message}
                     </p>
+                  )}
+                </div> */}
+
+                <div className="col-8 flex-column">
+                  <label className="black-text4 mb-1">Reason</label>
+                  <input
+                    type="text"
+                    placeholder="Enter"
+                    className="all-none input-bg small-font p-2 rounded"
+                    {...register("reason", { required: "Reason is required" })}
+                    onChange={handleReasonChange}
+                  />
+                  {reasonError && (
+                    <p className="text-danger small-font mt-1">{reasonError}</p>
                   )}
                 </div>
 
@@ -269,10 +339,11 @@ const AddNewPopUp = ({
                     {...register("description", {
                       required: "Description is required",
                     })}
+                    onChange={handleDescriptionChange}
                   ></textarea>
-                  {errors.description && (
-                    <p className="text-danger small-font">
-                      {errors.description.message}
+                  {descriptionError && (
+                    <p className="text-danger small-font mt-1">
+                      {descriptionError}
                     </p>
                   )}
                 </div>
@@ -282,11 +353,11 @@ const AddNewPopUp = ({
                   <button
                     type="submit"
                     className="saffron-btn2 small-font pointer mt-4 col-4"
-                    disabled={!isValid}
-                    style={{
-                      opacity: isValid ? 1 : 0.5,
-                      pointerEvents: isValid ? "auto" : "none",
-                    }}
+                    // disabled={!isValid}
+                    // style={{
+                    //   opacity: isValid ? 1 : 0.5,
+                    //   pointerEvents: isValid ? "auto" : "none",
+                    // }}
                   >
                     {isEdit ? "Update" : "Create"}
                   </button>
@@ -319,6 +390,8 @@ const AddNewPopUp = ({
                         shouldValidate: true,
                       })
                     }
+                    isSearchable={false} // Disable typing
+
                   />
                   {errors.status && (
                     <p className="text-danger small-font">
@@ -336,10 +409,11 @@ const AddNewPopUp = ({
                     {...register("securityQns", {
                       required: "Question is required",
                     })}
+                    onChange={handleQuestionChange}
                   />
-                  {errors.securityQns && (
-                    <p className="text-danger small-font">
-                      {errors.securityQns.message}
+                  {questionError && (
+                    <p className="text-danger small-font mt-1">
+                      {questionError}
                     </p>
                   )}
                 </div>
@@ -349,11 +423,11 @@ const AddNewPopUp = ({
                   <button
                     type="submit"
                     className="saffron-btn2 small-font pointer mt-4 col-4"
-                    disabled={!isValid}
-                    style={{
-                      opacity: isValid ? 1 : 0.5,
-                      pointerEvents: isValid ? "auto" : "none",
-                    }}
+                    // disabled={!isValid}
+                    // style={{
+                    //   opacity: isValid ? 1 : 0.5,
+                    //   pointerEvents: isValid ? "auto" : "none",
+                    // }}
                   >
                     {isSubmitting
                       ? "submitting..."

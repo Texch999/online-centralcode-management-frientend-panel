@@ -758,6 +758,22 @@ const endpoints = {
     method: "put",
     url: `/director/${userID()}/directorProfileUpdate`,
   },
+  getInActiveUsers: {
+    method: "get",
+    url: (params) => {
+      const { websiteId, ...filteredParams } = params;
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/website/${websiteId}?${query}`;
+    },
+  },
+  getAdminUserWebsites: {
+    method: "get",
+    url: (id) => `/user/${userID()}/adminPanel/${id}`,
+  },
+  suspendInActiveUsers:{
+    method:"post",
+    url:(data)=>`/user/${userID()}/website/${data.websiteId}/blockUser/${data.id}/status`
+  }
 };
 
 export default endpoints;

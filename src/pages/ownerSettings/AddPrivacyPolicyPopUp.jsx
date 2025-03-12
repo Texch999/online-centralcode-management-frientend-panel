@@ -49,7 +49,24 @@ const AddPrivacyPolicyPopUp = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [descriptionError, setDescriptionError] = useState("");
+
+  const handleDescriptionChange = (value) => {
+    // Remove HTML tags to count only text length
+    const textLength = value.replace(/<[^>]+>/g, "").trim().length;
+
+    if (textLength < 2) {
+      setDescriptionError("Description is required");
+    } else if (textLength > 5000) {
+      setDescriptionError("Description cannot exceed 5000 characters");
+    } else {
+      setDescriptionError(""); // Clear error when valid
+    }
+
+    setValue("description", value, { shouldValidate: true });
+  };
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -88,7 +105,7 @@ const AddPrivacyPolicyPopUp = ({
       });
       return;
     }
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     const payload = {
       country_id: data.country?.value,
@@ -117,9 +134,10 @@ const AddPrivacyPolicyPopUp = ({
         reset();
         setValues("");
         getPolicyPrivacyData();
-      }).finally(()=>{
-        setIsSubmitting(false)
       })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -214,6 +232,7 @@ const AddPrivacyPolicyPopUp = ({
                         (option) => option.value === field.value
                       )}
                       onChange={(val) => field.onChange(val)}
+                      isSearchable={false} // Disable typing
                     />
                   )}
                 />
@@ -224,12 +243,36 @@ const AddPrivacyPolicyPopUp = ({
                 )}
               </div>
 
-              <div className="col-12 flex-column mt-3 mb-4 ">
+              {/* <div className="col-12 flex-column mt-3 mb-4 ">
                 <label className="black-text4 mb-1">Description</label>
                 <ReactQuill theme="snow" value={values} onChange={setValues} />
                 {errors.description && (
                   <p className="text-danger small-font">
                     {errors.description.message}
+                  </p>
+                )}
+              </div> */}
+
+              <div className="col-12 flex-column mt-3 mb-4">
+                <label className="black-text4 mb-1">Description</label>
+                <Controller
+                  name="description"
+                  control={control}
+                  rules={{ required: "Description is required" }}
+                  render={({ field }) => (
+                    <ReactQuill
+                      {...field}
+                      theme="snow"
+                      onChange={(val) => {
+                        field.onChange(val);
+                        handleDescriptionChange(val);
+                      }}
+                    />
+                  )}
+                />
+                {descriptionError && (
+                  <p className="text-danger small-font mt-1">
+                    {descriptionError}
                   </p>
                 )}
               </div>
@@ -239,15 +282,15 @@ const AddPrivacyPolicyPopUp = ({
                 <div className=" small-font pointer mt-4 flex-end col-4">
                   <button
                     type="submit"
-                    className={` w-100 ${
-                      isValid ? "saffron-btn2" : "disabled-btn py-2 px-2 br-5"
-                    }`}
-                    disabled={!isValid || isSubmitting}
+                    className="w-100 saffron-btn2"
+                    // className={` w-100 ${
+                    //   isValid ? "saffron-btn2" : "disabled-btn py-2 px-2 br-5"
+                    // }`}
+                    // disabled={!isValid || isSubmitting}
                   >
                     {isSubmitting ? "submitting..." : "Create"}
                   </button>
                 </div>
-                
               </div>
             </div>
           </form>
