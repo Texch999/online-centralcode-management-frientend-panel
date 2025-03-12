@@ -244,6 +244,8 @@ const ReferenceData = () => {
                 (opt) => opt.value === selectStatus
               )}
               onChange={handleStatusChange}
+              isSearchable={false} // Disable typing
+
             />
           </div>
           <div
