@@ -2461,28 +2461,47 @@ function AddNewDirectorSuperAdmin() {
                 </span>
               )}
             </div>
-
             <div className="col p-1">
-              <label className="small-font my-1">Country</label>
-              <select
-                className="small-font rounded all-none input-css  w-100"
-                value={selectedCountryCode}
-                onChange={handleCountryChange}
-              >
-                <option value="">Select</option>
-                {countryData?.map((country, index) => (
-                  <option key={index} value={country.id}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
+      <label className="small-font my-1">Country</label>
+      <Select
+        className="small-font rounded all-none input-css w-100"
+        styles={customStyles}
+        value={
+          selectedCountryCode
+            ? {
+                value: selectedCountryCode,
+                label: countryData?.find(
+                  (country) => country.id === selectedCountryCode
+                )?.name,
+              }
+            : null
+        }
+        onChange={(selectedOption) =>
+          handleCountryChange({
+            target: {
+              value: selectedOption ? selectedOption.value : '',
+            },
+          })
+        }
+        options={[
+          { value: '', label: 'Select' },
+          ...(countryData?.map((country) => ({
+            value: country.id,
+            label: country.name,
+          })) || []),
+        ]}
+        placeholder="Select"
+        
+      />
+      {errors?.selectedCountryCode && (
+        <span className="x-small-font error">
+          {errors?.selectedCountryCode}
+        </span>
+      )}
+    </div>
 
-              {errors?.selectedCountryCode && (
-                <span className="x-small-font error">
-                  {errors?.selectedCountryCode}
-                </span>
-              )}
-            </div>
+
+  
           </div>
           <div className="row ">
             <div className="col p-1 my-2">
@@ -3074,9 +3093,10 @@ function AddNewDirectorSuperAdmin() {
                             {/* Single Dropdown for All Websites */}
 
                             <div className="d-flex">
-                              <div className="col-2 input-css d-flex border-grey3 my-2">
+                              <div className="col-2 input-css5   small-font ">
+                                <div className="black-font">User Website</div>
                                 <Select
-                                  className="small-font rounded all-none w-100"
+                                  className="small-font rounded all-none my-2 w-100"
                                   placeholder="Select a website "
                                   options={userWebsitesList[form.id].map(
                                     (site) => ({
@@ -3111,279 +3131,148 @@ function AddNewDirectorSuperAdmin() {
                               </div>
 
                               <div className="flex-row d-flex w-100 ">
-                                  {/* Commission Type Dropdown */}
-
+                                {/* Commission Type Dropdown */}
+                                <div className="col-2 input-css5">
+                                  <div className="black-font small-font">
+                                    Commission Type
+                                  </div>
                                   <Select
-                                      className="small-font col-2"
-                                      placeholder=" Commission Type"
-                                      options={commissionOptions}
-                                      styles={customStyles}
-                                      onChange={(selectedOption) =>
-                                        handleAccountTypeChange(
-                                          form.id,
-                                          selectedWebsiteId,
-                                          selectedOption
-                                        )
-                                      }
-                                      value={
-                                        commissionOptions.find(
-                                          (option) =>
-                                            option.value ===
-                                            accountTypes[form.id]?.[
-                                              selectedWebsiteId
-                                            ]
-                                        ) || null
-                                      }
-                                    />
+                                    className="small-font my-2  "
+                                    placeholder=" Commission Type"
+                                    options={commissionOptions}
+                                    styles={customStyles}
+                                    onChange={(selectedOption) =>
+                                      handleAccountTypeChange(
+                                        form.id,
+                                        selectedWebsiteId,
+                                        selectedOption
+                                      )
+                                    }
+                                    value={
+                                      commissionOptions.find(
+                                        (option) =>
+                                          option.value ===
+                                          accountTypes[form.id]?.[
+                                            selectedWebsiteId
+                                          ]
+                                      ) || null
+                                    }
+                                  />
+                                </div>
 
-                                  {/* Fields for Commission Type 1 */}
-                                  {accountTypes[form.id]?.[
-                                    selectedWebsiteId
-                                  ] === "1" && (
-                                    <div>
-                                      <div className="d-flex">
-                                        <div className="col-2 mx-2">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Monthly Amount
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
-                                            placeholder="Monthly Amnt"
-                                            onKeyPress={(e) => {
-                                              if (
-                                                e.charCode < 48 ||
-                                                e.charCode > 57
-                                              ) {
-                                                e.preventDefault();
-                                              }
-                                            }}
-                                            maxLength={9}
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedWebsiteId,
-                                                "monthly_amount",
-                                                e.target.value
-                                              )
+                                {/* Fields for Commission Type 1 */}
+                                {accountTypes[form.id]?.[selectedWebsiteId] ===
+                                  "1" && (
+                                  <div>
+                                    <div className="d-flex">
+                                      <div className="col-2 mx-2">
+                                        <label className="fw-600 my-1 small-font">
+                                          * Monthly Amount
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
+                                          placeholder="Monthly Amnt"
+                                          onKeyPress={(e) => {
+                                            if (
+                                              e.charCode < 48 ||
+                                              e.charCode > 57
+                                            ) {
+                                              e.preventDefault();
                                             }
-                                          />
-                                        </div>
-                                        <div className="col-2 mx-2">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Max Chips Monthly
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
-                                            placeholder="Max Chips Monthly"
-                                            maxLength={9}
-                                            onKeyPress={(e) => {
-                                              if (
-                                                e.charCode < 48 ||
-                                                e.charCode > 57
-                                              ) {
-                                                e.preventDefault();
-                                              }
-                                            }}
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedWebsiteId,
-                                                "max_chips_monthly",
-                                                e.target.value
-                                              )
+                                          }}
+                                          maxLength={9}
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "monthly_amount",
+                                              e.target.value
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                      <div className="col-2 mx-2">
+                                        <label className="fw-600 my-1 small-font">
+                                          * Max Chips Monthly
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
+                                          placeholder="Max Chips Monthly"
+                                          maxLength={9}
+                                          onKeyPress={(e) => {
+                                            if (
+                                              e.charCode < 48 ||
+                                              e.charCode > 57
+                                            ) {
+                                              e.preventDefault();
                                             }
-                                          />
-                                        </div>
-                                        <div className="col-1 mx-2">
-                                          <label className="fw-600 my-1 small-font">
-                                            Chips (%)
-                                          </label>
-                                          <input
-                                            type="text"
-                                            className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
-                                            placeholder="Chip %"
-                                            readOnly
-                                            value={
-                                              isNaN(
-                                                (parseFloat(
-                                                  websiteDetails[
-                                                    selectedWebsiteId
-                                                  ]?.monthly_amount
-                                                ) /
-                                                  parseFloat(
-                                                    websiteDetails[
-                                                      selectedWebsiteId
-                                                    ]?.max_chips_monthly
-                                                  )) *
-                                                  100
-                                              )
-                                                ? "0%"
-                                                : (
-                                                    (parseFloat(
-                                                      websiteDetails[
-                                                        selectedWebsiteId
-                                                      ]?.monthly_amount
-                                                    ) /
-                                                      parseFloat(
-                                                        websiteDetails[
-                                                          selectedWebsiteId
-                                                        ]?.max_chips_monthly
-                                                      )) *
-                                                    100
-                                                  ).toFixed(2) + "%"
-                                            }
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedWebsiteId,
-                                                "chip_percentage",
-                                                e.target.value
-                                              )
-                                            }
-                                          />
-                                        </div>
-                                        <div className="col-2 mx-2">
-                                          <label className="fw-600 my-1 small-font">
-                                            * Commission (%)
-                                          </label>
-                                          <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              type="text"
-                                              className="small-font bg-none all-none p-2 w-50"
-                                              maxLength={2}
-                                              value={
+                                          }}
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "max_chips_monthly",
+                                              e.target.value
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                      <div className="col-1 mx-2">
+                                        <label className="fw-600 my-1 small-font">
+                                          Chips (%)
+                                        </label>
+                                        <input
+                                          type="text"
+                                          className="small-font white-bg rounded border-grey3 all-none p-2 w-100"
+                                          placeholder="Chip %"
+                                          readOnly
+                                          value={
+                                            isNaN(
+                                              (parseFloat(
                                                 websiteDetails[
                                                   selectedWebsiteId
-                                                ]?.downline_comm || ""
-                                              }
-                                              onChange={(e) => {
-                                                let value =
-                                                  e.target.value.replace(
-                                                    /\D/g,
-                                                    ""
-                                                  ); // Allow only numbers
-                                                if (value.length > 3) return; // Restrict input to max 3 digits
-                                                if (parseInt(value, 10) > 100)
-                                                  return; // Prevent values greater than 100
-                                                handleInputChange(
-                                                  selectedWebsiteId,
-                                                  "downline_comm",
-                                                  value
-                                                );
-                                              }}
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="flex-between input-css d-flex border-grey3 mt-4 mx-2">
-                                          <input
-                                            type="checkbox"
-                                            checked={
-                                              websiteDetails[selectedWebsiteId]
-                                                ?.casino_allowed || false
-                                            }
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedWebsiteId,
-                                                "casino_allowed",
-                                                e.target.checked
-                                              )
-                                            }
-                                          />
-                                          <label className="small-font ms-2 white-space">
-                                            Casino Allowed
-                                          </label>
-                                        </div>
-                                        {websiteDetails[selectedWebsiteId]
-                                          ?.casino_allowed && (
-                                          <div className="col-2">
-                                            <label className="fw-600 my-1 white-space small-font">
-                                              * Casino Chip Value
-                                            </label>
-                                            <input
-                                              type="text"
-                                              className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
-                                              placeholder="Casino Chip Value"
-                                              maxLength={4}
-                                              onKeyPress={(e) => {
-                                                if (
-                                                  e.charCode < 48 ||
-                                                  e.charCode > 57
-                                                ) {
-                                                  e.preventDefault();
-                                                }
-                                              }}
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  selectedWebsiteId,
-                                                  "casino_chip_value",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                          </div>
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
-
-                                  {/* Fields for Commission Type 2 and 3 */}
-                                  {(accountTypes[form.id]?.[
-                                    selectedWebsiteId
-                                  ] === "2" ||
-                                    accountTypes[form.id]?.[
-                                      selectedWebsiteId
-                                    ] === "3") && (
-                                    <div className="col d-flex">
-                                      <div className="col-2 position-relative mx-1">
-                                        <label className="fw-600 my-1 small-font">
-                                          * Share (%)
-                                        </label>
-                                        <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="text"
-                                            className="small-font bg-none p-2 all-none w-50"
-                                            value={
-                                              websiteDetails[selectedWebsiteId]
-                                                ?.share || ""
-                                            }
-                                            onChange={(e) => {
-                                              let value =
-                                                e.target.value.replace(
-                                                  /\D/g,
-                                                  ""
-                                                ); // Allow only numbers
-                                              if (value.length > 3) return; // Restrict input to max 3 digits
-                                              if (parseInt(value, 10) > 100)
-                                                return; // Prevent values greater than 100
-                                              handleInputChange(
-                                                selectedWebsiteId,
-                                                "share",
-                                                value
-                                              );
-                                            }}
-                                          />
-                                          <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
-                                            <div className="fw-600">
-                                              My Share{" "}
-                                              {100 -
-                                                (parseInt(
+                                                ]?.monthly_amount
+                                              ) /
+                                                parseFloat(
                                                   websiteDetails[
                                                     selectedWebsiteId
-                                                  ]?.share
-                                                ) || 0)}
-                                              %
-                                            </div>
-                                          </span>
-                                        </div>
+                                                  ]?.max_chips_monthly
+                                                )) *
+                                                100
+                                            )
+                                              ? "0%"
+                                              : (
+                                                  (parseFloat(
+                                                    websiteDetails[
+                                                      selectedWebsiteId
+                                                    ]?.monthly_amount
+                                                  ) /
+                                                    parseFloat(
+                                                      websiteDetails[
+                                                        selectedWebsiteId
+                                                      ]?.max_chips_monthly
+                                                    )) *
+                                                  100
+                                                ).toFixed(2) + "%"
+                                          }
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "chip_percentage",
+                                              e.target.value
+                                            )
+                                          }
+                                        />
                                       </div>
-                                      <div className="col-2 position-relative mx-3">
+                                      <div className="col-2 mx-2">
                                         <label className="fw-600 my-1 small-font">
                                           * Commission (%)
                                         </label>
                                         <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
                                           <input
                                             type="text"
+                                            className="small-font bg-none all-none p-2 w-50"
                                             maxLength={2}
-                                            className="small-font bg-none p-2 w-75 all-none"
                                             value={
                                               websiteDetails[selectedWebsiteId]
                                                 ?.downline_comm || ""
@@ -3406,50 +3295,176 @@ function AddNewDirectorSuperAdmin() {
                                           />
                                         </div>
                                       </div>
-                                      <div className="col-2 position-relative mx-3">
-                                        <label className="fw-600 my-1 small-font">
-                                          * Casino Chip Value
+                                      <div className="flex-between input-css d-flex border-grey3 mt-4 mx-2">
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            websiteDetails[selectedWebsiteId]
+                                              ?.casino_allowed || false
+                                          }
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "casino_allowed",
+                                              e.target.checked
+                                            )
+                                          }
+                                        />
+                                        <label className="small-font ms-2 white-space">
+                                          Casino Allowed
                                         </label>
-                                        <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                      </div>
+                                      {websiteDetails[selectedWebsiteId]
+                                        ?.casino_allowed && (
+                                        <div className="col-2">
+                                          <label className="fw-600 my-1 white-space small-font">
+                                            * Casino Chip Value
+                                          </label>
                                           <input
-                                            className="small-font bg-none all-none p-2 w-100"
                                             type="text"
-                                            inputMode="numeric"
-                                            pattern="[0-9]*"
+                                            className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
+                                            placeholder="Casino Chip Value"
                                             maxLength={4}
-                                            onKeyPress={(event) => {
+                                            onKeyPress={(e) => {
                                               if (
-                                                event.charCode < 48 ||
-                                                event.charCode > 57
+                                                e.charCode < 48 ||
+                                                e.charCode > 57
                                               ) {
-                                                event.preventDefault(); // Prevent non-numeric characters
+                                                e.preventDefault();
                                               }
                                             }}
-                                            onChange={(e) => {
-                                              const numericValue =
-                                                e.target.value.replace(
-                                                  /\D/g,
-                                                  ""
-                                                ); // Remove non-numeric characters
+                                            onChange={(e) =>
                                               handleInputChange(
                                                 selectedWebsiteId,
-                                                "caschip_values",
-                                                numericValue
-                                              );
-                                            }}
+                                                "casino_chip_value",
+                                                e.target.value
+                                              )
+                                            }
                                           />
                                         </div>
-                                      </div>
-                                      {/* Render "Is Primary" checkbox for account types 2 and 3 */}
-                                      <div className="w-10 flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
-                                        {renderIsPrimaryCheckbox(
-                                          form.id,
-                                          selectedWebsiteId
-                                        )}
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Fields for Commission Type 2 and 3 */}
+                                {(accountTypes[form.id]?.[selectedWebsiteId] ===
+                                  "2" ||
+                                  accountTypes[form.id]?.[selectedWebsiteId] ===
+                                    "3") && (
+                                  <div className="col d-flex">
+                                    <div className="col-2 position-relative mx-1">
+                                      <label className="fw-600 my-1 small-font">
+                                        * Share (%)
+                                      </label>
+                                      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          type="text"
+                                          className="small-font bg-none p-2 all-none w-50"
+                                          value={
+                                            websiteDetails[selectedWebsiteId]
+                                              ?.share || ""
+                                          }
+                                          onChange={(e) => {
+                                            let value = e.target.value.replace(
+                                              /\D/g,
+                                              ""
+                                            ); // Allow only numbers
+                                            if (value.length > 3) return; // Restrict input to max 3 digits
+                                            if (parseInt(value, 10) > 100)
+                                              return; // Prevent values greater than 100
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "share",
+                                              value
+                                            );
+                                          }}
+                                        />
+                                        <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+                                          <div className="fw-600">
+                                            My Share{" "}
+                                            {100 -
+                                              (parseInt(
+                                                websiteDetails[
+                                                  selectedWebsiteId
+                                                ]?.share
+                                              ) || 0)}
+                                            %
+                                          </div>
+                                        </span>
                                       </div>
                                     </div>
-                                  )}
-                                </div>
+                                    <div className="col-2 position-relative mx-3">
+                                      <label className="fw-600 my-1 small-font">
+                                        * Commission (%)
+                                      </label>
+                                      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          type="text"
+                                          maxLength={2}
+                                          className="small-font bg-none p-2 w-75 all-none"
+                                          value={
+                                            websiteDetails[selectedWebsiteId]
+                                              ?.downline_comm || ""
+                                          }
+                                          onChange={(e) => {
+                                            let value = e.target.value.replace(
+                                              /\D/g,
+                                              ""
+                                            ); // Allow only numbers
+                                            if (value.length > 3) return; // Restrict input to max 3 digits
+                                            if (parseInt(value, 10) > 100)
+                                              return; // Prevent values greater than 100
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "downline_comm",
+                                              value
+                                            );
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="col-2 position-relative mx-3">
+                                      <label className="fw-600 my-1 small-font">
+                                        * Casino Chip Value
+                                      </label>
+                                      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          className="small-font bg-none all-none p-2 w-100"
+                                          type="text"
+                                          inputMode="numeric"
+                                          pattern="[0-9]*"
+                                          maxLength={4}
+                                          onKeyPress={(event) => {
+                                            if (
+                                              event.charCode < 48 ||
+                                              event.charCode > 57
+                                            ) {
+                                              event.preventDefault(); // Prevent non-numeric characters
+                                            }
+                                          }}
+                                          onChange={(e) => {
+                                            const numericValue =
+                                              e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                                            handleInputChange(
+                                              selectedWebsiteId,
+                                              "caschip_values",
+                                              numericValue
+                                            );
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                    {/* Render "Is Primary" checkbox for account types 2 and 3 */}
+                                    <div className="w-10 flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                                      {renderIsPrimaryCheckbox(
+                                        form.id,
+                                        selectedWebsiteId
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         ) : (
