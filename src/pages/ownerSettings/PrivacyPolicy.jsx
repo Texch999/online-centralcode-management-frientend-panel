@@ -90,7 +90,7 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.web_name,
   }));
-  console.log(availablePrivacyWebsiteId,"gg")
+  console.log(availablePrivacyWebsiteId, "gg");
 
   const hanldeWebsites = (id) => {
     setSelectWebsite(true);
@@ -248,6 +248,13 @@ const PrivacyPolicy = () => {
               maxMenuHeight={120}
               menuPlacement="auto"
               classNamePrefix="custom-react-select"
+              isSearchable={true} // Allow searching
+              onInputChange={(inputValue, { action }) => {
+                if (action === "input-change") {
+                  const filteredValue = inputValue.replace(/[^A-Za-z\s]/g, ""); // Allow only letters and spaces
+                  return filteredValue;
+                }
+              }}
               onChange={(selectedOption) => {
                 setSelectedCountry(selectedOption);
               }}

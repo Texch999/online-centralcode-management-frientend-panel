@@ -2122,15 +2122,15 @@ function AddNewDirectorSuperAdmin() {
       country_id: selectedCountryCode,
       currency_id: selectedCurrencyCode,
       accessWebsites: validUserWebsites,
-      is_credit: creditValue,
-      credit_reference: creditreference,
+      // is_credit: creditValue || 2,
+      // credit_reference: creditreference || 1,
     };
 
     createDirector(finalData)
       .then((response) => {
         if (response.status === true) {
           setSuccessPopupOpen(true);
-          setCreateDescription("Director Added Successfully");
+          setCreateDescription(`${selectedRole == 1 ? "Director":"Superadmin"} Added Successfully`);
           setTimeout(() => {
             navigate("/director-admin");
           }, 2000);
