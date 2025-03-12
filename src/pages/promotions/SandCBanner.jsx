@@ -54,6 +54,7 @@ const SandCBanner = () => {
   const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
   const [totalRecords, setTotalRecords] = useState("");
+  const [selectPosterType, setSelectPosterType] = useState(null);
   const [selectPages, setSelectPages] = useState(null);
   const [selectPlace, setSelectPlace] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -97,6 +98,7 @@ const SandCBanner = () => {
     localStorage.setItem("activeBtn", JSON.stringify(btn));
     setBanners([]);
     setTotalRecords("");
+    setSelectPosterType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
     setSelectedPlace(null);
@@ -107,10 +109,12 @@ const SandCBanner = () => {
 
   const [errors, setErrors] = useState({
     selectWebsites: "",
+    selectPosterType: "",
     selectedPage: "",
     selectedPlace: "",
     selectedFiles: "",
     endDT: "",
+    startDT: "",
   });
 
   const handleWebsitesType = (activeBtn) => {
@@ -205,6 +209,19 @@ const SandCBanner = () => {
     setSelectPlace(updatedSelectPlace);
   };
 
+
+  const posterTypeOptions = Object.entries(Enums.selectOptionsPromotionType).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+
+  const handleSelectPosterType = (selected) => {
+    setSelectPosterType(selected);
+    setErrors((prev) => ({ ...prev, selectPosterType: "" }));
+  };
+
   const handleSelectPage = (selected) => {
     setSelectedPage(selected);
     setErrors((prev) => ({ ...prev, selectedPage: "" }));
@@ -281,6 +298,9 @@ const SandCBanner = () => {
     if (!selectedPlace) {
       newErrors.selectedPlace = "Place is required.";
     }
+    if (!selectPosterType) {
+      newErrors.selectedPlace = "Place is required.";
+    }
     if (selectedFiles.length === 0) {
       newErrors.selectedFiles = "At least one image is required.";
     }
@@ -294,6 +314,7 @@ const SandCBanner = () => {
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
     formData.append("schedule", scheduleBtn.value);
+    formData.append("poster_type", selectPosterType.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
 
@@ -426,21 +447,42 @@ const SandCBanner = () => {
     setFullPoster(!fullPoster);
   };
 
-  const handleEndDateChange = (e) => {
-    const selectedEndDT = e.target.value;
+  // const handleEndDateChange = (e) => {
+  //   const selectedEndDT = e.target.value;
 
-    if (selectedEndDT < startDT) {
+  //   if (selectedEndDT < startDT) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       endDT: "End date cannot be before the start date.",
+  //     }));
+  //     setEndDT("");
+  //   } else {
+  //     setEndDT(selectedEndDT);
+  //     setErrors((prev) => ({ ...prev, endDT: "" }));
+  //   }
+  // };
+
+  const handleEndDateChange = (e) => {
+    const selectedEndDT = new Date(e.target.value);
+    const selectedStartDT = new Date(startDT);
+
+    if (!startDT) {
+      setErrors((prev) => ({
+        ...prev,
+        endDT: "Please select a start date first.",
+      }));
+      setEndDT("");
+    } else if (selectedEndDT < selectedStartDT) {
       setErrors((prev) => ({
         ...prev,
         endDT: "End date cannot be before the start date.",
       }));
       setEndDT("");
     } else {
-      setEndDT(selectedEndDT);
+      setEndDT(e.target.value);
       setErrors((prev) => ({ ...prev, endDT: "" }));
     }
   };
-
   const handleBlockOrUnblock = (id, status) => {
     setSelectedBannerId(id);
     setSelectedBannerStatus(status);
@@ -666,14 +708,18 @@ const SandCBanner = () => {
         <SlPencil
           size={18}
           className="mx-3 pointer"
-          style={banner.status !== 1 ? { pointerEvents: "none",  color: "gray"} : {}}
+          style={
+            banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}
+          }
           onClick={() => handleEditBanners(banner?.id)}
         />
 
         <FaRegTrashCan
           size={18}
-           className="mx-3 pointer"
-          style={banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}}
+          className="mx-3 pointer"
+          style={
+            banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}
+          }
           onClick={() => handleDeleteBannerConfirm(banner.id)}
         />
       </div>
@@ -684,10 +730,43 @@ const SandCBanner = () => {
     getBanners(limit, offset);
   };
 
-  const getMinDateTime = () => {
+  // const getMinDateTime = () => {
+  //   const now = new Date();
+  //   now.setMinutes(now.getMinutes() + 1); // Add 1 minute to the current time
+  //   return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:MM"
+  // };
+  const [minDateTime, setMinDateTime] = useState(getMinDateTime());
+
+  function getMinDateTime() {
     const now = new Date();
-    now.setMinutes(now.getMinutes() + 1); // Add 1 minute to the current time
+    now.setSeconds(0, 0); // Remove seconds and milliseconds
     return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:MM"
+  }
+
+  // Update minDateTime dynamically every second to prevent past selection
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMinDateTime(getMinDateTime());
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
+  const handleStartDateChange = (e) => {
+    const selectedDate = new Date(e.target.value);
+    const now = new Date();
+    now.setSeconds(0, 0); // Remove seconds/milliseconds
+
+    if (selectedDate < now) {
+      setErrors((prev) => ({
+        ...prev,
+        startDT: "Start date & time cannot be in the past.",
+      }));
+      setStartDT("");
+    } else {
+      setStartDT(e.target.value);
+      setErrors((prev) => ({ ...prev, startDT: "" }));
+    }
   };
 
   return (
@@ -794,10 +873,14 @@ const SandCBanner = () => {
             className="input-css2"
             type="datetime-local"
             value={startDT}
-            onChange={(e) => setStartDT(e.target.value)}
-            min={getMinDateTime()} // Restrict past times
+            onChange={handleStartDateChange}
+            // min={getMinDateTime()} // Restrict past times
+            min={minDateTime}
             onKeyDown={(e) => e.preventDefault()} // Prevent manual typing
           />
+          {errors.startDT && (
+          <span className="text-danger small-font">{errors.startDT}</span>
+        )}
         </div>
 
         <div className="col flex-column fixed-width-field1">
@@ -808,11 +891,32 @@ const SandCBanner = () => {
             value={endDT}
             onChange={handleEndDateChange}
             disabled={!startDT} // Disable if start date is not set
-            min={startDT || getMinDateTime()} // Ensure end date is after start date
+            min={startDT || minDateTime} // Ensure end date is after start date
             onKeyDown={(e) => e.preventDefault()} // Prevent manual typing
           />
           {errors.endDT && (
             <span className="text-danger small-font">{errors.endDT}</span>
+          )}
+        </div>
+
+        <div className="col flex-column me-3 fixed-width-field1">
+          <label className="black-text4 mb-1">Banner/Poster Type</label>
+          <Select
+            className="small-font"
+            options={posterTypeOptions || []}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+            value={selectPosterType}
+            onChange={handleSelectPosterType}
+            isSearchable={false} // Disable typing
+          />
+          {errors.selectPosterType && (
+            <span className="text-danger small-font">
+              {errors.selectPosterType}
+            </span>
           )}
         </div>
       </div>
