@@ -57,8 +57,10 @@ const AddPrivacyPolicyPopUp = ({
     // Remove HTML tags to count only text length
     const textLength = value.replace(/<[^>]+>/g, "").trim().length;
 
-    if (textLength < 2) {
+    if (textLength === 0) {
       setDescriptionError("Description is required");
+    } else if (textLength < 2) {
+      setDescriptionError("Description must be at least 2 characters");
     } else if (textLength > 5000) {
       setDescriptionError("Description cannot exceed 5000 characters");
     } else {
@@ -67,6 +69,7 @@ const AddPrivacyPolicyPopUp = ({
 
     setValue("description", value, { shouldValidate: true });
   };
+
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -170,10 +173,22 @@ const AddPrivacyPolicyPopUp = ({
                       placeholder="Select"
                       maxMenuHeight={120}
                       menuPlacement="auto"
+                      classNamePrefix="custom-react-select"
                       value={countryOptions.find(
                         (option) => option.value === field.value
                       )}
-                      onChange={(val) => field.onChange(val)}
+                      onInputChange={(inputValue, { action }) => {
+                        if (action === "input-change") {
+                          const filteredValue = inputValue.replace(
+                            /[^A-Za-z\s]/g,
+                            ""
+                          ); // Allow only letters and spaces
+                          return filteredValue;
+                        }
+                      }}
+                      onChange={(selectedOption) => {
+                        setSelectedCountry(selectedOption);
+                      }}
                     />
                   )}
                 />
@@ -270,9 +285,9 @@ const AddPrivacyPolicyPopUp = ({
                     />
                   )}
                 />
-                {descriptionError && (
-                  <p className="text-danger small-font mt-1">
-                    {descriptionError}
+                {errors.description && (
+                  <p className="text-danger small-font mt-5">
+                    {errors.description.message}
                   </p>
                 )}
               </div>

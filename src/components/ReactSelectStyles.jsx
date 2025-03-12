@@ -16,7 +16,7 @@ export const customStyles = {
   }),
   singleValue: (provided) => ({
       ...provided,
-      padding: "5px", // Adjust padding as needed
+      padding: "6px", // Adjust padding as needed
 
     }),
   option: (base, state) => ({
