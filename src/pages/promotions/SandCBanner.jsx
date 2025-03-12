@@ -634,22 +634,27 @@ const SandCBanner = () => {
     ),
     start: (
       <div>
-        {new Intl.DateTimeFormat("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }).format(new Date(banner.start))}
+        {banner.start
+          ? new Intl.DateTimeFormat("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }).format(new Date(banner.start))
+          : "-"}
       </div>
     ),
     end: (
       <div>
-        {new Intl.DateTimeFormat("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }).format(new Date(banner.end))}
+        {banner.end
+          ? new Intl.DateTimeFormat("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }).format(new Date(banner.end))
+          : "-"}
       </div>
     ),
+
     action: (
       <div className="flex-center">
         <MdBlockFlipped
@@ -661,12 +666,14 @@ const SandCBanner = () => {
         <SlPencil
           size={18}
           className="mx-3 pointer"
+          style={banner.status !== 1 ? { pointerEvents: "none",  color: "gray"} : {}}
           onClick={() => handleEditBanners(banner?.id)}
         />
 
         <FaRegTrashCan
           size={18}
-          className="mx-3 pointer"
+           className="mx-3 pointer"
+          style={banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}}
           onClick={() => handleDeleteBannerConfirm(banner.id)}
         />
       </div>
@@ -675,6 +682,12 @@ const SandCBanner = () => {
 
   const handlePageChange = ({ limit, offset }) => {
     getBanners(limit, offset);
+  };
+
+  const getMinDateTime = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 1); // Add 1 minute to the current time
+    return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:MM"
   };
 
   return (
@@ -782,6 +795,8 @@ const SandCBanner = () => {
             type="datetime-local"
             value={startDT}
             onChange={(e) => setStartDT(e.target.value)}
+            min={getMinDateTime()} // Restrict past times
+            onKeyDown={(e) => e.preventDefault()} // Prevent manual typing
           />
         </div>
 
@@ -792,8 +807,9 @@ const SandCBanner = () => {
             type="datetime-local"
             value={endDT}
             onChange={handleEndDateChange}
-            disabled={!startDT}
-            min={startDT || ""}
+            disabled={!startDT} // Disable if start date is not set
+            min={startDT || getMinDateTime()} // Ensure end date is after start date
+            onKeyDown={(e) => e.preventDefault()} // Prevent manual typing
           />
           {errors.endDT && (
             <span className="text-danger small-font">{errors.endDT}</span>
