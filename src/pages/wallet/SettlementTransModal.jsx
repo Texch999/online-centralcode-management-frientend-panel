@@ -11,9 +11,9 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
     >
       <div className="white-bg p-4 br-10">
         <div className="d-flex flex-between align-items-center">
-          <div className="black-br-btn px-2 py-2 br-5">Director - Abhi</div>
+          <div className="black-br-btn px-2 py-2 br-5 medium-font">Director - Abhi</div>
           <div className="d-flex gap-3 align-items-center">
-            <div className="green-font fw-bold light-bg br-5 px-3 py-2">
+            <div className="green-font fw-bold light-bg br-5 font-20 px-3 py-2">
               Settlement
             </div>
             <IoClose
@@ -24,69 +24,70 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
           </div>
         </div>
         <div className="d-flex flex-between my-2">
-          <div className="black-br-btn px-2 py-2 br-5">Admin - Brahma</div>
+          <div className="black-br-btn px-2 py-2 br-5 medium-font">Admin - Brahma</div>
         </div>
         <div className="d-flex flex-between my-1">
-          <div className="black-br-btn px-2 py-2 br-5">
+          <div className="black-br-btn px-2 py-2 br-5 medium-font">
             User - Diamond Exchange - 5%
           </div>
         </div>
         <div className="row mt-3">
           <div className="col-6">
-            <label>Total Credit</label>
+            <label className="medium-font">Total Credit</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font" />
             </div>
           </div>
           <div className="col-6">
-            <label>Paid</label>
+            <label className="medium-font">Paid</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font" />
             </div>
           </div>
         </div>
         <div className="row mt-2">
           <div className="col-6">
-            <label>Bal. Credit</label>
+            <label className="medium-font">Bal. Credit</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none red-font small-font small-font" />
             </div>
           </div>
           <div className="col-6">
-            <label>Enter Paid Amount</label>
+            <label className="medium-font">Enter Paid Amount</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
-              <input type="text" placeholder="1000" className="all-none" />
+              <input type="text" placeholder="1000" className="all-none small-font" />
             </div>
           </div>
         </div>
 
         <div className="col-12 mt-2 flex-column d-flex">
-          <label>Net Credit Bal.</label>
+          <label className="medium-font">Net Credit Bal.</label>
           <div className="light-bg br-5 mt-1 px-2 py-2">
-            <input type="text" placeholder="1000" className="all-none" />
+            <input type="text" placeholder="1000" className="all-none small-font small-font" />
           </div>
         </div>
 
         <div className="col-12 flex-column mt-2 d-flex">
-          <label>Remarks</label>
+          <label className="medium-font">Remarks</label>
           <div className="light-bg br-5 mt-1 px-2 py-2">
             <textarea
               type="text"
               placeholder="remarks"
-              className="all-none"
-              rows={3}
+              className="all-none small-font"
+              rows={2}
             />
           </div>
         </div>
-
-        <div className="col-12 flex-column mt-2 d-flex">
-          <label>Enter Password</label>
-          <div className="light-bg br-5 mt-1 px-2 py-2">
-            <input type="text" placeholder="password" className="all-none" />
+        <div className="row mt-2">
+          <div className="col-6 flex-column d-flex">
+            <label className="medium-font">Enter Password</label>
+            <div className="light-bg br-5 mt-1 px-2 py-2">
+              <input type="text" placeholder="password" className="all-none small-font" />
+            </div>
           </div>
-        </div>
-        <div className="d-flex flex-end mt-2 ">
-          <div className="saffron-btn br-5 px-3 pointer">submit</div>
+          <div className="col-6 flex-column mt-2 align-self-end d-flex">
+            <div className="saffron-btn br-5 px-4 pointer medium-font">submit</div>
+          </div>
         </div>
       </div>
     </Modal>
