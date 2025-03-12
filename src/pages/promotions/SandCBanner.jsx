@@ -54,6 +54,7 @@ const SandCBanner = () => {
   const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
   const [totalRecords, setTotalRecords] = useState("");
+  const [selectPosterType, setSelectPosterType] = useState(null);
   const [selectPages, setSelectPages] = useState(null);
   const [selectPlace, setSelectPlace] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -97,6 +98,7 @@ const SandCBanner = () => {
     localStorage.setItem("activeBtn", JSON.stringify(btn));
     setBanners([]);
     setTotalRecords("");
+    setSelectPosterType(null);
     setSelectWebsites(null);
     setSelectedPage(null);
     setSelectedPlace(null);
@@ -107,6 +109,7 @@ const SandCBanner = () => {
 
   const [errors, setErrors] = useState({
     selectWebsites: "",
+    selectPosterType: "",
     selectedPage: "",
     selectedPlace: "",
     selectedFiles: "",
@@ -206,6 +209,19 @@ const SandCBanner = () => {
     setSelectPlace(updatedSelectPlace);
   };
 
+
+  const posterTypeOptions = Object.entries(Enums.selectOptionsPromotionType).map(
+    ([key, value]) => ({
+      value,
+      label: key,
+    })
+  );
+
+  const handleSelectPosterType = (selected) => {
+    setSelectPosterType(selected);
+    setErrors((prev) => ({ ...prev, selectPosterType: "" }));
+  };
+
   const handleSelectPage = (selected) => {
     setSelectedPage(selected);
     setErrors((prev) => ({ ...prev, selectedPage: "" }));
@@ -282,6 +298,9 @@ const SandCBanner = () => {
     if (!selectedPlace) {
       newErrors.selectedPlace = "Place is required.";
     }
+    if (!selectPosterType) {
+      newErrors.selectedPlace = "Place is required.";
+    }
     if (selectedFiles.length === 0) {
       newErrors.selectedFiles = "At least one image is required.";
     }
@@ -295,6 +314,7 @@ const SandCBanner = () => {
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
     formData.append("schedule", scheduleBtn.value);
+    formData.append("poster_type", selectPosterType.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
 
@@ -876,6 +896,27 @@ const SandCBanner = () => {
           />
           {errors.endDT && (
             <span className="text-danger small-font">{errors.endDT}</span>
+          )}
+        </div>
+
+        <div className="col flex-column me-3 fixed-width-field1">
+          <label className="black-text4 mb-1">Banner/Poster Type</label>
+          <Select
+            className="small-font"
+            options={posterTypeOptions || []}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+            value={selectPosterType}
+            onChange={handleSelectPosterType}
+            isSearchable={false} // Disable typing
+          />
+          {errors.selectPosterType && (
+            <span className="text-danger small-font">
+              {errors.selectPosterType}
+            </span>
           )}
         </div>
       </div>

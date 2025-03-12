@@ -69,7 +69,6 @@ const AddPrivacyPolicyPopUp = ({
 
     setValue("description", value, { shouldValidate: true });
   };
-
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
