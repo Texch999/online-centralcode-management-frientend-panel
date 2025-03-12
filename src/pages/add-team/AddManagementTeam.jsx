@@ -37,6 +37,7 @@ const AddManagementTeam = () => {
   const [blockPopup, setBlockPopup] = useState(false);
   const [EditShow, setEditShow] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [resetData, setResetData] = useState(false);
   console.log(selectedUser, "selectedUser");
   const [formData, setFormData] = useState({
     role: "",
@@ -48,7 +49,10 @@ const AddManagementTeam = () => {
     confirmPassword: "",
     managementPassword: "",
   });
-  const [resetPasswordErrrors,setResetPasswordErrors] = useState([])
+
+  console.log(selectedUser, "==>selectedUser");
+
+  const [resetPasswordErrrors, setResetPasswordErrors] = useState([]);
 
   const GetEmployee = () => {
     getEmployees({ limit: 10, offset: 0 })
@@ -66,9 +70,8 @@ const AddManagementTeam = () => {
     GetEmployee();
   }, []);
 
-
   console.log(resetPasswordErrrors, "resetPasswordErrrors in main component");
-  
+
   const toggleModal = (modalName, value) => {
     setModalState((prev) => ({ ...prev, [modalName]: value }));
   };
@@ -103,10 +106,10 @@ const AddManagementTeam = () => {
     setSuccessPopupOpen(true);
   };
 
-  const handleBlockPopup = (id, name, status) => {
+  const handleBlockPopup = (id, name, status, loginName) => {
     setBlockTeamManagementId(id);
     setBlockPopup(true);
-    setSelectedUser({ name, status });
+    setSelectedUser({ name, status, loginName });
   };
 
   const handleResetPasswordPopup = (id) => {
@@ -139,7 +142,7 @@ const AddManagementTeam = () => {
 
   const onEmployeePasswordSubmit = (data) => {
     if (!resetPasswordId) {
-      alert("Invalid ID");
+      setResetPasswordErrors("Invalid ID");
       return;
     }
 
@@ -152,7 +155,8 @@ const AddManagementTeam = () => {
     resetEmployeePassword(resetPasswordId, requestData)
       .then((response) => {
         setSuccessPopupOpen(true);
-        setDiscription("Password reset successfully")
+        setDiscription("Password reset successfully");
+        setResetData(true);
         if (response) {
           setResetPasswordPopup(false);
           GetEmployee();
@@ -175,7 +179,16 @@ const AddManagementTeam = () => {
     blockEmploye(blockTeamManagementId, requestData)
       .then((response) => {
         if (response.status === true) {
+          if (newStatus === 1) {
+            setSuccessPopupOpen(true);
+            setDiscription("Unblocked Successfully");
+          } else {
+            setSuccessPopupOpen(true);
+            setDiscription("Blocked Successfully");
+          }
+        
           GetEmployee();
+
           toggleModal("isBlockPopupVisible", false);
         } else {
           alert("Something went wrong");
@@ -221,14 +234,18 @@ const AddManagementTeam = () => {
                 : ""
             }`}
             onClick={() =>
-              handleBlockPopup(employee.id, employee.name, employee.status)
+              handleBlockPopup(
+                employee.id,
+                employee.name,
+                employee.status,
+                employee.login_name
+              )
             }
           />
         </div>
       ),
     };
   });
-
 
   const [searchText, setSearchText] = useState("");
 
@@ -237,9 +254,10 @@ const AddManagementTeam = () => {
     setSearchText(event.target.value.toLowerCase());
   };
 
-
   const filteredTableData = tableData
-  .filter((employee) => employee.name.toLowerCase().includes(searchText))
+  .filter((employee) =>
+    employee.login_name?.toLowerCase().includes(searchText)
+  )
   .map((employee) => {
     const roleId = Number(employee.role);
     const role = Roles[roleId] || "Unknown";
@@ -258,13 +276,18 @@ const AddManagementTeam = () => {
         <div className="d-flex gap-3 flex-center">
           <SlPencil
             size={18}
-            className="pointer black-text"
-            onClick={() => handleEditShow(employee.id)}
+            className={`pointer black-text ${employee.status !== 1 ? "disabled-icon" : ""}`}
+            onClick={employee.status === 1 ? () => handleEditShow(employee.id) : null}
+            style={{ cursor: employee.status === 1 ? "pointer" : "not-allowed", opacity: employee.status === 1 ? 1 : 0.5 }}
           />
           <MdLockReset
             size={18}
             className="pointer black-text"
-            onClick={() => handleResetPasswordPopup(employee.id)}
+           
+
+            onClick={employee.status === 1 ? () => handleResetPasswordPopup(employee.id) : null}
+            style={{ cursor: employee.status === 1 ? "pointer" : "not-allowed", opacity: employee.status === 1 ? 1 : 0.5 }}
+       
           />
           <MdBlockFlipped
             size={18}
@@ -276,7 +299,12 @@ const AddManagementTeam = () => {
                 : ""
             }`}
             onClick={() =>
-              handleBlockPopup(employee.id, employee.name, employee.status)
+              handleBlockPopup(
+                employee.id,
+                employee.name,
+                employee.status,
+                employee.login_name
+              )
             }
           />
         </div>
@@ -285,15 +313,20 @@ const AddManagementTeam = () => {
   });
 
 
+    
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="yellow-font medium-font mb-0">Add Management Team</h6>
+        <h6 className="yellow-font medium-font mb-0">Add Management Team </h6>
         <div className="d-flex align-items-center">
           <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
             <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..."value={searchText}
-          onChange={handleSearchChange} />
+            <input
+              className="small-font all-none"
+              placeholder="Search..."
+              value={searchText}
+              onChange={handleSearchChange}
+            />
           </div>
           <button
             className="small-font rounded-pill input-pill blue-font px-3 py-1"
@@ -305,12 +338,12 @@ const AddManagementTeam = () => {
         </div>
       </div>
       <div className="management-team-wrapper rounded-bg">
-      <Table
-        className="black-text"
-        data={filteredTableData}
-        columns={columns}
-        itemsPerPage={5}
-      />
+        <Table
+          className="black-text"
+          data={filteredTableData}
+          columns={columns}
+          itemsPerPage={5}
+        />
       </div>
       {modalState.showAddModal && (
         <AddManagementPopup
@@ -326,8 +359,6 @@ const AddManagementTeam = () => {
           editingRowId={editingRowId}
           setDiscription={setDiscription}
           setSuccessPopupOpen={setSuccessPopupOpen}
-         
-      
         />
       )}
 
@@ -336,7 +367,7 @@ const AddManagementTeam = () => {
         setConfirmationPopupOpen={setBlockPopup}
         discription={`Are you sure you want to ${
           selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser}?`}
+        } ${selectedUser} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
@@ -345,7 +376,7 @@ const AddManagementTeam = () => {
         setConfirmationPopupOpen={setBlockPopup}
         discription={`Are you sure you want to ${
           selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser?.name}?`}
+        } ${selectedUser?.name} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
       />
@@ -356,7 +387,7 @@ const AddManagementTeam = () => {
         IndividualpassowrdId={resetPasswordId}
         onSubmit={onEmployeePasswordSubmit}
         resetPasswordErrrors={resetPasswordErrrors}
-    
+        setResetPasswordErrors={setResetPasswordErrors}
       />
       {successPopupOpen && (
         <SuccessPopup

@@ -293,11 +293,11 @@ const AddDirectorAdmin = () => {
       ),
       billing: "0",
       pl: <div className="red-font">0</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
+      // dw: (
+      //   <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+      //     D/W
+      //   </button>
+      // ),
       action: (
         <div className="d-flex flex-center gap-3">
           <SlPencil
@@ -462,7 +462,7 @@ const AddDirectorAdmin = () => {
       <div className="flex-between mb-3 mt-2">
         {role === "management" ? (
           <h6 className="yellow-font medium-font mb-0">
-            Add Director & Super Admin
+            Add Director & Super Admin 
           </h6>
         ) : (
           <h6 className="yellow-font mb-0">Add Super Admin</h6>
@@ -530,6 +530,7 @@ const AddDirectorAdmin = () => {
           resetPasswordPopup={resetPasswordPopup}
           setResetPasswordPopup={handleResetPasswordClose}
           resetPasswordErrrors={resetPasswordErrrors}
+          setResetPasswordErrors={setResetPasswordErrors}
           onSubmit={
             role === "management"
               ? onDirectorResetPassword

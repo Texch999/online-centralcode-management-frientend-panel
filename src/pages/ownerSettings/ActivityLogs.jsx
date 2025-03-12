@@ -78,10 +78,11 @@ const ActivityLogs = () => {
       toDate
     })
       .then((response) => {
-        if (response?.status) {
+        if (response?.status === true) {
           setLogsData(response.data);
           setTotalaRecords(response.totalCount)
         } else {
+          setLogsData([]);
           setError("Something Went Wrong");
         }
       })
