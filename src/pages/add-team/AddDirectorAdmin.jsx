@@ -293,11 +293,11 @@ const AddDirectorAdmin = () => {
       ),
       billing: "0",
       pl: <div className="red-font">0</div>,
-      dw: (
-        <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-          D/W
-        </button>
-      ),
+      // dw: (
+      //   <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
+      //     D/W
+      //   </button>
+      // ),
       action: (
         <div className="d-flex flex-center gap-3">
           <SlPencil
