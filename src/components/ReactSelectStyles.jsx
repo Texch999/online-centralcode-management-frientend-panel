@@ -14,6 +14,11 @@ export const customStyles = {
     ...provided,
     padding: "6px", // Adjust padding as needed
   }),
+  singleValue: (provided) => ({
+      ...provided,
+      padding: "5px", // Adjust padding as needed
+
+    }),
   option: (base, state) => ({
     ...base,
     backgroundColor: state.isFocused ? "#FFA310" : "transparent",
