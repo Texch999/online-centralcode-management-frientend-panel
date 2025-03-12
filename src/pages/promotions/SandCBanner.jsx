@@ -452,7 +452,11 @@ const SandCBanner = () => {
       // setLoading(true);
       const response = await statusUpdateBanner(selectedBannerId);
       if (response?.status === 200) {
-        setMessage(response?.message);
+        setMessage(
+          `Banner ${
+            response?.newStatus === 1 ? "Un Blocked" : "Blocked"
+          } Successfully`
+        );
         setLoading(false);
         getBanners();
         setErrorPopupOpen(false);

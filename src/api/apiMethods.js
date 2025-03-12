@@ -482,8 +482,11 @@ const getInActiveUsers = (params) => {
   return apiRequest("getInActiveUsers", {}, params);
 };
 const getAdminUserWebsites = (id, data) => {
-  console.log(id,data, "iddddpppp")
+  console.log(id, data, "iddddpppp");
   return apiRequest("getAdminUserWebsites", data, id);
+};
+const suspendInActiveUsers = (websiteId, id) => {
+  return apiRequest("suspendInActiveUsers", websiteId, { websiteId, id });
 };
 
 export {
@@ -608,4 +611,5 @@ export {
   dirEditProfile,
   getInActiveUsers,
   getAdminUserWebsites,
+  suspendInActiveUsers,
 };

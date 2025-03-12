@@ -311,8 +311,6 @@
   border-radius: 0.35rem;
 }
 
-
-
 .orange-btn {
   background: #fc9b4e;
   border-radius: 0.35rem;
@@ -787,9 +785,7 @@
 
   /* Light border */
 }
-
 .light-white-bg {
-
   background-color: #f2f2f2;
 }
 
@@ -818,7 +814,7 @@
 
   border: 1.2px solid #00000033 !important;
   border-radius: 5px;
-  color: #1B1B1B;
+  color: #1b1b1b;
   background-color: none;
   padding: 0.5rem !important;
 }
@@ -991,10 +987,9 @@
   color: #ee5787;
   background-color: #faccdb;
 }
-
 .error-popup-container1 {
-  color: #FFFFFF;
-  background-color: #FF2C2C;
+  color: #ffffff;
+  background-color: #ff2c2c;
 }
 
 .head-profile {
@@ -1032,4 +1027,11 @@
   display: inline-block;
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
+}
+.black-br-btn {
+  border: 1.2px solid #00000033;
+  background-color: #ffffff;
+}
+.light-bg{
+  background-color: #F2F2F2;
 }
