@@ -77,13 +77,74 @@ const EditBannerPopup = ({
     }
   }, [selectedBannerId]);
 
+  // const handleImageChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     image: Array.isArray(prevFormData.image)
+  //       ? [...prevFormData.image, ...files]
+  //       : [...files],
+  //   }));
+  // };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
+    const maxSizeImage = 2 * 1024 * 1024; // 2MB for images
+    const maxSizeVideo = 5 * 1024 * 1024; // 5MB for videos
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "video/mp4"];
+
+    let validImages = [];
+    let validVideos = [];
+    let errorMessages = [];
+
+    files.forEach((file) => {
+      console.log(
+        `File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(
+          2
+        )} MB, Type: ${file.type}`
+      );
+
+      if (!allowedTypes.includes(file.type)) {
+        errorMessages.push(`Invalid format: ${file.name}`);
+      } else if (file.type.startsWith("image/") && file.size > maxSizeImage) {
+        errorMessages.push(`Image ${file.name} exceeds 2MB.`);
+      } else if (file.type === "video/mp4" && file.size > maxSizeVideo) {
+        errorMessages.push(`Video ${file.name} exceeds 5MB.`);
+      } else {
+        if (file.type.startsWith("image/")) {
+          validImages.push(file);
+        } else if (file.type === "video/mp4") {
+          validVideos.push(file);
+        }
+      }
+    });
+
+    // Enforce max limits: 5 images, 2 videos
+    if (validImages.length > 5) {
+      errorMessages.push("You can only upload up to 5 images.");
+      validImages = validImages.slice(0, 5);
+    }
+
+    if (validVideos.length > 2) {
+      errorMessages.push("You can only upload up to 2 videos.");
+      validVideos = validVideos.slice(0, 2);
+    }
+
+    if (errorMessages.length > 0) {
+      // Display error messages (you can use a state variable like `setErrors` to show these messages)
+      setMessage(errorMessages.join(" "));
+      return;
+    }
+
+    // Combine valid images and videos
+    const validFiles = [...validImages, ...validVideos];
+
+    // Update form data with valid files
     setFormData((prevFormData) => ({
       ...prevFormData,
       image: Array.isArray(prevFormData.image)
-        ? [...prevFormData.image, ...files]
-        : [...files],
+        ? [...prevFormData.image, ...validFiles]
+        : [...validFiles],
     }));
   };
 
@@ -141,7 +202,6 @@ const EditBannerPopup = ({
     }
   };
 
-
   let weblist;
   if (emp_role_id === 1) {
     weblist = directorsWebsites;
@@ -186,6 +246,12 @@ const EditBannerPopup = ({
     setEditBanner(false);
   };
 
+  const getMinDateTime = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 1); // Add 1 minute to the current time
+    return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:MM"
+  };
+
   return (
     <Modal show={editBanner} size="md" centered>
       <Modal.Body>
@@ -196,7 +262,6 @@ const EditBannerPopup = ({
 
         <div className="row mt-3 small-font d-flex justify-content-spacebetween">
           <div className="d-flex w-80 mt-3">
-
             <div className="col-4 flex-column me-3">
               <label className="black-text4 small-font mb-1">Websites</label>
               <input
@@ -271,6 +336,8 @@ const EditBannerPopup = ({
                 onChange={(e) =>
                   setFormData({ ...formData, start: e.target.value })
                 }
+                onKeyDown={(e) => e.preventDefault()}
+                min={getMinDateTime()}
               />
             </div>
 
@@ -283,11 +350,13 @@ const EditBannerPopup = ({
                 onChange={(e) =>
                   setFormData({ ...formData, end: e.target.value })
                 }
+                min={getMinDateTime()}
+                onKeyDown={(e) => e.preventDefault()}
               />
             </div>
           </div>
 
-          <div className="d-flex w-100 mt-3 flex-column">
+          {/* <div className="d-flex w-100 mt-3 flex-column">
             <label className="black-text4 mb-1 small-font">
               Existing Files
             </label>
@@ -314,6 +383,61 @@ const EditBannerPopup = ({
                 ))}
               </div>
             )}
+          </div> */}
+          <div className="d-flex w-100 mt-3 flex-column">
+            <label className="black-text4 mb-1 small-font">
+              Existing Files
+            </label>
+            {formData.existingImages?.length > 0 && (
+              <div className="mt-2 d-flex">
+                {formData.existingImages.map((file, idx) => {
+                  const isVideo =
+                    file.endsWith(".mp4") ||
+                    file.endsWith(".mov") ||
+                    file.endsWith(".avi") ||
+                    file.endsWith(".mkv") ||
+                    file.endsWith(".webm");
+
+                  return (
+                    <div key={idx} className="position-relative">
+                      {isVideo ? (
+                        <video
+                          src={`${imgUrl}/banner/${file}`}
+                          className="img-thumbnail"
+                          style={{
+                            width: "90px",
+                            height: "80px",
+                            marginLeft: "5px",
+                            cursor: "pointer",
+                          }}
+                          controls
+                          autoPlay 
+                          muted 
+                          loop
+                        />
+                      ) : (
+                        <img
+                          src={`${imgUrl}/banner/${file}`}
+                          alt={`preview-${idx}`}
+                          className="img-thumbnail"
+                          style={{
+                            width: "90px",
+                            height: "80px",
+                            marginLeft: "5px",
+                            cursor: "pointer",
+                          }}
+                        />
+                      )}
+                      <MdCancel
+                        className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => removeImage(idx, false)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="d-flex w-100 mt-3 flex-column">
@@ -325,28 +449,51 @@ const EditBannerPopup = ({
               multiple
               onChange={handleImageChange}
               className="input-css2"
+              accept=".jpeg, .jpg, .png, .webp, .mp4, .mov, .avi, .mkv, .webm" // Allow both images and videos
             />
             {formData.image?.length > 0 && (
               <div className="mt-2 d-flex">
-                {formData.image.map((image, idx) => (
-                  <div key={idx} className="position-relative">
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt={`preview-${idx}`}
-                      className="img-thumbnail"
-                      style={{
-                        width: "90px",
-                        height: "80px",
-                        marginLeft: "5px",
-                      }}
-                    />
-                    <MdCancel
-                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle "
-                      style={{ cursor: "pointer" }}
-                      onClick={() => removeImage(idx, true)}
-                    />
-                  </div>
-                ))}
+                {formData.image.map((file, idx) => {
+                  const isVideo = file.type.startsWith("video/");
+
+                  return (
+                    <div key={idx} className="position-relative">
+                      {isVideo ? (
+                        <video
+                          src={URL.createObjectURL(file)}
+                          className="img-thumbnail"
+                          style={{
+                            width: "90px",
+                            height: "80px",
+                            marginLeft: "5px",
+                            cursor: "pointer",
+                          }}
+                          controls
+                          autoPlay 
+                          muted 
+                          loop
+                        />
+                      ) : (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`preview-${idx}`}
+                          className="img-thumbnail"
+                          style={{
+                            width: "90px",
+                            height: "80px",
+                            marginLeft: "5px",
+                            cursor: "pointer",
+                          }}
+                        />
+                      )}
+                      <MdCancel
+                        className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => removeImage(idx, true)}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

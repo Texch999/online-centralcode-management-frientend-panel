@@ -359,19 +359,6 @@ const Broadcasting = () => {
     { header: "", field: "icons", width: "10%" },
   ];
 
-  // const filteredbroadCastingdata = broadCastingdata?.filter((item) => {
-  //   const activedbutton = activeBtn.value;
-  //   if (activedbutton === 1) {
-  //     return item.panel_type === 1;
-  //   } else if (activedbutton === 2) {
-  //     return item.panel_type === 2;
-  //   }
-
-  //   return false;
-  // });
-
-  // useEffect(() => {}, [filteredbroadCastingdata, activeBtn]);
-
   const CASINO_DATA = broadCastingdata?.map((broadCast) => ({
     dateTime: (
       <div>
@@ -412,6 +399,9 @@ const Broadcasting = () => {
         <SlPencil
           size={18}
           className="pointer me-1"
+          style={
+            broadCast.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}
+          }
           onClick={() => handleEditBroadcasting(broadCast.id)}
         />
         <MdBlockFlipped
