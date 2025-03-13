@@ -38,6 +38,11 @@ const EditBannerPopup = ({
     existingImages: [],
   });
 
+  const [errors, setErrors] = useState({
+    start: "",
+    end: "",
+  });
+
   const directorsWebsites = [
     ...(Array.isArray(selectOptionsWebsitesDirectors)
       ? selectOptionsWebsitesDirectors
@@ -252,6 +257,37 @@ const EditBannerPopup = ({
     return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:MM"
   };
 
+  const handleDateChange = (e, field) => {
+    const { value } = e.target;
+    let errorMsg = "";
+
+    if (field === "start") {
+      const currentDateTime = new Date().toISOString().slice(0, 16);
+      if (value < currentDateTime) {
+        errorMsg = "Start date and time cannot be in the past.";
+      }
+      setFormData({ ...formData, start: value });
+
+      // Reset the end date if it's before the new start date
+      if (formData.end && value > formData.end) {
+        setFormData({ ...formData, end: "" });
+        setErrors((prev) => ({
+          ...prev,
+          end: "End date must be after start date.",
+        }));
+      }
+    }
+
+    if (field === "end") {
+      if (value < formData.start) {
+        errorMsg = "End date must be after the start date.";
+      }
+      setFormData({ ...formData, end: value });
+    }
+
+    setErrors((prev) => ({ ...prev, [field]: errorMsg }));
+  };
+
   return (
     <Modal show={editBanner} size="md" centered>
       <Modal.Body>
@@ -333,12 +369,13 @@ const EditBannerPopup = ({
                 className="input-css2"
                 type="datetime-local"
                 value={formData.start}
-                onChange={(e) =>
-                  setFormData({ ...formData, start: e.target.value })
-                }
+                onChange={(e) => handleDateChange(e, "start")}
                 onKeyDown={(e) => e.preventDefault()}
                 min={getMinDateTime()}
               />
+              {errors.start && (
+                <span className="text-danger small-font">{errors.start}</span>
+              )}
             </div>
 
             <div className="col-4 flex-column">
@@ -347,12 +384,14 @@ const EditBannerPopup = ({
                 className="input-css2"
                 type="datetime-local"
                 value={formData.end}
-                onChange={(e) =>
-                  setFormData({ ...formData, end: e.target.value })
-                }
-                min={getMinDateTime()}
+                // onChange={(e) =>
+                //   setFormData({ ...formData, end: e.target.value })
+                // }
+                onChange={(e) => handleDateChange(e, "end")}
+                min={formData.start}
                 onKeyDown={(e) => e.preventDefault()}
               />
+              {errors.end && <span className="text-danger small-font">{errors.end}</span>}
             </div>
           </div>
 
@@ -411,8 +450,8 @@ const EditBannerPopup = ({
                             cursor: "pointer",
                           }}
                           controls
-                          autoPlay 
-                          muted 
+                          autoPlay
+                          muted
                           loop
                         />
                       ) : (
@@ -469,8 +508,8 @@ const EditBannerPopup = ({
                             cursor: "pointer",
                           }}
                           controls
-                          autoPlay 
-                          muted 
+                          autoPlay
+                          muted
                           loop
                         />
                       ) : (

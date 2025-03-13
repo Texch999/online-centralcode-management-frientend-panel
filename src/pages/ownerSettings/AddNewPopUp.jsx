@@ -32,6 +32,7 @@ const AddNewPopUp = ({
     handleSubmit,
     setValue,
     watch,
+    trigger,
     reset,
     formState: { errors, isValid },
   } = useForm({
@@ -184,52 +185,26 @@ const AddNewPopUp = ({
       });
   };
 
-  const handleReasonChange = (e) => {
-    const value = e.target.value;
-
-    if (value.length === 0) {
-      setReasonError("Reason is required");
-    } else if (value.length < 2) {
-      setReasonError("Reason must be at least 2 characters");
-    } else if (value.length > 100) {
-      setReasonError("Reason cannot exceed 100 characters");
-    } else {
-      setReasonError(""); // Clear error when valid
-    }
-
-    setValue("reason", value, { shouldValidate: true });
-  };
-
   const handleQuestionChange = (e) => {
     const value = e.target.value;
 
-    if (value.length === 0) {
-      setQuestionError("Question is required");
-    } else if (value.length < 2) {
-      setQuestionError("Question must be at least 2 characters");
-    } else if (value.length > 100) {
-      setQuestionError("Question cannot exceed 100 characters");
+    if (value.length < 2) {
+      setValue("securityQns", value);
+      trigger("securityQns"); // Trigger validation to update errors
     } else {
-      setQuestionError(""); // Clear error when valid
+      setValue("securityQns", value, { shouldValidate: true });
     }
-
-    setValue("securityQns", value, { shouldValidate: true });
   };
 
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
 
-    if (value.length === 0) {
-      setDescriptionError("Description is required");
-    } else if (value.length < 2) {
-      setDescriptionError("Description must be at least 2 characters");
-    } else if (value.length > 255) {
-      setDescriptionError("Description cannot exceed 255 characters");
+    if (value.length < 2) {
+      setValue("description", value);
+      trigger("description"); // Trigger validation to update errors
     } else {
-      setDescriptionError(""); // Clear error when valid
+      setValue("description", value, { shouldValidate: true });
     }
-
-    setValue("description", value, { shouldValidate: true });
   };
 
   return (
@@ -286,11 +261,13 @@ const AddNewPopUp = ({
                     placeholder="Select"
                     styles={customStyles}
                     value={watch("status") || null}
-                    onChange={(selectedOption) =>
+                    {...register("status", { required: "Status is required" })} // Add required validation
+                    onChange={(selectedOption) => {
                       setValue("status", selectedOption, {
                         shouldValidate: true,
-                      })
-                    }
+                      });
+                      trigger("status"); // Trigger validation on change
+                    }}
                     isSearchable={false} // Disable typing
                   />
                   {errors.status && (
@@ -321,11 +298,26 @@ const AddNewPopUp = ({
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
-                    {...register("reason", { required: "Reason is required" })}
-                    onChange={handleReasonChange}
+                    {...register("reason", {
+                      required: "Reason is required",
+                      minLength: {
+                        value: 2,
+                        message: "Must be at least 2 characters",
+                      },
+                      maxLength: {
+                        value: 100,
+                        message: "Cannot exceed 100 characters",
+                      },
+                    })}
+                    onChange={(e) => {
+                      setValue("reason", e.target.value); // Update input value
+                      trigger("reason"); // Validate length constraints while typing
+                    }}
                   />
-                  {reasonError && (
-                    <p className="text-danger small-font mt-1">{reasonError}</p>
+                  {errors.reason && (
+                    <p className="text-danger small-font">
+                      {errors.reason.message}
+                    </p>
                   )}
                 </div>
 
@@ -338,12 +330,20 @@ const AddNewPopUp = ({
                     style={{ resize: "none" }}
                     {...register("description", {
                       required: "Description is required",
+                      minLength: {
+                        value: 2,
+                        message: "Must be at least 2 characters",
+                      },
+                      maxLength: {
+                        value: 255,
+                        message: "Cannot exceed 255 characters",
+                      },
                     })}
                     onChange={handleDescriptionChange}
                   ></textarea>
-                  {descriptionError && (
+                  {errors.description && (
                     <p className="text-danger small-font mt-1">
-                      {descriptionError}
+                      {errors.description.message}
                     </p>
                   )}
                 </div>
@@ -385,13 +385,14 @@ const AddNewPopUp = ({
                     placeholder="Select"
                     styles={customStyles}
                     value={watch("status") || null}
-                    onChange={(selectedOption) =>
+                    {...register("status", { required: "Status is required" })} // Add required validation
+                    onChange={(selectedOption) => {
                       setValue("status", selectedOption, {
                         shouldValidate: true,
-                      })
-                    }
+                      });
+                      trigger("status"); // Trigger validation on change
+                    }}
                     isSearchable={false} // Disable typing
-
                   />
                   {errors.status && (
                     <p className="text-danger small-font">
@@ -408,12 +409,20 @@ const AddNewPopUp = ({
                     className="all-none input-bg small-font p-2 rounded"
                     {...register("securityQns", {
                       required: "Question is required",
+                      minLength: {
+                        value: 2,
+                        message: "Must be at least 2 characters",
+                      },
+                      maxLength: {
+                        value: 100,
+                        message: "Cannot exceed 100 characters",
+                      },
                     })}
                     onChange={handleQuestionChange}
                   />
-                  {questionError && (
+                  {errors.securityQns && (
                     <p className="text-danger small-font mt-1">
-                      {questionError}
+                      {errors.securityQns.message}
                     </p>
                   )}
                 </div>
