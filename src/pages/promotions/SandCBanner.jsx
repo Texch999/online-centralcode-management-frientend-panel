@@ -50,7 +50,8 @@ const SandCBanner = () => {
   const [websitesList, setWebsitesList] = useState([]);
   const [fullPoster, setFullPoster] = useState(false);
   const [fullPosterImage, setFullPosterImage] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
   const [totalRecords, setTotalRecords] = useState("");
@@ -85,6 +86,8 @@ const SandCBanner = () => {
     return ACTIVE_BTNS[0];
   });
 
+  console.log("selectedImage", selectedImage)
+
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
@@ -104,7 +107,8 @@ const SandCBanner = () => {
     setSelectedPlace(null);
     setStartDT("");
     setEndDT("");
-    setSelectedFiles([]);
+    setSelectedVideo(null);
+    setSelectedImage(null);
   };
 
   const [errors, setErrors] = useState({
@@ -112,7 +116,8 @@ const SandCBanner = () => {
     selectPosterType: "",
     selectedPage: "",
     selectedPlace: "",
-    selectedFiles: "",
+    selectedImage: "",
+    selectedVideo: "",
     endDT: "",
   });
 
@@ -208,13 +213,12 @@ const SandCBanner = () => {
     setSelectPlace(updatedSelectPlace);
   };
 
-
-  const posterTypeOptions = Object.entries(Enums.selectOptionsPromotionType).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
+  const posterTypeOptions = Object.entries(
+    Enums.selectOptionsPromotionType
+  ).map(([key, value]) => ({
+    value,
+    label: key,
+  }));
 
   const handleSelectPosterType = (selected) => {
     setSelectPosterType(selected);
@@ -230,64 +234,46 @@ const SandCBanner = () => {
     setErrors((prev) => ({ ...prev, selectedPlace: "" }));
   };
 
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
+  const handleFileChange = (event, type) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
     const maxSizeImage = 2 * 1024 * 1024; // 2MB for images
     const maxSizeVideo = 5 * 1024 * 1024; // 5MB for videos
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "video/mp4"];
+    const allowedTypes = {
+      image: ["image/jpeg", "image/png", "image/webp"],
+      video: ["video/mp4"],
+    };
 
-    let validImages = [];
-    let validVideos = [];
-    let errorMessages = [];
+    let errorMessage = "";
 
-    files.forEach((file) => {
-      console.log(
-        `File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(
-          2
-        )} MB, Type: ${file.type}`
-      );
-
-      if (!allowedTypes.includes(file.type)) {
-        errorMessages.push(`Invalid format: ${file.name}`);
-      } else if (file.type.startsWith("image/") && file.size > maxSizeImage) {
-        errorMessages.push(`Image ${file.name} exceeds 2MB.`);
-      } else if (file.type === "video/mp4" && file.size > maxSizeVideo) {
-        errorMessages.push(`Video ${file.name} exceeds 5MB.`);
-      } else {
-        if (file.type.startsWith("image/")) {
-          validImages.push(file);
-        } else if (file.type === "video/mp4") {
-          validVideos.push(file);
-        }
-      }
-    });
-
-    // Enforce max limits: 5 images, 2 videos
-    if (validImages.length > 5) {
-      errorMessages.push("You can only upload up to 5 images.");
-      validImages = validImages.slice(0, 5);
+    if (!allowedTypes[type].includes(file.type)) {
+      errorMessage = `Invalid format: ${file.name}`;
+    } else if (type === "image" && file.size > maxSizeImage) {
+      errorMessage = `Image ${file.name} exceeds 2MB.`;
+    } else if (type === "video" && file.size > maxSizeVideo) {
+      errorMessage = `Video ${file.name} exceeds 5MB.`;
     }
 
-    if (validVideos.length > 2) {
-      errorMessages.push("You can only upload up to 2 videos.");
-      validVideos = validVideos.slice(0, 2);
-    }
-
-    if (errorMessages.length > 0) {
-      setErrors((prev) => ({
-        ...prev,
-        selectedFiles: errorMessages.join(" "),
-      }));
+    if (errorMessage) {
+      setErrors((prev) => ({ ...prev, [type]: errorMessage }));
       return;
     }
 
-    setSelectedFiles([...validImages, ...validVideos]);
-    setErrors((prev) => ({ ...prev, selectedFiles: "" }));
+    if (type === "image") {
+      setSelectedImage(file);
+    } else if (type === "video") {
+      setSelectedVideo(file);
+    }
+
+    setErrors((prev) => ({ ...prev, [type]: "" }));
   };
 
   const handleCreateBanner = async () => {
+    console.log("clickedddddddddd");
+  
     let newErrors = {};
-
+  
     if (!selectWebsites) {
       newErrors.selectWebsites = "Website is required.";
     }
@@ -298,17 +284,20 @@ const SandCBanner = () => {
       newErrors.selectedPlace = "Place is required.";
     }
     if (!selectPosterType) {
-      newErrors.selectedPlace = "Place is required.";
+      newErrors.selectPosterType = "Poster Type is required.";
     }
-    if (selectedFiles.length === 0) {
-      newErrors.selectedFiles = "At least one image is required.";
+    if (!selectedImage) {
+      newErrors.selectedImage = "Image is required.";
     }
-
+  
     if (Object.keys(newErrors).length > 0) {
+      console.log("Validation Errors:", newErrors);
       setErrors(newErrors);
       return;
     }
-
+  
+    console.log("Validation Passed. Proceeding...");
+  
     const formData = new FormData();
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
@@ -316,29 +305,24 @@ const SandCBanner = () => {
     formData.append("poster_type", selectPosterType.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
-
-    // Only append `start` and `end` if they have values
-    if (startDT) {
-      formData.append("start", startDT);
-    }
-    if (endDT) {
-      formData.append("end", endDT);
-    }
-
+  
+    if (startDT) formData.append("start", startDT);
+    if (endDT) formData.append("end", endDT);
+  
     if (Array.isArray(selectWebsites)) {
-      selectWebsites.forEach((site) =>
-        formData.append("website_id[]", site.value)
-      );
+      selectWebsites.forEach((site) => formData.append("website_id[]", site.value));
     } else {
       formData.append("website_id", selectWebsites?.value);
     }
-
-    selectedFiles.forEach((file) => {
-      formData.append("image", file);
-    });
-
+  
+    if (!createBanner) {
+      console.error("createBanner function is not defined!");
+      return;
+    }
+  
     setLoading(true);
     try {
+      console.log("tryingggggg");
       const response = await createBanner(formData);
       if (response.status === 200) {
         setMessage(response.message);
@@ -349,18 +333,20 @@ const SandCBanner = () => {
         setStartDT("");
         setEndDT("");
         setLoading(false);
-        setSelectedFiles([]);
+        setSelectedImage(null);
+        setSelectedVideo(null);
         setSuccessPopupOpen(true);
         getBanners();
       }
     } catch (error) {
+      console.error("Error during API call:", error);
       setMessage(error.message);
       setLoading(false);
       setSuccessPopupOpen(false);
       setErrorPopupOpen(true);
     }
   };
-
+  
   useEffect(() => {
     getBanners();
   }, [activeBtn]);
@@ -686,14 +672,18 @@ const SandCBanner = () => {
         <SlPencil
           size={18}
           className="mx-3 pointer"
-          style={banner.status !== 1 ? { pointerEvents: "none",  color: "gray"} : {}}
+          style={
+            banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}
+          }
           onClick={() => handleEditBanners(banner?.id)}
         />
 
         <FaRegTrashCan
           size={18}
-           className="mx-3 pointer"
-          style={banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}}
+          className="mx-3 pointer"
+          style={
+            banner.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}
+          }
           onClick={() => handleDeleteBannerConfirm(banner.id)}
         />
       </div>
@@ -859,55 +849,82 @@ const SandCBanner = () => {
       </div>
 
       <div className="d-flex small-font mt-3 mb-5 gap-3">
-        <div className="col-md-3 col-lg-5  fixed-width-field1">
+
+        <div className="col-md-3 col-lg-5 fixed-width-field1">
           <label
-            htmlFor="poster"
+            htmlFor="posterImage"
             className="black-text4 small-font mb-1 d-block"
           >
-            Upload Poster
+            Upload Poster Image
           </label>
 
-          <label htmlFor="poster" className="d-block">
+          <label htmlFor="posterImage" className="d-block">
             <input
               type="file"
-              id="poster"
-              multiple
+              id="posterImage"
               accept="*"
               style={{ display: "none" }}
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, "image")}
             />
 
             <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
               <span className="file-name">
-                {selectedFiles.length === 0 ? (
-                  "Select Files (Max: 5)"
-                ) : selectedFiles.length === 1 ? (
-                  selectedFiles[0].name.length > 10 ? (
-                    selectedFiles[0].name.substring(0, 10) + "..."
-                  ) : (
-                    selectedFiles[0].name
-                  )
-                ) : (
-                  <>
-                    {selectedFiles[0].name.length > 10
-                      ? selectedFiles[0].name.substring(0, 10) + "..."
-                      : selectedFiles[0].name}{" "}
-                    +{selectedFiles.length - 1} more
-                  </>
-                )}
+                {selectedImage
+                  ? selectedImage.name.length > 10
+                    ? selectedImage.name.substring(0, 10) + "..."
+                    : selectedImage.name
+                  : "Select Image"}
               </span>
               <MdOutlineFileUpload size={18} />
             </div>
           </label>
 
-          {errors?.selectedFiles && (
+          {errors.image && (
             <div
               className="position-absolute w-100"
               style={{ minHeight: "20px" }}
             >
-              <span className="text-danger small-font">
-                {errors.selectedFiles}
+              <span className="text-danger small-font">{errors.image}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Upload Poster Video */}
+        <div className="col-md-3 col-lg-5 fixed-width-field1">
+          <label
+            htmlFor="posterVideo"
+            className="black-text4 small-font mb-1 d-block"
+          >
+            Upload Poster Video
+          </label>
+
+          <label htmlFor="posterVideo" className="d-block">
+            <input
+              type="file"
+              id="posterVideo"
+              accept="video/mp4"
+              style={{ display: "none" }}
+              onChange={(e) => handleFileChange(e, "video")}
+            />
+
+            <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+              <span className="file-name">
+                {selectedVideo
+                  ? selectedVideo.name.length > 10
+                    ? selectedVideo.name.substring(0, 10) + "..."
+                    : selectedVideo.name
+                  : "Select Video"}
               </span>
+              <MdOutlineFileUpload size={18} />
+            </div>
+          </label>
+
+          {errors.video && (
+            <div
+              className="position-absolute w-100"
+              style={{ minHeight: "20px" }}
+            >
+              <span className="text-danger small-font">{errors.video}</span>
             </div>
           )}
         </div>
