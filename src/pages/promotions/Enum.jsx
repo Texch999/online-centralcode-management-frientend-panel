@@ -3,6 +3,10 @@ const Enums = {
     Sports: 1,
     Casino: 2,
   },
+  selectOptionsPromotionType: {
+    Image: 1,
+    Video: 2,
+  },
   
   brahmaSelectPages: {
     "HOME": 1,
