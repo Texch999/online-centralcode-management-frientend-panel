@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import {
+  getAvailableWebsites,
   getPrivacyPolicyById,
   updatePrivacyPolicyById,
 } from "../../api/apiMethods";
@@ -15,12 +16,60 @@ const EditPrivacyPolicy = ({
   setPrivacyPolicyId,
   privacyPolicyId,
   getPolicyPrivacyData,
+  availablePrivacyWebsiteId,
+  setSelectWebsite,
+  selectWebsite,
 }) => {
   const [error, setError] = useState("");
   const [showPrivacyText, setShowPrivacyText] = useState({ description: "" });
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   console.log(showPrivacyText?.description, "showPrivacyText");
   const [errorPopup, setErrorPopup] = useState(false);
+
+  const [websites, setWebsites] = useState([]);
+  // const [error, setError] = useState("");
+  // const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  // const [errorPopup, setErrorPopup] = useState(false);
+  const [allUnchecked, setAllUnchecked] = useState(false);
+  const [userConfirmed, setUserConfirmed] = useState(false);
+
+  const availableWebsites = () => {
+    getAvailableWebsites(availablePrivacyWebsiteId)
+      .then((response) => {
+        if (response.status === true) {
+          setWebsites(response?.data);
+          console.log(response?.data, "shshhs");
+        } else {
+          setError("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+        setErrorPopup(true);
+        setTimeout(() => setErrorPopup(false), 1500);
+      });
+  };
+
+  useEffect(() => {
+    if (availablePrivacyWebsiteId) {
+      availableWebsites();
+    }
+  }, [availablePrivacyWebsiteId]);
+
+  const handleCheckboxChange = (id) => {
+    setWebsites((prevWebsites) => {
+      const updatedWebsites = prevWebsites.map((site) =>
+        site.id === id ? { ...site, selected: !site.selected } : site
+      );
+
+      const allDeselected = updatedWebsites.every((site) => !site.selected);
+      setAllUnchecked(allDeselected);
+
+      return updatedWebsites;
+    });
+
+    setUserConfirmed(false);
+  };
 
   const getPolicyPrivacyDataById = () => {
     getPrivacyPolicyById(privacyPolicyId)
@@ -85,13 +134,67 @@ const EditPrivacyPolicy = ({
           <Modal.Title>Privacy Policy</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <div className="mb-3">
+            <div className="d-flex flex-between text-black my-2">
+              <div className="medium-font">Select Website</div>
+              {/* <div
+                        onClick={() => setSelectWebsite(false)}
+                        className="font-20"
+                      >
+                        <IoCloseSharp />
+                      </div> */}
+            </div>
+            <div className="d-flex w-100 flex-column small-font black-border p-2 br-5">
+              <div className="d-flex w-100 flex-wrap ">
+                {websites.map((website) => (
+                  <div key={website.id} className="my-2">
+                    <div className="input-css d-flex flex-between small-font mx-2">
+                      <input
+                        type="checkbox"
+                        checked={website?.selected}
+                        className="mx-2"
+                        onChange={() => handleCheckboxChange(website?.id)}
+                      />
+                      {website.web_name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {allUnchecked && (
+                <div className="alert alert-warning mx-2">
+                  <p>
+                    All websites are unselected. This privacy policy will be
+                    removed.
+                  </p>
+                  <button
+                    className="saffron-btn2"
+                    onClick={() => setUserConfirmed(true)}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              )}
+              {/* <div
+                      className={`saffron-btn2 br-5 mx-2 pointer ${
+                        allUnchecked && !userConfirmed ? "disabled" : ""
+                      }`}
+                      onClick={addMultipleWebsitesToPrivacyPolicy}
+                      style={{
+                        opacity: allUnchecked && !userConfirmed ? 0.5 : 1,
+                      }}
+                    >
+                      Add Website
+                    </div> */}
+            </div>
+          </div>
+
           <div className="small-font w-100 d-flex flex-column col-12">
             <ReactQuill
               theme="snow"
               value={showPrivacyText?.description || ""}
               onChange={hanldeChnage}
             />
-            ;
           </div>
           <div className="d-flex flex-end my-3">
             <div

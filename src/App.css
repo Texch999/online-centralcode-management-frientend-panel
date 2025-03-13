@@ -1003,3 +1003,8 @@
 .light-bg{
   background-color: #F2F2F2;
 }
+.flex-wrap{
+  display: flex;
+  flex-wrap: wrap;
+
+}

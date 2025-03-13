@@ -57,6 +57,7 @@ const PrivacyPolicy = () => {
   const handleEditPrivacyModal = (id) => {
     setPrivacyPolicyId(id);
     setEditPrivacyPolicyModal(true);
+    setAvailablePrivacyWebsiteId(id);
   };
   const handleAddPrivacyModal = () => {
     setAddPrivacyModal(true);
@@ -90,7 +91,7 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.web_name,
   }));
-  console.log(availablePrivacyWebsiteId,"gg")
+  console.log(availablePrivacyWebsiteId, "gg");
 
   const hanldeWebsites = (id) => {
     setSelectWebsite(true);
@@ -196,7 +197,7 @@ const PrivacyPolicy = () => {
       ),
       action: (
         <div className="large-font d-flex w-50 flex-between">
-          {item?.is_active === 2 ? (
+          {/* {item?.is_active === 2 ? (
             <span className="mx-3 pointer disabled">
               <CgWebsite size={20} />
             </span>
@@ -207,7 +208,7 @@ const PrivacyPolicy = () => {
             >
               <CgWebsite size={20} />
             </span>
-          )}
+          )} */}
           {item?.is_active === 2 ? (
             <span title="this action is denied" className="disabled">
               <SlPencil size={20} />
@@ -306,6 +307,10 @@ const PrivacyPolicy = () => {
         getPolicyPrivacyData={getPolicyPrivacyData}
         setShowPrivacyText={setShowPrivacyText}
         showPrivacyText={showPrivacyText}
+        availablePrivacyWebsiteId={availablePrivacyWebsiteId}
+        setAvailablePrivacyWebsiteId={setAvailablePrivacyWebsiteId}
+        setSelectWebsite={setSelectWebsite}
+        selectWebsite={selectWebsite}
       />
       <SelectWebsitePopUp
         setSelectWebsite={setSelectWebsite}
