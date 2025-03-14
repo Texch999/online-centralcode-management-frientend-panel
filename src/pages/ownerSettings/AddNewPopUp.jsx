@@ -72,8 +72,8 @@ const AddNewPopUp = ({
 
   useEffect(() => {
     if (isEdit && rejReasonsDataById) {
-      setRejReason(rejReasonsDataById?.reason || "");
-      setRejReasonDescription(rejReasonsDataById?.description || "");
+      setRejReason(rejReasonsDataById?.reason);
+      setRejReasonDescription(rejReasonsDataById?.description);
       setSelectedStatus(rejReasonsDataById?.status || null);
     }
   }, [isEdit, rejReasonsDataById]);
@@ -92,8 +92,17 @@ const AddNewPopUp = ({
   }, [isEdit, selectedRejReasonId, setValue]);
 
   const onSubmitRejReasons = (data) => {
+    const trimmedReason = data.reason.trim();
+
+    if (!trimmedReason) {
+      setError("securityQns", {
+        type: "manual",
+        message: "Reason cannot be empty or cannot be contain spaces",
+      });
+      return;
+    }
     const payload = {
-      reason: data.reason,
+      reason: trimmedReason,
       description: data.description,
       status: Number(data.status?.value),
     };
@@ -128,7 +137,7 @@ const AddNewPopUp = ({
   // sec qns
   useEffect(() => {
     if (isEdit && selectedSecurityQuestion) {
-      setSecurityQns(selectedSecurityQuestion?.questions || "");
+      setSecurityQns(selectedSecurityQuestion?.questions);
       setSelectedStatus(selectedSecurityQuestion.status || null);
     }
   }, [isEdit, selectedSecurityQuestion]);
@@ -146,9 +155,18 @@ const AddNewPopUp = ({
   }, [isEdit, selectedQnsId, setValue]);
 
   const onSubmitSecQns = (data) => {
+    const trimmedQuestion = data.securityQns.trim();
+
+    if (!trimmedQuestion) {
+      setError("securityQns", {
+        type: "manual",
+        message: "Question cannot be empty or cannot be contain spaces",
+      });
+      return;
+    }
     setIsSubmitting(true);
     const payload = {
-      questions: data?.securityQns,
+      questions: trimmedQuestion,
       status: data?.status?.value || null,
     };
 
@@ -250,7 +268,17 @@ const AddNewPopUp = ({
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
-                    {...register("reason", { required: "Reason is required" })}
+                    // {...register("reason", { required: "Reason is required" })}
+                    {...register("reason", {
+                      required: "Reason is required",
+                      validate: (value) => {
+                        const trimmedValue = value.trim();
+                        if (!trimmedValue) {
+                          return "Reason cannot be empty or contain only spaces";
+                        }
+                        return true;
+                      },
+                    })}
                   />
                   {errors.reason && (
                     <p className="text-danger small-font">
@@ -268,8 +296,16 @@ const AddNewPopUp = ({
                     style={{ resize: "none" }}
                     {...register("description", {
                       required: "Description is required",
+                      validate: (value) => {
+                        const trimmedValue = value.trim();
+                        if (trimmedValue.length <= 20) {
+                          return "Description must be more than 20 characters";
+                        }
+                        return true;
+                      },
                     })}
                   ></textarea>
+
                   {errors.description && (
                     <p className="text-danger small-font">
                       {errors.description.message}
@@ -333,8 +369,18 @@ const AddNewPopUp = ({
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
+                    // {...register("securityQns", {
+                    //   required: "Question is required",
+                    // })}
                     {...register("securityQns", {
                       required: "Question is required",
+                      validate: (value) => {
+                        const trimmedValue = value.trim();
+                        if (!trimmedValue) {
+                          return "Question cannot be empty or contain only spaces";
+                        }
+                        return true;
+                      },
                     })}
                   />
                   {errors.securityQns && (
