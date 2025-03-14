@@ -50,25 +50,6 @@ const AddPrivacyPolicyPopUp = ({
   const [message, setMessage] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [descriptionError, setDescriptionError] = useState("");
-
-  const handleDescriptionChange = (value) => {
-    // Remove HTML tags to count only text length
-    const textLength = value.replace(/<[^>]+>/g, "").trim().length;
-
-    if (textLength === 0) {
-      setDescriptionError("Description is required");
-    } else if (textLength < 2) {
-      setDescriptionError("Description must be at least 2 characters");
-    } else if (textLength > 5000) {
-      setDescriptionError("Description cannot exceed 5000 characters");
-    } else {
-      setDescriptionError(""); // Clear error when valid
-    }
-
-    setValue("description", value, { shouldValidate: true });
-  };
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -102,7 +83,7 @@ const AddPrivacyPolicyPopUp = ({
   const onSubmit = (data) => {
     if (!values || values === "<p><br></p>") {
       setError("description", {
-        type: "manual",
+        type: "manual",   
         message: "Description is required",
       });
       return;
@@ -166,29 +147,24 @@ const AddPrivacyPolicyPopUp = ({
                   rules={{ required: "Country is required" }}
                   render={({ field }) => (
                     <Select
-                      {...field}
-                      options={countryOptions}
-                      styles={customStyles}
-                      placeholder="Select"
-                      maxMenuHeight={120}
-                      menuPlacement="auto"
-                      classNamePrefix="custom-react-select"
-                      value={countryOptions.find(
-                        (option) => option.value === field.value
-                      )}
-                      onInputChange={(inputValue, { action }) => {
-                        if (action === "input-change") {
-                          const filteredValue = inputValue.replace(
-                            /[^A-Za-z\s]/g,
-                            ""
-                          ); // Allow only letters and spaces
-                          return filteredValue;
-                        }
-                      }}
-                      onChange={(selectedOption) => {
-                        setSelectedCountry(selectedOption);
-                      }}
-                    />
+                    {...field}
+                    options={countryOptions}
+                    styles={customStyles}
+                    placeholder="Select"
+                    maxMenuHeight={120}
+                    menuPlacement="auto"
+                    value={countryOptions.find((option) => option.value === field.value)}
+                    onChange={(val) => field.onChange(val)}
+                    filterOption={(option, searchText) => {
+                      // Allow only alphabetic characters in search
+                      const lettersOnly = searchText.replace(/[^a-zA-Z]/g, ""); // Remove non-alphabetic characters
+                      return option.label.toLowerCase().includes(lettersOnly.toLowerCase()); // Case-insensitive search
+                    }}
+                    onInputChange={(inputValue) => {
+                      // Ensure only alphabetic characters are allowed in the input
+                      return inputValue.replace(/[^a-zA-Z]/g, ""); // Remove non-alphabetic characters
+                    }}
+                  />
                   )}
                 />
                 {errors.country && (
@@ -241,12 +217,12 @@ const AddPrivacyPolicyPopUp = ({
                       styles={customStyles}
                       placeholder="Select"
                       maxMenuHeight={120}
+                      isSearchable={false}
                       menuPlacement="auto"
                       value={statusOptions.find(
                         (option) => option.value === field.value
                       )}
                       onChange={(val) => field.onChange(val)}
-                      isSearchable={false} // Disable typing
                     />
                   )}
                 />
@@ -257,35 +233,11 @@ const AddPrivacyPolicyPopUp = ({
                 )}
               </div>
 
-              {/* <div className="col-12 flex-column mt-3 mb-4 ">
+              <div className="col-12 flex-column mt-3 mb-4 ">
                 <label className="black-text4 mb-1">Description</label>
                 <ReactQuill theme="snow" value={values} onChange={setValues} />
                 {errors.description && (
                   <p className="text-danger small-font">
-                    {errors.description.message}
-                  </p>
-                )}
-              </div> */}
-
-              <div className="col-12 flex-column mt-3 mb-4">
-                <label className="black-text4 mb-1">Description</label>
-                <Controller
-                  name="description"
-                  control={control}
-                  rules={{ required: "Description is required" }}
-                  render={({ field }) => (
-                    <ReactQuill
-                      {...field}
-                      theme="snow"
-                      onChange={(val) => {
-                        field.onChange(val);
-                        handleDescriptionChange(val);
-                      }}
-                    />
-                  )}
-                />
-                {errors.description && (
-                  <p className="text-danger small-font mt-5">
                     {errors.description.message}
                   </p>
                 )}
@@ -296,11 +248,10 @@ const AddPrivacyPolicyPopUp = ({
                 <div className=" small-font pointer mt-4 flex-end col-4">
                   <button
                     type="submit"
-                    className="w-100 saffron-btn2"
-                    // className={` w-100 ${
-                    //   isValid ? "saffron-btn2" : "disabled-btn py-2 px-2 br-5"
-                    // }`}
-                    // disabled={!isValid || isSubmitting}
+                    className={` w-100 ${
+                      isValid ? "saffron-btn2" : "disabled-btn py-2 px-2 br-5"
+                    }`}
+                    disabled={!isValid || isSubmitting}
                   >
                     {isSubmitting ? "submitting..." : "Create"}
                   </button>
