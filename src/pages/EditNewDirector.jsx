@@ -2076,7 +2076,7 @@ function EditNewDirector() {
                     commission_type: site.commission_type || "",
                     status: site.status === 1 ? "Active" : "Inactive",
                     website_access_id: site.website_access_id,
-                    is_primary: site.is_primary || false, // Add is_primary to the payload
+                    is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
                   };
                   switch (site.commission_type) {
                     case 1:
@@ -2135,7 +2135,7 @@ function EditNewDirector() {
                     admin_panel_id: site.admin_panel_id,
                     commission_type: site.commission_type || "",
                     status: response.data.status === 1 ? "Active" : "Inactive",
-                    is_primary: site.is_primary || false, // Add is_primary to the payload
+                    is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
                   };
                   switch (site.commission_type) {
                     case 1:
@@ -2191,7 +2191,7 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          is_primary: site.is_primary || false, // Include is_primary in the payload
+          // Include is_primary in the payload
           ...(site.commission_type == 1
             ? {
               monthly_amount: parseInt(site.monthly_amount) || null,
@@ -2203,6 +2203,7 @@ function EditNewDirector() {
                 : {}),
             }
             : {
+              is_primary: site.is_primary == 1 ? 1 : 2,
               share: parseFloat(site.share) || null,
               downline_comm: parseFloat(site.downline_comm) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
@@ -2213,7 +2214,6 @@ function EditNewDirector() {
         admin_panel_id: parseInt(site.admin_panel_id) || null,
         user_paner_id: parseInt(site.user_paner_id) || null,
         commission_type: parseInt(site.commission_type) || null,
-        is_primary: site.is_primary || false, // Include is_primary in the payload
         ...(site.commission_type == 1
           ? {
             monthly_amount: parseInt(site.monthly_amount) || null,
@@ -2221,9 +2221,10 @@ function EditNewDirector() {
             chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
           }
           : {
+            is_primary: site.is_primary == 1 ? 1 : 2,
             share: parseFloat(site.share) || null,
             caschip_values: parseFloat(site.caschip_values) || null,
-          }),
+          }), 
         is_casino: site.is_casino === 1 ? 1 : 2,
         ...(site.is_casino === 1
           ? { caschip_values: parseFloat(site.caschip_values) || null }
@@ -2259,7 +2260,11 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id),
           user_paner_id: parseInt(site.user_paner_id),
           commission_type: parseInt(site.commission_type),
-          is_primary: site.is_primary || false, // Include is_primary in the payload
+          ...(site.commission_type != 1
+            ? {
+              is_primary: site.is_primary == 1 ? 1 : 2,
+            }
+            : {}),
           chip_percentage: (parseInt(site.monthly_amount) / parseInt(site.max_chips_monthly)) * 100,
         })),
       ],
@@ -2268,7 +2273,7 @@ function EditNewDirector() {
           admin_panel_id: parseInt(site.admin_panel_id) || null,
           user_paner_id: parseInt(site.user_paner_id) || null,
           commission_type: parseInt(site.commission_type) || null,
-          is_primary: site.is_primary || false, // Include is_primary in the payload
+          is_primary: site.is_primary == 1 ? 1 : 2, // Include is_primary in the payload
           downline_comm: parseFloat(site.downline_comm) || null,
           ...(site.commission_type == 1
             ? {
@@ -2334,7 +2339,7 @@ function EditNewDirector() {
         downline_comm: site.downline_comm,
         share: site.share,
         status: site.status,
-        is_primary: site.is_primary || false, // Add is_primary to the payload
+        is_primary: site.is_primary == 1 ? 1 : 2, // Add is_primary to the payload
         website_access_id: site.id ? site.id : site.website_access_id,
       });
     });
@@ -2477,7 +2482,7 @@ function EditNewDirector() {
           chip_percentage: null,
           caschip_values: null,
           is_casino: 2,
-          is_primary: false, // Default is_primary value for new websites
+          is_primary: 2, // Default is_primary value for new websites
           form_id: formId
         },
       ]);
@@ -3338,7 +3343,7 @@ function EditNewDirector() {
                                   <label className="small-font me-2">Is Primary</label>
                                   <input
                                     type="checkbox"
-                                    checked={userSite.is_primary == 1}
+                                    checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_primary == 1}
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
@@ -3414,7 +3419,7 @@ function EditNewDirector() {
                                   <label className="small-font me-2">Is Primary</label>
                                   <input
                                     type="checkbox"
-                                    checked={userSite.is_primary == 1}
+                                    checked={addWebsites.find((site) => site.id === userSite.website_access_id)?.is_primary == 1}
                                     onChange={(e) =>
                                       handleInputChange(
                                         userSite.website_access_id,
@@ -3653,10 +3658,20 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                {renderIsPrimaryCheckbox(
-                                  userSite.id,
-                                  addWebsites.find((site) => site.id === userSite.id)?.is_primary || false
-                                )}
+                                <div className="col position-relative mx-1 d-flex align-items-center">
+                                  <label className="small-font me-2">Is Primary</label>
+                                  <input
+                                    type="checkbox"
+                                    checked={addWebsites.find((site) => site.id === userSite.id)?.is_primary == 1}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.id,
+                                        "is_primary",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
 
                               </div>
                             )}
@@ -3717,10 +3732,20 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                {renderIsPrimaryCheckbox(
-                                  userSite.id,
-                                  addWebsites.find((site) => site.id === userSite.id)?.is_primary || false
-                                )}
+                                <div className="col position-relative mx-1 d-flex align-items-center">
+                                  <label className="small-font me-2">Is Primary</label>
+                                  <input
+                                    type="checkbox"
+                                    checked={addWebsites.find((site) => site.id === userSite.id)?.is_primary == 1}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        userSite.id,
+                                        "is_primary",
+                                        e.target.checked ? 1 : 2
+                                      )
+                                    }
+                                  />
+                                </div>
                               </div>
                             )}
                           </div>
