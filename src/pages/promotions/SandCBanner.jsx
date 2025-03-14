@@ -52,6 +52,7 @@ const SandCBanner = () => {
   const [fullPosterImage, setFullPosterImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedVideoBanner, setSelectedVideoBanner] = useState(null);
   const [loading, setLoading] = useState("");
   const [message, setMessage] = useState("");
   const [totalRecords, setTotalRecords] = useState("");
@@ -86,7 +87,9 @@ const SandCBanner = () => {
     return ACTIVE_BTNS[0];
   });
 
-  console.log("selectedImage", selectedImage)
+  console.log("selectedImage", selectedImage);
+  console.log("selectedVideo", selectedVideo);
+  console.log("selectedVideoBanner", selectedVideoBanner);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
@@ -108,6 +111,7 @@ const SandCBanner = () => {
     setStartDT("");
     setEndDT("");
     setSelectedVideo(null);
+    setSelectedVideoBanner(null);
     setSelectedImage(null);
   };
 
@@ -118,6 +122,7 @@ const SandCBanner = () => {
     selectedPlace: "",
     selectedImage: "",
     selectedVideo: "",
+    selectedVideoBanner: "",
     endDT: "",
     startDT: "",
   });
@@ -236,14 +241,16 @@ const SandCBanner = () => {
   };
 
   const handleFileChange = (event, type) => {
+    console.log("type", type);
     const file = event.target.files[0];
     if (!file) return;
 
     const maxSizeImage = 2 * 1024 * 1024; // 2MB for images
     const maxSizeVideo = 5 * 1024 * 1024; // 5MB for videos
     const allowedTypes = {
-      image: ["image/jpeg", "image/png", "image/webp"],
+      image: ["image/jpeg", "image/jpeg", "image/png", "image/webp"],
       video: ["video/mp4"],
+      video_banner: ["video/mp4"],
     };
 
     let errorMessage = "";
@@ -252,7 +259,10 @@ const SandCBanner = () => {
       errorMessage = `Invalid format: ${file.name}`;
     } else if (type === "image" && file.size > maxSizeImage) {
       errorMessage = `Image ${file.name} exceeds 2MB.`;
-    } else if (type === "video" && file.size > maxSizeVideo) {
+    } else if (
+      (type === "video" || type === "video_banner") &&
+      file.size > maxSizeVideo
+    ) {
       errorMessage = `Video ${file.name} exceeds 5MB.`;
     }
 
@@ -261,10 +271,13 @@ const SandCBanner = () => {
       return;
     }
 
+    // Set the correct state based on the type
     if (type === "image") {
       setSelectedImage(file);
     } else if (type === "video") {
       setSelectedVideo(file);
+    } else if (type === "video_banner") {
+      setSelectedVideoBanner(file);
     }
 
     setErrors((prev) => ({ ...prev, [type]: "" }));
@@ -272,9 +285,9 @@ const SandCBanner = () => {
 
   const handleCreateBanner = async () => {
     console.log("clickedddddddddd");
-  
+
     let newErrors = {};
-  
+
     if (!selectWebsites) {
       newErrors.selectWebsites = "Website is required.";
     }
@@ -286,19 +299,28 @@ const SandCBanner = () => {
     }
     if (!selectPosterType) {
       newErrors.selectPosterType = "Poster Type is required.";
+    } else {
+      if (selectPosterType.value === 1 && !selectedImage) {
+        newErrors.selectedImage = "Image is required.";
+      }
+      if (selectPosterType.value === 2) {
+        if (!selectedVideo) {
+          newErrors.selectedVideo = "Video is required.";
+        }
+        if (!selectedVideoBanner) {
+          newErrors.selectedVideoBanner = "Video Banner is required.";
+        }
+      }
     }
-    if (!selectedImage) {
-      newErrors.selectedImage = "Image is required.";
-    }
-  
+
     if (Object.keys(newErrors).length > 0) {
       console.log("Validation Errors:", newErrors);
       setErrors(newErrors);
       return;
     }
-  
+
     console.log("Validation Passed. Proceeding...");
-  
+
     const formData = new FormData();
     formData.append("register_id", localStorage.getItem("user_id"));
     formData.append("userfor", activeBtn.value);
@@ -306,21 +328,30 @@ const SandCBanner = () => {
     formData.append("poster_type", selectPosterType.value);
     formData.append("page", selectedPage?.value);
     formData.append("place", selectedPlace?.value);
-  
+
+    if (selectPosterType.value === 1) {
+      formData.append("image", selectedImage);
+    } else if (selectPosterType.value === 2) {
+      formData.append("video", selectedVideo);
+      formData.append("video_banner", selectedVideoBanner);
+    }
+
     if (startDT) formData.append("start", startDT);
     if (endDT) formData.append("end", endDT);
-  
+
     if (Array.isArray(selectWebsites)) {
-      selectWebsites.forEach((site) => formData.append("website_id[]", site.value));
+      selectWebsites.forEach((site) =>
+        formData.append("website_id[]", site.value)
+      );
     } else {
       formData.append("website_id", selectWebsites?.value);
     }
-  
+
     if (!createBanner) {
       console.error("createBanner function is not defined!");
       return;
     }
-  
+
     setLoading(true);
     try {
       console.log("tryingggggg");
@@ -336,6 +367,8 @@ const SandCBanner = () => {
         setLoading(false);
         setSelectedImage(null);
         setSelectedVideo(null);
+        setSelectPosterType(null);
+        setSelectedVideoBanner(null);
         setSuccessPopupOpen(true);
         getBanners();
       }
@@ -347,7 +380,7 @@ const SandCBanner = () => {
       setErrorPopupOpen(true);
     }
   };
-  
+
   useEffect(() => {
     getBanners();
   }, [activeBtn]);
@@ -535,8 +568,16 @@ const SandCBanner = () => {
     { header: "Banner/Poster Location", field: "posterLocation", width: "15%" },
     { header: "Schedule", field: "schedule", width: "15%" },
     {
-      header: <div className="flex-center">Poster</div>,
+      header: <div className="flex-center">Image</div>,
       field: "Poster",
+    },
+    {
+      header: <div className="flex-center">Banner</div>,
+      field: "Banner",
+    },
+    {
+      header: <div className="flex-center">Video</div>,
+      field: "Video",
     },
 
     { header: "Start", field: "start", width: "10%" },
@@ -611,18 +652,6 @@ const SandCBanner = () => {
         })()}
       </div>
     ),
-    // posterLocation: (
-    //   <div>
-    //     {/* {selectPlace.find(
-    //       (place) => Number(place.value) === Number(banner.place)
-    //     )?.label || "Unknown"} */}
-    //     {selectPlace?.length > 0
-    //       ? selectPlace.find(
-    //           (page) => Number(page.value) === Number(banner?.page)
-    //         )?.label || "Unknown"
-    //       : "No pages available"}
-    //   </div>
-    // ),
 
     schedule: (
       <div>{banner.schedule?.replace(/^./, (char) => char.toUpperCase())}</div>
@@ -630,33 +659,52 @@ const SandCBanner = () => {
     Poster: (
       <div className="flex-center">
         <div className="relative poster-img">
-          {banner.image &&
-            (() => {
-              const images = JSON.parse(banner.image);
-              const firstMedia = images[0];
-              const isVideo =
-                firstMedia.endsWith(".mp4") ||
-                firstMedia.endsWith(".mov") ||
-                firstMedia.endsWith(".avi") ||
-                firstMedia.endsWith(".mkv") ||
-                firstMedia.endsWith(".webm");
-
-              return isVideo ? (
-                <video
-                  src={`${imgUrl}/banner/${firstMedia}`}
-                  style={{ width: "200px", height: "150px", cursor: "pointer" }}
-                  controls
-                  onClick={() => handleFullScreen(images)}
-                />
-              ) : (
-                <img
-                  src={`${imgUrl}/banner/${firstMedia}`}
-                  alt="Banner"
-                  style={{ width: "200px", height: "150px", cursor: "pointer" }}
-                  onClick={() => handleFullScreen(images)}
-                />
-              );
-            })()}
+          {banner.image ? (
+            <img
+              src={`${imgUrl}/banner/${banner.image}`}
+              alt="Banner"
+              style={{ width: "200px", height: "150px", cursor: "pointer" }}
+              onClick={() => handleFullScreen(banner.image)}
+            />
+          ) : (
+            "-"
+          )}
+        </div>
+      </div>
+    ),
+    Banner: (
+      <div className="flex-center">
+        <div className="relative poster-img">
+          {banner.video_banner ? (
+            <video
+              src={`${imgUrl}/banner/${banner.video_banner}`}
+              style={{ width: "200px", height: "150px", cursor: "pointer" }}
+              // controls
+              autoPlay
+              muted
+              onClick={() => handleFullScreen(banner.video_banner)}
+            />
+          ) : (
+            "-"
+          )}
+        </div>
+      </div>
+    ),
+    Video: (
+      <div className="flex-center">
+        <div className="relative poster-img">
+          {banner.video ? (
+            <video
+              src={`${imgUrl}/banner/${banner.video}`}
+              style={{ width: "200px", height: "150px", cursor: "pointer" }}
+              // controls
+              autoPlay
+              muted
+              onClick={() => handleFullScreen(banner.video)}
+            />
+          ) : (
+            "-"
+          )}
         </div>
       </div>
     ),
@@ -865,8 +913,8 @@ const SandCBanner = () => {
             onKeyDown={(e) => e.preventDefault()} // Prevent manual typing
           />
           {errors.startDT && (
-          <span className="text-danger small-font">{errors.startDT}</span>
-        )}
+            <span className="text-danger small-font">{errors.startDT}</span>
+          )}
         </div>
 
         <div className="col flex-column fixed-width-field1">
@@ -908,85 +956,130 @@ const SandCBanner = () => {
       </div>
 
       <div className="d-flex small-font mt-3 mb-5 gap-3">
-
-        <div className="col-md-3 col-lg-5 fixed-width-field1">
-          <label
-            htmlFor="posterImage"
-            className="black-text4 small-font mb-1 d-block"
-          >
-            Upload Poster Image
-          </label>
-
-          <label htmlFor="posterImage" className="d-block">
-            <input
-              type="file"
-              id="posterImage"
-              accept="*"
-              style={{ display: "none" }}
-              onChange={(e) => handleFileChange(e, "image")}
-            />
-
-            <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
-              <span className="file-name">
-                {selectedImage
-                  ? selectedImage.name.length > 10
-                    ? selectedImage.name.substring(0, 10) + "..."
-                    : selectedImage.name
-                  : "Select Image"}
-              </span>
-              <MdOutlineFileUpload size={18} />
-            </div>
-          </label>
-
-          {errors.image && (
-            <div
-              className="position-absolute w-100"
-              style={{ minHeight: "20px" }}
+        {selectPosterType?.value === 1 ? (
+          <div className="col-md-3 col-lg-5 fixed-width-field1">
+            <label
+              htmlFor="posterImage"
+              className="black-text4 small-font mb-1 d-block"
             >
-              <span className="text-danger small-font">{errors.image}</span>
-            </div>
-          )}
-        </div>
+              Upload Poster Image
+            </label>
 
-        {/* Upload Poster Video */}
-        <div className="col-md-3 col-lg-5 fixed-width-field1">
-          <label
-            htmlFor="posterVideo"
-            className="black-text4 small-font mb-1 d-block"
-          >
-            Upload Poster Video
-          </label>
+            <label htmlFor="posterImage" className="d-block">
+              <input
+                type="file"
+                id="posterImage"
+                accept="*"
+                style={{ display: "none" }}
+                onChange={(e) => handleFileChange(e, "image")}
+              />
 
-          <label htmlFor="posterVideo" className="d-block">
-            <input
-              type="file"
-              id="posterVideo"
-              accept="video/mp4"
-              style={{ display: "none" }}
-              onChange={(e) => handleFileChange(e, "video")}
-            />
+              <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+                <span className="file-name">
+                  {selectedImage
+                    ? selectedImage.name.length > 10
+                      ? selectedImage.name.substring(0, 10) + "..."
+                      : selectedImage.name
+                    : "Select Image"}
+                </span>
+                <MdOutlineFileUpload size={18} />
+              </div>
+            </label>
 
-            <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
-              <span className="file-name">
-                {selectedVideo
-                  ? selectedVideo.name.length > 10
-                    ? selectedVideo.name.substring(0, 10) + "..."
-                    : selectedVideo.name
-                  : "Select Video"}
-              </span>
-              <MdOutlineFileUpload size={18} />
-            </div>
-          </label>
+            {errors.image && (
+              <div
+                className="position-absolute w-100"
+                style={{ minHeight: "20px" }}
+              >
+                <span className="text-danger small-font">{errors.image}</span>
+              </div>
+            )}
+          </div>
+        ) : null}
 
-          {errors.video && (
-            <div
-              className="position-absolute w-100"
-              style={{ minHeight: "20px" }}
+        {selectPosterType?.value === 2 ? (
+          <div className="col-md-3 col-lg-5 fixed-width-field1">
+            <label
+              htmlFor="posterVideoBanner"
+              className="black-text4 small-font mb-1 d-block"
             >
-              <span className="text-danger small-font">{errors.video}</span>
-            </div>
-          )}
-        </div>
+              Upload Poster Video Banner
+            </label>
+
+            <label htmlFor="posterVideoBanner" className="d-block">
+              <input
+                type="file"
+                id="posterVideoBanner"
+                accept="*"
+                style={{ display: "none" }}
+                onChange={(e) => handleFileChange(e, "video_banner")}
+              />
+
+              <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+                <span className="file-name">
+                  {selectedVideoBanner
+                    ? selectedVideoBanner.name.length > 10
+                      ? selectedVideoBanner.name.substring(0, 10) + "..."
+                      : selectedVideoBanner.name
+                    : "Select Video Banner"}
+                </span>
+                <MdOutlineFileUpload size={18} />
+              </div>
+            </label>
+
+            {errors.video_banner && (
+              <div
+                className="position-absolute w-100"
+                style={{ minHeight: "20px" }}
+              >
+                <span className="text-danger small-font">
+                  {errors.video_banner}
+                </span>
+              </div>
+            )}
+          </div>
+        ) : null}
+
+        {selectPosterType?.value === 2 ? (
+          <div className="col-md-3 col-lg-5 fixed-width-field1">
+            <label
+              htmlFor="posterVideo"
+              className="black-text4 small-font mb-1 d-block"
+            >
+              Upload Poster Video
+            </label>
+
+            <label htmlFor="posterVideo" className="d-block">
+              <input
+                type="file"
+                id="posterVideo"
+                accept="*"
+                style={{ display: "none" }}
+                onChange={(e) => handleFileChange(e, "video")}
+              />
+
+              <div className="input-css3 small-font d-flex justify-content-between align-items-center pointer fixed-upload">
+                <span className="file-name">
+                  {selectedVideo
+                    ? selectedVideo.name.length > 10
+                      ? selectedVideo.name.substring(0, 10) + "..."
+                      : selectedVideo.name
+                    : "Select Video"}
+                </span>
+                <MdOutlineFileUpload size={18} />
+              </div>
+            </label>
+
+            {errors.video && (
+              <div
+                className="position-absolute w-100"
+                style={{ minHeight: "20px" }}
+              >
+                <span className="text-danger small-font">{errors.video}</span>
+              </div>
+            )}
+          </div>
+        ) : null}
 
         <div className="w-100 align-self-end">
           <button
