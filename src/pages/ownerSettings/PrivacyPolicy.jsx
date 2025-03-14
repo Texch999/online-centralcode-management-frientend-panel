@@ -61,7 +61,7 @@ const PrivacyPolicy = () => {
   };
   const handleAddPrivacyModal = () => {
     setAddPrivacyModal(true);
-    // getAllWebsites();
+    getAllWebsites();
   };
 
   const handlePageChange = () => {

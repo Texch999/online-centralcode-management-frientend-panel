@@ -56,9 +56,12 @@ const AddPrivacyPolicyPopUp = ({
   const [websitess, setWebsitess] = useState([]);
   const [allUnchecked, setAllUnchecked] = useState(false);
   const [userConfirmed, setUserConfirmed] = useState(false);
+  const [showDescription, setShowDescription] = useState("");
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
+
+  console.log(websites, "===>websites");
 
   const countryOptions = countriesData.map((item) => ({
     value: item?.id,
@@ -78,6 +81,7 @@ const AddPrivacyPolicyPopUp = ({
     setWebsites((prevWebsites) =>
       prevWebsites.map((site) => ({ ...site, selected: false }))
     );
+    setShowDescription("  ");
     setAllUnchecked(false);
   };
 
@@ -92,11 +96,7 @@ const AddPrivacyPolicyPopUp = ({
   const onSubmit = (data) => {
     let hasError = false;
     if (!stripHtml(values)) {
-      setError("description", {
-        type: "manual",
-        message: "Description is required",
-      });
-
+      setShowDescription("Description is required");
       hasError = true;
     }
 
@@ -128,16 +128,16 @@ const AddPrivacyPolicyPopUp = ({
         setAddPrivacyModal(false);
         getPolicyPrivacyData();
         setSuccessPopupOpen(true);
-
+        setShowDescription("");
         setTimeout(() => {
           setSuccessPopupOpen(false);
-        }, 1000);
+        }, 4000);
         reset();
         setValues("");
+        getAllWebsites();
         setWebsites((prevWebsites) =>
           prevWebsites.map((site) => ({ ...site, selected: false }))
         );
-        getAllWebsites();
       })
       .catch((error) => {
         setError(error?.message);
@@ -150,9 +150,17 @@ const AddPrivacyPolicyPopUp = ({
         setValues("");
         getAllWebsites();
         getPolicyPrivacyData();
+        setWebsites((prevWebsites) =>
+          prevWebsites.map((site) => ({ ...site, selected: false }))
+        );
+        setShowDescription("");
       })
       .finally(() => {
         setIsSubmitting(false);
+        setWebsites((prevWebsites) =>
+          prevWebsites.map((site) => ({ ...site, selected: false }))
+        );
+        setShowDescription("");
       });
   };
 
@@ -310,10 +318,8 @@ const AddPrivacyPolicyPopUp = ({
                 <ReactQuill theme="snow" value={values} onChange={setValues} />
               </div>
               <div className="mt-4">
-                {errors.description && (
-                  <p className="text-danger small-font">
-                    {errors.description.message}
-                  </p>
+                {showDescription && (
+                  <p className="text-danger mt-1">{showDescription}</p>
                 )}
               </div>
 
@@ -351,11 +357,7 @@ const AddPrivacyPolicyPopUp = ({
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={`${
-          selectedWebsiteNames.length > 0
-            ? "Privacy Policy reated Successfully"
-            : "Privacy Policy has been removed."
-        }`}
+        discription={"Privacy Policy created Successfully"}
       />
 
       <ErrorPopup

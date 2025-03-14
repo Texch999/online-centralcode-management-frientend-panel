@@ -33,6 +33,7 @@ const EditPrivacyPolicy = ({
   const [allUnchecked, setAllUnchecked] = useState(false);
   const [userConfirmed, setUserConfirmed] = useState(false);
   const [descriptionError, setDescriptionError] = useState("");
+  const [msg, setMsg] = useState("");
 
   const availableWebsites = () => {
     getAvailableWebsites(availablePrivacyWebsiteId)
@@ -119,6 +120,7 @@ const EditPrivacyPolicy = ({
     updatePrivacyPolicyById(privacyPolicyId, payload)
       .then((response) => {
         if (response.status === true) {
+          setMsg(response?.message);
           setSuccessPopupOpen(true);
           setTimeout(() => {
             setSuccessPopupOpen(false);
@@ -184,12 +186,6 @@ const EditPrivacyPolicy = ({
                     All websites are unselected. This privacy policy will be
                     removed.
                   </p>
-                  <button
-                    className="saffron-btn2"
-                    onClick={() => setUserConfirmed(true)}
-                  >
-                    Confirm
-                  </button>
                 </div>
               )}
             </div>
@@ -207,7 +203,7 @@ const EditPrivacyPolicy = ({
           )}
           <div className="d-flex flex-end my-3">
             <div
-              className="saffron-btn2 white-font py-2 px-4"
+              className="saffron-btn2 white-font py-2 px-4 pointer"
               onClick={editPrivacyPolicy}
             >
               Update
@@ -218,7 +214,7 @@ const EditPrivacyPolicy = ({
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={"Privacy Policy Created Successfully"}
+        discription={msg}
       />
       <ErrorPopup
         discription={error}
