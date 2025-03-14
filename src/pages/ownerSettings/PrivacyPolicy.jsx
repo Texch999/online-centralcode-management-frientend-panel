@@ -61,13 +61,8 @@ const PrivacyPolicy = () => {
   };
   const handleAddPrivacyModal = () => {
     setAddPrivacyModal(true);
-    getAllWebsites();
+    // getAllWebsites();
   };
-
-  // const totalFetchs = 4;
-  // const currentOffst = (currentPage - 1) * totalFetchs;
-  // const pages = currentOffst;
-  // const pagsizes = totalFetchs;
 
   const handlePageChange = () => {
     getPolicyPrivacyData(intialpage, pageSize);
@@ -184,7 +179,7 @@ const PrivacyPolicy = () => {
         </div>
       ),
       showingWebsite: item?.websites?.map((item) => (
-        <div className="d-flex flex-column">{item?.web_name}</div>
+        <div className="d-flex flex-wrap">{item?.web_name}</div>
       )),
       status: (
         <div
@@ -259,7 +254,7 @@ const PrivacyPolicy = () => {
             onClick={handleAddPrivacyModal}
           >
             <IoAddOutline className="medium-font" />
-            <span className="small-font">Add new</span>
+            <span className="small-font">Add New</span>
           </button>
         </div>
       </div>
@@ -292,6 +287,7 @@ const PrivacyPolicy = () => {
         countriesData={countriesData}
         websites={websites}
         setWebsites={setWebsites}
+        getAllWebsites={getAllWebsites}
       />
       <PrivacyPopUp
         setShowPrivacyModal={setShowPrivacyModal}

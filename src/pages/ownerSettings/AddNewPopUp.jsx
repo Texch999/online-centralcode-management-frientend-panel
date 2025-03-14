@@ -136,7 +136,7 @@ const AddNewPopUp = ({
   useEffect(() => {
     if (isEdit && selectedQnsId) {
       getSecQusetionsById(selectedQnsId).then((response) => {
-        setValue("securityQns", isEdit === true ? response?.data?.questions : "");
+        setValue("securityQns", isEdit === true && response?.data?.questions);
         setValue(
           "status",
           selectOptions.find((opt) => opt.value === response?.data?.status)

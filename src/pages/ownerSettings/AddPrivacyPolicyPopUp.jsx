@@ -32,16 +32,15 @@ const AddPrivacyPolicyPopUp = ({
   countriesData,
   websites,
   setWebsites,
+  getAllWebsites,
   availablePrivacyWebsiteId,
-  // getPolicyPrivacyData,
 }) => {
   const {
-    register,
     handleSubmit,
     control,
     setValue,
-    watch,
     reset,
+    // setError,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
   const [values, setValues] = useState("");
@@ -54,6 +53,9 @@ const AddPrivacyPolicyPopUp = ({
   const [message, setMessage] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [websitess, setWebsitess] = useState([]);
+  const [allUnchecked, setAllUnchecked] = useState(false);
+  const [userConfirmed, setUserConfirmed] = useState(false);
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -61,11 +63,6 @@ const AddPrivacyPolicyPopUp = ({
   const countryOptions = countriesData.map((item) => ({
     value: item?.id,
     label: item?.name,
-  }));
-
-  const websiteOptions = websites.map((item) => ({
-    value: item?.id,
-    label: item?.web_name,
   }));
 
   const statusOptions = [
@@ -78,43 +75,69 @@ const AddPrivacyPolicyPopUp = ({
     setIsEditModal(false);
     reset();
     setSuccessPopupOpen(false);
+    setWebsites((prevWebsites) =>
+      prevWebsites.map((site) => ({ ...site, selected: false }))
+    );
+    setAllUnchecked(false);
   };
 
   useEffect(() => {
     setValue("description", values);
   }, [values, setValue]);
 
+  const stripHtml = (html) => {
+    return html.replace(/<[^>]*>/g).trim();
+  };
+
   const onSubmit = (data) => {
-    if (!values || values === "<p><br></p>") {
+    let hasError = false;
+    if (!stripHtml(values)) {
       setError("description", {
         type: "manual",
         message: "Description is required",
       });
-      return;
+
+      hasError = true;
     }
+
     setIsSubmitting(true);
 
     const selectedWebsiteIds = websites
-    .filter((site) => site.selected)
-    .map((site) => ({ website_id: site.id }));
+      .filter((site) => site.selected)
+      .map((site) => ({ website_id: site.id }));
+
+    if (selectedWebsiteIds.length === 0) {
+      setAllUnchecked(true);
+      hasError = true;
+    } else {
+      setAllUnchecked(false);
+    }
+    if (hasError) return;
+
+    setAllUnchecked(false);
+    setIsSubmitting(true);
 
     const payload = {
       country_id: data.country?.value,
-      // website_id: data.website?.value,
       is_active: Number(data.status?.value),
       description: values,
-      accessWebsites:selectedWebsiteIds,
+      accessWebsites: selectedWebsiteIds,
     };
     createPrivacyPolicy(payload)
       .then((response) => {
         setAddPrivacyModal(false);
+        getPolicyPrivacyData();
         setSuccessPopupOpen(true);
+
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 1000);
         reset();
         setValues("");
-        getPolicyPrivacyData();
+        setWebsites((prevWebsites) =>
+          prevWebsites.map((site) => ({ ...site, selected: false }))
+        );
+        getAllWebsites();
       })
       .catch((error) => {
         setError(error?.message);
@@ -125,19 +148,13 @@ const AddPrivacyPolicyPopUp = ({
         }, 3000);
         reset();
         setValues("");
+        getAllWebsites();
         getPolicyPrivacyData();
       })
       .finally(() => {
         setIsSubmitting(false);
       });
   };
-
-  const [websitess, setWebsitess] = useState([]);
-  // const [error, setError] = useState("");
-  // const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  // const [errorPopup, setErrorPopup] = useState(false);
-  const [allUnchecked, setAllUnchecked] = useState(false);
-  const [userConfirmed, setUserConfirmed] = useState(false);
 
   const availableWebsites = () => {
     getAvailableWebsites(availablePrivacyWebsiteId)
@@ -179,44 +196,6 @@ const AddPrivacyPolicyPopUp = ({
   const selectedWebsiteNames = websites
     .filter((site) => site.selected)
     .map((site) => site.web_name);
-
-  const addMultipleWebsitesToPrivacyPolicy = () => {
-    if (allUnchecked && !userConfirmed) {
-      setError("All websites are unchecked. Confirm before proceeding.");
-      setErrorPopup(true);
-      return;
-    }
-    const selectedWebsiteIds = websites
-      .filter((site) => site.selected)
-      .map((site) => site.id);
-    const payload = {
-      websites: selectedWebsiteIds,
-    };
-    addWebsiteToPrivacyPolicy(availablePrivacyWebsiteId, payload)
-      .then((response) => {
-        if (response.status === true) {
-          setWebsites((prevWebsites) =>
-            prevWebsites.map((site) => ({
-              ...site,
-              selected: selectedWebsiteIds.includes(site.id),
-            }))
-          );
-          // setSelectWebsite(false);
-          getPolicyPrivacyData();
-          setSuccessPopupOpen(true);
-          setTimeout(() => setSuccessPopupOpen(false), 1500);
-        } else {
-          setError("Something went wrong");
-        }
-      })
-      .catch((error) => {
-        setError(error?.message);
-        // setSelectWebsite(false);
-        setWebsites([]);
-        setErrorPopup(true);
-        setTimeout(() => setErrorPopup(false), 2000);
-      });
-  };
 
   return (
     <>
@@ -262,35 +241,6 @@ const AddPrivacyPolicyPopUp = ({
                 )}
               </div>
 
-              {/* <div className="col-4 flex-column">
-                <label className="black-text4 mb-1">Showing Websites</label>
-                <Controller
-                  name="website"
-                  control={control}
-                  rules={{ required: "Website is required" }}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      options={websiteOptions}
-                      styles={customStyles}
-                      placeholder="Select"
-                      maxMenuHeight={120}
-                      menuPlacement="auto"
-                      value={websiteOptions.find(
-                        (option) => option.value === field.value
-                      )}
-                      onChange={(val) => field.onChange(val)}
-                    />
-                  )}
-
-                />
-                {errors.website && (
-                  <p className="text-danger small-font">
-                    {errors.website.message}
-                  </p>
-                )}
-              </div> */}
-
               <div className="col-6 flex-column">
                 <label className="black-text4 mb-1">Status</label>
                 <Controller
@@ -321,64 +271,36 @@ const AddPrivacyPolicyPopUp = ({
               </div>
 
               <div>
-                <div
-                // show={selectWebsite}
-                // onHide={() => setSelectWebsite(false)}
-                // centered
-                >
+                <div>
                   <div>
-                  <div className="d-flex flex-between text-black my-2">
-                    <div className="medium-font">Select Website</div>
-                    {/* <div
-                        onClick={() => setSelectWebsite(false)}
-                        className="font-20"
-                      >
-                        <IoCloseSharp />
-                      </div> */}
-                  </div>
-                  <div className="d-flex w-100 flex-column small-font black-border p-2 br-5">
-                    <div className="d-flex w-100 flex-wrap ">
-                      {websites.map((website) => (
-                        <div key={website.id} className="my-2">
-                          <div className="input-css d-flex flex-between small-font mx-2">
-                            <input
-                              type="checkbox"
-                              checked={website?.selected}
-                              className="mx-2"
-                              onChange={() => handleCheckboxChange(website?.id)}
-                            />
-                            {website.web_name}
-                          </div>
-                        </div>
-                      ))}
+                    <div className="d-flex flex-between text-black my-2">
+                      <div className="medium-font">Select Website</div>
                     </div>
-
-                    {allUnchecked && (
-                      <div className="alert alert-warning mx-2">
-                        <p>
-                          All websites are unselected. This privacy policy will
-                          be removed.
-                        </p>
-                        <button
-                          className="saffron-btn2"
-                          onClick={() => setUserConfirmed(true)}
-                        >
-                          Confirm
-                        </button>
+                    <div className="d-flex w-100 flex-column small-font black-border p-2 br-5">
+                      <div className="d-flex w-100 flex-wrap ">
+                        {websites.map((website) => (
+                          <div key={website.id} className="my-2">
+                            <div className="input-css d-flex flex-between small-font mx-2">
+                              <input
+                                type="checkbox"
+                                checked={website?.selected}
+                                className="mx-2"
+                                onChange={() =>
+                                  handleCheckboxChange(website?.id)
+                                }
+                              />
+                              {website.web_name}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    )}
-                    {/* <div
-                      className={`saffron-btn2 br-5 mx-2 pointer ${
-                        allUnchecked && !userConfirmed ? "disabled" : ""
-                      }`}
-                      onClick={addMultipleWebsitesToPrivacyPolicy}
-                      style={{
-                        opacity: allUnchecked && !userConfirmed ? 0.5 : 1,
-                      }}
-                    >
-                      Add Website
-                    </div> */}
-                  </div>
+
+                      {allUnchecked && (
+                        <div className="alert alert-warning mx-2">
+                          <p>Please Select atlease one website...</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -386,6 +308,8 @@ const AddPrivacyPolicyPopUp = ({
               <div className="col-12 flex-column mt-3 mb-4 ">
                 <label className="black-text4 mb-1">Description</label>
                 <ReactQuill theme="snow" value={values} onChange={setValues} />
+              </div>
+              <div className="mt-4">
                 {errors.description && (
                   <p className="text-danger small-font">
                     {errors.description.message}
@@ -401,9 +325,10 @@ const AddPrivacyPolicyPopUp = ({
                     className={` w-100 ${
                       isValid ? "saffron-btn2" : "disabled-btn py-2 px-2 br-5"
                     }`}
-                    disabled={!isValid || isSubmitting}
+                    disabled={!isValid}
                   >
-                    {isSubmitting ? "submitting..." : "Create"}
+                    Create
+                    {/* {isSubmitting ? "submitting..." : "Create"} */}
                   </button>
                 </div>
               </div>
@@ -428,7 +353,7 @@ const AddPrivacyPolicyPopUp = ({
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={`${
           selectedWebsiteNames.length > 0
-            ? `${selectedWebsiteNames} are now included in the Privacy Policy`
+            ? "Privacy Policy reated Successfully"
             : "Privacy Policy has been removed."
         }`}
       />

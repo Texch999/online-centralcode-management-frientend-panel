@@ -32,6 +32,7 @@ const EditPrivacyPolicy = ({
   // const [errorPopup, setErrorPopup] = useState(false);
   const [allUnchecked, setAllUnchecked] = useState(false);
   const [userConfirmed, setUserConfirmed] = useState(false);
+  const [descriptionError, setDescriptionError] = useState("");
 
   const availableWebsites = () => {
     getAvailableWebsites(availablePrivacyWebsiteId)
@@ -95,9 +96,25 @@ const EditPrivacyPolicy = ({
     }
   }, [privacyPolicyId]);
 
+  const selectedWebsiteIds = websites
+    .filter((site) => site.selected)
+    .map((site) => ({ website_id: site.id }));
+
+  const stripHtml = (html) => {
+    return html.replace(/<[^>]*>/g, "").trim();
+  };
+
   const editPrivacyPolicy = () => {
+    if (!stripHtml(showPrivacyText?.description)) {
+      setDescriptionError("Description cannot be empty");
+      return;
+    } else {
+      setDescriptionError("");
+    }
+
     const payload = {
       description: showPrivacyText?.description,
+      accessWebsites: selectedWebsiteIds,
     };
     updatePrivacyPolicyById(privacyPolicyId, payload)
       .then((response) => {
@@ -119,8 +136,14 @@ const EditPrivacyPolicy = ({
         setErrorPopup(true);
       });
   };
-  const hanldeChnage = (value) => {
+  // const hanldeChnage = (value) => {
+  //   setShowPrivacyText((prev) => ({ ...prev, description: value }));
+  // };
+  const handleChange = (value) => {
     setShowPrivacyText((prev) => ({ ...prev, description: value }));
+    if (stripHtml(value)) {
+      setDescriptionError("");
+    }
   };
   return (
     <div>
@@ -137,12 +160,6 @@ const EditPrivacyPolicy = ({
           <div className="mb-3">
             <div className="d-flex flex-between text-black my-2">
               <div className="medium-font">Select Website</div>
-              {/* <div
-                        onClick={() => setSelectWebsite(false)}
-                        className="font-20"
-                      >
-                        <IoCloseSharp />
-                      </div> */}
             </div>
             <div className="d-flex w-100 flex-column small-font black-border p-2 br-5">
               <div className="d-flex w-100 flex-wrap ">
@@ -175,17 +192,6 @@ const EditPrivacyPolicy = ({
                   </button>
                 </div>
               )}
-              {/* <div
-                      className={`saffron-btn2 br-5 mx-2 pointer ${
-                        allUnchecked && !userConfirmed ? "disabled" : ""
-                      }`}
-                      onClick={addMultipleWebsitesToPrivacyPolicy}
-                      style={{
-                        opacity: allUnchecked && !userConfirmed ? 0.5 : 1,
-                      }}
-                    >
-                      Add Website
-                    </div> */}
             </div>
           </div>
 
@@ -193,9 +199,12 @@ const EditPrivacyPolicy = ({
             <ReactQuill
               theme="snow"
               value={showPrivacyText?.description || ""}
-              onChange={hanldeChnage}
+              onChange={handleChange}
             />
           </div>
+          {descriptionError && (
+            <p className="text-danger mt-1">{descriptionError}</p>
+          )}
           <div className="d-flex flex-end my-3">
             <div
               className="saffron-btn2 white-font py-2 px-4"
