@@ -74,7 +74,7 @@ function AddNewDirectorSuperAdmin() {
     setCreditValue(newIsCreditAllowed ? 1 : 2);
   };
   const [chosenRemark, setChosenRemark] = useState(null);
-
+  const [selectedUserSitesByAdmin, setSelectedUserSitesByAdmin] = useState({});
   const handleRemarkChange = (formId, websiteId, selectedRemark) => {
     setSelectedRemarks((prev) => ({
       ...prev,
@@ -86,6 +86,21 @@ function AddNewDirectorSuperAdmin() {
     const depTypeId = selectedRemark?.value == "offline" ? 2 : 1
     handleInputChange(formId, websiteId, "deposite_type", depTypeId)
   };
+
+  const handleUserSiteSelection = (formId, adminSiteId, userSiteId) => {
+    setSelectedUserSitesByAdmin((prev) => ({
+      ...prev,
+      [adminSiteId]: [...(prev[adminSiteId] || []), userSiteId],
+    }));
+  };
+
+  const getAvailableUserSites = (formId, adminSiteId) => {
+    const selectedUserSites = selectedUserSitesByAdmin[adminSiteId] || [];
+    return userWebsitesList[formId]?.filter(
+      (userSite) => !selectedUserSites.includes(userSite.id)
+    );
+  };
+
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
@@ -1359,16 +1374,20 @@ function AddNewDirectorSuperAdmin() {
                                 <Select
                                   className="small-font rounded all-none my-2 w-100"
                                   placeholder="Select a website"
-                                  options={userWebsitesList[form.id]
-                                    .filter((site) => {
-                                      // Check if the site ID is not in the selectedSiteIds object for the current form
-                                      return site.id !== selectedSiteIds[form.id];
-                                    })
-                                    .map((site) => ({
-                                      value: site.id,
-                                      label: site.web_url,
-                                    }))
-                                  }
+                                  // options={userWebsitesList[form.id]
+                                  //   .filter((site) => {
+                                  //     // Check if the site ID is not in the selectedSiteIds object for the current form
+                                  //     return site.id !== selectedSiteIds[form.id];
+                                  //   })
+                                  //   .map((site) => ({
+                                  //     value: site.id,
+                                  //     label: site.web_url,
+                                  //   }))
+                                  // }
+                                  options={getAvailableUserSites(form.id, selectedAdmins[form.id]?.value).map((site) => ({
+                                    value: site.id,
+                                    label: site.web_url,
+                                  }))}
                                   value={
                                     selectedSiteIds[form.id]
                                       ? {
@@ -1402,6 +1421,39 @@ function AddNewDirectorSuperAdmin() {
                                   }}
                                   styles={customStyles}
                                 />
+
+
+                                <Select
+                                  className="small-font rounded all-none my-2 w-100"
+                                  placeholder="Select a website"
+                                  options={getAvailableUserSites(form.id, selectedAdmins[form.id]?.value).map((site) => ({
+                                    value: site.id,
+                                    label: site.web_url,
+                                  }))}
+                                  value={
+                                    selectedSiteIds[form.id]
+                                      ? {
+                                        value: selectedSiteIds[form.id],
+                                        label:
+                                          userWebsitesList[form.id].find(
+                                            (site) => site.id === selectedSiteIds[form.id]
+                                          )?.web_url || "",
+                                      }
+                                      : null
+                                  }
+                                  onChange={(selectedOption) => {
+                                    const selectedSiteId = selectedOption ? selectedOption.value : null;
+                                    setSelectedSiteIds((prev) => ({
+                                      ...prev,
+                                      [form.id]: selectedSiteId,
+                                    }));
+                                    handleUserSiteSelection(form.id, selectedAdmins[form.id]?.value, selectedSiteId);
+                                  }}
+                                  styles={customStyles}
+                                />
+
+
+
                               </div>
 
                               <div className="flex-row d-flex w-100 ">
