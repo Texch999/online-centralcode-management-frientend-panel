@@ -52,6 +52,7 @@ const AddNewPopUp = ({
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
   const [errorPopup, setErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const selectOptions = [
     { value: 1, label: "Active" },
@@ -93,11 +94,21 @@ const AddNewPopUp = ({
 
   const onSubmitRejReasons = (data) => {
     const trimmedReason = data.reason.trim();
+    const trimmedDescription = data.description.trim();
 
     if (!trimmedReason) {
-      setError("securityQns", {
+      setError("reason", {
         type: "manual",
-        message: "Reason cannot be empty or cannot be contain spaces",
+        message: "Reason cannot be empty or contain only spaces",
+      });
+      return;
+    }
+
+    if (!trimmedDescription || trimmedDescription.length <= 20) {
+      setError("description", {
+        type: "manual",
+        message:
+          "Description cannot be empty, contain only spaces, or be less than 20 characters",
       });
       return;
     }
@@ -114,6 +125,7 @@ const AddNewPopUp = ({
 
     response
       .then(() => {
+        setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -176,6 +188,7 @@ const AddNewPopUp = ({
 
     response
       .then(() => {
+        setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -298,8 +311,8 @@ const AddNewPopUp = ({
                       required: "Description is required",
                       validate: (value) => {
                         const trimmedValue = value.trim();
-                        if (trimmedValue.length <= 20) {
-                          return "Description must be more than 20 characters";
+                        if (!trimmedValue || trimmedValue.length <= 20) {
+                          return "Description cannot be empty, contain only spaces, or be less than 20 characters";
                         }
                         return true;
                       },
@@ -422,7 +435,7 @@ const AddNewPopUp = ({
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={"success"}
+        discription={msg}
       />
     </>
   );
