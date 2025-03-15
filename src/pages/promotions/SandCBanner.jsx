@@ -269,13 +269,22 @@ const SandCBanner = () => {
       return;
     }
 
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[type];
+      return newErrors;
+    });
+
     // Set the correct state based on the type
     if (type === "image") {
       setSelectedImage(file);
+      setErrors((prev) => ({ ...prev, selectedImage: "" }));
     } else if (type === "video") {
       setSelectedVideo(file);
+      setErrors((prev) => ({ ...prev, selectedVideo: "" }));
     } else if (type === "video_banner") {
       setSelectedVideoBanner(file);
+      setErrors((prev) => ({ ...prev, selectedVideoBanner: "" }));
     }
 
     setErrors((prev) => ({ ...prev, [type]: "" }));
@@ -295,12 +304,6 @@ const SandCBanner = () => {
     if (!selectedPlace) {
       newErrors.selectedPlace = "Place is required.";
     }
-    // if (!startDT) {
-    //   newErrors.startDT = "Start Date is required.";
-    // }
-    // if (!endDT) {
-    //   newErrors.endDT = "End Date is required.";
-    // }
     if (!selectPosterType) {
       newErrors.selectPosterType = "Poster Type is required.";
     } else {
@@ -991,7 +994,7 @@ const SandCBanner = () => {
         </div>
       </div>
 
-      <div className="d-flex small-font mt-3 mb-5 gap-3">
+      <div className="d-flex small-font mt-3 fixed-width-field1 mb-5 gap-2">
         {selectPosterType?.value === 1 ? (
           <div className="col-md-3 col-lg-5 fixed-width-field1">
             <label

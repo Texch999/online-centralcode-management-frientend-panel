@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { FaSpinner } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdOutlineFileUpload } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
@@ -24,6 +24,8 @@ const EditBannerPopup = ({
   onSubmit,
   onSubmitResult,
 }) => {
+  console.log("selectedBannerId", selectedBannerId);
+  console.log("websitesList", websitesList);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     register_id: null,
@@ -42,6 +44,45 @@ const EditBannerPopup = ({
 
   const [initialData, setInitialData] = useState({});
 
+  const selectedWebsite = websitesList.find(
+    (site) => Number(site.id.slice(3, -3)) === selectedBannerId?.website_id
+  );
+
+  const pageMappings = {
+    brahma: Enums.brahmaSelectPages,
+    diamond: Enums.diamondSelectPages,
+    sparkbook: Enums.sparkbookSelectPages,
+    "9exchange": Enums.nineExchangeSelectPages,
+    texchange: Enums.texchangeSelectPages,
+  };
+  const placeMappings = {
+    brahma: Enums.brahmaSelectPlace,
+    diamond: Enums.diamondSelectPlace,
+    sparkbook: Enums.sparkbookSelectPlace,
+    "9exchange": Enums.nineExchangeSelectPlace,
+    texchange: Enums.texchangeSelectPlace,
+  };
+
+  const selectedWebName = selectedWebsite?.web_name;
+  console.log("selectedWebName", selectedWebName);
+
+  const selectPages = selectedWebName
+    ? Object.entries(pageMappings[selectedWebName] || {}).map(
+        ([label, value]) => ({
+          label,
+          value,
+        })
+      )
+    : [];
+
+  const selectPlace = selectedWebName
+    ? Object.entries(placeMappings[selectedWebName] || {}).map(
+        ([label, value]) => ({
+          label,
+          value,
+        })
+      )
+    : [];
   console.log("poster_type", formData.poster_type);
   const [errors, setErrors] = useState({
     start: "",
@@ -137,19 +178,19 @@ const EditBannerPopup = ({
     }));
   };
 
-  const removeFile = (field) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [field]: null,
-    }));
+  // const removeFile = (field) => {
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [field]: null,
+  //   }));
 
-    setErrors((prev) => ({
-      ...prev,
-      [field]: `${
-        field === "video" || field === "video_banner" ? "Video" : "Image"
-      } is required.`,
-    }));
-  };
+  //   setErrors((prev) => ({
+  //     ...prev,
+  //     [field]: `${
+  //       field === "video" || field === "video_banner" ? "Video" : "Image"
+  //     } is required.`,
+  //   }));
+  // };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -268,18 +309,18 @@ const EditBannerPopup = ({
     })
     .filter((item) => item.value !== null);
 
-  const selectPages = Object.entries(Enums.diamondSelectPages).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
-  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
+  // const selectPages = Object.entries(Enums.brahmaSelectPages).map(
+  //   ([key, value]) => ({
+  //     value,
+  //     label: key,
+  //   })
+  // );
+  // const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
+  //   ([key, value]) => ({
+  //     value,
+  //     label: key,
+  //   })
+  // );
 
   const handleClose = () => {
     setFormData({
@@ -302,6 +343,7 @@ const EditBannerPopup = ({
       changes: "",
     });
     setEditBanner(false);
+    setSelectedBannerId(null);
   };
 
   const getMinDateTime = () => {
@@ -423,7 +465,7 @@ const EditBannerPopup = ({
 
           <div className="d-flex w-80 mt-3">
             <div className="col-4 flex-column me-3">
-              <label className="black-text4 small-font mb-1">Websites</label>
+              <label className="black-text4 small-font mb-1">Banner Type</label>
               <input
                 className="all-none input-css2 small-font p-2 rounded"
                 type="text"
@@ -478,7 +520,16 @@ const EditBannerPopup = ({
                 onChange={(e) => handleFileChange(e, "image")}
                 className="input-css2"
                 accept=".jpeg, .jpg, .png, .webp"
+                id="imageUpload"
+                style={{ display: "none" }}
               />
+              <label
+                htmlFor="imageUpload"
+                className="input-css small-font d-flex justify-content-between align-items-center w-100 pointer fixed-upload"
+              >
+                <span className="file-name">{selectedBannerId?.image}</span>
+                <MdOutlineFileUpload size={18} />
+              </label>
               {formData.image && (
                 <div className="mt-2 d-flex">
                   <div className="position-relative">
@@ -497,11 +548,11 @@ const EditBannerPopup = ({
                         cursor: "pointer",
                       }}
                     />
-                    <MdCancel
+                    {/* <MdCancel
                       className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
                       style={{ cursor: "pointer" }}
                       onClick={() => removeFile("image")}
-                    />
+                    /> */}
                   </div>
                   {errors.image && (
                     <span className="text-danger small-font">
@@ -519,9 +570,20 @@ const EditBannerPopup = ({
               <input
                 type="file"
                 onChange={(e) => handleFileChange(e, "video")}
-                className="input-css2"
+                className="input-css2 "
                 accept=".mp4"
+                id="videoUpload"
+                style={{ display: "none" }}
               />
+
+              <label
+                htmlFor="videoUpload"
+                className="input-css small-font d-flex justify-content-between align-items-center w-100 pointer fixed-upload"
+              >
+                <span className="file-name">{selectedBannerId?.video}</span>
+                <MdOutlineFileUpload size={18} />
+              </label>
+
               {formData.video && (
                 <div className="mt-2 d-flex">
                   <div className="position-relative">
@@ -543,11 +605,11 @@ const EditBannerPopup = ({
                       muted
                       loop
                     />
-                    <MdCancel
+                    {/* <MdCancel
                       className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
                       style={{ cursor: "pointer" }}
                       onClick={() => removeFile("video")}
-                    />
+                    /> */}
                   </div>
                   {errors.video && (
                     <span className="text-danger small-font">
@@ -564,12 +626,25 @@ const EditBannerPopup = ({
               <label className="black-text4 mb-1 small-font">
                 Video Banner
               </label>
+
               <input
                 type="file"
                 onChange={(e) => handleFileChange(e, "video_banner")}
                 className="input-css2"
                 accept=".mp4"
+                id="videoBannerUpload"
+                style={{ display: "none" }}
               />
+
+              <label
+                htmlFor="videoBannerUpload"
+                className="input-css small-font d-flex justify-content-between align-items-center w-100 pointer fixed-upload"
+              >
+                <span className="file-name">
+                  {selectedBannerId?.video_banner}
+                </span>
+                <MdOutlineFileUpload size={18} />
+              </label>
               {formData.video_banner && (
                 <div className="mt-2 d-flex">
                   <div className="position-relative">
@@ -591,11 +666,11 @@ const EditBannerPopup = ({
                       muted
                       loop
                     />
-                    <MdCancel
+                    {/* <MdCancel
                       className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
                       style={{ cursor: "pointer" }}
                       onClick={() => removeFile("video_banner")}
-                    />
+                    /> */}
                   </div>
                   {errors.videobanner && (
                     <span className="text-danger small-font">
