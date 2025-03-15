@@ -239,6 +239,20 @@ const AddPrivacyPolicyPopUp = ({
                         (option) => option.value === field.value
                       )}
                       onChange={(val) => field.onChange(val)}
+                      filterOption={(option, searchText) => {
+                        // Allow only alphabetic characters in search
+                        const lettersOnly = searchText.replace(
+                          /[^a-zA-Z]/g,
+                          ""
+                        ); // Remove non-alphabetic characters
+                        return option.label
+                          .toLowerCase()
+                          .includes(lettersOnly.toLowerCase()); // Case-insensitive search
+                      }}
+                      onInputChange={(inputValue) => {
+                        // Ensure only alphabetic characters are allowed in the input
+                        return inputValue.replace(/[^a-zA-Z]/g, ""); // Remove non-alphabetic characters
+                      }}
                     />
                   )}
                 />
@@ -263,6 +277,7 @@ const AddPrivacyPolicyPopUp = ({
                       styles={customStyles}
                       placeholder="Select"
                       maxMenuHeight={120}
+                      isSearchable={false}
                       menuPlacement="auto"
                       value={statusOptions.find(
                         (option) => option.value === field.value

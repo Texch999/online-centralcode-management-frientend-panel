@@ -47,6 +47,7 @@ function Tickets() {
   const [ticketAction, setTicketAction] = useState("");
   const [selectedType, setSelectedType] = useState(null);
   const [ticketType, setTicketType] = useState("");
+  const [spinner, setSpinner] = useState(false);
 
   const [errors, setErrors] = useState({ startDate: "", fromDate: "", selectedType: "" });
 
@@ -115,6 +116,7 @@ function Tickets() {
     { header: "Admin/User Website", field: "adminuserwebiste" },
     { header: "UTR No/ DepositeType", field: "utrno" },
     { header: "D/W", field: "dw" },
+    { header: "IsCredit", field: "iscredit" },
     { header: "Chips", field: "chips" },
     { header: "Curr Type/Amt.", field: "currtypeamount" },
     { header: "Curr Rate", field: "currRate" },
@@ -173,7 +175,7 @@ function Tickets() {
           setSuccessPopupOpen(true)
           setDepositWithdrawPopupOpen(false)
           setErroDiscription("")
-
+          setSpinner(false)
         }
       })
       .catch((error) => {
@@ -239,10 +241,11 @@ function Tickets() {
         utrno: <div >{record.transacId}</div>,
         dw: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>
           {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
+        iscredit: <div >{record?.iscredit == 1 ? "YES" : "NO"}</div>,
         chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips}</div>,
         currtypeamount: <div >{Number(record.paidAmount).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
         currRate: <div >{record?.curRate ? rfloor((record?.curRate), -6) : 0}<br />{getCurrency(record.reqCurrency)}</div>,
-        yourChips: <div >{record.shareType === 1 ? Number(record?.inrSportsChips).toFixed(2) : Number(record?.inrChips).toFixed(2)}</div>,
+        yourChips: <div >{Number(record?.inrChips).toFixed(2)}</div>,
         yourcurramount: <div >{Number(record?.totCur).toFixed(2)}<br />{getCurrency(107)}</div>,
         view: (
           <div className="w-100 flex-center status-container d-flex flex-column justify-content-center">
@@ -453,6 +456,8 @@ function Tickets() {
           fromPath="tickets"
           handleTikcetApproveRejection={handleTikcetApproveRejection}
           handleWithdrwaTicketApproveRejection={handleWithdrwaTicketApproveRejection}
+          spinner={spinner}
+          setSpinner={setSpinner}
         />
       )}
 

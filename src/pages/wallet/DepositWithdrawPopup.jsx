@@ -3,7 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { imgUrl } from "../../api/baseUrl";
 import { rfloor } from "../../utils/mathFunctions";
 import utcDate from "../../utils/utcDateConversion";
@@ -18,7 +18,9 @@ function DepositWithdrawPopup({
   rejectionReasons,
   fromPath,
   handleTikcetApproveRejection,
-  handleWithdrwaTicketApproveRejection
+  handleWithdrwaTicketApproveRejection,
+  spinner,
+  setSpinner
 }) {
   const handleCancel = () => {
     setTicketDetails(null)
@@ -46,121 +48,94 @@ function DepositWithdrawPopup({
     console.log("Selected Reason ID:", selectedOption);
   };
 
-  const formatDateTime = (isoString) => {
-    const date = new Date(isoString);
 
-    // Format date as DD-MM-YYYY
-    const formattedDate = date.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).replace(/\//g, '-');
 
-    // Format time as HH:MM (24-hour format)
-    const formattedTime = date.toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
+  // const handleTicket = (action, DepOrWit) => {
 
-    return `${formattedDate} | ${formattedTime}`;
-  };
+  //   if (userRole === "management") {
+  //     // management deposit and withdraw aprrove & rejection
+  //     console.log(ticketData, "====>ticketData")
+  //     if (action === "REJECT") {
+  //       if (selectedOption === null) {
+  //         setRejectionError("Please select a reason for rejection.");
+  //       } else {
+  //         if (ticketData?.ticketType === 1) {
+  //           //deposite rejection
+  //           handleTikcetApproveRejection(action, selectedOption, DepOrWit)
 
+  //         } else {
+  //           // withdraw rejection
+  //           handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit)
+
+  //         }
+  //       }
+  //     } else {
+  //       if (ticketData?.ticketType === 1) {
+  //         // deposit approve
+  //         handleTikcetApproveRejection(action, selectedOption, DepOrWit)
+  //       } else {
+  //         // withdrwa approve
+  //         handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit)
+  //       }
+
+  //     }
+  //   } else {
+  //     // director deposit and withdraw aprrove & rejection
+  //     // user role id director 
+  //     if (action === "REJECT") {
+  //       if (selectedOption === null) {
+  //         setRejectionError("Please select a reason for rejection.");
+  //       } else {
+  //         if (ticketData?.ticketType === 1) {
+  //           //deposite rejection
+  //           handleTikcetApproveRejection(action, selectedOption, DepOrWit)
+
+  //         } else {
+  //           // withdraw rejection
+  //           handleTikcetApproveRejection(action, selectedOption, DepOrWit)
+
+  //         }
+  //       }
+  //     } else {
+  //       if (ticketData?.ticketType === 1) {
+  //         // deposit approve
+  //         handleTikcetApproveRejection(action, selectedOption, DepOrWit)
+  //       } else {
+  //         // withdrwa approve
+  //         handleTikcetApproveRejection(action, selectedOption, DepOrWit)
+  //       }
+
+  //     }
+  //   }
+  // }
+  // useEffect(() => {
+  //   setSpinner(false)
+  // }, [])
+  const [ticketaction, setTicketAction] = useState("")
   const handleTicket = (action, DepOrWit) => {
+    // Validate rejection reason if action is "REJECT"
+    setTicketAction(action)
+    if (action === "REJECT" && selectedOption === null) {
+      setRejectionError("Please select a reason for rejection.");
+      return; // Exit early if validation fails
+    }
+
+    const isDeposit = ticketData?.ticketType === 1;
 
     if (userRole === "management") {
-      // management deposit and withdraw aprrove & rejection
-      console.log(ticketData, "====>ticketData")
-      if (action === "REJECT") {
-        if (selectedOption === null) {
-          setRejectionError("Please select a reason for rejection.");
-        } else {
-          if (ticketData?.ticketType === 1) {
-            //deposite rejection
-            handleTikcetApproveRejection(action, selectedOption, DepOrWit)
-
-          } else {
-            // withdraw rejection
-            handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit)
-
-          }
-        }
+      // Management-specific logic
+      if (isDeposit) {
+        setSpinner(true)
+        handleTikcetApproveRejection(action, selectedOption, DepOrWit);
       } else {
-        if (ticketData?.ticketType === 1) {
-          // deposit approve
-          handleTikcetApproveRejection(action, selectedOption, DepOrWit)
-        } else {
-          // withdrwa approve
-          handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit)
-        }
-
+        setSpinner(true)
+        handleWithdrwaTicketApproveRejection(action, selectedOption, DepOrWit);
       }
     } else {
-      // director deposit and withdraw aprrove & rejection
-      // user role id director 
-      if (action === "REJECT") {
-        if (selectedOption === null) {
-          setRejectionError("Please select a reason for rejection.");
-        } else {
-          if (ticketData?.ticketType === 1) {
-            //deposite rejection
-            handleTikcetApproveRejection(action, selectedOption, DepOrWit)
-
-          } else {
-            // withdraw rejection
-            handleTikcetApproveRejection(action, selectedOption, DepOrWit)
-
-          }
-        }
-      } else {
-        if (ticketData?.ticketType === 1) {
-          // deposit approve
-          handleTikcetApproveRejection(action, selectedOption, DepOrWit)
-        } else {
-          // withdrwa approve
-          handleTikcetApproveRejection(action, selectedOption, DepOrWit)
-        }
-
-      }
+      // Director-specific logic
+      handleTikcetApproveRejection(action, selectedOption, DepOrWit);
     }
-  }
-
-  // const handleTicket = (action) => {
-  //   const isManagement = userRole === "management";
-  //   const isDepositTicket = ticketData?.ticketType === 1;
-  //   const isWithdrawTicket = ticketData?.ticketType === 2;
-
-  //   const handleRejection = () => {
-  //     if (selectedOption === null) {
-  //       setRejectionError("Please select a reason for rejection.");
-  //       return;
-  //     }
-
-  //     if (isDepositTicket) {
-  //       handleTikcetApproveRejection(action, selectedOption, "Withdraw"); // Deposit rejection
-  //     } else if (isWithdrawTicket) {
-  //       isManagement
-  //         ? handleWithdrwaTicketApproveRejection(action, selectedOption, "Withdraw") // Management withdraw rejection
-  //         : handleTikcetApproveRejection(action, selectedOption, "Withdraw"); // Director withdraw rejection
-  //     }
-  //   };
-
-  //   const handleApproval = () => {
-  //     if (isDepositTicket) {
-  //       handleTikcetApproveRejection(action, selectedOption, "Deposite"); // Deposit approval
-  //     } else if (isWithdrawTicket) {
-  //       isManagement
-  //         ? handleWithdrwaTicketApproveRejection(action, selectedOption, "Deposite") // Management withdraw approval
-  //         : handleTikcetApproveRejection(action, selectedOption, "Deposite"); // Director withdraw approval
-  //     }
-  //   };
-
-  //   if (action === "REJECT") {
-  //     handleRejection();
-  //   } else {
-  //     handleApproval();
-  //   }
-  // };
+  };
 
   return (
     <Modal show={depositWithdrawPopupOpen} centered>
@@ -169,7 +144,7 @@ function DepositWithdrawPopup({
           <h6 className="fw-600 mb-0">
             {`${ticketData?.dirName} - `}{" "}
             {ticketData?.shareType === 1
-              ? `(Rental ${ticketData?.sharePer}% - Ext ${ticketData?.extraSharePer}%)`
+              ? `(Rental ${ticketData?.sharePer}% )`
               : `(Share/Royalty: ${ticketData?.sharePer}%)`}
           </h6>
           <div className="d-flex ">
@@ -268,22 +243,45 @@ function DepositWithdrawPopup({
                 <span>Sports Chips - {getCurrency(ticketData?.reqCurrency)} </span>
                 <span className="yellow-font">{ticketData?.requChips}</span>
               </div>
-              {userRole === "management" ?
+              {/* {userRole === "management" ?
                 <div className="grey-box flex-between mt-2">
                   <span>Sports Chips - INR</span>
                   <span className="yellow-font">{ticketData?.inrSportsChips ? rfloor(ticketData?.inrSportsChips, -2) : 0}</span>
-                </div> : null}
+                </div> : null} */}
             </div>}
-          {ticketData?.tmpErr && (
+
+          {ticketData?.isCredit && ticketData?.ticketType == 1 && (
+            <div className="d-flex flex-column ">
+              <h6 className="mt-2 red-block small-font">Credit Request</h6>
+              <div className="d-flex flex-row">
+                <div className={` col-6 me-2`}>
+                  <div className="grey-box flex-between">
+                    <span>Credit Amount</span>
+                    <span>{ticketData?.creditAmount ? ticketData?.creditAmount : 0}</span>
+                  </div>
+                </div>
+                <div className="col-6 me-1">
+                  <div className="grey-box flex-between">
+                    <span>Paid Amount</span>
+                    <span>{ticketData?.paidAmount ? ticketData?.paidAmount : 0}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+          }
+
+          {ticketData?.tmpErr && ticketData?.ticketType == 1 && (
             <div>
-              <h6 className="mt-2 red-block">Rejection Reason</h6>
+              <h6 className="mt-2 red-block small-font">Rejection Reason</h6>
               <div className="grey-box flex-between m-1 col">{ticketData?.tmpErr.description}</div>
             </div>
           )}
-                                                                                                                                                                                                                                                                                                                                                
+
           {fromPath === "tickets" ? <>
             {ticketData?.status === 0 ? (
               <>
+                <h6 className="mt-2 red-block small-font">Rejection Reason</h6>
                 <div className="col-12 mt-2">
                   <Select
                     className="small-font"
@@ -299,10 +297,16 @@ function DepositWithdrawPopup({
 
                 </div>
                 <div className="col-6 mt-3">
-                  <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>Approve</button>
+                  <button className="w-100 saffron-btn2" onClick={() => handleTicket("APPROVE", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>{spinner && ticketaction == "APPROVE" ? <>
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <span> {` Approve ...`}</span>  </> :
+                    <span>Approve</span>}
+                  </button>
                 </div>
                 <div className="col-6 mt-3">
-                  <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>Reject</button>
+                  <button className="w-100 white-btn3" onClick={() => handleTicket("REJECT", ticketData?.ticketType === 1 ? "Deposit" : "Withdraw")}>{spinner && ticketaction == "REJECT" ?
+                    <> <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <span> {` Reject ...`}</span>  </> :
+                    <span>Reject</span>}
+                  </button>
                 </div>
               </>) : <button className="w-100 mt-3 saffron-btn2 pointer-events-none cursor-not-allowed" disabled>{ticketData?.status === 1 ? "Approved" : "Rejected"}</button>
             }
@@ -310,7 +314,7 @@ function DepositWithdrawPopup({
 
         </div>
       </div>
-    </Modal>
+    </Modal >
   );
 }
 

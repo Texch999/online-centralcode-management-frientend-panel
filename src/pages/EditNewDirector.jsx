@@ -2635,7 +2635,7 @@ function EditNewDirector() {
   const renderIsPrimaryCheckbox = (websiteId, isPrimary) => {
     return (
       <div className="col position-relative mx-1 d-flex align-items-center">
-        <label className="small-font me-2">Is Primary</label>
+        <label className="small-font me-2">Is Primary </label>
         <input
           type="checkbox"
           checked={isPrimary || false}
@@ -2942,7 +2942,7 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
-                                Chip Percentage
+                                Chip (%)
                               </label>
                               <input
                                 type="text"
@@ -2976,10 +2976,10 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
-                                Downline Comm
+                              * Commission (%)
                               </label>
                               <input
-                                type="text"
+                                type="text" 
                                 className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
@@ -3194,7 +3194,7 @@ function EditNewDirector() {
                                 }}
                               />
                               <label className="small-font me-2">
-                                Is Primary{" "}
+                                Is Primary{" "} 
                               </label>
                             </div>
                           </>
@@ -3322,7 +3322,7 @@ function EditNewDirector() {
                                 }}
                               />
                               <label className="small-font me-2">
-                                Is Primary
+                                Is Primary  
                               </label>
                             </div>
                           </>
@@ -3399,7 +3399,7 @@ function EditNewDirector() {
                           options={adminWebsite?.map((admin) => ({
                             value: admin.id,
                             label: admin.web_name,
-                          }))}
+                          }))}  
                           value={selectedAdmins[form.id] || null}
                           onChange={(selectedOption) =>
                             handleAdminRoleChange(form.id, selectedOption)
@@ -3651,7 +3651,7 @@ function EditNewDirector() {
                               {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                               <div className="col position-relative mx-1 d-flex align-items-center">
                                 <label className="small-font me-2">
-                                  Is Primary{" "}
+                                  Is Primary{" "} 
                                 </label>
                                 <input
                                   type="checkbox"
@@ -3733,7 +3733,7 @@ function EditNewDirector() {
                               {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                               <div className="col position-relative mx-1 d-flex align-items-center">
                                 <label className="small-font me-2">
-                                  Is Primary{" "}
+                                  Is Primary{" "} 
                                 </label>
                                 <input
                                   type="checkbox"
@@ -4080,7 +4080,7 @@ function EditNewDirector() {
                                 {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                 <div className="col position-relative mx-1 d-flex align-items-center">
                                   <label className="small-font me-2">
-                                    Is Primary{" "}
+                                    Is Primary{" "} 
                                   </label>
                                   <input
                                     type="checkbox"

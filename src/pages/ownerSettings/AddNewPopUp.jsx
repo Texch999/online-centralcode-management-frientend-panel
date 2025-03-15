@@ -32,6 +32,7 @@ const AddNewPopUp = ({
     handleSubmit,
     setValue,
     watch,
+    trigger,
     reset,
     formState: { errors, isValid },
   } = useForm({
@@ -45,6 +46,8 @@ const AddNewPopUp = ({
   const handleStatusChange = (selectedOption) => {
     setSelectedStatus(selectedOption.value);
   };
+  const [reasonError, setReasonError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
   const [rejReason, setRejReason] = useState("");
   const [rejReasonDescription, setRejReasonDescription] = useState("");
   const [secQnsByIdData, setSecQnsByIdData] = useState([]);
@@ -208,6 +211,29 @@ const AddNewPopUp = ({
         setIsSubmitting(false);
       });
   };
+
+  const handleQuestionChange = (e) => {
+    const value = e.target.value;
+
+    if (value.length < 2) {
+      setValue("securityQns", value);
+      trigger("securityQns"); // Trigger validation to update errors
+    } else {
+      setValue("securityQns", value, { shouldValidate: true });
+    }
+  };
+
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+
+    if (value.length < 2) {
+      setValue("description", value);
+      trigger("description"); // Trigger validation to update errors
+    } else {
+      setValue("description", value, { shouldValidate: true });
+    }
+  };
+
   return (
     <>
       {addNewModalRejection && (
@@ -262,11 +288,14 @@ const AddNewPopUp = ({
                     placeholder="Select"
                     styles={customStyles}
                     value={watch("status") || null}
-                    onChange={(selectedOption) =>
+                    {...register("status", { required: "Status is required" })} // Add required validation
+                    onChange={(selectedOption) => {
                       setValue("status", selectedOption, {
                         shouldValidate: true,
-                      })
-                    }
+                      });
+                      trigger("status"); // Trigger validation on change
+                    }}
+                    isSearchable={false} // Disable typing
                   />
                   {errors.status && (
                     <p className="text-danger small-font">
@@ -275,7 +304,7 @@ const AddNewPopUp = ({
                   )}
                 </div>
 
-                <div className="col-8 flex-column">
+                {/* <div className="col-8 flex-column">
                   <label className="black-text4 mb-1">Reason</label>
                   <input
                     type="text"
@@ -292,6 +321,35 @@ const AddNewPopUp = ({
                         return true;
                       },
                     })}
+                  />
+                  {errors.reason && (
+                    <p className="text-danger small-font">
+                      {errors.reason.message}
+                    </p>
+                  )}
+                </div> */}
+
+                <div className="col-8 flex-column">
+                  <label className="black-text4 mb-1">Reason</label>
+                  <input
+                    type="text"
+                    placeholder="Enter"
+                    className="all-none input-bg small-font p-2 rounded"
+                    {...register("reason", {
+                      required: "Reason is required",
+                      minLength: {
+                        value: 2,
+                        message: "Must be at least 2 characters",
+                      },
+                      maxLength: {
+                        value: 100,
+                        message: "Cannot exceed 100 characters",
+                      },
+                    })}
+                    onChange={(e) => {
+                      setValue("reason", e.target.value); // Update input value
+                      trigger("reason"); // Validate length constraints while typing
+                    }}
                   />
                   {errors.reason && (
                     <p className="text-danger small-font">
@@ -317,10 +375,11 @@ const AddNewPopUp = ({
                         return true;
                       },
                     })}
+                    onChange={handleDescriptionChange}
                   ></textarea>
 
                   {errors.description && (
-                    <p className="text-danger small-font">
+                    <p className="text-danger small-font mt-1">
                       {errors.description.message}
                     </p>
                   )}
@@ -363,11 +422,14 @@ const AddNewPopUp = ({
                     placeholder="Select"
                     styles={customStyles}
                     value={watch("status") || null}
-                    onChange={(selectedOption) =>
+                    {...register("status", { required: "Status is required" })} 
+                    onChange={(selectedOption) => {
                       setValue("status", selectedOption, {
                         shouldValidate: true,
-                      })
-                    }
+                      });
+                      trigger("status"); // Trigger validation on change
+                    }}
+                    isSearchable={false} // Disable typing
                   />
                   {errors.status && (
                     <p className="text-danger small-font">
@@ -395,9 +457,10 @@ const AddNewPopUp = ({
                         return true;
                       },
                     })}
+                    onChange={handleQuestionChange}
                   />
                   {errors.securityQns && (
-                    <p className="text-danger small-font">
+                    <p className="text-danger small-font mt-1">
                       {errors.securityQns.message}
                     </p>
                   )}
@@ -408,11 +471,11 @@ const AddNewPopUp = ({
                   <button
                     type="submit"
                     className="saffron-btn2 small-font pointer mt-4 col-4"
-                    disabled={!isValid}
-                    style={{
-                      opacity: isValid ? 1 : 0.5,
-                      pointerEvents: isValid ? "auto" : "none",
-                    }}
+                    // disabled={!isValid}
+                    // style={{
+                    //   opacity: isValid ? 1 : 0.5,
+                    //   pointerEvents: isValid ? "auto" : "none",
+                    // }}
                   >
                     {isSubmitting
                       ? "submitting..."

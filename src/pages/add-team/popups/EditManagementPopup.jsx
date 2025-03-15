@@ -170,6 +170,7 @@ function EditManagementPopup({
               <input
                 type="text"
                 name="login_name"
+                readOnly
                 className="small-font rounded input-css w-100"
                 placeholder="Enter"
                 maxLength={15}
