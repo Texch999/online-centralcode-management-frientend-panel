@@ -99,7 +99,7 @@ const AddNewPopUp = ({
     if (!trimmedReason) {
       setError("reason", {
         type: "manual",
-        message: "Reason cannot be empty or contain only spaces",
+        message: "Reason cannot be empty",
       });
       return;
     }
