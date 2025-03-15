@@ -347,8 +347,6 @@ function AddNewDirectorSuperAdmin() {
     }
 
 
-
-    // Final payload to be sent to the API
     const finalData = {
       type: selectedRole,
       name,
@@ -364,6 +362,8 @@ function AddNewDirectorSuperAdmin() {
 
     if (isCreditAllowed == true) {
       finalData.credit_reference = creditreference
+    } else {
+      finalData.credit_reference = 0
     }
     console.log("Final Payload:", finalData);
 
@@ -626,14 +626,6 @@ function AddNewDirectorSuperAdmin() {
     });
   };
 
-
-
-
-
-  // // New function name for handling changes
-  // const handleRemarkChange = (selectedRemark) => {
-  //   setChosenRemark(selectedRemark);
-  // };
 
   return (
     <>
@@ -1406,7 +1398,6 @@ function AddNewDirectorSuperAdmin() {
                                       ...prev,
                                       [form.id]: selectedSiteId,
                                     }));
-
                                     setWebsiteDetails((prevDetails) => ({
                                       ...prevDetails,
                                       [form.id]: {
@@ -1418,41 +1409,10 @@ function AddNewDirectorSuperAdmin() {
                                       },
                                     }));
                                     handleCheckboxChange(form.id, selectedSiteId);
-                                  }}
-                                  styles={customStyles}
-                                />
-
-
-                                <Select
-                                  className="small-font rounded all-none my-2 w-100"
-                                  placeholder="Select a website"
-                                  options={getAvailableUserSites(form.id, selectedAdmins[form.id]?.value).map((site) => ({
-                                    value: site.id,
-                                    label: site.web_url,
-                                  }))}
-                                  value={
-                                    selectedSiteIds[form.id]
-                                      ? {
-                                        value: selectedSiteIds[form.id],
-                                        label:
-                                          userWebsitesList[form.id].find(
-                                            (site) => site.id === selectedSiteIds[form.id]
-                                          )?.web_url || "",
-                                      }
-                                      : null
-                                  }
-                                  onChange={(selectedOption) => {
-                                    const selectedSiteId = selectedOption ? selectedOption.value : null;
-                                    setSelectedSiteIds((prev) => ({
-                                      ...prev,
-                                      [form.id]: selectedSiteId,
-                                    }));
                                     handleUserSiteSelection(form.id, selectedAdmins[form.id]?.value, selectedSiteId);
                                   }}
                                   styles={customStyles}
                                 />
-
-
 
                               </div>
 
@@ -1461,6 +1421,7 @@ function AddNewDirectorSuperAdmin() {
                                 <div className="col-2 input-css5">
                                   <div className="black-font small-font">
                                     Commission Type
+                                    {console.log(accountTypes[form.id]?.[selectedSiteIds[form.id]], "==>deposit")}
                                   </div>
                                   <Select
                                     className="small-font my-2"
@@ -1490,6 +1451,7 @@ function AddNewDirectorSuperAdmin() {
                                       ) || null
                                     }
                                   />
+
                                 </div>
 
                                 {accountTypes[form.id]?.[selectedSiteIds[form.id]] ===
@@ -1805,6 +1767,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
 
                             <div className="row ">
+
                               <div className="col-2 ">
                                 <label className="fw-600 my-1 small-font">
                                   {/* Cash chip Values */}
@@ -1817,94 +1780,96 @@ function AddNewDirectorSuperAdmin() {
                                   )}
                                 </div> */}
                               </div>
-                              {selectedSiteIds[form.id] && (
-                                <>
-                                  <div className="col-2 position-relative mt-1">
-                                    <label className="fw-600 small-font">
-                                      Add Deposit Chips
-                                    </label>
-                                    <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        type="number"
-                                        className="small-font bg-none w-75 all-none appearance"
-                                        onChange={(e) => {
-                                          handleInputChange(
-                                            form.id,
-                                            selectedSiteIds[form.id],
-                                            "add_deposit_chips",
-                                            e.target.value
-                                          );
-                                        }}
+                              {(accountTypes[form.id]?.[selectedSiteIds[form.id]] == "1"
+                                || accountTypes[form.id]?.[selectedSiteIds[form.id]] == "2"
+                                || accountTypes[form.id]?.[selectedSiteIds[form.id]] == "3") && (
+                                  <>
+                                    <div className="col-2 position-relative mt-1">
+                                      <label className="fw-600 small-font">
+                                        Add Deposit Chips
+                                      </label>
+                                      <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          type="number"
+                                          className="small-font bg-none w-75 all-none appearance"
+                                          onChange={(e) => {
+                                            handleInputChange(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "add_deposit_chips",
+                                              e.target.value
+                                            );
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-2 position-relative mt-1">
+                                      <label className="fw-600 small-font">
+                                        Total Paid Amount
+                                      </label>
+                                      <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          type="text"
+                                          maxLength={2}
+                                          className="small-font bg-none w-75 all-none"
+                                          value={websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips}
+                                          readOnly
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-2 small-font position-relative mt-3">
+                                      <label className="fw-600 small-font">Deposit Remark</label>
+                                      <Select
+                                        value={selectedRemarks[form.id]?.[selectedSiteIds[form.id]] || null}
+                                        onChange={(selectedOption) =>
+                                          handleRemarkChange(form.id, selectedSiteIds[form.id], selectedOption)
+                                        }
+                                        options={remarkOptions}
+                                        placeholder="Select..."
+                                        styles={customStyles}
+                                        isSearchable={false}
                                       />
                                     </div>
-                                  </div>
-
-                                  <div className="col-2 position-relative mt-1">
-                                    <label className="fw-600 small-font">
-                                      Total Paid Amount
-                                    </label>
-                                    <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        type="text"
-                                        maxLength={2}
-                                        className="small-font bg-none w-75 all-none"
-                                        value={websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips}
-                                        readOnly
-                                      />
-                                    </div>
-                                  </div>
-
-                                  <div className="col-2 small-font position-relative mt-3">
-                                    <label className="fw-600 small-font">Deposit Remark</label>
-                                    <Select
-                                      value={selectedRemarks[form.id]?.[selectedSiteIds[form.id]] || null}
-                                      onChange={(selectedOption) =>
-                                        handleRemarkChange(form.id, selectedSiteIds[form.id], selectedOption)
-                                      }
-                                      options={remarkOptions}
-                                      placeholder="Select..."
-                                      styles={customStyles}
-                                      isSearchable={false}
-                                    />
-                                  </div>
-                                  {selectedRemarks[form.id]?.[selectedSiteIds[form.id]]?.value === "credit" && (
-                                    <>
-                                      <div className="col-2 position-relative mt-1">
-                                        <label className="fw-600 small-font">Credit Amount</label>
-                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="number"
-                                            maxLength={9}
-                                            className="small-font bg-none w-75 all-none appearance"
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                form.id,
-                                                selectedSiteIds[form.id],
-                                                "credit_amount",
-                                                e.target.value
-                                              )
-                                            }
-                                          />
+                                    {selectedRemarks[form.id]?.[selectedSiteIds[form.id]]?.value === "credit" && (
+                                      <>
+                                        <div className="col-2 position-relative mt-1">
+                                          <label className="fw-600 small-font">Credit Amount</label>
+                                          <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                            <input
+                                              type="number"
+                                              maxLength={9}
+                                              className="small-font bg-none w-75 all-none appearance"
+                                              onChange={(e) =>
+                                                handleInputChange(
+                                                  form.id,
+                                                  selectedSiteIds[form.id],
+                                                  "credit_amount",
+                                                  e.target.value
+                                                )
+                                              }
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      <div className="col-2 position-relative mt-1">
-                                        <label className="fw-600 small-font">Paid Amount</label>
-                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="text"
-                                            maxLength={9}
-                                            className="small-font bg-none w-75 all-none appearance"
-                                            value={parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips) -
-                                              parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.credit_amount) ?? 0}
-                                            readOnly
-                                          />
+                                        <div className="col-2 position-relative mt-1">
+                                          <label className="fw-600 small-font">Paid Amount</label>
+                                          <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                            <input
+                                              type="text"
+                                              maxLength={9}
+                                              className="small-font bg-none w-75 all-none appearance"
+                                              value={parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips) -
+                                                parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.credit_amount) ?? 0}
+                                              readOnly
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
-                                    </>
-                                  )}
-                                </>
-                              )}
+                                      </>
+                                    )}
+                                  </>
+                                )}
                             </div>
                           </div>
                         ) : (
