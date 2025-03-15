@@ -2259,7 +2259,8 @@ function EditNewDirector() {
     { value: "offline", label: "Offline" },
     ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), // Conditionally add "Credit" option
   ];
-
+  const [allSelectedUserWebsites, setAllSelectedUserWebsites] = useState([]);
+  const [selectedUserWebsitesPerAdmin, setSelectedUserWebsitesPerAdmin] = useState({});
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -2448,6 +2449,7 @@ function EditNewDirector() {
       login_name: loginName,
       parent_password: managementPassword,
       is_credit: isCreditAllowed == true ? 1 : 2,
+      credit_reference: isCreditAllowed == true ? creditreference : 0,
       accessWebsites: [
         ...userWebsites.map((site) => ({
           id: site.id,
@@ -2509,6 +2511,7 @@ function EditNewDirector() {
                 is_primary: site.is_primary == 1 ? 1 : 2,
                 share: parseFloat(site.share) || null,
                 caschip_values: parseFloat(site.caschip_values) || null,
+                caschip_values: 1
               }),
             is_casino: site.is_casino === 1 ? 1 : 2,
             ...(site.is_casino === 1
@@ -2730,22 +2733,77 @@ function EditNewDirector() {
     GetAllCurrencies();
   }, [userId]);
 
+  // const handleAdminRoleChange = (formId, selectedOption) => {
+  //   setSelectedAdmins((prev) => ({
+  //     ...prev,
+  //     [formId]: selectedOption,
+  //   }));
+
+  //   const remainingUserWebsites = getRemainingUserWebsites(
+  //     selectedOption.value
+  //   );
+  //   setUserWebsitesList((prev) => ({
+  //     ...prev,
+  //     [formId]: remainingUserWebsites,
+  //   }));
+  // };
+
   const handleAdminRoleChange = (formId, selectedOption) => {
     setSelectedAdmins((prev) => ({
       ...prev,
       [formId]: selectedOption,
     }));
 
-    const remainingUserWebsites = getRemainingUserWebsites(
-      selectedOption.value
-    );
+    const availableUserWebsites = getAvailableUserWebsites(selectedOption.value);
     setUserWebsitesList((prev) => ({
       ...prev,
-      [formId]: remainingUserWebsites,
+      [formId]: availableUserWebsites,
     }));
   };
 
-  const handleCheckboxChange = (formId, userSiteId, user_web_id) => {
+
+  // const handleCheckboxChange = (formId, userSiteId, user_web_id) => {
+  //   setSelectedWebsites((prev) => ({
+  //     ...prev,
+  //     [formId]: {
+  //       ...prev[formId],
+  //       [userSiteId]: !prev[formId]?.[userSiteId],
+  //     },
+  //   }));
+
+  //   if (selectedWebsites[formId]?.[userSiteId]) {
+  //     // Remove the user site from addWebsites if unchecked
+  //     setAddWebsites((prevAddWebsites) =>
+  //       prevAddWebsites.filter((site) => site.user_paner_id !== userSiteId)
+  //     );
+  //   } else {
+  //     // Add the user site to addWebsites if checked
+  //     const adminPanelId = selectedAdmins[formId]?.value || null;
+  //     console.log(adminPanelId, userSiteId, "===>adminPanelId");
+  //     setAddWebsites((prevAddWebsites) => [
+  //       ...prevAddWebsites,
+  //       {
+  //         id: userSiteId,
+  //         admin_panel_id: adminPanelId,
+  //         user_paner_id: user_web_id ? user_web_id : userSiteId,
+  //         commission_type: null,
+  //         share: null,
+  //         is_casino: null,
+  //         caschip_values: null,
+  //         downline_comm: null,
+  //         monthly_amount: null,
+  //         max_chips_monthly: null,
+  //         chip_percentage: null,
+  //         caschip_values: null,
+  //         is_casino: 2,
+  //         is_primary: 2, // Default is_primary value for new websites
+  //         form_id: formId,
+  //       },
+  //     ]);
+  //   }
+  // };
+
+  const handleCheckboxChange = (formId, userSiteId, user_web_id, adminId) => {
     setSelectedWebsites((prev) => ({
       ...prev,
       [formId]: {
@@ -2759,10 +2817,15 @@ function EditNewDirector() {
       setAddWebsites((prevAddWebsites) =>
         prevAddWebsites.filter((site) => site.user_paner_id !== userSiteId)
       );
+
+      // Remove the user site from the selectedUserWebsitesPerAdmin state
+      setSelectedUserWebsitesPerAdmin((prev) => ({
+        ...prev,
+        [adminId]: prev[adminId].filter((siteId) => siteId !== userSiteId),
+      }));
     } else {
       // Add the user site to addWebsites if checked
       const adminPanelId = selectedAdmins[formId]?.value || null;
-      console.log(adminPanelId, userSiteId, "===>adminPanelId");
       setAddWebsites((prevAddWebsites) => [
         ...prevAddWebsites,
         {
@@ -2783,6 +2846,12 @@ function EditNewDirector() {
           form_id: formId,
         },
       ]);
+
+      // Add the user site to the selectedUserWebsitesPerAdmin state
+      setSelectedUserWebsitesPerAdmin((prev) => ({
+        ...prev,
+        [adminId]: [...(prev[adminId] || []), userSiteId],
+      }));
     }
   };
 
@@ -2909,6 +2978,24 @@ function EditNewDirector() {
       </div>
     );
   };
+
+  const getAvailableUserWebsites = (adminId) => {
+    const assignedUserWebsiteIds = userWebsites
+      .filter((site) => site.admin_panel_id === adminId)
+      .map((site) => site.user_paner_id);
+
+    const adminData = adminWebsite.find((admin) => admin.id === adminId);
+    const selectedUserWebsitesForAdmin = selectedUserWebsitesPerAdmin[adminId] || [];
+
+    return (
+      adminData?.userWebsites.filter(
+        (site) =>
+          !assignedUserWebsiteIds.includes(site.id) &&
+          !selectedUserWebsitesForAdmin.includes(site.id)
+      ) || []
+    );
+  };
+
 
   return (
     <>
@@ -4079,7 +4166,6 @@ function EditNewDirector() {
                     <div className="col-12">
                       {userWebsitesList[form.id]?.length > 0 ? (
                         <div className="row">
-                          {/* Dropdown for selecting user websites */}
                           <div className="col-2 input-css5 small-font">
                             <div className="black-font">User Website</div>
                             <Select
@@ -4104,33 +4190,18 @@ function EditNewDirector() {
                               }
                               onChange={(selectedOption) => {
                                 const selectedSiteId = selectedOption ? selectedOption.value : null;
+                                const adminId = selectedAdmins[form.id]?.value;
 
-                                // Update the selected site ID for this form
                                 setSelectedSiteIds((prev) => ({
                                   ...prev,
                                   [form.id]: selectedSiteId,
                                 }));
 
-                                // Update the website details for this form and selected site
-                                setWebsiteDetails((prevDetails) => ({
-                                  ...prevDetails,
-                                  [form.id]: {
-                                    ...prevDetails[form.id],
-                                    [selectedSiteId]: {
-                                      ...prevDetails[form.id]?.[selectedSiteId],
-                                      selectedWebsiteId: selectedSiteId,
-                                    },
-                                  },
-                                }));
-
-                                // Handle the checkbox change (if needed)
-                                handleCheckboxChange(form.id, selectedSiteId);
+                                handleCheckboxChange(form.id, selectedSiteId, null, adminId);
                               }}
                               styles={customStyles}
                             />
                           </div>
-
-                          {/* Render fields based on the selected user website */}
                           {selectedSiteIds[form.id] && (
                             <>
                               <div className="col-1 my-1">
@@ -4303,6 +4374,8 @@ function EditNewDirector() {
                                             e.target.value
                                           )
                                         }
+                                        max={10}
+                                        min={0}
                                       />
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Share 10%</b>
@@ -4321,6 +4394,8 @@ function EditNewDirector() {
                                             e.target.value
                                           )
                                         }
+                                        max={10}
+                                        min={0}
                                       />
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Comm.. 1%</b>
@@ -4368,7 +4443,7 @@ function EditNewDirector() {
                               )}
 
                               {/* Fields for Commission Type 3 */}
-                             {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "3" && (
+                              {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "3" && (
                                 <div className="col d-flex">
                                   <div className="col position-relative mx-1">
                                     <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -4382,6 +4457,8 @@ function EditNewDirector() {
                                             e.target.value
                                           )
                                         }
+                                        max={10}
+                                        min={0}
                                       />
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Share 10%</b>
@@ -4400,6 +4477,8 @@ function EditNewDirector() {
                                             e.target.value
                                           )
                                         }
+                                        max={10}
+                                        min={0}
                                       />
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Comm.. 1%</b>
@@ -4443,7 +4522,7 @@ function EditNewDirector() {
                                     />
                                   </div>
                                 </div>
-                              )} 
+                              )}
                               <div className="row ">
                                 <div className="col-2 ">
                                   <label className="fw-600 my-1 small-font">
