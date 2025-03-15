@@ -38,7 +38,6 @@ const AddManagementTeam = () => {
   const [EditShow, setEditShow] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [resetData, setResetData] = useState(false);
-  console.log(selectedUser, "selectedUser");
   const [formData, setFormData] = useState({
     role: "",
     name: "",
