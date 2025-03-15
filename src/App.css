@@ -1052,5 +1052,10 @@
 
 .appearance {
   -moz-appearance: textfield;
-  appearance: textfield;
+  appearance: textfield;}
+  
+.flex-wrap{
+  display: flex;
+  flex-wrap: wrap;
+
 }

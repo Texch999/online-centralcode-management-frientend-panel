@@ -19,7 +19,7 @@ const PrivacyPopUp = ({
       </Modal.Header>
       <Modal.Body>
         <div
-          className="small-font"
+          className="small-font "
           dangerouslySetInnerHTML={{ __html: showPrivacyText }}
         />
       </Modal.Body>
