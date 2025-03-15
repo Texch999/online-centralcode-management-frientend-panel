@@ -47,6 +47,9 @@ const EditBannerPopup = ({
     start: "",
     end: "",
     changes: "",
+    image: "",
+    video: "",
+    videobanner: "",
   });
 
   const directorsWebsites = [
@@ -92,7 +95,16 @@ const EditBannerPopup = ({
     const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"];
     const allowedVideoTypes = ["video/mp4"];
 
-    if (!file) return;
+    // if (!file) return;
+
+    if (!file) {
+      setMessage(
+        `${
+          field === "video" || field === "video_banner" ? "Video" : "Image"
+        } is required.`
+      );
+      return;
+    }
 
     let errorMessage = "";
 
@@ -117,6 +129,7 @@ const EditBannerPopup = ({
       setMessage(errorMessage);
       return;
     }
+    setErrors((prev) => ({ ...prev, [field]: "" }));
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -129,12 +142,37 @@ const EditBannerPopup = ({
       ...prevFormData,
       [field]: null,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [field]: `${
+        field === "video" || field === "video_banner" ? "Video" : "Image"
+      } is required.`,
+    }));
   };
 
   const handleSubmit = async () => {
     setLoading(true);
 
-    // Compare current form data with initial data
+    let formErrors = {};
+
+    if (formData.poster_type === 1 && !formData.image) {
+      formErrors.image = "Image is required.";
+    }
+    if (
+      formData.poster_type === 2 &&
+      !formData.video &&
+      !formData.video_banner
+    ) {
+      formErrors.video = "At least one video is required.";
+    }
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      setLoading(false);
+      return;
+    }
+
     const hasChanges = Object.keys(formData).some((key) => {
       return formData[key] !== initialData[key];
     });
@@ -465,6 +503,11 @@ const EditBannerPopup = ({
                       onClick={() => removeFile("image")}
                     />
                   </div>
+                  {errors.image && (
+                    <span className="text-danger small-font">
+                      {errors.image}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -506,6 +549,11 @@ const EditBannerPopup = ({
                       onClick={() => removeFile("video")}
                     />
                   </div>
+                  {errors.video && (
+                    <span className="text-danger small-font">
+                      {errors.video}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -549,14 +597,19 @@ const EditBannerPopup = ({
                       onClick={() => removeFile("video_banner")}
                     />
                   </div>
+                  {errors.videobanner && (
+                    <span className="text-danger small-font">
+                      {errors.videobanner}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
           ) : null}
 
-          <div className="d-flex w-100 mt-3 justify-content-center">
+          <div className="d-flex w-100 mt-3 flex-center">
             {errors.changes && (
-              <span className="text-danger small-font">{errors.changes}</span>
+              <span className="text-danger medium-font">{errors.changes}</span>
             )}
             <div
               className="saffron-btn2 small-font pointer ms-2 w-50 mr-2"
