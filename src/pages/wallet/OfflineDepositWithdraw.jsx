@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Table from "../../components/Table"; // Common Table component
+import Table from "../../components/Table";
 import { customStyles } from "../../components/ReactSelectStyles";
 import Select from "react-select";
 import { currencyConvert } from "../../utils/currEchange";
@@ -31,7 +31,7 @@ function OfflineDepositWithdraw() {
     selectedUserSiteId: null,
     selectedCommissionType: null,
   });
-  const [isCredit, setIsCredit] = useState(false); // State for credit checkbox
+  const [isCredit, setIsCredit] = useState(false); 
   const [creditAmount, setCreditAmount] = useState(0);
   const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
   const [selectedDetails, setSelectedDetails] = useState(null);
@@ -359,11 +359,11 @@ function OfflineDepositWithdraw() {
     return {
       ...row,
       nameRole: <div>{`${row.name}`} <br /> Director</div>,
-      totalBalance: <div>{`${row.name}`}</div>,
-      Available: <div>{`${row.name}`}</div>,
-      totalAvailable: <div>{`${row.name}`}</div>,
-      totalExposure: <div>{`${row.name}`}</div>,
-      referencePL: <div className=" text-end">{`${row.name}`}</div>,
+      totalBalance: <div>{`150000`}</div>,
+      Available: <div>{`42000`}</div>,
+      totalAvailable: <div>{`95000`}</div>,
+      totalExposure: <div>{`55000`}</div>,
+      referencePL: <div className=" text-end">{`132000`}</div>,
       adminSites: <div >
         <AdminSiteDropdown
           options={adminSites}
