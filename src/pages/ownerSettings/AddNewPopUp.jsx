@@ -127,7 +127,7 @@ const AddNewPopUp = ({
       : createRejReasons(payload);
 
     response
-      .then(() => {
+      .then((response) => {
         setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => {

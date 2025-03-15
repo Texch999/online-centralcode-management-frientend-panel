@@ -840,7 +840,7 @@ const SandCBanner = () => {
       </div>
 
       <div className="w-100 d-flex small-font">
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-2 fixed-width-field1">
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
@@ -861,7 +861,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-2 fixed-width-field1">
           <label className="black-text4 mb-1">Banner/Poster Page</label>
           <Select
             className="small-font"
@@ -881,7 +881,7 @@ const SandCBanner = () => {
             </span>
           )}
         </div>
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-2 fixed-width-field1">
           <label className="black-text4 mb-1">Banner/Poster Location</label>
           <Select
             className="small-font"
@@ -901,7 +901,7 @@ const SandCBanner = () => {
             </span>
           )}
         </div>
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-3 fixed-width-field1 me-2">
           <label className="black-text4 mb-1">Start Date & Time</label>
           <input
             className="input-css2"
@@ -917,7 +917,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column fixed-width-field1">
+        <div className="col flex-column fixed-width-field1 me-2">
           <label className="black-text4 mb-1">End Date & Time</label>
           <input
             className="input-css2"
@@ -933,7 +933,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-3 fixed-width-field1 me-2">
           <label className="black-text4 mb-1">Banner/Poster Type</label>
           <Select
             className="small-font"
