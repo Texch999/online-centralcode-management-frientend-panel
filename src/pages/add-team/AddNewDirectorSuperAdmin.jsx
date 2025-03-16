@@ -207,6 +207,7 @@ function AddNewDirectorSuperAdmin() {
         [userSiteId]: selectedOption.value,
       },
     }));
+
   };
 
   // const handleInputChange = (websiteId, field, value) => {
@@ -347,7 +348,6 @@ function AddNewDirectorSuperAdmin() {
       return;
     }
 
-    // Final payload to be sent to the API
     const finalData = {
       type: selectedRole,
       name,
@@ -362,9 +362,9 @@ function AddNewDirectorSuperAdmin() {
     };
 
     if (isCreditAllowed == true) {
-      finalData.credit_reference = creditreference;
+      finalData.credit_reference = creditreference
     } else {
-      finalData.credit_reference = 0;
+      finalData.credit_reference = 0
     }
     console.log("Final Payload:", finalData);
 
@@ -639,11 +639,8 @@ function AddNewDirectorSuperAdmin() {
     });
   };
 
-  // // New function name for handling changes
-  // const handleRemarkChange = (selectedRemark) => {
-  //   setChosenRemark(selectedRemark);
-  // };
-
+  console.log(accountTypes, "==>accountTypes")
+  console.log(websiteDetails, "==>websiteDetails")
   return (
     <>
       <div className="m-2 ">
@@ -805,14 +802,12 @@ function AddNewDirectorSuperAdmin() {
                 ]}
                 placeholder="Select"
                 filterOption={(option, searchText) => {
-                  // Allow only alphabetic characters in search
                   const lettersOnly = searchText.replace(/[^a-zA-Z]/g, "");
                   return option.label
                     .toLowerCase()
                     .includes(lettersOnly.toLowerCase());
                 }}
                 onInputChange={(inputValue) => {
-                  // Ensure only alphabetic characters are allowed in the input
                   return inputValue.replace(/[^a-zA-Z]/g, "");
                 }}
               />
@@ -855,7 +850,6 @@ function AddNewDirectorSuperAdmin() {
                 </div>
                 <div className="p-1 col position-relative my-2 ">
                   <label className="small-font my-1">Confirm Password</label>
-
                   <div className="w-100 input-css4">
                     <input
                       type={showConfirmPassword ? "text" : "password"}
@@ -887,7 +881,6 @@ function AddNewDirectorSuperAdmin() {
                 </div>
                 <div className="p-1 col-3 position-relative my-2">
                   <label className="small-font my-1">Management Password</label>
-
                   <div className="w-100 input-css4">
                     <input
                       type={showManagementPassword ? "text" : "password"}
@@ -1393,20 +1386,7 @@ function AddNewDirectorSuperAdmin() {
                                 <Select
                                   className="small-font rounded all-none my-2 w-100"
                                   placeholder="Select a website"
-                                  // options={userWebsitesList[form.id]
-                                  //   .filter((site) => {
-                                  //     // Check if the site ID is not in the selectedSiteIds object for the current form
-                                  //     return site.id !== selectedSiteIds[form.id];
-                                  //   })
-                                  //   .map((site) => ({
-                                  //     value: site.id,
-                                  //     label: site.web_url,
-                                  //   }))
-                                  // }
-                                  options={getAvailableUserSites(
-                                    form.id,
-                                    selectedAdmins[form.id]?.value
-                                  ).map((site) => ({
+                                  options={getAvailableUserSites(form.id, selectedAdmins[form.id]?.value).map((site) => ({
                                     value: site.id,
                                     label: site.web_url,
                                   }))}
@@ -1424,15 +1404,11 @@ function AddNewDirectorSuperAdmin() {
                                       : null
                                   }
                                   onChange={(selectedOption) => {
-                                    const selectedSiteId = selectedOption
-                                      ? selectedOption.value
-                                      : null;
-
+                                    const selectedSiteId = selectedOption ? selectedOption.value : null;
                                     setSelectedSiteIds((prev) => ({
                                       ...prev,
                                       [form.id]: selectedSiteId,
                                     }));
-
                                     setWebsiteDetails((prevDetails) => ({
                                       ...prevDetails,
                                       [form.id]: {
@@ -1445,20 +1421,18 @@ function AddNewDirectorSuperAdmin() {
                                         },
                                       },
                                     }));
-                                    handleCheckboxChange(
-                                      form.id,
-                                      selectedSiteId
-                                    );
+                                    handleCheckboxChange(form.id, selectedSiteId);
+                                    handleUserSiteSelection(form.id, selectedAdmins[form.id]?.value, selectedSiteId);
                                   }}
                                   styles={customStyles}
                                 />
                               </div>
-
                               <div className="flex-row d-flex w-100 ">
                                 {/* Commission Type Dropdown */}
                                 <div className="col-2 input-css5">
                                   <div className="black-font small-font">
                                     Commission Type
+                                    {console.log(accountTypes[form.id]?.[selectedSiteIds[form.id]], "==>deposit")}
                                   </div>
                                   <Select
                                     className="small-font my-2"
@@ -1489,6 +1463,7 @@ function AddNewDirectorSuperAdmin() {
                                       ) || null
                                     }
                                   />
+
                                 </div>
 
                                 {accountTypes[form.id]?.[
@@ -1603,18 +1578,54 @@ function AddNewDirectorSuperAdmin() {
                                         </label>
                                         <div className="input-css rounded  d-flex justify-content-between align-items-center small-font">
                                           <input
-                                            type="number"
-                                            className="small-font bg-none all-none  w-50"
+                                            type="text"
+                                            className="small-font bg-none  all-none w-50"
+                                            onChange={(e) => {
+                                              let value = e.target.value.replace(
+                                                /\D/g,
+                                                ""
+                                              );
+                                              if (value.length > 3) return;
+                                              if (parseInt(value, 10) > 100)
+                                                return;
+                                              handleInputChange(
+                                                form.id,
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                value
+                                              );
+                                            }}
+                                          />
+                                          {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
+                                          <div className="fw-600">
+                                            My Share{" "}
+                                            {100 -
+                                              (parseInt(
+                                                websiteDetails[
+                                                  selectedWebsiteId
+                                                ]?.share
+                                              ) || 0)}
+                                            %
+                                          </div>
+                                        </span> */}
+                                        </div>
+                                      </div>
+                                      <div className="col-2 position-relative mt-1 mx-3">
+                                        <label className="fw-600  small-font">
+                                          Downline Commission
+                                        </label>
+                                        <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                          <input
+                                            type="text"
                                             maxLength={2}
                                             onChange={(e) => {
-                                              let value =
-                                                e.target.value.replace(
-                                                  /\D/g,
-                                                  ""
-                                                );
-                                              if (value.length > 3) return; // Restrict input to max 3 digits
+                                              let value = e.target.value.replace(
+                                                /\D/g,
+                                                ""
+                                              );
+                                              if (value.length > 3) return;
                                               if (parseInt(value, 10) > 100)
-                                                return; // Prevent values greater than 100
+                                                return;
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
@@ -1629,22 +1640,29 @@ function AddNewDirectorSuperAdmin() {
                                       <div className="col-2 m-2">
                                         <div className="  input-css d-flex mt-4  my-2 mx-2">
                                           <input
-                                            type="checkbox"
-                                            checked={
-                                              websiteDetails[form.id]?.[
-                                                selectedSiteIds[form.id]
-                                              ]?.casino_allowed == 1
-                                                ? true
-                                                : false
-                                            }
-                                            onChange={(e) =>
+                                            className="small-font bg-none all-none  w-100"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
+                                            maxLength={4}
+                                            onKeyPress={(event) => {
+                                              if (
+                                                event.charCode < 48 ||
+                                                event.charCode > 57
+                                              ) {
+                                                event.preventDefault();
+                                              }
+                                            }}
+                                            onChange={(e) => {
+                                              const numericValue =
+                                                e.target.value.replace(/\D/g, "");
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
                                                 "casino_allowed",
                                                 e.target.checked ? 1 : 2
                                               )
-                                            }
+                                            }}
                                           />
                                           <label className="small-font ms-2 white-space">
                                             Casino Allowed
@@ -1833,6 +1851,7 @@ function AddNewDirectorSuperAdmin() {
                             </div>
 
                             <div className="row ">
+
                               <div className="col-2 ">
                                 <label className="fw-600 my-1 small-font">
                                   {/* Cash chip Values */}
@@ -1845,124 +1864,96 @@ function AddNewDirectorSuperAdmin() {
                                   )}
                                 </div> */}
                               </div>
-                              {selectedSiteIds[form.id] && (
-                                <>
-                                  <div className="col-2 position-relative mt-1">
-                                    <label className="fw-600 small-font">
-                                      Add Deposit Chips
-                                    </label>
-                                    <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        type="number"
-                                        className="small-font bg-none w-75 all-none appearance"
-                                        onChange={(e) => {
-                                          handleInputChange(
-                                            form.id,
-                                            selectedSiteIds[form.id],
-                                            "add_deposit_chips",
-                                            e.target.value
-                                          );
-                                        }}
-                                      />
+                              {(accountTypes[form.id]?.[selectedSiteIds[form.id]] == "1"
+                                || accountTypes[form.id]?.[selectedSiteIds[form.id]] == "2"
+                                || accountTypes[form.id]?.[selectedSiteIds[form.id]] == "3") && (
+                                  <>
+                                    <div className="col-2 position-relative mt-1">
+                                      <label className="fw-600 small-font">
+                                        Add Deposit Chips
+                                      </label>
+                                      <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          type="number"
+                                          className="small-font bg-none w-75 all-none appearance"
+                                          onChange={(e) => {
+                                            handleInputChange(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "add_deposit_chips",
+                                              e.target.value
+                                            );
+                                          }}
+                                        />
+                                      </div>
                                     </div>
-                                  </div>
 
-                                  <div className="col-2 position-relative mt-1">
-                                    <label className="fw-600 small-font">
-                                      Total Paid Amount
-                                    </label>
-                                    <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        type="text"
-                                        maxLength={2}
-                                        className="small-font bg-none w-75 all-none"
-                                        value={
-                                          websiteDetails[form.id]?.[
-                                            selectedSiteIds[form.id]
-                                          ]?.add_deposit_chips
+                                    <div className="col-2 position-relative mt-1">
+                                      <label className="fw-600 small-font">
+                                        Total Paid Amount
+                                      </label>
+                                      <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                        <input
+                                          type="text"
+                                          maxLength={2}
+                                          className="small-font bg-none w-75 all-none"
+                                          value={websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips}
+                                          readOnly
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-2 small-font position-relative mt-3">
+                                      <label className="fw-600 small-font">Deposit Remark</label>
+                                      <Select
+                                        value={selectedRemarks[form.id]?.[selectedSiteIds[form.id]] || null}
+                                        onChange={(selectedOption) =>
+                                          handleRemarkChange(form.id, selectedSiteIds[form.id], selectedOption)
                                         }
-                                        readOnly
+                                        options={remarkOptions}
+                                        placeholder="Select..."
+                                        styles={customStyles}
+                                        isSearchable={false}
                                       />
                                     </div>
-                                  </div>
-
-                                  <div className="col-2 small-font position-relative mt-3">
-                                    <label className="fw-600 small-font">
-                                      Deposit Remark
-                                    </label>
-                                    <Select
-                                      value={
-                                        selectedRemarks[form.id]?.[
-                                          selectedSiteIds[form.id]
-                                        ] || null
-                                      }
-                                      onChange={(selectedOption) =>
-                                        handleRemarkChange(
-                                          form.id,
-                                          selectedSiteIds[form.id],
-                                          selectedOption
-                                        )
-                                      }
-                                      options={remarkOptions}
-                                      placeholder="Select..."
-                                      styles={customStyles}
-                                      isSearchable={false}
-                                    />
-                                  </div>
-                                  {selectedRemarks[form.id]?.[
-                                    selectedSiteIds[form.id]
-                                  ]?.value === "credit" && (
-                                    <>
-                                      <div className="col-2 position-relative mt-1">
-                                        <label className="fw-600 small-font">
-                                          Credit Amount
-                                        </label>
-                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="number"
-                                            maxLength={9}
-                                            className="small-font bg-none w-75 all-none appearance"
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                form.id,
-                                                selectedSiteIds[form.id],
-                                                "credit_amount",
-                                                e.target.value
-                                              )
-                                            }
-                                          />
+                                    {selectedRemarks[form.id]?.[selectedSiteIds[form.id]]?.value === "credit" && (
+                                      <>
+                                        <div className="col-2 position-relative mt-1">
+                                          <label className="fw-600 small-font">Credit Amount</label>
+                                          <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                            <input
+                                              type="number"
+                                              maxLength={9}
+                                              className="small-font bg-none w-75 all-none appearance"
+                                              onChange={(e) =>
+                                                handleInputChange(
+                                                  form.id,
+                                                  selectedSiteIds[form.id],
+                                                  "credit_amount",
+                                                  e.target.value
+                                                )
+                                              }
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
 
-                                      <div className="col-2 position-relative mt-1">
-                                        <label className="fw-600 small-font">
-                                          Paid Amount
-                                        </label>
-                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="text"
-                                            maxLength={9}
-                                            className="small-font bg-none w-75 all-none appearance"
-                                            value={
-                                              parseInt(
-                                                websiteDetails[form.id]?.[
-                                                  selectedSiteIds[form.id]
-                                                ]?.add_deposit_chips
-                                              ) -
-                                                parseInt(
-                                                  websiteDetails[form.id]?.[
-                                                    selectedSiteIds[form.id]
-                                                  ]?.credit_amount
-                                                ) ?? 0
-                                            }
-                                            readOnly
-                                          />
+                                        <div className="col-2 position-relative mt-1">
+                                          <label className="fw-600 small-font">Paid Amount</label>
+                                          <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                            <input
+                                              type="text"
+                                              maxLength={9}
+                                              className="small-font bg-none w-75 all-none appearance"
+                                              value={parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips) -
+                                                parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.credit_amount) ?? 0}
+                                              readOnly
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
-                                    </>
-                                  )}
-                                </>
-                              )}
+                                      </>
+                                    )}
+                                  </>
+                                )}
                             </div>
                           </div>
                         ) : (
