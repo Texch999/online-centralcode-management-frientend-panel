@@ -209,6 +209,7 @@ function AddNewDirectorSuperAdmin() {
         [userSiteId]: selectedOption.value,
       },
     }));
+
   };
 
   // const handleInputChange = (websiteId, field, value) => {
@@ -626,7 +627,8 @@ function AddNewDirectorSuperAdmin() {
     });
   };
 
-
+  console.log(accountTypes, "==>accountTypes")
+  console.log(websiteDetails, "==>websiteDetails")
   return (
     <>
       <div className="m-2 ">
@@ -781,12 +783,10 @@ function AddNewDirectorSuperAdmin() {
                 ]}
                 placeholder="Select"
                 filterOption={(option, searchText) => {
-                  // Allow only alphabetic characters in search
                   const lettersOnly = searchText.replace(/[^a-zA-Z]/g, "");
                   return option.label.toLowerCase().includes(lettersOnly.toLowerCase());
                 }}
                 onInputChange={(inputValue) => {
-                  // Ensure only alphabetic characters are allowed in the input
                   return inputValue.replace(/[^a-zA-Z]/g, "");
                 }}
               />
@@ -827,7 +827,6 @@ function AddNewDirectorSuperAdmin() {
                 </div>
                 <div className="p-1 col position-relative my-2 ">
                   <label className="small-font my-1">Confirm Password</label>
-
                   <div className="w-100 input-css4">
                     <input
                       type={showConfirmPassword ? "text" : "password"}
@@ -859,7 +858,6 @@ function AddNewDirectorSuperAdmin() {
                 </div>
                 <div className="p-1 col-3 position-relative my-2">
                   <label className="small-font my-1">Management Password</label>
-
                   <div className="w-100 input-css4">
                     <input
                       type={showManagementPassword ? "text" : "password"}
@@ -1366,16 +1364,6 @@ function AddNewDirectorSuperAdmin() {
                                 <Select
                                   className="small-font rounded all-none my-2 w-100"
                                   placeholder="Select a website"
-                                  // options={userWebsitesList[form.id]
-                                  //   .filter((site) => {
-                                  //     // Check if the site ID is not in the selectedSiteIds object for the current form
-                                  //     return site.id !== selectedSiteIds[form.id];
-                                  //   })
-                                  //   .map((site) => ({
-                                  //     value: site.id,
-                                  //     label: site.web_url,
-                                  //   }))
-                                  // }
                                   options={getAvailableUserSites(form.id, selectedAdmins[form.id]?.value).map((site) => ({
                                     value: site.id,
                                     label: site.web_url,
@@ -1393,7 +1381,6 @@ function AddNewDirectorSuperAdmin() {
                                   }
                                   onChange={(selectedOption) => {
                                     const selectedSiteId = selectedOption ? selectedOption.value : null;
-
                                     setSelectedSiteIds((prev) => ({
                                       ...prev,
                                       [form.id]: selectedSiteId,
@@ -1413,9 +1400,7 @@ function AddNewDirectorSuperAdmin() {
                                   }}
                                   styles={customStyles}
                                 />
-
                               </div>
-
                               <div className="flex-row d-flex w-100 ">
                                 {/* Commission Type Dropdown */}
                                 <div className="col-2 input-css5">
@@ -1491,7 +1476,7 @@ function AddNewDirectorSuperAdmin() {
                                           <input
                                             type="text"
                                             className="small-font input-css  rounded  all-none p-2 w-100"
-                                            // placeholder="Max Chips Monthly"
+                                            placeholder="Max Chips Monthly"
                                             maxLength={9}
                                             onKeyPress={(e) => {
                                               if (
@@ -1653,10 +1638,10 @@ function AddNewDirectorSuperAdmin() {
                                               let value = e.target.value.replace(
                                                 /\D/g,
                                                 ""
-                                              ); // Allow only numbers
-                                              if (value.length > 3) return; // Restrict input to max 3 digits
+                                              );
+                                              if (value.length > 3) return;
                                               if (parseInt(value, 10) > 100)
-                                                return; // Prevent values greater than 100
+                                                return;
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
@@ -1692,10 +1677,10 @@ function AddNewDirectorSuperAdmin() {
                                               let value = e.target.value.replace(
                                                 /\D/g,
                                                 ""
-                                              ); // Allow only numbers
-                                              if (value.length > 3) return; // Restrict input to max 3 digits
+                                              );
+                                              if (value.length > 3) return;
                                               if (parseInt(value, 10) > 100)
-                                                return; // Prevent values greater than 100
+                                                return;
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
@@ -1722,12 +1707,12 @@ function AddNewDirectorSuperAdmin() {
                                                 event.charCode < 48 ||
                                                 event.charCode > 57
                                               ) {
-                                                event.preventDefault(); // Prevent non-numeric characters
+                                                event.preventDefault();
                                               }
                                             }}
                                             onChange={(e) => {
                                               const numericValue =
-                                                e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                                                e.target.value.replace(/\D/g, "");
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
