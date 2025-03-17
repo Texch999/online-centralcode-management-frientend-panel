@@ -26,7 +26,6 @@ const AddDirectorAdmin = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedDirectorId, setSelectedDirectorId] = useState(null);
   const [selectedSuperAdminId, setSelectedSuperAdminId] = useState(null);
-  console.log(selectedSuperAdminId, "selectedSuperAdminId");
   const [tableData, setTableData] = useState([]);
   const [tableSuperAdminData, setTableSuperAdminData] = useState([]);
 
@@ -38,7 +37,7 @@ const AddDirectorAdmin = () => {
     setSelectedSuperAdminId(id);
     setResetPasswordPopup(true);
   };
-  const itemsPerPage = 6;
+  const itemsPerPage = 7;
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
@@ -86,6 +85,7 @@ const AddDirectorAdmin = () => {
     { header: "Name", field: "name" },
     { header: "Login Name", field: "loginname" },
     { header: "In Used", field: "inUsed" },
+    { header: "Admin Websites", field: "adminwebsites" },
     { header: "Link Websites", field: "linkWebsites" },
     { header: "Share/Rent", field: "shareRent" },
     { header: "Billing", field: "billing" },
@@ -113,7 +113,6 @@ const AddDirectorAdmin = () => {
         setLoading(false);
       });
   };
-  console.log(tableSuperAdminData, "tableSuperAdminData");
   const GetAllDirectors = (limit, offset) => {
     setLoading(true);
     getDirectors({ limit, offset })
@@ -216,10 +215,8 @@ const AddDirectorAdmin = () => {
       id: selectedSuperAdminId,
       status: selectedSuperAdminStatus,
     };
-    console.log(data, "====?data");
     unblockBlockDirectorDwnln(data)
       .then((response) => {
-        console.log(response, "resp");
         setConfirmationPopup(false);
         GetAllSuperAdmin();
       })
@@ -254,6 +251,22 @@ const AddDirectorAdmin = () => {
           {user.status === 1 ? "Active" : "InActive"}
         </div>
       ),
+      adminwebsites: (
+        <span className="d-flex flex-column">
+          {linkWebsites.map((website, index) => (
+            <span key={index}>
+              <a
+                href={website.adminUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {website.adminPanel}
+              </a>
+              
+            </span>
+          ))}
+        </span>
+      ),
       linkWebsites: (
         <span className="d-flex flex-column">
           {linkWebsites.map((website, index) => (
@@ -264,17 +277,8 @@ const AddDirectorAdmin = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {website.url}
-              </a>{" "}
-              (Admin:{" "}
-              <a
-                href={website.adminUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {website.adminPanel}
+                {website.url} 
               </a>
-              )
             </span>
           ))}
         </span>
@@ -286,7 +290,7 @@ const AddDirectorAdmin = () => {
               <span className="green-clr">
                 {commissionTypes[type.commissionType] || "Unknown"}{" "}
               </span>
-              {type.share ? `, Share: ${type.share}%` : ""}
+              {/* {type.share ? `, Share: ${type.share}%` : ""} */}
             </span>
           ))}
         </span>
