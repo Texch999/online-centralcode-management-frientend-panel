@@ -130,84 +130,91 @@ const SettlementTransaction = () => {
           <div className="col-2 me-3 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Total Credit</span>
-              <span className=" medium-font red-font">40000</span>
+              <span className="small-font red-font">40000</span>
             </div>
           </div>
           <div className="col-2 me-3 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Paid Credit</span>
-              <span className=" medium-font red-font">40000</span>
+              <span className=" small-font red-font">40000</span>
             </div>
           </div>
           <div className="col-2 me-3 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Bal Credit</span>
-              <span className=" medium-font red-font">40000</span>
+              <span className=" small-font red-font">40000</span>
             </div>
           </div>
           <div className="col-1"></div>
         </div>
-        <div className="row">
-          <div className="col-2">
-            <div className="flex-column me-3">
-              <label className="black-text4 small-font mb-1">
-                Select Admin Panel
-              </label>
-              <Select
-                className="small-font"
-                options={adminOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-              />
+        <div className="row justify-content-between align-items-center">
+          <div className="col-10 d-flex flex-wrap align-items-center">
+            <div className="col-2">
+              <div className="d-flex flex-column me-3">
+                <label className="black-text4 small-font mb-1">
+                  Select Admin Panel
+                </label>
+                <Select
+                  className="small-font"
+                  options={adminOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  classNamePrefix="custom-react-select"
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-2">
-            <div className="flex-column me-3">
-              <label className="black-text4 small-font mb-1">
-                Select User Panel
-              </label>
-              <Select
-                className="small-font"
-                options={adminOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-              />
+            <div className="col-2">
+              <div className="d-flex flex-column me-3">
+                <label className="black-text4 small-font mb-1">
+                  Select User Panel
+                </label>
+                <Select
+                  className="small-font"
+                  options={adminOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  classNamePrefix="custom-react-select"
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-1">
-            <div className="flex-column me-3">
-              <label className="black-text4 small-font mb-1">Select Type</label>
-              <Select
-                className="small-font"
-                options={adminOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-              />
+            <div className="col-2">
+              <div className="d-flex flex-column me-3">
+                <label className="black-text4 small-font mb-1">
+                  Select Type
+                </label>
+                <Select
+                  className="small-font"
+                  options={adminOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  classNamePrefix="custom-react-select"
+                />
+              </div>
+            </div>
+
+            {["From", "To"].map((label) => (
+              <div key={label} className="col-2 d-flex flex-column mx-2">
+                <label className="black-text4 small-font mb-1">{label}</label>
+                <input className="input-css2 small-font" type="date" />
+              </div>
+            ))}
+
+            <div className="col-1 d-flex align-items-end align-self-end ms-3">
+              <button className="saffron-btn2 w-100 small-font">Submit</button>
             </div>
           </div>
 
-          {["From", "To"].map((label) => (
-            <div key={label} className="col-2 flex-column mx-2">
-              <label className="black-text4 small-font mb-1">{label}</label>
-              <input className="input-css2 small-font" type="date" />
-            </div>
-          ))}
-
-          <div className="d-flex align-self-end small-font pointer col-1">
-            <button className="saffron-btn2">Submit</button>
-          </div>
-
-          <div className="col-1 me-3 align-self-end" onClick={()=>setSettleModalShow(true)}>
-            <div className="white-bg br-5 px-1 py-2 text-center black-border">
+          <div className="col-2 d-flex justify-content-end  align-self-end pointer">
+            <div
+              className="white-bg br-5 px-2 py-2 text-center small-font black-border pointer"
+              onClick={() => setSettleModalShow(true)}
+            >
               Settlement
             </div>
           </div>
@@ -217,7 +224,10 @@ const SettlementTransaction = () => {
         <Table columns={COLUMNS} data={DATA} itemsPerPage={4} footer={FOOTER} />
       </div>
 
-      <SettlementTransModal setSettleModalShow={setSettleModalShow} settleModalShow={settleModalShow}/>
+      <SettlementTransModal
+        setSettleModalShow={setSettleModalShow}
+        settleModalShow={settleModalShow}
+      />
     </div>
   );
 };
