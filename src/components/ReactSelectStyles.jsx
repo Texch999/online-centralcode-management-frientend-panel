@@ -10,7 +10,15 @@ export const customStyles = {
     borderRadius: "0.4rem",
     cursor: "pointer",
   }),
+  placeholder: (provided) => ({
+    ...provided,
+    padding: "6px", // Adjust padding as needed
+  }),
+  singleValue: (provided) => ({
+      ...provided,
+      padding: "6px", // Adjust padding as needed
 
+    }),
   option: (base, state) => ({
     ...base,
     backgroundColor: state.isFocused ? "#FFA310" : "transparent",

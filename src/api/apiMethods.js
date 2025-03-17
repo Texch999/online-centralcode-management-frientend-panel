@@ -478,6 +478,16 @@ const dirEmpEditProfile = (data) => {
 const dirEditProfile = (data) => {
   return apiRequest("dirEditProfile", data);
 };
+const getInActiveUsers = (params) => {
+  return apiRequest("getInActiveUsers", {}, params);
+};
+const getAdminUserWebsites = (id, data) => {
+  console.log(id, data, "iddddpppp");
+  return apiRequest("getAdminUserWebsites", data, id);
+};
+const suspendInActiveUsers = (websiteId, id) => {
+  return apiRequest("suspendInActiveUsers", websiteId, { websiteId, id });
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -599,4 +609,7 @@ export {
   managementEditProfile,
   dirEmpEditProfile,
   dirEditProfile,
+  getInActiveUsers,
+  getAdminUserWebsites,
+  suspendInActiveUsers,
 };

@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { resetEmployeePassword } from "../../api/apiMethods";
 
 function ResetPasswordPopup({
   resetPasswordPopup,
   setResetPasswordPopup,
   IndividualpassowrdId,
   onSubmit,
+  resetPasswordErrrors,
+  setResetPasswordErrors,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -25,16 +26,31 @@ function ResetPasswordPopup({
     handleSubmit,
     formState: { errors },
     getValues, // Now properly destructured
+    reset,
   } = useForm();
 
   const handleCancel = () => {
     setResetPasswordPopup(false);
+    reset();
+    setResetPasswordErrors("");
   };
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
     setResetPasswordPopup(false);
+    reset();
+    setResetPasswordErrors("");
   };
+
+  useEffect(() => {
+    if (!resetPasswordPopup) {
+      reset({
+        password: "",
+        confirmPassword: "",
+        managementPassword: "",
+      }); // Explicitly reset form fields
+    }
+  }, [resetPasswordPopup, reset]); // Ensure reset function is included in dependencies
 
   return (
     <>
@@ -54,6 +70,18 @@ function ResetPasswordPopup({
             <div className="col-12 flex-column mt-3">
               <label className="black-text4 mb-1">New Password</label>
               <div className="grey-box flex-between">
+                {/* <input
+                  className="all-none"
+                  placeholder="Enter Password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })} */}
+
                 <input
                   className="all-none"
                   placeholder="Enter Password"
@@ -64,17 +92,24 @@ function ResetPasswordPopup({
                       value: 6,
                       message: "Password must be at least 6 characters",
                     },
+                    pattern: {
+                      value:
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+                      message:
+                        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
+                    },
                   })}
                 />
+
                 {showPassword ? (
-                  <FaEyeSlash
+                  <FaEye
                     className="black-text4"
                     size={18}
                     onClick={() => setShowPassword(false)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <FaEye
+                  <FaEyeSlash
                     className="black-text4"
                     size={18}
                     onClick={() => setShowPassword(true)}
@@ -91,7 +126,7 @@ function ResetPasswordPopup({
             <div className="col-12 flex-column mt-3">
               <label className="black-text4 mb-1">Confirm Password</label>
               <div className="grey-box flex-between">
-                <input
+                {/* <input
                   className="all-none"
                   placeholder="Re-enter Password"
                   type={showConfirmPassword ? "text" : "password"}
@@ -101,16 +136,36 @@ function ResetPasswordPopup({
                       value === getValues("password") ||
                       "Passwords do not match",
                   })}
+                /> */}
+
+                <input
+                  className="all-none"
+                  placeholder="Re-enter Password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  {...register("confirmPassword", {
+                    required: "Confirm Password is required",
+                    validate: {
+                      matchesPassword: (value) =>
+                        value === getValues("password") ||
+                        "Passwords do not match",
+                      passwordPattern: (value) =>
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/.test(
+                          value
+                        ) ||
+                        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
+                    },
+                  })}
                 />
+
                 {showConfirmPassword ? (
-                  <FaEyeSlash
+                  <FaEye
                     className="black-text4"
                     size={18}
                     onClick={() => setShowConfirmPassword(false)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <FaEye
+                  <FaEyeSlash
                     className="black-text4"
                     size={18}
                     onClick={() => setShowConfirmPassword(true)}
@@ -140,14 +195,14 @@ function ResetPasswordPopup({
                   })}
                 />
                 {showManagementPassword ? (
-                  <FaEyeSlash
+                  <FaEye
                     className="black-text4"
                     size={18}
                     onClick={() => setShowManagementPassword(false)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <FaEye
+                  <FaEyeSlash
                     className="black-text4"
                     size={18}
                     onClick={() => setShowManagementPassword(true)}
@@ -161,6 +216,7 @@ function ResetPasswordPopup({
                 </span>
               )}
             </div>
+            <div className="red-font my-2">{resetPasswordErrrors}</div>
 
             <div className="col-12 mt-3">
               <button

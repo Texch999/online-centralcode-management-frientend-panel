@@ -157,9 +157,9 @@ const OfflinePaymentModes = () => {
         }
       })
       .catch((error) => {
-        setError(error?.message);
+        setError(error?.message[0]?.message);
         setConfirmationModal(false);
-        setError(error?.message);
+    
         setErrorPopup(true);
         setTimeout(() => {
           setErrorPopup(false);
@@ -234,7 +234,7 @@ const OfflinePaymentModes = () => {
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
         <h6 className="col-2 yellow-font medium-font mb-0 white-space">
-          Offline Payment Modes
+        Offline Payment Cards
         </h6>
 
         <div className="col-6 d-flex justify-content-end gap-3 medium-font">

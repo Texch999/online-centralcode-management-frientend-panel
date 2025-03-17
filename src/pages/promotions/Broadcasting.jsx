@@ -315,7 +315,11 @@ const Broadcasting = () => {
       // setLoading(true);
       const response = await statusBroadCasting(selectedBroadcastId);
       if (response?.status === 200) {
-        setMessage(response?.message);
+        setMessage(
+          `Banner ${
+            response?.newStatus === 1 ? "Un Blocked" : "Blocked"
+          } Successfully`
+        );
         setLoading(false);
         getBroadCastingdata();
         setErrorPopupOpen(false);
@@ -354,19 +358,6 @@ const Broadcasting = () => {
     },
     { header: "", field: "icons", width: "10%" },
   ];
-
-  // const filteredbroadCastingdata = broadCastingdata?.filter((item) => {
-  //   const activedbutton = activeBtn.value;
-  //   if (activedbutton === 1) {
-  //     return item.panel_type === 1;
-  //   } else if (activedbutton === 2) {
-  //     return item.panel_type === 2;
-  //   }
-
-  //   return false;
-  // });
-
-  // useEffect(() => {}, [filteredbroadCastingdata, activeBtn]);
 
   const CASINO_DATA = broadCastingdata?.map((broadCast) => ({
     dateTime: (
@@ -408,6 +399,9 @@ const Broadcasting = () => {
         <SlPencil
           size={18}
           className="pointer me-1"
+          style={
+            broadCast.status !== 1 ? { pointerEvents: "none", color: "gray" } : {}
+          }
           onClick={() => handleEditBroadcasting(broadCast.id)}
         />
         <MdBlockFlipped
@@ -462,7 +456,6 @@ const Broadcasting = () => {
             // onChange={handleSelectType}
             onChange={setSelectType}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectType && (
             <span className="text-danger small-font">{errors.selectType}</span>
@@ -482,7 +475,6 @@ const Broadcasting = () => {
             value={selectWebsites}
             onChange={handleSelectWebsites}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectWebsites && (
             <span className="text-danger small-font">
@@ -506,7 +498,6 @@ const Broadcasting = () => {
             value={selectLocations}
             onChange={handleSelectLocations}
             isSearchable={false} // Disable typing
-
           />
           {errors.selectLocations && (
             <span className="text-danger small-font">
@@ -521,7 +512,7 @@ const Broadcasting = () => {
           </label>
           <textarea
             placeholder="Enter"
-            className="all-none input-css2 small-font p-2 rounded"
+            className="all-none input-css2 small-font rounded"
             rows="1"
             style={{
               resize: "none",

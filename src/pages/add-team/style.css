@@ -241,3 +241,7 @@
 .check-bg{
   background-color: yellow;
 }
+.disabled-icon {
+  pointer-events: none;
+  opacity: 0.5;
+}

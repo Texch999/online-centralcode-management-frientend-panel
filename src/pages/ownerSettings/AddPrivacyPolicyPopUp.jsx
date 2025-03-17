@@ -49,7 +49,7 @@ const AddPrivacyPolicyPopUp = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleStatusChange = (selectOptionStatus) => {
     setSelectedStatus(selectOptionStatus);
   };
@@ -83,12 +83,12 @@ const AddPrivacyPolicyPopUp = ({
   const onSubmit = (data) => {
     if (!values || values === "<p><br></p>") {
       setError("description", {
-        type: "manual",
+        type: "manual",   
         message: "Description is required",
       });
       return;
     }
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     const payload = {
       country_id: data.country?.value,
@@ -117,9 +117,10 @@ const AddPrivacyPolicyPopUp = ({
         reset();
         setValues("");
         getPolicyPrivacyData();
-      }).finally(()=>{
-        setIsSubmitting(false)
       })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -146,17 +147,24 @@ const AddPrivacyPolicyPopUp = ({
                   rules={{ required: "Country is required" }}
                   render={({ field }) => (
                     <Select
-                      {...field}
-                      options={countryOptions}
-                      styles={customStyles}
-                      placeholder="Select"
-                      maxMenuHeight={120}
-                      menuPlacement="auto"
-                      value={countryOptions.find(
-                        (option) => option.value === field.value
-                      )}
-                      onChange={(val) => field.onChange(val)}
-                    />
+                    {...field}
+                    options={countryOptions}
+                    styles={customStyles}
+                    placeholder="Select"
+                    maxMenuHeight={120}
+                    menuPlacement="auto"
+                    value={countryOptions.find((option) => option.value === field.value)}
+                    onChange={(val) => field.onChange(val)}
+                    filterOption={(option, searchText) => {
+                      // Allow only alphabetic characters in search
+                      const lettersOnly = searchText.replace(/[^a-zA-Z]/g, ""); // Remove non-alphabetic characters
+                      return option.label.toLowerCase().includes(lettersOnly.toLowerCase()); // Case-insensitive search
+                    }}
+                    onInputChange={(inputValue) => {
+                      // Ensure only alphabetic characters are allowed in the input
+                      return inputValue.replace(/[^a-zA-Z]/g, ""); // Remove non-alphabetic characters
+                    }}
+                  />
                   )}
                 />
                 {errors.country && (
@@ -209,6 +217,7 @@ const AddPrivacyPolicyPopUp = ({
                       styles={customStyles}
                       placeholder="Select"
                       maxMenuHeight={120}
+                      isSearchable={false}
                       menuPlacement="auto"
                       value={statusOptions.find(
                         (option) => option.value === field.value
@@ -247,7 +256,6 @@ const AddPrivacyPolicyPopUp = ({
                     {isSubmitting ? "submitting..." : "Create"}
                   </button>
                 </div>
-                
               </div>
             </div>
           </form>

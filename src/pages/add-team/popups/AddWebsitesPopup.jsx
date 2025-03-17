@@ -66,21 +66,6 @@ const AddWebsitesPopup = ({ show, onHide,
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Filter out numbers and special characters for the city field
-    // if (name === "city") {
-    //   const filteredValue = value.replace(/[^a-zA-Z\s]/g, ""); // Allow only letters and spaces
-    //   setFormData((prevData) => ({
-    //     ...prevData,
-    //     [name]: filteredValue, // Update the form data with the filtered value
-    //   }));
-
-    //   // Validate the city field
-    //   validateField(name, filteredValue);
-    //   return; // Stop further execution for the city field
-    // }
-
-    // For other fields, update the form data as usual
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -99,10 +84,10 @@ const AddWebsitesPopup = ({ show, onHide,
           newErrors.city = "City is required.";
         } else if (value.length < 3 || value.length > 45) {
           newErrors.city = "City must be between 3 and 45 characters.";
-        } else if (!/^[a-zA-Z0-9\s]+$/.test(value)) {
-          newErrors.city = "City can only contain letters, numbers, and spaces.";
+        } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+          newErrors.city = "City can only contain letters, and spaces.";
         } else {
-          delete newErrors.city; 
+          delete newErrors.city;
         }
         break;
 
@@ -114,7 +99,7 @@ const AddWebsitesPopup = ({ show, onHide,
         } else if (!/^[a-zA-Z0-9._\s-]+$/.test(value)) {
           newErrors.websiteName = "Website Name can only contain letters, numbers, dots, and underscores.";
         } else {
-          delete newErrors.websiteName; // Clear the error if validation passes
+          delete newErrors.websiteName; 
         }
         break;
 
@@ -486,17 +471,22 @@ const AddWebsitesPopup = ({ show, onHide,
 
             {/* City Input */}
             <div className="col-4">
-              <label className="small-font mb-1">City</label>
-              <input
-                type="text"
-                name="city"
-                className="w-100 small-font rounded input-css all-none"
-                placeholder="Enter"
-                value={formData.city}
-                onChange={handleChange}
-              />
-              {errors.city && <p className="text-danger small-font">{errors.city}</p>}
-            </div>
+  <label className="small-font mb-1">City</label>
+  <input
+    type="text"
+    name="city"
+    className="w-100 small-font rounded input-css all-none"
+    placeholder="Enter"
+    value={formData.city}
+    onChange={(e) => {
+      // Remove any character that is not a letter or space
+      const filteredValue = e.target.value.replace(/[^A-Za-z\s]/g, "");
+      handleChange({ target: { name: "city", value: filteredValue } });
+    }}
+  />
+  {errors.city && <p className="text-danger small-font">{errors.city}</p>}
+</div>
+
 
             {/* Website Name Input */}
             <div className="col-4">

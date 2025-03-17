@@ -78,10 +78,11 @@ const ActivityLogs = () => {
       toDate
     })
       .then((response) => {
-        if (response?.status) {
+        if (response?.status === true) {
           setLogsData(response.data);
           setTotalaRecords(response.totalCount)
         } else {
+          setLogsData([]);
           setError("Something Went Wrong");
         }
       })
@@ -113,6 +114,7 @@ const ActivityLogs = () => {
   };
 
   const handleTabClick = (tab, type) => {
+    console.log(type, "==>/activity-logs")
     setType(type);
     setActiveTab(tab);
   };

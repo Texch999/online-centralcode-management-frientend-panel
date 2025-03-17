@@ -103,6 +103,7 @@ import { CountriesProvider } from "./context/CountriesContext";
 import PageNotFound from "./pages/notFound/PageNotFound";
 import DownlineWebsiteList from "./pages/add-team/DownlineWebsiteList";
 import PrivateRoute from "./pages/routes/PrivateRoutes";
+import SettlementTransaction from "./pages/wallet/SettlementTransaction";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -335,6 +336,10 @@ function App() {
                 <Route
                   path="/addnew-payments"
                   element={<AddNePaymentGateway />}
+                />
+                <Route
+                  path="/settlement-transaction"
+                  element={<SettlementTransaction />}
                 />
               </Routes>
             </div>

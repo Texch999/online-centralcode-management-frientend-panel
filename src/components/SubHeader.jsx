@@ -21,7 +21,7 @@ function SubHeader() {
           { label: "Management Team", path: "/management-team" },
           { label: "Director & Super Admin", path: "/director-admin" },
           { label: "View Downline List", path: "/downline-list" },
-          { label: "Offline Payment Modes", path: "/offline-payment-modes" },
+          { label: "Offline Payment Cards", path: "/offline-payment-modes" },
           { label: "Payment Details", path: "/payment-details" },
           { label: "Websites", path: "/websites" },
         ],
@@ -32,7 +32,7 @@ function SubHeader() {
           { label: "Sports", path: "/live-block-sports" },
           { label: "Casino", path: "/management-casino" },
           { label: "Set Limits", path: "/set-limits" },
-          { label: "In-active Users", path: "/inactive-users" },
+          { label: "Active/In-Active Users", path: "/inactive-users" },
           { label: "Bet Block Users", path: "/bet-block-users" },
         ],
       },
@@ -58,6 +58,7 @@ function SubHeader() {
           },
           { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
+          {label:"Settlement Transaction",path:"/settlement-transaction"}
         ],
       },
       {
