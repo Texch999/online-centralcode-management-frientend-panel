@@ -569,88 +569,88 @@ function AddNewDirectorSuperAdmin() {
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
-  //   let hasErrors = false;
-  //   const newValidationErrors = {};
+  // let hasErrors = false;
+  // const newValidationErrors = {};
 
-  //   // Validate login and general fields
-  //   const loginErrors = validateForm();
-  //   if (Object.keys(loginErrors).length > 0) {
-  //     console.log(loginErrors, "=>loginErrors");
-  //     hasErrors = true;
-  //     setErrors(loginErrors);
-  //   }
+  // // Validate login and general fields
+  // const loginErrors = validateForm();
+  // if (Object.keys(loginErrors).length > 0) {
+  //   console.log(loginErrors, "=>loginErrors");
+  //   hasErrors = true;
+  //   setErrors(loginErrors);
+  // }
 
-  //   // Ensure forms is an array
-  //   if (!Array.isArray(forms)) {
-  //     console.error("Forms is not an array:", forms);
-  //     return;
-  //   }
+  // // Ensure forms is an array
+  // if (!Array.isArray(forms)) {
+  //   console.error("Forms is not an array:", forms);
+  //   return;
+  // }
 
-  //   // Validate website fields for each form
-  //   forms.forEach((form) => {
-  //     const formId = form.id;
-  //     const websiteId = selectedSiteIds[formId];
+  // // Validate website fields for each form
+  // forms.forEach((form) => {
+  //   const formId = form.id;
+  //   const websiteId = selectedSiteIds[formId];
 
-  //     if (websiteId) {
-  //       const fields = websiteDetails[formId]?.[websiteId] || {};
-  //       const errors = validateWebsiteFields(fields, accountTypes[formId]?.[websiteId]);
-  //       if (Object.keys(errors).length > 0) {
-  //         hasErrors = true;
-  //         console.log(errors, "errors")
-  //         newValidationErrors[formId] = {
-  //           ...newValidationErrors[formId],
-  //           [websiteId]: errors,
-  //         };
-  //       }
+  //   if (websiteId) {
+  //     const fields = websiteDetails[formId]?.[websiteId] || {};
+  //     const errors = validateWebsiteFields(fields, accountTypes[formId]?.[websiteId]);
+  //     if (Object.keys(errors).length > 0) {
+  //       hasErrors = true;
+  //       console.log(errors, "errors")
+  //       newValidationErrors[formId] = {
+  //         ...newValidationErrors[formId],
+  //         [websiteId]: errors,
+  //       };
   //     }
-  //     //  else {
-  //     //   hasErrors = true;
-  //     //   if (!newValidationErrors[formId]) {
-  //     //     newValidationErrors[formId] = {};
-  //     //   }
-  //     //   console.log("error")
-  //     //   newValidationErrors[formId].websiteId = "Please select a website.";
-  //     //   // Check if at least one admin website is selected
-  //     //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-  //     //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
-  //     //     console.log("No admin website selected");
-  //     //     return;
-  //     //   }
-
-  //     //   // Check if at least one user website is selected
-  //     //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-  //     //     setShowWebsiteCreationErrors("Please select at least one User Website.");
-  //     //     console.log("No user website selected");
-  //     //     return;
-  //     //   }
-  //     // }
-  //   });
-
-  //   // Update the validation errors state
-  //   setValidationErrors(newValidationErrors);
-
-  //   // If there are validation errors, stop form submission
-  //   if (hasErrors) {
-  //     console.log(hasErrors, "Form has validation errors. Please fix them.");
-  //     return;
   //   }
+  //   //  else {
+  //   //   hasErrors = true;
+  //   //   if (!newValidationErrors[formId]) {
+  //   //     newValidationErrors[formId] = {};
+  //   //   }
+  //   //   console.log("error")
+  //   //   newValidationErrors[formId].websiteId = "Please select a website.";
+  //   //   // Check if at least one admin website is selected
+  //   //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+  //   //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
+  //   //     console.log("No admin website selected");
+  //   //     return;
+  //   //   }
 
-  //   // Check if at least one admin website is selected
-  //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-  //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
-  //     console.log("No admin website selected");
-  //     return;
-  //   }
+  //   //   // Check if at least one user website is selected
+  //   //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+  //   //     setShowWebsiteCreationErrors("Please select at least one User Website.");
+  //   //     console.log("No user website selected");
+  //   //     return;
+  //   //   }
+  //   // }
+  // });
 
-  //   // Check if at least one user website is selected
-  //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-  //     console.log("usersite ")
-  //     setShowWebsiteCreationErrors("Please select at least one User Website.");
-  //     console.log("No user website selected");
-  //     return;
-  //   } else {
-  //     setShowWebsiteCreationErrors(null);
-  //   }
+  // // Update the validation errors state
+  // setValidationErrors(newValidationErrors);
+
+  // // If there are validation errors, stop form submission
+  // if (hasErrors) {
+  //   console.log(hasErrors, "Form has validation errors. Please fix them.");
+  //   return;
+  // }
+
+  // // Check if at least one admin website is selected
+  // if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+  //   setShowWebsiteCreationErrors("Please select at least one Admin Website");
+  //   console.log("No admin website selected");
+  //   return;
+  // }
+
+  // // Check if at least one user website is selected
+  // if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+  //   console.log("usersite ")
+  //   setShowWebsiteCreationErrors("Please select at least one User Website.");
+  //   console.log("No user website selected");
+  //   return;
+  // } else {
+  //   setShowWebsiteCreationErrors(null);
+  // }
 
   //   // Map selected user websites and their details into the payload
   //   const selectedUserWebsites = forms.flatMap((form) => {
@@ -799,8 +799,15 @@ function AddNewDirectorSuperAdmin() {
     // Validate login and general fields
     const loginErrors = validateForm();
     if (Object.keys(loginErrors).length > 0) {
+      console.log(loginErrors, "=>loginErrors");
       hasErrors = true;
       setErrors(loginErrors);
+    }
+
+    // Ensure forms is an array
+    if (!Array.isArray(forms)) {
+      console.error("Forms is not an array:", forms);
+      return;
     }
 
     // Validate website fields for each form
@@ -813,18 +820,34 @@ function AddNewDirectorSuperAdmin() {
         const errors = validateWebsiteFields(fields, accountTypes[formId]?.[websiteId]);
         if (Object.keys(errors).length > 0) {
           hasErrors = true;
+          console.log(errors, "errors")
           newValidationErrors[formId] = {
             ...newValidationErrors[formId],
             [websiteId]: errors,
           };
         }
-      } else {
-        hasErrors = true;
-        newValidationErrors[formId] = {
-          ...newValidationErrors[formId],
-          websiteId: "Please select a website.",
-        };
       }
+      //  else {
+      //   hasErrors = true;
+      //   if (!newValidationErrors[formId]) {
+      //     newValidationErrors[formId] = {};
+      //   }
+      //   console.log("error")
+      //   newValidationErrors[formId].websiteId = "Please select a website.";
+      //   // Check if at least one admin website is selected
+      //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+      //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
+      //     console.log("No admin website selected");
+      //     return;
+      //   }
+
+      //   // Check if at least one user website is selected
+      //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+      //     setShowWebsiteCreationErrors("Please select at least one User Website.");
+      //     console.log("No user website selected");
+      //     return;
+      //   }
+      // }
     });
 
     // Update the validation errors state
@@ -832,22 +855,25 @@ function AddNewDirectorSuperAdmin() {
 
     // If there are validation errors, stop form submission
     if (hasErrors) {
-      console.log("Form has validation errors. Please fix them.");
+      console.log(hasErrors, "Form has validation errors. Please fix them.");
       return;
     }
 
     // Check if at least one admin website is selected
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-      setShowWebsiteCreationErrors("Please select at least one Admin Website.");
+      setShowWebsiteCreationErrors("Please select at least one Admin Website");
       console.log("No admin website selected");
       return;
     }
 
     // Check if at least one user website is selected
     if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+      console.log("usersite ")
       setShowWebsiteCreationErrors("Please select at least one User Website.");
       console.log("No user website selected");
       return;
+    } else {
+      setShowWebsiteCreationErrors(null);
     }
 
     // Map selected user websites and their details into the payload
