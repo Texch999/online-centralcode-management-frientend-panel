@@ -25,7 +25,8 @@ function InActiveUsers() {
   const dataFetched = useRef(false);
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 4;
-  const [totalRecords, setTotalRecords] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(0);
+  console.log(totalRecords, "totalRecords");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
@@ -104,9 +105,9 @@ function InActiveUsers() {
     action: (
       <div className="d-flex align-items-center justify-content-around">
         {item?.status === 1 ? (
-          <div className="col-8 col-lg-7 green-btn">Active</div>
+          <div className="col-8 col-lg-7 green-btn white-space">Active</div>
         ) : (
-          <div className="col-8 col-lg-7 red-btn">In-Active</div>
+          <div className="col-8 col-lg-7 red-btn white-space">In-Active</div>
         )}
         <MdDeleteOutline
           size={25}
@@ -172,8 +173,9 @@ function InActiveUsers() {
   };
 
   const handleSubmit = () => {
+    setError("");
     if (!website_id) {
-      setError("Please select a user website.");
+      setError("Please select a websites.");
       return;
     }
     setLoading(true);
@@ -205,7 +207,7 @@ function InActiveUsers() {
       .then((response) => {
         if (response.status === true) {
           console.log(response?.data);
-          fetchAllUsers(limit,offset,website_id);
+          fetchAllUsers(limit, offset, website_id);
           setMsg(response?.message);
           setSuccessPopupOpen(true);
           setTimeout(() => {
@@ -223,7 +225,9 @@ function InActiveUsers() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font medium-font my-2">In-Active Users</h6>
+        <h6 className="d-flex yellow-font medium-font my-2">
+          Active/In-Active Users
+        </h6>
       </div>
 
       <div className="row mb-3">
@@ -235,12 +239,16 @@ function InActiveUsers() {
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
+            isSearchable={false}
             menuPlacement="auto"
             classNamePrefix="custom-react-select"
             value={adminOptions.find(
               (option) => option.value === selectedAdminWebsite
             )}
-            onChange={(e) => setSelectedAdminWebsite(e.value)}
+            onChange={(e) => {
+              setSelectedAdminWebsite(e.value);
+              setError("");
+            }}
           />
         </div>
         <div className="col-3 col-lg-2">
@@ -250,6 +258,7 @@ function InActiveUsers() {
             options={userOptions}
             placeholder="Select"
             styles={customStyles}
+            isSearchable={false}
             maxMenuHeight={120}
             menuPlacement="auto"
             classNamePrefix="custom-react-select"
@@ -259,6 +268,7 @@ function InActiveUsers() {
             onChange={(e) => setSelectedUserWebsite(e.value)}
           />
         </div>
+
         <button
           className="col-2 col-lg-1 saffron-btn2 small-font align-self-end"
           onClick={handleSubmit}
@@ -266,6 +276,7 @@ function InActiveUsers() {
           Submit
         </button>
       </div>
+      {error && <p className="red-font small-font">{error}</p>}
 
       {loading ? (
         <div className="d-flex flex-column flex-center mt-10rem align-items-center">
@@ -276,17 +287,13 @@ function InActiveUsers() {
         </div>
       ) : (
         <div>
-          {!selectedUserWebsite ? (
-            <div className="mx-2 my-3">Please Select a User Website to View Active/Inactive Users</div>
-          ) : (
-            <Table
-              columns={INACTIVE_USER_COLUMNS}
-              data={data}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              totalRecords={totalRecords}
-            />
-          )}
+          <Table
+            columns={INACTIVE_USER_COLUMNS}
+            data={data}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
         </div>
       )}
 
