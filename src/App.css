@@ -1015,7 +1015,7 @@
   position: absolute;
   width: 88%;
   bottom: 43%;
-  z-index: 999999;
+  /* z-index: 999999; */
   left: 10%;
 }
 
