@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
 import { FaSpinner } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdOutlineFileUpload } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
@@ -24,6 +24,8 @@ const EditBannerPopup = ({
   onSubmit,
   onSubmitResult,
 }) => {
+  console.log("selectedBannerId", selectedBannerId);
+  console.log("websitesList", websitesList);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     register_id: null,
@@ -32,15 +34,63 @@ const EditBannerPopup = ({
     website_id: null,
     place: "",
     page: "",
-    image: [],
+    poster_type: "",
+    image: null, // Single file, not an array
+    video: null, // Single file, not an array
+    video_banner: null, // Single file, not an array
     start: "",
     end: "",
-    existingImages: [],
   });
 
+  const [initialData, setInitialData] = useState({});
+
+  const selectedWebsite = websitesList.find(
+    (site) => Number(site.id.slice(3, -3)) === selectedBannerId?.website_id
+  );
+
+  const pageMappings = {
+    brahma: Enums.brahmaSelectPages,
+    diamond: Enums.diamondSelectPages,
+    sparkbook: Enums.sparkbookSelectPages,
+    "9exchange": Enums.nineExchangeSelectPages,
+    texchange: Enums.texchangeSelectPages,
+  };
+  const placeMappings = {
+    brahma: Enums.brahmaSelectPlace,
+    diamond: Enums.diamondSelectPlace,
+    sparkbook: Enums.sparkbookSelectPlace,
+    "9exchange": Enums.nineExchangeSelectPlace,
+    texchange: Enums.texchangeSelectPlace,
+  };
+
+  const selectedWebName = selectedWebsite?.web_name;
+  console.log("selectedWebName", selectedWebName);
+
+  const selectPages = selectedWebName
+    ? Object.entries(pageMappings[selectedWebName] || {}).map(
+        ([label, value]) => ({
+          label,
+          value,
+        })
+      )
+    : [];
+
+  const selectPlace = selectedWebName
+    ? Object.entries(placeMappings[selectedWebName] || {}).map(
+        ([label, value]) => ({
+          label,
+          value,
+        })
+      )
+    : [];
+  console.log("poster_type", formData.poster_type);
   const [errors, setErrors] = useState({
     start: "",
     end: "",
+    changes: "",
+    image: "",
+    video: "",
+    videobanner: "",
   });
 
   const directorsWebsites = [
@@ -59,135 +109,160 @@ const EditBannerPopup = ({
         return date.toISOString().slice(0, 16);
       };
 
-      setFormData({
+      const initialFormData = {
         register_id: selectedBannerId.register_id || null,
         userfor: selectedBannerId.userfor || "",
         schedule: selectedBannerId.schedule || "",
         website_id: selectedBannerId.website_id || "",
         page: selectedBannerId.page || "",
+        poster_type: selectedBannerId.poster_type || "",
         place: selectedBannerId.place || "",
-        ...(selectedBannerId.start
-          ? { start: formatDate(selectedBannerId.start) }
-          : {}),
-        ...(selectedBannerId.end
-          ? { end: formatDate(selectedBannerId.end) }
-          : {}),
-        existingImages: selectedBannerId.image
-          ? Array.isArray(selectedBannerId.image)
-            ? selectedBannerId.image
-            : JSON.parse(selectedBannerId.image)
-          : [],
-        image: [],
-      });
+        start: selectedBannerId.start ? formatDate(selectedBannerId.start) : "",
+        end: selectedBannerId.end ? formatDate(selectedBannerId.end) : "",
+        image: selectedBannerId.image || null,
+        video: selectedBannerId.video || null,
+        video_banner: selectedBannerId.video_banner || null,
+      };
+
+      setFormData(initialFormData);
+      setInitialData(initialFormData); // Store initial data
     }
   }, [selectedBannerId]);
 
-  // const handleImageChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     image: Array.isArray(prevFormData.image)
-  //       ? [...prevFormData.image, ...files]
-  //       : [...files],
-  //   }));
-  // };
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+  const handleFileChange = (e, field) => {
+    const file = e.target.files[0];
     const maxSizeImage = 2 * 1024 * 1024; // 2MB for images
     const maxSizeVideo = 5 * 1024 * 1024; // 5MB for videos
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "video/mp4"];
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"];
+    const allowedVideoTypes = ["video/mp4"];
 
-    let validImages = [];
-    let validVideos = [];
-    let errorMessages = [];
+    // if (!file) return;
 
-    files.forEach((file) => {
-      console.log(
-        `File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(
-          2
-        )} MB, Type: ${file.type}`
+    if (!file) {
+      setMessage(
+        `${
+          field === "video" || field === "video_banner" ? "Video" : "Image"
+        } is required.`
       );
-
-      if (!allowedTypes.includes(file.type)) {
-        errorMessages.push(`Invalid format: ${file.name}`);
-      } else if (file.type.startsWith("image/") && file.size > maxSizeImage) {
-        errorMessages.push(`Image ${file.name} exceeds 2MB.`);
-      } else if (file.type === "video/mp4" && file.size > maxSizeVideo) {
-        errorMessages.push(`Video ${file.name} exceeds 5MB.`);
-      } else {
-        if (file.type.startsWith("image/")) {
-          validImages.push(file);
-        } else if (file.type === "video/mp4") {
-          validVideos.push(file);
-        }
-      }
-    });
-
-    // Enforce max limits: 5 images, 2 videos
-    if (validImages.length > 5) {
-      errorMessages.push("You can only upload up to 5 images.");
-      validImages = validImages.slice(0, 5);
-    }
-
-    if (validVideos.length > 2) {
-      errorMessages.push("You can only upload up to 2 videos.");
-      validVideos = validVideos.slice(0, 2);
-    }
-
-    if (errorMessages.length > 0) {
-      // Display error messages (you can use a state variable like `setErrors` to show these messages)
-      setMessage(errorMessages.join(" "));
       return;
     }
 
-    // Combine valid images and videos
-    const validFiles = [...validImages, ...validVideos];
+    let errorMessage = "";
 
-    // Update form data with valid files
+    if (field === "image" && !allowedImageTypes.includes(file.type)) {
+      errorMessage =
+        "Invalid image format. Only JPEG, PNG, and WEBP are allowed.";
+    } else if (field === "image" && file.size > maxSizeImage) {
+      errorMessage = "Image exceeds 2MB.";
+    } else if (
+      (field === "video" || field === "video_banner") &&
+      !allowedVideoTypes.includes(file.type)
+    ) {
+      errorMessage = "Invalid video format. Only MP4 is allowed.";
+    } else if (
+      (field === "video" || field === "video_banner") &&
+      file.size > maxSizeVideo
+    ) {
+      errorMessage = "Video exceeds 5MB.";
+    }
+
+    if (errorMessage) {
+      setMessage(errorMessage);
+      return;
+    }
+    setErrors((prev) => ({ ...prev, [field]: "" }));
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      image: Array.isArray(prevFormData.image)
-        ? [...prevFormData.image, ...validFiles]
-        : [...validFiles],
+      [field]: file,
     }));
   };
 
-  const removeImage = (index, isNewImage = false) => {
-    setFormData((prevFormData) => {
-      if (isNewImage) {
-        return {
-          ...prevFormData,
-          image: prevFormData.image.filter((_, i) => i !== index),
-        };
-      } else {
-        return {
-          ...prevFormData,
-          existingImages: prevFormData.existingImages.filter(
-            (_, i) => i !== index
-          ),
-        };
-      }
-    });
-  };
+  // const removeFile = (field) => {
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [field]: null,
+  //   }));
+
+  //   setErrors((prev) => ({
+  //     ...prev,
+  //     [field]: `${
+  //       field === "video" || field === "video_banner" ? "Video" : "Image"
+  //     } is required.`,
+  //   }));
+  // };
 
   const handleSubmit = async () => {
     setLoading(true);
-    const id = selectedBannerId.id;
-    const { image, existingImages, ...formDataWithoutImages } = formData;
 
+    let formErrors = {};
+
+    if (formData.poster_type === 1 && !formData.image) {
+      formErrors.image = "Image is required.";
+    }
+    if (
+      formData.poster_type === 2 &&
+      !formData.video &&
+      !formData.video_banner
+    ) {
+      formErrors.video = "At least one video is required.";
+    }
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      setLoading(false);
+      return;
+    }
+
+    const hasChanges = Object.keys(formData).some((key) => {
+      return formData[key] !== initialData[key];
+    });
+
+    if (!hasChanges) {
+      setErrors((prev) => ({ ...prev, changes: "No changes detected." }));
+      setLoading(false);
+      return;
+    }
+
+    const id = selectedBannerId.id;
     try {
       const formDataToSubmit = new FormData();
+      let includeStartEnd = false;
 
-      Object.keys(formDataWithoutImages).forEach((key) => {
-        formDataToSubmit.append(key, formDataWithoutImages[key]);
+      // Check if "start" is changed and ensure "end" has a value
+      if (formData.start !== initialData.start && !formData.end) {
+        setErrors((prev) => ({ ...prev, end: "End date is required." }));
+        setLoading(false);
+        return;
+      }
+
+      // Append only the fields that have changed
+      Object.keys(formData).forEach((key) => {
+        if (formData[key] !== initialData[key]) {
+          if (key === "image" || key === "video" || key === "video_banner") {
+            if (formData[key]) {
+              formDataToSubmit.append(key, formData[key]);
+            }
+          } else {
+            formDataToSubmit.append(key, formData[key]);
+          }
+
+          // Check if "start" or "end" is changed
+          if (key === "start" || key === "end") {
+            includeStartEnd = true;
+          }
+        }
       });
 
-      formDataToSubmit.append("existingImages", JSON.stringify(existingImages));
-
-      image.forEach((img) => {
-        formDataToSubmit.append("image", img);
-      });
+      // Ensure both "start" and "end" are included if one of them is changed
+      if (includeStartEnd) {
+        if (!formDataToSubmit.has("start") && formData.start) {
+          formDataToSubmit.append("start", formData.start);
+        }
+        if (!formDataToSubmit.has("end") && formData.end) {
+          formDataToSubmit.append("end", formData.end);
+        }
+      }
 
       const response = await editBannerApi(id, formDataToSubmit);
 
@@ -234,21 +309,41 @@ const EditBannerPopup = ({
     })
     .filter((item) => item.value !== null);
 
-  const selectPages = Object.entries(Enums.diamondSelectPages).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
-  const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
-    ([key, value]) => ({
-      value,
-      label: key,
-    })
-  );
+  // const selectPages = Object.entries(Enums.brahmaSelectPages).map(
+  //   ([key, value]) => ({
+  //     value,
+  //     label: key,
+  //   })
+  // );
+  // const selectPlace = Object.entries(Enums.diamondSelectPlace).map(
+  //   ([key, value]) => ({
+  //     value,
+  //     label: key,
+  //   })
+  // );
 
   const handleClose = () => {
+    setFormData({
+      register_id: null,
+      userfor: "",
+      schedule: "",
+      website_id: null,
+      place: "",
+      page: "",
+      poster_type: "",
+      image: null,
+      video: null,
+      video_banner: null,
+      start: "",
+      end: "",
+    });
+    setErrors({
+      start: "",
+      end: "",
+      changes: "",
+    });
     setEditBanner(false);
+    setSelectedBannerId(null);
   };
 
   const getMinDateTime = () => {
@@ -287,6 +382,13 @@ const EditBannerPopup = ({
 
     setErrors((prev) => ({ ...prev, [field]: errorMsg }));
   };
+
+  const posterTypeOptions = Object.entries(
+    Enums.selectOptionsPromotionType
+  ).map(([key, value]) => ({
+    value,
+    label: key,
+  }));
 
   return (
     <Modal show={editBanner} size="md" centered>
@@ -338,9 +440,6 @@ const EditBannerPopup = ({
                 }
               />
             </div>
-          </div>
-
-          <div className="d-flex w-80 mt-3">
             <div className="col-4 flex-column me-3">
               <label className="black-text4 mb-1">Poster Location</label>
               <Select
@@ -360,6 +459,25 @@ const EditBannerPopup = ({
                 value={selectPlace.find(
                   (option) => option.value === Number(formData.place)
                 )}
+              />
+            </div>
+          </div>
+
+          <div className="d-flex w-80 mt-3">
+            <div className="col-4 flex-column me-3">
+              <label className="black-text4 small-font mb-1">Banner Type</label>
+              <input
+                className="all-none input-css2 small-font p-2 rounded"
+                type="text"
+                placeholder="Enter website"
+                value={
+                  formData.poster_type
+                    ? posterTypeOptions.find(
+                        (option) => option.value === formData.poster_type
+                      )?.label || ""
+                    : ""
+                }
+                readOnly
               />
             </div>
 
@@ -384,160 +502,190 @@ const EditBannerPopup = ({
                 className="input-css2"
                 type="datetime-local"
                 value={formData.end}
-                // onChange={(e) =>
-                //   setFormData({ ...formData, end: e.target.value })
-                // }
                 onChange={(e) => handleDateChange(e, "end")}
                 min={formData.start}
                 onKeyDown={(e) => e.preventDefault()}
               />
-              {errors.end && <span className="text-danger small-font">{errors.end}</span>}
+              {errors.end && (
+                <span className="text-danger small-font">{errors.end}</span>
+              )}
             </div>
           </div>
 
-          {/* <div className="d-flex w-100 mt-3 flex-column">
-            <label className="black-text4 mb-1 small-font">
-              Existing Files
-            </label>
-            {formData.existingImages?.length > 0 && (
-              <div className="mt-2 d-flex">
-                {formData.existingImages.map((image, idx) => (
-                  <div key={idx} className="position-relative">
+          {formData?.poster_type === 1 ? (
+            <div className="d-flex w-100 mt-3 flex-column">
+              <label className="black-text4 mb-1 small-font">Image</label>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "image")}
+                className="input-css2"
+                accept=".jpeg, .jpg, .png, .webp"
+                id="imageUpload"
+                style={{ display: "none" }}
+              />
+              <label
+                htmlFor="imageUpload"
+                className="input-css small-font d-flex justify-content-between align-items-center w-100 pointer fixed-upload"
+              >
+                <span className="file-name">{selectedBannerId?.image}</span>
+                <MdOutlineFileUpload size={18} />
+              </label>
+              {formData.image && (
+                <div className="mt-2 d-flex">
+                  <div className="position-relative">
                     <img
-                      src={`${imgUrl}/banner/${image}`}
-                      alt={`preview-${idx}`}
+                      src={
+                        typeof formData.image === "string"
+                          ? `${imgUrl}/banner/${formData.image}`
+                          : URL.createObjectURL(formData.image)
+                      }
+                      alt="preview"
                       className="img-thumbnail"
                       style={{
                         width: "90px",
                         height: "80px",
                         marginLeft: "5px",
+                        cursor: "pointer",
                       }}
                     />
-                    <MdCancel
-                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle "
+                    {/* <MdCancel
+                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
                       style={{ cursor: "pointer" }}
-                      onClick={() => removeImage(idx, false)}
-                    />
+                      onClick={() => removeFile("image")}
+                    /> */}
                   </div>
-                ))}
-              </div>
+                  {errors.image && (
+                    <span className="text-danger small-font">
+                      {errors.image}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          {formData?.poster_type === 2 ? (
+            <div className="d-flex w-100 mt-3 flex-column">
+              <label className="black-text4 mb-1 small-font">Video</label>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "video")}
+                className="input-css2 "
+                accept=".mp4"
+                id="videoUpload"
+                style={{ display: "none" }}
+              />
+
+              <label
+                htmlFor="videoUpload"
+                className="input-css small-font d-flex justify-content-between align-items-center w-100 pointer fixed-upload"
+              >
+                <span className="file-name">{selectedBannerId?.video}</span>
+                <MdOutlineFileUpload size={18} />
+              </label>
+
+              {formData.video && (
+                <div className="mt-2 d-flex">
+                  <div className="position-relative">
+                    <video
+                      src={
+                        typeof formData.video === "string"
+                          ? `${imgUrl}/banner/${formData.video}`
+                          : URL.createObjectURL(formData.video)
+                      }
+                      className="img-thumbnail"
+                      style={{
+                        width: "90px",
+                        height: "80px",
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                      }}
+                      controls
+                      autoPlay
+                      muted
+                      loop
+                    />
+                    {/* <MdCancel
+                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => removeFile("video")}
+                    /> */}
+                  </div>
+                  {errors.video && (
+                    <span className="text-danger small-font">
+                      {errors.video}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          {formData?.poster_type === 2 ? (
+            <div className="d-flex w-100 mt-3 flex-column">
+              <label className="black-text4 mb-1 small-font">
+                Video Banner
+              </label>
+
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "video_banner")}
+                className="input-css2"
+                accept=".mp4"
+                id="videoBannerUpload"
+                style={{ display: "none" }}
+              />
+
+              <label
+                htmlFor="videoBannerUpload"
+                className="input-css small-font d-flex justify-content-between align-items-center w-100 pointer fixed-upload"
+              >
+                <span className="file-name">
+                  {selectedBannerId?.video_banner}
+                </span>
+                <MdOutlineFileUpload size={18} />
+              </label>
+              {formData.video_banner && (
+                <div className="mt-2 d-flex">
+                  <div className="position-relative">
+                    <video
+                      src={
+                        typeof formData.video_banner === "string"
+                          ? `${imgUrl}/banner/${formData.video_banner}`
+                          : URL.createObjectURL(formData.video_banner)
+                      }
+                      className="img-thumbnail"
+                      style={{
+                        width: "90px",
+                        height: "80px",
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                      }}
+                      controls
+                      autoPlay
+                      muted
+                      loop
+                    />
+                    {/* <MdCancel
+                      className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => removeFile("video_banner")}
+                    /> */}
+                  </div>
+                  {errors.videobanner && (
+                    <span className="text-danger small-font">
+                      {errors.videobanner}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          <div className="d-flex w-100 mt-3 flex-center">
+            {errors.changes && (
+              <span className="text-danger medium-font">{errors.changes}</span>
             )}
-          </div> */}
-          <div className="d-flex w-100 mt-3 flex-column">
-            <label className="black-text4 mb-1 small-font">
-              Existing Files
-            </label>
-            {formData.existingImages?.length > 0 && (
-              <div className="mt-2 d-flex">
-                {formData.existingImages.map((file, idx) => {
-                  const isVideo =
-                    file.endsWith(".mp4") ||
-                    file.endsWith(".mov") ||
-                    file.endsWith(".avi") ||
-                    file.endsWith(".mkv") ||
-                    file.endsWith(".webm");
-
-                  return (
-                    <div key={idx} className="position-relative">
-                      {isVideo ? (
-                        <video
-                          src={`${imgUrl}/banner/${file}`}
-                          className="img-thumbnail"
-                          style={{
-                            width: "90px",
-                            height: "80px",
-                            marginLeft: "5px",
-                            cursor: "pointer",
-                          }}
-                          controls
-                          autoPlay
-                          muted
-                          loop
-                        />
-                      ) : (
-                        <img
-                          src={`${imgUrl}/banner/${file}`}
-                          alt={`preview-${idx}`}
-                          className="img-thumbnail"
-                          style={{
-                            width: "90px",
-                            height: "80px",
-                            marginLeft: "5px",
-                            cursor: "pointer",
-                          }}
-                        />
-                      )}
-                      <MdCancel
-                        className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => removeImage(idx, false)}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          <div className="d-flex w-100 mt-3 flex-column">
-            <label className="black-text4 mb-1 small-font">
-              Upload New Files
-            </label>
-            <input
-              type="file"
-              multiple
-              onChange={handleImageChange}
-              className="input-css2"
-              accept=".jpeg, .jpg, .png, .webp, .mp4, .mov, .avi, .mkv, .webm" // Allow both images and videos
-            />
-            {formData.image?.length > 0 && (
-              <div className="mt-2 d-flex">
-                {formData.image.map((file, idx) => {
-                  const isVideo = file.type.startsWith("video/");
-
-                  return (
-                    <div key={idx} className="position-relative">
-                      {isVideo ? (
-                        <video
-                          src={URL.createObjectURL(file)}
-                          className="img-thumbnail"
-                          style={{
-                            width: "90px",
-                            height: "80px",
-                            marginLeft: "5px",
-                            cursor: "pointer",
-                          }}
-                          controls
-                          autoPlay
-                          muted
-                          loop
-                        />
-                      ) : (
-                        <img
-                          src={URL.createObjectURL(file)}
-                          alt={`preview-${idx}`}
-                          className="img-thumbnail"
-                          style={{
-                            width: "90px",
-                            height: "80px",
-                            marginLeft: "5px",
-                            cursor: "pointer",
-                          }}
-                        />
-                      )}
-                      <MdCancel
-                        className="position-absolute top-0 end-0 bg-danger text-white rounded-circle"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => removeImage(idx, true)}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          <div className="d-flex w-100 mt-3 justify-content-center">
             <div
               className="saffron-btn2 small-font pointer ms-2 w-50 mr-2"
               onClick={handleSubmit}
