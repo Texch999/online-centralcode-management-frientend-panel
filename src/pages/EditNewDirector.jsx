@@ -2663,16 +2663,12 @@ function EditNewDirector() {
         if (!site.monthly_amount || site.monthly_amount == 0) {
           errors[`monthly_amount_${site.id}`] = "Monthly amount is required.";
         }
-        if (!site.max_chips_monthly || site.max_chips_monthly > 0) {
+        if (!site.max_chips_monthly || site.max_chips_monthly == 0) {
           errors[`max_chips_monthly_${site.id}`] = "Max chips monthly is required.";
         }
         if (!site.downline_comm || site.downline_comm == 0) {
           errors[`downline_comm_${site.id}`] = "Downline commission is required.";
-        } else if (isNaN(site.downline_comm)) {
-          errors[`downline_comm_${site.id}`] = "Downline commission must be a number.";
-        } else if (parseInt(site.downline_comm) > 100) {
-          errors[`downline_comm_${site.id}`] = "Downline commission must be less than or equal to 100.";
-        }
+        } 
 
         if (site.is_casino === "1" && (!site.caschip_values || site.caschip_values.trim() === "")) {
           errors[`caschip_values_${site.id}`] = "Casino chip value is required.";
@@ -2684,22 +2680,12 @@ function EditNewDirector() {
           console.log(!site.share, site.share == 0, !site.share || site.share > 0, "==>!site.share || site.share > 0")
           errors[`share_${site.id}`] = "Downline share is required.";
         }
-        //  else if (isNaN(site.share)) {
-        //   errors[`share_${site.id}`] = "Downline share must be a number.";
-        // } else if (parseInt(site.share) > 100) {
-        //   errors[`share_${site.id}`] = "Downline share must be less than or equal to 100.";
-        // }
-
+      
         if (!site.downline_comm || site.downline_comm == 0) {
           console.log(!site.share, site.share > 0, !site.share || site.share == 0, "==>!site.share || site.share > 0")
           errors[`downline_comm_${site.id}`] = "Downline commission is required.";
         }
-        // else if (isNaN(site.downline_comm)) {
-        //   errors[`downline_comm_${site.id}`] = "Downline commission must be a number.";
-        // } else if (parseInt(site.downline_comm) > 100) {
-        //   errors[`downline_comm_${site.id}`] = "Downline commission must be less than or equal to 100.";
-        // }
-
+       
         if (!site.caschip_values || site.caschip_values == "") {
           errors[`caschip_values_${site.id}`] = "Casino chip value is required.";
         } else if (isNaN(site.caschip_values)) {
