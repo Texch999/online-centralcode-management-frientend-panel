@@ -2646,7 +2646,69 @@ function EditNewDirector() {
 
   const validateAddWebsites = (addWebsites) => {
     const errors = {};
+    // NEW WEBSITEDETAILS VALIDATION
+    userWebsites.forEach((site) => {
+      console.log(site, "===>site")
+      if (!site.admin_panel_id) {
+        errors[`admin_panel_id_${site.id}`] = "Admin panel ID is required.";
+      }
+      if (!site.user_paner_id) {
+        errors[`user_paner_id_${site.id}`] = "User panel ID is required.";
+      }
+      if (!site.commission_type) {
+        errors[`commission_type_${site.id}`] = "Commission type is required.";
+      }
 
+      if (site.commission_type == "1") {
+        if (!site.monthly_amount || site.monthly_amount == 0) {
+          errors[`monthly_amount_${site.id}`] = "Monthly amount is required.";
+        }
+        if (!site.max_chips_monthly || site.max_chips_monthly > 0) {
+          errors[`max_chips_monthly_${site.id}`] = "Max chips monthly is required.";
+        }
+        if (!site.downline_comm || site.downline_comm == 0) {
+          errors[`downline_comm_${site.id}`] = "Downline commission is required.";
+        } else if (isNaN(site.downline_comm)) {
+          errors[`downline_comm_${site.id}`] = "Downline commission must be a number.";
+        } else if (parseInt(site.downline_comm) > 100) {
+          errors[`downline_comm_${site.id}`] = "Downline commission must be less than or equal to 100.";
+        }
+
+        if (site.is_casino === "1" && (!site.caschip_values || site.caschip_values.trim() === "")) {
+          errors[`caschip_values_${site.id}`] = "Casino chip value is required.";
+        } else if (site.is_casino === "1" && isNaN(site.caschip_values)) {
+          errors[`caschip_values_${site.id}`] = "Casino chip value must be a number.";
+        }
+      } else if (site.commission_type == "2" || site.commission_type == "3") {
+        if (!site.share || site.share == 0) {
+          console.log(!site.share, site.share == 0, !site.share || site.share > 0, "==>!site.share || site.share > 0")
+          errors[`share_${site.id}`] = "Downline share is required.";
+        }
+        //  else if (isNaN(site.share)) {
+        //   errors[`share_${site.id}`] = "Downline share must be a number.";
+        // } else if (parseInt(site.share) > 100) {
+        //   errors[`share_${site.id}`] = "Downline share must be less than or equal to 100.";
+        // }
+
+        if (!site.downline_comm || site.downline_comm == 0) {
+          console.log(!site.share, site.share > 0, !site.share || site.share == 0, "==>!site.share || site.share > 0")
+          errors[`downline_comm_${site.id}`] = "Downline commission is required.";
+        }
+        // else if (isNaN(site.downline_comm)) {
+        //   errors[`downline_comm_${site.id}`] = "Downline commission must be a number.";
+        // } else if (parseInt(site.downline_comm) > 100) {
+        //   errors[`downline_comm_${site.id}`] = "Downline commission must be less than or equal to 100.";
+        // }
+
+        if (!site.caschip_values || site.caschip_values == "") {
+          errors[`caschip_values_${site.id}`] = "Casino chip value is required.";
+        } else if (isNaN(site.caschip_values)) {
+          errors[`caschip_values_${site.id}`] = "Casino chip value must be a number.";
+        }
+      }
+    });
+
+    // NEW WEBSITEDETAILS VALIDATION
     // Validate website details
     addWebsites.forEach((site, index) => {
       if (!site.admin_panel_id) {
@@ -2706,7 +2768,7 @@ function EditNewDirector() {
         }
       }
     });
-
+    console.log(errors)
     return errors;
   };
 
@@ -2750,10 +2812,21 @@ function EditNewDirector() {
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
                           downline_comm: site.downline_comm || "",
+                          downline_comm: site.downline_comm || "",
+                          share: site.share || "",
+                          caschip_values: site.caschip_values || "",
                         };
                       case 2:
                         return {
                           ...basePayload,
+                          rent_start_date: site.rent_start_date || "",
+                          rent_expiry_date: site.rent_expiry_date || "",
+                          monthly_amount: site.monthly_amount || "",
+                          max_chips_monthly: site.max_chips_monthly || "",
+                          chip_percentage: site.chip_percentage || "",
+                          is_casino: site.is_casino || false,
+                          caschip_values: site.caschip_values || "",
+                          downline_comm: site.downline_comm || "",
                           downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
@@ -2761,6 +2834,14 @@ function EditNewDirector() {
                       case 3:
                         return {
                           ...basePayload,
+                          rent_start_date: site.rent_start_date || "",
+                          rent_expiry_date: site.rent_expiry_date || "",
+                          monthly_amount: site.monthly_amount || "",
+                          max_chips_monthly: site.max_chips_monthly || "",
+                          chip_percentage: site.chip_percentage || "",
+                          is_casino: site.is_casino || false,
+                          caschip_values: site.caschip_values || "",
+                          downline_comm: site.downline_comm || "",
                           downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
@@ -2793,7 +2874,7 @@ function EditNewDirector() {
                 const updatedUserWebsites = response.data.accessWebsites.map(
                   (site) => {
                     const basePayload = {
-                      id: site.id,
+                      id: site.website_access_id,
                       user_paner_id: site.user_paner_id,
                       web_url: site.user_panel_url,
                       admin_panel_id: site.admin_panel_id,
@@ -2821,6 +2902,14 @@ function EditNewDirector() {
                           downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
+                          rent_start_date: site.rent_start_date || "",
+                          rent_expiry_date: site.rent_expiry_date || "",
+                          monthly_amount: site.rentAmount || "",
+                          max_chips_monthly: site.max_chips_rent || "",
+                          chip_percentage: site.rentPercentage || "",
+                          is_casino: site.is_casino || false,
+                          caschip_values: site.caschip_values || "",
+                          downline_comm: site.downline_comm || "",
                         };
                       case 3:
                         return {
@@ -2828,6 +2917,14 @@ function EditNewDirector() {
                           downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
+                          rent_start_date: site.rent_start_date || "",
+                          rent_expiry_date: site.rent_expiry_date || "",
+                          monthly_amount: site.rentAmount || "",
+                          max_chips_monthly: site.max_chips_rent || "",
+                          chip_percentage: site.rentPercentage || "",
+                          is_casino: site.is_casino || false,
+                          caschip_values: site.caschip_values || "",
+                          downline_comm: site.downline_comm || "",
                         };
                       default:
                         return basePayload;
@@ -2864,7 +2961,6 @@ function EditNewDirector() {
       console.log("Form is invalid. Errors:");
       return; // Stop if the form is invalid
     }
-    // Combine errors
     const errors = { ...adminUserSiteErrors, ...websiteErrors };
 
     if (Object.keys(errors).length > 0) {
@@ -2872,8 +2968,6 @@ function EditNewDirector() {
       setErrors(errors);
       return;
     }
-
-    // if (!validateForm() || !validateAddWebsites(addWebsites)) return;
 
     const payload = {
       type: parseInt(selectedRole),
@@ -3500,7 +3594,6 @@ function EditNewDirector() {
                 value={name}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  // Allow only letters and spaces using a regular expression
                   const filteredValue = inputValue.replace(/[^A-Za-z\s]/g, "");
                   setName(filteredValue);
                 }}
@@ -3634,7 +3727,6 @@ function EditNewDirector() {
               </div>
             )}
 
-            {/* Credit Balance Input */}
             {isCreditAllowed && (
               <div className="col-3">
                 <div className="p-1 position-relative">
@@ -3658,6 +3750,7 @@ function EditNewDirector() {
         <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             <div>Active</div>
+            {console.log(adminWebsites, "==>adminWebsites")}
             {adminWebsites?.map((data, index) => (
               <div
                 key={index}
@@ -3692,6 +3785,11 @@ function EditNewDirector() {
                               {userWebsite.web_url}
                             </option>
                           </select>
+                          {errors[`user_paner_id_${userWebsite.id}`] && (
+                            <span className="text-danger small-font">
+                              {errors[`user_paner_id_${userWebsite.id}`]}
+                            </span>
+                          )}
                         </div>
 
                         <div className="col-2  ">
@@ -3723,6 +3821,11 @@ function EditNewDirector() {
                               )}
                             </select>
                           </div>
+                          {errors[`commission_type_${userWebsite.id}`] && (
+                            <span className="text-danger small-font">
+                              {errors[`commission_type_${userWebsite.id}`]}
+                            </span>
+                          )}
                         </div>
 
                         {currentCommissionType == "1" && (
@@ -3753,6 +3856,7 @@ function EditNewDirector() {
                             )}
 
                             <div className="col-2">
+                              {console.log(errors, "==>{errors[`max_chips_monthly_${userWebsite.id}`]")}
                               <label className="small-font my-1">
                                 Monthly Amount
                               </label>
@@ -3763,7 +3867,6 @@ function EditNewDirector() {
                                 value={userWebsite.monthly_amount || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
@@ -3771,7 +3874,7 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    monthly_amount: numericValue, // Set the filtered value
+                                    monthly_amount: numericValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
@@ -3781,6 +3884,11 @@ function EditNewDirector() {
                                     : null
                                 )}
                               />
+                              {errors[`monthly_amount_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`monthly_amount_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
@@ -3792,7 +3900,6 @@ function EditNewDirector() {
                                 value={userWebsite.max_chips_monthly || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
@@ -3800,7 +3907,7 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    max_chips_monthly: numericValue, // Set the filtered value
+                                    max_chips_monthly: numericValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
@@ -3810,6 +3917,11 @@ function EditNewDirector() {
                                     : null
                                 )}
                               />
+                              {errors[`max_chips_monthly_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`max_chips_monthly_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
@@ -3830,12 +3942,12 @@ function EditNewDirector() {
                                         userWebsite.max_chips_monthly) *
                                       100
                                     )
-                                    ? "0%" // Show 0% if max_chips_monthly is 0, the value is NaN, or the value is Infinity
+                                    ? "0%"
                                     : `${(
                                       (userWebsite.monthly_amount /
                                         userWebsite.max_chips_monthly) *
                                       100
-                                    ).toFixed(2)}%` // Otherwise, show the calculated percentage with 2 decimal places
+                                    ).toFixed(2)}%`
                                 }
                                 readOnly
                                 disabled={isExpired(
@@ -3855,22 +3967,19 @@ function EditNewDirector() {
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
                                   );
 
-                                  // Restrict input to 2 digits unless the value is exactly 100
                                   let finalValue = numericValue;
                                   if (
                                     numericValue.length > 2 &&
                                     numericValue !== "100"
                                   ) {
-                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                    finalValue = numericValue.slice(0, 2);
                                   }
 
-                                  // Ensure the value is between 0 and 100
                                   const clampedValue = Math.min(
                                     Math.max(Number(finalValue), 0),
                                     100
@@ -3879,7 +3988,7 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    downline_comm: clampedValue, // Set the clamped value
+                                    downline_comm: clampedValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
@@ -3889,6 +3998,11 @@ function EditNewDirector() {
                                     : null
                                 )}
                               />
+                              {errors[`downline_comm_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`downline_comm_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
 
                             <div className="col-2  mt-4 ">
@@ -3924,7 +4038,6 @@ function EditNewDirector() {
                                   value={userWebsite.caschip_values || ""}
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
-                                    // Allow only numbers using a regular expression
                                     const numericValue = inputValue.replace(
                                       /[^0-9]/g,
                                       ""
@@ -3932,7 +4045,7 @@ function EditNewDirector() {
                                     const updatedWebsites = [...userWebsites];
                                     updatedWebsites[userIndex] = {
                                       ...updatedWebsites[userIndex],
-                                      caschip_values: numericValue, // Set the filtered value
+                                      caschip_values: numericValue,
                                     };
                                     setUserWebsites(updatedWebsites);
                                   }}
@@ -3945,6 +4058,7 @@ function EditNewDirector() {
                         {currentCommissionType == "2" && (
                           <>
                             <div className="col-2">
+                              {console.log(errors, "==>{errors[`max_chips_monthly_${userWebsite.id}`]")}
                               <label className="small-font my-1">
                                 Downline Share
                               </label>
@@ -3954,22 +4068,20 @@ function EditNewDirector() {
                                 value={userWebsite.share || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
                                   );
 
-                                  // Restrict input to 2 digits unless the value is exactly 100
                                   let finalValue = numericValue;
                                   if (
                                     numericValue.length > 2 &&
                                     numericValue !== "100"
                                   ) {
-                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                    finalValue = numericValue.slice(0, 2);
                                   }
 
-                                  // Ensure the value is between 0 and 100
+
                                   const clampedValue = Math.min(
                                     Math.max(Number(finalValue), 0),
                                     100
@@ -3978,11 +4090,16 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    share: clampedValue, // Set the clamped value
+                                    share: clampedValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              {errors[`share_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`share_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
@@ -3994,22 +4111,20 @@ function EditNewDirector() {
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
+
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
                                   );
 
-                                  // Restrict input to 2 digits unless the value is exactly 100
                                   let finalValue = numericValue;
                                   if (
                                     numericValue.length > 2 &&
                                     numericValue !== "100"
                                   ) {
-                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                    finalValue = numericValue.slice(0, 2);
                                   }
 
-                                  // Ensure the value is between 0 and 100
                                   const clampedValue = Math.min(
                                     Math.max(Number(finalValue), 0),
                                     100
@@ -4018,11 +4133,16 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    downline_comm: clampedValue, // Set the clamped value
+                                    downline_comm: clampedValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              {errors[`downline_comm_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`downline_comm_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
@@ -4035,7 +4155,6 @@ function EditNewDirector() {
                                 value={userWebsite.caschip_values || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
@@ -4043,11 +4162,16 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    caschip_values: numericValue, // Set the filtered value
+                                    caschip_values: numericValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              {errors[`caschip_values_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`caschip_values_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
@@ -4083,22 +4207,19 @@ function EditNewDirector() {
                                 value={userWebsite.share || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
                                   );
 
-                                  // Restrict input to 2 digits unless the value is exactly 100
                                   let finalValue = numericValue;
                                   if (
                                     numericValue.length > 2 &&
                                     numericValue !== "100"
                                   ) {
-                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                    finalValue = numericValue.slice(0, 2);
                                   }
 
-                                  // Ensure the value is between 0 and 100
                                   const clampedValue = Math.min(
                                     Math.max(Number(finalValue), 0),
                                     100
@@ -4107,11 +4228,16 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    share: clampedValue, // Set the clamped value
+                                    share: clampedValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              {errors[`share_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`share_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
@@ -4123,22 +4249,20 @@ function EditNewDirector() {
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
+
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
                                   );
 
-                                  // Restrict input to 2 digits unless the value is exactly 100
                                   let finalValue = numericValue;
                                   if (
                                     numericValue.length > 2 &&
                                     numericValue !== "100"
                                   ) {
-                                    finalValue = numericValue.slice(0, 2); // Stop after 2 digits
+                                    finalValue = numericValue.slice(0, 2);
                                   }
 
-                                  // Ensure the value is between 0 and 100
                                   const clampedValue = Math.min(
                                     Math.max(Number(finalValue), 0),
                                     100
@@ -4147,11 +4271,16 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    downline_comm: clampedValue, // Set the clamped value
+                                    downline_comm: clampedValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              {errors[`downline_comm_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`downline_comm_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1">
@@ -4164,7 +4293,6 @@ function EditNewDirector() {
                                 value={userWebsite.caschip_values || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  // Allow only numbers using a regular expression
                                   const numericValue = inputValue.replace(
                                     /[^0-9]/g,
                                     ""
@@ -4172,11 +4300,16 @@ function EditNewDirector() {
                                   const updatedWebsites = [...userWebsites];
                                   updatedWebsites[userIndex] = {
                                     ...updatedWebsites[userIndex],
-                                    caschip_values: numericValue, // Set the filtered value
+                                    caschip_values: numericValue,
                                   };
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
+                              {errors[`caschip_values_${userWebsite.id}`] && (
+                                <span className="text-danger small-font">
+                                  {errors[`caschip_values_${userWebsite.id}`]}
+                                </span>
+                              )}
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                             <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
@@ -4810,13 +4943,13 @@ function EditNewDirector() {
                                         <span className="small-font text-center border-left3 px-1">
                                           <b>My Comm.. 1%</b>
                                         </span>
-                                        
+
                                       </div>
                                       {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                        <span className="text-danger small-font">
+                                          {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                                        </span>
+                                      )}
                                     </div>
 
                                     {/* Casino Allowed Checkbox */}
@@ -4883,13 +5016,13 @@ function EditNewDirector() {
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Share 10%</b>
                                       </span>
-                                     
+
                                     </div>
                                     {errors[`share_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`share_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                      <span className="text-danger small-font">
+                                        {errors[`share_${selectedSiteIds[form.id]}`]}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="col position-relative mx-1">
                                     <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -4909,13 +5042,13 @@ function EditNewDirector() {
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Comm.. 1%</b>
                                       </span>
-                                      
+
                                     </div>
                                     {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                      <span className="text-danger small-font">
+                                        {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="col position-relative mx-1">
                                     <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -4933,13 +5066,13 @@ function EditNewDirector() {
                                       <span className="small-font text-center border-left3 px-1">
                                         <b className="mx-1">Cas. Chip Val 20</b>
                                       </span>
-                                      
+
                                     </div>
                                     {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                      <span className="text-danger small-font">
+                                        {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
+                                      </span>
+                                    )}
                                   </div>
                                   {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                                   <div className="col position-relative mx-1 d-flex align-items-center">
@@ -4985,10 +5118,10 @@ function EditNewDirector() {
                                         <b>My Share 10%</b>
                                       </span>
                                       {errors[`share_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`share_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                        <span className="text-danger small-font">
+                                          {errors[`share_${selectedSiteIds[form.id]}`]}
+                                        </span>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col position-relative mx-1">
@@ -5009,13 +5142,13 @@ function EditNewDirector() {
                                       <span className="small-font text-center border-left3 px-1">
                                         <b>My Comm.. 1%</b>
                                       </span>
-                                      
+
                                     </div>
                                     {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                      <span className="text-danger small-font">
+                                        {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="col position-relative mx-1">
                                     <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
@@ -5033,13 +5166,13 @@ function EditNewDirector() {
                                       <span className="small-font text-center border-left3 px-1">
                                         <b className="mx-1">Cas. Chip Val 20</b>
                                       </span>
-                                       
+
                                     </div>
                                     {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
-                                          <span className="text-danger small-font">
-                                            {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
-                                          </span>
-                                        )}
+                                      <span className="text-danger small-font">
+                                        {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="col position-relative mx-1 d-flex align-items-center">
                                     <label className="small-font me-2">Is Primary </label>
@@ -5227,7 +5360,8 @@ function EditNewDirector() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={`Updated ${selectedRole} ${loginName} Successfully`}
+          // discription={`Updated ${selectedRole} ${loginName} Successfully`}
+          discription={`Updated Successfully`}
         />
       </div>
     </>
