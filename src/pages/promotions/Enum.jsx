@@ -25,7 +25,7 @@ const Enums = {
     "IN PLAY": 2,
     "ELECTIONS": 3,
     "CRICKET": 4,
-    "FOOT BALL": 5,
+    "FOOT BALL/SOCCER": 5,
     "TENNIS": 6,
     "GREY HOUND": 7,
     "HOURSE RACING": 8,
@@ -41,7 +41,7 @@ const Enums = {
   sparkbookSelectPages: {
     "IN PLAY": 1,
     "CRICKET": 2,
-    "FOOT BALL": 3,
+    "FOOT BALL/SOCCER": 3,
     "TENNIS": 4,
     "HOURSE RACING": 5,
     "GREY HOUND": 6,
@@ -60,7 +60,7 @@ const Enums = {
   nineExchangeSelectPages: {
     "IN PLAY": 1,
     "CRICKET": 2,
-    "FOOT BALL": 3,
+    "FOOT BALL/SOCCER": 3,
     "TENNIS": 4,
     "GREY HOUND": 5,
     "BADMINTON":6,

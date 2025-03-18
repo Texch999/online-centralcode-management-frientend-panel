@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaSearch, FaSpinner } from "react-icons/fa";
 import { MdBlockFlipped, MdOutlineFileUpload } from "react-icons/md";
 import Table from "../../components/Table";
-import { Images } from "../../images";
-import { TbArrowsDiagonal } from "react-icons/tb";
 import { FaRegTrashCan } from "react-icons/fa6";
 import FullPosterPopUp from "./FullPosterPopUp";
 import { SlPencil } from "react-icons/sl";
@@ -160,6 +157,7 @@ const SandCBanner = () => {
         const userPanels = adminPanels.flatMap((admin) => admin.users || []);
 
         if (adminPanels.length > 0) setDirectorAdminPanels(adminPanels);
+
         if (userPanels.length > 0) setDirectorUserPanels(userPanels);
       }
     } catch (error) {
@@ -271,13 +269,22 @@ const SandCBanner = () => {
       return;
     }
 
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[type];
+      return newErrors;
+    });
+
     // Set the correct state based on the type
     if (type === "image") {
       setSelectedImage(file);
+      setErrors((prev) => ({ ...prev, selectedImage: "" }));
     } else if (type === "video") {
       setSelectedVideo(file);
+      setErrors((prev) => ({ ...prev, selectedVideo: "" }));
     } else if (type === "video_banner") {
       setSelectedVideoBanner(file);
+      setErrors((prev) => ({ ...prev, selectedVideoBanner: "" }));
     }
 
     setErrors((prev) => ({ ...prev, [type]: "" }));
@@ -467,41 +474,26 @@ const SandCBanner = () => {
   };
 
   // const handleEndDateChange = (e) => {
-  //   const selectedEndDT = e.target.value;
+  //   const selectedEndDT = new Date(e.target.value);
+  //   const selectedStartDT = new Date(startDT);
 
-  //   if (selectedEndDT < startDT) {
+  //   if (!startDT) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       endDT: "Please select a start date first.",
+  //     }));
+  //     setEndDT("");
+  //   } else if (selectedEndDT < selectedStartDT) {
   //     setErrors((prev) => ({
   //       ...prev,
   //       endDT: "End date cannot be before the start date.",
   //     }));
   //     setEndDT("");
   //   } else {
-  //     setEndDT(selectedEndDT);
+  //     setEndDT(e.target.value);
   //     setErrors((prev) => ({ ...prev, endDT: "" }));
   //   }
   // };
-
-  const handleEndDateChange = (e) => {
-    const selectedEndDT = new Date(e.target.value);
-    const selectedStartDT = new Date(startDT);
-
-    if (!startDT) {
-      setErrors((prev) => ({
-        ...prev,
-        endDT: "Please select a start date first.",
-      }));
-      setEndDT("");
-    } else if (selectedEndDT < selectedStartDT) {
-      setErrors((prev) => ({
-        ...prev,
-        endDT: "End date cannot be before the start date.",
-      }));
-      setEndDT("");
-    } else {
-      setEndDT(e.target.value);
-      setErrors((prev) => ({ ...prev, endDT: "" }));
-    }
-  };
   const handleBlockOrUnblock = (id, status) => {
     setSelectedBannerId(id);
     setSelectedBannerStatus(status);
@@ -786,6 +778,23 @@ const SandCBanner = () => {
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
+  // const handleStartDateChange = (e) => {
+  //   const selectedDate = new Date(e.target.value);
+  //   const now = new Date();
+  //   now.setSeconds(0, 0); // Remove seconds/milliseconds
+
+  //   if (selectedDate < now) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       startDT: "Start date & time cannot be in the past.",
+  //     }));
+  //     setStartDT("");
+  //   } else {
+  //     setStartDT(e.target.value);
+  //     setErrors((prev) => ({ ...prev, startDT: "" }));
+  //   }
+  // };
+
   const handleStartDateChange = (e) => {
     const selectedDate = new Date(e.target.value);
     const now = new Date();
@@ -797,9 +806,39 @@ const SandCBanner = () => {
         startDT: "Start date & time cannot be in the past.",
       }));
       setStartDT("");
+      setEndDT(""); // Clear end date if invalid start date
     } else {
       setStartDT(e.target.value);
-      setErrors((prev) => ({ ...prev, startDT: "" }));
+      setErrors((prev) => ({
+        ...prev,
+        startDT: "",
+        endDT: "End date is required.",
+      }));
+    }
+  };
+
+  const handleEndDateChange = (e) => {
+    const selectedEndDate = new Date(e.target.value);
+    const selectedStartDate = new Date(startDT);
+
+    if (!startDT) {
+      setErrors((prev) => ({
+        ...prev,
+        endDT: "Please select a start date first.",
+      }));
+      setEndDT("");
+      return;
+    }
+
+    if (selectedEndDate <= selectedStartDate) {
+      setErrors((prev) => ({
+        ...prev,
+        endDT: "End date must be after start date.",
+      }));
+      setEndDT("");
+    } else {
+      setEndDT(e.target.value);
+      setErrors((prev) => ({ ...prev, endDT: "" })); // Clear error when valid
     }
   };
 
@@ -840,7 +879,7 @@ const SandCBanner = () => {
       </div>
 
       <div className="w-100 d-flex small-font">
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-2 fixed-width-field1">
           <label className="black-text4 mb-1">Websites</label>
           <Select
             className="small-font"
@@ -861,7 +900,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-2 fixed-width-field1">
           <label className="black-text4 mb-1">Banner/Poster Page</label>
           <Select
             className="small-font"
@@ -881,7 +920,7 @@ const SandCBanner = () => {
             </span>
           )}
         </div>
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-2 fixed-width-field1">
           <label className="black-text4 mb-1">Banner/Poster Location</label>
           <Select
             className="small-font"
@@ -901,7 +940,7 @@ const SandCBanner = () => {
             </span>
           )}
         </div>
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-3 fixed-width-field1 me-2">
           <label className="black-text4 mb-1">Start Date & Time</label>
           <input
             className="input-css2"
@@ -917,7 +956,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column fixed-width-field1">
+        <div className="col flex-column fixed-width-field1 me-2">
           <label className="black-text4 mb-1">End Date & Time</label>
           <input
             className="input-css2"
@@ -933,7 +972,7 @@ const SandCBanner = () => {
           )}
         </div>
 
-        <div className="col flex-column me-3 fixed-width-field1">
+        <div className="col flex-column me-3 fixed-width-field1 me-2">
           <label className="black-text4 mb-1">Banner/Poster Type</label>
           <Select
             className="small-font"
@@ -955,7 +994,7 @@ const SandCBanner = () => {
         </div>
       </div>
 
-      <div className="d-flex small-font mt-3 mb-5 gap-3">
+      <div className="d-flex small-font mt-3 fixed-width-field1 mb-5 gap-2">
         {selectPosterType?.value === 1 ? (
           <div className="col-md-3 col-lg-5 fixed-width-field1">
             <label
@@ -986,12 +1025,14 @@ const SandCBanner = () => {
               </div>
             </label>
 
-            {errors.image && (
+            {errors.selectedImage && (
               <div
                 className="position-absolute w-100"
                 style={{ minHeight: "20px" }}
               >
-                <span className="text-danger small-font">{errors.image}</span>
+                <span className="text-danger small-font">
+                  {errors.selectedImage}
+                </span>
               </div>
             )}
           </div>
@@ -1027,13 +1068,13 @@ const SandCBanner = () => {
               </div>
             </label>
 
-            {errors.video_banner && (
+            {errors.selectedVideoBanner && (
               <div
                 className="position-absolute w-100"
                 style={{ minHeight: "20px" }}
               >
                 <span className="text-danger small-font">
-                  {errors.video_banner}
+                  {errors.selectedVideoBanner}
                 </span>
               </div>
             )}
@@ -1070,12 +1111,14 @@ const SandCBanner = () => {
               </div>
             </label>
 
-            {errors.video && (
+            {errors.selectedVideo && (
               <div
                 className="position-absolute w-100"
                 style={{ minHeight: "20px" }}
               >
-                <span className="text-danger small-font">{errors.video}</span>
+                <span className="text-danger small-font">
+                  {errors.selectedVideo}
+                </span>
               </div>
             )}
           </div>
@@ -1083,7 +1126,7 @@ const SandCBanner = () => {
 
         <div className="w-100 align-self-end">
           <button
-            className="saffron-btn2 pointer small-font"
+            className="saffron-btn2 pointer small-font px-2"
             onClick={() => handleCreateBanner()}
           >
             {loading ? "Loading..." : "Submit"}

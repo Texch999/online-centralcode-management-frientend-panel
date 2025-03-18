@@ -55,7 +55,7 @@ const AddNewPopUp = ({
   const [rejReasonsDataById, setRejReasonsDataById] = useState([]);
   const [errorPopup, setErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [questionError, setQuestionError] = useState("");
+  const [msg, setMsg] = useState("");
 
   const selectOptions = [
     { value: 1, label: "Active" },
@@ -76,8 +76,8 @@ const AddNewPopUp = ({
 
   useEffect(() => {
     if (isEdit && rejReasonsDataById) {
-      setRejReason(rejReasonsDataById?.reason || "");
-      setRejReasonDescription(rejReasonsDataById?.description || "");
+      setRejReason(rejReasonsDataById?.reason);
+      setRejReasonDescription(rejReasonsDataById?.description);
       setSelectedStatus(rejReasonsDataById?.status || null);
     }
   }, [isEdit, rejReasonsDataById]);
@@ -96,8 +96,27 @@ const AddNewPopUp = ({
   }, [isEdit, selectedRejReasonId, setValue]);
 
   const onSubmitRejReasons = (data) => {
+    const trimmedReason = data.reason.trim();
+    const trimmedDescription = data.description.trim();
+
+    if (!trimmedReason) {
+      setError("reason", {
+        type: "manual",
+        message: "Reason cannot be empty",
+      });
+      return;
+    }
+
+    if (!trimmedDescription || trimmedDescription.length <= 20) {
+      setError("description", {
+        type: "manual",
+        message:
+          "Description cannot be empty, contain only spaces, or be less than 20 characters",
+      });
+      return;
+    }
     const payload = {
-      reason: data.reason,
+      reason: trimmedReason,
       description: data.description,
       status: Number(data.status?.value),
     };
@@ -108,7 +127,8 @@ const AddNewPopUp = ({
       : createRejReasons(payload);
 
     response
-      .then(() => {
+      .then((response) => {
+        setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -132,7 +152,7 @@ const AddNewPopUp = ({
   // sec qns
   useEffect(() => {
     if (isEdit && selectedSecurityQuestion) {
-      setSecurityQns(selectedSecurityQuestion?.questions || "");
+      setSecurityQns(selectedSecurityQuestion?.questions);
       setSelectedStatus(selectedSecurityQuestion.status || null);
     }
   }, [isEdit, selectedSecurityQuestion]);
@@ -140,10 +160,7 @@ const AddNewPopUp = ({
   useEffect(() => {
     if (isEdit && selectedQnsId) {
       getSecQusetionsById(selectedQnsId).then((response) => {
-        setValue(
-          "securityQns",
-          isEdit === true ? response?.data?.questions : ""
-        );
+        setValue("securityQns", isEdit === true && response?.data?.questions);
         setValue(
           "status",
           selectOptions.find((opt) => opt.value === response?.data?.status)
@@ -153,9 +170,18 @@ const AddNewPopUp = ({
   }, [isEdit, selectedQnsId, setValue]);
 
   const onSubmitSecQns = (data) => {
+    const trimmedQuestion = data.securityQns.trim();
+
+    if (!trimmedQuestion) {
+      setError("securityQns", {
+        type: "manual",
+        message: "Question cannot be empty or cannot be contain spaces",
+      });
+      return;
+    }
     setIsSubmitting(true);
     const payload = {
-      questions: data?.securityQns,
+      questions: trimmedQuestion,
       status: data?.status?.value || null,
     };
 
@@ -164,7 +190,8 @@ const AddNewPopUp = ({
       : createSecurityQuestions(payload);
 
     response
-      .then(() => {
+      .then((response) => {
+        setMsg(response?.message);
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -283,7 +310,17 @@ const AddNewPopUp = ({
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
-                    {...register("reason", { required: "Reason is required" })}
+                    // {...register("reason", { required: "Reason is required" })}
+                    {...register("reason", {
+                      required: "Reason is required",
+                      validate: (value) => {
+                        const trimmedValue = value.trim();
+                        if (!trimmedValue) {
+                          return "Reason cannot be empty or contain only spaces";
+                        }
+                        return true;
+                      },
+                    })}
                   />
                   {errors.reason && (
                     <p className="text-danger small-font">
@@ -330,17 +367,17 @@ const AddNewPopUp = ({
                     style={{ resize: "none" }}
                     {...register("description", {
                       required: "Description is required",
-                      minLength: {
-                        value: 2,
-                        message: "Must be at least 2 characters",
-                      },
-                      maxLength: {
-                        value: 255,
-                        message: "Cannot exceed 255 characters",
+                      validate: (value) => {
+                        const trimmedValue = value.trim();
+                        if (!trimmedValue || trimmedValue.length <= 20) {
+                          return "Description cannot be empty, contain only spaces, or be less than 20 characters";
+                        }
+                        return true;
                       },
                     })}
                     onChange={handleDescriptionChange}
                   ></textarea>
+
                   {errors.description && (
                     <p className="text-danger small-font mt-1">
                       {errors.description.message}
@@ -353,11 +390,11 @@ const AddNewPopUp = ({
                   <button
                     type="submit"
                     className="saffron-btn2 small-font pointer mt-4 col-4"
-                    // disabled={!isValid}
-                    // style={{
-                    //   opacity: isValid ? 1 : 0.5,
-                    //   pointerEvents: isValid ? "auto" : "none",
-                    // }}
+                    disabled={!isValid}
+                    style={{
+                      opacity: isValid ? 1 : 0.5,
+                      pointerEvents: isValid ? "auto" : "none",
+                    }}
                   >
                     {isEdit ? "Update" : "Create"}
                   </button>
@@ -385,7 +422,7 @@ const AddNewPopUp = ({
                     placeholder="Select"
                     styles={customStyles}
                     value={watch("status") || null}
-                    {...register("status", { required: "Status is required" })} // Add required validation
+                    {...register("status", { required: "Status is required" })} 
                     onChange={(selectedOption) => {
                       setValue("status", selectedOption, {
                         shouldValidate: true,
@@ -407,15 +444,17 @@ const AddNewPopUp = ({
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
+                    // {...register("securityQns", {
+                    //   required: "Question is required",
+                    // })}
                     {...register("securityQns", {
                       required: "Question is required",
-                      minLength: {
-                        value: 2,
-                        message: "Must be at least 2 characters",
-                      },
-                      maxLength: {
-                        value: 100,
-                        message: "Cannot exceed 100 characters",
+                      validate: (value) => {
+                        const trimmedValue = value.trim();
+                        if (!trimmedValue) {
+                          return "Question cannot be empty or contain only spaces";
+                        }
+                        return true;
                       },
                     })}
                     onChange={handleQuestionChange}
@@ -459,7 +498,7 @@ const AddNewPopUp = ({
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={"success"}
+        discription={msg}
       />
     </>
   );

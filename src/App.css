@@ -404,6 +404,7 @@
   padding: 0.6rem;
   border-radius: 0.35rem;
 }
+
 .input-css5 {
   background: #ffffff;
   /* border: 2px solid #e0e0e0; */
@@ -794,6 +795,7 @@
 
   /* Light border */
 }
+
 .light-white-bg {
   background-color: #f2f2f2;
 }
@@ -909,7 +911,7 @@
 }
 
 .dep-pop-clr {
-  color: #222A4C;
+  color: #222a4c;
 }
 
 .text-size {
@@ -996,6 +998,7 @@
   color: #ee5787;
   background-color: #faccdb;
 }
+
 .error-popup-container1 {
   color: #ffffff;
   background-color: #ff2c2c;
@@ -1012,7 +1015,7 @@
   position: absolute;
   width: 88%;
   bottom: 43%;
-  z-index: 999999;
+  /* z-index: 999999; */
   left: 10%;
 }
 
@@ -1037,10 +1040,38 @@
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
 }
+
 .black-br-btn {
   border: 1.2px solid #00000033;
   background-color: #ffffff;
 }
-.light-bg{
-  background-color: #F2F2F2;
+.light-bg {
+  background-color: #f2f2f2;
+}
+.flex-wrap {
+  flex-wrap: nowrap;
+}
+
+.light-bg {
+  background-color: #f2f2f2;
+}
+
+.appearance {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
