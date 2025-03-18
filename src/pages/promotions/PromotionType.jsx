@@ -398,7 +398,7 @@ const PromotionType = () => {
       <div className="flex-center">
         <div className="relative poster-img">
           <img
-            src={`${imgUrl}/promotionsImages/${promotionsImage.image}`}
+            src={`${imgUrl}/promotions/${promotionsImage.image}`}
             alt="Promotion"
             style={{ width: "200px", height: "150px", cursor: "pointer" }}
             onClick={() => handleFullScreen(promotionsImage.image)}
@@ -689,7 +689,7 @@ const PromotionType = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
-        path={"promotionsImages"}
+        path={"promotions"}
       />
       <ConfirmationPopup
         confirmationPopupOpen={promotionDeleteModal}
