@@ -174,8 +174,12 @@ function InActiveUsers() {
 
   const handleSubmit = () => {
     setError("");
-    if (!website_id) {
+    if (!selectedAdminWebsite && !website_id) {
       setError("Please select a websites.");
+      return;
+    }
+    if (!website_id) {
+      setError("Please select user a websites.");
       return;
     }
     setLoading(true);
