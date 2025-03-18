@@ -83,7 +83,6 @@ const PromotionType = () => {
   const [promotionsImgTotalRecords, setpromotionsImgTotalRecords] =
     useState("");
 
-
   const [errors, setErrors] = useState({
     promotionType: "",
     image: "",
@@ -207,11 +206,7 @@ const PromotionType = () => {
     if (file) {
       const maxSize = 2 * 1024 * 1024;
 
-      const allowedTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-      ];
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
       if (!allowedTypes.includes(file.type)) {
         setErrorMessage("Only JPG, PNG, GIF, and WEBP images are allowed.");
@@ -398,9 +393,17 @@ const PromotionType = () => {
       <div className="flex-center">
         <div className="relative poster-img">
           <img
-            src={`${imgUrl}/promotionsImages/${promotionsImage.image}`}
+            src={`${imgUrl}/promotions/${promotionsImage.image}`}
             alt="Promotion"
             style={{ width: "200px", height: "150px", cursor: "pointer" }}
+            onError={(e) => {
+              if (!e.target.dataset.retry) {
+                e.target.dataset.retry = "true"; // Mark as retried
+                setTimeout(() => {
+                  e.target.src = `${imgUrl}/promotions/${promotionsImage.image}`; // Retry after 1 sec
+                }, 1000);
+              }
+            }}
             onClick={() => handleFullScreen(promotionsImage.image)}
           />
         </div>
@@ -432,7 +435,11 @@ const PromotionType = () => {
       setLoading(true);
       const response = await statusPromotionsTypes(selectedPromotionId);
       if (response?.status === 200) {
-        setMessage(`Promotion Type ${response?.newStatus === 1 ? "Un Blocked" : "Blocked"} Successfully`);
+        setMessage(
+          `Promotion Type ${
+            response?.newStatus === 1 ? "Un Blocked" : "Blocked"
+          } Successfully`
+        );
         setLoading(false);
         getPromotions();
         setErrorPopupOpen(false);
@@ -527,7 +534,6 @@ const PromotionType = () => {
                   value={selectedOption}
                   onChange={handleSelectChange}
                   isSearchable={false} // Disable typing
-
                 />
 
                 <div
@@ -564,7 +570,6 @@ const PromotionType = () => {
                   value={selectWebsites}
                   onChange={handleSelectWebsites}
                   isSearchable={false} // Disable typing
-
                 />
                 <div
                   className="position-absolute"
@@ -601,7 +606,6 @@ const PromotionType = () => {
                   value={selectUserWebsites}
                   onChange={handleSelectUserWebsites}
                   isSearchable={false} // Disable typing
-
                 />
                 <div
                   className="position-absolute"
@@ -689,7 +693,7 @@ const PromotionType = () => {
         fullPoster={fullPoster}
         setFullPosterImage={setFullPosterImage}
         fullPosterImage={fullPosterImage}
-        path={"promotionsImages"}
+        path={"promotions"}
       />
       <ConfirmationPopup
         confirmationPopupOpen={promotionDeleteModal}

@@ -473,27 +473,6 @@ const SandCBanner = () => {
     setFullPoster(!fullPoster);
   };
 
-  // const handleEndDateChange = (e) => {
-  //   const selectedEndDT = new Date(e.target.value);
-  //   const selectedStartDT = new Date(startDT);
-
-  //   if (!startDT) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       endDT: "Please select a start date first.",
-  //     }));
-  //     setEndDT("");
-  //   } else if (selectedEndDT < selectedStartDT) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       endDT: "End date cannot be before the start date.",
-  //     }));
-  //     setEndDT("");
-  //   } else {
-  //     setEndDT(e.target.value);
-  //     setErrors((prev) => ({ ...prev, endDT: "" }));
-  //   }
-  // };
   const handleBlockOrUnblock = (id, status) => {
     setSelectedBannerId(id);
     setSelectedBannerStatus(status);
@@ -656,6 +635,20 @@ const SandCBanner = () => {
               src={`${imgUrl}/banner/${banner.image}`}
               alt="Banner"
               style={{ width: "200px", height: "150px", cursor: "pointer" }}
+              onError={(e) => {
+                if (!e.target.dataset.retry) {
+                  e.target.dataset.retry = "true"; // Mark as retried
+                  setTimeout(() => {
+                    e.target.src = `${imgUrl}/banner/${banner.image}`; // Retry after 1 sec
+                  }, 1000);
+                }
+              }}
+              // onError={(e) => {
+              //   if (!e.target.dataset.retry) {
+              //     e.target.dataset.retry = "true"; // Mark as retried once
+              //     e.target.src = `${imgUrl}/banner/${banner.image}`; // Retry same source
+              //   }
+              // }}
               onClick={() => handleFullScreen(banner.image)}
             />
           ) : (
@@ -674,6 +667,20 @@ const SandCBanner = () => {
               // controls
               autoPlay
               muted
+              onError={(e) => {
+                if (!e.target.dataset.retry) {
+                  e.target.dataset.retry = "true"; // Mark as retried
+                  setTimeout(() => {
+                    e.target.src = `${imgUrl}/banner/${banner.video_banner}`; // Retry after 1 sec
+                  }, 1000);
+                }
+              }}
+              // onError={(e) => {
+              //   if (!e.target.dataset.retry) {
+              //     e.target.dataset.retry = "true"; // Mark as retried once
+              //     e.target.src = `${imgUrl}/banner/${banner.video_banner}`; // Retry same source
+              //   }
+              // }}
               onClick={() => handleFullScreen(banner.video_banner)}
             />
           ) : (
@@ -689,9 +696,22 @@ const SandCBanner = () => {
             <video
               src={`${imgUrl}/banner/${banner.video}`}
               style={{ width: "200px", height: "150px", cursor: "pointer" }}
-              // controls
               autoPlay
               muted
+              onError={(e) => {
+                if (!e.target.dataset.retry) {
+                  e.target.dataset.retry = "true"; // Mark as retried
+                  setTimeout(() => {
+                    e.target.src = `${imgUrl}/banner/${banner.video}`; // Retry after 1 sec
+                  }, 1000);
+                }
+              }}
+              // onError={(e) => {
+              //   if (!e.target.dataset.retry) {
+              //     e.target.dataset.retry = "true"; // Mark as retried once
+              //     e.target.src = `${imgUrl}/banner/${banner.video}`; // Retry same source
+              //   }
+              // }}
               onClick={() => handleFullScreen(banner.video)}
             />
           ) : (
@@ -700,6 +720,8 @@ const SandCBanner = () => {
         </div>
       </div>
     ),
+    
+    
     start: (
       <div>
         {banner.start
@@ -756,11 +778,7 @@ const SandCBanner = () => {
     getBanners(limit, offset);
   };
 
-  // const getMinDateTime = () => {
-  //   const now = new Date();
-  //   now.setMinutes(now.getMinutes() + 1); // Add 1 minute to the current time
-  //   return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:MM"
-  // };
+
   const [minDateTime, setMinDateTime] = useState(getMinDateTime());
 
   function getMinDateTime() {
@@ -777,23 +795,6 @@ const SandCBanner = () => {
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
-
-  // const handleStartDateChange = (e) => {
-  //   const selectedDate = new Date(e.target.value);
-  //   const now = new Date();
-  //   now.setSeconds(0, 0); // Remove seconds/milliseconds
-
-  //   if (selectedDate < now) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       startDT: "Start date & time cannot be in the past.",
-  //     }));
-  //     setStartDT("");
-  //   } else {
-  //     setStartDT(e.target.value);
-  //     setErrors((prev) => ({ ...prev, startDT: "" }));
-  //   }
-  // };
 
   const handleStartDateChange = (e) => {
     const selectedDate = new Date(e.target.value);
