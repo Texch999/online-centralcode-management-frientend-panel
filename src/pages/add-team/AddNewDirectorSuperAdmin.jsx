@@ -71,7 +71,7 @@ function AddNewDirectorSuperAdmin() {
     setIsCreditAllowed(newIsCreditAllowed);
     setCreditValue(newIsCreditAllowed ? 1 : 2);
   };
-  const [chosenRemark, setChosenRemark] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
   const [selectedUserSitesByAdmin, setSelectedUserSitesByAdmin] = useState({});
   const handleRemarkChange = (formId, websiteId, selectedRemark) => {
     setSelectedRemarks((prev) => ({
@@ -189,12 +189,39 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
-  const handleCheckboxChange = (formId, userId) => {
+  // const handleCheckboxChange = (formId, userId) => {
+  //   setSelectedWebsites((prev) => ({
+  //     ...prev,
+  //     [formId]: {
+  //       ...prev[formId],
+  //       [userId]: !prev[formId]?.[userId],
+  //     },
+  //   }));
+  // };
+
+  const handleCheckboxChange = (formId, userSiteId) => {
     setSelectedWebsites((prev) => ({
       ...prev,
       [formId]: {
         ...prev[formId],
-        [userId]: !prev[formId]?.[userId],
+        [userSiteId]: !prev[formId]?.[userSiteId],
+      },
+    }));
+
+    // Clear previous data when reselecting a user site
+    setAccountTypes((prev) => ({
+      ...prev,
+      [formId]: {
+        ...prev[formId],
+        [userSiteId]: null,
+      },
+    }));
+
+    setWebsiteDetails((prevDetails) => ({
+      ...prevDetails,
+      [formId]: {
+        ...prevDetails[formId],
+        [userSiteId]: {},
       },
     }));
   };
@@ -207,7 +234,95 @@ function AddNewDirectorSuperAdmin() {
         [userSiteId]: selectedOption.value,
       },
     }));
+  };
 
+  const validateWebsiteFields = (fields, accountType) => {
+    const errors = {};
+    const comm_type = fields.commission_type;
+    // Common validations for all account types
+    if (!fields.commission_type || fields.commission_type == "") {
+      errors.commission_type = "Commission type is required";
+      setShowWebsiteCreationErrors(null);
+    }
+    // Conditional validations based on account type
+    if (comm_type == "1") {
+      setShowWebsiteCreationErrors(null);
+      // Validations for account type 1
+      if (!fields.monthly_amount || fields.monthly_amount.trim() === "") {
+        errors.monthly_amount = "Amount is required.";
+      } else if (isNaN(fields.monthly_amount)) {
+        errors.monthly_amount = "Monthly Amount must be a number.";
+      }
+
+      if (!fields.max_chips_monthly || fields.max_chips_monthly.trim() === "") {
+        errors.max_chips_monthly = "Chips  is required.";
+      } else if (isNaN(fields.max_chips_monthly)) {
+        errors.max_chips_monthly = "Max Chips Monthly must be a number.";
+      }
+
+      if (!fields.downline_comm || fields.downline_comm.trim() === "") {
+        errors.downline_comm = "Commission is required.";
+      } else if (isNaN(fields.downline_comm)) {
+        errors.downline_comm = "Commission must be a number.";
+      } else if (parseInt(fields.downline_comm) > 100) {
+        errors.downline_comm =
+          "Downline Commission must be less than or equal to 100.";
+      }
+
+      if (
+        fields.casino_allowed === "1" &&
+        (!fields.casino_chip_value || fields.casino_chip_value.trim() === "")
+      ) {
+        errors.casino_chip_value = "Casino Chip Value is required.";
+      } else if (
+        fields.casino_allowed === "1" &&
+        isNaN(fields.casino_chip_value)
+      ) {
+        errors.casino_chip_value = "Casino Chip Value must be a number.";
+      }
+    } else if (comm_type === "2" || comm_type === "3") {
+      setShowWebsiteCreationErrors(null);
+      // Validations for account types 2 and 3
+      if (!fields.share || fields.share.trim() === "") {
+        errors.share = "Share is required.";
+      } else if (isNaN(fields.share)) {
+        errors.share = "Share must be a number.";
+      } else if (parseInt(fields.share) > 100) {
+        errors.share = "Share must be less than or equal to 100.";
+      }
+
+      if (!fields.downline_comm || fields.downline_comm.trim() === "") {
+        errors.downline_comm = "Commission is required.";
+      } else if (isNaN(fields.downline_comm)) {
+        errors.downline_comm = "Commission must be a number.";
+      } else if (parseInt(fields.downline_comm) > 100) {
+        errors.downline_comm =
+          "Downline Commission must be less than or equal to 100.";
+      }
+      if (!fields.caschip_values || fields.caschip_values.trim() === "") {
+        errors.caschip_values = "Chip Value is required.";
+      } else if (isNaN(fields.caschip_values)) {
+        errors.caschip_values = "Chip Value must be a number.";
+      }
+    }
+
+    // Additional validations for deposit chips and credit amount
+    // if (!fields.add_deposit_chips || fields.add_deposit_chips.trim() == "") {
+    //   errors.add_deposit_chips = "Add Deposit Chips is required.";
+    // } else if (isNaN(fields.add_deposit_chips)) {
+    //   errors.add_deposit_chips = "Add Deposit Chips must be a number.";
+    // }
+
+    if (
+      fields.deposite_type === "1" &&
+      (!fields.credit_amount || fields.credit_amount.trim() === "")
+    ) {
+      errors.credit_amount = "Credit Amount is required.";
+    } else if (fields.deposite_type === "1" && isNaN(fields.credit_amount)) {
+      errors.credit_amount = "Credit Amount must be a number.";
+    }
+    console.log(errors, "=>errors");
+    return errors;
   };
 
   // const handleInputChange = (websiteId, field, value) => {
@@ -233,109 +348,398 @@ function AddNewDirectorSuperAdmin() {
     }));
   };
 
+  const renderErrorMessage = (formId, websiteId, field) => {
+    const errorMessage = validationErrors[formId]?.[websiteId]?.[field];
+    return errorMessage ? (
+      <span className="x-small-font error">{errorMessage}</span>
+    ) : null;
+  };
+
+ 
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  // let hasErrors = false;
+  // const newValidationErrors = {};
+
+  // // Validate login and general fields
+  // const loginErrors = validateForm();
+  // if (Object.keys(loginErrors).length > 0) {
+  //   console.log(loginErrors, "=>loginErrors");
+  //   hasErrors = true;
+  //   setErrors(loginErrors);
+  // }
+
+  // // Ensure forms is an array
+  // if (!Array.isArray(forms)) {
+  //   console.error("Forms is not an array:", forms);
+  //   return;
+  // }
+
+  // // Validate website fields for each form
+  // forms.forEach((form) => {
+  //   const formId = form.id;
+  //   const websiteId = selectedSiteIds[formId];
+
+  //   if (websiteId) {
+  //     const fields = websiteDetails[formId]?.[websiteId] || {};
+  //     const errors = validateWebsiteFields(fields, accountTypes[formId]?.[websiteId]);
+  //     if (Object.keys(errors).length > 0) {
+  //       hasErrors = true;
+  //       console.log(errors, "errors")
+  //       newValidationErrors[formId] = {
+  //         ...newValidationErrors[formId],
+  //         [websiteId]: errors,
+  //       };
+  //     }
+  //   }
+  //   //  else {
+  //   //   hasErrors = true;
+  //   //   if (!newValidationErrors[formId]) {
+  //   //     newValidationErrors[formId] = {};
+  //   //   }
+  //   //   console.log("error")
+  //   //   newValidationErrors[formId].websiteId = "Please select a website.";
+  //   //   // Check if at least one admin website is selected
+  //   //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+  //   //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
+  //   //     console.log("No admin website selected");
+  //   //     return;
+  //   //   }
+
+  //   //   // Check if at least one user website is selected
+  //   //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+  //   //     setShowWebsiteCreationErrors("Please select at least one User Website.");
+  //   //     console.log("No user website selected");
+  //   //     return;
+  //   //   }
+  //   // }
+  // });
+
+  // // Update the validation errors state
+  // setValidationErrors(newValidationErrors);
+
+  // // If there are validation errors, stop form submission
+  // if (hasErrors) {
+  //   console.log(hasErrors, "Form has validation errors. Please fix them.");
+  //   return;
+  // }
+
+  // // Check if at least one admin website is selected
+  // if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+  //   setShowWebsiteCreationErrors("Please select at least one Admin Website");
+  //   console.log("No admin website selected");
+  //   return;
+  // }
+
+  // // Check if at least one user website is selected
+  // if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+  //   console.log("usersite ")
+  //   setShowWebsiteCreationErrors("Please select at least one User Website.");
+  //   console.log("No user website selected");
+  //   return;
+  // } else {
+  //   setShowWebsiteCreationErrors(null);
+  // }
+
+  //   // Map selected user websites and their details into the payload
+  //   const selectedUserWebsites = forms.flatMap((form) => {
+  //     return userWebsitesList[form.id]?.map((userSite) => {
+  //       if (!selectedWebsites[form.id]?.[userSite.id]) return null;
+
+  //       const accotypeid = accountTypes[form.id]?.[userSite.id];
+  //       if (!accotypeid) {
+  //         hasErrors = true;
+  //         newValidationErrors[form.id] = {
+  //           ...newValidationErrors[form.id],
+  //           [userSite.id]: { commission_type: "Commission type is required." },
+  //         };
+  //         return null;
+  //       }
+
+  //       let websiteData = {
+  //         admin_panel_id: selectedAdmins[form.id]?.value,
+  //         user_paner_id: userSite.id,
+  //         commission_type: accotypeid,
+  //       };
+
+  //       // Add fields based on commission type
+  //       if (accotypeid === "2" || accotypeid === "3") {
+  //         websiteData.share = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.share || 0
+  //         );
+  //         websiteData.caschip_values = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.caschip_values || 0
+  //         );
+  //         websiteData.downline_comm = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.downline_comm || 0
+  //         );
+  //         console.log(websiteDetails[form.id]?.[userSite.id]?.downline_comm, "===>websiteDetails[form.id]?.[userSite.id]?.downline_comm")
+  //         websiteData.is_casino = 1;
+  //         websiteData.is_primary =
+  //           websiteDetails[form.id]?.[userSite.id]?.isPrimary == 1 ? 1 : 2;
+  //       }
+
+  //       if (accotypeid === "1") {
+  //         websiteData.monthly_amount = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.monthly_amount || 0
+  //         );
+  //         websiteData.max_chips_monthly = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.max_chips_monthly || 0
+  //         );
+  //         console.log(websiteDetails[form.id]?.[userSite.id]?.downline_comm, "===>websiteDetails[form.id]?.[userSite.id]?.downline_comm")
+  //         websiteData.chip_percentage =
+  //           (websiteData.monthly_amount / websiteData.max_chips_monthly) * 100;
+
+  //         websiteData.is_casino =
+  //           websiteDetails[form.id]?.[userSite.id]?.casino_allowed == 1 ? 1 : 2;
+
+  //         websiteData.downline_comm = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.downline_comm || 0
+  //         );
+
+  //         if (websiteDetails[form.id]?.[userSite.id]?.casino_allowed == 1) {
+  //           websiteData.caschip_values = parseFloat(
+  //             websiteDetails[form.id]?.[userSite.id]?.casino_chip_value
+  //           );
+  //         }
+  //       }
+
+  //       websiteData.totalAmount = parseFloat(
+  //         websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
+  //       );
+  //       websiteData.totalChips = parseFloat(
+  //         websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
+  //       );
+  //       if (websiteDetails[form.id]?.[userSite.id]?.deposite_type == "1") {
+  //         websiteData.creditAmount = parseFloat(
+  //           websiteDetails[form.id]?.[userSite.id]?.credit_amount || 0
+  //         );
+  //         websiteData.offDepositAmount =
+  //           parseFloat(
+  //             websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
+  //           ) -
+  //           parseFloat(
+  //             websiteDetails[form.id]?.[userSite.id]?.credit_amount || 0
+  //           );
+  //         websiteData.depositType = 1;
+  //       } else {
+  //         websiteData.depositType = 2;
+  //       }
+
+  //       return websiteData;
+  //     });
+  //   });
+
+  //   // Filter out null values (unselected user sites)
+  //   const validUserWebsites = selectedUserWebsites.filter(Boolean);
+
+  //   // Check if at least one valid user website is selected
+  //   if (validUserWebsites.length === 0) {
+  //     setShowWebsiteCreationErrors("Please select at least one User Website.");
+  //     return;
+  //   }
+
+  //   const finalData = {
+  //     type: selectedRole,
+  //     name,
+  //     login_name: loginName,
+  //     password,
+  //     confirm_password: confirmPassword,
+  //     parent_password: managementPassword,
+  //     country_id: selectedCountryCode,
+  //     is_credit: isCreditAllowed == true ? 1 : 2,
+  //     currency_id: selectedCurrencyCode,
+  //     accessWebsites: validUserWebsites,
+  //   };
+
+  //   if (isCreditAllowed == true) {
+  //     finalData.credit_reference = creditreference;
+  //   } else {
+  //     finalData.credit_reference = 0;
+  //   }
+
+  //   // Send the payload to the API
+  //   createDirector(finalData)
+  //     .then((response) => {
+  //       if (response.status === true) {
+  //         setSuccessPopupOpen(true);
+  //         setCreateDescription(
+  //           `${selectedRole == 1 ? "Director" : "Superadmin"
+  //           } Added Successfully`
+  //         );
+  //         setTimeout(() => {
+  //           navigate("/director-admin");
+  //         }, 2000);
+  //       } else {
+  //         console.log("Something went wrong");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setShowWebsiteCreationErrors(
+  //         error.message[0].message || error.message[0]
+  //       );
+  //     });
+  // };
   const handleSubmit = (e) => {
     e.preventDefault();
+    let hasErrors = false;
+    const newValidationErrors = {};
 
-    // Validate form and check for errors
-    // if (!validateForm()) {
-    //   console.log("Form validation failed");
-    //   return;
-    // }
+    // Validate login and general fields
+    const loginErrors = validateForm();
+    if (Object.keys(loginErrors).length > 0) {
+      console.log(loginErrors, "=>loginErrors");
+      hasErrors = true;
+      setErrors(loginErrors);
+    }
 
-    // // Check if at least one admin website is selected
-    // if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-    //   setShowWebsiteCreationErrors("Please select at least one Admin Website");
-    //   console.log("No admin website selected");
-    //   return;
-    // }
+    // Ensure forms is an array
+    if (!Array.isArray(forms)) {
+      console.error("Forms is not an array:", forms);
+      return;
+    }
 
-    // // Check if at least one user website is selected
-    // if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-    //   setShowWebsiteCreationErrors("Please select at least one User Website.");
-    //   console.log("No user website selected");
-    //   return;
-    // }
+    // Validate website fields for each form
+    forms.forEach((form) => {
+      const formId = form.id;
+      const websiteId = selectedSiteIds[formId];
+
+      if (websiteId) {
+        const fields = websiteDetails[formId]?.[websiteId] || {};
+        const errors = validateWebsiteFields(
+          fields,
+          accountTypes[formId]?.[websiteId]
+        );
+        if (Object.keys(errors).length > 0) {
+          hasErrors = true;
+          console.log(errors, "errors");
+          newValidationErrors[formId] = {
+            ...newValidationErrors[formId],
+            [websiteId]: errors,
+          };
+        }
+      }
+
+    });
+
+    // Update the validation errors state
+    setValidationErrors(newValidationErrors);
+
+    // If there are validation errors, stop form submission
+    if (hasErrors) {
+      console.log(hasErrors, "Form has validation errors. Please fix them.");
+      return;
+    }
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
+
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
+    // Check if at least one admin website is selected
+    if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
+      setShowWebsiteCreationErrors("Please select at least one Admin Website");
+      console.log("No admin website selected");
+      return;
+    }
+
+    // Check if at least one user website is selected
+    if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
+      console.log("usersite ");
+      setShowWebsiteCreationErrors("Please select at least one User Website.");
+      console.log("No user website selected");
+      return;
+    } else {
+      setShowWebsiteCreationErrors(null);
+    }
 
     // Map selected user websites and their details into the payload
-    const selectedUserWebsites = forms.flatMap((form) => {
-      return userWebsitesList[form.id]?.map((userSite) => {
-        // Skip if the user site is not selected
-        if (!selectedWebsites[form.id]?.[userSite.id]) return null;
+    const selectedUserWebsites = forms.map((form) => {
+      const formId = form.id;
+      const websiteId = selectedSiteIds[formId];
 
-        // Get the commission type for the user site
-        const accotypeid = accountTypes[form.id]?.[userSite.id];
+      if (!websiteId) return null;
 
-        // Base website data
-        let websiteData = {
-          admin_panel_id: selectedAdmins[form.id]?.value, // Admin panel ID
-          user_paner_id: userSite.id, // User panel ID
-          commission_type: accotypeid, // Commission type
-        };
+      const userSite = userWebsitesList[formId]?.find(
+        (site) => site.id === websiteId
+      );
 
-        // Add fields based on commission type
-        if (accotypeid === "2" || accotypeid === "3") {
-          websiteData.share = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.share || 0
-          );
+      if (!userSite) return null;
+
+      const accotypeid = accountTypes[formId]?.[websiteId];
+      if (!accotypeid) return null;
+
+      let websiteData = {
+        admin_panel_id: selectedAdmins[formId]?.value,
+        user_paner_id: userSite.id,
+        commission_type: accotypeid,
+      };
+
+      // Add fields based on commission type
+      if (accotypeid === "2" || accotypeid === "3") {
+        websiteData.share = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.share || 0
+        );
+        websiteData.caschip_values = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.caschip_values || 0
+        );
+        websiteData.downline_comm = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.downline_comm || 0
+        );
+        websiteData.is_casino = 1;
+        websiteData.is_primary =
+          websiteDetails[formId]?.[websiteId]?.isPrimary == 1 ? 1 : 2;
+      }
+
+      if (accotypeid === "1") {
+        websiteData.monthly_amount = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.monthly_amount || 0
+        );
+        websiteData.max_chips_monthly = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.max_chips_monthly || 0
+        );
+        websiteData.chip_percentage =
+          (websiteData.monthly_amount / websiteData.max_chips_monthly) * 100;
+
+        websiteData.is_casino =
+          websiteDetails[formId]?.[websiteId]?.casino_allowed == 1 ? 1 : 2;
+
+        websiteData.downline_comm = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.downline_comm || 0
+        );
+
+        if (websiteDetails[formId]?.[websiteId]?.casino_allowed == 1) {
           websiteData.caschip_values = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.caschip_values || 0
+            websiteDetails[formId]?.[websiteId]?.casino_chip_value
           );
-          websiteData.downline_comm = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.downline_comm || 0
-          );
-          websiteData.is_casino = 1;
-          websiteData.is_primary =
-            websiteDetails[form.id]?.[userSite.id]?.isPrimary == 1 ? 1 : 2;
         }
+      }
 
-        if (accotypeid === "1") {
-          websiteData.monthly_amount = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.monthly_amount || 0
-          );
-          websiteData.max_chips_monthly = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.max_chips_monthly || 0
-          );
-          websiteData.chip_percentage =
-            (websiteData.monthly_amount / websiteData.max_chips_monthly) * 100;
-
-          websiteData.is_casino =
-            websiteDetails[form.id]?.[userSite.id]?.casino_allowed == 1 ? 1 : 2;
-
-          websiteData.downline_comm = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.downline_comm || 0
-          );
-
-          if (websiteDetails[form.id]?.[userSite.id]?.casino_allowed == 1) {
-            websiteData.caschip_values = parseFloat(
-              websiteDetails[form.id]?.[userSite.id]?.casino_chip_value
-            );
-          }
-        }
-
-        websiteData.totalAmount = parseFloat(
-          websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
+      websiteData.totalAmount = parseFloat(
+        websiteDetails[formId]?.[websiteId]?.add_deposit_chips || 0
+      );
+      websiteData.totalChips = parseFloat(
+        websiteDetails[formId]?.[websiteId]?.add_deposit_chips || 0
+      );
+      if (websiteDetails[formId]?.[websiteId]?.deposite_type == "1") {
+        websiteData.creditAmount = parseFloat(
+          websiteDetails[formId]?.[websiteId]?.credit_amount || 0
         );
-        websiteData.totalChips = parseFloat(
-          websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
-        );
-        if (websiteDetails[form.id]?.[userSite.id]?.deposite_type == "1") {
-          websiteData.creditAmount = parseFloat(
-            websiteDetails[form.id]?.[userSite.id]?.credit_amount || 0
-          );
-          websiteData.offDepositAmount =
-            parseFloat(
-              websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
-            ) -
-            parseFloat(
-              websiteDetails[form.id]?.[userSite.id]?.credit_amount || 0
-            );
-          websiteData.depositType = 1;
-        } else {
-          websiteData.depositType = 2;
-        }
+        websiteData.offDepositAmount =
+          parseFloat(
+            websiteDetails[formId]?.[websiteId]?.add_deposit_chips || 0
+          ) -
+          parseFloat(websiteDetails[formId]?.[websiteId]?.credit_amount || 0);
+        websiteData.depositType = 1;
+      } else {
+        websiteData.depositType = 2;
+      }
 
-        return websiteData;
-      });
+      return websiteData;
     });
 
     // Filter out null values (unselected user sites)
@@ -344,7 +748,6 @@ function AddNewDirectorSuperAdmin() {
     // Check if at least one valid user website is selected
     if (validUserWebsites.length === 0) {
       setShowWebsiteCreationErrors("Please select at least one User Website.");
-      console.log("No valid user websites selected");
       return;
     }
 
@@ -356,17 +759,11 @@ function AddNewDirectorSuperAdmin() {
       confirm_password: confirmPassword,
       parent_password: managementPassword,
       country_id: selectedCountryCode,
-      is_credit: isCreditAllowed == true ? 1 : 2,
+      is_credit: isCreditAllowed ? 1 : 2,
       currency_id: selectedCurrencyCode,
       accessWebsites: validUserWebsites,
+      credit_reference: isCreditAllowed ? creditreference : 0,
     };
-
-    if (isCreditAllowed == true) {
-      finalData.credit_reference = creditreference
-    } else {
-      finalData.credit_reference = 0
-    }
-    console.log("Final Payload:", finalData);
 
     // Send the payload to the API
     createDirector(finalData)
@@ -391,7 +788,6 @@ function AddNewDirectorSuperAdmin() {
         );
       });
   };
-
   const handleDirectorSubmit = (e) => {
     if (e) e.preventDefault();
     if (!validateForm()) return;
@@ -530,8 +926,18 @@ function AddNewDirectorSuperAdmin() {
   const validateForm = () => {
     let newErrors = {};
 
-    if (!name.trim()) newErrors.name = "Name is required.";
-    if (!loginName.trim()) newErrors.loginName = "Login Name is required.";
+    if (!name.trim()) {
+      newErrors.name = "Name is required.";
+    } else if (name.trim().length < 6) {
+      newErrors.name = "Name must be at least 6 characters long.";
+    }
+
+    if (!loginName.trim()) {
+      newErrors.loginName = "Login Name is required.";
+    } else if (loginName.trim().length < 6) {
+      newErrors.loginName = "Login Name must be at least 6 characters long.";
+    }
+
     if (!selectedRole) newErrors.selectedRole = "Role selection is required.";
     if (!selectedCountryCode)
       newErrors.selectedCountryCode = "Country is required.";
@@ -546,6 +952,13 @@ function AddNewDirectorSuperAdmin() {
     if (!managementPassword) {
       newErrors.managementPassword = "Management Password is required.";
     }
+    if (
+      creditValue === 1 &&
+      (!creditreference || creditreference.trim() === "")
+    ) {
+      newErrors.creditreference = "Credit limit is required.";
+    }
+    console.log(newErrors, "==>newErrors");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -639,13 +1052,11 @@ function AddNewDirectorSuperAdmin() {
     });
   };
 
-  console.log(accountTypes, "==>accountTypes")
-  console.log(websiteDetails, "==>websiteDetails")
   return (
     <>
       <div className="m-2 ">
         <div className="d-flex align-items-center justify-content-between py-2">
-          <h5 className="yellow-font">Add Director & Super Admin</h5>
+          <h5 className="yellow-font">Add Director & Super Admin </h5>
           <span
             className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
             onClick={() => navigate(-1)}
@@ -669,7 +1080,9 @@ function AddNewDirectorSuperAdmin() {
                   }
                 }}
               />
-              {errors?.name && <span className="error">{errors?.name}</span>}
+              {errors?.name && (
+                <span className="x-small-font error">{errors?.name}</span>
+              )}
             </div>
 
             <div className="col p-1">
@@ -709,7 +1122,7 @@ function AddNewDirectorSuperAdmin() {
                 styles={customStyles}
               />
               {errors.selectedRole && (
-                <span className="text-danger small-font">
+                <span className="error x-small-font">
                   {errors.selectedRole}
                 </span>
               )}
@@ -928,7 +1341,7 @@ function AddNewDirectorSuperAdmin() {
             <div className="col-3">
               {isCreditAllowed && (
                 <div className="p-1 position-relative">
-                  <label className="small-font">Credit Reference</label>
+                  <label className="small-font">Credit Limit</label>
                   <input
                     type="text"
                     className="small-font rounded all-none input-css w-100"
@@ -945,6 +1358,11 @@ function AddNewDirectorSuperAdmin() {
                       }
                     }}
                   />
+                  {errors?.creditreference && (
+                    <span className="x-small-font error">
+                      {errors?.creditreference}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -1134,7 +1552,7 @@ function AddNewDirectorSuperAdmin() {
                                         <input
                                           type="text"
                                           className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                          placeholder="Max Chips Monthly"
+                                          // placeholder="Max Chips Monthly"
                                           onChange={(e) =>
                                             handleInputChange(
                                               userSite.website_access_id,
@@ -1386,7 +1804,10 @@ function AddNewDirectorSuperAdmin() {
                                 <Select
                                   className="small-font rounded all-none my-2 w-100"
                                   placeholder="Select a website"
-                                  options={getAvailableUserSites(form.id, selectedAdmins[form.id]?.value).map((site) => ({
+                                  options={getAvailableUserSites(
+                                    form.id,
+                                    selectedAdmins[form.id]?.value
+                                  ).map((site) => ({
                                     value: site.id,
                                     label: site.web_url,
                                   }))}
@@ -1404,7 +1825,9 @@ function AddNewDirectorSuperAdmin() {
                                       : null
                                   }
                                   onChange={(selectedOption) => {
-                                    const selectedSiteId = selectedOption ? selectedOption.value : null;
+                                    const selectedSiteId = selectedOption
+                                      ? selectedOption.value
+                                      : null;
                                     setSelectedSiteIds((prev) => ({
                                       ...prev,
                                       [form.id]: selectedSiteId,
@@ -1421,8 +1844,15 @@ function AddNewDirectorSuperAdmin() {
                                         },
                                       },
                                     }));
-                                    handleCheckboxChange(form.id, selectedSiteId);
-                                    handleUserSiteSelection(form.id, selectedAdmins[form.id]?.value, selectedSiteId);
+                                    handleCheckboxChange(
+                                      form.id,
+                                      selectedSiteId
+                                    );
+                                    handleUserSiteSelection(
+                                      form.id,
+                                      selectedAdmins[form.id]?.value,
+                                      selectedSiteId
+                                    );
                                   }}
                                   styles={customStyles}
                                 />
@@ -1432,9 +1862,14 @@ function AddNewDirectorSuperAdmin() {
                                 <div className="col-2 input-css5">
                                   <div className="black-font small-font">
                                     Commission Type
-                                    {console.log(accountTypes[form.id]?.[selectedSiteIds[form.id]], "==>deposit")}
+                                    {console.log(
+                                      accountTypes[form.id]?.[
+                                        selectedSiteIds[form.id]
+                                      ],
+                                      "==>deposit"
+                                    )}
                                   </div>
-                                  <Select
+                                  {/* <Select
                                     className="small-font my-2"
                                     placeholder="Commission Type"
                                     options={commissionOptions}
@@ -1458,12 +1893,45 @@ function AddNewDirectorSuperAdmin() {
                                         (option) =>
                                           option.value ===
                                           accountTypes[form.id]?.[
+                                          selectedSiteIds[form.id]
+                                          ]
+                                      ) || null
+                                    }
+                                  /> */}
+                                  <Select
+                                    className="small-font my-2"
+                                    placeholder="Commission Type"
+                                    options={commissionOptions}
+                                    styles={customStyles}
+                                    isDisabled={!selectedSiteIds[form.id]} // Disable if no user site is selected
+                                    onChange={(selectedOption) => {
+                                      handleAccountTypeChange(
+                                        form.id,
+                                        selectedSiteIds[form.id],
+                                        selectedOption
+                                      );
+                                      handleInputChange(
+                                        form.id,
+                                        selectedSiteIds[form.id],
+                                        "commission_type",
+                                        selectedOption.value
+                                      );
+                                    }}
+                                    value={
+                                      commissionOptions.find(
+                                        (option) =>
+                                          option.value ===
+                                          accountTypes[form.id]?.[
                                             selectedSiteIds[form.id]
                                           ]
                                       ) || null
                                     }
                                   />
-
+                                  {renderErrorMessage(
+                                    form.id,
+                                    selectedSiteIds[form.id],
+                                    "commission_type"
+                                  )}
                                 </div>
 
                                 {accountTypes[form.id]?.[
@@ -1496,6 +1964,14 @@ function AddNewDirectorSuperAdmin() {
                                             )
                                           }
                                         />
+
+                                        <div className="small-font fw-600">
+                                          {renderErrorMessage(
+                                            form.id,
+                                            selectedSiteIds[form.id],
+                                            "monthly_amount"
+                                          )}
+                                        </div>
                                       </div>
                                       <div className="col-2 mx-2 mt-2">
                                         <label className="fw-600 my-1 small-font">
@@ -1504,7 +1980,7 @@ function AddNewDirectorSuperAdmin() {
                                         <input
                                           type="text"
                                           className="small-font input-css  rounded  all-none p-2 w-100"
-                                          // placeholder="Max Chips Monthly"
+                                          placeholder="Max Chips Monthly"
                                           maxLength={9}
                                           onKeyPress={(e) => {
                                             if (
@@ -1523,6 +1999,11 @@ function AddNewDirectorSuperAdmin() {
                                             )
                                           }
                                         />
+                                        {renderErrorMessage(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "max_chips_monthly"
+                                        )}
                                       </div>
                                       <div className="col-1 m-2 ">
                                         <label className="fw-600 my-1 small-font">
@@ -1578,54 +2059,15 @@ function AddNewDirectorSuperAdmin() {
                                         </label>
                                         <div className="input-css rounded  d-flex justify-content-between align-items-center small-font">
                                           <input
-                                            type="text"
-                                            className="small-font bg-none  all-none w-50"
-                                            onChange={(e) => {
-                                              let value = e.target.value.replace(
-                                                /\D/g,
-                                                ""
-                                              );
-                                              if (value.length > 3) return;
-                                              if (parseInt(value, 10) > 100)
-                                                return;
-                                              handleInputChange(
-                                                form.id,
-                                                selectedSiteIds[form.id],
-                                                "share",
-                                                value
-                                              );
-                                            }}
-                                          />
-                                          {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
-                                          <div className="fw-600">
-                                            My Share{" "}
-                                            {100 -
-                                              (parseInt(
-                                                websiteDetails[
-                                                  selectedWebsiteId
-                                                ]?.share
-                                              ) || 0)}
-                                            %
-                                          </div>
-                                        </span> */}
-                                        </div>
-                                      </div>
-                                      <div className="col-2 position-relative mt-1 mx-3">
-                                        <label className="fw-600  small-font">
-                                          Downline Commission
-                                        </label>
-                                        <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="text"
+                                            type="number"
+                                            className="small-font bg-none all-none  w-50"
                                             maxLength={2}
                                             onChange={(e) => {
-                                              let value = e.target.value.replace(
-                                                /\D/g,
-                                                ""
-                                              );
-                                              if (value.length > 3) return;
+                                              let value = e.target.value;
+
+                                              if (value.length > 3) return; // Restrict input to max 3 digits
                                               if (parseInt(value, 10) > 100)
-                                                return;
+                                                return; // Prevent values greater than 100
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
@@ -1635,34 +2077,34 @@ function AddNewDirectorSuperAdmin() {
                                             }}
                                           />
                                         </div>
+                                        <div className=" x-small-font">
+                                          {renderErrorMessage(
+                                            form.id,
+                                            selectedSiteIds[form.id],
+                                            "downline_comm"
+                                          )}
+                                        </div>
                                       </div>
 
                                       <div className="col-2 m-2">
                                         <div className="  input-css d-flex mt-4  my-2 mx-2">
                                           <input
-                                            className="small-font bg-none all-none  w-100"
-                                            type="text"
-                                            inputMode="numeric"
-                                            pattern="[0-9]*"
-                                            maxLength={4}
-                                            onKeyPress={(event) => {
-                                              if (
-                                                event.charCode < 48 ||
-                                                event.charCode > 57
-                                              ) {
-                                                event.preventDefault();
-                                              }
-                                            }}
-                                            onChange={(e) => {
-                                              const numericValue =
-                                                e.target.value.replace(/\D/g, "");
+                                            type="checkbox"
+                                            checked={
+                                              websiteDetails[form.id]?.[
+                                                selectedSiteIds[form.id]
+                                              ]?.casino_allowed == 1
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={(e) =>
                                               handleInputChange(
                                                 form.id,
                                                 selectedSiteIds[form.id],
                                                 "casino_allowed",
                                                 e.target.checked ? 1 : 2
                                               )
-                                            }}
+                                            }
                                           />
                                           <label className="small-font ms-2 white-space">
                                             Casino Allowed
@@ -1704,6 +2146,14 @@ function AddNewDirectorSuperAdmin() {
                                               )
                                             }
                                           />
+                                          {websiteDetails[form.id]?.[
+                                            selectedSiteIds[form.id]
+                                          ]?.casino_allowed == "1" &&
+                                            renderErrorMessage(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "casino_chip_value"
+                                            )}
                                         </div>
                                       )}
                                     </div>
@@ -1726,13 +2176,10 @@ function AddNewDirectorSuperAdmin() {
                                           type="text"
                                           className="small-font bg-none  all-none w-50"
                                           onChange={(e) => {
-                                            let value = e.target.value.replace(
-                                              /\D/g,
-                                              ""
-                                            ); // Allow only numbers
-                                            if (value.length > 3) return; // Restrict input to max 3 digits
+                                            let value = e.target.value;
+                                            if (value.length > 3) return;
                                             if (parseInt(value, 10) > 100)
-                                              return; // Prevent values greater than 100
+                                              return;
                                             handleInputChange(
                                               form.id,
                                               selectedSiteIds[form.id],
@@ -1741,6 +2188,7 @@ function AddNewDirectorSuperAdmin() {
                                             );
                                           }}
                                         />
+                                       
                                         {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
                                           <div className="fw-600">
                                             My Share{" "}
@@ -1754,6 +2202,11 @@ function AddNewDirectorSuperAdmin() {
                                           </div>
                                         </span> */}
                                       </div>
+                                      {renderErrorMessage(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "share"
+                                        )}
                                     </div>
                                     <div className="col-2 position-relative mt-1 mx-3">
                                       <label className="fw-600  small-font">
@@ -1761,14 +2214,12 @@ function AddNewDirectorSuperAdmin() {
                                       </label>
                                       <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
                                         <input
-                                          type="text"
+                                          type="number"
+                                          className="small-font bg-none all-none  w-50"
                                           maxLength={2}
-                                          className="small-font bg-none  w-75 all-none"
                                           onChange={(e) => {
-                                            let value = e.target.value.replace(
-                                              /\D/g,
-                                              ""
-                                            ); // Allow only numbers
+                                            let value = e.target.value;
+
                                             if (value.length > 3) return; // Restrict input to max 3 digits
                                             if (parseInt(value, 10) > 100)
                                               return; // Prevent values greater than 100
@@ -1780,7 +2231,13 @@ function AddNewDirectorSuperAdmin() {
                                             );
                                           }}
                                         />
+                                       
                                       </div>
+                                      {renderErrorMessage(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "downline_comm"
+                                        )}
                                     </div>
                                     <div className="col-2 position-relative mx-3">
                                       <label className="fw-600 my-1 small-font">
@@ -1798,12 +2255,12 @@ function AddNewDirectorSuperAdmin() {
                                               event.charCode < 48 ||
                                               event.charCode > 57
                                             ) {
-                                              event.preventDefault(); // Prevent non-numeric characters
+                                              event.preventDefault();
                                             }
                                           }}
                                           onChange={(e) => {
                                             const numericValue =
-                                              e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                                              e.target.value.replace(/\D/g, "");
                                             handleInputChange(
                                               form.id,
                                               selectedSiteIds[form.id],
@@ -1812,7 +2269,13 @@ function AddNewDirectorSuperAdmin() {
                                             );
                                           }}
                                         />
+                                       
                                       </div>
+                                      {renderErrorMessage(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "caschip_values"
+                                        )}
                                     </div>
                                     <div className="col-2 ">
                                       <label className="fw-600 my-1 small-font">
@@ -1851,7 +2314,6 @@ function AddNewDirectorSuperAdmin() {
                             </div>
 
                             <div className="row ">
-
                               <div className="col-2 ">
                                 <label className="fw-600 my-1 small-font">
                                   {/* Cash chip Values */}
@@ -1864,96 +2326,132 @@ function AddNewDirectorSuperAdmin() {
                                   )}
                                 </div> */}
                               </div>
-                              {(accountTypes[form.id]?.[selectedSiteIds[form.id]] == "1"
-                                || accountTypes[form.id]?.[selectedSiteIds[form.id]] == "2"
-                                || accountTypes[form.id]?.[selectedSiteIds[form.id]] == "3") && (
-                                  <>
-                                    <div className="col-2 position-relative mt-1">
-                                      <label className="fw-600 small-font">
-                                        Add Deposit Chips
-                                      </label>
-                                      <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                        <input
-                                          type="number"
-                                          className="small-font bg-none w-75 all-none appearance"
-                                          onChange={(e) => {
-                                            handleInputChange(
-                                              form.id,
-                                              selectedSiteIds[form.id],
-                                              "add_deposit_chips",
-                                              e.target.value
-                                            );
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 position-relative mt-1">
-                                      <label className="fw-600 small-font">
-                                        Total Paid Amount
-                                      </label>
-                                      <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                        <input
-                                          type="text"
-                                          maxLength={2}
-                                          className="small-font bg-none w-75 all-none"
-                                          value={websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips}
-                                          readOnly
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="col-2 small-font position-relative mt-3">
-                                      <label className="fw-600 small-font">Deposit Remark</label>
-                                      <Select
-                                        value={selectedRemarks[form.id]?.[selectedSiteIds[form.id]] || null}
-                                        onChange={(selectedOption) =>
-                                          handleRemarkChange(form.id, selectedSiteIds[form.id], selectedOption)
-                                        }
-                                        options={remarkOptions}
-                                        placeholder="Select..."
-                                        styles={customStyles}
-                                        isSearchable={false}
+                              {(accountTypes[form.id]?.[
+                                selectedSiteIds[form.id]
+                              ] == "1" ||
+                                accountTypes[form.id]?.[
+                                  selectedSiteIds[form.id]
+                                ] == "2" ||
+                                accountTypes[form.id]?.[
+                                  selectedSiteIds[form.id]
+                                ] == "3") && (
+                                <>
+                                  <div className="col-2 position-relative mt-1">
+                                    <label className="fw-600 small-font">
+                                      Add Deposit Chips
+                                    </label>
+                                    <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                      <input
+                                        type="number"
+                                        className="small-font bg-none w-75 all-none appearance"
+                                        onChange={(e) => {
+                                          handleInputChange(
+                                            form.id,
+                                            selectedSiteIds[form.id],
+                                            "add_deposit_chips",
+                                            e.target.value
+                                          );
+                                        }}
                                       />
                                     </div>
-                                    {selectedRemarks[form.id]?.[selectedSiteIds[form.id]]?.value === "credit" && (
-                                      <>
-                                        <div className="col-2 position-relative mt-1">
-                                          <label className="fw-600 small-font">Credit Amount</label>
-                                          <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              type="number"
-                                              maxLength={9}
-                                              className="small-font bg-none w-75 all-none appearance"
-                                              onChange={(e) =>
-                                                handleInputChange(
-                                                  form.id,
-                                                  selectedSiteIds[form.id],
-                                                  "credit_amount",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                          </div>
-                                        </div>
+                                  </div>
 
-                                        <div className="col-2 position-relative mt-1">
-                                          <label className="fw-600 small-font">Paid Amount</label>
-                                          <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                            <input
-                                              type="text"
-                                              maxLength={9}
-                                              className="small-font bg-none w-75 all-none appearance"
-                                              value={parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.add_deposit_chips) -
-                                                parseInt(websiteDetails[form.id]?.[selectedSiteIds[form.id]]?.credit_amount) ?? 0}
-                                              readOnly
-                                            />
-                                          </div>
+                                  <div className="col-2 position-relative mt-1">
+                                    <label className="fw-600 small-font">
+                                      Total Paid Amount
+                                    </label>
+                                    <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                      <input
+                                        type="text"
+                                        maxLength={2}
+                                        className="small-font bg-none w-75 all-none"
+                                        value={
+                                          websiteDetails[form.id]?.[
+                                            selectedSiteIds[form.id]
+                                          ]?.add_deposit_chips
+                                        }
+                                        readOnly
+                                      />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-2 small-font position-relative mt-3">
+                                    <label className="fw-600 small-font">
+                                      Deposit Remark
+                                    </label>
+                                    <Select
+                                      value={
+                                        selectedRemarks[form.id]?.[
+                                          selectedSiteIds[form.id]
+                                        ] || null
+                                      }
+                                      onChange={(selectedOption) =>
+                                        handleRemarkChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          selectedOption
+                                        )
+                                      }
+                                      options={remarkOptions}
+                                      placeholder="Select..."
+                                      styles={customStyles}
+                                      isSearchable={false}
+                                    />
+                                  </div>
+                                  {selectedRemarks[form.id]?.[
+                                    selectedSiteIds[form.id]
+                                  ]?.value === "credit" && (
+                                    <>
+                                      <div className="col-2 position-relative mt-1">
+                                        <label className="fw-600 small-font">
+                                          Credit Amount
+                                        </label>
+                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                          <input
+                                            type="number"
+                                            maxLength={9}
+                                            className="small-font bg-none w-75 all-none appearance"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                form.id,
+                                                selectedSiteIds[form.id],
+                                                "credit_amount",
+                                                e.target.value
+                                              )
+                                            }
+                                          />
                                         </div>
-                                      </>
-                                    )}
-                                  </>
-                                )}
+                                      </div>
+
+                                      <div className="col-2 position-relative mt-1">
+                                        <label className="fw-600 small-font">
+                                          Paid Amount
+                                        </label>
+                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                          <input
+                                            type="text"
+                                            maxLength={9}
+                                            className="small-font bg-none w-75 all-none appearance"
+                                            value={
+                                              parseInt(
+                                                websiteDetails[form.id]?.[
+                                                  selectedSiteIds[form.id]
+                                                ]?.add_deposit_chips
+                                              ) -
+                                                parseInt(
+                                                  websiteDetails[form.id]?.[
+                                                    selectedSiteIds[form.id]
+                                                  ]?.credit_amount
+                                                ) ?? 0
+                                            }
+                                            readOnly
+                                          />
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </>
+                              )}
                             </div>
                           </div>
                         ) : (
