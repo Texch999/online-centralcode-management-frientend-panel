@@ -71,6 +71,9 @@ function AddNewDirectorSuperAdmin() {
     setIsCreditAllowed(newIsCreditAllowed);
     setCreditValue(newIsCreditAllowed ? 1 : 2);
   };
+
+  console.log(creditValue,"==>creditValue");
+  
   const [validationErrors, setValidationErrors] = useState({});
   const [selectedUserSitesByAdmin, setSelectedUserSitesByAdmin] = useState({});
   const handleRemarkChange = (formId, websiteId, selectedRemark) => {
@@ -118,7 +121,7 @@ function AddNewDirectorSuperAdmin() {
 
   const remarkOptions = [
     { value: "offline", label: "Offline" },
-    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), // Conditionally add "Credit" option
+    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), 
   ];
 
   const GetAllCurrencies = () => {
