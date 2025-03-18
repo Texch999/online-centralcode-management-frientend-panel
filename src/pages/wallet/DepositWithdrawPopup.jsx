@@ -280,18 +280,29 @@ function DepositWithdrawPopup({
               ) : null}
             </div>
           ) : (
-            <div className="col-12 mt-2">
-              <div className="grey-box flex-between">
-                <span>
-                  Sports Chips - {getCurrency(ticketData?.reqCurrency)}{" "}
-                </span>
-                <span className="yellow-font">{ticketData?.requChips}</span>
-              </div>
-              {/* {userRole === "management" ?
+            <div>
+              <div className="col-12 mt-2">
+                <div className="grey-box flex-between">
+                  <span>
+                    Total Chips
+                    {/* - 
+                    {getCurrency(ticketData?.reqCurrency)}{" "} */}
+                  </span>
+                  <span className="yellow-font">{ticketData?.requChips}</span>
+                </div>
+                {/* {userRole === "management" ?
                 <div className="grey-box flex-between mt-2">
                   <span>Sports Chips - INR</span>
                   <span className="yellow-font">{ticketData?.inrSportsChips ? rfloor(ticketData?.inrSportsChips, -2) : 0}</span>
                 </div> : null} */}
+              </div>
+
+              <div className="col-12 mt-2">
+                <div className="grey-box flex-between">
+                  <span>Paid Amount</span>
+                  <span>{ticketData?.paidAmount ?? 0}</span>
+                </div>
+              </div>
             </div>
           )}
 
@@ -299,70 +310,34 @@ function DepositWithdrawPopup({
             (ticketData?.credit > 0 && ticketData?.ticketType == 1 && (
               <div className="d-flex flex-column ">
                 <h6 className="mt-2 red-block small-font">Credit Request</h6>
-                <div className="d-flex flex-row">
-                  <div className={` col-6 me-2`}>
-                    <div className="grey-box flex-between">
-                      <span>Credit Amount</span>
-                      <span>
-                        {ticketData?.credit
-                          ? ticketData?.credit
-                          : 0}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="col-6 me-1">
+                <div className="d-flex flex-row my-2">
+                  <div className="col-6 me-2">
                     <div className="grey-box flex-between">
                       <span>Old Credit Amount</span>
-                      <span>
-                        {ticketData?.creditAmount
-                          ? ticketData?.creditAmount
-                          : 0}
-                      </span>
+                      <span>{ticketData?.oldCredit ?? 0}</span>
+                    </div>
+                  </div>
+
+                  <div className={` col-6 me-2`}>
+                    <div className="grey-box flex-between">
+                      <span>New Credit Request</span>
+                      <span>{ticketData?.credit ?? 0}</span>
                     </div>
                   </div>
                 </div>
-                <div className="d-flex flex-row my-2">
+                <div className="d-flex flex-row ">
                   <div className={` col-6 me-2`}>
                     <div className="grey-box flex-between">
-                      <span>New Credit Amount</span>
-                      <span>
-                        {ticketData?.creditAmount
-                          ? ticketData?.creditAmount
-                          : 0}
-                      </span>
+                      <span>Credit Limit</span>
+                      <span>{ticketData?.maxCreditLimit ?? 0}</span>
                     </div>
                   </div>
 
                   <div className="col-6 me-1">
                     <div className="grey-box flex-between">
-                      <span>Total Credit Amount</span>
-                      <span>
-                        {ticketData?.creditAmount
-                          ? ticketData?.creditAmount
-                          : 0}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex flex-row my-2">
-                  <div className={` col-6 me-2`}>
-                    <div className="grey-box flex-between">
-                      <span>Bal Credit Amount</span>
-                      <span>
-                        {ticketData?.creditAmount
-                          ? ticketData?.creditAmount
-                          : 0}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="col-6 me-1">
-                    <div className="grey-box flex-between">
-                      <span>Paid Amount</span>
-                      <span>
-                        {ticketData?.paidAmount ? ticketData?.paidAmount : 0}
-                      </span>
+                      <span>Total Credit</span>
+                      <span>{(ticketData?.credit ?? 0) + (ticketData?.oldCredit ?? 0)}</span>
                     </div>
                   </div>
                 </div>
