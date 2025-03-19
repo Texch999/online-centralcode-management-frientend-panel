@@ -728,6 +728,10 @@
   cursor: not-allowed;
   color: #787676;
 }
+.disable-eye {
+  cursor: not-allowed;
+  color: #787676;
+}
 
 .green-block {
   color: green;
@@ -1075,3 +1079,11 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+.dark-yellow {
+  background-color: #de9a15;
+  border-radius: 2px;
+}
+.border-right{
+  border-right: 1.2px solid #00000033
+}
+

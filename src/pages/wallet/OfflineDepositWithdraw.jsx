@@ -3,7 +3,11 @@ import Table from "../../components/Table";
 import { customStyles } from "../../components/ReactSelectStyles";
 import Select from "react-select";
 import { currencyConvert } from "../../utils/currEchange";
-import { ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicketCreation, ownerDowlineDirAndSADetails } from "../../api/apiMethods";
+import {
+  ManagementOfflineDepositeTicketCreation,
+  ManagementOfflineWithdrawTicketCreation,
+  ownerDowlineDirAndSADetails,
+} from "../../api/apiMethods";
 import { useSelector } from "react-redux";
 import { rceil } from "../../utils/mathFunctions";
 import SuccessPopup from "../popups/SuccessPopup";
@@ -15,11 +19,11 @@ function OfflineDepositWithdraw() {
   const [dirAndSADetails, setDirAndSADetails] = useState([]);
   const [actionType, setActionType] = useState([]);
   const [apiErrors, setApiErrors] = useState(null);
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
-  const [discription, setDiscription] = useState("")
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState("");
   const [errors, setErrors] = useState({});
-  const [totalRecords, setTotalRecords] = useState(null)
-  const [duration, setDuration] = useState("")
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [duration, setDuration] = useState("");
   const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState({
     adminWeb: "",
@@ -31,7 +35,7 @@ function OfflineDepositWithdraw() {
     selectedUserSiteId: null,
     selectedCommissionType: null,
   });
-  const [isCredit, setIsCredit] = useState(false); 
+  const [isCredit, setIsCredit] = useState(false);
   const [creditAmount, setCreditAmount] = useState(0);
   const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
   const [selectedDetails, setSelectedDetails] = useState(null);
@@ -40,25 +44,28 @@ function OfflineDepositWithdraw() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
-  const itemsPerPage = 4
-  const limit = itemsPerPage
-  const offset = (currentPage - 1) * itemsPerPage
+  const itemsPerPage = 4;
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
   const durationOptions = [
     { value: 30, label: "30day" },
     { value: 90, label: "90day" },
     { value: 180, label: "180day" },
     { value: 365, label: "365day" },
-  ]
+  ];
   useEffect(() => {
     fetchOwnerDownlineDirectorAndSuperAdminDetails(limit, offset);
   }, []);
 
-  const fetchOwnerDownlineDirectorAndSuperAdminDetails = async (limit, offset) => {
+  const fetchOwnerDownlineDirectorAndSuperAdminDetails = async (
+    limit,
+    offset
+  ) => {
     try {
       const response = await ownerDowlineDirAndSADetails({ limit, offset });
       if (response?.list?.length > 0) {
         setDirAndSADetails(response.list);
-        setTotalRecords(response.count)
+        setTotalRecords(response.count);
       } else {
         setDirAndSADetails([]);
       }
@@ -126,13 +133,24 @@ function OfflineDepositWithdraw() {
   // Action buttons component
   const ActionButtons = ({ onDeposit, onWithdraw }) => (
     <div className="d-flex flex-row justify-content-center align-items-center">
-      <button className="saffron-btn3 px-2" style={{ borderTopLeftRadius: "8px", borderBottomLeftRadius: "8px" }} onClick={onDeposit}>
+      <button
+        className="saffron-btn3 px-2"
+        style={{ borderTopLeftRadius: "8px", borderBottomLeftRadius: "8px" }}
+        onClick={onDeposit}
+      >
         D/C
       </button>
-      <div className="saffron-btn3 white-text" style={{ pointerEvents: "none" }}>
+      <div
+        className="saffron-btn3 white-text"
+        style={{ pointerEvents: "none" }}
+      >
         |
       </div>
-      <button className="me-3 saffron-btn3 px-2 " style={{ borderTopRightRadius: "8px", borderBottomRightRadius: "8px" }} onClick={onWithdraw}>
+      <button
+        className="me-3 saffron-btn3 px-2 "
+        style={{ borderTopRightRadius: "8px", borderBottomRightRadius: "8px" }}
+        onClick={onWithdraw}
+      >
         W
       </button>
     </div>
@@ -176,7 +194,10 @@ function OfflineDepositWithdraw() {
 
     newData[index].selectedUserSite = userSiteId;
     newData[index].selectedUserDetails = selectedUser;
-    console.log(newData[index].selectedUserSite, "===> newData[index].selectedUserSite")
+    console.log(
+      newData[index].selectedUserSite,
+      "===> newData[index].selectedUserSite"
+    );
     // Update selected user site ID and commission type in state
     setInputData((prevData) => ({
       ...prevData,
@@ -189,15 +210,15 @@ function OfflineDepositWithdraw() {
 
   // Toggle child row visibility
   const toggleChildRow = (index, action, siteDetails) => {
-    setSelectedDetails(siteDetails)
-    setDepositWithdrawPopup(true)
+    setSelectedDetails(siteDetails);
+    setDepositWithdrawPopup(true);
     setDirAndSADetails((prevData) =>
       prevData.map((row, i) => ({
         ...row,
         showChildRow: i === index ? !row.showChildRow : false,
       }))
     );
-    setActionType(action)
+    setActionType(action);
     setApiErrors(null);
   };
 
@@ -205,8 +226,6 @@ function OfflineDepositWithdraw() {
   const calculatePaidAmount = (amount, percentage) => {
     return percentage !== undefined ? amount * (percentage / 100) : amount;
   };
-
-
 
   const validateForm = (siteData) => {
     const newErrors = {};
@@ -234,105 +253,15 @@ function OfflineDepositWithdraw() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const handleSubmit = (siteData) => {
-  //   if (!validateForm(siteData)) return
-  //   const payload = {
-  //     adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
-  //     userPanelId: siteData?.selectedUserDetails?.user_paner_id,
-  //     currency: siteData?.currency_id,
-  //     selctChips: (inputData.inrChips ? currencyConvert(
-  //       Number(inputData.inrChips),
-  //       getCurrencyRate(107),
-  //       getCurrencyRate(siteData?.currency_id)
-  //     ) : 0),
-
-  //   };
-
-  //   if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
-  //     payload.selctSpcChips = (inputData.extChips ? currencyConvert(
-  //       Number(inputData.extChips),
-  //       getCurrencyRate(107),
-  //       getCurrencyRate(siteData?.currency_id)
-  //     ) : 0)
-
-  //     payload.paidAmount = rceil((inputData.inrChips ? (
-  //       currencyConvert(
-  //         Number(inputData.inrChips),
-  //         getCurrencyRate(107),
-  //         getCurrencyRate(siteData?.currency_id)
-  //       ) *
-  //       (siteData.selectedUserDetails?.commission_type === 1
-  //         ? siteData.selectedUserDetails?.chip_percentage / 100
-  //         : siteData.selectedUserDetails?.share / 100)
-  //     ) : 0) +
-  //       (inputData.extChips ? currencyConvert(
-  //         Number(inputData.extChips),
-  //         getCurrencyRate(107),
-  //         getCurrencyRate(siteData?.currency_id)
-  //       ) : 0), -3)
-  //   } else {
-  //     payload.paidAmount = rceil((inputData.inrChips ? (
-  //       currencyConvert(
-  //         Number(inputData.inrChips),
-  //         getCurrencyRate(107),
-  //         getCurrencyRate(siteData?.currency_id)
-  //       ) *
-  //       (siteData.selectedUserDetails?.commission_type === 1
-  //         ? siteData.selectedUserDetails?.chip_percentage / 100
-  //         : siteData.selectedUserDetails?.share / 100)
-  //     ) : 0), -3)
-
-  //   }
-  //   let apiCall
-  //   if (actionType === "DEPOSIT") {
-  //     apiCall = ManagementOfflineDepositeTicketCreation
-
-  //   } else {
-  //     apiCall = ManagementOfflineWithdrawTicketCreation
-  //   }
-  //   apiCall(siteData?.id, payload)
-  //     .then((response) => {
-  //       if (response?.status === true) {
-  //         setSuccessPopupOpen(true);
-  //         setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "WIthdraw"} Created Successfully`)
-  //         setInputData({
-  //           inrChips: 0,
-  //           extChips: 0,
-  //         });
-  //         setApiErrors(null);
-  //         setErrors({})
-  //       } else {
-  //         setApiErrors(response?.errors || "Deposit failed. Please try again.");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setApiErrors(error?.errors || error?.message || "API request failed");
-  //     });
-  // }
-
-
-
-  // const handleCancel = (index) => {
-  //   setDirAndSADetails((prevData) =>
-  //     prevData.map((row, i) => ({
-  //       ...row,
-  //       showChildRow: i === index ? !row.showChildRow : false,
-  //     }))
-  //   );
-  //   setInputData({
-  //     inrChips: 0,
-  //     extChips: 0,
-  //   });
-  //   setErrors({})
-  //   setApiErrors(null);
-  // }
-
   // Table columns
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "Name & Role", field: "nameRole" },
     { header: "Balance", field: "totalBalance" },
     { header: "Available", field: "totalAvailable" },
-    { header: <div className="text-end">Exposure</div>, field: "totalExposure" },
+    {
+      header: <div className="text-end">Exposure</div>,
+      field: "totalExposure",
+    },
     { header: <div className="text-end">Ref P/L</div>, field: "referencePL" },
     { header: "Admin Site", field: "adminSites" },
     { header: "User Site", field: "userSites" },
@@ -341,8 +270,6 @@ function OfflineDepositWithdraw() {
     { header: "Exposure", field: "userSitexposure" },
     { header: <div className="text-center">Action</div>, field: "action" },
   ];
-
-
 
   // Prepare table data
   const tableData = dirAndSADetails.map((row, index) => {
@@ -358,64 +285,100 @@ function OfflineDepositWithdraw() {
 
     return {
       ...row,
-      nameRole: <div>{`${row.name}`} <br /> Director</div>,
+      nameRole: (
+        <div>
+          {`${row.name}`} <br /> Director
+        </div>
+      ),
       totalBalance: <div>{`150000`}</div>,
       Available: <div>{`42000`}</div>,
       totalAvailable: <div>{`95000`}</div>,
       totalExposure: <div>{`55000`}</div>,
       referencePL: <div className=" text-end">{`132000`}</div>,
-      adminSites: <div >
-        <AdminSiteDropdown
-          options={adminSites}
-          onChange={(value) => handleAdminSiteChange(index, value)}
-          value={
-            row.selectedAdminSite && row.selectedAdminName
-              ? {
-                value: row.selectedAdminSite,
-                label: row.selectedAdminName,
-              }
-              : null
-          }
-        />
-        {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
-      </div>,
-      userSites: <div >
-        <UserSiteDropdown
-          options={
-            row.selectedAdminSite
-              ? adminSites.find((a) => a.value === row.selectedAdminSite)
-                ?.userSites
-              : []
-          }
-          onChange={(value) => handleUserSiteChange(index, value)}
-          value={
-            row.selectedUserSite
-              ? {
-                label:
-                  row.selectedUserDetails.commission_type !== 1
-                    ? `${row.selectedUserDetails?.usrPnl}/ Share ${row.selectedUserDetails?.share}% - ${getCurrency(row?.currency_id)}`
-                    : `${row.selectedUserDetails?.usrPnl}/ Rental ${row.selectedUserDetails?.chip_percentage}% - ${getCurrency(row?.currency_id)}`,
-                value: row.selectedUserSite,
-              }
-              : null
-          }
-        />
-        {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
-      </div>,
-      creditReference: <div className="w-100 d-flex justify-content-between align-items-center gap-3">
-        <div>150000</div>
+      adminSites: (
         <div>
-          <button className="me-3 saffron-btn2 px-3" >
-            Edit
-          </button>
+          <AdminSiteDropdown
+            options={adminSites}
+            onChange={(value) => handleAdminSiteChange(index, value)}
+            value={
+              row.selectedAdminSite && row.selectedAdminName
+                ? {
+                    value: row.selectedAdminSite,
+                    label: row.selectedAdminName,
+                  }
+                : null
+            }
+          />
+          {errors.adminWebsiteId && (
+            <p className="text-danger small-font">{errors.adminWebsiteId}</p>
+          )}
         </div>
-      </div>,
-      userSiteAvaiBal: <div>{row.selectedUserDetails ? row.selectedUserDetails?.totalChips : <div> {`--`}</div>}</div>,
-      userSitexposure: <div>{row.selectedUserDetails ? row.selectedUserDetails?.totalChips : <div> {`--`}</div>}</div>,
+      ),
+      userSites: (
+        <div>
+          <UserSiteDropdown
+            options={
+              row.selectedAdminSite
+                ? adminSites.find((a) => a.value === row.selectedAdminSite)
+                    ?.userSites
+                : []
+            }
+            onChange={(value) => handleUserSiteChange(index, value)}
+            value={
+              row.selectedUserSite
+                ? {
+                    label:
+                      row.selectedUserDetails.commission_type !== 1
+                        ? `${row.selectedUserDetails?.usrPnl}/ Share ${
+                            row.selectedUserDetails?.share
+                          }% - ${getCurrency(row?.currency_id)}`
+                        : `${row.selectedUserDetails?.usrPnl}/ Rental ${
+                            row.selectedUserDetails?.chip_percentage
+                          }% - ${getCurrency(row?.currency_id)}`,
+                    value: row.selectedUserSite,
+                  }
+                : null
+            }
+          />
+          {errors.userPanelId && (
+            <p className="text-danger small-font">{errors.userPanelId}</p>
+          )}
+        </div>
+      ),
+      creditReference: (
+        <div className="w-100 d-flex justify-content-between align-items-center gap-3">
+          <div>150000</div>
+          <div>
+            <button className="me-3 saffron-btn2 px-3">Edit</button>
+          </div>
+        </div>
+      ),
+      userSiteAvaiBal: (
+        <div>
+          {row.selectedUserDetails ? (
+            row.selectedUserDetails?.totalChips
+          ) : (
+            <div> {`--`}</div>
+          )}
+        </div>
+      ),
+      userSitexposure: (
+        <div>
+          {row.selectedUserDetails ? (
+            row.selectedUserDetails?.totalChips
+          ) : (
+            <div> {`--`}</div>
+          )}
+        </div>
+      ),
       action: (
         <ActionButtons
-          onDeposit={() => toggleChildRow(index, "DEPOSIT", row.selectedUserDetails)}
-          onWithdraw={() => toggleChildRow(index, "WITHDRAW", row.selectedUserDetails)}
+          onDeposit={() =>
+            toggleChildRow(index, "DEPOSIT", row.selectedUserDetails)
+          }
+          onWithdraw={() =>
+            toggleChildRow(index, "WITHDRAW", row.selectedUserDetails)
+          }
         />
       ),
     };
@@ -429,14 +392,17 @@ function OfflineDepositWithdraw() {
     <>
       <div>
         <div className="flex-between mb-3 mt-2">
-          <h6 className="d-flex yellow-font mb-0">Offline Deposit & Withdraw</h6>
+          <h6 className="d-flex yellow-font mb-0">
+            Offline Deposit & Withdraw
+          </h6>
         </div>
         <div className="d-flex small-font mb-3">
           {SPORTS_BUTTONS.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 ${activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-                }`}
+              className={`me-3 ${
+                activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
+              }`}
               onClick={() => handleSportClick(sport)}
             >
               {sport}
@@ -470,7 +436,6 @@ function OfflineDepositWithdraw() {
         selectedDetails={selectedDetails}
         setDepositWithdrawPopup={setDepositWithdrawPopup}
       />
-
     </>
   );
 }

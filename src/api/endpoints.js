@@ -770,10 +770,29 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/adminPanel/${id}`,
   },
-  suspendInActiveUsers:{
-    method:"post",
-    url:(data)=>`/user/${userID()}/website/${data.websiteId}/blockUser/${data.id}/status`
-  }
+  suspendInActiveUsers: {
+    method: "post",
+    url: (data) =>
+      `/user/${userID()}/website/${data.websiteId}/blockUser/${data.id}/status`,
+  },
+  getOfflineDWDirectors: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/offlineDeposits/directors?${query}`;
+    },
+  },
+  getDirById:{
+    method:"get",
+    url: (params) => {
+      const { userId, ...filteredParams } = params;
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/offlineDeposits/directors/${userId}/websites?${query}`;
+    },
+
+    // url:(id,...params)=>`/user/${userID()}/offlineDeposits/directors/${id}/websites?${query}
+    // adminPanId=1&userPanId=2`
+  },
 };
 
 export default endpoints;
