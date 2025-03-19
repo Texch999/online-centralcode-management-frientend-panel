@@ -71,6 +71,9 @@ function AddNewDirectorSuperAdmin() {
     setIsCreditAllowed(newIsCreditAllowed);
     setCreditValue(newIsCreditAllowed ? 1 : 2);
   };
+
+  console.log(creditValue,"==>creditValue");
+  
   const [validationErrors, setValidationErrors] = useState({});
   const [selectedUserSitesByAdmin, setSelectedUserSitesByAdmin] = useState({});
   const handleRemarkChange = (formId, websiteId, selectedRemark) => {
@@ -118,7 +121,7 @@ function AddNewDirectorSuperAdmin() {
 
   const remarkOptions = [
     { value: "offline", label: "Offline" },
-    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), // Conditionally add "Credit" option
+    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), 
   ];
 
   const GetAllCurrencies = () => {
@@ -355,214 +358,7 @@ function AddNewDirectorSuperAdmin() {
     ) : null;
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   let hasErrors = false;
-  //   const newValidationErrors = {};
-
-  //   // Validate login and general fields
-  //   const loginErrors = validateForm();
-  //   if (Object.keys(loginErrors).length > 0) {
-  //     console.log(loginErrors, "=>loginErrors");
-
-  //     hasErrors = true;
-  //     setErrors(loginErrors);
-  //   }
-  //   if (!Array.isArray(forms)) {
-  //     console.error("Forms is not an array:", forms);
-  //     return;
-  //   }
-  //   console.log(forms, "===.forms")
-  //   // Validate website fields for each form
-  //   forms &&
-  //     forms.forEach((form) => {
-  //       const formId = form.id;
-  //       const websiteId = selectedSiteIds[formId];
-
-  //       if (websiteId) {
-  //         const fields = websiteDetails[formId]?.[websiteId] || {};
-  //         const errors = validateWebsiteFields(fields);
-  //         console.log(fields)
-  //         if (Object.keys(errors).length > 0) {
-  //           hasErrors = true;
-  //           console.log(errors, "=errors")
-
-  //           newValidationErrors[formId] = {
-  //             ...newValidationErrors[formId],
-  //             [websiteId]: errors,
-  //           };
-  //         }
-  //       } else {
-  //         // If no website is selected, mark the form as having an error
-  //         hasErrors = true;
-  //         console.log(...newValidationErrors[formId], "= ...newValidationErrors[formId]")
-  //         newValidationErrors[formId] = {
-  //           ...newValidationErrors[formId],
-  //           websiteId: "Please select a website.",
-  //         };
-  //       }
-  //     });
-
-  //   // Update the validation errors state
-  //   setValidationErrors(newValidationErrors);
-
-  //   //  If there are validation errors, stop form submission
-  //   if (hasErrors) {
-  //     console.log(hasErrors, "Form has validation errors. Please fix them.");
-  //     return;
-  //   }
-  //   if (!validateForm()) {
-  //     console.log("Form validation failed");
-  //     return;
-  //   }
-
-  //   // Check if at least one admin website is selected
-  //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-  //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
-  //     console.log("No admin website selected");
-  //     return;
-  //   }
-
-  //   // Check if at least one user website is selected
-  //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-  //     setShowWebsiteCreationErrors("Please select at least one User Website.");
-  //     console.log("No user website selected");
-  //     return;
-  //   }
-
-  //   // Map selected user websites and their details into the payload
-  //   const selectedUserWebsites = forms.flatMap((form) => {
-  //     return userWebsitesList[form.id]?.map((userSite) => {
-  //       // Skip if the user site is not selected
-  //       if (!selectedWebsites[form.id]?.[userSite.id]) return null;
-
-  //       // Get the commission type for the user site
-  //       const accotypeid = accountTypes[form.id]?.[userSite.id];
-
-  //       // Base website data
-  //       let websiteData = {
-  //         admin_panel_id: selectedAdmins[form.id]?.value, // Admin panel ID
-  //         user_paner_id: userSite.id, // User panel ID
-  //         commission_type: accotypeid, // Commission type
-  //       };
-
-  //       // Add fields based on commission type
-  //       if (accotypeid === "2" || accotypeid === "3") {
-  //         websiteData.share = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.share || 0
-  //         );
-  //         websiteData.caschip_values = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.caschip_values || 0
-  //         );
-  //         websiteData.downline_comm = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.downline_comm || 0
-  //         );
-  //         websiteData.is_casino = 1;
-  //         websiteData.is_primary =
-  //           websiteDetails[form.id]?.[userSite.id]?.isPrimary == 1 ? 1 : 2;
-  //       }
-
-  //       if (accotypeid === "1") {
-  //         websiteData.monthly_amount = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.monthly_amount || 0
-  //         );
-  //         websiteData.max_chips_monthly = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.max_chips_monthly || 0
-  //         );
-  //         websiteData.chip_percentage =
-  //           (websiteData.monthly_amount / websiteData.max_chips_monthly) * 100;
-
-  //         websiteData.is_casino =
-  //           websiteDetails[form.id]?.[userSite.id]?.casino_allowed == 1 ? 1 : 2;
-
-  //         websiteData.downline_comm = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.downline_comm || 0
-  //         );
-
-  //         if (websiteDetails[form.id]?.[userSite.id]?.casino_allowed == 1) {
-  //           websiteData.caschip_values = parseFloat(
-  //             websiteDetails[form.id]?.[userSite.id]?.casino_chip_value
-  //           );
-  //         }
-  //       }
-
-  //       websiteData.totalAmount = parseFloat(
-  //         websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
-  //       );
-  //       websiteData.totalChips = parseFloat(
-  //         websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
-  //       );
-  //       if (websiteDetails[form.id]?.[userSite.id]?.deposite_type == "1") {
-  //         websiteData.creditAmount = parseFloat(
-  //           websiteDetails[form.id]?.[userSite.id]?.credit_amount || 0
-  //         );
-  //         websiteData.offDepositAmount =
-  //           parseFloat(
-  //             websiteDetails[form.id]?.[userSite.id]?.add_deposit_chips || 0
-  //           ) -
-  //           parseFloat(
-  //             websiteDetails[form.id]?.[userSite.id]?.credit_amount || 0
-  //           );
-  //         websiteData.depositType = 1;
-  //       } else {
-  //         websiteData.depositType = 2;
-  //       }
-
-  //       return websiteData;
-  //     });
-  //   });
-
-  //   // Filter out null values (unselected user sites)
-  //   const validUserWebsites = selectedUserWebsites.filter(Boolean);
-
-  //   // Check if at least one valid user website is selected
-  //   if (validUserWebsites.length === 0) {
-  //     setShowWebsiteCreationErrors("Please select at least one User Website.");
-
-  //     return;
-  //   }
-
-  //   const finalData = {
-  //     type: selectedRole,
-  //     name,
-  //     login_name: loginName,
-  //     password,
-  //     confirm_password: confirmPassword,
-  //     parent_password: managementPassword,
-  //     country_id: selectedCountryCode,
-  //     is_credit: isCreditAllowed == true ? 1 : 2,
-  //     currency_id: selectedCurrencyCode,
-  //     accessWebsites: validUserWebsites,
-  //   };
-
-  //   if (isCreditAllowed == true) {
-  //     finalData.credit_reference = creditreference;
-  //   } else {
-  //     finalData.credit_reference = 0;
-  //   }
-
-  //   // Send the payload to the API
-  //   createDirector(finalData)
-  //     .then((response) => {
-  //       if (response.status === true) {
-  //         setSuccessPopupOpen(true);
-  //         setCreateDescription(
-  //           `${selectedRole == 1 ? "Director" : "Superadmin"
-  //           } Added Successfully`
-  //         );
-  //         setTimeout(() => {
-  //           navigate("/director-admin");
-  //         }, 2000);
-  //       } else {
-  //         console.log("Something went wrong");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setShowWebsiteCreationErrors(
-  //         error.message[0].message || error.message[0]
-  //       );
-  //     });
-  // };
+ 
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -827,27 +623,7 @@ function AddNewDirectorSuperAdmin() {
           };
         }
       }
-      //  else {
-      //   hasErrors = true;
-      //   if (!newValidationErrors[formId]) {
-      //     newValidationErrors[formId] = {};
-      //   }
-      //   console.log("error")
-      //   newValidationErrors[formId].websiteId = "Please select a website.";
-      //   // Check if at least one admin website is selected
-      //   if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
-      //     setShowWebsiteCreationErrors("Please select at least one Admin Website");
-      //     console.log("No admin website selected");
-      //     return;
-      //   }
 
-      //   // Check if at least one user website is selected
-      //   if (!selectedWebsites || Object.keys(selectedWebsites).length === 0) {
-      //     setShowWebsiteCreationErrors("Please select at least one User Website.");
-      //     console.log("No user website selected");
-      //     return;
-      //   }
-      // }
     });
 
     // Update the validation errors state
@@ -856,6 +632,10 @@ function AddNewDirectorSuperAdmin() {
     // If there are validation errors, stop form submission
     if (hasErrors) {
       console.log(hasErrors, "Form has validation errors. Please fix them.");
+      return;
+    }
+    if (!validateForm()) {
+      console.log("Form validation failed");
       return;
     }
 
