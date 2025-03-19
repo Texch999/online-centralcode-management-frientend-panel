@@ -81,16 +81,16 @@ const AddDirectorAdmin = () => {
   };
 
   const columns = [
-    { header: "Role", field: "role" },
-    { header: "Name", field: "name" },
-    { header: "Login Name", field: "loginname" },
-    { header: "In Used", field: "inUsed" },
-    { header: "Admin Websites", field: "adminwebsites" },
-    { header: "Link Websites", field: "linkWebsites" },
-    { header: "Share/Rent", field: "shareRent" },
-    { header: "Billing", field: "billing" },
+    { header: "Name", field: "role" },
+    { header: "Credit Ref.", field: "creditref" },
+    { header: "Credit", field: "credit" },
+    { header: "Deposit", field: "deposit" },
+    { header: "Withdraw", field: "withdraw" },
+    { header: "Available Bal.", field: "availableBal." },
     { header: "P/L", field: "pl" },
-    { header: "", field: "dw", width: "1%" },
+    { header: "Exposure", field: "exposure" },
+    { header: "AD Lock", field: "ADLock" },
+    { header: "Bet Lock", field: "BetLock" },
     {
       header: <div className="text-center">Action</div>,
       field: "action",
@@ -242,8 +242,13 @@ const AddDirectorAdmin = () => {
     }));
 
     return {
-      id: user.id,
-      role: user.type === 1 ? "Director" : "Super Admin",
+      role: <div className="d-flex flex-row">
+        <div className="me-2" > <span className="role-bg">{user.type === 1 ? "Di" : "SA"}</span></div>
+        <div className="d-lex flex-column">
+          <div>{user.type === 1 ? "Director" : "Super Admin"}</div>
+          <div>{user.type === 1 ? "Director" : "Super Admin"}</div>
+        </div>
+      </div>,
       name: user.name,
       loginname: user.login_name,
       inUsed: (
@@ -262,7 +267,7 @@ const AddDirectorAdmin = () => {
               >
                 {website.adminPanel}
               </a>
-              
+
             </span>
           ))}
         </span>
@@ -277,7 +282,7 @@ const AddDirectorAdmin = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {website.url} 
+                {website.url}
               </a>
             </span>
           ))}
@@ -306,9 +311,8 @@ const AddDirectorAdmin = () => {
         <div className="d-flex flex-center gap-3">
           <SlPencil
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 &&
               navigate(`/director-admin/editDirector`, {
@@ -318,9 +322,8 @@ const AddDirectorAdmin = () => {
           />
           <MdLockReset
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 && handleResetPasswordOpen(user.id)
             }
@@ -332,9 +335,8 @@ const AddDirectorAdmin = () => {
           />
           <BsEye
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
           />
         </div>
@@ -417,9 +419,8 @@ const AddDirectorAdmin = () => {
         <div className="d-flex flex-center gap-3">
           <SlPencil
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 &&
               navigate(`/director-admin/editDirector`, {
@@ -429,9 +430,8 @@ const AddDirectorAdmin = () => {
           />
           <MdLockReset
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 && handleResetPasswordOpen(user.id)
             }
@@ -443,9 +443,8 @@ const AddDirectorAdmin = () => {
           />
           <BsEye
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
           />
         </div>
@@ -466,7 +465,7 @@ const AddDirectorAdmin = () => {
       <div className="flex-between mb-3 mt-2">
         {role === "management" ? (
           <h6 className="yellow-font medium-font mb-0">
-            Add Director & Super Admin 
+            Add Director & Super Admin
           </h6>
         ) : (
           <h6 className="yellow-font mb-0">Add Super Admin</h6>
@@ -558,9 +557,8 @@ const AddDirectorAdmin = () => {
                 confirmationPopupOpen={confirmationPopup}
                 setConfirmationPopupOpen={setConfirmationPopup}
                 onSubmit={blockUnblock}
-                discription={`Do you want to ${
-                  selectedDirectorStatus === 1 ? "Block" : "Unblock"
-                } ?`}
+                discription={`Do you want to ${selectedDirectorStatus === 1 ? "Block" : "Unblock"
+                  } ?`}
                 submitButton={
                   selectedDirectorStatus === 1 ? "Block" : "Unblock"
                 }
@@ -573,9 +571,8 @@ const AddDirectorAdmin = () => {
                 confirmationPopupOpen={confirmationPopup}
                 setConfirmationPopupOpen={setConfirmationPopup}
                 onSubmit={blockUnblockSuperAdmin}
-                discription={`Do you want to ${
-                  selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
-                } this SuperAdmin?`}
+                discription={`Do you want to ${selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
+                  } this SuperAdmin?`}
                 submitButton={
                   selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
                 }

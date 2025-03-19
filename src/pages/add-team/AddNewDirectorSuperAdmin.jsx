@@ -695,6 +695,7 @@ function AddNewDirectorSuperAdmin() {
     return false;
   });
 
+  const youpay=Number(addDepositChips) - Number(enteredPaidAmount)
   return (
     <>
       <div className="m-2 ">
@@ -1108,9 +1109,7 @@ function AddNewDirectorSuperAdmin() {
                       type="number"
                       maxLength={9}
                       className="small-font bg-none w-75 all-none appearance"
-                      value={
-                        Number(addDepositChips) - Number(enteredPaidAmount)
-                      }
+                      value={youpay> 0 ? youpay: 0}
                     />
                   </div>
                 </div>
