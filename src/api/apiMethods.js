@@ -488,6 +488,12 @@ const getAdminUserWebsites = (id, data) => {
 const suspendInActiveUsers = (websiteId, id) => {
   return apiRequest("suspendInActiveUsers", websiteId, { websiteId, id });
 };
+const getOfflineDWDirectors = (params) => {
+  return apiRequest("getOfflineDWDirectors", {}, params);
+};
+const getDirById = (params) => {
+  return apiRequest("getDirById", {}, params);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -612,4 +618,6 @@ export {
   getInActiveUsers,
   getAdminUserWebsites,
   suspendInActiveUsers,
+  getOfflineDWDirectors,
+  getDirById,
 };
