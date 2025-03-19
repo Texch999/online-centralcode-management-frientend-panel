@@ -67,6 +67,7 @@ const Enums = {
     "HOURSE RACING": 7,
     "KABADDI": 8,
     "CASINO": 9,
+    "LIVE CASINO":10,
   },
   texchangeSelectPages: {
     "HOME": 1,
