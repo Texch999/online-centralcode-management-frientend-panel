@@ -72,8 +72,6 @@ function AddNewDirectorSuperAdmin() {
     setCreditValue(newIsCreditAllowed ? 1 : 2);
   };
 
-  console.log(creditValue,"==>creditValue");
-  
   const [validationErrors, setValidationErrors] = useState({});
   const [selectedUserSitesByAdmin, setSelectedUserSitesByAdmin] = useState({});
   const handleRemarkChange = (formId, websiteId, selectedRemark) => {
