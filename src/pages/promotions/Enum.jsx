@@ -67,6 +67,7 @@ const Enums = {
     "HOURSE RACING": 7,
     "KABADDI": 8,
     "CASINO": 9,
+    "LIVE CASINO":10,
   },
   texchangeSelectPages: {
     "HOME": 1,
@@ -79,13 +80,13 @@ const Enums = {
   },
   sparkbookSelectPlace: {
     MAIN: 1,
-    SERIES_1: 2,
-    SERIES_2: 3,
-    SERIES_3: 4,
-    SERIES_4: 5,
-    SERIES_5: 6,
-    SERIES_6: 7,
-    SERIES_7: 8,
+    SERIES: 2,
+    // SERIES_2: 3,
+    // SERIES_3: 4,
+    // SERIES_4: 5,
+    // SERIES_5: 6,
+    // SERIES_6: 7,
+    // SERIES_7: 8,
   },
   nineExchangeSelectPlace: {
     MAIN: 1,

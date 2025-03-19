@@ -220,7 +220,8 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       }
 
       if (response?.status === true) {
-        const file = response?.data?.[0]?.fileName;
+        // const file = response?.data?.[0]?.fileName;
+        const file = response?.data;
         console.log(file, "fileee");
         setPhotoPath(file);
         localStorage.setItem("photo", file);
@@ -232,7 +233,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       }
     } catch (error) {
       setError(
-        error?.message || "An error occurred while updating the profile."
+        error?.errors?.message
       );
     }
   };
@@ -292,6 +293,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
               src={profileSrc}
               alt="Profile"
               loading="lazy"
+              accept="image/*"
             />
 
             <div
