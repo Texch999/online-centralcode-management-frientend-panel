@@ -2579,7 +2579,7 @@ function EditNewDirector() {
   const [selectedRemarks, setSelectedRemarks] = useState({});
   const remarkOptions = [
     { value: "offline", label: "Offline" },
-    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), // Conditionally add "Credit" option
+    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), 
   ];
   const [allSelectedUserWebsites, setAllSelectedUserWebsites] = useState([]);
   const [selectedUserWebsitesPerAdmin, setSelectedUserWebsitesPerAdmin] = useState({});
@@ -2998,21 +2998,6 @@ function EditNewDirector() {
             admin_panel_id: parseInt(site.admin_panel_id) || null,
             user_paner_id: parseInt(site.user_paner_id) || null,
             commission_type: parseInt(site.commission_type) || null,
-            ...site.add_deposit_chips
-              ? {
-                totalAmount: parseFloat(site.add_deposit_chips || 0),
-                totalChips: parseFloat(site.add_deposit_chips || 0),
-              }
-              : {},
-            ...site.deposite_type == "1"
-              ? {
-                depositType: 1,
-                creditAmount: parseFloat(site?.credit_amount),
-                offDepositAmount: parseFloat(site.add_deposit_chips || 0) - parseFloat(site?.credit_amount || 0),
-              }
-              : {
-                depositType: 2,
-              },
             ...(site.commission_type == 1
               ? {
                 monthly_amount: parseInt(site.monthly_amount) || null,
@@ -3253,57 +3238,6 @@ function EditNewDirector() {
     }));
   };
 
-  // const handleCheckboxChange = (formId, userSiteId, user_web_id, adminId) => {
-  //   setSelectedWebsites((prev) => ({
-  //     ...prev,
-  //     [formId]: {
-  //       ...prev[formId],
-  //       [userSiteId]: !prev[formId]?.[userSiteId],
-  //     },
-  //   }));
-
-  //   const adminPanelId = selectedAdmins[formId]?.value || null;
-
-  //   setAddWebsites((prevAddWebsites) => {
-  //     const existingSiteIndex = prevAddWebsites.findIndex(
-  //       (site) => site.form_id === formId && site.user_paner_id === userSiteId
-  //     );
-
-  //     if (existingSiteIndex !== -1) {
-  //       // Remove the existing site if unchecked
-  //       return prevAddWebsites.filter((site) => site.user_paner_id !== userSiteId);
-  //     } else {
-  //       // Add the new site if checked
-  //       return [
-  //         ...prevAddWebsites,
-  //         {
-  //           id: userSiteId,
-  //           admin_panel_id: adminPanelId,
-  //           user_paner_id: user_web_id ? user_web_id : userSiteId,
-  //           commission_type: null,
-  //           share: null,
-  //           is_casino: null,
-  //           caschip_values: null,
-  //           downline_comm: null,
-  //           monthly_amount: null,
-  //           max_chips_monthly: null,
-  //           chip_percentage: null,
-  //           is_casino: 2,
-  //           is_primary: 2,
-  //           form_id: formId,
-  //         },
-  //       ];
-  //     }
-  //   });
-
-  //   setSelectedUserWebsitesPerAdmin((prev) => ({
-  //     ...prev,
-  //     [adminId]: prev[adminId]?.includes(userSiteId)
-  //       ? prev[adminId].filter((siteId) => siteId !== userSiteId)
-  //       : [...(prev[adminId] || []), userSiteId],
-  //   }));
-  // };
-
   const handleCheckboxChange = (formId, userSiteId, user_web_id, adminId) => {
     setSelectedWebsites((prev) => ({
       ...prev,
@@ -3383,24 +3317,6 @@ function EditNewDirector() {
       }));
     }
   };
-
-  // const handleAccountTypeChange = (formId, userSiteId, selectedOption) => {
-  //   setAccountTypes((prev) => ({
-  //     ...prev,
-  //     [formId]: {
-  //       ...prev[formId],
-  //       [userSiteId]: selectedOption.value,
-  //     },
-  //   }));
-
-  //   setAddWebsites((prevAddWebsites) =>
-  //     prevAddWebsites.map((site) =>
-  //       site.id === userSiteId
-  //         ? { ...site, commission_type: selectedOption.value }
-  //         : site
-  //     )
-  //   );
-  // };
 
   const handleAccountTypeChange = (formId, userSiteId, selectedOption) => {
     setAccountTypes((prev) => ({
@@ -5180,127 +5096,6 @@ function EditNewDirector() {
                                   </div>
                                 </div>
                               )}
-                              <div className="row ">
-                                <div className="col-2 ">
-                                  <label className="fw-600 my-1 small-font">
-                                    {/* Cash chip Values */}
-                                  </label>
-                                  {/* <div className="input-css mt-2">
-                                                                {renderIsPrimaryCheckbox(
-                                                                  form.id,
-                                                                  selectedWebsiteId
-                                                                )}
-                                                              </div> */}
-                                </div>
-                                {/* Fields for Commission Type 1, 2, and 3 */}
-                                {(accountTypes[form.id]?.[selectedSiteIds[form.id]] == 1 ||
-                                  accountTypes[form.id]?.[selectedSiteIds[form.id]] == 2 ||
-                                  accountTypes[form.id]?.[selectedSiteIds[form.id]] == 3) && (
-                                    <>
-                                      <div className="col-2 position-relative mt-1">
-                                        <label className="fw-600 small-font">Add Deposit Chips</label>
-                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="number"
-                                            className="small-font bg-none w-75 all-none appearance"
-                                            placeholder="Enter Chips"
-                                            onChange={(e) => {
-                                              handleInputChange(
-                                                selectedSiteIds[form.id],
-                                                "add_deposit_chips",
-                                                e.target.value
-                                              );
-                                            }}
-                                          />
-                                        </div>
-                                      </div>
-
-                                      <div className="col-2 position-relative mt-1">
-                                        <label className="fw-600 small-font">Total Paid Amount</label>
-                                        <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                          <input
-                                            type="text"
-                                            maxLength={2}
-                                            className="small-font bg-none w-75 all-none"
-                                            value={parseInt(
-                                              addWebsites.find(
-                                                (site) => site.id == selectedSiteIds[form.id]
-                                              )?.add_deposit_chips || 0
-                                            )}
-                                            readOnly
-                                          />
-                                        </div>
-                                      </div>
-
-                                      <div className="col-2 small-font position-relative mt-3">
-                                        <label className="fw-600 small-font">Deposit Remark</label>
-                                        <Select
-                                          value={
-                                            selectedRemarks[form.id]?.[selectedSiteIds[form.id]] || null
-                                          }
-                                          onChange={(selectedOption) =>
-                                            handleRemarkChange(
-                                              form.id,
-                                              selectedSiteIds[form.id],
-                                              selectedOption
-                                            )
-                                          }
-                                          options={remarkOptions}
-                                          placeholder="Select..."
-                                          styles={customStyles}
-                                          isSearchable={false}
-                                        />
-                                      </div>
-
-                                      {selectedRemarks[form.id]?.[selectedSiteIds[form.id]]?.value ===
-                                        "credit" && (
-                                          <>
-                                            <div className="col-2 position-relative mt-1">
-                                              <label className="fw-600 small-font">Credit Amount</label>
-                                              <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                                <input
-                                                  type="number"
-                                                  maxLength={9}
-                                                  className="small-font bg-none w-75 all-none appearance"
-                                                  onChange={(e) =>
-                                                    handleInputChange(
-                                                      selectedSiteIds[form.id],
-                                                      "credit_amount",
-                                                      e.target.value
-                                                    )
-                                                  }
-                                                />
-                                              </div>
-                                            </div>
-
-                                            <div className="col-2 position-relative mt-1">
-                                              <label className="fw-600 small-font">Paid Amount</label>
-                                              <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                                <input
-                                                  type="text"
-                                                  maxLength={9}
-                                                  className="small-font bg-none w-75 all-none appearance"
-                                                  value={
-                                                    parseInt(
-                                                      addWebsites.find(
-                                                        (site) => site.id == selectedSiteIds[form.id]
-                                                      )?.add_deposit_chips || 0
-                                                    ) -
-                                                    parseInt(
-                                                      addWebsites.find(
-                                                        (site) => site.id == selectedSiteIds[form.id]
-                                                      )?.credit_amount || 0
-                                                    ) ?? 0
-                                                  }
-                                                  readOnly
-                                                />
-                                              </div>
-                                            </div>
-                                          </>
-                                        )}
-                                    </>
-                                  )}
-                              </div>
                             </>
                           )}
                         </div>

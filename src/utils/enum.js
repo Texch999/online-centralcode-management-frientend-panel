@@ -15,7 +15,7 @@ const directorDwnlns = Object.freeze({
   2: "Super Admin",
 });
 const commissionTypes = Object.freeze({
-  1: "Rent",
+  // 1: "Rent",
   2: "Share",
   3: "Royalty",
 });
