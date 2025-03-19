@@ -101,7 +101,15 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
         if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
             payload.duration = duration
         }
-
+        // /user/1/director/1/offlineDeposits
+        // {
+        //     "currency" : 107,
+        //     "oldCredit" : 20,
+        //     "chipAmount" : "20",
+        //     "paidAmount" : "20",
+        //     "totalCredit" : "20",
+        //     "remarks" : "sdfsdfsdf" 
+        // }
         let apiCall;
         if (actionType === "DEPOSIT") {
             apiCall = ManagementOfflineDepositeTicketCreation;
@@ -145,39 +153,7 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-start mb-2">
-                        {/* <div className="d-flex justify-content-start flex-grow-1">
-                            <div className="d-flex flex-column text-start">
-                               
-                                <div
-                                    className="medium-font fw-400 dep-pop-clr rounded"
-                                    style={{ display: "inline-block" }}
-                                >
-                                    <span className="auto-border">
-                                        Deposit in Director
-                                    </span>
-                                </div>
-                               
-                                <div
-                                    className="medium-font fw-400 dep-pop-clr rounded mt-1"
-                                    style={{ display: "inline-block" }}
-                                >
-                                    <span className="auto-border">
-                                        Brahma - Diamond
-                                    </span>
-                                </div>
-                                
-                                <div
-                                    className="medium-font mb-0 dep-pop-clr rounded mt-1"
-                                    style={{ display: "inline-block" }}
-                                >
-                                    <span className="auto-border medium-font">
-                                        {selectedDetails?.commission_type === 1
-                                            ? `${userName} - ${userRole} Rental`
-                                            : `${userName} - ${userRole} - ${selectedDetails?.share || 0}%)`}
-                                    </span>
-                                </div>
-                            </div>
-                        </div> */}
+
                         <div>
                             <div className=" fw-600 mb-0 green-font text-size input-bg px-2 rounded">{actionType == "DEPOSIT" ? "Deposit" : "Withdraw"}</div>
                         </div>
@@ -200,40 +176,23 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                     )}
                     <hr />
                     <div className="row ">
-                        <div className={`${selectedDetails?.commission_type == 1 ? "col" : "col-6"} mb-2`}>
-                            <label className="small-font mb-1">Model Of Deposit</label>
-                            <Select
-                                className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                                placeholder="Select Duration"
-                                styles={customStyles}
-                                onChange={(option) => setPaymentMode(option.value)}
-                                options={paymentModeOptions}
-                                value={paymentModeOptions.find((option) => option.value === paymentMode)}
-                                maxMenuHeight={120}
-                                menuPlacement="auto"
-                            />
-                            {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
-                        </div>
-                        {selectedDetails?.commission_type == 1 && (
-                            <div className="col mb-2">
-                                <label className="small-font mb-1">Rental Duration</label>
-                                <Select
-                                    className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                                    placeholder="Select Duration"
-                                    styles={customStyles}
-                                    onChange={(option) => setDuration(option.value)}
-                                    options={durationOptions}
-                                    value={durationOptions.find((option) => option.value === duration)}
-                                    maxMenuHeight={120}
-                                    menuPlacement="auto"
-                                />
-                                {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
-                            </div>
-                        )}
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
+                            <label className="small-font mb-1">Old Credit Balance</label>
+                            <input
+                                type="number"
+                                name="selectedChips"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                placeholder="Enter Chips"
+                                value={inputData.selectedChips}
+                                onChange={(e) => handleInputChange(e)}
+                            />
+                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Withdraw Chips - {directorCurrency?.currencyName}</label>
                             <input
                                 type="number"
                                 name="selectedChips"

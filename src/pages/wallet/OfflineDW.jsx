@@ -9,7 +9,7 @@ const OfflineDW = () => {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
   const [totalRecords, setTotalRecords] = useState(0);
-    const [actionType, setActionType] = useState("Deposit");
+  const [actionType, setActionType] = useState("Deposit");
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const dataFetched = useRef(false);
@@ -27,6 +27,19 @@ const OfflineDW = () => {
 
   const handleNextpage = (id, name) => {
     navigate(`/offline-deposit-withdraw/${id}/${name}`);
+  };
+
+  const toggleChildRow = (index, action, ) => {
+    // setSelectedDetails(siteDetails);
+    setDepositWithdrawPopup(true);
+    // setDirAndSADetails((prevData) =>
+    //   prevData.map((row, i) => ({
+    //     ...row,
+    //     showChildRow: i === index ? !row.showChildRow : false,
+    //   }))
+    // );
+    setActionType(action);
+    // setApiErrors(null);
   };
 
   const ActionButtons = ({ onDeposit, onWithdraw }) => (
@@ -100,7 +113,7 @@ const OfflineDW = () => {
     fetchData(limit, offset);
   }, []);
 
-  const tableData = data?.map((item) => ({
+  const tableData = data?.map((item,index) => ({
     nameRole: (
       <div>
         <span className="dark-yellow px-1 py-1 black-font small-font mx-2">
@@ -149,8 +162,18 @@ const OfflineDW = () => {
       ),
     userSView: (
       <div className="d-flex gap-2 align-items-center">
-        <div onClick={()=>setDepositWithdrawPopup(true)}>
-          <ActionButtons />
+        <div
+        //  onClick={()=>setDepositWithdrawPopup(true)}
+        >
+          <ActionButtons
+            onDeposit={() =>
+              toggleChildRow(index, "DEPOSIT", item)
+            }
+            onWithdraw={() =>
+              toggleChildRow(index, "WITHDRAW", item)
+            }
+
+          />
         </div>
         <div>
           {item?.creditAllowed === 2 ? (
