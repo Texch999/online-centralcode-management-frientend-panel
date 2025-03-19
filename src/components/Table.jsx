@@ -11,6 +11,7 @@ function Table({
   customPadding = "px-3 py-2",
   onPageChange,
   totalRecords,
+  verLine,
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -61,7 +62,10 @@ function Table({
                 <th
                   key={index}
                   style={{ width: column.width }}
-                  className={`border-bottom small-font fw-600 black-text ${customPadding}`}
+                  // className={`border-bottom small-font fw-600 black-text ${customPadding}`}
+                  className={`border-bottom small-font fw-600 black-text ${customPadding} ${
+                    verLine ? "border-right" : ""
+                  }`}
                 >
                   {column.header}
                 </th>
@@ -76,8 +80,11 @@ function Table({
                     <td
                       key={colIndex}
                       style={{ width: column.width }}
-                      className={`${rowColor ? rowColor(row) : "black-text"
-                        } align-top small-font ${customPadding}`}
+                      // className={`${rowColor ? rowColor(row) : "black-text"
+                      //   } align-top small-font ${customPadding}`}
+                      className={`border-bottom small-font fw-600 black-text ${customPadding} ${
+                        verLine ? "border-right" : ""
+                      }`}
                     >
                       {row[column.field]}
                     </td>

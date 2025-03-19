@@ -104,6 +104,8 @@ import PageNotFound from "./pages/notFound/PageNotFound";
 import DownlineWebsiteList from "./pages/add-team/DownlineWebsiteList";
 import PrivateRoute from "./pages/routes/PrivateRoutes";
 import SettlementTransaction from "./pages/wallet/SettlementTransaction";
+import OfflineDW from "./pages/wallet/OfflineDW";
+import OfflineDWUser from "./pages/wallet/OfflineDWUser";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -205,9 +207,17 @@ function App() {
                   path="/deposit-withdraw"
                   element={<MyDepositWithdraw />}
                 />
-                <Route
+                {/* <Route
                   path="/offline-deposit-withdraw"
                   element={<OfflineDepositWithdraw />}
+                /> */}
+                <Route
+                  path="/offline-deposit-withdraw/:id/:name"
+                  element={<OfflineDWUser />}
+                />
+                <Route
+                  path="/offline-deposit-withdraw"
+                  element={<OfflineDW />}
                 />
                 <Route path="/tickets" element={<Tickets />} />
                 <Route
