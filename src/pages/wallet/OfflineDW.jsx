@@ -3,11 +3,13 @@ import Table from "../../components/Table";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { getOfflineDWDirectors } from "../../api/apiMethods";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
 
 const OfflineDW = () => {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
   const SPORTS_BUTTONS = ["Sports & Casino", "Sports", "Casino"];
   const [totalRecords, setTotalRecords] = useState(0);
+    const [actionType, setActionType] = useState("Deposit");
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const dataFetched = useRef(false);
@@ -17,6 +19,7 @@ const OfflineDW = () => {
   const itemsPerPage = 4;
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
+  const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
   const handlePageChange = ({ limit, offset }) => {
     fetchData(limit, offset);
   };
@@ -25,6 +28,31 @@ const OfflineDW = () => {
   const handleNextpage = (id, name) => {
     navigate(`/offline-deposit-withdraw/${id}/${name}`);
   };
+
+  const ActionButtons = ({ onDeposit, onWithdraw }) => (
+    <div className="d-flex flex-row justify-content-center align-items-center">
+      <button
+        className="saffron-btn3 px-2"
+        style={{ borderTopLeftRadius: "6px", borderBottomLeftRadius: "6px" }}
+        onClick={onDeposit}
+      >
+        D
+      </button>
+      <div
+        className="saffron-btn3 white-text"
+        style={{ pointerEvents: "none" }}
+      >
+        |
+      </div>
+      <button
+        className="me-2 saffron-btn3 px-2 "
+        style={{ borderTopRightRadius: "6px", borderBottomRightRadius: "6px" }}
+        onClick={onWithdraw}
+      >
+        W
+      </button>
+    </div>
+  );
 
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "Name & Role", field: "nameRole" },
@@ -120,53 +148,52 @@ const OfflineDW = () => {
         </div>
       ),
     userSView: (
-      <div className="d-flex flex-center">
-        {item?.creditAllowed === 2 ? (
-          <MdOutlineRemoveRedEye size={20} className="disable-eye" />
-        ) : (
-          <MdOutlineRemoveRedEye
-            size={20}
-            className="black-font pointer"
-            onClick={() => handleNextpage(item?.id, item?.name)}
-          />
-        )}
+      <div className="d-flex gap-2 align-items-center">
+        <div onClick={()=>setDepositWithdrawPopup(true)}>
+          <ActionButtons />
+        </div>
+        <div>
+          {item?.creditAllowed === 2 ? (
+            <MdOutlineRemoveRedEye size={20} className="disable-eye" />
+          ) : (
+            <MdOutlineRemoveRedEye
+              size={20}
+              className="black-font pointer"
+              onClick={() => handleNextpage(item?.id, item?.name)}
+            />
+          )}
+        </div>
       </div>
     ),
   }));
 
   return (
-    <div>
-      <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font mb-0 medium-font">Credit/Other Manual D-W</h6>
+    <>
+      <div>
+        <div className="flex-between mb-3 mt-2">
+          <h6 className="d-flex yellow-font mb-0 medium-font">
+            Credit/Other Manual D-W
+          </h6>
+        </div>
+
+        <div style={{ zIndex: "10" }}>
+          <Table
+            columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
+            data={tableData}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
+            verLine={true}
+          />
+        </div>
       </div>
-      {/* <div className="d-flex small-font mb-3">
-        {SPORTS_BUTTONS.map((sport, index) => (
-          <div
-            key={index}
-            className={`me-3 ${
-              activeSport === sport ? "saffron-btn2" : "white-btn2 pointer"
-            }`}
-            // onClick={() => handleSportClick(sport)}
-          >
-            {sport}
-          </div>
-        ))}
-      </div> */}
-      {/* <div className="w-100 grey-bg2 d-flex py-3 rounded mb-3">
-        <span className="small-font border-right px-3">Your Balance</span>
-        <h6 className="green-font fw-600 mb-0 px-3 border-left2">50000000</h6>
-      </div> */}
-      <div style={{ zIndex: "10" }}>
-        <Table
-          columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
-          data={tableData}
-          itemsPerPage={itemsPerPage}
-          totalRecords={totalRecords}
-          onPageChange={handlePageChange}
-          verLine={true}
-        />
-      </div>
-    </div>
+      <OfflineDepositWithdrawPopup
+        actionType={actionType}
+        depositWithdrawPopup={depositWithdrawPopup}
+        // selectedDetails={selectedDetails}
+        setDepositWithdrawPopup={setDepositWithdrawPopup}
+      />
+    </>
   );
 };
 

@@ -145,9 +145,9 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-start mb-2">
-                        <div className="d-flex justify-content-start flex-grow-1">
+                        {/* <div className="d-flex justify-content-start flex-grow-1">
                             <div className="d-flex flex-column text-start">
-                                {/* Deposit in Director */}
+                               
                                 <div
                                     className="medium-font fw-400 dep-pop-clr rounded"
                                     style={{ display: "inline-block" }}
@@ -156,7 +156,7 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                                         Deposit in Director
                                     </span>
                                 </div>
-                                {/* Brahma - Diamond */}
+                               
                                 <div
                                     className="medium-font fw-400 dep-pop-clr rounded mt-1"
                                     style={{ display: "inline-block" }}
@@ -165,7 +165,7 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                                         Brahma - Diamond
                                     </span>
                                 </div>
-                                {/* User Name and Role */}
+                                
                                 <div
                                     className="medium-font mb-0 dep-pop-clr rounded mt-1"
                                     style={{ display: "inline-block" }}
@@ -177,7 +177,7 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div>
                             <div className=" fw-600 mb-0 green-font text-size input-bg px-2 rounded">{actionType == "DEPOSIT" ? "Deposit" : "Withdraw"}</div>
                         </div>
