@@ -5,10 +5,14 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import Select from "react-select";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { getDirById } from "../../api/apiMethods";
+import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
 
 const OfflineDWUser = () => {
   const navigate = useNavigate();
   const params = useParams();
+   const [actionType, setActionType] = useState([]);
+   const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
+   const [selectedDetails, setSelectedDetails] = useState(null);
   const [totalRecords, setTotalRecords] = useState(0);
   const itemsPerPage = 4;
   const handlePageChange = ({ limit, offset }) => {
@@ -117,18 +121,12 @@ const OfflineDWUser = () => {
       </div>
     ),
     CreditA: (
-      // item?.creditAllowed === 2 ? (
-      //   <div className="d-flex w-100">
-      //     <span className="w-50">-</span>
-      //     <span className="w-50">-</span>
-      //   </div>
-      // ) : (
       <div className="d-flex w-100">
         <span className="w-50">-</span>
         <span className="w-50">-</span>
       </div>
     ),
-    // )
+
     TotalC: <div>-</div>,
     CreditTrans: (
       <div className="d-flex gap-2 align-items-center">
@@ -153,63 +151,72 @@ const OfflineDWUser = () => {
     ),
   }));
   return (
-    <div>
-      <div className="flex-between mb-3 mt-2">
-        <h6
-          className="d-flex yellow-font mb-0 medium-font pointer"
-          onClick={() => navigate(-1)}
-        >
-          Credit/Other Manual D-W -{` ${params?.name}`}
-        </h6>
-      </div>
+    <>
+      <div>
+        <div className="flex-between mb-3 mt-2">
+          <h6
+            className="d-flex yellow-font mb-0 medium-font pointer"
+            onClick={() => navigate(-1)}
+          >
+            Credit/Other Manual D-W -{` ${params?.name}`}
+          </h6>
+        </div>
 
-      <div className="row">
-        <div className="col-3">
-          <div className="flex-column me-3">
-            <label className="black-text4 small-font mb-1 ms-1">
-              Select Admin Panel
-            </label>
-            <Select
-              className="small-font"
-              options={adminOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
+        <div className="row">
+          <div className="col-3">
+            <div className="flex-column me-3">
+              <label className="black-text4 small-font mb-1 ms-1">
+                Select Admin Panel
+              </label>
+              <Select
+                className="small-font"
+                options={adminOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
+            </div>
+          </div>
+
+          <div className="col-3">
+            <div className="flex-column me-3">
+              <label className="black-text4 small-font mb-1 ms-1">
+                Select User Panel
+              </label>
+              <Select
+                className="small-font"
+                options={adminOptions}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
+            </div>
           </div>
         </div>
 
-        <div className="col-3">
-          <div className="flex-column me-3">
-            <label className="black-text4 small-font mb-1 ms-1">
-              Select User Panel
-            </label>
-            <Select
-              className="small-font"
-              options={adminOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          </div>
+        <div className="mt-3" style={{ zIndex: "10" }}>
+          <Table
+            columns={COLUMNS}
+            data={tableData}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
+            verLine={true}
+          />
         </div>
       </div>
 
-      <div className="mt-3" style={{ zIndex: "10" }}>
-        <Table
-          columns={COLUMNS}
-          data={tableData}
-          itemsPerPage={itemsPerPage}
-          totalRecords={totalRecords}
-          onPageChange={handlePageChange}
-          verLine={true}
-        />
-      </div>
-    </div>
+      <OfflineDepositWithdrawPopup
+        // actionType={actionType}
+        depositWithdrawPopup={depositWithdrawPopup}
+        // selectedDetails={selectedDetails}
+        setDepositWithdrawPopup={setDepositWithdrawPopup}
+      />
+    </>
   );
 };
 

@@ -7,10 +7,12 @@ import { FaSearch, FaPlus } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { IoPersonCircle } from "react-icons/io5";
 import {
   blockDirector,
   getDirectorDwnList,
   getDirectors,
+  getOfflineDWDirectors,
   resetDirectorPassword,
   resetSuperAdminPassword,
   unblockBlockDirectorDwnln,
@@ -18,6 +20,7 @@ import {
 import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
 import SuccessPopup from "../popups/SuccessPopup";
+import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -28,7 +31,9 @@ const AddDirectorAdmin = () => {
   const [selectedSuperAdminId, setSelectedSuperAdminId] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [tableSuperAdminData, setTableSuperAdminData] = useState([]);
-
+  const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
+  const [actionType, setActionType] = useState("Deposit");
+  const [selectedDetails, setSelectedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -56,7 +61,7 @@ const AddDirectorAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = tableData?.filter((user) =>
-    user.login_name.toLowerCase().includes(searchTerm.toLowerCase())
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const handleBlockUserOpen = (login_name, id) => {
     const director = tableData.find((user) => user.id === id);
@@ -81,16 +86,16 @@ const AddDirectorAdmin = () => {
   };
 
   const columns = [
-    { header: "Role", field: "role" },
-    { header: "Name", field: "name" },
-    { header: "Login Name", field: "loginname" },
-    { header: "In Used", field: "inUsed" },
-    { header: "Admin Websites", field: "adminwebsites" },
-    { header: "Link Websites", field: "linkWebsites" },
-    { header: "Share/Rent", field: "shareRent" },
-    { header: "Billing", field: "billing" },
+    { header: "Name", field: "role" },
+    { header: "Credit Ref.", field: "creditref" },
+    { header: "Credit", field: "credit" },
+    { header: "Deposit", field: "deposit" },
+    { header: "Withdraw", field: "withdraw" },
+    { header: "Available Bal.", field: "availableBal" },
     { header: "P/L", field: "pl" },
-    { header: "", field: "dw", width: "1%" },
+    { header: "Exposure", field: "exposure" },
+    { header: "AD Lock", field: "ADLock" },
+    { header: "Bet Lock", field: "BetLock" },
     {
       header: <div className="text-center">Action</div>,
       field: "action",
@@ -113,13 +118,32 @@ const AddDirectorAdmin = () => {
         setLoading(false);
       });
   };
+  // const GetAllDirectors = (limit, offset) => {
+  //     const params = {
+  //       limit: limit,
+  //       offset: offset,
+  //     };
+  //     getOfflineDWDirectors (params)
+  //       .then((response) => {
+  //         console.log(response?.list);
+  //         setData(response?.list);
+  //         setTotalRecords(response?.count);
+  //       })
+  //       .catch((error) => {
+  //         setError(error?.message);
+  //       });
+  //   };
   const GetAllDirectors = (limit, offset) => {
+    const params = {
+      limit: limit,
+      offset: offset,
+    };
     setLoading(true);
-    getDirectors({ limit, offset })
+    getOfflineDWDirectors(params)
       .then((response) => {
-        if (response.status === true) {
-          setTableData(response.directorsWithWebsites);
-          setTotalRecords(response?.meta.totalCount);
+        if (response.list) {
+          setTableData(response?.list);
+          setTotalRecords(response?.count);
         } else {
           console.error("Something Went Wrong");
         }
@@ -224,103 +248,54 @@ const AddDirectorAdmin = () => {
         console.error(error?.message || "Failed to block/unblock director");
       });
   };
-  const TableData = filteredData?.map((user) => {
-    const linkWebsites = user.accessWebsites.map((website) => ({
-      name: website.user_panel_name,
-      url: website.user_panel_url,
-      adminPanel: website.admin_panel_name,
-      adminUrl: website.admin_panel_url,
-    }));
 
-    const shareRent = user.accessWebsites.map((website) => ({
-      commissionType: website.commission_type,
-      monthlyAmount: website.monthly_amount || "N/A",
-      maxChipsMonthly: website.max_chips_monthly || "N/A",
-      extraChipsPercentage: website.extra_chips_percentage || "N/A",
-      chipPercentage: website.chip_percentage || "N/A",
-      share: website.share,
-    }));
+  const onHandleDW = (action, data) => {
+    setSelectedDetails(data)
+    setDepositWithdrawPopup(true)
+    setActionType(action)
+  }
+  const TableData = filteredData?.map((user) => {
 
     return {
-      id: user.id,
-      role: user.type === 1 ? "Director" : "Super Admin",
-      name: user.name,
-      loginname: user.login_name,
-      inUsed: (
-        <div className={`${user.status === 1 ? "green-clr" : "clr-red"}`}>
-          {user.status === 1 ? "Active" : "InActive"}
+      role: <div className="d-flex flex-row">
+        <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Di" : "SA"}</span></div>
+        <div className="me-2" > <span className="role-bg p-1"><IoPersonCircle /></span></div>
+        <div className="d-lex flex-column">
+          <div>{user.name}</div>
+          <div>{"Hyd - India"}</div>
         </div>
-      ),
-      adminwebsites: (
-        <span className="d-flex flex-column">
-          {linkWebsites.map((website, index) => (
-            <span key={index}>
-              <a
-                href={website.adminUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {website.adminPanel}
-              </a>
-              
-            </span>
-          ))}
-        </span>
-      ),
-      linkWebsites: (
-        <span className="d-flex flex-column">
-          {linkWebsites.map((website, index) => (
-            <span key={index}>
-              <a
-                className="yellow-font"
-                href={website.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {website.url} 
-              </a>
-            </span>
-          ))}
-        </span>
-      ),
-      shareRent: (
-        <span className="d-flex flex-column">
-          {shareRent.map((type, index) => (
-            <span key={index}>
-              <span className="green-clr">
-                {commissionTypes[type.commissionType] || "Unknown"}{" "}
-              </span>
-              {/* {type.share ? `, Share: ${type.share}%` : ""} */}
-            </span>
-          ))}
-        </span>
-      ),
-      billing: "0",
+      </div>,
+      creditref: <div>{user.creditAllowed == 1 ? user.maxCreditLimit : "--"}</div>,
+      credit: <div className="red-font">{user.creditAllowed == 1 ? user.creditBalance : "--"}</div>,
+      deposit: <div className="green-block"> {user.totalDeposits > 0 ? user.totalDeposits : 0}</div>,
+      withdraw: <div className="red-font">{user.totalWithdraws > 0 ? user.totalWithdraws : 0}</div>,
+      availableBal: <div className="green-block">0</div>,
       pl: <div className="red-font">0</div>,
-      // dw: (
-      //   <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-      //     D/W
-      //   </button>
-      // ),
+      exposure: <div className="red-font">0</div>,
+      ADLock: <div className="red-font"><input type="checkbox" style={{ border: "1px solid rgba(0, 0, 0, 0.2)" }} /></div>,
+      BetLock: <div className="red-font"><input type="checkbox" /></div>,
       action: (
         <div className="d-flex flex-center gap-3">
+          <div className="gap-2 d-flex flex-row">
+            <div className="green-bg px-3 py-2 rounded"
+              style={{ color: "#fff", background: "#18B962" }} onClick={() => onHandleDW("DEPOSIT", user)}>D</div>
+            <div className="rust-red-btn px-3 py-2 rounded" onClick={() => onHandleDW("WITHDRAW", user)}>W </div>
+          </div>
           <SlPencil
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 &&
-              navigate(`/director-admin/editDirector/`, {
+              navigate(`/director-admin/editDirector`, {
                 state: { userId: user.id, mode: "edit" },
               })
             }
           />
           <MdLockReset
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 && handleResetPasswordOpen(user.id)
             }
@@ -332,9 +307,8 @@ const AddDirectorAdmin = () => {
           />
           <BsEye
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
           />
         </div>
@@ -417,21 +391,19 @@ const AddDirectorAdmin = () => {
         <div className="d-flex flex-center gap-3">
           <SlPencil
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 &&
-              navigate(`/director-admin/editDirector/`, {
+              navigate(`/director-admin/editDirector`, {
                 state: { userId: user.id, mode: "edit" },
               })
             }
           />
           <MdLockReset
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() =>
               user.status !== 2 && handleResetPasswordOpen(user.id)
             }
@@ -443,13 +415,13 @@ const AddDirectorAdmin = () => {
           />
           <BsEye
             size={18}
-            className={`black-text pointer ${
-              user.status === 2 ? "disabled" : ""
-            }`}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
           />
         </div>
       ),
+      bg: '#F2F2F2'
     };
   });
 
@@ -460,13 +432,12 @@ const AddDirectorAdmin = () => {
       GetAllSuperAdmin(limit, offset);
     }
   };
-  console.log(totalRecords, "==totalRecords");
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
         {role === "management" ? (
           <h6 className="yellow-font medium-font mb-0">
-            Add Director & Super Admin 
+            Add Director & Super Admin
           </h6>
         ) : (
           <h6 className="yellow-font mb-0">Add Super Admin</h6>
@@ -513,6 +484,7 @@ const AddDirectorAdmin = () => {
                 itemsPerPage={itemsPerPage}
                 onPageChange={handlePageChange}
                 totalRecords={totalRecords}
+                bg="#F2F2F2"
               />
             </>
           ) : (
@@ -558,9 +530,8 @@ const AddDirectorAdmin = () => {
                 confirmationPopupOpen={confirmationPopup}
                 setConfirmationPopupOpen={setConfirmationPopup}
                 onSubmit={blockUnblock}
-                discription={`Do you want to ${
-                  selectedDirectorStatus === 1 ? "Block" : "Unblock"
-                } ?`}
+                discription={`Do you want to ${selectedDirectorStatus === 1 ? "Block" : "Unblock"
+                  } ?`}
                 submitButton={
                   selectedDirectorStatus === 1 ? "Block" : "Unblock"
                 }
@@ -573,9 +544,8 @@ const AddDirectorAdmin = () => {
                 confirmationPopupOpen={confirmationPopup}
                 setConfirmationPopupOpen={setConfirmationPopup}
                 onSubmit={blockUnblockSuperAdmin}
-                discription={`Do you want to ${
-                  selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
-                } this SuperAdmin?`}
+                discription={`Do you want to ${selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
+                  } this SuperAdmin?`}
                 submitButton={
                   selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
                 }
@@ -586,6 +556,15 @@ const AddDirectorAdmin = () => {
 
         // selectedSuperAdminStatus
       )}
+      {depositWithdrawPopup&& (
+        <OfflineDepositWithdrawPopup
+        actionType={actionType}
+        depositWithdrawPopup={depositWithdrawPopup}
+        selectedDetails={selectedDetails}
+        setDepositWithdrawPopup={setDepositWithdrawPopup}
+      />
+      )}
+      
     </div>
   );
 };

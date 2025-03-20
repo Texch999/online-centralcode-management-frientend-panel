@@ -12,6 +12,7 @@ function Table({
   onPageChange,
   totalRecords,
   verLine,
+  bg
 }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -63,9 +64,8 @@ function Table({
                   key={index}
                   style={{ width: column.width }}
                   // className={`border-bottom small-font fw-600 black-text ${customPadding}`}
-                  className={`border-bottom small-font fw-600 black-text ${customPadding} ${
-                    verLine ? "border-right" : ""
-                  }`}
+                  className={`border-bottom small-font fw-600 black-text ${customPadding} ${verLine ? "border-right" : ""
+                    }`}
                 >
                   {column.header}
                 </th>
@@ -75,16 +75,15 @@ function Table({
           <tbody>
             {hasData ? (
               data.map((row, rowIndex) => (
-                <tr key={rowIndex} className="border-top">
+                < tr key={rowIndex} className="border-top" style={{ backgroundColor: bg }}>
                   {columns.map((column, colIndex) => (
                     <td
                       key={colIndex}
                       style={{ width: column.width }}
                       // className={`${rowColor ? rowColor(row) : "black-text"
                       //   } align-top small-font ${customPadding}`}
-                      className={`border-bottom small-font fw-600 black-text ${customPadding} ${
-                        verLine ? "border-right" : ""
-                      }`}
+                      className={`border-bottom small-font fw-600 black-text ${customPadding} ${verLine ? "border-right" : ""
+                        }`}
                     >
                       {row[column.field]}
                     </td>
@@ -121,51 +120,53 @@ function Table({
       </div>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="d-flex align-items-center justify-content-end mt-3 me-3">
-          <div className="d-flex">
-            {/* Previous Button */}
-            <div
-              className={`chat-img flex-center black-text2 me-1 br-3px cursor-pointer ${currentPage > 1 ? "grey-bg black-border" : "border"
-                }`}
-              onClick={
-                currentPage > 1 ? () => handlePageChange(currentPage - 1) : null
-              }
-            >
-              <MdOutlineChevronLeft className="d-flex" />
-            </div>
-
-            {/* Page Buttons */}
-            {Array.from(
-              { length: endPage - startPage + 1 },
-              (_, i) => startPage + i
-            ).map((pageNumber) => (
+      {
+        totalPages > 1 && (
+          <div className="d-flex align-items-center justify-content-end mt-3 me-3">
+            <div className="d-flex">
+              {/* Previous Button */}
               <div
-                key={pageNumber}
-                onClick={() => handlePageChange(pageNumber)}
-                className={`chat-img flex-center small-font black-text2 mx-1 br-3px cursor-pointer ${currentPage === pageNumber ? "grey-bg black-border" : "border"
+                className={`chat-img flex-center black-text2 me-1 br-3px cursor-pointer ${currentPage > 1 ? "grey-bg black-border" : "border"
                   }`}
+                onClick={
+                  currentPage > 1 ? () => handlePageChange(currentPage - 1) : null
+                }
               >
-                {pageNumber}
+                <MdOutlineChevronLeft className="d-flex" />
               </div>
-            ))}
 
-            {/* Next Button */}
-            <div
-              className={`chat-img flex-center black-text2 ms-1 br-3px cursor-pointer ${currentPage < totalPages ? "grey-bg black-border" : "border"
-                }`}
-              onClick={
-                currentPage < totalPages
-                  ? () => handlePageChange(currentPage + 1)
-                  : null
-              }
-            >
-              <MdOutlineChevronRight className="d-flex" />
+              {/* Page Buttons */}
+              {Array.from(
+                { length: endPage - startPage + 1 },
+                (_, i) => startPage + i
+              ).map((pageNumber) => (
+                <div
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`chat-img flex-center small-font black-text2 mx-1 br-3px cursor-pointer ${currentPage === pageNumber ? "grey-bg black-border" : "border"
+                    }`}
+                >
+                  {pageNumber}
+                </div>
+              ))}
+
+              {/* Next Button */}
+              <div
+                className={`chat-img flex-center black-text2 ms-1 br-3px cursor-pointer ${currentPage < totalPages ? "grey-bg black-border" : "border"
+                  }`}
+                onClick={
+                  currentPage < totalPages
+                    ? () => handlePageChange(currentPage + 1)
+                    : null
+                }
+              >
+                <MdOutlineChevronRight className="d-flex" />
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }
 

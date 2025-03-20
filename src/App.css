@@ -728,6 +728,7 @@
   cursor: not-allowed;
   color: #787676;
 }
+
 .disable-eye {
   cursor: not-allowed;
   color: #787676;
@@ -1049,9 +1050,11 @@
   border: 1.2px solid #00000033;
   background-color: #ffffff;
 }
+
 .light-bg {
   background-color: #f2f2f2;
 }
+
 .flex-wrap {
   flex-wrap: nowrap;
 }
@@ -1079,11 +1082,16 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 .dark-yellow {
   background-color: #de9a15;
   border-radius: 2px;
 }
-.border-right{
+
+.border-right {
   border-right: 1.2px solid #00000033
 }
 
+.role-bg {
+  background-color: #DE9A15;
+}

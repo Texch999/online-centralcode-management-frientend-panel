@@ -1,20 +1,11 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
-import Select from "react-select";
-import { customStyles } from "../../components/ReactSelectStyles";
-import { VscCloudUpload } from "react-icons/vsc";
-import { DirectorOffilneDepositTicket, getDirectorAccessWebites, getDirectorSites, ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
-import { MdContentCopy } from "react-icons/md";
-import { imgUrl } from "../../api/baseUrl";
-import { rceil } from "../../utils/mathFunctions";
+import { ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
 import SuccessPopup from "./SuccessPopup";
 
-const OfflineDepositWithdrawPopup = ({ setDepositePopup,
-    depositePopup,
-    handleSuccessPopupOpen,
-    selectedPayment,
+const OfflineDepositWithdrawPopup = ({
     actionType,
     depositWithdrawPopup,
     selectedDetails,
@@ -22,59 +13,31 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
 }) => {
 
     const [errors, setErrors] = useState({});
-    const userName = localStorage.getItem("user_name")
-    const userRole = localStorage.getItem("role_code")
     const [directorCurrency, setDirectorCurrency] = useState("")
+    const [paidAmount, setPaidAmount] = useState("")
+    const [selectedChips, setSelectedChips] = useState("")
+    const [remark, setRemark] = useState("")
+    const [masterPassword, setMasterPassword] = useState("")
     const [fieldError, setFieldError] = useState('')
     const [apiErrors, setApiErrors] = useState(null);
-    const [paymentMode, setPaymentMode] = useState(null);
     const [discription, setDiscription] = useState("")
     const [loading, setLoading] = useState(null);
     const [successPopupOpen, setSuccessPopupOpen] = useState(false)
-    const durationOptions = [
-        { value: 30, label: "30day" },
-        { value: 90, label: "90day" },
-        { value: 180, label: "180day" },
-        { value: 365, label: "365day" },
-    ]
-    const paymentModeOptions = [
-        { value: 1, label: "Credit" },
-        { value: 2, label: "Other Payment" },
-    ]
-    const [duration, setDuration] = useState("")
-    const [inputData, setInputData] = useState({
-        adminWeb: "",
-        userWeb: "",
-        selectedChips: 0,
-        remarks: 0,
-        totalPay: 0,
-        parentpassword: "",
-        paidAmount: 0,
-        creditAmount: 0,
-        selectedAdminSiteId: null,
-        selectedUserSiteId: null,
-        selectedCommissionType: null,
-    });
 
     const validateForm = (siteData) => {
         const newErrors = {};
-
-        // Validate Admin Panel ID
-        if (!siteData?.selectedUserDetails?.admin_panel_id) {
-            newErrors.adminWebsiteId = "Please select an Admin Panel ID";
-        }
-
-        // Validate User Panel ID
-        if (!siteData?.selectedUserDetails?.user_paner_id) {
-            newErrors.userPanelId = "Please select a User Panel ID";
-        }
-
         // Validate INR Chips
-        if (!inputData?.inrChips || inputData?.inrChips <= 0) {
-            newErrors.inrChips = "INR Chips value is required";
+        if (!selectedChips || Number(selectedChips) <= 0) {
+            newErrors.selectedChips = "Deposit chips is required";
         }
-        if (!inputData?.inrChips || inputData?.inrChips <= 0) {
-            newErrors.inrChips = "INR Chips value is required";
+        if (!paidAmount || Number(paidAmount) < 0) {
+            newErrors.paidAmount = "Paid amount is required";
+        }
+        if (!remark || remark == "") {
+            newErrors.remark = "Enter remark for more information";
+        }
+        if (!masterPassword || masterPassword == "") {
+            newErrors.masterPassword = "master password is required";
         }
 
         setErrors(newErrors);
@@ -83,24 +46,19 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
     };
 
 
-    const roundedShareChipValue = Number(inputData.selectedChips) *
-        (selectedDetails?.commission_type == 1 ? selectedDetails?.chip_percentage || 1 : selectedDetails?.share) / 100
 
-    const creditBalance = roundedShareChipValue - Number(inputData.paidAmount)
     const handleSubmit = (siteData) => {
         if (!validateForm(siteData)) return;
 
         const payload = {
-            adminPanelId: siteData?.selectedUserDetails?.admin_panel_id,
-            userPanelId: siteData?.selectedUserDetails?.user_paner_id,
-            currency: siteData?.currency_id,
-            TotalPaidAmount: inputData.paidAmount,
+            currency: selectedDetails?.currId,
+            oldCredit: selectedDetails.creditBalance ? selectedDetails.creditBalance : 0,
+            chipAmount: selectedChips,
+            paidAmount: paidAmount,
+            totalCredit: selectedDetails.creditBalance ? selectedDetails.creditBalance : 0 + (Number(selectedChips) - Number(paidAmount)),
+            remarks: remark,
+            parentPassword: masterPassword,
         };
-
-        // Add extra chips data if commission type is 1 and action is not WITHDRAW
-        if (siteData?.selectedUserDetails?.commission_type === 1 && actionType !== "WITHDRAW") {
-            payload.duration = duration
-        }
 
         let apiCall;
         if (actionType === "DEPOSIT") {
@@ -108,19 +66,17 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
         } else {
             apiCall = ManagementOfflineWithdrawTicketCreation;
         }
+
         setLoading(true)
-        apiCall(siteData?.id, payload)
+        apiCall(selectedDetails?.id, payload)
             .then((response) => {
-                if (response?.status === true) {
+                if (response?.message === "Deposit Created Successfully.") {
                     setSuccessPopupOpen(true);
-                    setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Created Successfully`);
-                    setInputData({
-                        inrChips: 0,
-                        extChips: 0,
-                    });
+                    setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Ticket Created Successfully`);
                     setApiErrors(null);
                     setLoading(false)
                     setErrors({});
+                    setDepositWithdrawPopup(false)
                 } else if (response?.status == 422) {
                     setLoading(false)
                     setApiErrors(response?.errors || "Deposit failed. Please try again.");
@@ -132,52 +88,16 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
             });
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setInputData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
 
+
+
+    const afterPay = selectedDetails.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
     return (
         <div>
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-start mb-2">
-                        <div className="d-flex justify-content-start flex-grow-1">
-                            <div className="d-flex flex-column text-start">
-                                {/* Deposit in Director */}
-                                <div
-                                    className="medium-font fw-400 dep-pop-clr rounded"
-                                    style={{ display: "inline-block" }}
-                                >
-                                    <span className="auto-border">
-                                        Deposit in Director
-                                    </span>
-                                </div>
-                                {/* Brahma - Diamond */}
-                                <div
-                                    className="medium-font fw-400 dep-pop-clr rounded mt-1"
-                                    style={{ display: "inline-block" }}
-                                >
-                                    <span className="auto-border">
-                                        Brahma - Diamond
-                                    </span>
-                                </div>
-                                {/* User Name and Role */}
-                                <div
-                                    className="medium-font mb-0 dep-pop-clr rounded mt-1"
-                                    style={{ display: "inline-block" }}
-                                >
-                                    <span className="auto-border medium-font">
-                                        {selectedDetails?.commission_type === 1
-                                            ? `${userName} - ${userRole} Rental`
-                                            : `${userName} - ${userRole} - ${selectedDetails?.share || 0}%)`}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+
                         <div>
                             <div className=" fw-600 mb-0 green-font text-size input-bg px-2 rounded">{actionType == "DEPOSIT" ? "Deposit" : "Withdraw"}</div>
                         </div>
@@ -200,95 +120,60 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                     )}
                     <hr />
                     <div className="row ">
-                        <div className={`${selectedDetails?.commission_type == 1 ? "col" : "col-6"} mb-2`}>
-                            <label className="small-font mb-1">Model Of Deposit</label>
-                            <Select
-                                className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                                placeholder="Select Duration"
-                                styles={customStyles}
-                                onChange={(option) => setPaymentMode(option.value)}
-                                options={paymentModeOptions}
-                                value={paymentModeOptions.find((option) => option.value === paymentMode)}
-                                maxMenuHeight={120}
-                                menuPlacement="auto"
-                            />
-                            {errors.adminWebsiteId && <p className="text-danger small-font">{errors.adminWebsiteId}</p>}
-                        </div>
-                        {selectedDetails?.commission_type == 1 && (
-                            <div className="col mb-2">
-                                <label className="small-font mb-1">Rental Duration</label>
-                                <Select
-                                    className="small-font white-bg input-border rounded text-capitalize text-nowrap"
-                                    placeholder="Select Duration"
-                                    styles={customStyles}
-                                    onChange={(option) => setDuration(option.value)}
-                                    options={durationOptions}
-                                    value={durationOptions.find((option) => option.value === duration)}
-                                    maxMenuHeight={120}
-                                    menuPlacement="auto"
-                                />
-                                {errors.userPanelId && <p className="text-danger small-font">{errors.userPanelId}</p>}
-                            </div>
-                        )}
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Chips - {directorCurrency?.currencyName}</label>
+                            <label className="small-font mb-1">Old Credit Balance</label>
                             <input
                                 type="number"
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter Chips"
-                                value={inputData.selectedChips}
-                                onChange={(e) => handleInputChange(e)}
+                                value={selectedDetails.creditBalance ? selectedDetails.creditBalance : 0}
+                                readOnly
+                            />
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Withdraw Chips - {directorCurrency?.currencyName}</label>
+                            <input
+                                type="tet"
+                                name="selectedChips"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                placeholder="Enter Chips"
+                                value={selectedChips}
+                                onChange={(e) => {
+                                    setSelectedChips(e.target.value)
+                                    setPaidAmount(e.target.value)
+                                }}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
-                        </div>
-                        <div className="col mb-2">
-                            <label className="small-font mb-1">
-                                Amount ( {selectedDetails?.share}%) -  {directorCurrency?.currencyName}</label>
-                            <input
-                                type="number"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                placeholder="Enter "
-                                value={roundedShareChipValue}
-                                readOnly
-                                style={{ pointerEvents: "none" }}
-                            />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Paid Amount Chips - {directorCurrency?.currencyName}</label>
+                            <label className="small-font mb-1">Paid Amount - {directorCurrency?.currencyName}</label>
                             <input
-                                type="number"
+                                type="text"
                                 name="paidAmount"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter Chips"
-                                value={inputData.paidAmount}
-                                // onChange={(e) => {
-                                //     if (Number(e.target.value) <= 99999999999) {
-                                //         handleChange(e);
-                                //         setFieldError("")
-                                //     } else {
-                                //         setFieldError(`You cannot enter more than ${99999999999} chips.`);
-                                //     }
-                                // }}
-                                onChange={(e) => handleInputChange(e)}
+                                value={paidAmount}
+                                onChange={(e) => setPaidAmount(e.target.value)}
+                                disabled={selectedDetails.creditAllowed === 2}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                            {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
                         </div>
+
                         <div className="col mb-2">
                             <label className="small-font mb-1">
-                                Bal. Credit Amount ( {selectedDetails?.share}%) -  {directorCurrency?.currencyName}</label>
+                                Credit Amount -  {directorCurrency?.currencyName}</label>
                             <input
                                 type="number"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter "
-                                value={creditBalance}
-                                onChange={(e) => handleInputChange(e)}
+                                value={afterPay > 0 ? afterPay : 0}
                                 readOnly
                                 style={{ pointerEvents: "none" }}
                             />
@@ -299,14 +184,14 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                             <label className="small-font mb-1">Remark</label>
                             <input
                                 type="text"
-                                name="remarks"
+                                name="remark"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter Description"
-                                value={inputData.remarks}
-                                onChange={(e) => handleInputChange(e)}
+                                value={remark}
+                                onChange={(e) => setRemark(e.target.value)}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                            {errors.remark && <p className="text-danger small-font">{errors.remark}</p>}
                         </div>
                     </div>
 
@@ -319,15 +204,14 @@ const OfflineDepositWithdrawPopup = ({ setDepositePopup,
                                 name="parentpassword"
                                 className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
                                 placeholder="Enter Amount"
-                                value={inputData?.parentpassword || ""}
-                                onChange={(e) => handleInputChange(e)}
-
+                                value={masterPassword || ""}
+                                onChange={(e) => setMasterPassword(e.target.value)}
                             />
                             <button className="saffron-btn small-font rounded w-100 ms-1" onClick={handleSubmit}>
                                 Submit
                             </button>
                         </div>
-
+                        {errors.parentpassword && <p className="text-danger small-font">{errors.parentpassword}</p>}
                     </div>
                 </Modal.Body>
             </Modal>
