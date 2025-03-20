@@ -54,7 +54,6 @@ const Enums = {
     "EXCHANGE":13,
     "VIRTUAL SPORTS":14,
     "HOME":15,
-    "LIVE CASINO": 16,
   },
 
   nineExchangeSelectPages: {
