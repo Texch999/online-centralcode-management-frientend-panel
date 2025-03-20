@@ -695,6 +695,7 @@ function AddNewDirectorSuperAdmin() {
     return false;
   });
 
+  const youpay=Number(addDepositChips) - Number(enteredPaidAmount)
   return (
     <>
       <div className="m-2 ">
@@ -1093,12 +1094,13 @@ function AddNewDirectorSuperAdmin() {
                       }}
                     />
                   </div>
-                  {error && <span className="small-font error">{error}</span>}
-                  {errors?.enteredPaidAmount && (
+                  {error  ? <span className="small-font error">{error}</span> :
+                  errors?.enteredPaidAmount && (
                     <span className="small-font error">
                       {errors?.enteredPaidAmount}
                     </span>
-                  )}
+                  )  }
+                  
                 </div>
                 <div className="col-3 position-relative mt-2">
                   <label className="fw-600 small-font">Credit Amount</label>
@@ -1107,9 +1109,7 @@ function AddNewDirectorSuperAdmin() {
                       type="number"
                       maxLength={9}
                       className="small-font bg-none w-75 all-none appearance"
-                      value={
-                        Number(addDepositChips) - Number(enteredPaidAmount)
-                      }
+                      value={youpay> 0 ? youpay: 0}
                     />
                   </div>
                 </div>
