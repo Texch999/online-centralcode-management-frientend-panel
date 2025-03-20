@@ -99,7 +99,7 @@ const DwnlineTransactionHistory = () => {
           {buttons?.map((sport, index) => (
             <div
               key={index}
-              className={`me-3 pointer ${
+              className={`me-3 pointer small-font ${
                 activeSport === sport ? "saffron-btn2" : "white-btn2"
               }`}
               onClick={() => handleSportClick(sport)}
