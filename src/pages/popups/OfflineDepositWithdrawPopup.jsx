@@ -134,7 +134,7 @@ const OfflineDepositWithdrawPopup = ({
                             />
                         </div>
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Withdraw Chips - {directorCurrency?.currencyName}</label>
+                            <label className="small-font mb-1">Enter {`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"}`} Chips - {directorCurrency?.currencyName}</label>
                             <input
                                 type="tet"
                                 name="selectedChips"
@@ -160,7 +160,7 @@ const OfflineDepositWithdrawPopup = ({
                                 placeholder="Enter Chips"
                                 value={paidAmount}
                                 onChange={(e) => setPaidAmount(e.target.value)}
-                                disabled={selectedDetails.creditAllowed === 2}
+                                disabled={selectedDetails.creditAllowed == 2 ? true : false}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}

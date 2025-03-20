@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
-import { MdLockReset, MdBlockFlipped } from "react-icons/md";
+import { MdLockReset, MdBlockFlipped, MdOutlinePersonOutline } from "react-icons/md";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 import ResetPasswordPopup from "../popups/ResetPasswordPopup";
@@ -21,6 +21,7 @@ import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
 import SuccessPopup from "../popups/SuccessPopup";
 import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
+import { BiTransfer } from "react-icons/bi";
 
 const AddDirectorAdmin = () => {
   const role = localStorage.getItem("role_code");
@@ -35,6 +36,7 @@ const AddDirectorAdmin = () => {
   const [actionType, setActionType] = useState("Deposit");
   const [selectedDetails, setSelectedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleResetPasswordOpen = (id) => {
@@ -258,11 +260,11 @@ const AddDirectorAdmin = () => {
 
     return {
       role: <div className="d-flex flex-row">
-        <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Di" : "SA"}</span></div>
-        <div className="me-2" > <span className="role-bg p-1"><IoPersonCircle /></span></div>
+        <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Di" : "SA"}</span> </div>
+        <div className="me-2" > <span className="role-bg p-1"><IoPersonCircle /></span> </div>
         <div className="d-lex flex-column">
           <div>{user.name}</div>
-          <div>{"Hyd - India"}</div>
+          <div>{"India"}</div>
         </div>
       </div>,
       creditref: <div>{user.creditAllowed == 1 ? user.maxCreditLimit : "--"}</div>,
@@ -273,16 +275,16 @@ const AddDirectorAdmin = () => {
       pl: <div className="red-font">0</div>,
       exposure: <div className="red-font">0</div>,
       ADLock: <div className="red-font"><input type="checkbox" style={{ border: "1px solid rgba(0, 0, 0, 0.2)" }} /></div>,
-      BetLock: <div className="red-font"><input type="checkbox" /></div>,
+      BetLock: <div className="red-font"><input type="checkbox" style={{ border: "1px solid rgba(0, 0, 0, 0.2)" }} /></div>,
       action: (
         <div className="d-flex flex-center gap-3">
           <div className="gap-2 d-flex flex-row">
-            <div className="green-bg px-3 py-2 rounded"
+            <div className="green-bg px-3 py-2 rounded pointer"
               style={{ color: "#fff", background: "#18B962" }} onClick={() => onHandleDW("DEPOSIT", user)}>D</div>
-            <div className="rust-red-btn px-3 py-2 rounded" onClick={() => onHandleDW("WITHDRAW", user)}>W </div>
+            <div className="rust-red-btn px-3 py-2 rounded pointer" onClick={() => onHandleDW("WITHDRAW", user)}>W </div>
           </div>
           <SlPencil
-            size={18}
+            size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             onClick={() =>
@@ -293,20 +295,35 @@ const AddDirectorAdmin = () => {
             }
           />
           <MdLockReset
-            size={18}
+            size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             onClick={() =>
               user.status !== 2 && handleResetPasswordOpen(user.id)
             }
           />
-          <MdBlockFlipped
+
+          <BiTransfer
+            size={20}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+              }`}
+            style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
+            onClick={() =>
+              user.status !== 2 && handleResetPasswordOpen(user.id)
+            }
+          />
+          {/* <MdBlockFlipped
             size={18}
             className={user.status === 2 ? "clr-red" : "green-clr"}
             onClick={() => handleBlockUserOpen(user.login_name, user.id)}
-          />
+          /> */}
           <BsEye
-            size={18}
+            size={20}
+            className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
+            onClick={() => navigate("/dir-sa-websites-details", { state: { userId: user?.id } })}
+          />
+          <MdOutlinePersonOutline
+            size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
@@ -556,15 +573,15 @@ const AddDirectorAdmin = () => {
 
         // selectedSuperAdminStatus
       )}
-      {depositWithdrawPopup&& (
+      {depositWithdrawPopup && (
         <OfflineDepositWithdrawPopup
-        actionType={actionType}
-        depositWithdrawPopup={depositWithdrawPopup}
-        selectedDetails={selectedDetails}
-        setDepositWithdrawPopup={setDepositWithdrawPopup}
-      />
+          actionType={actionType}
+          depositWithdrawPopup={depositWithdrawPopup}
+          selectedDetails={selectedDetails}
+          setDepositWithdrawPopup={setDepositWithdrawPopup}
+        />
       )}
-      
+
     </div>
   );
 };
