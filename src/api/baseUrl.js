@@ -4,5 +4,5 @@
 export const baseUrl = "http://192.168.29.186:9001/rest2/0.1";
 export const imgUrl = "http://192.168.29.186:9001/uploads";
 
-// export const baseUrl = "https://1cee-2405-201-c030-60bb-7280-c176-49d9-2ede.ngrok-free.app/rest2/0.1";
+// export const baseUrl = "http://192.168.29.186:9001/rest2/0.1";
 // export const imgUrl = "https://gameappxyz.s3.ap-south-1.amazonaws.com";

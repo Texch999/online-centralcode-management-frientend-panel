@@ -106,6 +106,7 @@ import PrivateRoute from "./pages/routes/PrivateRoutes";
 import SettlementTransaction from "./pages/wallet/SettlementTransaction";
 import OfflineDW from "./pages/wallet/OfflineDW";
 import OfflineDWUser from "./pages/wallet/OfflineDWUser";
+import DirectorSuperAdminaccessedWebsites from "./pages/add-team/DirectorSuperAdminaccessedWebsites";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -350,6 +351,10 @@ function App() {
                 <Route
                   path="/settlement-transaction"
                   element={<SettlementTransaction />}
+                />
+                <Route
+                  path="/dir-sa-websites-details"
+                  element={<DirectorSuperAdminaccessedWebsites />}
                 />
               </Routes>
             </div>
