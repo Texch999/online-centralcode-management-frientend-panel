@@ -108,6 +108,7 @@ import OfflineDW from "./pages/wallet/OfflineDW";
 import OfflineDWUser from "./pages/wallet/OfflineDWUser";
 import DirectorSuperAdminaccessedWebsites from "./pages/add-team/DirectorSuperAdminaccessedWebsites";
 import DwnlineTransactionHistory from "./pages/add-team/DwnlineTransactionHistory";
+import GameControl from "./pages/add-team/GameControl";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -360,6 +361,10 @@ function App() {
                 <Route
                   path="/downline-transaction-history"
                   element={<DwnlineTransactionHistory />}
+                />
+                <Route
+                  path="/game-control"
+                  element={<GameControl />}
                 />
               </Routes>
             </div>
