@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { IoArrowBack, IoArrowDown } from "react-icons/io5";
+import { IoArrowBack, IoArrowDown, IoEye, IoEyeOff } from "react-icons/io5";
 
 const GameControl = () => {
   const [active, setActive] = useState(0);
@@ -235,6 +235,40 @@ const GameControl = () => {
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+
+        <div>
+        
+          <div className="row small-font align-items-center">
+
+          <div className="small-font my-1 col-2">Management Password</div>
+
+            <div className="col-6">
+              <div className="input-bg d-flex br-5 py-2 px-2 flex-between">
+                <input
+                  className="all-none"
+                  type={pswdVisible ? "text" : "password"}
+                  placeholder="Enter Password"
+                />
+                {pswdVisible ? (
+                  <IoEye
+                    className="black-font"
+                    size={15}
+                    onClick={() => setPswdVisible(false)}
+                  />
+                ) : (
+                  <IoEyeOff
+                    className="black-font"
+                    size={15}
+                    onClick={() => setPswdVisible(true)}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="saffron-btn2 pointer">Submit</div>
             </div>
           </div>
         </div>
