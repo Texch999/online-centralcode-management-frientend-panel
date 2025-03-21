@@ -48,7 +48,7 @@ const DirectorSuperAdminaccessedWebsites = () => {
   };
 
   const handleGC = () => {
-    navigate("/game-control")
+    navigate("/game-control");
   };
 
   const fetchDirById = (adminId) => {
@@ -163,8 +163,18 @@ const DirectorSuperAdminaccessedWebsites = () => {
       action: (
         <div className="d-flex flex-center gap-3">
           <div className="gap-2 d-flex flex-row">
-            <div className="gc-contoll-bg px-3 py-2 rounded pointer">GC</div>
-            <div className="cc-contoll-bg px-3 py-2 rounded pointer">CC</div>
+            <div
+              className="gc-contoll-bg px-3 py-2 rounded pointer"
+              onClick={handleGC}
+            >
+              GC
+            </div>
+            <div
+              className="cc-contoll-bg px-3 py-2 rounded pointer"
+              onClick={handleCC}
+            >
+              CC
+            </div>
             <div
               className="wc-contoll-bg px-3 py-2 rounded pointer"
               onClick={handleWc}
@@ -230,9 +240,6 @@ const DirectorSuperAdminaccessedWebsites = () => {
               Submit
             </button>
           </div>
-          <div onClick={handleWc}>wc</div>
-          <div onClick={handleCC}>cc</div>
-          <div onClick={handleGC}>Gc</div>
           <span className="small-font red-font pt-1">{filterError}</span>
         </div>
       </div>
