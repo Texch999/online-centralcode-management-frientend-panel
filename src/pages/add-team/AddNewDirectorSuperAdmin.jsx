@@ -448,6 +448,7 @@ function AddNewDirectorSuperAdmin() {
       finalData.depositType = 1;
     } else {
       finalData.depositType = 2;
+      finalData.offDepositAmount = addDepositChips ? parseFloat(addDepositChips) : 0;
     }
 
     createDirector(finalData)
@@ -695,7 +696,7 @@ function AddNewDirectorSuperAdmin() {
     return false;
   });
 
-  const youpay=Number(addDepositChips) - Number(enteredPaidAmount)
+  const youpay = Number(addDepositChips) - Number(enteredPaidAmount);
   return (
     <>
       <div className="m-2 ">
@@ -1094,13 +1095,15 @@ function AddNewDirectorSuperAdmin() {
                       }}
                     />
                   </div>
-                  {error  ? <span className="small-font error">{error}</span> :
-                  errors?.enteredPaidAmount && (
-                    <span className="small-font error">
-                      {errors?.enteredPaidAmount}
-                    </span>
-                  )  }
-                  
+                  {error ? (
+                    <span className="small-font error">{error}</span>
+                  ) : (
+                    errors?.enteredPaidAmount && (
+                      <span className="small-font error">
+                        {errors?.enteredPaidAmount}
+                      </span>
+                    )
+                  )}
                 </div>
                 <div className="col-3 position-relative mt-2">
                   <label className="fw-600 small-font">Credit Amount</label>
@@ -1109,7 +1112,7 @@ function AddNewDirectorSuperAdmin() {
                       type="number"
                       maxLength={9}
                       className="small-font bg-none w-75 all-none appearance"
-                      value={youpay> 0 ? youpay: 0}
+                      value={youpay > 0 ? youpay : 0}
                     />
                   </div>
                 </div>
@@ -1491,24 +1494,41 @@ function AddNewDirectorSuperAdmin() {
                               <div className="col d-flex">
                                 <div className="col-2 position-relative mx-1 mt-2">
                                   <label className="fw-600 my-1 small-font">
-                                    Downline Share
+                                    Downline Share 
                                   </label>
                                   <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      type="text"
-                                      className="small-font bg-none  all-none w-50"
-                                      onChange={(e) => {
-                                        let value = e.target.value;
-                                        if (value.length > 3) return;
-                                        if (parseInt(value, 10) > 100) return;
-                                        handleInputChange(
-                                          form.id,
-                                          selectedSiteIds[form.id],
-                                          "share",
-                                          value
-                                        );
-                                      }}
-                                    />
+                                  <input
+  type="text"
+  className="small-font bg-none all-none w-50"
+  onChange={(e) => {
+    let value = e.target.value;
+
+    // Allow only numbers
+    if (/^\d*$/.test(value)) {
+      // Prevent input beyond 2 digits, except for 100
+      if (value.length <= 2 || value === "100") {
+        handleInputChange(form.id, selectedSiteIds[form.id], "share", value);
+      } else {
+        e.target.value = value.slice(0, 2); // Trim input beyond 2 digits
+      }
+    } else {
+      e.target.value = value.replace(/\D/g, ""); // Remove non-numeric characters
+    }
+  }}
+  onBlur={(e) => {
+    let numericValue = parseInt(e.target.value, 10);
+
+    // Ensure value is within range
+    if (isNaN(numericValue) || numericValue < 0) {
+      e.target.value = "0";
+    } else if (numericValue > 100) {
+      e.target.value = "100";
+    }
+
+    handleInputChange(form.id, selectedSiteIds[form.id], "share", e.target.value);
+  }}
+/>
+
 
                                     {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
                                           <div className="fw-600">
@@ -1534,23 +1554,33 @@ function AddNewDirectorSuperAdmin() {
                                     Downline Commission
                                   </label>
                                   <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      type="number"
-                                      className="small-font bg-none all-none  w-50"
-                                      maxLength={2}
-                                      onChange={(e) => {
-                                        let value = e.target.value;
+                                  <input
+  type="number"
+  className="small-font bg-none all-none w-50"
+  onChange={(e) => {
+    let value = e.target.value;
 
-                                        if (value.length > 3) return; // Restrict input to max 3 digits
-                                        if (parseInt(value, 10) > 100) return; // Prevent values greater than 100
-                                        handleInputChange(
-                                          form.id,
-                                          selectedSiteIds[form.id],
-                                          "downline_comm",
-                                          value
-                                        );
-                                      }}
-                                    />
+    // Allow only numbers between 0 and 5
+    if (value === "" || (parseInt(value) >= 0 && parseInt(value) <= 5)) {
+      handleInputChange(form.id, selectedSiteIds[form.id], "downline_comm", value);
+    } else {
+      e.target.value = Math.min(Math.max(parseInt(value), 0), 5); // Auto-correct invalid input
+    }
+  }}
+  onBlur={(e) => {
+    // Ensure value is within range on blur
+    let numericValue = parseInt(e.target.value, 10);
+
+    if (isNaN(numericValue) || numericValue < 0) {
+      e.target.value = "0";
+    } else if (numericValue > 5) {
+      e.target.value = "5";
+    }
+
+    handleInputChange(form.id, selectedSiteIds[form.id], "downline_comm", e.target.value);
+  }}
+/>
+
                                   </div>
                                   {renderErrorMessage(
                                     form.id,
@@ -1691,14 +1721,6 @@ function AddNewDirectorSuperAdmin() {
 
 export default AddNewDirectorSuperAdmin;
 
-
-
-
-
-
-
-
-
 // import React, { useEffect, useState } from "react";
 // import {
 //   FaArrowLeft,
@@ -1820,7 +1842,7 @@ export default AddNewDirectorSuperAdmin;
 
 //   const remarkOptions = [
 //     { value: "offline", label: "Offline" },
-//     ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), 
+//     ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []),
 //   ];
 
 //   const GetAllCurrencies = () => {
@@ -2026,7 +2048,6 @@ export default AddNewDirectorSuperAdmin;
 //     console.log(errors, "=>errors");
 //     return errors;
 //   };
-
 
 //   const handleInputChange = (formId, websiteId, field, value) => {
 //     setWebsiteDetails((prevDetails) => ({
@@ -3655,7 +3676,7 @@ export default AddNewDirectorSuperAdmin;
 //                                             );
 //                                           }}
 //                                         />
-                                       
+
 //                                         {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
 //                                           <div className="fw-600">
 //                                             My Share{" "}
@@ -3698,7 +3719,7 @@ export default AddNewDirectorSuperAdmin;
 //                                             );
 //                                           }}
 //                                         />
-                                       
+
 //                                       </div>
 //                                       {renderErrorMessage(
 //                                           form.id,
@@ -3736,7 +3757,7 @@ export default AddNewDirectorSuperAdmin;
 //                                             );
 //                                           }}
 //                                         />
-                                       
+
 //                                       </div>
 //                                       {renderErrorMessage(
 //                                           form.id,
@@ -3982,4 +4003,3 @@ export default AddNewDirectorSuperAdmin;
 // }
 
 // export default AddNewDirectorSuperAdmin;
-
