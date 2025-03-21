@@ -292,9 +292,10 @@ const AddDirectorAdmin = () => {
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
-            onClick={() =>
-              user.status !== 2 && handleResetPasswordOpen(user.id)
-            }
+            onClick={()=>navigate("/downline-transaction-history")}
+            // onClick={() =>
+            //   user.status !== 2 && handleResetPasswordOpen(user.id)
+            // }
           />
           <BsEye
             size={20}
