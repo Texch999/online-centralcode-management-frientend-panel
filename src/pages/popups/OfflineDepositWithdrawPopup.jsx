@@ -52,10 +52,10 @@ const OfflineDepositWithdrawPopup = ({
 
         const payload = {
             currency: selectedDetails?.currId,
-            oldCredit: selectedDetails.creditBalance ? selectedDetails.creditBalance : 0,
+            oldCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0,
             chipAmount: selectedChips,
             paidAmount: paidAmount,
-            totalCredit: selectedDetails.creditBalance ? selectedDetails.creditBalance : 0 + (Number(selectedChips) - Number(paidAmount)),
+            totalCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0 + (Number(selectedChips) - Number(paidAmount)),
             remarks: remark,
             parentPassword: masterPassword,
         };
@@ -88,10 +88,7 @@ const OfflineDepositWithdrawPopup = ({
             });
     };
 
-
-
-
-    const afterPay = selectedDetails.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
+    const afterPay = selectedDetails?.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
     return (
         <div>
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
@@ -129,7 +126,7 @@ const OfflineDepositWithdrawPopup = ({
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter Chips"
-                                value={selectedDetails.creditBalance ? selectedDetails.creditBalance : 0}
+                                value={selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0}
                                 readOnly
                             />
                         </div>
@@ -160,7 +157,7 @@ const OfflineDepositWithdrawPopup = ({
                                 placeholder="Enter Chips"
                                 value={paidAmount}
                                 onChange={(e) => setPaidAmount(e.target.value)}
-                                disabled={selectedDetails.creditAllowed == 2 ? true : false}
+                                disabled={selectedDetails?.creditAllowed == 2 ? true : false}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}

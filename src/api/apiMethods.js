@@ -494,6 +494,9 @@ const getOfflineDWDirectors = (params) => {
 const getDirById = (params) => {
   return apiRequest("getDirById", {}, params);
 };
+const getSettlementTransactionById = (params) => {
+  return apiRequest("getSettlementTransactionById", {}, params);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -620,4 +623,5 @@ export {
   suspendInActiveUsers,
   getOfflineDWDirectors,
   getDirById,
+  getSettlementTransactionById,
 };
