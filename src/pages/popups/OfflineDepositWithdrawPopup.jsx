@@ -17,6 +17,7 @@ const OfflineDepositWithdrawPopup = ({
     const [errors, setErrors] = useState({});
     const [directorCurrency, setDirectorCurrency] = useState("")
     const [paidAmount, setPaidAmount] = useState("")
+    const [finalPaidAmount, setFinalPaidAmount] = useState("")
     const [selectedChips, setSelectedChips] = useState("")
     const [remark, setRemark] = useState("")
     const [masterPassword, setMasterPassword] = useState("")
@@ -58,13 +59,12 @@ const OfflineDepositWithdrawPopup = ({
         const payload = {
             currency: selectedDetails?.currId,
             oldCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0,
-            chipAmount: selectedChips,
-            paidAmount: paidAmount,
-            totalCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0 + (Number(selectedChips) - Number(paidAmount)),
+            chipAmount: paidAmount,
+            paidAmount: finalPaidAmount,
+            totalCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0 + selectedDetails?.creditAllowed == 1 ? (Number(paidAmount) - Number(finalPaidAmount)) : 0,
             remarks: remark,
             parentPassword: masterPassword,
         };
-
         let apiCall;
         if (actionType === "DEPOSIT") {
             apiCall = ManagementOfflineDepositeTicketCreation;
@@ -96,6 +96,15 @@ const OfflineDepositWithdrawPopup = ({
     console.log(selectedDetails, "==>selectedDetails")
 
     const afterPay = selectedDetails?.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
+
+    const handlePaidAmountChange = (e) => {
+        const value = e.target.value;
+
+        // Ensure the value does not exceed 12000
+        if (Number(value) <= Number(paidAmount)) {
+            setFinalPaidAmount(value);
+        }
+    };
     return (
         <div>
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
@@ -144,11 +153,8 @@ const OfflineDepositWithdrawPopup = ({
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
                                 placeholder="Enter Chips"
-                                value={selectedChips}
-                                onChange={(e) => {
-                                    setSelectedChips(e.target.value)
-                                    setPaidAmount(e.target.value)
-                                }}
+                                value={finalPaidAmount ? ((Number(paidAmount) - Number(finalPaidAmount)) < 0 ? 0 : Number(paidAmount) - Number(finalPaidAmount)) : 0}
+                                readOnly
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
@@ -156,7 +162,7 @@ const OfflineDepositWithdrawPopup = ({
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter Paid Amount </label>
+                            <label className="small-font mb-1">Enter Deposit Chips </label>
                             <input
                                 type="tet"
                                 name="selectedChips"
@@ -180,7 +186,6 @@ const OfflineDepositWithdrawPopup = ({
                                 placeholder="Enter Chips"
                                 value={paidAmount}
                                 onChange={(e) => setPaidAmount(e.target.value)}
-                                disabled={selectedDetails?.creditAllowed == 2 ? true : false}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
@@ -188,15 +193,22 @@ const OfflineDepositWithdrawPopup = ({
 
                         <div className="col mb-2">
                             <label className="small-font mb-1">
-                                Credit Amount -  {getCurrency(selectedDetails.currId)} </label>
+                                Paid Amount </label>
                             <input
                                 type="number"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
-                                placeholder="Enter "
-                                value={afterPay > 0 ? afterPay : 0}
-                                readOnly
-                                style={{ pointerEvents: "none" }}
+                                placeholder="Enter"
+                                value={finalPaidAmount}
+                                onChange={handlePaidAmountChange}
+                                min="0"
+                                max={Number(paidAmount)}
+
                             />
+                            {finalPaidAmount > 1000 && (
+                                <div className="text-danger small-font mt-1">
+                                    Paid amount cannot exceed {paidAmount}.
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="row">
