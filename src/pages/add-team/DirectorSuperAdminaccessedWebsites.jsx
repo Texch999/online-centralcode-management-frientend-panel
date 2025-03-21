@@ -2,92 +2,62 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
-import { MdLockReset, MdBlockFlipped, MdOutlinePersonOutline } from "react-icons/md";
-import { FaSearch, FaPlus } from "react-icons/fa";
+import { MdLockReset, MdBlockFlipped } from "react-icons/md";
 import { BsEye } from "react-icons/bs";
-import ResetPasswordPopup from "../popups/ResetPasswordPopup";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { IoPersonCircle } from "react-icons/io5";
-import {
-    blockDirector,
-    getDirectorDwnList,
-    getDirectors,
-    getOfflineDWDirectors,
-    resetDirectorPassword,
-    resetSuperAdminPassword,
-    unblockBlockDirectorDwnln,
-} from "../../api/apiMethods";
+import { customStyles } from "../../components/ReactSelectStyles";
+import { getAdminWebsites, getDirById, getDirectorDwnList } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
 import SuccessPopup from "../popups/SuccessPopup";
-import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
-import { BiTransfer } from "react-icons/bi";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import Select from "react-select";
 
 const DirectorSuperAdminaccessedWebsites = () => {
     const location = useLocation();
-    const userId = location.state?.userId;
+    const { userId, name, roleId } = location.state
     const role = localStorage.getItem("role_code");
-    const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
-    const [confirmationPopup, setConfirmationPopup] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [selectedDirectorId, setSelectedDirectorId] = useState(null);
-    const [selectedSuperAdminId, setSelectedSuperAdminId] = useState(null);
     const [tableData, setTableData] = useState([]);
     const [tableSuperAdminData, setTableSuperAdminData] = useState([]);
-    const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
-    const [actionType, setActionType] = useState("Deposit");
-    const [selectedDetails, setSelectedDetails] = useState(null);
+    const [adminWebsites, setAdminWebsites] = useState([]);
+    const [filterError, setFilterError] = useState("");
+    const navigate = useNavigate(); // Use useNavigate instead of useNavigation
     const [loading, setLoading] = useState(false);
-
-    const navigate = useNavigate();
-
-    const handleResetPasswordOpen = (id) => {
-        setSelectedDirectorId(id);
-        setSelectedSuperAdminId(id);
-        setResetPasswordPopup(true);
-    };
     const itemsPerPage = 7;
     const [searchParams, setSearchParams] = useSearchParams();
     const page = parseInt(searchParams.get("page") || 1);
-    const [currentPage, setCurrentPage] = useState(page);
-    const handleResetPasswordClose = () => {
-        setResetPasswordPopup(false);
-    };
-    const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
     const [totalRecords, setTotalRecords] = useState(null);
-    const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] =
-        useState(null);
-    const [resetPasswordErrrors, setResetPasswordErrors] = useState(null);
-
     const [successPopupOpen, setSuccessPopupOpen] = useState(false);
     const [discription, setDiscription] = useState(null);
+    const [selectedAdminSite, setSelectedAdminSite] = useState("");
+    const [dataById, setDataById] = useState([]);
 
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const filteredData = tableData?.filter((user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const handleBlockUserOpen = (login_name, id) => {
-        const director = tableData.find((user) => user.id === id);
-        if (director) {
-            setSelectedDirectorId(id);
-            setSelectedDirectorStatus(director.status);
-            setConfirmationPopup(true);
-        }
-        const superAdmin = tableSuperAdminData.find((user) => user.id === id);
-        if (superAdmin) {
-            setSelectedSuperAdminId(id);
-            setSelectedSuperAdminStatus(superAdmin.status);
-            setConfirmationPopup(true);
-        }
+    const fetchDirById = (adminId) => {
+        const params = {
+            adminPanId: adminId || undefined,
+        };
+        getDirById({ userId, params })
+            .then((response) => {
+                setDataById(response?.list);
+            })
+            .catch((error) => {
+                console.error("API error");
+            });
     };
-    // else {
-    //   setSelectedSuperAdminId(id);
-    //   setConfirmationPopup(true);
-    // }
-    const handleNavigateUserDashboard = (id) => {
-        navigate(`/user-profile-dashboard/${id}`);
+
+    const fetchAdminWebsites = () => {
+        getAdminWebsites()
+            .then((response) => {
+                if (response.status === true) {
+                    const options = response?.data?.map((item) => ({
+                        value: item.id,
+                        label: item.web_name,
+                    }));
+                    setAdminWebsites(options);
+                }
+            })
+            .catch((error) => {
+                console.error("API error");
+            });
     };
 
     const columns = [
@@ -103,6 +73,7 @@ const DirectorSuperAdminaccessedWebsites = () => {
             width: "8%",
         },
     ];
+
     const GetAllSuperAdmin = (limit, offset) => {
         getDirectorDwnList({ limit, offset })
             .then((response) => {
@@ -119,152 +90,33 @@ const DirectorSuperAdminaccessedWebsites = () => {
                 setLoading(false);
             });
     };
-    // const GetAllDirectors = (limit, offset) => {
-    //     const params = {
-    //       limit: limit,
-    //       offset: offset,
-    //     };
-    //     getOfflineDWDirectors (params)
-    //       .then((response) => {
-    //         console.log(response?.list);
-    //         setData(response?.list);
-    //         setTotalRecords(response?.count);
-    //       })
-    //       .catch((error) => {
-    //         setError(error?.message);
-    //       });
-    //   };
-    const GetAllDirectors = (limit, offset) => {
-        const params = {
-            limit: limit,
-            offset: offset,
-        };
-        setLoading(true);
-        getOfflineDWDirectors(params)
-            .then((response) => {
-                if (response.list) {
-                    setTableData(response?.list);
-                    setTotalRecords(response?.count);
-                } else {
-                    console.error("Something Went Wrong");
-                }
-            })
-            .catch((error) => {
-                console.error(error?.message || "Failed to fetch directors");
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
 
     useEffect(() => {
         const limit = itemsPerPage;
         const offset = (page - 1) * itemsPerPage;
+
         if (role === "director") {
             GetAllSuperAdmin(limit, offset);
         } else if (role === "management") {
-            GetAllDirectors(limit, offset);
+            fetchDirById();
+            fetchAdminWebsites();
         }
-    }, [role]); // Runs when role changes
+    }, [role, page]);
 
-    const onDirectorResetPassword = (data) => {
-        if (!selectedDirectorId) {
-            setResetPasswordErrors("Invalid ID");
-            return;
-        }
-
-        const requestData = {
-            password: data.password,
-            confirm_password: data.confirmPassword,
-            parent_password: data.managementPassword,
-        };
-
-        resetDirectorPassword(selectedDirectorId, requestData)
-            .then((response) => {
-                setResetPasswordPopup(false);
-                setSuccessPopupOpen(true);
-                setDiscription("Password reset successfully");
-
-                if (response) {
-                    setTimeout(() => {
-                        setResetPasswordPopup(false);
-                    }, 1000);
-                } else {
-                    setResetPasswordErrors("Something went wrong");
-                }
-            })
-            .catch((error) => {
-                setResetPasswordErrors(error?.message || "Request failed");
-            });
-    };
-
-    const onSuperAdminResetPassword = (data) => {
-        if (!selectedSuperAdminId) {
-            setResetPasswordErrors("Invalid ID");
-            return;
-        }
-
-        const requestData = {
-            password: data.password,
-            confirm_password: data.confirmPassword,
-            parent_password: data.managementPassword,
-        };
-
-        resetSuperAdminPassword(selectedDirectorId, requestData)
-            .then((response) => {
-                if (response) {
-                    setTimeout(() => {
-                        setResetPasswordPopup(false);
-                    }, 1000);
-                } else {
-                    setResetPasswordErrors("Something went wrong");
-                }
-            })
-            .catch((error) => {
-                setResetPasswordErrors(error?.message || "Request failed");
-            });
-    };
-    const blockUnblock = () => {
-        blockDirector(selectedDirectorId)
-            .then((response) => {
-                console.log(response, "resp");
-                setConfirmationPopup(false);
-                GetAllDirectors();
-            })
-            .catch((error) => {
-                console.error(error?.message || "Failed to block/unblock director");
-            });
-    };
-    const blockUnblockSuperAdmin = () => {
-        const data = {
-            id: selectedSuperAdminId,
-            status: selectedSuperAdminStatus,
-        };
-        unblockBlockDirectorDwnln(data)
-            .then((response) => {
-                setConfirmationPopup(false);
-                GetAllSuperAdmin();
-            })
-            .catch((error) => {
-                console.error(error?.message || "Failed to block/unblock director");
-            });
-    };
-
-    const onHandleDW = (action, data) => {
-        setSelectedDetails(data)
-        setDepositWithdrawPopup(true)
-        setActionType(action)
-    }
-
-    const TableData = filteredData?.map((user) => {
-
+    const TableData = dataById?.map((user) => {
         return {
-            usersite: <div className="d-flex flex-column">
-                <div className="me-1" > <span className=" p-1">{"Diamon Exchnage"}</span> </div>
-                <div className="me-1" > <span className="p-1">{"Admin - Brahma - 10%"}</span> </div>
-            </div>,
-            pl: <div className="red-font">0</div>,
-            exposure: <div className="red-font">0</div>,
+            usersite: (
+                <div className="d-flex flex-column">
+                    <div className="me-1">
+                        <span className="p-1 text-capitalize">{user.userPanel}</span>
+                    </div>
+                    <div className="me-1">
+                        <span className="p-1 text-capitalize">{`${user.adminPanel} - ${user.share}`}</span>
+                    </div>
+                </div>
+            ),
+            pl: <div className="red-font">{user.pl}</div>,
+            exposure: <div className="red-font">{user.exposure}</div>,
             sitelock: (
                 <div className="red-font">
                     <input
@@ -276,11 +128,7 @@ const DirectorSuperAdminaccessedWebsites = () => {
             ),
             BetLock: (
                 <div className="red-font">
-                    <input
-                        type="checkbox"
-                        className="custom-checkbox"
-                        style={{ border: "2px solid rgba(0, 0, 0, 0.2)" }}
-                    />
+                    <input type="checkbox" className="custom-checkbox" />
                 </div>
             ),
             clock: (
@@ -295,229 +143,89 @@ const DirectorSuperAdminaccessedWebsites = () => {
             action: (
                 <div className="d-flex flex-center gap-3">
                     <div className="gap-2 d-flex flex-row">
-                        <div className="gc-contoll-bg px-3 py-2 rounded pointer"
-                        // onClick={() => onHandleDW("DEPOSIT", user)}
-                        >GC</div>
-                        <div className="cc-contoll-bg px-3 py-2 rounded pointer"
-                        //  onClick={() => onHandleDW("WITHDRAW", user)}
-                        >CC </div>
-                        <div className="wc-contoll-bg px-3 py-2 rounded pointer"
-                        //  onClick={() => onHandleDW("WITHDRAW", user)}
-                        >WC </div>
+                        <div className="gc-contoll-bg px-3 py-2 rounded pointer">GC</div>
+                        <div className="cc-contoll-bg px-3 py-2 rounded pointer">CC</div>
+                        <div className="wc-contoll-bg px-3 py-2 rounded pointer">WC</div>
                     </div>
-                    <SlPencil
-                        size={20}
-                        className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                            }`}
-                    // onClick={() =>
-                    //     user.status !== 2 &&
-                    //     navigate(`/director-admin/editDirector`, {
-                    //         state: { userId: user.id, mode: "edit" },
-                    //     })
-                    // }
-                    />
                 </div>
             ),
-        };
-    });
-
-    const directorTableData = tableSuperAdminData?.map((user) => {
-        const linkWebsites = user.accessWebsites.map((website) => ({
-            name: website.user_panel_name || "N/A",
-            url: website.user_panel_url || "#",
-            adminPanel: website.admin_panel_name,
-            adminUrl: website.admin_panel_url,
-        }));
-
-        const shareRent = user.accessWebsites.map((website) => ({
-            commissionType: website.commission_type,
-            monthlyAmount: website.monthly_amount || "N/A",
-            maxChipsMonthly: website.max_chips_monthly || "N/A",
-            extraChipsPercentage: website.extra_chips_percentage || "N/A",
-            chipPercentage: website.chip_percentage || "N/A",
-            share: website.share,
-        }));
-
-        return {
-            id: user.id,
-            role: user.type === 2 ? "Super Admin" : "Unknown",
-            name: user.name,
-            loginname: user.login_name,
-            inUsed: (
-                <div className={`${user.status === 1 ? "green-clr" : "clr-red"}`}>
-                    {user.status === 1 ? "Active" : "Inactive"}
-                </div>
-            ),
-            linkWebsites: (
-                <span className="d-flex flex-column">
-                    {linkWebsites.map((website, index) => (
-                        <span key={index}>
-                            <a
-                                className="yellow-font"
-                                href={website.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {website.url}
-                            </a>{" "}
-                            (Admin:{" "}
-                            <a
-                                href={website.adminUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {website.adminPanel}
-                            </a>
-                            )
-                        </span>
-                    ))}
-                </span>
-            ),
-            shareRent: (
-                <span className="d-flex flex-column">
-                    {shareRent.map((type, index) => (
-                        <span key={index}>
-                            <span className="green-clr">
-                                {commissionTypes[type.commissionType] || "Unknown"}{" "}
-                            </span>
-                            {type.share ? `, Share: ${type.share}%` : ""}
-                        </span>
-                    ))}
-                </span>
-            ),
-            billing: "0",
-            pl: <div className="red-font">0</div>,
-            dw: (
-                <button className="py-2 rounded px-3 dw-active-btn all-none mx-1 small-font">
-                    D/W
-                </button>
-            ),
-            action: (
-                <div className="d-flex flex-center gap-3">
-                    <SlPencil
-                        size={18}
-                        className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                            }`}
-                        onClick={() =>
-                            user.status !== 2 &&
-                            navigate(`/director-admin/editDirector`, {
-                                state: { userId: user.id, mode: "edit" },
-                            })
-                        }
-                    />
-                    <MdLockReset
-                        size={18}
-                        className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                            }`}
-                        onClick={() =>
-                            user.status !== 2 && handleResetPasswordOpen(user.id)
-                        }
-                    />
-                    <MdBlockFlipped
-                        size={18}
-                        className={user.status === 2 ? "clr-red" : "green-clr"}
-                        onClick={() => handleBlockUserOpen(user.login_name, user.id)}
-                    />
-                    <BsEye
-                        size={18}
-                        className={`black-text pointer ${user.status === 2 ? "disabled" : ""
-                            }`}
-                        onClick={() => handleNavigateUserDashboard(user?.id)}
-                    />
-                </div>
-            ),
-            bg: '#F2F2F2'
         };
     });
 
     const handlePageChange = ({ limit, offset }) => {
-        if (role === "management") {
-            GetAllDirectors(limit, offset);
+        GetAllSuperAdmin(limit, offset);
+    };
+
+    const hanldeFilter = () => {
+        const adnId = selectedAdminSite.value;
+        if (adnId) {
+            fetchDirById(adnId);
+            setFilterError("");
         } else {
-            GetAllSuperAdmin(limit, offset);
+            setFilterError("Please select Admin panel");
         }
     };
+
+    const handleBack = () => {
+        navigate(-1);
+    };
+
     return (
         <div>
-            <div className="flex-between mb-3 mt-2">
+            <div className="d-flex flex-column mb-3 mt-2">
                 {role === "management" ? (
                     <h6 className="yellow-font medium-font mb-0">
-                        <MdOutlineKeyboardArrowLeft /> Super Admin - Sudheer Babu
+                        <MdOutlineKeyboardArrowLeft size={30} onClick={handleBack} className="pointer" />
+                        <span className="text-capitalize medium-font fw-600">{`${roleId == 1 ? "Director" : "Super Admin"} - ${name}`} </span>
                     </h6>
                 ) : (
                     <h6 className="yellow-font mb-0">Add Super Admin</h6>
                 )}
-                <div className="d-flex align-items-center">
-                    <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
-                        <FaSearch size={16} className="grey-clr me-2" />
-                        <input
-                            className="small-font all-none"
-                            placeholder="Search..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                <div className="d-flex flex-column mt-2">
+                    <label className="small-font">Select Admin</label>
+                    <div className="d-flex flex-row mt-1">
+                        <Select
+                            className="small-font me-2 col-2 text-capitalize"
+                            options={adminWebsites}
+                            placeholder="Select"
+                            styles={customStyles}
+                            value={selectedAdminSite}
+                            onChange={(option) => setSelectedAdminSite(option)}
                         />
+                        <button className="saffron-btn rounded px-4 medium-font" onClick={hanldeFilter}>
+                            Submit
+                        </button>
                     </div>
-                    <button
-                        className="small-font rounded-pill input-pill blue-font px-3 py-1"
-                        onClick={() =>
-                            navigate("/director-admin/addnewdirector", {
-                                state: { mode: "add" },
-                            })
-                        }
-                    >
-                        <FaPlus className="me-2" />
-                        Add New
-                    </button>
+                    <span className="small-font red-font pt-1">{filterError}</span>
                 </div>
             </div>
 
             {loading ? (
                 <div className="d-flex flex-column flex-center mt-10rem align-items-center">
                     <CircleLoader color="#3498db" size={40} />
-                    <div className="medium-font black-font my-3">
-                        Just a moment...............⏳
-                    </div>
+                    <div className="medium-font black-font my-3">Just a moment...............⏳</div>
                 </div>
             ) : (
                 <>
                     {role === "management" ? (
-                        <>
-                            {" "}
-                            <Table
-                                data={TableData}
-                                columns={columns}
-                                itemsPerPage={itemsPerPage}
-                                onPageChange={handlePageChange}
-                                totalRecords={totalRecords}
-                                bg="#F2F2F2"
-                            />
-                        </>
+                        <Table
+                            data={TableData}
+                            columns={columns}
+                            itemsPerPage={itemsPerPage}
+                            onPageChange={handlePageChange}
+                            totalRecords={totalRecords}
+                            bg="#F2F2F2"
+                        />
                     ) : (
-                        <>
-                            {" "}
-                            <Table
-                                data={directorTableData}
-                                columns={columns}
-                                itemsPerPage={itemsPerPage}
-                                onPageChange={handlePageChange}
-                                totalRecords={totalRecords}
-                            />
-                        </>
+                        <Table
+                            data={tableSuperAdminData}
+                            columns={columns}
+                            itemsPerPage={itemsPerPage}
+                            onPageChange={handlePageChange}
+                            totalRecords={totalRecords}
+                        />
                     )}
                 </>
-            )}
-            {resetPasswordPopup && (
-                <ResetPasswordPopup
-                    resetPasswordPopup={resetPasswordPopup}
-                    setResetPasswordPopup={handleResetPasswordClose}
-                    resetPasswordErrrors={resetPasswordErrrors}
-                    setResetPasswordErrors={setResetPasswordErrors}
-                    onSubmit={
-                        role === "management"
-                            ? onDirectorResetPassword
-                            : onSuperAdminResetPassword
-                    }
-                />
             )}
 
             {successPopupOpen && (
@@ -527,49 +235,6 @@ const DirectorSuperAdminaccessedWebsites = () => {
                     discription={discription}
                 />
             )}
-            {confirmationPopup && (
-                <>
-                    {role === "management" ? (
-                        <>
-                            <ConfirmationPopup
-                                confirmationPopupOpen={confirmationPopup}
-                                setConfirmationPopupOpen={setConfirmationPopup}
-                                onSubmit={blockUnblock}
-                                discription={`Do you want to ${selectedDirectorStatus === 1 ? "Block" : "Unblock"
-                                    } ?`}
-                                submitButton={
-                                    selectedDirectorStatus === 1 ? "Block" : "Unblock"
-                                }
-                            />
-                        </>
-                    ) : (
-                        <>
-                            {" "}
-                            <ConfirmationPopup
-                                confirmationPopupOpen={confirmationPopup}
-                                setConfirmationPopupOpen={setConfirmationPopup}
-                                onSubmit={blockUnblockSuperAdmin}
-                                discription={`Do you want to ${selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
-                                    } this SuperAdmin?`}
-                                submitButton={
-                                    selectedSuperAdminStatus === 1 ? "Block" : "Unblock"
-                                }
-                            />
-                        </>
-                    )}
-                </>
-
-                // selectedSuperAdminStatus
-            )}
-            {depositWithdrawPopup && (
-                <OfflineDepositWithdrawPopup
-                    actionType={actionType}
-                    depositWithdrawPopup={depositWithdrawPopup}
-                    selectedDetails={selectedDetails}
-                    setDepositWithdrawPopup={setDepositWithdrawPopup}
-                />
-            )}
-
         </div>
     );
 };

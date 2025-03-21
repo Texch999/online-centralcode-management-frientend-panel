@@ -2535,6 +2535,7 @@ import { adminRoles, commissionTypes } from "../utils/enum";
 import SuccessPopup from "./popups/SuccessPopup";
 import Select from "react-select";
 import { customStyles } from "../components/ReactSelectStyles";
+import { useSelector } from "react-redux";
 
 function EditNewDirector() {
   const navigate = useNavigate();
@@ -2583,7 +2584,11 @@ function EditNewDirector() {
   ];
   const [allSelectedUserWebsites, setAllSelectedUserWebsites] = useState([]);
   const [selectedUserWebsitesPerAdmin, setSelectedUserWebsitesPerAdmin] = useState({});
-
+   const allCountries = useSelector ((item) => item?.allCountries);
+  const getLocationName = (locationId) => {
+    const country = allCountries.find((country) => country.id === locationId);
+    return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
+
   const validationSchema = Yup.object({
     totalCredit: Yup.string()
       .matches(/^\d+$/, "Only numbers are allowed")
@@ -50,6 +51,14 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
       console.log("Form Submitted", values);
     },
   });
+  // {
+  //   "currency": 107,
+  //  "oldCredit": 500,
+  //  "paidAmount": 500,
+  //  "totalCredit": 0,
+  //  "remarks": "dfgdfgdfg",
+  //  "parentPassword": "Owner&123"
+  //  }
   return (
     <Modal
       show={settleModalShow}
@@ -72,20 +81,10 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
             />
           </div>
         </div>
-        <div className="d-flex flex-between my-2">
-          <div className="black-br-btn px-2 py-2 br-5 small-font">
-            Admin - Brahma
-          </div>
-        </div>
-        <div className="d-flex flex-between my-1">
-          <div className="black-br-btn px-2 py-2 br-5 small-font">
-            User - Diamond Exchange - 5%
-          </div>
-        </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="row mt-3">
             <div className="col-6">
-              <label className="small-font">Total Credit</label>
+              <label className="small-font">Credit Limit</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"
@@ -102,7 +101,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
               )}
             </div>
             <div className="col-6">
-              <label className="small-font">Paid</label>
+              <label className="small-font">Credit Balance</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"
@@ -121,7 +120,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
           </div>
           <div className="row mt-2">
             <div className="col-6">
-              <label className="small-font">Bal. Credit</label>
+              <label className="small-font">Due Credit Balance</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"

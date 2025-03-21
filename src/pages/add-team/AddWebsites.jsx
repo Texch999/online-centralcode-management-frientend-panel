@@ -113,6 +113,7 @@ const AddWibsites = () => {
       width: "10%",
     },
   ];
+  
   const getLocationName = (locationId) => {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
