@@ -189,8 +189,7 @@ const OfflineDepositWithdrawPopup = ({
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
-                        </div>
-
+                        </div>      
                         <div className="col mb-2">
                             <label className="small-font mb-1">
                                 Paid Amount </label>
