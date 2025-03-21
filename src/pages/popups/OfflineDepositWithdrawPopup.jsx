@@ -88,16 +88,16 @@ const OfflineDepositWithdrawPopup = ({
             });
     };
 
+    console.log(selectedDetails, "==>selectedDetails")
+
     const afterPay = selectedDetails?.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
     return (
         <div>
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
-                    <div className="d-flex justify-content-between align-items-start mb-2">
-
-                        <div>
-                            <div className=" fw-600 mb-0 green-font text-size input-bg px-2 rounded">{actionType == "DEPOSIT" ? "Deposit" : "Withdraw"}</div>
-                        </div>
+                    <div className="d-flex justify-content-center align-items-start mb-2">
+                        <div>{` `}</div>
+                        <div className=" fw-600 mb-0 green-font text-center text-size px-2 rounded">{`Deposit (Manual & Credit)`}</div>
                         <div>
                             <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositWithdrawPopup(false)} />
                         </div>

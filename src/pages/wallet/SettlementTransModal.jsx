@@ -1,32 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoClose } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { creditSettlements, getSettlementSummeryById } from "../../api/apiMethods";
+const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDirSAId, getApi }) => {
+  const [settleDetails, setSettleDetails] = useState({})
+  const [netCreditBalance, setNetCreditBalance] = useState(settleDetails?.creditBalance);
+  const GetAllDirectors = (id) => {
+    getSettlementSummeryById(id)
+      .then((response) => {
+        if (response?.message) {
+          const data = response?.message
+          setSettleDetails(...data);
+          console.log(...data, "==>...data")
+        } else {
+          console.error("Something Went Wrong");
+        }
+      })
+      .catch((error) => {
+        console.error(error?.message || "Failed to fetch directors");
+      });
+  };
 
-const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
+  useEffect(() => {
+    GetAllDirectors(selectedDirSAId)
+  }, [selectedDirSAId]);
 
   const validationSchema = Yup.object({
-    totalCredit: Yup.string()
-      .matches(/^\d+$/, "Only numbers are allowed")
-      .required("Total Credit is required"),
-    paid: Yup.string()
-      .matches(/^\d+$/, "Only numbers are allowed")
-      .required("Paid amount is required"), 
-    balanceCredit: Yup.string()
-      .matches(/^\d+$/, "Only numbers are allowed")
-      .required("Balance Credit is required"),
-    netBalCredit: Yup.string()
-      .matches(/^\d+$/, "Only numbers are allowed")
-      .required("Balance Credit is required"),
     enterPaidAmount: Yup.number()
-    .typeError("Only numbers (0-999) are allowed")
-    .min(0, "Amount must be at least 0")
-    .max(999, "Amount cannot be more than 999")
-    .required("Enter Paid Amount is required"),
+      .typeError("Only numbers (0-9) are allowed")
+      .min(0, "Amount must be at least 0")
+      .max(settleDetails?.creditBalance, `Amount cannot be more than ${settleDetails?.creditBalance}`)
+      .required("Enter Paid Amount is required"),
     password: Yup.string()
       .matches(
-        /^[a-zA-Z0-9]{6,15}$/,
+        /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,36}$/,
         "Password must be 6-36 alphanumeric characters"
       )
       .required("Password is required"),
@@ -38,27 +47,42 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
 
   const formik = useFormik({
     initialValues: {
-      totalCredit: "",
-      paid: "",
-      balanceCredit: "",
-      netBalCredit: "",
       enterPaidAmount: "",
       password: "",
       remarks: "",
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("Form Submitted", values);
+      const oldCredit = settleDetails?.creditBalance;
+      const paidAmount = parseFloat(values.enterPaidAmount);
+      const totalCredit = oldCredit - paidAmount;
+
+      const payload = {
+        currency: settleDetails?.currencyId,
+        oldCredit: oldCredit,
+        paidAmount: paidAmount || 0,
+        totalCredit: totalCredit,
+        remarks: values.remarks,
+        parentPassword: values.password,
+      };
+
+      creditSettlements(selectedDirSAId, payload)
+        .then((response) => {
+          setSettleModalShow(false)
+          getApi()
+        })
+        .catch((error) => {
+          console.error("Failed to submit settlement:", error);
+        });
     },
+
   });
-  // {
-  //   "currency": 107,
-  //  "oldCredit": 500,
-  //  "paidAmount": 500,
-  //  "totalCredit": 0,
-  //  "remarks": "dfgdfgdfg",
-  //  "parentPassword": "Owner&123"
-  //  }
+
+  React.useEffect(() => {
+    const paidAmount = parseFloat(formik.values.enterPaidAmount) || 0;
+    setNetCreditBalance(settleDetails?.creditBalance > 0 ? settleDetails?.creditBalance - paidAmount : 0);
+  }, [formik.values.enterPaidAmount, settleDetails?.creditBalance]);
+
   return (
     <Modal
       show={settleModalShow}
@@ -67,74 +91,56 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
     >
       <div className="white-bg p-4 br-10">
         <div className="d-flex flex-between align-items-center">
-          <div className="black-br-btn px-2 py-2 br-5 small-font">
-            Director - Abhi
-          </div>
           <div className="d-flex gap-3 align-items-center">
             <div className="green-font fw-bold light-bg br-5 medium-font px-3 py-2">
               Settlement
             </div>
-            <IoClose
-              size={24}
-              className="pointer"
-              onClick={() => setSettleModalShow(false)}
-            />
           </div>
+          <IoClose
+            size={24}
+            className="pointer"
+            onClick={() => setSettleModalShow(false)}
+          />
         </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="row mt-3">
             <div className="col-6">
-              <label className="small-font">Credit Limit</label>
+              <label className="small-font">Total Credit </label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"
                   placeholder="1000"
                   className="all-none small-font"
-                  {...formik.getFieldProps("totalCredit")}
+                  value={settleDetails?.totalCredit}
                   readOnly
                 />
               </div>
-              {formik.touched.totalCredit && formik.errors.totalCredit && (
-                <div className="text-danger small-font">
-                  {formik.errors.totalCredit}
-                </div>
-              )}
             </div>
             <div className="col-6">
-              <label className="small-font">Credit Balance</label>
+              <label className="small-font">Paid</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"
                   placeholder="1000"
                   className="all-none small-font"
-                  {...formik.getFieldProps("paid")}
+                  value={settleDetails?.settledCredit}
                   readOnly
                 />
               </div>
-              {formik.touched.paid && formik.errors.paid && (
-                <div className="text-danger small-font">
-                  {formik.errors.paid}
-                </div>
-              )}
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-6">
-              <label className="small-font">Due Credit Balance</label>
+              <label className="small-font">Bal Credit</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"
                   placeholder="1000"
-                  className="all-none red-font small-font small-font"
-                  {...formik.getFieldProps("balanceCredit")}
+                  className="all-none red-font small-font"
+                  value={settleDetails?.creditBalance}
                   readOnly
                 />
               </div>
-              {formik.touched.balanceCredit && formik.errors.balanceCredit && (
-                <div className="text-danger small-font">
-                  {formik.errors.balanceCredit}
-                </div>
-              )}
             </div>
             <div className="col-6">
               <label className="small-font">Enter Paid Amount</label>
@@ -144,7 +150,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
                   placeholder="1000"
                   className="all-none small-font w-100"
                   min="0"
-                  max="3"
+                  max="999"
                   {...formik.getFieldProps("enterPaidAmount")}
                 />
               </div>
@@ -156,25 +162,20 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
                 )}
             </div>
           </div>
-
-          <div className="col-12 mt-2 flex-column d-flex">
+          <div className="col-12">
             <label className="small-font">Net Credit Bal.</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
               <input
-                type="text"
+                type="number"
                 placeholder="1000"
-                className="all-none small-font small-font"
-                {...formik.getFieldProps("netBalCredit")}
+                className="all-none small-font w-100"
+                min={0}
+                max={settleDetails?.creditBalance}
+                value={netCreditBalance}
                 readOnly
               />
             </div>
-            {formik.touched.netBalCredit && formik.errors.netBalCredit && (
-              <div className="text-danger small-font">
-                {formik.errors.netBalCredit}
-              </div>
-            )}
           </div>
-
           <div className="col-12 flex-column mt-2 d-flex">
             <label className="small-font">Remarks</label>
             <div className="light-bg br-5 mt-1 px-2 py-2">
@@ -214,7 +215,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow }) => {
                 type="submit"
                 className="saffron-btn br-5 px-4 pointer small-font"
               >
-                submit
+                Submit
               </button>
             </div>
           </div>

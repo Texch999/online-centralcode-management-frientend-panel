@@ -25,6 +25,7 @@ import { BiTransfer } from "react-icons/bi";
 import { useSelector } from "react-redux";
 
 const AddDirectorAdmin = () => {
+
   const role = localStorage.getItem("role_code");
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
@@ -38,26 +39,28 @@ const AddDirectorAdmin = () => {
   const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
   const navigate = useNavigate();
+  const itemsPerPage = 7;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] = useState(null);
+  const [resetPasswordErrrors, setResetPasswordErrors] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleResetPasswordOpen = (id) => {
     setSelectedDirectorId(id);
     setSelectedSuperAdminId(id);
     setResetPasswordPopup(true);
   };
-  const itemsPerPage = 7;
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(page);
+
   const handleResetPasswordClose = () => {
     setResetPasswordPopup(false);
   };
-  const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
-  const [totalRecords, setTotalRecords] = useState(null);
-  const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] =
-    useState(null);
-  const [resetPasswordErrrors, setResetPasswordErrors] = useState(null);
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [discription, setDiscription] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+
   const filteredData = tableData?.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -151,7 +154,7 @@ const AddDirectorAdmin = () => {
     } else if (role === "management") {
       GetAllDirectors(limit, offset);
     }
-  }, [role]); // Runs when role changes
+  }, [role]); 
 
   const onDirectorResetPassword = (data) => {
     if (!selectedDirectorId) {
@@ -292,10 +295,10 @@ const AddDirectorAdmin = () => {
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
-            onClick={()=>navigate("/downline-transaction-history")}
-            // onClick={() =>
-            //   user.status !== 2 && handleResetPasswordOpen(user.id)
-            // }
+            onClick={() => navigate("/downline-transaction-history")}
+          // onClick={() =>
+          //   user.status !== 2 && handleResetPasswordOpen(user.id)
+          // }
           />
           <BsEye
             size={20}

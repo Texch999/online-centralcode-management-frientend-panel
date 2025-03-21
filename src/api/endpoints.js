@@ -792,17 +792,27 @@ const endpoints = {
     // url:(id,...params)=>`/user/${userID()}/offlineDeposits/directors/${id}/websites?${query}
     // adminPanId=1&userPanId=2`
   },
+
   getSettlementTransactionById: {
     method: "get",
     url: (params) => {
       const { userId } = params;
       const query = new URLSearchParams(params.params).toString();
       return `/user/${userID()}/director/${userId}/settlements?${query}`;
-    },
-
-    // url:(id,...params)=>`/user/${userID()}/offlineDeposits/directors/${id}/websites?${query}
-    // adminPanId=1&userPanId=2`
+    }
   },
+
+  creditSettlements: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/director/${id}/settleCredit`,
+  },
+
+  getSettlementSummeryById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/${id}/accountsSummery`,
+  },
+  // http://localhost:9001/rest2/0.1/user/1/director/45621125/accountsSummery
 };
 
 export default endpoints;
