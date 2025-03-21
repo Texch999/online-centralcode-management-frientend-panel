@@ -107,6 +107,7 @@ import SettlementTransaction from "./pages/wallet/SettlementTransaction";
 import OfflineDW from "./pages/wallet/OfflineDW";
 import OfflineDWUser from "./pages/wallet/OfflineDWUser";
 import DirectorSuperAdminaccessedWebsites from "./pages/add-team/DirectorSuperAdminaccessedWebsites";
+import DwnlineTransactionHistory from "./pages/add-team/DwnlineTransactionHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -355,6 +356,10 @@ function App() {
                 <Route
                   path="/dir-sa-websites-details"
                   element={<DirectorSuperAdminaccessedWebsites />}
+                />
+                <Route
+                  path="/downline-transaction-history"
+                  element={<DwnlineTransactionHistory />}
                 />
               </Routes>
             </div>
