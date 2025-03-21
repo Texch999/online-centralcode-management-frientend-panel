@@ -239,7 +239,7 @@ const GameControl = () => {
           </div>
         </div>
 
-        <div>
+        <div className="mt-2">
         
           <div className="row small-font align-items-center">
 
@@ -248,7 +248,7 @@ const GameControl = () => {
             <div className="col-6">
               <div className="input-bg d-flex br-5 py-2 px-2 flex-between">
                 <input
-                  className="all-none"
+                  className="all-none w-100"
                   type={pswdVisible ? "text" : "password"}
                   placeholder="Enter Password"
                 />
