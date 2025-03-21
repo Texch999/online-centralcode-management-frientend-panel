@@ -268,6 +268,7 @@ const AddDirectorAdmin = () => {
               style={{ color: "#fff", background: "#18B962" }} onClick={() => onHandleDW("DEPOSIT", user)}>D</div>
             <div className="rust-red-btn px-3 py-2 rounded pointer" onClick={() => onHandleDW("WITHDRAW", user)}>W </div>
           </div>
+        
           <SlPencil
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
