@@ -448,7 +448,9 @@ function AddNewDirectorSuperAdmin() {
       finalData.depositType = 1;
     } else {
       finalData.depositType = 2;
-      finalData.offDepositAmount = addDepositChips ? parseFloat(addDepositChips) : 0;
+      finalData.offDepositAmount = addDepositChips
+        ? parseFloat(addDepositChips)
+        : 0;
     }
 
     createDirector(finalData)
@@ -1494,41 +1496,94 @@ function AddNewDirectorSuperAdmin() {
                               <div className="col d-flex">
                                 <div className="col-2 position-relative mx-1 mt-2">
                                   <label className="fw-600 my-1 small-font">
-                                    Downline Share 
+                                    Downline Share
                                   </label>
                                   <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
-                                  <input
-  type="text"
-  className="small-font bg-none all-none w-50"
-  onChange={(e) => {
-    let value = e.target.value;
+                                    <input
+                                      type="text"
+                                      className="small-font bg-none all-none w-50"
+                                      onChange={(e) => {
+                                        let value = e.target.value;
 
-    // Allow only numbers
-    if (/^\d*$/.test(value)) {
-      // Prevent input beyond 2 digits, except for 100
-      if (value.length <= 2 || value === "100") {
-        handleInputChange(form.id, selectedSiteIds[form.id], "share", value);
-      } else {
-        e.target.value = value.slice(0, 2); // Trim input beyond 2 digits
-      }
-    } else {
-      e.target.value = value.replace(/\D/g, ""); // Remove non-numeric characters
-    }
-  }}
-  onBlur={(e) => {
-    let numericValue = parseInt(e.target.value, 10);
+                                        // Allow only numeric input
+                                        if (/^\d*$/.test(value)) {
+                                          // Handle values within range and length
+                                          if (value === "100") {
+                                            // Allow 100 as a valid input
+                                            handleInputChange(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "share",
+                                              value
+                                            );
+                                          }
+                                          // For values less than 100, allow max 2 digits only
+                                          else if (value.length <= 2) {
+                                            handleInputChange(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "share",
+                                              value
+                                            );
+                                          }
+                                          // Prevent entering a 3rd digit after 2 valid digits
+                                          else {
+                                            // Stop input and show error if trying to enter 3rd digit
+                                            setValidationErrors(
+                                              (prevErrors) => ({
+                                                ...prevErrors,
+                                                [form.id]: {
+                                                  ...prevErrors[form.id],
+                                                  [selectedSiteIds[form.id]]: {
+                                                    ...prevErrors[form.id]?.[
+                                                      selectedSiteIds[form.id]
+                                                    ],
+                                                    share:
+                                                      "Value less than 100 !",
+                                                  },
+                                                },
+                                              })
+                                            );
 
-    // Ensure value is within range
-    if (isNaN(numericValue) || numericValue < 0) {
-      e.target.value = "0";
-    } else if (numericValue > 100) {
-      e.target.value = "100";
-    }
+                                            // Trim input to first 2 digits
+                                            e.target.value = value.slice(0, 2);
+                                          }
+                                        }
+                                        // Remove non-numeric characters
+                                        else {
+                                          e.target.value = value.replace(
+                                            /\D/g,
+                                            ""
+                                          );
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        let numericValue = parseInt(
+                                          e.target.value,
+                                          10
+                                        );
 
-    handleInputChange(form.id, selectedSiteIds[form.id], "share", e.target.value);
-  }}
-/>
+                                        // Handle invalid or empty value -> reset to 0
+                                        if (
+                                          isNaN(numericValue) ||
+                                          numericValue < 0
+                                        ) {
+                                          e.target.value = "0";
+                                        }
+                                        // Handle values greater than 100
+                                        else if (numericValue > 100) {
+                                          e.target.value = "100";
+                                        }
 
+                                        // Final update to state after onBlur
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "share",
+                                          e.target.value
+                                        );
+                                      }}
+                                    />
 
                                     {/* <span className="small-font text-center px-1 white-space yellow-bg py-2 br-right fw-600">
                                           <div className="fw-600">
@@ -1554,33 +1609,86 @@ function AddNewDirectorSuperAdmin() {
                                     Downline Commission
                                   </label>
                                   <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                  <input
-  type="number"
-  className="small-font bg-none all-none w-50"
-  onChange={(e) => {
-    let value = e.target.value;
+                                    <input
+                                      type="number"
+                                      className="small-font bg-none all-none w-50"
+                                      onChange={(e) => {
+                                        let value = e.target.value;
 
-    // Allow only numbers between 0 and 5
-    if (value === "" || (parseInt(value) >= 0 && parseInt(value) <= 5)) {
-      handleInputChange(form.id, selectedSiteIds[form.id], "downline_comm", value);
-    } else {
-      e.target.value = Math.min(Math.max(parseInt(value), 0), 5); // Auto-correct invalid input
-    }
-  }}
-  onBlur={(e) => {
-    // Ensure value is within range on blur
-    let numericValue = parseInt(e.target.value, 10);
+                                        // Allow only numbers between 0 and 5
+                                        if (
+                                          value === "" ||
+                                          (parseInt(value) >= 0 &&
+                                            parseInt(value) <= 5)
+                                        ) {
+                                          // Clear errors and update value in state
+                                          setValidationErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            [form.id]: {
+                                              ...prevErrors[form.id],
+                                              [selectedSiteIds[form.id]]: {
+                                                ...prevErrors[form.id]?.[
+                                                  selectedSiteIds[form.id]
+                                                ],
+                                                downline_comm: "", // Clear error if valid
+                                              },
+                                            },
+                                          }));
+                                          handleInputChange(
+                                            form.id,
+                                            selectedSiteIds[form.id],
+                                            "downline_comm",
+                                            value
+                                          );
+                                        }
+                                        // Handle invalid input (value > 5)
+                                        else {
+                                          setValidationErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            [form.id]: {
+                                              ...prevErrors[form.id],
+                                              [selectedSiteIds[form.id]]: {
+                                                ...prevErrors[form.id]?.[
+                                                  selectedSiteIds[form.id]
+                                                ],
+                                                downline_comm:
+                                                  "Value less than 5%", // Show error
+                                              },
+                                            },
+                                          }));
 
-    if (isNaN(numericValue) || numericValue < 0) {
-      e.target.value = "0";
-    } else if (numericValue > 5) {
-      e.target.value = "5";
-    }
+                                          // Auto-correct value to 5
+                                          e.target.value = Math.min(
+                                            Math.max(parseInt(value), 0),
+                                            5
+                                          );
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        let numericValue = parseInt(
+                                          e.target.value,
+                                          10
+                                        );
 
-    handleInputChange(form.id, selectedSiteIds[form.id], "downline_comm", e.target.value);
-  }}
-/>
+                                        // Ensure value is valid on blur
+                                        if (
+                                          isNaN(numericValue) ||
+                                          numericValue < 0
+                                        ) {
+                                          e.target.value = "0";
+                                        } else if (numericValue > 5) {
+                                          e.target.value = "5";
+                                        }
 
+                                        // Final value update onBlur
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "downline_comm",
+                                          e.target.value
+                                        );
+                                      }}
+                                    />
                                   </div>
                                   {renderErrorMessage(
                                     form.id,
