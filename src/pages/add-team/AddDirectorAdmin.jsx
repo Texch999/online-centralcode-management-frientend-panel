@@ -249,7 +249,7 @@ const AddDirectorAdmin = () => {
     return {
       role: <div className="d-flex flex-row">
         <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Dir" : "SA"}</span> </div>
-        <div className="me-2" > <span className="role-bg p-1"><IoPersonCircle /></span> </div>
+        <div className="me-2 pointer"  onClick={() => handleNavigateUserDashboard(user?.id)}> <span className="role-bg p-1"><IoPersonCircle size={16} /></span> </div>
         <div className="d-lex flex-column">
           <div className="text-capitalize">{user.name}</div>
           <div>{getLocationName(user.county)}</div>

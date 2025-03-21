@@ -123,8 +123,6 @@ const AddWibsites = () => {
     admin: (
       <div>
         {" "}
-        {/* {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
-          } `} */}
         {`${website?.panel_type === 1 ? "Admin" : "User"
           } `}
       </div>

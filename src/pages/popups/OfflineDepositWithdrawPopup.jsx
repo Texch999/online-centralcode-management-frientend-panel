@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
 import SuccessPopup from "./SuccessPopup";
+import { useSelector } from "react-redux";
 
 const OfflineDepositWithdrawPopup = ({
     actionType,
@@ -12,6 +13,7 @@ const OfflineDepositWithdrawPopup = ({
     setDepositWithdrawPopup
 }) => {
 
+    const allCountries = useSelector((item) => item?.allCountries);
     const [errors, setErrors] = useState({});
     const [directorCurrency, setDirectorCurrency] = useState("")
     const [paidAmount, setPaidAmount] = useState("")
@@ -45,7 +47,10 @@ const OfflineDepositWithdrawPopup = ({
         return Object.keys(newErrors).length === 0;
     };
 
-
+    const getCurrency = (id) => {
+        const country = allCountries.find((item) => item.id === id);
+        return country?.currency_name
+    };
 
     const handleSubmit = (siteData) => {
         if (!validateForm(siteData)) return;
@@ -115,9 +120,11 @@ const OfflineDepositWithdrawPopup = ({
                             )}
                         </div>
                     )}
-                    <hr />
-                    <div className="row ">
+
+                    <div className="col w-100 small-font rounded input-css all-none white-bg input-border">
+                        Brahma - SA - Vignesh1993 - India - 10%
                     </div>
+
                     <div className="row">
                         <div className="col mb-2">
                             <label className="small-font mb-1">Old Credit Balance</label>
@@ -131,7 +138,7 @@ const OfflineDepositWithdrawPopup = ({
                             />
                         </div>
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Enter {`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"}`} Chips - {directorCurrency?.currencyName}</label>
+                            <label className="small-font mb-1">New Credit Deposit</label>
                             <input
                                 type="tet"
                                 name="selectedChips"
@@ -149,7 +156,23 @@ const OfflineDepositWithdrawPopup = ({
                     </div>
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Paid Amount - {directorCurrency?.currencyName}</label>
+                            <label className="small-font mb-1">Enter Paid Amount </label>
+                            <input
+                                type="tet"
+                                name="selectedChips"
+                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                placeholder="Enter Chips"
+                                value={selectedChips}
+                                onChange={(e) => {
+                                    setSelectedChips(e.target.value)
+                                    setPaidAmount(e.target.value)
+                                }}
+                            />
+                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Paid Amount </label>
                             <input
                                 type="text"
                                 name="paidAmount"
@@ -165,7 +188,7 @@ const OfflineDepositWithdrawPopup = ({
 
                         <div className="col mb-2">
                             <label className="small-font mb-1">
-                                Credit Amount -  {directorCurrency?.currencyName}</label>
+                                Credit Amount -  {getCurrency(selectedDetails.currId)} </label>
                             <input
                                 type="number"
                                 className="w-100 small-font rounded input-css all-none white-bg input-border"
