@@ -94,7 +94,6 @@ const OfflineDepositWithdrawPopup = ({
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
                     <div className="d-flex justify-content-between align-items-start mb-2">
-
                         <div>
                             <div className=" fw-600 mb-0 green-font text-size input-bg px-2 rounded">{actionType == "DEPOSIT" ? "Deposit" : "Withdraw"}</div>
                         </div>
@@ -161,8 +160,7 @@ const OfflineDepositWithdrawPopup = ({
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
-                        </div>
-
+                        </div>      
                         <div className="col mb-2">
                             <label className="small-font mb-1">
                                 Credit Amount -  {directorCurrency?.currencyName}</label>
