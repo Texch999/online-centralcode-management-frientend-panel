@@ -100,11 +100,11 @@ const OfflineDepositWithdrawPopup = ({
     const handlePaidAmountChange = (e) => {
         const value = e.target.value;
 
-        // Ensure the value does not exceed 12000
         if (Number(value) <= Number(paidAmount)) {
             setFinalPaidAmount(value);
         }
     };
+    
     return (
         <div>
             <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
