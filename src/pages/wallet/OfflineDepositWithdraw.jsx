@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { rceil } from "../../utils/mathFunctions";
 import SuccessPopup from "../popups/SuccessPopup";
 import { useSearchParams } from "react-router-dom";
-import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
+import OfflineDepositPopup from "../popups/OfflineDepositPopup";
 
 function OfflineDepositWithdraw() {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
@@ -430,7 +430,7 @@ function OfflineDepositWithdraw() {
           discription={discription}
         />
       )}
-      <OfflineDepositWithdrawPopup
+      <OfflineDepositPopup
         actionType={actionType}
         depositWithdrawPopup={depositWithdrawPopup}
         selectedDetails={selectedDetails}

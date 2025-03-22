@@ -143,10 +143,6 @@ const RecentAccessIp = () => {
   }));
 
   useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
     const limit = itemsPerPage
     const offset = (currentPage - 1) * itemsPerPage
     if (userRole === "director") {

@@ -79,10 +79,6 @@ const WithdrawPopup = ({
     };
 
     useEffect(() => {
-        if (isInitialRender.current) {
-            isInitialRender.current = false;
-            return;
-        }
         getDirectorAccessedWebistesList();
         getDirectorSitesList();
     }, []);

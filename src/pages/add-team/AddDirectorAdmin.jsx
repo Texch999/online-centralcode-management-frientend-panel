@@ -11,7 +11,6 @@ import { IoPersonCircle } from "react-icons/io5";
 import {
   blockDirector,
   getDirectorDwnList,
-  getDirectors,
   getOfflineDWDirectors,
   resetDirectorPassword,
   resetSuperAdminPassword,
@@ -20,11 +19,14 @@ import {
 import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
 import SuccessPopup from "../popups/SuccessPopup";
-import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
+import OfflineDepositPopup from "../popups/OfflineDepositPopup";
 import { BiTransfer } from "react-icons/bi";
 import { useSelector } from "react-redux";
+import OfflineWithdrawPopup from "../popups/OfflineWithdrawPopup";
+import { Images } from "../../images/index";
 
 const AddDirectorAdmin = () => {
+
   const role = localStorage.getItem("role_code");
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [confirmationPopup, setConfirmationPopup] = useState(false);
@@ -32,32 +34,34 @@ const AddDirectorAdmin = () => {
   const [selectedSuperAdminId, setSelectedSuperAdminId] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [tableSuperAdminData, setTableSuperAdminData] = useState([]);
-  const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
+  const [depositPopup, setDepositPopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const [actionType, setActionType] = useState("Deposit");
   const [selectedDetails, setSelectedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
   const navigate = useNavigate();
+  const itemsPerPage = 7;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
+  const [totalRecords, setTotalRecords] = useState(null);
+  const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] = useState(null);
+  const [resetPasswordErrrors, setResetPasswordErrors] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleResetPasswordOpen = (id) => {
     setSelectedDirectorId(id);
     setSelectedSuperAdminId(id);
     setResetPasswordPopup(true);
   };
-  const itemsPerPage = 7;
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(page);
+
   const handleResetPasswordClose = () => {
     setResetPasswordPopup(false);
   };
-  const [selectedDirectorStatus, setSelectedDirectorStatus] = useState(null);
-  const [totalRecords, setTotalRecords] = useState(null);
-  const [selectedSuperAdminStatus, setSelectedSuperAdminStatus] =
-    useState(null);
-  const [resetPasswordErrrors, setResetPasswordErrors] = useState(null);
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  const [discription, setDiscription] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+
   const filteredData = tableData?.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -81,6 +85,7 @@ const AddDirectorAdmin = () => {
   const handleNavigateUserDashboard = (id) => {
     navigate(`/user-profile-dashboard/${id}`);
   };
+
   const getLocationName = (locationId) => {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
@@ -103,6 +108,7 @@ const AddDirectorAdmin = () => {
       width: "8%",
     },
   ];
+
   const GetAllSuperAdmin = (limit, offset) => {
     getDirectorDwnList({ limit, offset })
       .then((response) => {
@@ -151,7 +157,7 @@ const AddDirectorAdmin = () => {
     } else if (role === "management") {
       GetAllDirectors(limit, offset);
     }
-  }, [role]); // Runs when role changes
+  }, [role]);
 
   const onDirectorResetPassword = (data) => {
     if (!selectedDirectorId) {
@@ -238,15 +244,19 @@ const AddDirectorAdmin = () => {
 
   const onHandleDW = (action, data) => {
     setSelectedDetails(data)
-    setDepositWithdrawPopup(true)
     setActionType(action)
+    if (action == "DEPOSIT") {
+      setDepositPopup(true);
+    } else {
+      setWithdrawPopup(true);
+    }
   }
-  const TableData = filteredData?.map((user) => {
 
+  const TableData = filteredData?.map((user) => {
     return {
       role: <div className="d-flex flex-row">
         <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Dir" : "SA"}</span> </div>
-        <div className="me-2" > <span className="role-bg p-1"><IoPersonCircle /></span> </div>
+        <div className="me-2 pointer" onClick={() => handleNavigateUserDashboard(user?.id)}> <span className="role-bg p-1"><IoPersonCircle size={16} /></span> </div>
         <div className="d-lex flex-column">
           <div className="text-capitalize">{user.name}</div>
           <div>{getLocationName(user.county)}</div>
@@ -268,7 +278,7 @@ const AddDirectorAdmin = () => {
               style={{ color: "#fff", background: "#18B962" }} onClick={() => onHandleDW("DEPOSIT", user)}>D</div>
             <div className="rust-red-btn px-3 py-2 rounded pointer" onClick={() => onHandleDW("WITHDRAW", user)}>W </div>
           </div>
-        
+
           <SlPencil
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
@@ -293,10 +303,7 @@ const AddDirectorAdmin = () => {
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
-            onClick={()=>navigate("/downline-transaction-history")}
-            // onClick={() =>
-            //   user.status !== 2 && handleResetPasswordOpen(user.id)
-            // }
+            onClick={() => navigate("/downline-transaction-history")}
           />
           <BsEye
             size={20}
@@ -430,6 +437,107 @@ const AddDirectorAdmin = () => {
       GetAllSuperAdmin(limit, offset);
     }
   };
+
+  const Card = ({
+    title,
+    backgroundColor,
+    value,
+    icon,
+    bootstrapClassesTop,
+    bootstrapClassesBottom,
+  }) => {
+    return (
+      <div className="mini-container bg-white stats-border">
+        <div
+          className={`top-section rounded-top d-flex justify-content-between align-items-center ${bootstrapClassesTop}`}
+          style={{ backgroundColor: backgroundColor }}
+        >
+          <h6 className="mb-0 text-white small-font">{title}</h6>
+          {icon}
+        </div>
+        <p className={`medium-font fw-600 ${bootstrapClassesBottom}`}>
+          {value}
+        </p>
+      </div>
+    );
+  };
+
+  const cardData = [
+      {
+        title:"Deposits",
+        backgroundColor: "#7DA0FA",
+        value: "500000000",
+        icon: (
+          <img
+            src={Images.adminProfileShareRevenue}
+            alt="ShareRevenue"
+            className="chat-img"
+          />
+        ),
+        bootstrapClassesTop: "downline-list-card-top",
+        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+        color:"#18B962"
+      },
+      {
+        title: "Withdraw",
+        backgroundColor: "#7DA0FA",
+        value: "500000000",
+        icon: (
+          <img
+            src={Images.adminProfileShareRevenue}
+            alt="ShareRevenue"
+            className="chat-img"
+          />
+        ),
+        bootstrapClassesTop: "downline-list-card-top",
+        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+        color:"#d0431c"
+
+      },
+      {
+        title: "D-W",
+        backgroundColor: "#7DA0FA",
+        value: "0.00",
+        icon: (
+          <img
+            src={Images.adminProfileShareRevenue}
+            alt="ShareRevenue"
+            className="chat-img"
+          />
+        ),
+        bootstrapClassesTop: "downline-list-card-top",
+        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      },
+      {
+        title: "Profit/Loss (S/R)",
+        backgroundColor: "#7DA0FA",
+        value: "300000000",
+        icon: (
+          <img
+            src={Images.adminProfileShareRevenue}
+            alt="ShareRevenue"
+            className="chat-img"
+          />
+        ),
+        bootstrapClassesTop: "downline-list-card-top",
+        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      },
+      {
+        title: "Net Profit/Loss",
+        backgroundColor: "#7DA0FA",
+        value: "300000000",
+        icon: (
+          <img
+            src={Images.adminProfileShareRevenue}
+            alt="ShareRevenue"
+            className="chat-img"
+          />
+        ),
+        bootstrapClassesTop: "downline-list-card-top",
+        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      },
+    ];
+
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -461,6 +569,25 @@ const AddDirectorAdmin = () => {
             <FaPlus className="me-2" />
             Add New
           </button>
+        </div>
+      </div>
+      <div className="row ps-2 gap-1 mb-4">
+        <div className="col-12">
+          <div className="row">
+            {cardData.map((card, index) => (
+              <div className="col-2 px-1" key={index}>
+                <Card
+                  title={card.title}
+                  backgroundColor={card.backgroundColor}
+                  value={card.value}
+                  valueClass={card.valueClass}
+                  icon={card.icon}
+                  bootstrapClassesTop={card.bootstrapClassesTop}
+                  bootstrapClassesBottom={card.bootstrapClassesBottom}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -554,12 +681,19 @@ const AddDirectorAdmin = () => {
 
         // selectedSuperAdminStatus
       )}
-      {depositWithdrawPopup && (
-        <OfflineDepositWithdrawPopup
+      {depositPopup && (
+        <OfflineDepositPopup
           actionType={actionType}
-          depositWithdrawPopup={depositWithdrawPopup}
+          depositPopup={depositPopup}
           selectedDetails={selectedDetails}
-          setDepositWithdrawPopup={setDepositWithdrawPopup}
+          setDepositPopup={setDepositPopup}
+        />
+      )}
+      {withdrawPopup && (
+        <OfflineWithdrawPopup
+          withdrawPopup={withdrawPopup}
+          selectedDetails={selectedDetails}
+          setWithdrawPopup={setWithdrawPopup}
         />
       )}
 
