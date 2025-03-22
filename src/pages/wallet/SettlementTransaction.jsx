@@ -4,8 +4,13 @@ import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import Table from "../../components/Table";
 import SettlementTransModal from "./SettlementTransModal";
-import { getOfflineDWDirectors, getSettlementTransactionById } from "../../api/apiMethods";
-import { useSearchParams } from "react-router-dom";
+import {
+  getOfflineDWDirectors,
+  getSettlementTransactionById,
+} from "../../api/apiMethods";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const SettlementTransaction = () => {
   const role = localStorage.getItem("role_code");
@@ -53,7 +58,13 @@ const SettlementTransaction = () => {
   };
 
   // Fetch settlement transactions
-  const getSettleTransaction = (limit, offset, selectType, startDate, endDate) => {
+  const getSettleTransaction = (
+    limit,
+    offset,
+    selectType,
+    startDate,
+    endDate
+  ) => {
     if (!selectedAdminId?.value) return;
 
     const userId = selectedAdminId.value;
@@ -151,7 +162,10 @@ const SettlementTransaction = () => {
   // Handle settlement button click
   const hanldeSettlement = () => {
     if (!selectedAdminId?.value) {
-      setErrors((prev) => ({ ...prev, selectedAdminId: "Please select an admin." }));
+      setErrors((prev) => ({
+        ...prev,
+        selectedAdminId: "Please select an admin.",
+      }));
       return;
     }
     setSettleModalShow(true);
@@ -198,15 +212,20 @@ const SettlementTransaction = () => {
 
   return (
     <div>
-      <div className="flex-start mb-3 mt-2">
+      <div className="flex-between mb-3 mt-2 align-items-center">
         <h6 className="d-flex yellow-font mb-0">
           <span>Settlement Transaction</span>
         </h6>
+        <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
+          <span className="Medium-font" style={{ color: "#fff" }} ><IoMdArrowRoundBack size={18} className="me-1" />Back</span>
+        </div>
       </div>
       <div className="d-flex flex-column gap-2">
         <div className="col-2">
           <div className="flex-column me-3">
-            <label className="black-text4 small-font mb-1">Select Admin Name</label>
+            <label className="black-text4 small-font mb-1">
+              Select Admin Name
+            </label>
             <Select
               className="small-font text-capitalize"
               options={downlines}
@@ -221,27 +240,52 @@ const SettlementTransaction = () => {
               }}
             />
             {errors.selectedAdminId && (
-              <div className="text-danger small-font">{errors.selectedAdminId}</div>
+              <div className="text-danger small-font">
+                {errors.selectedAdminId}
+              </div>
             )}
           </div>
         </div>
         <div className="row">
+          <div className="col-2">
+            <div className="flex-column me-3">
+              <label className="black-text4 small-font mb-1">
+                Select Admin Name
+              </label>
+              <Select
+                className="small-font text-capitalize"
+                options={downlines}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+                onChange={(option) => setSelectedAdminId(option)}
+              />
+            </div>
+          </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Total Credit</span>
-              <span className="small-font red-font">{totalCredit > 0 ? totalCredit : 0}</span>
+              <span className="small-font red-font">
+                {totalCredit > 0 ? totalCredit : 0}
+              </span>
             </div>
           </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Paid Credit</span>
-              <span className="small-font red-font">{settledCredit > 0 ? settledCredit : 0}</span>
+              <span className="small-font red-font">
+                {settledCredit > 0 ? settledCredit : 0}
+              </span>
             </div>
           </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Bal Credit</span>
-              <span className="small-font red-font">{creditBal > 0 ? creditBal : 0}</span>
+              <span className="small-font red-font">
+                {creditBal > 0 ? creditBal : 0}
+              </span>
             </div>
           </div>
           <div className="col-1"></div>
@@ -250,7 +294,9 @@ const SettlementTransaction = () => {
           <div className="col-10 d-flex flex-wrap align-items-center">
             <div className="col-2">
               <div className="d-flex flex-column me-3">
-                <label className="black-text4 small-font mb-1">Select Type</label>
+                <label className="black-text4 small-font mb-1">
+                  Select Type
+                </label>
                 <Select
                   className="small-font"
                   options={TrasactionType}
@@ -265,7 +311,9 @@ const SettlementTransaction = () => {
                   }}
                 />
                 {errors.selectedType && (
-                  <div className="text-danger small-font">{errors.selectedType}</div>
+                  <div className="text-danger small-font">
+                    {errors.selectedType}
+                  </div>
                 )}
               </div>
             </div>
@@ -287,7 +335,9 @@ const SettlementTransaction = () => {
                   }}
                 />
                 {label === "From" && errors.fromDate && (
-                  <div className="text-danger small-font">{errors.fromDate}</div>
+                  <div className="text-danger small-font">
+                    {errors.fromDate}
+                  </div>
                 )}
                 {label === "To" && errors.toDate && (
                   <div className="text-danger small-font">{errors.toDate}</div>
@@ -296,7 +346,10 @@ const SettlementTransaction = () => {
             ))}
 
             <div className="col-1 d-flex align-items-end align-self-end ms-3">
-              <button className="saffron-btn2 w-100 small-font" onClick={handleSubmit}>
+              <button
+                className="saffron-btn2 w-100 small-font"
+                onClick={handleSubmit}
+              >
                 Submit
               </button>
             </div>
@@ -306,7 +359,9 @@ const SettlementTransaction = () => {
             <div
               className="white-bg br-5 px-2 py-2 text-center small-font black-border pointer"
               onClick={hanldeSettlement}
-            >Settlement</div>
+            >
+              Settlement
+            </div>
           </div>
         </div>
       </div>

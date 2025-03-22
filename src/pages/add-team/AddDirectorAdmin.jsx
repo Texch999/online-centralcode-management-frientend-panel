@@ -66,7 +66,7 @@ const AddDirectorAdmin = () => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleBlockUserOpen = ( id) => {
+  const handleBlockUserOpen = (id) => {
     const director = tableData.find((user) => user.id === id);
     if (director) {
       setSelectedDirectorId(id);
@@ -216,6 +216,7 @@ const AddDirectorAdmin = () => {
         setResetPasswordErrors(error?.message || "Request failed");
       });
   };
+
   const blockUnblock = () => {
     blockDirector(selectedDirectorId)
       .then((response) => {
@@ -227,6 +228,7 @@ const AddDirectorAdmin = () => {
         console.error(error?.message || "Failed to block/unblock director");
       });
   };
+
   const blockUnblockSuperAdmin = () => {
     const data = {
       id: selectedSuperAdminId,
@@ -305,7 +307,9 @@ const AddDirectorAdmin = () => {
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
-            onClick={() => navigate("/downline-transaction-history")}
+            onClick={() => navigate("/downline-transaction-history", {
+              state: { userId: user.id },
+            })}
           />
 
           <BsEye
@@ -320,7 +324,7 @@ const AddDirectorAdmin = () => {
               }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
           />
-          
+
         </div>
       ),
     };

@@ -812,7 +812,16 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/director/${id}/accountsSummery`,
   },
-  // http://localhost:9001/rest2/0.1/user/1/director/45621125/accountsSummery
+
+  getDownlineTransactionById: {
+    method: "get",
+    url: (params) => {
+      const { id } = params;
+      const query = new URLSearchParams(params.params).toString();
+      return `/user/${userID()}/director/${id}/transactionHistory?${query}`;
+    }
+  },
+
 };
 
 export default endpoints;

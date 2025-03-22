@@ -32,7 +32,10 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
     enterPaidAmount: Yup.number()
       .typeError("Only numbers (0-9) are allowed")
       .min(0, "Amount must be at least 0")
-      .max(settleDetails?.creditBalance, `Amount cannot be more than ${settleDetails?.creditBalance}`)
+      .max(
+        settleDetails?.creditBalance,
+        `Amount cannot be more than ${settleDetails?.creditBalance}`
+      )
       .required("Enter Paid Amount is required"),
     password: Yup.string()
       .matches(
@@ -80,19 +83,39 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
 
   React.useEffect(() => {
     const paidAmount = parseFloat(formik.values.enterPaidAmount) || 0;
-    setNetCreditBalance(settleDetails?.creditBalance > 0 ? settleDetails?.creditBalance - paidAmount : 0);
+    setNetCreditBalance(
+      settleDetails?.creditBalance > 0
+        ? settleDetails?.creditBalance - paidAmount
+        : 0
+    );
   }, [formik.values.enterPaidAmount, settleDetails?.creditBalance]);
 
   return (
     <Modal show={settleModalShow} onHide={() => setSettleModalShow(false)} centered>
       <div className="white-bg p-4 br-10">
-        <div className="d-flex flex-between align-items-center mb-3">
+        {/* <div className="d-flex flex-between align-items-center mb-3">
           <div className="d-flex gap-3 align-items-center">
             <div className="green-font fw-bold light-bg br-5 medium-font px-3 py-2">
               Settlement
             </div>
           </div>
           <IoClose size={24} className="pointer" onClick={() => setSettleModalShow(false)} />
+        </div> */}
+        <div
+          className="d-flex justify-content-between align-items-center mb-2"
+          style={{ padding: "0 16px" }}
+        >
+          <div style={{ width: "22px" }}>{` `}</div>
+          <div className=" fw-600 mb-0 green-font text-center text-size px-2 rounded">
+            Credit Settlement
+          </div>
+          <div>
+            <IoClose
+              size={22}
+              className="pointer"
+              onClick={() => setSettleModalShow(false)}
+            />
+          </div>
         </div>
 
         <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">

@@ -505,6 +505,10 @@ const getSettlementSummeryById = (id, data) => {
   return apiRequest("getSettlementSummeryById", data, id);
 };
 
+const getDownlineTransactionById = (params) => {
+  return apiRequest("getDownlineTransactionById", {}, params);
+};
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -633,4 +637,5 @@ export {
   getSettlementTransactionById,
   creditSettlements,
   getSettlementSummeryById,
+  getDownlineTransactionById,
 };

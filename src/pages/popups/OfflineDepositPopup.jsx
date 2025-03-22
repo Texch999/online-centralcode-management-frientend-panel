@@ -90,9 +90,6 @@ const OfflineDepositPopup = ({
             });
     };
 
-
-    console.log(selectedDetails, "==>selectedDetails")
-
     const afterPay = selectedDetails?.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
 
     const handlePaidAmountChange = (e) => {
@@ -106,7 +103,7 @@ const OfflineDepositPopup = ({
         const country = allCountries.find((item) => item.id === id);
         return country?.currency_name
     };
-    console.log(selectedDetails, "==>selectedDetails")
+
     return (
         <div>
             <Modal show={depositPopup} centered className="confirm-popup" size="md">
