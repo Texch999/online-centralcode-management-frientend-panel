@@ -6,11 +6,12 @@ import { ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicke
 import SuccessPopup from "./SuccessPopup";
 import { useSelector } from "react-redux";
 
-const OfflineDepositWithdrawPopup = ({
+// const OfflineDepositWithdrawPopup = ({
+const OfflineDepositPopup = ({
     actionType,
-    depositWithdrawPopup,
+    depositPopup,
     selectedDetails,
-    setDepositWithdrawPopup
+    setDepositPopup
 }) => {
 
     const allCountries = useSelector((item) => item?.allCountries);
@@ -48,11 +49,6 @@ const OfflineDepositWithdrawPopup = ({
         return Object.keys(newErrors).length === 0;
     };
 
-    const getCurrency = (id) => {
-        const country = allCountries.find((item) => item.id === id);
-        return country?.currency_name
-    };
-
     const handleSubmit = (siteData) => {
         if (!validateForm(siteData)) return;
 
@@ -81,7 +77,8 @@ const OfflineDepositWithdrawPopup = ({
                     setApiErrors(null);
                     setLoading(false)
                     setErrors({});
-                    setDepositWithdrawPopup(false)
+
+    setDepositPopup(false)
                 } else if (response?.status == 422) {
                     setLoading(false)
                     setApiErrors(response?.errors || "Deposit failed. Please try again.");
@@ -104,18 +101,32 @@ const OfflineDepositWithdrawPopup = ({
             setFinalPaidAmount(value);
         }
     };
-    
+    const getCurrency = (id) => {
+        const country = allCountries.find((item) => item.id === id);
+        return country?.currency_name
+    };
+    console.log(selectedDetails, "==>selectedDetails")
     return (
         <div>
-            <Modal show={depositWithdrawPopup} centered className="confirm-popup" size="md">
+            <Modal show={depositPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
-                    <div className="d-flex justify-content-center align-items-start mb-2">
-                        <div>{` `}</div>
-                        <div className=" fw-600 mb-0 green-font text-center text-size px-2 rounded">{`Deposit (Manual & Credit)`}</div>
+                    <div
+                        className="d-flex justify-content-between align-items-center mb-2"
+                        style={{ padding: "0 16px" }}
+                    >
+                        <div style={{ width: "22px" }}>{` `}</div>
+                        <div className=" fw-600 mb-0 green-font text-center text-size px-2 rounded">
+                            Deposit (Manual & Credit)
+                        </div>
                         <div>
-                            <MdOutlineClose size={22} className="pointer ms-3" onClick={() => setDepositWithdrawPopup(false)} />
+                            <MdOutlineClose
+                                size={22}
+                                className="pointer"
+                                onClick={() => setDepositPopup(false)}
+                            />
                         </div>
                     </div>
+
                     {apiErrors && (
                         <div className="alert alert-danger pb-1">
                             {Array.isArray(apiErrors) ? (
@@ -130,8 +141,8 @@ const OfflineDepositWithdrawPopup = ({
                         </div>
                     )}
 
-                    <div className="col w-100 small-font rounded input-css all-none white-bg input-border">
-                        Brahma - SA - Vignesh1993 - India - 10%
+                    <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
+                        {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${selectedDetails?.name} - ${getCurrency(selectedDetails?.currId)}`}
                     </div>
 
                     <div className="row">
@@ -140,18 +151,19 @@ const OfflineDepositWithdrawPopup = ({
                             <input
                                 type="number"
                                 name="selectedChips"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter Chips"
                                 value={selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0}
                                 readOnly
                             />
                         </div>
+
                         <div className="col mb-2">
                             <label className="small-font mb-1">New Credit Deposit</label>
                             <input
                                 type="tet"
                                 name="selectedChips"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter Chips"
                                 value={finalPaidAmount ? ((Number(paidAmount) - Number(finalPaidAmount)) < 0 ? 0 : Number(paidAmount) - Number(finalPaidAmount)) : 0}
                                 readOnly
@@ -160,13 +172,14 @@ const OfflineDepositWithdrawPopup = ({
                             {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                         </div>
                     </div>
+
                     <div className="row">
                         <div className="col mb-2">
                             <label className="small-font mb-1">Enter Deposit Chips </label>
                             <input
                                 type="tet"
                                 name="selectedChips"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter Chips"
                                 value={selectedChips}
                                 onChange={(e) => {
@@ -177,25 +190,27 @@ const OfflineDepositWithdrawPopup = ({
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                         </div>
+
                         <div className="col mb-2">
                             <label className="small-font mb-1">Enter Paid Amount </label>
                             <input
                                 type="text"
                                 name="paidAmount"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter Chips"
                                 value={paidAmount}
                                 onChange={(e) => setPaidAmount(e.target.value)}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
-                        </div>      
+                        </div>
+
                         <div className="col mb-2">
                             <label className="small-font mb-1">
                                 Paid Amount </label>
                             <input
                                 type="number"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter"
                                 value={finalPaidAmount}
                                 onChange={handlePaidAmountChange}
@@ -203,20 +218,21 @@ const OfflineDepositWithdrawPopup = ({
                                 max={Number(paidAmount)}
 
                             />
-                            {finalPaidAmount > 1000 && (
+                            {finalPaidAmount > paidAmount && (
                                 <div className="text-danger small-font mt-1">
                                     Paid amount cannot exceed {paidAmount}.
                                 </div>
                             )}
                         </div>
                     </div>
+
                     <div className="row">
                         <div className="col mb-2">
                             <label className="small-font mb-1">Remark</label>
                             <input
                                 type="text"
                                 name="remark"
-                                className="w-100 small-font rounded input-css all-none white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter Description"
                                 value={remark}
                                 onChange={(e) => setRemark(e.target.value)}
@@ -226,14 +242,13 @@ const OfflineDepositWithdrawPopup = ({
                         </div>
                     </div>
 
-                    {/* Submit Button */}
                     <div className="d-flex flex-column w-100">
                         <div className="small-font mb-1 ">Enter Password</div>
                         <div className="d-flex flex-row justify-content-between me-1">
                             <input
                                 type="text"
                                 name="parentpassword"
-                                className="w-100 small-font rounded input-css all-none rounded white-bg input-border"
+                                className="w-100 small-font rounded input-css all-none rounded input-bg"
                                 placeholder="Enter Amount"
                                 value={masterPassword || ""}
                                 onChange={(e) => setMasterPassword(e.target.value)}
@@ -242,8 +257,10 @@ const OfflineDepositWithdrawPopup = ({
                                 Submit
                             </button>
                         </div>
+
                         {errors.parentpassword && <p className="text-danger small-font">{errors.parentpassword}</p>}
                     </div>
+
                 </Modal.Body>
             </Modal>
             {successPopupOpen && (
@@ -257,4 +274,4 @@ const OfflineDepositWithdrawPopup = ({
     );
 };
 
-export default OfflineDepositWithdrawPopup;
+export default OfflineDepositPopup;
