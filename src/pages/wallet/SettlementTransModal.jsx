@@ -4,16 +4,17 @@ import { IoClose } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { creditSettlements, getSettlementSummeryById } from "../../api/apiMethods";
+
 const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDirSAId, getApi }) => {
-  const [settleDetails, setSettleDetails] = useState({})
+  const [settleDetails, setSettleDetails] = useState({});
   const [netCreditBalance, setNetCreditBalance] = useState(settleDetails?.creditBalance);
+
   const GetAllDirectors = (id) => {
     getSettlementSummeryById(id)
       .then((response) => {
         if (response?.message) {
-          const data = response?.message
+          const data = response?.message;
           setSettleDetails(...data);
-          console.log(...data, "==>...data")
         } else {
           console.error("Something Went Wrong");
         }
@@ -24,7 +25,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
   };
 
   useEffect(() => {
-    GetAllDirectors(selectedDirSAId)
+    GetAllDirectors(selectedDirSAId);
   }, [selectedDirSAId]);
 
   const validationSchema = Yup.object({
@@ -68,14 +69,13 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
 
       creditSettlements(selectedDirSAId, payload)
         .then((response) => {
-          setSettleModalShow(false)
-          getApi()
+          setSettleModalShow(false);
+          getApi();
         })
         .catch((error) => {
           console.error("Failed to submit settlement:", error);
         });
     },
-
   });
 
   React.useEffect(() => {
@@ -84,33 +84,25 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
   }, [formik.values.enterPaidAmount, settleDetails?.creditBalance]);
 
   return (
-    <Modal
-      show={settleModalShow}
-      onHide={() => setSettleModalShow(false)}
-      centered
-    >
+    <Modal show={settleModalShow} onHide={() => setSettleModalShow(false)} centered>
       <div className="white-bg p-4 br-10">
-        <div className="d-flex flex-between align-items-center">
+        <div className="d-flex flex-between align-items-center mb-3">
           <div className="d-flex gap-3 align-items-center">
             <div className="green-font fw-bold light-bg br-5 medium-font px-3 py-2">
               Settlement
             </div>
           </div>
-          <IoClose
-            size={24}
-            className="pointer"
-            onClick={() => setSettleModalShow(false)}
-          />
+          <IoClose size={24} className="pointer" onClick={() => setSettleModalShow(false)} />
         </div>
 
-        {/* <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
-          {`${settleDetails?.roal == 2 ? "SA" : "Director"} - ${settleDetails?.name} - ${getCurrency(selectedDetails?.currId)}`}
-        </div> */}
+        <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
+          {`SA - Harish - INR`}
+        </div>
 
         <form onSubmit={formik.handleSubmit}>
-          <div className="row mt-3">
+          <div className="row mt-2">
             <div className="col-6">
-              <label className="small-font">Total Credit </label>
+              <label className="small-font">Total Credit</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
                   type="number"
@@ -155,16 +147,25 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
                   placeholder="1000"
                   className="all-none small-font w-100"
                   min="0"
-                  max="999"
-                  {...formik.getFieldProps("enterPaidAmount")}
+                  max={settleDetails?.creditBalance}
+                  value={formik.values.enterPaidAmount}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const maxAmount = settleDetails?.creditBalance;
+
+                    // Cap the value to the maximum allowed amount
+                    const cappedValue = Math.min(Number(value), maxAmount);
+
+                    // Update the formik value
+                    formik.setFieldValue("enterPaidAmount", cappedValue);
+                  }}
                 />
               </div>
-              {formik.touched.enterPaidAmount &&
-                formik.errors.enterPaidAmount && (
-                  <div className="text-danger small-font">
-                    {formik.errors.enterPaidAmount}
-                  </div>
-                )}
+              {formik.touched.enterPaidAmount && formik.errors.enterPaidAmount && (
+                <div className="text-danger small-font">
+                  {formik.errors.enterPaidAmount}
+                </div>
+              )}
             </div>
           </div>
           <div className="col-12">
@@ -218,7 +219,8 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
             <div className="col-6 flex-column mt-4">
               <button
                 type="submit"
-                className="saffron-btn br-5 px-4 pointer small-font"
+                className={`saffron-btn br-5 px-4 pointer small-font ${settleDetails?.creditBalance > 0 ? "" : "no-cursor"}`}
+                disabled={settleDetails?.creditBalance <= 0}
               >
                 Submit
               </button>

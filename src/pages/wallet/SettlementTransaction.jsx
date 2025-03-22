@@ -116,15 +116,19 @@ const SettlementTransaction = () => {
     if (!selectedAdminId?.value) {
       newErrors.selectedAdminId = "Please select an admin.";
     }
+
     if (!selectedType?.value) {
       newErrors.selectedType = "Please select a type.";
     }
+
     if (!fromDate) {
       newErrors.fromDate = "Please select a 'From' date.";
     }
-    if (!toDate) {
+
+    if (fromDate && !toDate) {
       newErrors.toDate = "Please select a 'To' date.";
     }
+
     if (fromDate && toDate && new Date(fromDate) > new Date(toDate)) {
       newErrors.toDate = "'From' date cannot be greater than 'To' date.";
     }
@@ -170,7 +174,7 @@ const SettlementTransaction = () => {
     debit: <div className="red-font">{trx.debit}</div>,
     closing: <div>{trx.closBal}</div>,
     desc: <div>{trx.desc}</div>,
-    from: <div>{trx.cfrom == 0? "Management" : name } → {trx.cto}</div>,
+    from: <div>{trx.cfrom == 0 ? "Management" : name} → {trx.cto == 0 ? "Management" : name}</div>,
   }));
 
   // Table footer

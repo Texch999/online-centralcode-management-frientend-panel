@@ -799,21 +799,21 @@ const SandCBanner = () => {
   const handleStartDateChange = (e) => {
     const selectedDate = new Date(e.target.value);
     const now = new Date();
-    now.setSeconds(0, 0); // Remove seconds/milliseconds
-
+    now.setSeconds(0, 0);
+ 
     if (selectedDate < now) {
       setErrors((prev) => ({
         ...prev,
         startDT: "Start date & time cannot be in the past.",
       }));
       setStartDT("");
-      setEndDT(""); // Clear end date if invalid start date
+      setEndDT("");
     } else {
       setStartDT(e.target.value);
       setErrors((prev) => ({
         ...prev,
         startDT: "",
-        endDT: "End date is required.",
+        endDT: endDT ? "" : "End date is required.",
       }));
     }
   };
