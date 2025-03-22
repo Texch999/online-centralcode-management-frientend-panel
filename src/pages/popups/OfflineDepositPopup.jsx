@@ -141,6 +141,7 @@ const OfflineDepositPopup = ({
                         </div>
                     )}
 
+
                     <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
                         {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${selectedDetails?.name} - ${getCurrency(selectedDetails?.currId)}`}
                     </div>

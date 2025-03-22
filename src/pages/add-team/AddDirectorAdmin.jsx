@@ -571,11 +571,11 @@ const AddDirectorAdmin = () => {
           </button>
         </div>
       </div>
-      <div className="row ps-2 gap-3 mb-4">
-        <div className="col-10">
+      <div className="row ps-2 gap-1 mb-4">
+        <div className="col-12">
           <div className="row">
             {cardData.map((card, index) => (
-              <div className="col-3 px-1" key={index}>
+              <div className="col-2 px-1" key={index}>
                 <Card
                   title={card.title}
                   backgroundColor={card.backgroundColor}

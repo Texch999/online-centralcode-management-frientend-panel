@@ -102,6 +102,11 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
             onClick={() => setSettleModalShow(false)}
           />
         </div>
+
+        {/* <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
+          {`${settleDetails?.roal == 2 ? "SA" : "Director"} - ${settleDetails?.name} - ${getCurrency(selectedDetails?.currId)}`}
+        </div> */}
+
         <form onSubmit={formik.handleSubmit}>
           <div className="row mt-3">
             <div className="col-6">

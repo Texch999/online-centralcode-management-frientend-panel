@@ -148,10 +148,6 @@ const AddWebsitesPopup = ({ show, onHide,
   };
 
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false
-      return
-    }
     if (editMode && websiteId) {
       getWebsiteDetails(websiteId)
         .then((response) => {

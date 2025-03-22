@@ -71,7 +71,7 @@ function Login() {
       login_name: data?.username,
       password: data?.password,
     };
-console.log("trying")
+
     setLoading(true);
 
     let loginApiCall;
@@ -86,7 +86,7 @@ console.log("trying")
     try {
       const response = await loginApiCall(payload);
       setLoading(false);
-      console.log( "===>error?.message")
+
       if (response?.status === true) {
         dispatch(setLoginData(response));
         // await setSecureItem("jwt_token", response?.token);
@@ -113,10 +113,8 @@ console.log("trying")
         navigate("/");
       } else {
         setError("Invalid credentials");
-        console.log(response, "===>error?.message1")
       }
     } catch (error) {
-      console.log(error?.message[0], "===>error?.message2")
       setLoading(false);
       setError(error?.message || "Login failed");
     }

@@ -76,10 +76,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
             });
     };
     useEffect(() => {
-        if (isInitialRender.current) {
-            isInitialRender.current = false;
-            return;
-        }
         if (depositePopup) {
             getDirectorAccessedWebistesList();
             getDirectorSitesList();

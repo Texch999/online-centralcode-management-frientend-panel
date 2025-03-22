@@ -120,10 +120,6 @@ const ActivityLogs = () => {
   };
   const isInitialRender = useRef(true);
   useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
     const limit = itemsPerPage
     const offset = (currentPage - 1) * itemsPerPage
 
