@@ -482,7 +482,6 @@ const getInActiveUsers = (params) => {
   return apiRequest("getInActiveUsers", {}, params);
 };
 const getAdminUserWebsites = (id, data) => {
-  console.log(id, data, "iddddpppp");
   return apiRequest("getAdminUserWebsites", data, id);
 };
 const suspendInActiveUsers = (websiteId, id) => {
@@ -496,6 +495,14 @@ const getDirById = (params) => {
 };
 const getSettlementTransactionById = (params) => {
   return apiRequest("getSettlementTransactionById", {}, params);
+};
+
+const creditSettlements = (id, data) => {
+  return apiRequest("creditSettlements", data, id);
+};
+
+const getSettlementSummeryById = (id, data) => {
+  return apiRequest("getSettlementSummeryById", data, id);
 };
 
 export {
@@ -624,4 +631,6 @@ export {
   getOfflineDWDirectors,
   getDirById,
   getSettlementTransactionById,
+  creditSettlements,
+  getSettlementSummeryById,
 };

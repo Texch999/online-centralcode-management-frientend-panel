@@ -808,6 +808,9 @@
 .custom-file-upload:hover {
   background: #e9ecef;
 }
+.br-50{
+  border-radius: 50%;
+}
 
 .disabled {
   opacity: 0.5;
@@ -920,7 +923,7 @@
 }
 
 .text-size {
-  font-size: 1.8125rem;
+  font-size: 1.4rem;
 }
 
 .placeholder-red-clr {
@@ -1116,4 +1119,8 @@ input[type="number"] {
 .wc-contoll-bg {
   background-color: #A8A208;
   color: white;
+}
+
+.stats-border {
+  border: 1px solid rgb(0, 0, 0, 0.12);
 }

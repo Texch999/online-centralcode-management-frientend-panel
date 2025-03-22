@@ -5,7 +5,7 @@ import { customStyles } from "../../components/ReactSelectStyles";
 import Select from "react-select";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { getDirById } from "../../api/apiMethods";
-import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
+import OfflineDepositPopup from "../popups/OfflineDepositPopup";
 
 const OfflineDWUser = () => {
   const navigate = useNavigate();
@@ -210,7 +210,7 @@ const OfflineDWUser = () => {
         </div>
       </div>
 
-      <OfflineDepositWithdrawPopup
+      <OfflineDepositPopup
         // actionType={actionType}
         depositWithdrawPopup={depositWithdrawPopup}
         // selectedDetails={selectedDetails}

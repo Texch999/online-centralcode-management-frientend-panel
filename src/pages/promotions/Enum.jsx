@@ -50,9 +50,9 @@ const Enums = {
     "CASINO": 9,
     "BASE BALL": 10,
     "MULTI MARKET": 11,
-    "SPORTS BOOK":12,
-    "EXCHANGE":13,
-    "VIRTUAL SPORTS":14,
+    // "SPORTS BOOK":12,
+    // "EXCHANGE":13,
+    // "VIRTUAL SPORTS":14,
     "HOME":15,
   },
 
