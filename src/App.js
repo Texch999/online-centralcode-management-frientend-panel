@@ -109,6 +109,7 @@ import OfflineDWUser from "./pages/wallet/OfflineDWUser";
 import DirectorSuperAdminaccessedWebsites from "./pages/add-team/DirectorSuperAdminaccessedWebsites";
 import DwnlineTransactionHistory from "./pages/add-team/DwnlineTransactionHistory";
 import GameControl from "./pages/add-team/GameControl";
+import CreditSettlement from "./pages/wallet/CreditSettlement";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -214,14 +215,14 @@ function App() {
                   path="/offline-deposit-withdraw"
                   element={<OfflineDepositWithdraw />}
                 /> */}
-                <Route
+                {/* <Route
                   path="/offline-deposit-withdraw/:id/:name"
                   element={<OfflineDWUser />}
-                />
-                <Route
+                /> */}
+                {/* <Route
                   path="/offline-deposit-withdraw"
                   element={<OfflineDW />}
-                />
+                /> */}
                 <Route path="/tickets" element={<Tickets />} />
                 <Route
                   path="/gateway-transactions"
@@ -362,9 +363,10 @@ function App() {
                   path="/downline-transaction-history"
                   element={<DwnlineTransactionHistory />}
                 />
+                <Route path="/game-control" element={<GameControl />} />
                 <Route
-                  path="/game-control"
-                  element={<GameControl />}
+                  path="/credit-settlement"
+                  element={<CreditSettlement />}
                 />
               </Routes>
             </div>

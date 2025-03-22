@@ -1,25 +1,15 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import Table from "../../components/Table";
 import SettlementTransModal from "./SettlementTransModal";
-import { getOfflineDWDirectors, getSettlementTransactionById } from "../../api/apiMethods";
-import { useSearchParams } from "react-router-dom";
+import {
+  getOfflineDWDirectors,
+  getSettlementTransactionById,
+} from "../../api/apiMethods";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 
 const SettlementTransaction = () => {
   const role = localStorage.getItem("role_code");
@@ -59,7 +49,13 @@ const SettlementTransaction = () => {
   };
 
   // Fetch settlement transactions
-  const getSettleTransaction = (limit, offset, selectType, startDate, endDate) => {
+  const getSettleTransaction = (
+    limit,
+    offset,
+    selectType,
+    startDate,
+    endDate
+  ) => {
     if (!selectedAdminId?.value) return;
 
     const userId = selectedAdminId.value;
@@ -152,7 +148,11 @@ const SettlementTransaction = () => {
     debit: <div className="red-font">{trx.debit}</div>,
     closing: <div>{trx.closBal}</div>,
     desc: <div>{trx.desc}</div>,
-    from: <div>{trx.cfrom} → {trx.cto}</div>,
+    from: (
+      <div>
+        {trx.cfrom} → {trx.cto}
+      </div>
+    ),
   }));
 
   // Table footer
@@ -173,51 +173,66 @@ const SettlementTransaction = () => {
       console.log("director panel");
     }
   };
+  const navigate = useNavigate();
 
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font mb-0">
-          <span>Settlement Transaction</span>
-        </h6>
+        <div className="d-flex  yellow-font mb-0 align-items-center">
+          <span>
+            <MdOutlineKeyboardArrowLeft
+              size={20}
+              onClick={() => navigate(-1)}
+            />
+          </span>
+          <span className="medium-font">Settlement Transaction</span>
+        </div>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
           <input className="small-font all-none" placeholder="Search..." />
         </div>
       </div>
       <div className="d-flex flex-column gap-2">
-        <div className="col-2">
-          <div className="flex-column me-3">
-            <label className="black-text4 small-font mb-1">Select Admin Name</label>
-            <Select
-              className="small-font text-capitalize"
-              options={downlines}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-              onChange={(option) => setSelectedAdminId(option)}
-            />
-          </div>
-        </div>
         <div className="row">
+          <div className="col-2">
+            <div className="flex-column me-3">
+              <label className="black-text4 small-font mb-1">
+                Select Admin Name
+              </label>
+              <Select
+                className="small-font text-capitalize"
+                options={downlines}
+                placeholder="Select"
+                styles={customStyles}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+                onChange={(option) => setSelectedAdminId(option)}
+              />
+            </div>
+          </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Total Credit</span>
-              <span className="small-font red-font">{totalCredit > 0 ? totalCredit : 0}</span>
+              <span className="small-font red-font">
+                {totalCredit > 0 ? totalCredit : 0}
+              </span>
             </div>
           </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Paid Credit</span>
-              <span className="small-font red-font">{settledCredit > 0 ? settledCredit : 0}</span>
+              <span className="small-font red-font">
+                {settledCredit > 0 ? settledCredit : 0}
+              </span>
             </div>
           </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Bal Credit</span>
-              <span className="small-font red-font">{creditBal > 0 ? creditBal : 0}</span>
+              <span className="small-font red-font">
+                {creditBal > 0 ? creditBal : 0}
+              </span>
             </div>
           </div>
           <div className="col-1"></div>
@@ -226,7 +241,9 @@ const SettlementTransaction = () => {
           <div className="col-10 d-flex flex-wrap align-items-center">
             <div className="col-2">
               <div className="d-flex flex-column me-3">
-                <label className="black-text4 small-font mb-1">Select Type</label>
+                <label className="black-text4 small-font mb-1">
+                  Select Type
+                </label>
                 <Select
                   className="small-font"
                   options={TrasactionType}
@@ -256,7 +273,10 @@ const SettlementTransaction = () => {
             ))}
 
             <div className="col-1 d-flex align-items-end align-self-end ms-3">
-              <button className="saffron-btn2 w-100 small-font" onClick={handleSubmit}>
+              <button
+                className="saffron-btn2 w-100 small-font"
+                onClick={handleSubmit}
+              >
                 Submit
               </button>
             </div>
@@ -291,20 +311,11 @@ const SettlementTransaction = () => {
           settleModalShow={settleModalShow}
         />
       )}
-
     </div>
   );
 };
 
 export default SettlementTransaction;
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import { FaSearch } from "react-icons/fa";
