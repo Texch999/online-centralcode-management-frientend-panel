@@ -255,7 +255,6 @@ const OfflineWithdrawPopup = ({
                     </div>
                 </Modal.Body>
             </Modal>
-
             {successPopupOpen && (
                 <SuccessPopup
                     successPopupOpen={successPopupOpen}

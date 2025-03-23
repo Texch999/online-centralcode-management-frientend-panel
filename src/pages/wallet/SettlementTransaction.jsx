@@ -8,11 +8,14 @@ import {
   getOfflineDWDirectors,
   getSettlementTransactionById,
 } from "../../api/apiMethods";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const SettlementTransaction = () => {
+
+  const location = useLocation();
+  const { userId } = location.state || {};
   const role = localStorage.getItem("role_code");
   const [settleModalShow, setSettleModalShow] = useState(false);
   const [settleModalTransaction, setSettleModalTransaction] = useState([]);
@@ -29,6 +32,7 @@ const SettlementTransaction = () => {
   const [settledCredit, setSettledCredit] = useState("");
   const [creditBal, setCreditBal] = useState("");
   const [name, setName] = useState("");
+  const navigate = useNavigate();
 
   // State to track field-specific errors
   const [errors, setErrors] = useState({
@@ -38,25 +42,6 @@ const SettlementTransaction = () => {
     toDate: "",
   });
 
-  // Fetch all directors
-  const GetAllDirectors = () => {
-    getOfflineDWDirectors()
-      .then((response) => {
-        if (response.list) {
-          const options = response?.list?.map((item) => ({
-            value: item.id,
-            label: item.name,
-          }));
-          setDownlines(options);
-        } else {
-          console.error("Something Went Wrong");
-        }
-      })
-      .catch((error) => {
-        console.error(error?.message || "Failed to fetch directors");
-      });
-  };
-
   // Fetch settlement transactions
   const getSettleTransaction = (
     limit,
@@ -65,9 +50,6 @@ const SettlementTransaction = () => {
     startDate,
     endDate
   ) => {
-    if (!selectedAdminId?.value) return;
-
-    const userId = selectedAdminId.value;
     const params = {
       limit: limit,
       offset: offset,
@@ -98,19 +80,14 @@ const SettlementTransaction = () => {
   useEffect(() => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    if (selectedAdminId?.value) {
+    if (userId) {
       getSettleTransaction(limit, offset, selectedType, fromDate, toDate);
     }
   }, [selectedAdminId, page]);
 
-  // Fetch all directors on component mount
-  useEffect(() => {
-    GetAllDirectors();
-  }, []);
-
   // Transaction type options
   const TrasactionType = [
-    { value: "", label: "All" },
+    { value: "0", label: "All" },
     { value: "1", label: "Credit" },
     { value: "2", label: "Debit" },
   ];
@@ -118,15 +95,10 @@ const SettlementTransaction = () => {
   // Validate fields
   const validateFields = () => {
     const newErrors = {
-      selectedAdminId: "",
       selectedType: "",
       fromDate: "",
       toDate: "",
     };
-
-    if (!selectedAdminId?.value) {
-      newErrors.selectedAdminId = "Please select an admin.";
-    }
 
     if (!selectedType?.value) {
       newErrors.selectedType = "Please select a type.";
@@ -145,27 +117,24 @@ const SettlementTransaction = () => {
     }
 
     setErrors(newErrors);
-    return Object.values(newErrors).every((error) => !error); // Return true if no errors
+    return Object.values(newErrors).every((error) => !error);
+
   };
 
   // Handle submit button click
   const handleSubmit = () => {
     const isValid = validateFields();
     if (!isValid) return;
-
+    const type = selectedType.value == "0" ? "" : selectedType
     // If all validations pass, proceed with API call
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    getSettleTransaction(limit, offset, selectedType, fromDate, toDate);
+    getSettleTransaction(limit, offset, type, fromDate, toDate);
   };
 
   // Handle settlement button click
   const hanldeSettlement = () => {
-    if (!selectedAdminId?.value) {
-      setErrors((prev) => ({
-        ...prev,
-        selectedAdminId: "Please select an admin.",
-      }));
+    if (!userId) {
       return;
     }
     setSettleModalShow(true);
@@ -183,23 +152,13 @@ const SettlementTransaction = () => {
 
   // Map transaction data to table rows
   const DATA = settleModalTransaction.map((trx) => ({
-    dt: <div>{trx.crDate}</div>,
+    dt: <div>{`${new Date(trx.crDate).toLocaleDateString()} ${new Date(trx.crDate).toLocaleTimeString()}`}</div>,
     credit: <div className="green-font">{trx.credit}</div>,
     debit: <div className="red-font">{trx.debit}</div>,
     closing: <div>{trx.closBal}</div>,
     desc: <div>{trx.desc}</div>,
     from: <div>{trx.cfrom == 0 ? "Management" : name} → {trx.cto == 0 ? "Management" : name}</div>,
   }));
-
-  // Table footer
-  const FOOTER = [
-    { header: "Total" },
-    { header: <div className="red-font">7500000</div> },
-    { header: <div className="green-font">7500000</div> },
-    { header: <div className="red-font">7500000</div> },
-    { header: "" },
-    { header: "" },
-  ];
 
   // Handle page change
   const handlePageChange = ({ limit, offset }) => {
@@ -209,61 +168,21 @@ const SettlementTransaction = () => {
       console.log("director panel");
     }
   };
-
   return (
     <div>
-      <div className="flex-between mb-3 mt-2 align-items-center">
-        <h6 className="d-flex yellow-font mb-0">
-          <span>Settlement Transaction</span>
-        </h6>
-        <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
-          <span className="Medium-font" style={{ color: "#fff" }} ><IoMdArrowRoundBack size={18} className="me-1" />Back</span>
+      <div className="flex-start mb-3 mt-2 align-items-center">
+        <div className="d-flex fw-600 yellow-font mb-0">
+          <span>
+            <MdOutlineKeyboardArrowLeft
+              size={22}
+              onClick={() => navigate(-1)}
+            />
+          </span>
+          <span> Credit Settlement History</span>
         </div>
       </div>
       <div className="d-flex flex-column gap-2">
-        <div className="col-2">
-          <div className="flex-column me-3">
-            <label className="black-text4 small-font mb-1">
-              Select Admin Name
-            </label>
-            <Select
-              className="small-font text-capitalize"
-              options={downlines}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-              onChange={(option) => {
-                setSelectedAdminId(option);
-                setErrors((prev) => ({ ...prev, selectedAdminId: "" })); // Clear error when admin is selected
-              }}
-            />
-            {errors.selectedAdminId && (
-              <div className="text-danger small-font">
-                {errors.selectedAdminId}
-              </div>
-            )}
-          </div>
-        </div>
         <div className="row">
-          <div className="col-2">
-            <div className="flex-column me-3">
-              <label className="black-text4 small-font mb-1">
-                Select Admin Name
-              </label>
-              <Select
-                className="small-font text-capitalize"
-                options={downlines}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-                onChange={(option) => setSelectedAdminId(option)}
-              />
-            </div>
-          </div>
           <div className="col-2 me-2 align-self-end">
             <div className="white-btn2 flex-between">
               <span className="small-font">Total Credit</span>
@@ -370,16 +289,16 @@ const SettlementTransaction = () => {
           columns={COLUMNS}
           data={DATA}
           itemsPerPage={itemsPerPage}
-          footer={FOOTER}
           totalRecords={totalRecords}
           onPageChange={handlePageChange}
         />
       </div>
-      {settleModalShow && selectedAdminId?.value && (
+      {console.log(userId, "==>userId")}
+      {settleModalShow && userId && (
         <SettlementTransModal
           setSettleModalShow={setSettleModalShow}
           settleModalShow={settleModalShow}
-          selectedDirSAId={selectedAdminId?.value}
+          selectedDirSAId={userId}
           getApi={getSettleTransaction}
         />
       )}

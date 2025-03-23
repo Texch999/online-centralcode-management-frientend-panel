@@ -4,10 +4,14 @@ import { IoClose } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { creditSettlements, getSettlementSummeryById } from "../../api/apiMethods";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDirSAId, getApi }) => {
   const [settleDetails, setSettleDetails] = useState({});
   const [netCreditBalance, setNetCreditBalance] = useState(settleDetails?.creditBalance);
+  const [apiErrors, setApiErrors] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState("");
 
   const GetAllDirectors = (id) => {
     getSettlementSummeryById(id)
@@ -72,10 +76,17 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
 
       creditSettlements(selectedDirSAId, payload)
         .then((response) => {
-          setSettleModalShow(false);
+          setSettleModalShow(true);
           getApi();
+          setSuccessPopupOpen(true)
+          setTimeout(() => {
+            setSettleModalShow(false);
+            setSuccessPopupOpen(false);
+          }, 3000);
+          setDiscription("Credit Settled Successfully")
         })
         .catch((error) => {
+          setApiErrors(error.message)
           console.error("Failed to submit settlement:", error);
         });
     },
@@ -93,14 +104,6 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
   return (
     <Modal show={settleModalShow} onHide={() => setSettleModalShow(false)} centered>
       <div className="white-bg p-4 br-10">
-        {/* <div className="d-flex flex-between align-items-center mb-3">
-          <div className="d-flex gap-3 align-items-center">
-            <div className="green-font fw-bold light-bg br-5 medium-font px-3 py-2">
-              Settlement
-            </div>
-          </div>
-          <IoClose size={24} className="pointer" onClick={() => setSettleModalShow(false)} />
-        </div> */}
         <div
           className="d-flex justify-content-between align-items-center mb-2"
           style={{ padding: "0 16px" }}
@@ -121,7 +124,19 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
         <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
           {`SA - Harish - INR`}
         </div>
-
+        {apiErrors && (
+          <div className="alert alert-danger pb-1">
+            {Array.isArray(apiErrors) ? (
+              <ul className="pb-1 ps-1">
+                {apiErrors.map((error, index) => (
+                  <li className="small-font" key={index}>{error.message || error}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="small-font ps-1">{apiErrors.message || apiErrors}</p>
+            )}
+          </div>
+        )}
         <form onSubmit={formik.handleSubmit}>
           <div className="row mt-2">
             <div className="col-6">
@@ -251,6 +266,13 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
           </div>
         </form>
       </div>
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={discription}
+        />
+      )}
     </Modal>
   );
 };

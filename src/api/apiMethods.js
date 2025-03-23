@@ -509,6 +509,17 @@ const getDownlineTransactionById = (params) => {
   return apiRequest("getDownlineTransactionById", {}, params);
 };
 
+const getCreditUSersList = (params) => {
+  return apiRequest("getCreditUSersList", {}, params);
+};
+
+const returnCreditChips = (id, data) => {
+  return apiRequest("returnCreditChips", data, id);
+};
+const creditFullSettlement = (data) => {
+  return apiRequest("creditFullSettlement", data);
+};
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -638,4 +649,7 @@ export {
   creditSettlements,
   getSettlementSummeryById,
   getDownlineTransactionById,
+  getCreditUSersList,
+  returnCreditChips,
+  creditFullSettlement,
 };

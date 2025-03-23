@@ -822,6 +822,26 @@ const endpoints = {
     }
   },
 
+  getCreditUSersList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/creditSettlement?${query}`;
+    }
+  },
+
+  returnCreditChips: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/director/${id}/returnCreditChips`,
+  },
+
+  creditFullSettlement: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/directors/fullSettlement`,
+  },
+
 };
 
 export default endpoints;
