@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MdBlockFlipped } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { BsPerson } from "react-icons/bs";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { Images } from "../../images/index";
 import Table from "../../components/Table";
@@ -9,17 +7,23 @@ import "../../App.css";
 import "./style.css";
 import CreditReferencePopup from "./popups/CreditReferencePopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { GiClick } from "react-icons/gi";
 import {
   dwnlineDSASuspend,
   managemnetViewDownlinelist,
 } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
 import { CircleLoader } from "react-spinners";
-import { CgUnblock } from "react-icons/cg";
 import ErrorPopup from "../popups/ErrorPopup";
+import { BsEye } from "react-icons/bs";
+import { MdLockReset, MdBlockFlipped, MdOutlinePersonOutline } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
+import { SlPencil } from "react-icons/sl";
+import { IoPersonCircle } from "react-icons/io5";
+
 
 const DownlineList = () => {
+  const location = useLocation()
+  const selctedDownlineUserId = location.state?.userId
   const [onBlockPopup, setOnBlockPopup] = useState(false);
   const role = localStorage.getItem("role");
   const [showCreditAmountPopup, setShowCreditAmountPopup] = useState(false);
@@ -36,6 +40,9 @@ const DownlineList = () => {
   const [userName, setUserName] = useState("");
   const [statusId, setStatusId] = useState(null);
   const [errorPopup, setErrorPopup] = useState(false);
+  const [selectedDirectorId, setSelectedDirectorId] = useState(null);
+  const [selectedSuperAdminId, setSelectedSuperAdminId] = useState(null);
+  const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value ? Number(e.target.value) : "");
   };
@@ -53,6 +60,12 @@ const DownlineList = () => {
     navigate(
       `/downline-list/${user}/${userid}/${adminwebsite}/${adminwebsiteId}`
     );
+  };
+
+  const handleResetPasswordOpen = (id) => {
+    setSelectedDirectorId(id);
+    setSelectedSuperAdminId(id);
+    setResetPasswordPopup(true);
   };
 
   const totalDeposit = downlineList?.reduce(
@@ -215,84 +228,92 @@ const DownlineList = () => {
       (searchName === "" ||
         item?.name?.toLowerCase().includes(searchName.toLowerCase()))
   );
-
+  const getLocationName = (locationId) => {
+    const country = allCountries.find((country) => country.id === locationId);
+    return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
+  };
   const ACCOUNT_COLUMNS = [
-    { header: "Account", field: "account" },
-    { header: "Website List", field: "websitelist" },
-    { header: "Total Cus D", field: "totalCusD" },
-    { header: "Total Cus W", field: "totalCusW" },
-    { header: "Wall. Bal", field: "walletBalance" },
-    // { header: "Exposure", field: "exposure" },
-    // { header: "Wall Pay. Bal", field: "walletPlayingBalance" },
-    // { header: "Ref P/L", field: "referralPL" },
-    { header: <div className="text-center">Action</div>, field: "action" },
+    { header: "Name", field: "role" },
+    { header: "Credit Ref.", field: "creditref" },
+    { header: "Credit", field: "credit" },
+    { header: "Deposit", field: "deposit" },
+    { header: "Withdraw", field: "withdraw" },
+    { header: "Available Bal.", field: "availableBal" },
+    { header: "P/L", field: "pl" },
+    { header: "Exposure", field: "exposure" },
+    { header: "AD Lock", field: "ADLock" },
+    { header: "Bet Lock", field: "BetLock" },
+    {
+      header: <div className="text-center">Action</div>,
+      field: "action",
+      width: "8%",
+    },
   ];
-  const data = filterData?.map((item) => ({
-    account: (
-      <div>
-        <div>
-          {item?.roleName} - {item?.name}
-        </div>
-        <div>{getCountry(item?.currency_id)}</div>
+  const data = filterData?.map((user) => ({
+    role: <div className="d-flex flex-row">
+      <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Dir" : "SA"}</span> </div>
+      <div className="me-2 pointer" onClick={() => handleNavigateUserDashboard(user?.id)}> <span className="role-bg p-1"><IoPersonCircle size={16} /></span> </div>
+      <div className="d-lex flex-column">
+        <div className="text-capitalize">{user.name}</div>
+        <div>{getLocationName(user.county)}</div>
       </div>
-    ),
-
-    websitelist: (
-      <div className="d-flex flex-column">
-        {item?.adminSName?.map((wbsite, index) => (
-          <div className="d-flex flex-column my-1">
-            <div
-              key={index}
-              className="d-flex align-items-center gap-2 pointer"
-              onClick={() =>
-                handleNaviagte(item?.name, item?.id, wbsite?.name, wbsite?.id)
-              }
-            >
-              <span>{wbsite?.name}</span>
-              <GiClick className="yellow-font mx-1" size={18} />
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-
-    totalCusD: <div>{item?.toatalCustomerDiposite}</div>,
-    totalCusW: <div>{item?.totalCustomerWithdrawl}</div>,
-    walletBalance: <span className="yellow-font">{item?.wall_bal}</span>,
+    </div>,
+    creditref: <div>{user.creditAllowed == 1 ? user.maxCreditLimit : "--"}</div>,
+    credit: <div className="red-font">{user.creditAllowed == 1 ? user.creditBalance : "--"}</div>,
+    deposit: <div className="green-block"> {user.totalDeposits > 0 ? user.totalDeposits : 0}</div>,
+    withdraw: <div className="red-font">{user.totalWithdraws > 0 ? user.totalWithdraws : 0}</div>,
+    availableBal: <div className="green-block">0</div>,
+    pl: <div className="red-font">{user.pl ? user.pl : 0}</div>,
+    exposure: <div className="red-font">{user.expo ? user.expo : 0}</div>,
+    ADLock: <div className="red-font"><input type="checkbox" style={{ border: "1px solid rgba(0, 0, 0, 0.2)" }} /></div>,
+    BetLock: <div className="red-font"><input type="checkbox" style={{ border: "1px solid rgba(0, 0, 0, 0.2)" }} /></div>,
     action: (
-      <div className="d-flex flex-column justify-content-center gap-2 align-items-center">
-        {item?.status === 1 ? (
-          <button className="payment-gateway-status-badge mb-1 p-2 badge rounded">
-            Active
-          </button>
-        ) : (
-          <button className="red-btn mb-1 p-2 badge rounded">In-Active</button>
-        )}
+      <div className="d-flex flex-center gap-3">
+        <SlPencil
+          size={20}
+          className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+            }`}
+          onClick={() =>
+            user.status !== 2 &&
+            navigate(`/director-admin/editDirector`, {
+              state: { userId: user.id, mode: "edit" },
+            })
+          }
+        />
 
-        <div className="d-flex">
-          <BsPerson
-            size={20}
-            className="icon-action me-2 pointer"
-            onClick={() => handleNavigateUserDashboard(item?.id)}
-          />
-          <span>
-            {item?.status === 1 ? (
-              <CgUnblock
-                size={20}
-                className="icon-action me-2 pointer green-clr"
-                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
-              />
-            ) : (
-              <MdBlockFlipped
-                size={20}
-                className="icon-action me-2 pointer red-clr"
-                onClick={() => handleBlock(item?.id, item?.name, item?.status)}
-              />
-            )}
-          </span>
-        </div>
-      </div>
-    ),
+        <MdLockReset
+          size={20}
+          className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+            }`}
+          onClick={() =>
+            user.status !== 2 && handleResetPasswordOpen(user.id)
+          }
+        />
+
+        <GrTransaction
+          size={20}
+          className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+            }`}
+          style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
+          onClick={() => navigate("/downline-transaction-history", {
+            state: { userId: user.id },
+          })}
+        />
+
+        <BsEye
+          size={20}
+          className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
+          onClick={() => navigate("/dir-sa-websites-details", { state: { userId: user?.id, name: user.name, roleId: user.type } })}
+        />
+
+        <MdOutlinePersonOutline
+          size={20}
+          className={`black-text pointer ${user.status === 2 ? "disabled" : ""
+            }`}
+          onClick={() => navigate("/downline-list", { state: { userId: user?.id, } })}
+        />
+
+      </div>)
   }));
 
   const ACCOUNT_FOOTER = [

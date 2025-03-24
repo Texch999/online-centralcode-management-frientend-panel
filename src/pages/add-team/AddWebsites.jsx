@@ -15,6 +15,7 @@ import {
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { CircleLoader } from "react-spinners";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
@@ -36,9 +37,11 @@ const AddWibsites = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
+  const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
 
   const getAllWebsiteList = (limit, offset) => {
+    setLoading(true)
     getWebsitesList({
       limit,
       offset,
@@ -48,6 +51,7 @@ const AddWibsites = () => {
         if (response?.status) {
           setWebsite(response.data);
           setTotalRecords(response.totalCount);
+          setLoading(false)
         } else {
           setError("Something Went Wrong");
           setWebsite([]);
@@ -59,6 +63,7 @@ const AddWibsites = () => {
       });
   };
   const getAllDirectorWebsiteList = (limit, offset) => {
+    setLoading(true)
     getDirectorAccessWebites({
       limit,
       offset,
@@ -68,6 +73,7 @@ const AddWibsites = () => {
         if (response?.status) {
           setDirectorSites(response.data);
           setTotalRecords(response.totalCount);
+          setLoading(false)
         } else {
           setError("Something Went Wrong");
           setDirectorSites([]);
@@ -262,28 +268,36 @@ const AddWibsites = () => {
           )}
         </div>
       </div>
+      {loading ? (<div className="d-flex flex-column flex-center mt-10rem align-items-center">
+        <CircleLoader color="#3498db" size={40} />
+        <div className="medium-font black-font my-3">
+          Just a moment...............⏳
+        </div>
+      </div>) :
+        role === "management" ? (
+          <div className="mt-2">
+            <Table
+              data={data}
+              columns={columns}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              totalRecords={totalRecords}
+            />
+          </div>
+        ) : (
+          <div className="mt-2">
+            <Table
+              data={directorswebsitedata}
+              columns={directorswebsitecolumns}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              totalRecords={totalRecords}
+            />
+          </div>
+        )
+      }
 
-      {role === "management" ? (
-        <div className="mt-2">
-          <Table
-            data={data}
-            columns={columns}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            totalRecords={totalRecords}
-          />
-        </div>
-      ) : (
-        <div className="mt-2">
-          <Table
-            data={directorswebsitedata}
-            columns={directorswebsitecolumns}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            totalRecords={totalRecords}
-          />
-        </div>
-      )}
+
 
       <AddWebsitesPopup
         show={onAddwebsitePopup}

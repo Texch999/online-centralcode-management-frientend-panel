@@ -9,13 +9,13 @@ import {
   getSettlementTransactionById,
 } from "../../api/apiMethods";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const SettlementTransaction = () => {
 
   const location = useLocation();
-  const { userId } = location.state || {};
+  const { userId, userName, roleType } = location.state || {};
   const role = localStorage.getItem("role_code");
   const [settleModalShow, setSettleModalShow] = useState(false);
   const [settleModalTransaction, setSettleModalTransaction] = useState([]);
@@ -76,7 +76,6 @@ const SettlementTransaction = () => {
       });
   };
 
-  // Call API when admin is selected
   useEffect(() => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
@@ -168,17 +167,20 @@ const SettlementTransaction = () => {
       console.log("director panel");
     }
   };
+
   return (
     <div>
       <div className="flex-start mb-3 mt-2 align-items-center">
-        <div className="d-flex fw-600 yellow-font mb-0">
+        <div className="d-flex fw-600 yellow-font mb-0 align-items-center">
           <span>
             <MdOutlineKeyboardArrowLeft
-              size={22}
+              size={25}
               onClick={() => navigate(-1)}
             />
           </span>
           <span> Credit Settlement History</span>
+          <span className="Breadcrumbs px-2 rounded text-white ms-1 text-capitalize"> {userName}</span>
+          <span className="ms-1 black-text medium-font"> {roleType == "1" ? "Director" : "Super Admin"} <MdOutlineKeyboardArrowRight size={17} /> </span>
         </div>
       </div>
       <div className="d-flex flex-column gap-2">
