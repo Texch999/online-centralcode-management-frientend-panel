@@ -481,7 +481,7 @@ const UserProfileDashboard = () => {
 
   useEffect(() => {
     if (id) {
-      getDirectorDetailsById(id);
+      getById(id);
     }
   }, [id]); // Now it runs only when `id` changes
 
@@ -573,11 +573,11 @@ const UserProfileDashboard = () => {
                 className="d-flex gap-2 super-admin-img-down-content align-items-end"
                 style={{ marginTop: "20px" }}
               >
-                <h6 className="small-font mb-0">{directorData.name}</h6>
                 <FaPen
                   className="yellow-font pointer medium-font mt-1"
                   onClick={() => handleEdit(id)}
                 />
+                <h6 className="small-font mb-0">{directorData?.name}</h6>
               </div>
             </div>
             <div className="col-10">

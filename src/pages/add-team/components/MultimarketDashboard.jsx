@@ -109,10 +109,10 @@ const MultimarketDashboard = () => {
       <div className="px-3 d-flex justify-content-between align-items-center mb-3">
         <h6 className="medium-font">Multimarket</h6>
         <div
-          className="d-flex gap-2 align-items-center  mall-font rounded-pill input-pill blue-font px-1 py-1"
+          className="d-flex gap-2 align-items-center small-font rounded-pill input-pill blue-font px-1 py-1"
           onClick={() => navigate("/director-admin/editDirector")}
         >
-          <IoAdd className="blue-font" size={18} />
+          <IoAdd className="blue-font" size={16} />
           Add New
         </div>
       </div>
