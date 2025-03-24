@@ -815,7 +815,7 @@ const endpoints = {
   // http://localhost:9001/rest2/0.1/user/1/director/45621125/accountsSummery
   dirProfileBlockUnblock:{
     method:"post",
-    url:(id)=>`/user/${userID()}/director/:userId/status`
+    url:(id)=>`/user/${userID()}/director/${id}/status`
   }
 };
 

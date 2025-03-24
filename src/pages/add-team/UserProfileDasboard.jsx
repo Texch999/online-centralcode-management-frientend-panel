@@ -31,6 +31,7 @@ import {
 import ErrorPopup from "../popups/ErrorPopup";
 import { useDispatch } from "react-redux";
 import { setDirProfileData } from "../../redux/action";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 const login_role_name = localStorage.getItem("role_name");
 
 const cardData = [
@@ -249,97 +250,128 @@ const Card = ({
   );
 };
 
-const DefaultBottomShow = () => {
+const DefaultBottomShow = ({ userData, id }) => {
   const [status, setStatus] = useState(1); // Default active (1)
+  const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
+
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState("");
 
   const handleToggle = (e) => {
-    setStatus(e.target.checked ? 1 : 2); // 1 for Active, 2 for Inactive
+    setStatus(e.target.checked ? 1 : 2);
+    setConfirmationPopupOpen(true); // 1 for Active, 2 for Inactive
   };
 
+  const blockUnblock = () => {
+    dirProfileBlockUnblock(id)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response?.data);
+          setMsg(response?.message);
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  console.log(userData, "=====userdata");
+
   return (
-    <div className="py-4 bg-white shadow rounded">
-      <div className="px-4 d-flex justify-content-between align-items-center mb-3">
-        <h6 className="small-font">
-          Texchange I{" "}
-          <span className="yellow-font">
-            texch.com - Share 10% - Rental 0.00
-          </span>
-        </h6>
-        <div className="d-flex align-items-center">
-          <span className="me-3 black-text small-font black-font">Active</span>
+    <div>
+      <div className="py-4 bg-white shadow rounded">
+        <div className="px-4 d-flex justify-content-between align-items-center mb-3">
+          <h6 className="small-font">
+            Texchange I{" "}
+            <span className="yellow-font">
+              texch.com - Share 10% - Rental 0.00
+            </span>
+          </h6>
+          <div className="d-flex align-items-center">
+            <span className="me-3 black-text small-font black-font">
+              Active
+            </span>
 
-          <Form>
-            <Form.Check
-              type="switch"
-              id="custom-switch"
-              className="director-admin-profile-toggle-btn"
-              checked={status === 1}
-              onChange={handleToggle}
-            />
-          </Form>
+            <Form>
+              <Form.Check
+                type="switch"
+                id="custom-switch"
+                className="director-admin-profile-toggle-btn"
+                checked={userData?.status === 1}
+                onChange={handleToggle}
+              />
+            </Form>
 
-          <span className="ms-2 black-text small-font black-font">
-            In-active
-          </span>
-        </div>
-      </div>
-
-      <hr className="dashed-line mb-4" style={{ color: "black" }} />
-
-      {/* Main Content Container */}
-
-      <div className="row px-4">
-        <div className="col-8">
-          <div className="row d-flex gap-3 ">
-            <h6 className="small-font">Sports/Casino</h6>
-            {bottomCardsData.map((card, index) => (
-              <div
-                className="col-4 card border border-grey p-0 direct-admin-profile-bottom-card"
-                key={index}
-              >
-                <Card
-                  title={card.title}
-                  backgroundColor={card.backgroundColor}
-                  value={card.value}
-                  valueClass={card.valueClass}
-                  icon={card.icon}
-                  bootstrapClassesTop={card.bootstrapClassesTop}
-                  bootstrapClassesBottom={card.bootstrapClassesBottom}
-                />
-              </div>
-            ))}
+            <span className="ms-2 black-text small-font black-font">
+              In-active
+            </span>
           </div>
         </div>
 
-        {/* Right Side Container */}
-        <div className="col-4 align-self-end">
-          <div className="bg-white director-admin-profile-bottom-section-right p-4">
-            <h5 className="yellow-font small-font">Total Amount</h5>
-            <input
-              type="text"
-              value="500000"
-              className="w-100 input-css fw-600 mb-2 small-font"
-              readOnly
-            />
+        <hr className="dashed-line mb-4" style={{ color: "black" }} />
 
-            <h5 className="yellow-font small-font">Paid Amount</h5>
-            <input
-              type="text"
-              value="500000"
-              className="w-100 input-css fw-600 small-font mb-2"
-              readOnly
-            />
+        {/* Main Content Container */}
 
-            <h5 className="yellow-font small-font">Net P/L</h5>
-            <input
-              type="text"
-              value="500000"
-              className="w-100 input-css fw-600 small-font mb-2"
-              readOnly
-            />
+        <div className="row px-4">
+          <div className="col-8">
+            <div className="row d-flex gap-3 ">
+              <h6 className="small-font">Sports/Casino</h6>
+              {bottomCardsData.map((card, index) => (
+                <div
+                  className="col-4 card border border-grey p-0 direct-admin-profile-bottom-card"
+                  key={index}
+                >
+                  <Card
+                    title={card.title}
+                    backgroundColor={card.backgroundColor}
+                    value={card.value}
+                    valueClass={card.valueClass}
+                    icon={card.icon}
+                    bootstrapClassesTop={card.bootstrapClassesTop}
+                    bootstrapClassesBottom={card.bootstrapClassesBottom}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Side Container */}
+          <div className="col-4 align-self-end">
+            <div className="bg-white director-admin-profile-bottom-section-right p-4">
+              <h5 className="yellow-font small-font">Total Amount</h5>
+              <input
+                type="text"
+                value="500000"
+                className="w-100 input-css fw-600 mb-2 small-font"
+                readOnly
+              />
+
+              <h5 className="yellow-font small-font">Paid Amount</h5>
+              <input
+                type="text"
+                value="500000"
+                className="w-100 input-css fw-600 small-font mb-2"
+                readOnly
+              />
+
+              <h5 className="yellow-font small-font">Net P/L</h5>
+              <input
+                type="text"
+                value="500000"
+                className="w-100 input-css fw-600 small-font mb-2"
+                readOnly
+              />
+            </div>
           </div>
         </div>
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={confirmationPopupOpen}
+        setConfirmationPopupOpen={setConfirmationPopupOpen}
+        discription={msg}
+        submitButton={`${userData?.status === 1 ? "In-Active" : "Active"}`}
+        onSubmit={blockUnblock}
+      />
     </div>
   );
 };
@@ -351,6 +383,7 @@ const UserProfileDashboard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [directorData, setDirectorData] = useState([]);
+  console.log(directorData, "---directorData")
   const [error, setError] = useState("");
   const [editData, setEditData] = useState([]);
   // errorPopupOpen, setErrorPopupOpen, discription
@@ -426,18 +459,6 @@ const UserProfileDashboard = () => {
   const handleResetPasswordClose = () => {
     // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
-  };
-
-  const blockUnblock = () => {
-    dirProfileBlockUnblock(id)
-      .then((response) => {
-        if (response?.status === true) {
-          console.log(response?.data);
-        }
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
   };
 
   return (
@@ -523,7 +544,7 @@ const UserProfileDashboard = () => {
                     <span className="small-font">India</span>
                   </div>
                 </div>
-                <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1" >
+                <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1">
                   Active
                 </span>
               </div>
@@ -632,7 +653,9 @@ const UserProfileDashboard = () => {
 
       {/* Conditional Rendering of Components */}
       <div className="table-parent-container mt-2">
-        {activeTab === "websitesLimit" && <DefaultBottomShow />}
+        {activeTab === "websitesLimit" && (
+          <DefaultBottomShow id={id} userData={directorData} />
+        )}
         {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
