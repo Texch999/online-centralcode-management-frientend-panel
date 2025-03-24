@@ -9,8 +9,10 @@ const Enums = {
   },
   
   brahmaSelectPages: {
-    "HOME": 1,
-    "IN PLAY": 2,
+    "IN PLAY": 1,
+    "CRICKET": 2,
+    "FOOT BALL/SOCCER": 3,
+    "TENNIS": 4,
     // "ELECTIONS": 3,
     // "CRICKET": 4,
     // "FOOT BALL": 5,

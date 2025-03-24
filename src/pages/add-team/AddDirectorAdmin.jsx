@@ -20,10 +20,10 @@ import { CircleLoader } from "react-spinners";
 import { commissionTypes } from "../../utils/enum";
 import SuccessPopup from "../popups/SuccessPopup";
 import OfflineDepositPopup from "../popups/OfflineDepositPopup";
-import { BiTransfer } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import OfflineWithdrawPopup from "../popups/OfflineWithdrawPopup";
 import { Images } from "../../images/index";
+import { GrTransaction } from "react-icons/gr";
 
 const AddDirectorAdmin = () => {
 
@@ -66,7 +66,7 @@ const AddDirectorAdmin = () => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleBlockUserOpen = (login_name, id) => {
+  const handleBlockUserOpen = (id) => {
     const director = tableData.find((user) => user.id === id);
     if (director) {
       setSelectedDirectorId(id);
@@ -216,6 +216,7 @@ const AddDirectorAdmin = () => {
         setResetPasswordErrors(error?.message || "Request failed");
       });
   };
+
   const blockUnblock = () => {
     blockDirector(selectedDirectorId)
       .then((response) => {
@@ -227,6 +228,7 @@ const AddDirectorAdmin = () => {
         console.error(error?.message || "Failed to block/unblock director");
       });
   };
+
   const blockUnblockSuperAdmin = () => {
     const data = {
       id: selectedSuperAdminId,
@@ -290,6 +292,7 @@ const AddDirectorAdmin = () => {
               })
             }
           />
+
           <MdLockReset
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
@@ -298,24 +301,30 @@ const AddDirectorAdmin = () => {
               user.status !== 2 && handleResetPasswordOpen(user.id)
             }
           />
-          <BiTransfer
+
+          <GrTransaction
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             style={{ transform: "rotate(90deg)", transition: "transform 0.3s ease" }}
-            onClick={() => navigate("/downline-transaction-history")}
+            onClick={() => navigate("/downline-transaction-history", {
+              state: { userId: user.id },
+            })}
           />
+
           <BsEye
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""}`}
             onClick={() => navigate("/dir-sa-websites-details", { state: { userId: user?.id, name: user.name, roleId: user.type } })}
           />
+
           <MdOutlinePersonOutline
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
             onClick={() => handleNavigateUserDashboard(user?.id)}
           />
+
         </div>
       ),
     };
@@ -445,6 +454,7 @@ const AddDirectorAdmin = () => {
     icon,
     bootstrapClassesTop,
     bootstrapClassesBottom,
+    clr
   }) => {
     return (
       <div className="mini-container bg-white stats-border">
@@ -452,10 +462,10 @@ const AddDirectorAdmin = () => {
           className={`top-section rounded-top d-flex justify-content-between align-items-center ${bootstrapClassesTop}`}
           style={{ backgroundColor: backgroundColor }}
         >
-          <h6 className="mb-0 text-white small-font">{title}</h6>
+          <h6 className="mb-0 text-white medium-font">{title}</h6>
           {icon}
         </div>
-        <p className={`medium-font fw-600 ${bootstrapClassesBottom}`}>
+        <p className={`large-font fw-600 ${bootstrapClassesBottom}`} style={{ color: `${clr}` }}>
           {value}
         </p>
       </div>
@@ -463,80 +473,83 @@ const AddDirectorAdmin = () => {
   };
 
   const cardData = [
-      {
-        title:"Deposits",
-        backgroundColor: "#7DA0FA",
-        value: "500000000",
-        icon: (
-          <img
-            src={Images.adminProfileShareRevenue}
-            alt="ShareRevenue"
-            className="chat-img"
-          />
-        ),
-        bootstrapClassesTop: "downline-list-card-top",
-        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-        color:"#18B962"
-      },
-      {
-        title: "Withdraw",
-        backgroundColor: "#7DA0FA",
-        value: "500000000",
-        icon: (
-          <img
-            src={Images.adminProfileShareRevenue}
-            alt="ShareRevenue"
-            className="chat-img"
-          />
-        ),
-        bootstrapClassesTop: "downline-list-card-top",
-        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-        color:"#d0431c"
+    {
+      title: "Deposits",
+      backgroundColor: "#7DA0FA",
+      value: "500000000",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      color: "#18B962"
+    },
+    {
+      title: "Withdraw",
+      backgroundColor: "#7DA0FA",
+      value: "500000000",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      color: "#d0431c"
 
-      },
-      {
-        title: "D-W",
-        backgroundColor: "#7DA0FA",
-        value: "0.00",
-        icon: (
-          <img
-            src={Images.adminProfileShareRevenue}
-            alt="ShareRevenue"
-            className="chat-img"
-          />
-        ),
-        bootstrapClassesTop: "downline-list-card-top",
-        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-      },
-      {
-        title: "Profit/Loss (S/R)",
-        backgroundColor: "#7DA0FA",
-        value: "300000000",
-        icon: (
-          <img
-            src={Images.adminProfileShareRevenue}
-            alt="ShareRevenue"
-            className="chat-img"
-          />
-        ),
-        bootstrapClassesTop: "downline-list-card-top",
-        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-      },
-      {
-        title: "Net Profit/Loss",
-        backgroundColor: "#7DA0FA",
-        value: "300000000",
-        icon: (
-          <img
-            src={Images.adminProfileShareRevenue}
-            alt="ShareRevenue"
-            className="chat-img"
-          />
-        ),
-        bootstrapClassesTop: "downline-list-card-top",
-        bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-      },
-    ];
+    },
+    {
+      title: "D-W",
+      backgroundColor: "#7DA0FA",
+      value: "0.00",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      color: "#18B962"
+    },
+    {
+      title: "Profit/Loss (S/R)",
+      backgroundColor: "#7DA0FA",
+      value: "300000000",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      color: "#18B962"
+    },
+    {
+      title: "Net Profit/Loss",
+      backgroundColor: "#7DA0FA",
+      value: "300000000",
+      icon: (
+        <img
+          src={Images.adminProfileShareRevenue}
+          alt="ShareRevenue"
+          className="chat-img"
+        />
+      ),
+      bootstrapClassesTop: "downline-list-card-top",
+      bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+      color: "#18B962"
+    },
+  ];
 
   return (
     <div>
@@ -584,6 +597,7 @@ const AddDirectorAdmin = () => {
                   icon={card.icon}
                   bootstrapClassesTop={card.bootstrapClassesTop}
                   bootstrapClassesBottom={card.bootstrapClassesBottom}
+                  clr={card.color}
                 />
               </div>
             ))}

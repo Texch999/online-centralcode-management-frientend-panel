@@ -16,7 +16,6 @@ const OfflineDepositPopup = ({
 
     const allCountries = useSelector((item) => item?.allCountries);
     const [errors, setErrors] = useState({});
-    const [directorCurrency, setDirectorCurrency] = useState("")
     const [paidAmount, setPaidAmount] = useState("")
     const [finalPaidAmount, setFinalPaidAmount] = useState("")
     const [selectedChips, setSelectedChips] = useState("")
@@ -27,6 +26,8 @@ const OfflineDepositPopup = ({
     const [discription, setDiscription] = useState("")
     const [loading, setLoading] = useState(null);
     const [successPopupOpen, setSuccessPopupOpen] = useState(false)
+    const [isFinalPaidAmountFocused, setIsFinalPaidAmountFocused] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = (siteData) => {
         const newErrors = {};
@@ -57,40 +58,37 @@ const OfflineDepositPopup = ({
             oldCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0,
             chipAmount: paidAmount,
             paidAmount: finalPaidAmount,
-            totalCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0 + selectedDetails?.creditAllowed == 1 ? (Number(paidAmount) - Number(finalPaidAmount)) : 0,
+            totalCredit:
+                (selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0) +
+                (selectedDetails?.creditAllowed == 1
+                    ? Number(paidAmount) - Number(finalPaidAmount)
+                    : 0),
             remarks: remark,
             parentPassword: masterPassword,
         };
-        let apiCall;
-        if (actionType === "DEPOSIT") {
-            apiCall = ManagementOfflineDepositeTicketCreation;
-        } else {
-            apiCall = ManagementOfflineWithdrawTicketCreation;
-        }
 
-        setLoading(true)
-        apiCall(selectedDetails?.id, payload)
+        setIsLoading(true);
+
+        ManagementOfflineDepositeTicketCreation(selectedDetails?.id, payload)
             .then((response) => {
-                if (response?.message === "Deposit Created Successfully.") {
-                    setSuccessPopupOpen(true);
-                    setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Ticket Created Successfully`);
-                    setApiErrors(null);
-                    setLoading(false)
-                    setErrors({});
+                setSuccessPopupOpen(true);
+                setDiscription(
+                    `${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Ticket Created Successfully`
+                );
+                setApiErrors(null);
+                setTimeout(() => {
+                    setSuccessPopupOpen(false);
+                    setDepositPopup(false);
+                }, 3000);
 
-    setDepositPopup(false)
-                } else if (response?.status == 422) {
-                    setLoading(false)
-                    setApiErrors(response?.errors || "Deposit failed. Please try again.");
-                }
             })
             .catch((error) => {
-                setLoading(false)
                 setApiErrors(error?.message || "API request failed");
+            })
+            .finally(() => {
+                setIsLoading(false); // Stop loading
             });
     };
-
-    console.log(selectedDetails, "==>selectedDetails")
 
     const afterPay = selectedDetails?.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
 
@@ -105,7 +103,7 @@ const OfflineDepositPopup = ({
         const country = allCountries.find((item) => item.id === id);
         return country?.currency_name
     };
-    console.log(selectedDetails, "==>selectedDetails")
+
     return (
         <div>
             <Modal show={depositPopup} centered className="confirm-popup" size="md">
@@ -166,7 +164,7 @@ const OfflineDepositPopup = ({
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg"
                                 placeholder="Enter Chips"
-                                value={finalPaidAmount ? ((Number(paidAmount) - Number(finalPaidAmount)) < 0 ? 0 : Number(paidAmount) - Number(finalPaidAmount)) : 0}
+                                value={selectedDetails?.creditAllowed == 1 && finalPaidAmount ? ((Number(paidAmount) - Number(finalPaidAmount)) < 0 ? 0 : Number(paidAmount) - Number(finalPaidAmount)) : 0}
                                 readOnly
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
@@ -215,15 +213,29 @@ const OfflineDepositPopup = ({
                                 placeholder="Enter"
                                 value={finalPaidAmount}
                                 onChange={handlePaidAmountChange}
+                                onFocus={() => setIsFinalPaidAmountFocused(true)} 
+                                onBlur={() => setIsFinalPaidAmountFocused(false)} 
                                 min="0"
-                                max={Number(paidAmount)}
-
                             />
-                            {finalPaidAmount > paidAmount && (
-                                <div className="text-danger small-font mt-1">
-                                    Paid amount cannot exceed {paidAmount}.
-                                </div>
-                            )}
+
+                            {
+                                /** Paid Amount Condition */
+                                isFinalPaidAmountFocused && (
+                                    <>
+                                        {selectedDetails?.creditAllowed == 2 && finalPaidAmount !== paidAmount && (
+                                            <div className="text-danger small-font mt-1">
+                                                Paid amount must be exactly {paidAmount}.
+                                            </div>
+                                        )}
+                                        {selectedDetails?.creditAllowed == 1 && finalPaidAmount > paidAmount && (
+                                            <div className="text-danger small-font mt-1">
+                                                Paid amount cannot exceed {paidAmount}.
+                                            </div>
+                                        )}
+                                    </>
+                                )
+                            }
+
                         </div>
                     </div>
 
@@ -254,8 +266,21 @@ const OfflineDepositPopup = ({
                                 value={masterPassword || ""}
                                 onChange={(e) => setMasterPassword(e.target.value)}
                             />
-                            <button className="saffron-btn small-font rounded w-100 ms-1" onClick={handleSubmit}>
-                                Submit
+                            <button
+                                className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
+                                onClick={handleSubmit}
+                                disabled={isLoading} // Disable button when loading
+                            >
+                                {isLoading ? (
+                                    <div
+                                        className="spinner-border spinner-border-sm" // Bootstrap spinner
+                                        role="status"
+                                    >
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                ) : (
+                                    "Submit"
+                                )}
                             </button>
                         </div>
 

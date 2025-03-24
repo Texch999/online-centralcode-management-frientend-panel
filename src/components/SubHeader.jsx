@@ -56,8 +56,9 @@ function SubHeader() {
           //   label: "Offline Deposit/Withdraw",
           //   path: "/offline-deposit-withdraw",
           // }, // new screens 
-            {
-            label: "Offline Deposit/Withdraw",
+          {
+            // label: "Offline Deposit/Withdraw",
+            label: "Credit & Settlement",
             path: "/credit-settlement",
           }, // new screens 
           { label: "Downline Tickets", path: "/tickets" },

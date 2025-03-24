@@ -1,39 +1,31 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
-import { ManagementOfflineDepositeTicketCreation, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
+import { getSettlementSummeryById, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
 import SuccessPopup from "./SuccessPopup";
 import { useSelector } from "react-redux";
 
-// const OfflineDepositWithdrawPopup = ({
 const OfflineWithdrawPopup = ({
     actionType,
     withdrawPopup,
     selectedDetails,
-    setWithdrawPopup
+    setWithdrawPopup,
 }) => {
-
     const allCountries = useSelector((item) => item?.allCountries);
     const [errors, setErrors] = useState({});
-    const [directorCurrency, setDirectorCurrency] = useState("")
-    const [paidAmount, setPaidAmount] = useState("")
-    const [finalPaidAmount, setFinalPaidAmount] = useState("")
-    const [selectedChips, setSelectedChips] = useState("")
-    const [remark, setRemark] = useState("")
-    const [masterPassword, setMasterPassword] = useState("")
-    const [fieldError, setFieldError] = useState('')
+    const [paidAmount, setPaidAmount] = useState("");
+    const [remark, setRemark] = useState("");
+    const [masterPassword, setMasterPassword] = useState("");
+    const [fieldError, setFieldError] = useState("");
     const [apiErrors, setApiErrors] = useState(null);
-    const [discription, setDiscription] = useState("")
+    const [discription, setDiscription] = useState("");
     const [loading, setLoading] = useState(null);
-    const [successPopupOpen, setSuccessPopupOpen] = useState(false)
+    const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+    const [settleDetails, setSettleDetails] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
-    const validateForm = (siteData) => {
+    const validateForm = () => {
         const newErrors = {};
-        // Validate INR Chips
-        if (!selectedChips || Number(selectedChips) <= 0) {
-            newErrors.selectedChips = "Deposit chips is required";
-        }
         if (!paidAmount || Number(paidAmount) < 0) {
             newErrors.paidAmount = "Paid amount is required";
         }
@@ -41,88 +33,92 @@ const OfflineWithdrawPopup = ({
             newErrors.remark = "Enter remark for more information";
         }
         if (!masterPassword || masterPassword == "") {
-            newErrors.masterPassword = "master password is required";
+            newErrors.masterPassword = "Master password is required";
         }
-
         setErrors(newErrors);
-
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (siteData) => {
-        if (!validateForm(siteData)) return;
-
-        const payload = {
-            currency: selectedDetails?.currId,
-            oldCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0,
-            chipAmount: paidAmount,
-            paidAmount: finalPaidAmount,
-            totalCredit: selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0 + selectedDetails?.creditAllowed == 1 ? (Number(paidAmount) - Number(finalPaidAmount)) : 0,
-            remarks: remark,
-            parentPassword: masterPassword,
-        };
-        let apiCall;
-        if (actionType === "DEPOSIT") {
-            apiCall = ManagementOfflineDepositeTicketCreation;
-        } else {
-            apiCall = ManagementOfflineWithdrawTicketCreation;
-        }
-
-        setLoading(true)
-        apiCall(selectedDetails?.id, payload)
+    const GetAllDirectors = (id) => {
+        getSettlementSummeryById(id)
             .then((response) => {
-                if (response?.message === "Deposit Created Successfully.") {
-                    setSuccessPopupOpen(true);
-                    setDiscription(`${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Ticket Created Successfully`);
-                    setApiErrors(null);
-                    setLoading(false)
-                    setErrors({});
-                    setWithdrawPopup(false)
-                } else if (response?.status == 422) {
-                    setLoading(false)
-                    setApiErrors(response?.errors || "Deposit failed. Please try again.");
-                }
+                const data = response?.message;
+                setSettleDetails(...data);
             })
             .catch((error) => {
-                setLoading(false)
-                setApiErrors(error?.message || "API request failed");
+                console.error(error?.message || "Failed to fetch directors");
             });
     };
 
-    console.log(selectedDetails, "==>selectedDetails")
+    const calculateMaxWithdrawAmount = () => {
+        const availableBalance = settleDetails?.avilChips || 0;
+        const creditBalance = settleDetails?.creditBalance || 0;
 
-    const afterPay = selectedDetails?.creditAllowed == 1 ? (Number(selectedChips) - Number(paidAmount)) : 0
-
-    const handlePaidAmountChange = (e) => {
-        const value = e.target.value;
-
-        if (Number(value) <= Number(paidAmount)) {
-            setFinalPaidAmount(value);
+        if (selectedDetails?.creditAllowed == 1) {
+            return availableBalance - creditBalance;
+        } else {
+            return availableBalance;
         }
     };
+
+    const handleSubmit = (siteData) => {
+        const maxWithdrawAmount = calculateMaxWithdrawAmount();
+
+        if (Number(paidAmount) > maxWithdrawAmount) {
+            setErrors({ ...errors, paidAmount: `Withdraw amount cannot exceed ${maxWithdrawAmount}` });
+            return;
+        }
+        if (!validateForm(siteData)) return;
+        const payload = {
+            currency: settleDetails?.currencyId,
+            walletBalance: settleDetails?.avilChips,
+            creditBalance: settleDetails?.creditBalance,
+            availBalance: settleDetails?.avilChips - settleDetails?.creditBalance,
+            withdrawAmount: paidAmount,
+            remarks: remark,
+            parentPassword: masterPassword,
+        };
+
+        setIsLoading(true);
+        ManagementOfflineWithdrawTicketCreation(selectedDetails?.id, payload)
+            .then((response) => {
+                setSuccessPopupOpen(true);
+                setDiscription(`"Withdraw Ticket Created Successfully`);
+                setApiErrors(null);
+                setErrors({});
+                setTimeout(() => {
+                    setSuccessPopupOpen(false);
+                    setWithdrawPopup(false);
+                }, 3000);
+
+            })
+            .catch((error) => {
+                setLoading(false);
+                setApiErrors(error?.message || "API request failed");
+            })
+            .finally(() => {
+                setIsLoading(false); // Stop loading
+            });
+    };
+
+    useEffect(() => {
+        GetAllDirectors(selectedDetails?.id);
+    }, [selectedDetails?.id]);
+
     const getCurrency = (id) => {
         const country = allCountries.find((item) => item.id === id);
-        return country?.currency_name
+        return country?.currency_name;
     };
-    console.log(selectedDetails, "==>selectedDetails")
+
     return (
         <div>
             <Modal show={withdrawPopup} centered className="confirm-popup" size="md">
                 <Modal.Body>
-                    <div
-                        className="d-flex justify-content-between align-items-center mb-2"
-                        style={{ padding: "0 16px" }}
-                    >
+                    <div className="d-flex justify-content-between align-items-center mb-2" style={{ padding: "0 16px" }}>
                         <div style={{ width: "22px" }}>{` `}</div>
-                        <div className=" fw-600 mb-0 red-font text-center text-size px-2 rounded">
-                            Withdraw
-                        </div>
+                        <div className="fw-600 mb-0 red-font text-center text-size px-2 rounded">Withdraw</div>
                         <div>
-                            <MdOutlineClose
-                                size={22}
-                                className="pointer"
-                                onClick={() => setWithdrawPopup(false)}
-                            />
+                            <MdOutlineClose size={22} className="pointer" onClick={() => setWithdrawPopup(false)} />
                         </div>
                     </div>
 
@@ -152,7 +148,7 @@ const OfflineWithdrawPopup = ({
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
                                 placeholder="Enter Chips"
-                                value={selectedDetails?.totalChips ? selectedDetails.totalChips : 0}
+                                value={settleDetails?.avilChips ? settleDetails.avilChips : 0}
                                 readOnly
                             />
                         </div>
@@ -160,44 +156,52 @@ const OfflineWithdrawPopup = ({
                         <div className="col mb-2">
                             <label className="small-font mb-1">Pending Credit</label>
                             <input
-                                type="tet"
+                                type="text"
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
                                 placeholder="Enter Chips"
-                                value={finalPaidAmount ? ((Number(paidAmount) - Number(finalPaidAmount)) < 0 ? 0 : Number(paidAmount) - Number(finalPaidAmount)) : 0}
+                                value={settleDetails?.creditAllowed == 1 ? settleDetails?.creditBalance : 0}
                                 readOnly
                             />
-                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                         </div>
                     </div>
 
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Remaining Wallet Balance </label>
+                            <label className="small-font mb-1">Remaining Wallet Balance</label>
                             <input
-                                type="tet"
+                                type="text"
                                 name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
                                 placeholder="Enter Chips"
-                                value={selectedChips}
+                                value={paidAmount ? settleDetails?.avilChips - Number(paidAmount) : 0}
                                 readOnly
                             />
-                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
                         </div>
 
                         <div className="col mb-2">
                             <label className="small-font mb-1">Enter Withdraw</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="paidAmount"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
                                 placeholder="Enter Chips"
                                 value={paidAmount}
-                                onChange={(e) => setPaidAmount(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    const maxWithdrawAmount = calculateMaxWithdrawAmount();
+
+                                    if (Number(value) <= maxWithdrawAmount) {
+                                        setPaidAmount(value);
+                                    }
+                                }}
+                                max={calculateMaxWithdrawAmount()}
                             />
-                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                            {paidAmount > calculateMaxWithdrawAmount() && (
+                                <div className="text-danger small-font mt-1">
+                                    Withdraw amount cannot exceed {calculateMaxWithdrawAmount()}.
+                                </div>
+                            )}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
                         </div>
                     </div>
@@ -208,7 +212,7 @@ const OfflineWithdrawPopup = ({
                             <input
                                 type="text"
                                 name="remark"
-                                className="w-100 small-font rounded input-css all-none input-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg input-border fw-600"
                                 placeholder="Enter Description"
                                 value={remark}
                                 onChange={(e) => setRemark(e.target.value)}
@@ -219,7 +223,7 @@ const OfflineWithdrawPopup = ({
                     </div>
 
                     <div className="d-flex flex-column w-100">
-                        <div className="small-font mb-1 ">Enter Password</div>
+                        <div className="small-font mb-1">Enter Password</div>
                         <div className="d-flex flex-row justify-content-between me-1">
                             <input
                                 type="text"
@@ -229,14 +233,26 @@ const OfflineWithdrawPopup = ({
                                 value={masterPassword || ""}
                                 onChange={(e) => setMasterPassword(e.target.value)}
                             />
-                            <button className="saffron-btn small-font rounded w-100 ms-1" onClick={handleSubmit}>
-                                Submit
+                            <button
+                                className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
+                                onClick={handleSubmit}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <div
+                                        className="spinner-border spinner-border-sm"
+                                        role="status"
+                                    >
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                ) : (
+                                    "Submit"
+                                )}
                             </button>
                         </div>
 
                         {errors.parentpassword && <p className="text-danger small-font">{errors.parentpassword}</p>}
                     </div>
-
                 </Modal.Body>
             </Modal>
             {successPopupOpen && (
@@ -246,7 +262,7 @@ const OfflineWithdrawPopup = ({
                     discription={discription}
                 />
             )}
-        </div >
+        </div>
     );
 };
 
