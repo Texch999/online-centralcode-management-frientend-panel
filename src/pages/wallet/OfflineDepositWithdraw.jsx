@@ -79,25 +79,10 @@ function OfflineDepositWithdraw() {
     setActiveSport(sport);
   };
 
-  // Handle input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setInputData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   // Get currency name by ID
   const getCurrency = (id) => {
     const country = allCountries.find((item) => item.id === id);
     return country?.currency_name;
-  };
-
-  // Get currency exchange rate by ID
-  const getCurrencyRate = (id) => {
-    const country = allCountries.find((item) => item.id === id);
-    return country?.exchange;
   };
 
   // Admin site dropdown component
@@ -194,15 +179,10 @@ function OfflineDepositWithdraw() {
 
     newData[index].selectedUserSite = userSiteId;
     newData[index].selectedUserDetails = selectedUser;
-    console.log(
-      newData[index].selectedUserSite,
-      "===> newData[index].selectedUserSite"
-    );
-    // Update selected user site ID and commission type in state
     setInputData((prevData) => ({
       ...prevData,
       selectedUserSiteId: userSiteId,
-      selectedCommissionType: selectedUser.commission_type, // Store commission type
+      selectedCommissionType: selectedUser.commission_type, 
     }));
 
     setDirAndSADetails(newData);
@@ -220,37 +200,6 @@ function OfflineDepositWithdraw() {
     );
     setActionType(action);
     setApiErrors(null);
-  };
-
-  // Calculate paid amount based on commission type
-  const calculatePaidAmount = (amount, percentage) => {
-    return percentage !== undefined ? amount * (percentage / 100) : amount;
-  };
-
-  const validateForm = (siteData) => {
-    const newErrors = {};
-
-    // Validate Admin Panel ID
-    if (!siteData?.selectedUserDetails?.admin_panel_id) {
-      newErrors.adminWebsiteId = "Please select an Admin Panel ID";
-    }
-
-    // Validate User Panel ID
-    if (!siteData?.selectedUserDetails?.user_paner_id) {
-      newErrors.userPanelId = "Please select a User Panel ID";
-    }
-
-    // Validate INR Chips
-    if (!inputData?.inrChips || inputData?.inrChips <= 0) {
-      newErrors.inrChips = "INR Chips value is required";
-    }
-    if (!inputData?.inrChips || inputData?.inrChips <= 0) {
-      newErrors.inrChips = "INR Chips value is required";
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
   };
 
   // Table columns

@@ -808,7 +808,7 @@
 .custom-file-upload:hover {
   background: #e9ecef;
 }
-.br-50 {
+.br-50{
   border-radius: 50%;
 }
 
@@ -1019,12 +1019,10 @@
 }
 
 .hr-line-grey {
-  border: 1.2px dashed #00000066;
-  position: absolute;
-  width: 88%;
-  bottom: 43%;
-  /* z-index: 999999; */
-  left: 10%;
+  display: inline-block;
+  width: 100%;
+  border-top: 1px dashed #ccc;
+  vertical-align: middle;
 }
 
 .br-right {
@@ -1123,15 +1121,3 @@ input[type="number"] {
 .stats-border {
   border: 1px solid rgb(0, 0, 0, 0.12);
 }
-/* .profile-default {
-  background-image: url("../public/assets/Profile_Image.png");
-} */
-.profile-default {
-  width: 100px; /* Adjust size as needed */
-  height: 100px; 
-  background-image: url("../public/assets/Profile_Image.png");
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%; /* Optional for circular profile */
-}
-

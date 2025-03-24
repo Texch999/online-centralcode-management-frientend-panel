@@ -5,16 +5,18 @@ import { getSettlementSummeryById, returnCreditChips } from "../../api/apiMethod
 import { useSelector } from "react-redux";
 import SuccessPopup from "../popups/SuccessPopup";
 
-const ReturnCreditModal = ({ show, setShow, selectedUserId }) => {
+const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersList }) => {
   const [settleDetails, setSettleDetails] = useState({});
   const [creditChips, setCreditChips] = useState("");
-  const [error, setError] = useState(""); // To show error messages
+  const [error, setError] = useState("");
   const allCountries = useSelector((item) => item?.allCountries);
   const [parentPassword, setParentPassword] = useState("");
   const [remark, setRemark] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [apiErrors, setApiErrors] = useState(null);
   const [discription, setDiscription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // Fetch settlement details
   const GetAllDirectors = (id) => {
@@ -95,7 +97,7 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId }) => {
       setError(`Entered chips cannot exceed ${pendingCreditChips}`);
       return;
     }
-
+    setIsLoading(true)
     const payload = {
       currency: settleDetails?.currencyId,
       walletBalance: settleDetails?.avilChips,
@@ -109,6 +111,8 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId }) => {
     returnCreditChips(selectedUserId.id, payload)
       .then((response) => {
         setSuccessPopupOpen(true);
+        setIsLoading(false)
+        getAllCreditUsersList()
         setTimeout(() => {
           setShow(false);
           setSuccessPopupOpen(false);
@@ -116,6 +120,7 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId }) => {
         setDiscription("Credit Settled Successfully");
       })
       .catch((error) => {
+        setIsLoading(false)
         setApiErrors(error.message);
         console.error("Failed to submit settlement:", error);
       });
@@ -247,8 +252,18 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId }) => {
               <button
                 type="submit"
                 className="saffron-btn w-100 br-5 py-1 px-4 pointer small-font"
+                disabled={isLoading}
               >
-                Submit
+                {isLoading ? (
+                  <div
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  >
+                    <span className="visually-hidden">Submiting...</span>
+                  </div>
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </div>

@@ -8,6 +8,8 @@ import Table from "../../components/Table";
 import { IoEye, IoEyeOff, IoEyeOutline } from "react-icons/io5";
 import ReturnCreditModal from "./ReturnCreditModal";
 import { creditFullSettlement, getCreditUSersList, getOfflineDWDirectors } from "../../api/apiMethods";
+import SuccessPopup from "../popups/SuccessPopup";
+import { CircleLoader } from "react-spinners";
 
 const CreditSettlement = () => {
   const navigate = useNavigate();
@@ -31,7 +33,11 @@ const CreditSettlement = () => {
   });
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [parentPassword, setParentPassword] = useState("");
-
+  const [apiError, setApiError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState("");
+  const [apiLoading, setApiLoading] = useState(false);
   const GetAllDirectors = () => {
     getOfflineDWDirectors()
       .then((response) => {
@@ -47,13 +53,16 @@ const CreditSettlement = () => {
   };
 
   const getAllCreditUsersList = (limit, offset, adminId) => {
+    setApiLoading(true)
     getCreditUSersList({ limit, offset, adminId })
       .then((response) => {
+        setApiLoading(false)
         setCreditUserList(response.records);
         setTotalRecords(response.totalCount);
       })
       .catch((error) => {
         setCreditUserList([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   };
@@ -69,17 +78,14 @@ const CreditSettlement = () => {
   }, []);
 
   const handleFullSettled = (id, balance) => {
-    // Update settlement amounts
+
     setSettlementAmounts((prev) => ({
       ...prev,
       [id]: balance,
     }));
 
-    // Create payload for the specific record
     const newPayload = [{ id, amount: balance }];
     setPayload(newPayload);
-
-    console.log("Payload for Full Settled:", newPayload);
   };
 
   const handleFillAll = () => {
@@ -92,13 +98,8 @@ const CreditSettlement = () => {
       };
     });
 
-    // Update settlement amounts
     setSettlementAmounts(newSettlementAmounts);
-
-    // Create payload for all records
     setPayload(newPayload);
-
-    console.log("Payload for Fill All:", newPayload);
   };
 
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
@@ -149,17 +150,16 @@ const CreditSettlement = () => {
       </div>
     ),
     view: (
-      <div className="d-flex flex-between">
+      <div className="d-flex flex-between pointer">
         <IoEyeOutline
           className="mx-1"
           size={18}
           onClick={() => navigate("/settlement-transaction",
-            { state: { userId: list.id } }
+            { state: { userId: list.id, userName: list.name, roleType: list.type } }
           )}
         />
-
         <div
-          className="saffron-btn2 white-space"
+          className="saffron-btn2 white-space pointer"
           onClick={() => {
             setReturnCreditModal(true);
             setSelectedUserId({ id: list.id, name: list.name, role: list.type });
@@ -207,22 +207,36 @@ const CreditSettlement = () => {
   };
 
   const hanldeSettlement = () => {
-    console.log(settlementAmounts, "==>settlementAmounts")
-    const paylaod = {
-      list: payload,
-      parentPassword: parentPassword
+    if (!payload || Object.keys(payload).length === 0) {
+      return;
     }
-    creditFullSettlement(paylaod)
-      .then((response) => {
+
+    const data = {
+      list: payload,
+      parentPassword: parentPassword,
+    };
+    setIsLoading(true)
+    creditFullSettlement(data)
+      .then(() => {
         const limit = itemsPerPage;
         const offset = (page - 1) * itemsPerPage;
         getAllCreditUsersList(limit, offset);
+        setIsLoading(false)
+        setSuccessPopupOpen(true)
+        setDiscription("Credit Settled Successfully");
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 3000);
       })
       .catch((error) => {
-        console.error(error?.message || "Failed to fetch directors");
+        setApiError(error?.message)
+        setIsLoading(false)
       });
-  }
+  };
 
+  const handleClearAll = () => {
+    setPayload([])
+  }
   return (
     <>
       <div>
@@ -282,15 +296,25 @@ const CreditSettlement = () => {
             <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
           </div>
         </div>
-        <div className="mt-3" style={{ zIndex: "10" }}>
-          <Table
-            columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
-            data={data}
-            footer={footer}
-            verLine={true}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        {apiLoading ? (
+          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            <CircleLoader color="#3498db" size={40} />
+            <div className="medium-font black-font my-3">
+              Just a moment...............⏳
+            </div>
+          </div>
+        ) : (
+          <div className="mt-3" style={{ zIndex: "10" }}>
+            <Table
+              columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
+              data={data}
+              footer={footer}
+              verLine={true}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
+
         <div className="row small-font my-2 align-items-center">
           <div className="small-font my-1 col-2">Management Password</div>
 
@@ -321,19 +345,40 @@ const CreditSettlement = () => {
             <div className="saffron-btn2 pointer" onClick={handleFillAll}>Fill all</div>
           </div>
           <div className="col-2">
-            <div className="saffron-btn2 pointer" onClick={hanldeSettlement}>Settled</div>
+            <div className="saffron-btn2 pointer" onClick={hanldeSettlement} disabled={isLoading}
+            >
+              {isLoading ? (
+                <div
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                >
+                  <span className="visually-hidden">Submiting...</span>
+                </div>
+              ) : (
+                "Settled"
+              )}
+            </div>
           </div>
           <div className="col-2">
-            <div className="white-btn2 pointer">Clear All</div>
+            <div className="white-btn2 pointer" onClick={handleClearAll}>Clear All</div>
           </div>
         </div>
-      </div>
+        <div>{apiError}</div>
+      </div >
 
       {returnCreditModal && (
         <ReturnCreditModal
           show={returnCreditModal}
           setShow={setReturnCreditModal}
           selectedUserId={selectedUserId}
+          getAllCreditUsersList={getAllCreditUsersList}
+        />
+      )}
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={discription}
         />
       )}
     </>
