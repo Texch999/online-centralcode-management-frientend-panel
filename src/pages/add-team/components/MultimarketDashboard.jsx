@@ -2,8 +2,11 @@ import React from "react";
 import Table from "../../../components/Table";
 import { IoAdd } from "react-icons/io5";
 import { MdBlock, MdDelete, MdOutlineModeEdit } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const MultimarketDashboard = () => {
+  const navigate = useNavigate();
+
   const columns = [
     {
       header: (
@@ -12,20 +15,24 @@ const MultimarketDashboard = () => {
           <div className="">Share/Rent</div>
         </div>
       ),
-      field: "name",width:"43%"
+      field: "name",
+      width: "43%",
     },
 
     {
       header: <div className="flex-center w-100">Last Updated</div>,
-      field: "last",width:"40%"
+      field: "last",
+      width: "40%",
     },
     {
       header: <div className="">Status</div>,
-      field: "status", width:"10%"
+      field: "status",
+      width: "10%",
     },
     {
       header: <div className="text-center w-100">Action</div>,
-      field: "action",width:"20%"
+      field: "action",
+      width: "20%",
     },
   ];
   const data = [
@@ -77,14 +84,15 @@ const MultimarketDashboard = () => {
         </div>
       ),
       status: (
-        <div className="badge payment-gateway-status-badge p-2">
-          active
-        </div>
+        <div className="badge payment-gateway-status-badge p-2">active</div>
       ),
       action: (
         <div className="d-flex gap-2 flex-center">
-          <span>
-            <MdOutlineModeEdit size={20} />
+          <span className="pointer">
+            <MdOutlineModeEdit
+              size={20}
+              onClick={() => navigate("/director-admin/editDirector")}
+            />
           </span>
           <span>
             <MdBlock size={20} />
@@ -100,8 +108,11 @@ const MultimarketDashboard = () => {
     <div className="py-4 bg-white shadow rounded">
       <div className="px-3 d-flex justify-content-between align-items-center mb-3">
         <h6 className="medium-font">Multimarket</h6>
-        <div className="d-flex gap-2 align-items-center small-font white-btn br-5">
-          <IoAdd className="blue-font" size={20} />
+        <div
+          className="d-flex gap-2 align-items-center  mall-font rounded-pill input-pill blue-font px-1 py-1"
+          onClick={() => navigate("/director-admin/editDirector")}
+        >
+          <IoAdd className="blue-font" size={18} />
           Add New
         </div>
       </div>
