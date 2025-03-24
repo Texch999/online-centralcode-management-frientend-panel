@@ -32,7 +32,7 @@ function ResetPasswordPopup({
   const handleCancel = () => {
     setResetPasswordPopup(false);
     reset();
-    setResetPasswordErrors("");
+    // setResetPasswordErrors("");
   };
 
   const handleSuccessClose = () => {

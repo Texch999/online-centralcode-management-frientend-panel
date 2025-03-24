@@ -110,6 +110,7 @@ import DirectorSuperAdminaccessedWebsites from "./pages/add-team/DirectorSuperAd
 import DwnlineTransactionHistory from "./pages/add-team/DwnlineTransactionHistory";
 import GameControl from "./pages/add-team/GameControl";
 import CreditSettlement from "./pages/wallet/CreditSettlement";
+import MultimarketDashboard from "./pages/add-team/components/MultimarketDashboard";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -367,6 +368,10 @@ function App() {
                 <Route
                   path="/credit-settlement"
                   element={<CreditSettlement />}
+                />
+                       <Route
+                  path="/multimarket"
+                  element={<MultimarketDashboard/>}
                 />
               </Routes>
             </div>

@@ -117,8 +117,9 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/banners/user/${id}${query ? `?${query}` : ""
-        }`;
+      return `/${user}/${userID()}/banners/user/${id}${
+        query ? `?${query}` : ""
+      }`;
     },
   },
 
@@ -368,8 +369,9 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/broadcastings/${id}${query ? `?${query}` : ""
-        }`;
+      return `/${user}/${userID()}/broadcastings/${id}${
+        query ? `?${query}` : ""
+      }`;
     },
   },
 
@@ -613,7 +615,8 @@ const endpoints = {
   readNotificationsforDirector: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/notifications/${data.id}/readStatus/${data.status
+      `/director/${userID()}/notifications/${data.id}/readStatus/${
+        data.status
       }`,
   },
   DirectorOffilneDepositTicket: {
@@ -799,18 +802,22 @@ const endpoints = {
       const { userId } = params;
       const query = new URLSearchParams(params.params).toString();
       return `/user/${userID()}/director/${userId}/settlements?${query}`;
-    }
+    },
   },
 
   creditSettlements: {
     method: "post",
-    url: (id) =>
-      `/user/${userID()}/director/${id}/settleCredit`,
+    url: (id) => `/user/${userID()}/director/${id}/settleCredit`,
   },
 
   getSettlementSummeryById: {
     method: "get",
     url: (id) => `/user/${userID()}/director/${id}/accountsSummery`,
+  },
+  // http://localhost:9001/rest2/0.1/user/1/director/45621125/accountsSummery
+  dirProfileBlockUnblock: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/status`,
   },
 
   getDownlineTransactionById: {
@@ -819,7 +826,7 @@ const endpoints = {
       const { id } = params;
       const query = new URLSearchParams(params.params).toString();
       return `/user/${userID()}/director/${id}/transactionHistory?${query}`;
-    }
+    },
   },
 
   getCreditUSersList: {
@@ -827,21 +834,18 @@ const endpoints = {
     url: (params) => {
       const query = new URLSearchParams(params).toString();
       return `/user/${userID()}/creditSettlement?${query}`;
-    }
+    },
   },
 
   returnCreditChips: {
     method: "post",
-    url: (id) =>
-      `/user/${userID()}/director/${id}/returnCreditChips`,
+    url: (id) => `/user/${userID()}/director/${id}/returnCreditChips`,
   },
 
   creditFullSettlement: {
     method: "post",
-    url: (id) =>
-      `/user/${userID()}/directors/fullSettlement`,
+    url: (id) => `/user/${userID()}/directors/fullSettlement`,
   },
-
 };
 
 export default endpoints;

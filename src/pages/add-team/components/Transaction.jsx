@@ -240,7 +240,7 @@ const Transaction = () => {
     <div className="py-4 bg-white shadow rounded">
       <div className="px-3 d-flex justify-content-between align-items-center mb-3">
         <h6 className="medium-font">Trasaction</h6>
-        <div className="d-flex align-items-center">
+        {/* <div className="d-flex align-items-center">
           <span className="me-2 black-text small-font">Active</span>
           <Form>
             <Form.Check
@@ -250,7 +250,7 @@ const Transaction = () => {
             />
           </Form>
           <span className="me-2 small-font black-text small-font">In-active</span>
-        </div>
+        </div> */}
       </div>
 
       <div className="table-parent-container mt-2">
