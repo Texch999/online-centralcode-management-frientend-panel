@@ -18,7 +18,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../add-team/style.css";
 import "../../App.css";
 import "../../index.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
 
 import {
@@ -29,9 +29,11 @@ import {
   updateDirectorProfileDetails,
 } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDirProfileData } from "../../redux/action";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { IoArrowBack } from "react-icons/io5";
+import MultimarketDashboard from "./components/MultimarketDashboard";
 const login_role_name = localStorage.getItem("role_name");
 
 const cardData = [
@@ -250,9 +252,11 @@ const Card = ({
   );
 };
 
-const DefaultBottomShow = ({ userData, id }) => {
+const DefaultBottomShow = ({ userData, id, getById }) => {
   const [status, setStatus] = useState(1); // Default active (1)
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
 
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -268,10 +272,19 @@ const DefaultBottomShow = ({ userData, id }) => {
         if (response?.status === true) {
           console.log(response?.data);
           setMsg(response?.message);
+          setShowSuccessPopup(true);
+          setTimeout(() => {
+            setShowSuccessPopup(false);
+          }, 2000);
         }
+        getById();
       })
       .catch((error) => {
         setError(error?.message);
+        setErrorPopupOpen(true);
+        setTimeout(() => {
+          setErrorPopupOpen(false);
+        }, 2000);
       });
   };
 
@@ -368,9 +381,23 @@ const DefaultBottomShow = ({ userData, id }) => {
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopupOpen}
         setConfirmationPopupOpen={setConfirmationPopupOpen}
-        discription={msg}
+        discription={`Are you sure want to ${
+          userData?.status === 1 ? "In-Acctive" : "Active"
+        }`}
         submitButton={`${userData?.status === 1 ? "In-Active" : "Active"}`}
         onSubmit={blockUnblock}
+      />
+
+      <SuccessPopup
+        successPopupOpen={showSuccessPopup}
+        // onHide={() => setShowSuccessPopup(false)}
+        setSuccessPopupOpen={() => setShowSuccessPopup(false)}
+        discription={msg}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={error}
       />
     </div>
   );
@@ -383,7 +410,7 @@ const UserProfileDashboard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [directorData, setDirectorData] = useState([]);
-  console.log(directorData, "---directorData")
+  console.log(directorData, "---directorData");
   const [error, setError] = useState("");
   const [editData, setEditData] = useState([]);
   // errorPopupOpen, setErrorPopupOpen, discription
@@ -393,6 +420,7 @@ const UserProfileDashboard = () => {
   const [editedDtat, setEditedDtat] = useState([]);
   const dispatch = useDispatch();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleEdit = (id) => {
     setShowEditProfilePopup(true);
@@ -430,9 +458,8 @@ const UserProfileDashboard = () => {
         setShowResetPasswordPopup(false);
       });
   };
-  useEffect(() => {
-    if (!id) return; // Prevent calling API if id is undefined
 
+  const getById = () => {
     getDirectorDetailsById(id)
       .then((response) => {
         if (response) {
@@ -450,6 +477,12 @@ const UserProfileDashboard = () => {
         setErrorPopupOpen(true);
         setShowResetPasswordPopup(false);
       });
+  };
+
+  useEffect(() => {
+    if (id) {
+      getDirectorDetailsById(id);
+    }
   }, [id]); // Now it runs only when `id` changes
 
   const handleTabClick = (tabName) => {
@@ -460,12 +493,30 @@ const UserProfileDashboard = () => {
     // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
   };
+  const allCountries = useSelector((item) => item.allCountries);
+  console.log(allCountries, "allCountries");
+
+  const getCountryName = (id) => {
+    const country = allCountries.find((c) => c.id === id);
+    return country ? country.name : "Unknown";
+  };
 
   return (
     <div>
       <div className="gap-3 director-admin-profile-top-con rounded">
         {/* User Information Section */}
+
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
+          <div
+            className="director-admin-profile-top-bg-dark d-flex align-items-center gap-2 px-3 text-white rounded-pill"
+            onClick={() => navigate(-1)}
+          >
+            <span className="fw-600 small-font">
+              <IoArrowBack className="yellow-font" size={20} />
+            </span>
+            <span className="fw-600 small-font">Back</span>
+          </div>
+
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-4 px-3 text-white rounded-pill">
             <span className="fw-600 small-font">User Name</span>
             <span className="fw-600 small-font">{directorData.login_name}</span>
@@ -473,18 +524,15 @@ const UserProfileDashboard = () => {
 
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 text-white rounded-pill px-3">
             <div className="d-flex align-items-center gap-4 px-2">
-              <span className="fw-600 small-font">Password</span>
-              <span className="fw-600 small-font">
+              <span className="fw-600 small-font">Reset Password</span>
+              {/* <span className="fw-600 small-font">
                 {" "}
                 {showPassword ? "1234567823" : "********"}
-              </span>
+              </span> */}
             </div>
 
             <div className="d-flex align-items-center gap-1 my-1">
-              {/* <div className="director-top-bg-icon px-2 py-1">
-                <MdRemoveRedEye className="text-warning large-font pointer" />
-              </div> */}
-              <div
+              {/* <div
                 className="director-top-bg-icon px-2 py-1 pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
@@ -493,7 +541,7 @@ const UserProfileDashboard = () => {
                 ) : (
                   <MdRemoveRedEye className="text-warning large-font" />
                 )}
-              </div>
+              </div> */}
               <div className="director-top-bg-icon px-2 py-1">
                 <MdLockReset
                   className="text-warning large-font pointer"
@@ -509,12 +557,12 @@ const UserProfileDashboard = () => {
           {/* Profile Details */}
           <div className="row">
             <div className="col-2 super-admin-top-container">
-              <div className="profile-default">
+              <div className="profile-default super-admin-profile-img-con">
                 <img
                   src={`${imgUrl}/directorProfilePhotos/${directorData.photo}`}
                   loading="lazy"
                   alt="Profile Photo Loading"
-                  className="super-admin-profile-img-con"
+                  // className="super-admin-profile-img-con"
                   onError={(e) => {
                     e.target.style.display = "none";
                   }}
@@ -537,15 +585,25 @@ const UserProfileDashboard = () => {
                 <div className="d-flex gap-4 align-items-center">
                   <div className="d-flex gap-2 align-items-end">
                     <FaUserTie className="large-font" />
-                    <span className="small-font">Director</span>
+                    <span className="small-font">{`${
+                      directorData?.type === 2 ? "Super Admin" : "Director"
+                    }`}</span>
                   </div>
                   <div className="d-flex gap-2 align-items-end">
                     <FaMapMarkerAlt className="large-font" />
-                    <span className="small-font">India</span>
+                    <span className="small-font">
+                      {getCountryName(directorData?.county)}
+                    </span>
                   </div>
                 </div>
-                <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1">
-                  Active
+                <span
+                  className={`${
+                    directorData?.status === 1
+                      ? "director-admin-profile-active-btn"
+                      : "red-btn"
+                  } rounded-pill py-2 px-4 small-font m-1`}
+                >
+                  {`${directorData?.status === 1 ? "Active" : "In-Active"}`}
                 </span>
               </div>
 
@@ -595,7 +653,7 @@ const UserProfileDashboard = () => {
       {/* Tabs Section */}
       <div className="row py-3 px-3">
         <div className="col-7 p-0">
-          <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3z">
+          <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3">
             <button
               className={`small-font rounded p-2 w-25 ${
                 activeTab === "websitesLimit" && "saffron-btn"
@@ -628,6 +686,14 @@ const UserProfileDashboard = () => {
             >
               Bet History
             </button>
+            <button
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "multimarket" && "saffron-btn"
+              }`}
+              onClick={() => handleTabClick("multimarket")}
+            >
+              MultiMarket
+            </button>
           </div>
         </div>
 
@@ -654,11 +720,16 @@ const UserProfileDashboard = () => {
       {/* Conditional Rendering of Components */}
       <div className="table-parent-container mt-2">
         {activeTab === "websitesLimit" && (
-          <DefaultBottomShow id={id} userData={directorData} />
+          <DefaultBottomShow
+            id={id}
+            userData={directorData}
+            getById={getById}
+          />
         )}
         {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
+        {activeTab === "multimarket" && <MultimarketDashboard />}
       </div>
     </div>
   );
