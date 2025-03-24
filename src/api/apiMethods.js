@@ -504,6 +504,24 @@ const creditSettlements = (id, data) => {
 const getSettlementSummeryById = (id, data) => {
   return apiRequest("getSettlementSummeryById", data, id);
 };
+const dirProfileBlockUnblock = (id, data) => {
+  return apiRequest("dirProfileBlockUnblock", data, id);
+};
+
+const getDownlineTransactionById = (params) => {
+  return apiRequest("getDownlineTransactionById", {}, params);
+};
+
+const getCreditUSersList = (params) => {
+  return apiRequest("getCreditUSersList", {}, params);
+};
+
+const returnCreditChips = (id, data) => {
+  return apiRequest("returnCreditChips", data, id);
+};
+const creditFullSettlement = (data) => {
+  return apiRequest("creditFullSettlement", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -633,4 +651,9 @@ export {
   getSettlementTransactionById,
   creditSettlements,
   getSettlementSummeryById,
+  dirProfileBlockUnblock,
+  getDownlineTransactionById,
+  getCreditUSersList,
+  returnCreditChips,
+  creditFullSettlement,
 };

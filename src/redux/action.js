@@ -6,4 +6,7 @@ export const setLoginData = (data) => ({
   type: "SET_LOGIN_DATA",
   payload: data,
 });
-
+export const setDirProfileData = (data) => ({
+  type: "SET_DIR_PROFILE_DATA",
+  payload: data,
+});

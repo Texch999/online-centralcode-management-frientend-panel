@@ -52,13 +52,18 @@ function SubHeader() {
         options: [
           { label: "My Vendors Account", path: "/my-vendors-account" },
           // { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+          // {
+          //   label: "Offline Deposit/Withdraw",
+          //   path: "/offline-deposit-withdraw",
+          // }, // new screens 
           {
-            label: "Offline Deposit/Withdraw",
-            path: "/offline-deposit-withdraw",
-          },
+            // label: "Offline Deposit/Withdraw",
+            label: "Credit & Settlement",
+            path: "/credit-settlement",
+          }, // new screens 
           { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
-          {label:"Settlement Transaction",path:"/settlement-transaction"}
+          // {label:"Settlement Transaction",path:"/settlement-transaction"}
         ],
       },
       {

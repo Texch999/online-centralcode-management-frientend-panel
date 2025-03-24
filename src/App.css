@@ -575,8 +575,8 @@
 }
 
 .chat-img {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 1.8rem;
+  width: 1.8rem;
 }
 
 .zoom-out {
@@ -808,7 +808,7 @@
 .custom-file-upload:hover {
   background: #e9ecef;
 }
-.br-50{
+.br-50 {
   border-radius: 50%;
 }
 
@@ -1092,11 +1092,11 @@ input[type="number"] {
 }
 
 .border-right {
-  border-right: 1.2px solid #00000033
+  border-right: 1.2px solid #00000033;
 }
 
 .role-bg {
-  background-color: #DE9A15;
+  background-color: #de9a15;
 }
 
 .custom-checkbox {
@@ -1106,21 +1106,32 @@ input[type="number"] {
 }
 
 .gc-contoll-bg {
-  background-color: #F312F7;
+  background-color: #f312f7;
   color: white;
 }
 
 .cc-contoll-bg {
-  background-color: #1297F7;
+  background-color: #1297f7;
   color: white;
-
 }
 
 .wc-contoll-bg {
-  background-color: #A8A208;
+  background-color: #a8a208;
   color: white;
 }
 
 .stats-border {
   border: 1px solid rgb(0, 0, 0, 0.12);
 }
+/* .profile-default {
+  background-image: url("../public/assets/Profile_Image.png");
+} */
+.profile-default {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; 
+  background-image: url("../public/assets/Profile_Image.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%; /* Optional for circular profile */
+}
+
