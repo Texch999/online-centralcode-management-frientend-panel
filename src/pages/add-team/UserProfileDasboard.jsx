@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { MdLockReset, MdRemoveRedEye, MdOutlineVisibilityOff } from "react-icons/md";
+import {
+  MdLockReset,
+  MdRemoveRedEye,
+  MdOutlineVisibilityOff,
+} from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Images } from "../../images";
@@ -17,10 +21,17 @@ import "../../index.css";
 import { useParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
 
-import { getDirectorDetailsById, resetDirectorPasswordInProfile, updateDirectorProfileDetails } from "../../api/apiMethods";
+import {
+  dirProfileBlockUnblock,
+  getDirectorDetailsById,
+  resetDirectorPassword,
+  resetDirectorPasswordInProfile,
+  updateDirectorProfileDetails,
+} from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useDispatch } from "react-redux";
+import { setDirProfileData } from "../../redux/action";
 const login_role_name = localStorage.getItem("role_name");
-
 
 const cardData = [
   {
@@ -229,11 +240,14 @@ const Card = ({
         <h6 className="mb-0 text-white small-font">{title}</h6>
         {icon}
       </div>
-      <p className={`medium-font fw-600 ${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+      <p
+        className={`medium-font fw-600 ${bootstrapClassesBottom} ${valueClass}`}
+      >
+        {value}
+      </p>
     </div>
   );
 };
-
 
 const DefaultBottomShow = () => {
   const [status, setStatus] = useState(1); // Default active (1)
@@ -338,24 +352,23 @@ const UserProfileDashboard = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [directorData, setDirectorData] = useState([]);
   const [error, setError] = useState("");
-  const [editData, setEditData] = useState([])
+  const [editData, setEditData] = useState([]);
   // errorPopupOpen, setErrorPopupOpen, discription
-  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [editedDtat, setEditedDtat] = useState([]);
-
+  const dispatch = useDispatch();
   const { id } = useParams();
-
 
   const handleEdit = (id) => {
     setShowEditProfilePopup(true);
-    getDirectorDetailsById(id)
-  }
-  const resetDirectorPassword = (data) => {
+    getDirectorDetailsById(id);
+  };
+  const resetDirectorPswd = (data) => {
     if (!id) {
-      setDesciption("Invalid Id")
-      setErrorPopupOpen(true)
+      setDesciption("Invalid Id");
+      setErrorPopupOpen(true);
       return;
     }
 
@@ -365,28 +378,23 @@ const UserProfileDashboard = () => {
       parent_password: data.managementPassword,
     };
 
-    resetDirectorPasswordInProfile(id, payload)
+    resetDirectorPassword(id, payload)
       .then((response) => {
         if (response.status === true) {
-          setEditedDtat(response.data)
-          setDesciption(response.message)
+          setEditedDtat(response.data);
+          setDesciption(response.message);
           setShowSuccessPopup(true);
-          handleResetPasswordClose()
-
-
-
+          handleResetPasswordClose();
         } else {
-          setDesciption("Something went Wrong")
-          setErrorPopupOpen(true)
+          setDesciption("Something went Wrong");
+          setErrorPopupOpen(true);
           setShowResetPasswordPopup(false);
-
         }
       })
       .catch((error) => {
-        setDesciption(error.message)
-        setErrorPopupOpen(true)
+        setDesciption(error.message);
+        setErrorPopupOpen(true);
         setShowResetPasswordPopup(false);
-
       });
   };
   useEffect(() => {
@@ -395,10 +403,9 @@ const UserProfileDashboard = () => {
     getDirectorDetailsById(id)
       .then((response) => {
         if (response) {
-
           console.log(response, "response12357");
           setDirectorData(response.data);
-
+          dispatch(setDirProfileData(response?.data));
         } else {
           setError("No employee data found");
         }
@@ -406,13 +413,11 @@ const UserProfileDashboard = () => {
       .catch((error) => {
         console.error("API Call Error:", error);
         setError(error?.message || "Login failed");
-        setDesciption(error.message)
-        setErrorPopupOpen(true)
+        setDesciption(error.message);
+        setErrorPopupOpen(true);
         setShowResetPasswordPopup(false);
       });
   }, [id]); // Now it runs only when `id` changes
-
-
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -421,9 +426,19 @@ const UserProfileDashboard = () => {
   const handleResetPasswordClose = () => {
     // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
-
   };
 
+  const blockUnblock = () => {
+    dirProfileBlockUnblock(id)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response?.data);
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
 
   return (
     <div>
@@ -438,7 +453,10 @@ const UserProfileDashboard = () => {
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 text-white rounded-pill px-3">
             <div className="d-flex align-items-center gap-4 px-2">
               <span className="fw-600 small-font">Password</span>
-              <span className="fw-600 small-font"> {showPassword ? "1234567823" : "********"}</span>
+              <span className="fw-600 small-font">
+                {" "}
+                {showPassword ? "1234567823" : "********"}
+              </span>
             </div>
 
             <div className="d-flex align-items-center gap-1 my-1">
@@ -470,17 +488,17 @@ const UserProfileDashboard = () => {
           {/* Profile Details */}
           <div className="row">
             <div className="col-2 super-admin-top-container">
-              <img
-                src={directorData.photo ? `${imgUrl}/directorProfilePhotos/${directorData.photo}` : `${Images.defaultProfileImage}`}
-                loading="lazy"
-                alt="Profile Photo Loading"
-                className="super-admin-profile-img-con"
-                onError={(e) => {
-                  e.target.onerror = null;  // Prevent infinite loop if the fallback image also fails
-                  e.target.src = `${Images.defaultProfileImage}`;  // Set a default image as fallback if the image fails to load
-                }}
-              />
-
+              <div className="profile-default">
+                <img
+                  src={`${imgUrl}/directorProfilePhotos/${directorData.photo}`}
+                  loading="lazy"
+                  alt="Profile Photo Loading"
+                  className="super-admin-profile-img-con"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              </div>
 
               <div
                 className="d-flex gap-2 super-admin-img-down-content align-items-end"
@@ -505,7 +523,7 @@ const UserProfileDashboard = () => {
                     <span className="small-font">India</span>
                   </div>
                 </div>
-                <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1">
+                <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1" >
                   Active
                 </span>
               </div>
@@ -533,7 +551,7 @@ const UserProfileDashboard = () => {
       <ResetPasswordPopup
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
-        onSubmit={resetDirectorPassword}
+        onSubmit={resetDirectorPswd}
       />
       <EditProfilePopup
         show={showEditProfilePopup}
@@ -558,29 +576,33 @@ const UserProfileDashboard = () => {
         <div className="col-7 p-0">
           <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3z">
             <button
-              className={`small-font rounded p-2 w-25 ${activeTab === "websitesLimit" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 w-25 ${
+                activeTab === "websitesLimit" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("websitesLimit")}
             >
               Websites/Limit
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${activeTab === "paymentGateway" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "paymentGateway" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("paymentGateway")}
             >
               Payment Gateway
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${activeTab === "transaction" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "transaction" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("transaction")}
             >
               Transaction
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${activeTab === "betHistory" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "betHistory" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("betHistory")}
             >
               Bet History
@@ -611,7 +633,7 @@ const UserProfileDashboard = () => {
       {/* Conditional Rendering of Components */}
       <div className="table-parent-container mt-2">
         {activeTab === "websitesLimit" && <DefaultBottomShow />}
-        {activeTab === "paymentGateway" && <PaymentGateway  dwnlnId={id}/>}
+        {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
       </div>

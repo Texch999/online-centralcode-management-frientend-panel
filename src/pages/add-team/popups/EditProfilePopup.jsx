@@ -6,7 +6,6 @@
 // import SuccessPopup from "../../popups/SuccessPopup";
 // import ErrorPopup from "../../popups/ErrorPopup";
 
-
 // const EditProfilePopup = ({ show, onHide, data, reload }) => {
 //   const [name, setName] = useState("");
 //   const [phoneNumber, setPhoneNumber] = useState("");
@@ -14,9 +13,6 @@
 //   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 //   const [description, setDesciption] = useState("");
 //   const [errorPopupOpen, setErrorPopupOpen] = useState(false)
-
-
-
 
 //   // Populate form when data changes
 //   useEffect(() => {
@@ -147,7 +143,7 @@
 //         discription={description}
 //       />
 //       <ErrorPopup
-//       errorPopupOpen={errorPopupOpen} 
+//       errorPopupOpen={errorPopupOpen}
 //       setErrorPopupOpen={setErrorPopupOpen}
 //        discription= {description}
 //        />
@@ -165,6 +161,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { updateDirectorProfileDetails } from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
+import { useSelector } from "react-redux";
 
 const EditProfilePopup = ({ show, onHide, data, reload }) => {
   const [name, setName] = useState("");
@@ -173,6 +170,9 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+
+  const dirProfileData = useSelector((item) => item?.dirProfileData);
+  console.log(dirProfileData,"dirProfileData")
 
   // Validation error states
   const [nameError, setNameError] = useState("");
@@ -236,7 +236,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
   // Submit form
   const handleSubmit = async () => {
     // Validate before submitting
-    if (!validateName(name) || !validatePhoneNumber(phoneNumber)) {
+    if (!validateName(name)) {
       return; // Stop submission if validation fails
     }
 
@@ -252,8 +252,11 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
       setDesciption(response.message);
       setShowSuccessPopup(true);
       onHide(); // Close modal after success
+      // dirProfileData;
     } catch (error) {
-      setDesciption("Failed to update profile: " + (error.message || "Unknown error"));
+      setDesciption(
+        "Failed to update profile: " + (error.message || "Unknown error")
+      );
       setErrorPopupOpen(true);
       onHide();
     }
@@ -271,7 +274,9 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
           <div className="row d-flex mb-3">
             {/* Name Field */}
             <div className="col-4">
-              <label htmlFor="name" className="small-font fw-400 mb-1">Name</label>
+              <label htmlFor="name" className="small-font fw-400 mb-1">
+                Name
+              </label>
               <input
                 id="name"
                 type="text"
@@ -280,12 +285,17 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 value={name}
                 onChange={handleNameChange} // Handle name change with validation
               />
-              {nameError && <div className="text-danger small-font">{nameError}</div>} {/* Show name error */}
+              {nameError && (
+                <div className="text-danger small-font">{nameError}</div>
+              )}{" "}
+              {/* Show name error */}
             </div>
 
             {/* Phone Number Field */}
             <div className="col-4">
-              <label htmlFor="phoneNumber" className="small-font fw-400 mb-1">Phone Number</label>
+              <label htmlFor="phoneNumber" className="small-font fw-400 mb-1">
+                Phone Number
+              </label>
               <input
                 id="phoneNumber"
                 type="text"
@@ -294,12 +304,17 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange} // Handle phone number change with validation
               />
-              {phoneNumberError && <div className="text-danger small-font">{phoneNumberError}</div>} {/* Show phone number error */}
+              {phoneNumberError && (
+                <div className="text-danger small-font">{phoneNumberError}</div>
+              )}{" "}
+              {/* Show phone number error */}
             </div>
 
             {/* Profile Photo Upload Field */}
             <div className="col-4">
-              <label htmlFor="profilePhoto" className="small-font fw-400 mb-1">Upload Profile Photo</label>
+              <label htmlFor="profilePhoto" className="small-font fw-400 mb-1">
+                Upload Profile Photo
+              </label>
               <div className="input-group">
                 <input
                   id="profilePhoto"
@@ -348,5 +363,3 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
 };
 
 export default EditProfilePopup;
-
-

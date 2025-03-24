@@ -504,6 +504,9 @@ const creditSettlements = (id, data) => {
 const getSettlementSummeryById = (id, data) => {
   return apiRequest("getSettlementSummeryById", data, id);
 };
+const dirProfileBlockUnblock = (id, data) => {
+  return apiRequest("dirProfileBlockUnblock", data, id);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -633,4 +636,5 @@ export {
   getSettlementTransactionById,
   creditSettlements,
   getSettlementSummeryById,
+  dirProfileBlockUnblock,
 };
