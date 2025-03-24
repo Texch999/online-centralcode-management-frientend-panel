@@ -24,7 +24,7 @@ import { customStyles } from "../components/ReactSelectStyles";
 import { useSelector } from "react-redux";
 
 function EditNewDirector() {
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const mode = location.state?.mode || "add";
@@ -67,11 +67,11 @@ function EditNewDirector() {
   const [selectedRemarks, setSelectedRemarks] = useState({});
   const remarkOptions = [
     { value: "offline", label: "Offline" },
-    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []), 
+    ...(isCreditAllowed ? [{ value: "credit", label: "Credit" }] : []),
   ];
   const [allSelectedUserWebsites, setAllSelectedUserWebsites] = useState([]);
   const [selectedUserWebsitesPerAdmin, setSelectedUserWebsitesPerAdmin] = useState({});
-   const allCountries = useSelector ((item) => item?.allCountries);
+  const allCountries = useSelector((item) => item?.allCountries);
   const getLocationName = (locationId) => {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
@@ -160,7 +160,7 @@ function EditNewDirector() {
         }
         if (!site.downline_comm || site.downline_comm == 0) {
           errors[`downline_comm_${site.id}`] = "Downline commission is required.";
-        } 
+        }
 
         if (site.is_casino === "1" && (!site.caschip_values || site.caschip_values.trim() === "")) {
           errors[`caschip_values_${site.id}`] = "Casino chip value is required.";
@@ -172,12 +172,12 @@ function EditNewDirector() {
           console.log(!site.share, site.share == 0, !site.share || site.share > 0, "==>!site.share || site.share > 0")
           errors[`share_${site.id}`] = "Downline share is required.";
         }
-      
+
         if (!site.downline_comm || site.downline_comm == 0) {
           console.log(!site.share, site.share > 0, !site.share || site.share == 0, "==>!site.share || site.share > 0")
           errors[`downline_comm_${site.id}`] = "Downline commission is required.";
         }
-       
+
         if (!site.caschip_values || site.caschip_values == "") {
           errors[`caschip_values_${site.id}`] = "Casino chip value is required.";
         } else if (isNaN(site.caschip_values)) {
@@ -836,9 +836,35 @@ function EditNewDirector() {
     );
   };
 
+  // const addAnotherForm = () => {
+  //   const newForm = { id: Date.now() };
+  //   setForms((prevForms) => [...prevForms, newForm]);
+  // };
+
   const addAnotherForm = () => {
     const newForm = { id: Date.now() };
     setForms((prevForms) => [...prevForms, newForm]);
+
+    // If type is 2 (SuperAdmin), auto-select the existing admin site
+    if (parseInt(selectedRole) === 2 && individualDirectorData?.accessWebsites[0]?.admin_panel_id) {
+      const adminId = individualDirectorData.accessWebsites[0].admin_panel_id;
+      const adminName = individualDirectorData.accessWebsites[0].admin_panel_name;
+
+      setSelectedAdmins(prev => ({
+        ...prev,
+        [newForm.id]: {
+          value: adminId,
+          label: adminName
+        }
+      }));
+
+      // Get available user websites for this admin
+      const availableUserWebsites = getAvailableUserWebsites(adminId);
+      setUserWebsitesList(prev => ({
+        ...prev,
+        [newForm.id]: availableUserWebsites
+      }));
+    }
   };
 
   const removeForm = (id) => {
@@ -1154,7 +1180,7 @@ function EditNewDirector() {
                   <label className="small-font my-1">Admin Website</label>
                   <div className="d-flex align-items-center">
                     <select
-                      className="small-font white-bg rounded border-grey3 p-2 w-100 no-cursor"
+                      className="small-font grey-bg-clr rounded p-2 w-100 no-cursor border-0"
                       disabled
                     >
                       <option value={data.web_name}>{data.web_name}</option>
@@ -1172,7 +1198,7 @@ function EditNewDirector() {
                       <div key={userIndex} className="w-100 mt-3 my-2 row">
                         <div className="col-2 d-flex flex-column mt-4">
                           <select
-                            className="small-font w-100 white-bg rounded border-grey3 p-2 no-cursor"
+                            className="small-font w-100 grey-bg-clr rounded p-2 no-cursor border-0"
                             disabled
                           >
                             <option value={userWebsite.web_url}>
@@ -1192,7 +1218,7 @@ function EditNewDirector() {
                           </label>
                           <div className="d-flex align-items-center">
                             <select
-                              className="small-font white-bg rounded border-grey3 p-2 w-100"
+                              className="small-font grey-bg-clr rounded p-2 w-100 border-0"
                               value={currentCommissionType}
                               onChange={(e) =>
                                 handleCommissionTypeChange(
@@ -1232,7 +1258,7 @@ function EditNewDirector() {
                                   </label>
                                   <input
                                     type="text"
-                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    className="small-font grey-bg-clr rounded border-0 p-2 w-100"
                                     value={userWebsite.rent_start_date || ""}
                                   />
                                 </div>
@@ -1242,7 +1268,7 @@ function EditNewDirector() {
                                   </label>
                                   <input
                                     type="text"
-                                    className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                    className="small-font grey-bg-clr rounded border-0 p-2 w-100"
                                     value={userWebsite.rent_expiry_date || ""}
                                   />
                                 </div>
@@ -1257,7 +1283,7 @@ function EditNewDirector() {
                               <input
                                 type="text"
                                 maxLength={10}
-                                className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
+                                className="small-font grey-bg-clr rounded all-none border-0 p-2 w-100"
                                 value={userWebsite.monthly_amount || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -1290,7 +1316,7 @@ function EditNewDirector() {
                               </label>
                               <input
                                 type="text"
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
+                                className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                 value={userWebsite.max_chips_monthly || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -1323,7 +1349,7 @@ function EditNewDirector() {
                               </label>
                               <input
                                 type="text"
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
+                                className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                 value={
                                   userWebsite.max_chips_monthly === 0 ||
                                     isNaN(
@@ -1357,7 +1383,7 @@ function EditNewDirector() {
                               </label>
                               <input
                                 type="text"
-                                className="small-font white-bg rounded all-none border-grey3 p-2 w-100"
+                                className="small-font grey-bg-clr rounded all-none border-0 p-2 w-100"
                                 value={userWebsite.downline_comm || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -1400,7 +1426,7 @@ function EditNewDirector() {
                             </div>
 
                             <div className="col-2  mt-4 ">
-                              <div className="light-white-bg br-5 ">
+                              <div className="grey-bg-clr br-5 border-0">
                                 <input
                                   type="checkbox"
                                   className="ms-2"
@@ -1428,7 +1454,7 @@ function EditNewDirector() {
                                 <input
                                   type="text"
                                   maxLength={4}
-                                  className="small-font all-none white-bg rounded border-grey3 p-2 w-100"
+                                  className="small-font all-none grey-bg-clr rounded border-0 p-2 w-100"
                                   value={userWebsite.caschip_values || ""}
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
@@ -1452,43 +1478,38 @@ function EditNewDirector() {
                         {currentCommissionType == "2" && (
                           <>
                             <div className="col-2">
-                              {console.log(errors, "==>{errors[`max_chips_monthly_${userWebsite.id}`]")}
                               <label className="small-font my-1">
                                 Downline Share
                               </label>
-                              <input
-                                type="text"
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
-                                value={userWebsite.share || ""}
-                                onChange={(e) => {
-                                  const inputValue = e.target.value;
-                                  const numericValue = inputValue.replace(
-                                    /[^0-9]/g,
-                                    ""
-                                  );
+                              <div className="position-relative">
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100 pe-4"
+                                  value={userWebsite.share || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    const numericValue = inputValue.replace(/[^0-9]/g, "");
 
-                                  let finalValue = numericValue;
-                                  if (
-                                    numericValue.length > 2 &&
-                                    numericValue !== "100"
-                                  ) {
-                                    finalValue = numericValue.slice(0, 2);
-                                  }
+                                    let finalValue = numericValue;
+                                    if (numericValue.length > 2 && numericValue !== "100") {
+                                      finalValue = numericValue.slice(0, 2);
+                                    }
 
+                                    const clampedValue = Math.min(
+                                      Math.max(Number(finalValue), 0),
+                                      100
+                                    );
 
-                                  const clampedValue = Math.min(
-                                    Math.max(Number(finalValue), 0),
-                                    100
-                                  );
-
-                                  const updatedWebsites = [...userWebsites];
-                                  updatedWebsites[userIndex] = {
-                                    ...updatedWebsites[userIndex],
-                                    share: clampedValue,
-                                  };
-                                  setUserWebsites(updatedWebsites);
-                                }}
-                              />
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      share: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                                <span className="position-absolute end-0 top-50 translate-middle-y me-3">%</span>
+                              </div>
                               {errors[`share_${userWebsite.id}`] && (
                                 <span className="text-danger small-font">
                                   {errors[`share_${userWebsite.id}`]}
@@ -1499,39 +1520,42 @@ function EditNewDirector() {
                               <label className="small-font my-1">
                                 Downline Comm
                               </label>
-                              <input
-                                type="text"
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
-                                value={userWebsite.downline_comm || ""}
-                                onChange={(e) => {
-                                  const inputValue = e.target.value;
+                              <div className="position-relative">
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
 
-                                  const numericValue = inputValue.replace(
-                                    /[^0-9]/g,
-                                    ""
-                                  );
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9]/g,
+                                      ""
+                                    );
 
-                                  let finalValue = numericValue;
-                                  if (
-                                    numericValue.length > 2 &&
-                                    numericValue !== "100"
-                                  ) {
-                                    finalValue = numericValue.slice(0, 2);
-                                  }
+                                    let finalValue = numericValue;
+                                    if (
+                                      numericValue.length > 2 &&
+                                      numericValue !== "100"
+                                    ) {
+                                      finalValue = numericValue.slice(0, 2);
+                                    }
 
-                                  const clampedValue = Math.min(
-                                    Math.max(Number(finalValue), 0),
-                                    100
-                                  );
+                                    const clampedValue = Math.min(
+                                      Math.max(Number(finalValue), 0),
+                                      100
+                                    );
 
-                                  const updatedWebsites = [...userWebsites];
-                                  updatedWebsites[userIndex] = {
-                                    ...updatedWebsites[userIndex],
-                                    downline_comm: clampedValue,
-                                  };
-                                  setUserWebsites(updatedWebsites);
-                                }}
-                              />
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                                <span className="position-absolute end-0 top-50 translate-middle-y me-3">%</span>
+                              </div>
                               {errors[`downline_comm_${userWebsite.id}`] && (
                                 <span className="text-danger small-font">
                                   {errors[`downline_comm_${userWebsite.id}`]}
@@ -1545,7 +1569,7 @@ function EditNewDirector() {
                               <input
                                 type="text"
                                 maxLength={4}
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
+                                className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                 value={userWebsite.caschip_values || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -1569,7 +1593,7 @@ function EditNewDirector() {
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
-                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                            <div className="col grey-bg-clr flex-between white-space input-css ms-2 d-flex border-0 mt-4">
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary === 1}
@@ -1595,38 +1619,41 @@ function EditNewDirector() {
                               <label className="small-font my-1">
                                 Downline Share
                               </label>
-                              <input
-                                type="text"
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
-                                value={userWebsite.share || ""}
-                                onChange={(e) => {
-                                  const inputValue = e.target.value;
-                                  const numericValue = inputValue.replace(
-                                    /[^0-9]/g,
-                                    ""
-                                  );
+                              <div className="position-relative">
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
+                                  value={userWebsite.share || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9]/g,
+                                      ""
+                                    );
 
-                                  let finalValue = numericValue;
-                                  if (
-                                    numericValue.length > 2 &&
-                                    numericValue !== "100"
-                                  ) {
-                                    finalValue = numericValue.slice(0, 2);
-                                  }
+                                    let finalValue = numericValue;
+                                    if (
+                                      numericValue.length > 2 &&
+                                      numericValue !== "100"
+                                    ) {
+                                      finalValue = numericValue.slice(0, 2);
+                                    }
 
-                                  const clampedValue = Math.min(
-                                    Math.max(Number(finalValue), 0),
-                                    100
-                                  );
+                                    const clampedValue = Math.min(
+                                      Math.max(Number(finalValue), 0),
+                                      100
+                                    );
 
-                                  const updatedWebsites = [...userWebsites];
-                                  updatedWebsites[userIndex] = {
-                                    ...updatedWebsites[userIndex],
-                                    share: clampedValue,
-                                  };
-                                  setUserWebsites(updatedWebsites);
-                                }}
-                              />
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      share: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                                <span className="position-absolute end-0 top-50 translate-middle-y me-3">%</span>
+                              </div>
                               {errors[`share_${userWebsite.id}`] && (
                                 <span className="text-danger small-font">
                                   {errors[`share_${userWebsite.id}`]}
@@ -1637,39 +1664,42 @@ function EditNewDirector() {
                               <label className="small-font my-1">
                                 Downline Comm
                               </label>
-                              <input
-                                type="text"
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
-                                value={userWebsite.downline_comm || ""}
-                                onChange={(e) => {
-                                  const inputValue = e.target.value;
+                              <div className="position-relative">
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
 
-                                  const numericValue = inputValue.replace(
-                                    /[^0-9]/g,
-                                    ""
-                                  );
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9]/g,
+                                      ""
+                                    );
 
-                                  let finalValue = numericValue;
-                                  if (
-                                    numericValue.length > 2 &&
-                                    numericValue !== "100"
-                                  ) {
-                                    finalValue = numericValue.slice(0, 2);
-                                  }
+                                    let finalValue = numericValue;
+                                    if (
+                                      numericValue.length > 2 &&
+                                      numericValue !== "100"
+                                    ) {
+                                      finalValue = numericValue.slice(0, 2);
+                                    }
 
-                                  const clampedValue = Math.min(
-                                    Math.max(Number(finalValue), 0),
-                                    100
-                                  );
+                                    const clampedValue = Math.min(
+                                      Math.max(Number(finalValue), 0),
+                                      100
+                                    );
 
-                                  const updatedWebsites = [...userWebsites];
-                                  updatedWebsites[userIndex] = {
-                                    ...updatedWebsites[userIndex],
-                                    downline_comm: clampedValue,
-                                  };
-                                  setUserWebsites(updatedWebsites);
-                                }}
-                              />
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
+                                />
+                                <span className="position-absolute end-0 top-50 translate-middle-y me-3">%</span>
+                              </div>
                               {errors[`downline_comm_${userWebsite.id}`] && (
                                 <span className="text-danger small-font">
                                   {errors[`downline_comm_${userWebsite.id}`]}
@@ -1683,7 +1713,7 @@ function EditNewDirector() {
                               <input
                                 type="text"
                                 maxLength={4}
-                                className="small-font white-bg all-none rounded border-grey3 p-2 w-100"
+                                className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                 value={userWebsite.caschip_values || ""}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -1706,7 +1736,7 @@ function EditNewDirector() {
                               )}
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                            <div className="col flex-between white-space input-css ms-2 d-flex border-grey3 mt-4">
+                            <div className="col grey-bg-clr flex-between white-space input-css ms-2 d-flex border-0 mt-4">
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary == 1}
@@ -1719,7 +1749,7 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
-                              <label className="small-font me-2">
+                              <label className="small-font mx-2">
                                 Is Primary
                               </label>
                             </div>
@@ -1751,7 +1781,7 @@ function EditNewDirector() {
             ))}
 
             {forms.map((form, index) => (
-              <>
+              < div className="white-bg mt-2 pt-2">
                 <h5 className="yellow-font fw-bold mb-0">ADD WEBSITE MARKET</h5>
                 <div key={form.id}>
                   {role === "director" ? (
@@ -1803,7 +1833,6 @@ function EditNewDirector() {
                           }
                         />
                       </div>
-                      {console.log(errors[`admin_${form.id}`], "===>errors[form.id]")}
                       {errors[`admin_${form.id}`] && (
                         <span className="text-danger small-font">
                           {errors[`admin_${form.id}`]}
@@ -1848,6 +1877,7 @@ function EditNewDirector() {
                             userSite.website_access_id
                           ] && (
                               <div className="col-1 my-1">
+                                <label>Commison Type</label>
                                 <Select
                                   className="small-font white-bg"
                                   placeholder="Account Type"
@@ -2051,7 +2081,7 @@ function EditNewDirector() {
                                     </span>
                                   </div>
                                 </div>
-                                {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
+
                                 <div className="col position-relative mx-1 d-flex align-items-center">
                                   <label className="small-font me-2">
                                     Is Primary{" "}
@@ -2163,20 +2193,476 @@ function EditNewDirector() {
                       <p className="small-font">No user websites available</p>
                     )
                   ) : (
+                    // <div className="col-12">
+                    //   {userWebsitesList[form.id]?.length > 0 ? (
+                    //     <div className="row">
+                    //       <div className="col-2 input-css5 small-font">
+                    //         <div className="black-font">User Website</div>
+                    //         <Select
+                    //           className="small-font rounded all-none my-2 w-100"
+                    //           placeholder="Select a website"
+                    //           options={userWebsitesList[form.id]
+                    //             .map((site) => ({
+                    //               value: site.id,
+                    //               label: site.web_url,
+                    //             }))
+                    //           }
+                    //           value={
+                    //             selectedSiteIds[form.id]
+                    //               ? {
+                    //                 value: selectedSiteIds[form.id],
+                    //                 label:
+                    //                   userWebsitesList[form.id].find(
+                    //                     (site) => site.id === selectedSiteIds[form.id]
+                    //                   )?.web_url || "",
+                    //               }
+                    //               : null
+                    //           }
+                    //           onChange={(selectedOption) => {
+                    //             const selectedSiteId = selectedOption ? selectedOption.value : null;
+                    //             const adminId = selectedAdmins[form.id]?.value;
+
+                    //             setSelectedSiteIds((prev) => ({
+                    //               ...prev,
+                    //               [form.id]: selectedSiteId,
+                    //             }));
+
+                    //             handleCheckboxChange(form.id, selectedSiteId, null, adminId);
+                    //           }}
+                    //           styles={customStyles}
+                    //         />
+
+                    //         {errors[`userSite_${form.id}`] && (
+                    //           <span className="text-danger small-font">
+                    //             {errors[`userSite_${form.id}`]}
+                    //           </span>
+                    //         )}
+                    //       </div>
+                    //       {selectedSiteIds[form.id] && (
+                    //         <>
+                    //           <div className="col-2 my-1">
+                    //             <label className="small-font my-1 d-block">Commission Type</label>
+                    //             <Select
+                    //               className="small-font white-bg"
+                    //               placeholder="Account Type"
+                    //               options={commissionOptions}
+                    //               styles={customStyles}
+                    //               onChange={(selectedOption) =>
+                    //                 handleAccountTypeChange(
+                    //                   form.id,
+                    //                   selectedSiteIds[form.id],
+                    //                   selectedOption
+                    //                 )
+                    //               }
+                    //               value={
+                    //                 commissionOptions.find(
+                    //                   (option) =>
+                    //                     option.value ===
+                    //                     accountTypes[form.id]?.[selectedSiteIds[form.id]]
+                    //                 ) || null
+                    //               }
+                    //             />
+
+                    //             {errors[`commission_type_${selectedSiteIds[form.id]}`] && (
+                    //               <span className="text-danger small-font">
+                    //                 {errors[`commission_type_${selectedSiteIds[form.id]}`]}
+                    //               </span>
+                    //             )}
+
+                    //           </div>
+
+                    //           {/* Fields for Commission Type 1 */}
+                    //           {/* {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "1" && (
+                    //             <div className="col-10">
+                    //               <div className="row">
+                    //                 <div className="col">
+                    //                   <input
+                    //                     type="text"
+                    //                     className="small-font white-bg rounded border-grey3 p-2 w-100"
+                    //                     placeholder="Monthly Amnt"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "monthly_amount",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                   />
+                    //                   {errors[`monthly_amount_${selectedSiteIds[form.id]}`] && (
+                    //                     <span className="text-danger small-font">
+                    //                       {errors[`monthly_amount_${selectedSiteIds[form.id]}`]}
+                    //                     </span>
+                    //                   )}
+                    //                   {console.log(errors, "==>errors[`commission_type_${selectedSiteIds[form.id]}`]")}
+                    //                 </div>
+
+                    //                 <div className="col">
+                    //                   <input
+                    //                     type="text"
+                    //                     className="small-font white-bg rounded border-grey3 p-2 w-100"
+                    //                     placeholder="Max Chips Monthly"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "max_chips_monthly",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                   />
+                    //                   {errors[`max_chips_monthly_${selectedSiteIds[form.id]}`] && (
+                    //                     <span className="text-danger small-font">
+                    //                       {errors[`max_chips_monthly_${selectedSiteIds[form.id]}`]}
+                    //                     </span>
+                    //                   )}
+                    //                 </div>
+
+                    //                 <div className="col">
+                    //                   <input
+                    //                     type="text"
+                    //                     className="small-font white-bg rounded border-grey3 p-2 w-100"
+                    //                     placeholder="Rent Percentage"
+                    //                     value={
+                    //                       addWebsites.find(
+                    //                         (site) => site.id === selectedSiteIds[form.id]
+                    //                       )?.monthly_amount &&
+                    //                         addWebsites.find(
+                    //                           (site) => site.id === selectedSiteIds[form.id]
+                    //                         )?.max_chips_monthly
+                    //                         ? (
+                    //                           (parseFloat(
+                    //                             addWebsites.find(
+                    //                               (site) => site.id === selectedSiteIds[form.id]
+                    //                             )?.monthly_amount
+                    //                           ) /
+                    //                             parseFloat(
+                    //                               addWebsites.find(
+                    //                                 (site) => site.id === selectedSiteIds[form.id]
+                    //                               )?.max_chips_monthly
+                    //                             )) *
+                    //                           100
+                    //                         ).toFixed(2)
+                    //                         : ""
+                    //                     }
+                    //                     readOnly
+                    //                   />
+                    //                 </div>
+
+                    //                 <div className="col-3">
+                    //                   <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
+                    //                     <input
+                    //                       type="text"
+                    //                       className="small-font bg-none p-2 w-75"
+                    //                       placeholder="Commission(%)"
+                    //                       onChange={(e) =>
+                    //                         handleInputChange(
+                    //                           selectedSiteIds[form.id],
+                    //                           "downline_comm",
+                    //                           e.target.value
+                    //                         )
+                    //                       }
+                    //                     />
+                    //                     <span className="small-font text-center border-left3 px-1">
+                    //                       <b>My Comm.. 1%</b>
+                    //                     </span>
+
+                    //                   </div>
+                    //                   {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
+                    //                     <span className="text-danger small-font">
+                    //                       {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                    //                     </span>
+                    //                   )}
+                    //                 </div>
+
+                    //                 <div className="col d-flex align-items-center">
+                    //                   <label className="small-font me-2">Casino Allowed</label>
+                    //                   <input
+                    //                     type="checkbox"
+                    //                     checked={
+                    //                       addWebsites.find(
+                    //                         (site) => site.id === selectedSiteIds[form.id]
+                    //                       )?.is_casino === 1
+                    //                     }
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "is_casino",
+                    //                         e.target.checked ? 1 : 2
+                    //                       )
+                    //                     }
+                    //                   />
+                    //                 </div>
+
+                    //                 {addWebsites.find(
+                    //                   (site) => site.id === selectedSiteIds[form.id]
+                    //                 )?.is_casino === 1 && (
+                    //                     <div className="col">
+                    //                       <input
+                    //                         type="text"
+                    //                         className="small-font white-bg rounded border-grey3 p-2 w-100"
+                    //                         placeholder="Casino Chip Value"
+                    //                         onChange={(e) =>
+                    //                           handleInputChange(
+                    //                             selectedSiteIds[form.id],
+                    //                             "caschip_values",
+                    //                             e.target.value
+                    //                           )
+                    //                         }
+                    //                       />
+                    //                     </div>
+                    //                   )}
+                    //               </div>
+                    //             </div>
+                    //           )} */}
+
+                    //           {/* Fields for Commission Type 2 */}
+                    //           {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "2" && (
+                    //             <div className="col d-flex">
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block">Downline Sharing</label>
+                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
+                    //                   <input
+                    //                     className="small-font bg-transparent p-2 flex-grow-1"
+                    //                     style={{
+                    //                       border: "none",
+                    //                       outline: "none",
+                    //                       boxShadow: "none"
+                    //                     }}
+                    //                     placeholder="Downline Sharing"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "share",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                     max={10}
+                    //                     min={0}
+                    //                   />
+                    //                   <span className="px-2 text-muted">%</span>
+                    //                 </div>
+                    //                 {errors[`share_${selectedSiteIds[form.id]}`] && (
+                    //                   <span className="text-danger small-font">
+                    //                     {errors[`share_${selectedSiteIds[form.id]}`]}
+                    //                   </span>
+                    //                 )}
+                    //               </div>
+
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block">Commission</label>
+                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
+                    //                   <input
+                    //                     className="small-font bg-transparent p-2 flex-grow-1"
+                    //                     style={{
+                    //                       border: "none",
+                    //                       outline: "none",
+                    //                       boxShadow: "none"
+                    //                     }}
+                    //                     placeholder="Enter Commission"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "downline_comm",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                     max={10}
+                    //                     min={0}
+                    //                   />
+                    //                   <span className="px-2 text-muted">%</span>
+                    //                 </div>
+                    //                 {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
+                    //                   <span className="text-danger small-font">
+                    //                     {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                    //                   </span>
+                    //                 )}
+                    //               </div>
+
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block">Casino Chip Value</label>
+                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
+                    //                   <input
+                    //                     className="small-font bg-transparent p-2 flex-grow-1"
+                    //                     style={{
+                    //                       border: "none",
+                    //                       outline: "none",
+                    //                       boxShadow: "none"
+                    //                     }}
+                    //                     placeholder="Casino Chip Value"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "caschip_values",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                     max={10}
+                    //                     min={0}
+                    //                   />
+                    //                 </div>
+                    //                 {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
+                    //                   <span className="text-danger small-font">
+                    //                     {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
+                    //                   </span>
+                    //                 )}
+                    //               </div>
+
+                    //               <div className="col position-relative mx-1">
+                    //                 <div className="rounded grey-bg-clr d-flex flex-start align-items-center small-font py-2 px-1  border-0">
+                    //                   <input
+                    //                     type="checkbox"
+                    //                     checked={
+                    //                       addWebsites.find(
+                    //                         (site) => site.id === selectedSiteIds[form.id]
+                    //                       )?.is_primary == 1
+                    //                     }
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "is_primary",
+                    //                         e.target.checked ? 1 : 2
+                    //                       )
+                    //                     }
+                    //                   />
+                    //                   <label className="small-font ms-2">Is Primary </label>
+                    //                 </div>
+                    //               </div>
+                    //             </div>
+                    //           )}
+                    //           {/* Fields for Commission Type 3 */}
+                    //           {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "3" && (
+                    //             <div className="col d-flex">
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block">Downline Sharing</label>
+                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
+                    //                   <input
+                    //                     className="small-font bg-transparent p-2 flex-grow-1"
+                    //                     style={{
+                    //                       border: "none",
+                    //                       outline: "none",
+                    //                       boxShadow: "none"
+                    //                     }}
+                    //                     placeholder="Downline Sharing"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "share",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                     max={10}
+                    //                     min={0}
+                    //                   />
+                    //                   <span className="px-2 text-muted">%</span>
+                    //                 </div>
+                    //                 {errors[`share_${selectedSiteIds[form.id]}`] && (
+                    //                   <span className="text-danger small-font">
+                    //                     {errors[`share_${selectedSiteIds[form.id]}`]}
+                    //                   </span>
+                    //                 )}
+                    //               </div>
+
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block">Commission</label>
+                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
+                    //                   <input
+                    //                     className="small-font bg-transparent p-2 flex-grow-1"
+                    //                     style={{
+                    //                       border: "none",
+                    //                       outline: "none",
+                    //                       boxShadow: "none"
+                    //                     }}
+                    //                     placeholder="Enter Commission"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "downline_comm",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                     max={10}
+                    //                     min={0}
+                    //                   />
+                    //                   <span className="px-2 text-muted">%</span>
+                    //                 </div>
+                    //                 {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
+                    //                   <span className="text-danger small-font">
+                    //                     {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                    //                   </span>
+                    //                 )}
+                    //               </div>
+
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block">Casino Chip Value</label>
+                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
+                    //                   <input
+                    //                     className="small-font bg-transparent p-2 flex-grow-1"
+                    //                     style={{
+                    //                       border: "none",
+                    //                       outline: "none",
+                    //                       boxShadow: "none"
+                    //                     }}
+                    //                     placeholder="Casino Chip Value"
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "caschip_values",
+                    //                         e.target.value
+                    //                       )
+                    //                     }
+                    //                     max={10}
+                    //                     min={0}
+                    //                   />
+                    //                 </div>
+                    //                 {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
+                    //                   <span className="text-danger small-font">
+                    //                     {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
+                    //                   </span>
+                    //                 )}
+                    //               </div>
+
+                    //               <div className="col position-relative mx-1">
+                    //                 <label className="small-font my-1 d-block" style={{ color: "#fff" }}>Primary</label>
+                    //                 <div className="rounded grey-bg-clr d-flex flex-start align-items-center small-font py-2 px-1  border-0">
+                    //                   <input
+                    //                     type="checkbox"
+                    //                     checked={
+                    //                       addWebsites.find(
+                    //                         (site) => site.id === selectedSiteIds[form.id]
+                    //                       )?.is_primary == 1
+                    //                     }
+                    //                     onChange={(e) =>
+                    //                       handleInputChange(
+                    //                         selectedSiteIds[form.id],
+                    //                         "is_primary",
+                    //                         e.target.checked ? 1 : 2
+                    //                       )
+                    //                     }
+                    //                   />
+                    //                   <label className="small-font ms-2">Is Primary </label>
+                    //                 </div>
+                    //               </div>
+                    //             </div>
+                    //           )}
+                    //         </>
+                    //       )}
+                    //     </div>
+                    //   ) : (
+                    //     <p className="small-font">No user websites available</p>
+                    //   )}
+                    // </div >
                     <div className="col-12">
                       {userWebsitesList[form.id]?.length > 0 ? (
-                        <div className="row">
-                          <div className="col-2 input-css5 small-font">
+                        <div className="row align-items-center g-2"> {/* Added align-items-center and g-2 for consistent vertical alignment and gap */}
+                          {/* User Website Select */}
+                          <div className="col-md-2 col-12 input-css5 small-font">
                             <div className="black-font">User Website</div>
                             <Select
                               className="small-font rounded all-none my-2 w-100"
                               placeholder="Select a website"
-                              options={userWebsitesList[form.id]
-                                .map((site) => ({
-                                  value: site.id,
-                                  label: site.web_url,
-                                }))
-                              }
+                              options={userWebsitesList[form.id].map((site) => ({
+                                value: site.id,
+                                label: site.web_url,
+                              }))}
                               value={
                                 selectedSiteIds[form.id]
                                   ? {
@@ -2201,16 +2687,18 @@ function EditNewDirector() {
                               }}
                               styles={customStyles}
                             />
-
                             {errors[`userSite_${form.id}`] && (
                               <span className="text-danger small-font">
                                 {errors[`userSite_${form.id}`]}
                               </span>
                             )}
                           </div>
+
+                          {/* Commission Type Select */}
                           {selectedSiteIds[form.id] && (
                             <>
-                              <div className="col-1 my-1">
+                              <div className="col-md-2 col-12">
+                                <label className="small-font my-1 d-block">Commission Type</label>
                                 <Select
                                   className="small-font white-bg"
                                   placeholder="Account Type"
@@ -2231,149 +2719,89 @@ function EditNewDirector() {
                                     ) || null
                                   }
                                 />
-
                                 {errors[`commission_type_${selectedSiteIds[form.id]}`] && (
                                   <span className="text-danger small-font">
                                     {errors[`commission_type_${selectedSiteIds[form.id]}`]}
                                   </span>
                                 )}
-
                               </div>
 
-                              {/* Fields for Commission Type 1 */}
-                              {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "1" && (
-                                <div className="col-10">
-                                  <div className="row">
-                                    {/* Monthly Amount */}
-                                    <div className="col">
-                                      <input
-                                        type="text"
-                                        className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                        placeholder="Monthly Amnt"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "monthly_amount",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                      {errors[`monthly_amount_${selectedSiteIds[form.id]}`] && (
-                                        <span className="text-danger small-font">
-                                          {errors[`monthly_amount_${selectedSiteIds[form.id]}`]}
-                                        </span>
-                                      )}
-                                      {console.log(errors, "==>errors[`commission_type_${selectedSiteIds[form.id]}`]")}
-                                    </div>
-
-                                    {/* Max Chips Monthly */}
-                                    <div className="col">
-                                      <input
-                                        type="text"
-                                        className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                        placeholder="Max Chips Monthly"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "max_chips_monthly",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                      {errors[`max_chips_monthly_${selectedSiteIds[form.id]}`] && (
-                                        <span className="text-danger small-font">
-                                          {errors[`max_chips_monthly_${selectedSiteIds[form.id]}`]}
-                                        </span>
-                                      )}
-                                    </div>
-
-                                    {/* Rent Percentage (Calculated Field) */}
-                                    <div className="col">
-                                      <input
-                                        type="text"
-                                        className="small-font white-bg rounded border-grey3 p-2 w-100"
-                                        placeholder="Rent Percentage"
-                                        value={
-                                          addWebsites.find(
-                                            (site) => site.id === selectedSiteIds[form.id]
-                                          )?.monthly_amount &&
-                                            addWebsites.find(
-                                              (site) => site.id === selectedSiteIds[form.id]
-                                            )?.max_chips_monthly
-                                            ? (
-                                              (parseFloat(
-                                                addWebsites.find(
-                                                  (site) => site.id === selectedSiteIds[form.id]
-                                                )?.monthly_amount
-                                              ) /
-                                                parseFloat(
-                                                  addWebsites.find(
-                                                    (site) => site.id === selectedSiteIds[form.id]
-                                                  )?.max_chips_monthly
-                                                )) *
-                                              100
-                                            ).toFixed(2)
-                                            : ""
-                                        }
-                                        readOnly
-                                      />
-                                    </div>
-
-                                    {/* Commission */}
-                                    <div className="col-3">
-                                      <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                        <input
-                                          type="text"
-                                          className="small-font bg-none p-2 w-75"
-                                          placeholder="Commission(%)"
-                                          onChange={(e) =>
-                                            handleInputChange(
-                                              selectedSiteIds[form.id],
-                                              "downline_comm",
-                                              e.target.value
-                                            )
-                                          }
-                                        />
-                                        <span className="small-font text-center border-left3 px-1">
-                                          <b>My Comm.. 1%</b>
-                                        </span>
-
-                                      </div>
-                                      {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                                        <span className="text-danger small-font">
-                                          {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                                        </span>
-                                      )}
-                                    </div>
-
-                                    {/* Casino Allowed Checkbox */}
-                                    <div className="col d-flex align-items-center">
-                                      <label className="small-font me-2">Casino Allowed</label>
-                                      <input
-                                        type="checkbox"
-                                        checked={
-                                          addWebsites.find(
-                                            (site) => site.id === selectedSiteIds[form.id]
-                                          )?.is_casino === 1
-                                        }
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "is_casino",
-                                            e.target.checked ? 1 : 2
-                                          )
-                                        }
-                                      />
-                                    </div>
-
-                                    {/* Casino Chip Value (Conditional Rendering) */}
-                                    {addWebsites.find(
-                                      (site) => site.id === selectedSiteIds[form.id]
-                                    )?.is_casino === 1 && (
-                                        <div className="col">
+                              {/* Dynamic Fields - All in one row */}
+                              <div className="col-md-8 col-12">
+                                <div className="row align-items-center g-2">
+                                  {/* Fields for Commission Type 2 */}
+                                  {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "2" && (
+                                    <>
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block">Downline Sharing</label>
+                                        <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                           <input
-                                            type="text"
-                                            className="small-font white-bg rounded border-grey3 p-2 w-100"
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none"
+                                            }}
+                                            placeholder="Downline Sharing"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                e.target.value
+                                              )
+                                            }
+                                            max={10}
+                                            min={0}
+                                          />
+                                          <span className="px-2 text-muted">%</span>
+                                        </div>
+                                        {errors[`share_${selectedSiteIds[form.id]}`] && (
+                                          <span className="text-danger small-font">
+                                            {errors[`share_${selectedSiteIds[form.id]}`]}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block">Commission</label>
+                                        <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
+                                          <input
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none"
+                                            }}
+                                            placeholder="Enter Commission"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "downline_comm",
+                                                e.target.value
+                                              )
+                                            }
+                                            max={10}
+                                            min={0}
+                                          />
+                                          <span className="px-2 text-muted">%</span>
+                                        </div>
+                                        {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
+                                          <span className="text-danger small-font">
+                                            {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block">Casino Chip Value</label>
+                                        <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
+                                          <input
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none"
+                                            }}
                                             placeholder="Casino Chip Value"
                                             onChange={(e) =>
                                               handleInputChange(
@@ -2382,212 +2810,160 @@ function EditNewDirector() {
                                                 e.target.value
                                               )
                                             }
+                                            max={10}
+                                            min={0}
                                           />
                                         </div>
-                                      )}
-                                  </div>
+                                        {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
+                                          <span className="text-danger small-font">
+                                            {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block" style={{ visibility: "hidden" }}>Primary</label>
+                                        <div className="rounded grey-bg-clr d-flex align-items-center small-font p-2 border-0 h-100">
+                                          <input
+                                            type="checkbox"
+                                            className="me-2"
+                                            checked={
+                                              addWebsites.find(
+                                                (site) => site.id === selectedSiteIds[form.id]
+                                              )?.is_primary == 1
+                                            }
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "is_primary",
+                                                e.target.checked ? 1 : 2
+                                              )
+                                            }
+                                          />
+                                          <label className="small-font m-0">Is Primary</label>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+
+                                  {/* Fields for Commission Type 3 */}
+                                  {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "3" && (
+                                    <>
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block">Downline Sharing</label>
+                                        <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
+                                          <input
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none"
+                                            }}
+                                            placeholder="Downline Sharing"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                e.target.value
+                                              )
+                                            }
+                                            max={10}
+                                            min={0}
+                                          />
+                                          <span className="px-2 text-muted">%</span>
+                                        </div>
+                                        {errors[`share_${selectedSiteIds[form.id]}`] && (
+                                          <span className="text-danger small-font">
+                                            {errors[`share_${selectedSiteIds[form.id]}`]}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block">Commission</label>
+                                        <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
+                                          <input
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none"
+                                            }}
+                                            placeholder="Enter Commission"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "downline_comm",
+                                                e.target.value
+                                              )
+                                            }
+                                            max={10}
+                                            min={0}
+                                          />
+                                          <span className="px-2 text-muted">%</span>
+                                        </div>
+                                        {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
+                                          <span className="text-danger small-font">
+                                            {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block">Casino Chip Value</label>
+                                        <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
+                                          <input
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none"
+                                            }}
+                                            placeholder="Casino Chip Value"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "caschip_values",
+                                                e.target.value
+                                              )
+                                            }
+                                            max={10}
+                                            min={0}
+                                          />
+                                        </div>
+                                        {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
+                                          <span className="text-danger small-font">
+                                            {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      <div className="col position-relative">
+                                        <label className="small-font my-1 d-block" style={{ visibility: "hidden" }}>Primary</label>
+                                        <div className="rounded grey-bg-clr d-flex align-items-center small-font p-2 border-0 h-100">
+                                          <input
+                                            type="checkbox"
+                                            className="me-2"
+                                            checked={
+                                              addWebsites.find(
+                                                (site) => site.id === selectedSiteIds[form.id]
+                                              )?.is_primary == 1
+                                            }
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "is_primary",
+                                                e.target.checked ? 1 : 2
+                                              )
+                                            }
+                                          />
+                                          <label className="small-font m-0">Is Primary</label>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
                                 </div>
-                              )}
-
-                              {/* Fields for Commission Type 2 */}
-                              {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "2" && (
-                                <div className="col d-flex">
-                                  <div className="col position-relative mx-1">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Downline Sharing"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "share",
-                                            e.target.value
-                                          )
-                                        }
-                                        max={10}
-                                        min={0}
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b>My Share 10%</b>
-                                      </span>
-
-                                    </div>
-                                    {errors[`share_${selectedSiteIds[form.id]}`] && (
-                                      <span className="text-danger small-font">
-                                        {errors[`share_${selectedSiteIds[form.id]}`]}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="col position-relative mx-1">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Enter Commission: M.0"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "downline_comm",
-                                            e.target.value
-                                          )
-                                        }
-                                        max={10}
-                                        min={0}
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b>My Comm.. 1%</b>
-                                      </span>
-
-                                    </div>
-                                    {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                                      <span className="text-danger small-font">
-                                        {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="col position-relative mx-1">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Casino Chip Value"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "caschip_values",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b className="mx-1">Cas. Chip Val 20</b>
-                                      </span>
-
-                                    </div>
-                                    {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
-                                      <span className="text-danger small-font">
-                                        {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                                  <div className="col position-relative mx-1 d-flex align-items-center">
-                                    <label className="small-font me-2">Is Primary </label>
-                                    <input
-                                      type="checkbox"
-                                      checked={
-                                        addWebsites.find(
-                                          (site) => site.id === selectedSiteIds[form.id]
-                                        )?.is_primary == 1
-                                      }
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          selectedSiteIds[form.id],
-                                          "is_primary",
-                                          e.target.checked ? 1 : 2
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Fields for Commission Type 3 */}
-                              {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "3" && (
-                                <div className="col d-flex">
-                                  <div className="col position-relative mx-1">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Downline Sharing"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "share",
-                                            e.target.value
-                                          )
-                                        }
-                                        max={10}
-                                        min={0}
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b>My Share 10%</b>
-                                      </span>
-                                      {errors[`share_${selectedSiteIds[form.id]}`] && (
-                                        <span className="text-danger small-font">
-                                          {errors[`share_${selectedSiteIds[form.id]}`]}
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="col position-relative mx-1">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Enter Commission: M.0"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "downline_comm",
-                                            e.target.value
-                                          )
-                                        }
-                                        max={10}
-                                        min={0}
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b>My Comm.. 1%</b>
-                                      </span>
-
-                                    </div>
-                                    {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                                      <span className="text-danger small-font">
-                                        {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="col position-relative mx-1">
-                                    <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        className="small-font bg-none p-2 w-75"
-                                        placeholder="Casino Chip Value"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            selectedSiteIds[form.id],
-                                            "caschip_values",
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                      <span className="small-font text-center border-left3 px-1">
-                                        <b className="mx-1">Cas. Chip Val 20</b>
-                                      </span>
-
-                                    </div>
-                                    {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
-                                      <span className="text-danger small-font">
-                                        {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="col position-relative mx-1 d-flex align-items-center">
-                                    <label className="small-font me-2">Is Primary </label>
-                                    <input
-                                      type="checkbox"
-                                      checked={
-                                        addWebsites.find(
-                                          (site) => site.id === selectedSiteIds[form.id]
-                                        )?.is_primary == 1
-                                      }
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          selectedSiteIds[form.id],
-                                          "is_primary",
-                                          e.target.checked ? 1 : 2
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                              )}
+                              </div>
                             </>
                           )}
                         </div>
@@ -2606,17 +2982,18 @@ function EditNewDirector() {
                     <FaTrash className="me-2" /> Remove
                   </button>
                 </div>
-              </>
+              </div>
             ))}
           </div>
-        </form>
+        </form >
         {hasRemainingUserWebsites() && (
           <div className="text-end mb-3 w-100">
             <button type="button" className="cst-btn" onClick={addAnotherForm}>
               <FaPlus className="me-2" /> Add Another
             </button>
           </div>
-        )}
+        )
+        }
         <div className="d-flex justify-content-end">
           <button
             className="saffron-btn rounded"
@@ -2636,7 +3013,7 @@ function EditNewDirector() {
           // discription={`Updated ${selectedRole} ${loginName} Successfully`}
           discription={`Updated Successfully`}
         />
-      </div>
+      </div >
     </>
   );
 }

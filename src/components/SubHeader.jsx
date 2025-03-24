@@ -20,7 +20,7 @@ function SubHeader() {
         options: [
           { label: "Management Team", path: "/management-team" },
           { label: "Director & Super Admin", path: "/director-admin" },
-          { label: "View Downline List", path: "/downline-list" },
+          // { label: "View Downline List", path: "/downline-list" },
           { label: "Offline Payment Cards", path: "/offline-payment-modes" },
           { label: "Payment Details", path: "/payment-details" },
           { label: "Websites", path: "/websites" },

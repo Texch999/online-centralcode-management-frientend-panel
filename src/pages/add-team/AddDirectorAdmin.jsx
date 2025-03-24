@@ -493,7 +493,7 @@ const AddDirectorAdmin = () => {
     {
       title: "Deposits",
       backgroundColor: "#7DA0FA",
-      value: stats?.totDeposits,
+      value: stats?.totDeposits || 0,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -508,7 +508,7 @@ const AddDirectorAdmin = () => {
     {
       title: "Withdraw",
       backgroundColor: "#7DA0FA",
-      value: stats?.totWith,
+      value: stats?.totWith || 0,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -539,7 +539,7 @@ const AddDirectorAdmin = () => {
     {
       title: "Profit/Loss (S/R)",
       backgroundColor: "#7DA0FA",
-      value: stats?.pndl,
+      value: stats?.pndl || 0,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
