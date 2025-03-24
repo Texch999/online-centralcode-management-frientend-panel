@@ -3,6 +3,7 @@ const initialState = {
   allCountries: [],
   loginData: [],
   profilePic: null,
+  dirProfileData: [],
 };
 
 const authReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loginData: action.payload,
+      };
+    case "SET_DIR_PROFILE_DATA":
+      return {
+        ...state,
+        dirProfileData: action.payload,
       };
 
     default:

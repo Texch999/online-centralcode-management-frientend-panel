@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { MdLockReset, MdRemoveRedEye, MdOutlineVisibilityOff } from "react-icons/md";
+import {
+  MdLockReset,
+  MdRemoveRedEye,
+  MdOutlineVisibilityOff,
+} from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Images } from "../../images";
@@ -14,13 +18,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../add-team/style.css";
 import "../../App.css";
 import "../../index.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
 
-import { getDirectorDetailsById, resetDirectorPasswordInProfile, updateDirectorProfileDetails } from "../../api/apiMethods";
+import {
+  dirProfileBlockUnblock,
+  getDirectorDetailsById,
+  resetDirectorPassword,
+  resetDirectorPasswordInProfile,
+  updateDirectorProfileDetails,
+} from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { setDirProfileData } from "../../redux/action";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { IoArrowBack } from "react-icons/io5";
+import MultimarketDashboard from "./components/MultimarketDashboard";
 const login_role_name = localStorage.getItem("role_name");
-
 
 const cardData = [
   {
@@ -229,103 +243,162 @@ const Card = ({
         <h6 className="mb-0 text-white small-font">{title}</h6>
         {icon}
       </div>
-      <p className={`medium-font fw-600 ${bootstrapClassesBottom} ${valueClass}`}>{value}</p>
+      <p
+        className={`medium-font fw-600 ${bootstrapClassesBottom} ${valueClass}`}
+      >
+        {value}
+      </p>
     </div>
   );
 };
 
-
-const DefaultBottomShow = () => {
+const DefaultBottomShow = ({ userData, id, getById }) => {
   const [status, setStatus] = useState(1); // Default active (1)
+  const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState("");
 
   const handleToggle = (e) => {
-    setStatus(e.target.checked ? 1 : 2); // 1 for Active, 2 for Inactive
+    setStatus(e.target.checked ? 1 : 2);
+    setConfirmationPopupOpen(true); // 1 for Active, 2 for Inactive
   };
 
+  const blockUnblock = () => {
+    dirProfileBlockUnblock(id)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response?.data);
+          setMsg(response?.message);
+          setShowSuccessPopup(true);
+          setTimeout(() => {
+            setShowSuccessPopup(false);
+          }, 2000);
+        }
+        getById();
+      })
+      .catch((error) => {
+        setError(error?.message);
+        setErrorPopupOpen(true);
+        setTimeout(() => {
+          setErrorPopupOpen(false);
+        }, 2000);
+      });
+  };
+
+  console.log(userData, "=====userdata");
+
   return (
-    <div className="py-4 bg-white shadow rounded">
-      <div className="px-4 d-flex justify-content-between align-items-center mb-3">
-        <h6 className="small-font">
-          Texchange I{" "}
-          <span className="yellow-font">
-            texch.com - Share 10% - Rental 0.00
-          </span>
-        </h6>
-        <div className="d-flex align-items-center">
-          <span className="me-3 black-text small-font black-font">Active</span>
+    <div>
+      <div className="py-4 bg-white shadow rounded">
+        <div className="px-4 d-flex justify-content-between align-items-center mb-3">
+          <h6 className="small-font">
+            Texchange I{" "}
+            <span className="yellow-font">
+              texch.com - Share 10% - Rental 0.00
+            </span>
+          </h6>
+          <div className="d-flex align-items-center">
+            <span className="me-3 black-text small-font black-font">
+              Active
+            </span>
 
-          <Form>
-            <Form.Check
-              type="switch"
-              id="custom-switch"
-              className="director-admin-profile-toggle-btn"
-              checked={status === 1}
-              onChange={handleToggle}
-            />
-          </Form>
+            <Form>
+              <Form.Check
+                type="switch"
+                id="custom-switch"
+                className="director-admin-profile-toggle-btn"
+                checked={userData?.status === 1}
+                onChange={handleToggle}
+              />
+            </Form>
 
-          <span className="ms-2 black-text small-font black-font">
-            In-active
-          </span>
-        </div>
-      </div>
-
-      <hr className="dashed-line mb-4" style={{ color: "black" }} />
-
-      {/* Main Content Container */}
-
-      <div className="row px-4">
-        <div className="col-8">
-          <div className="row d-flex gap-3 ">
-            <h6 className="small-font">Sports/Casino</h6>
-            {bottomCardsData.map((card, index) => (
-              <div
-                className="col-4 card border border-grey p-0 direct-admin-profile-bottom-card"
-                key={index}
-              >
-                <Card
-                  title={card.title}
-                  backgroundColor={card.backgroundColor}
-                  value={card.value}
-                  valueClass={card.valueClass}
-                  icon={card.icon}
-                  bootstrapClassesTop={card.bootstrapClassesTop}
-                  bootstrapClassesBottom={card.bootstrapClassesBottom}
-                />
-              </div>
-            ))}
+            <span className="ms-2 black-text small-font black-font">
+              In-active
+            </span>
           </div>
         </div>
 
-        {/* Right Side Container */}
-        <div className="col-4 align-self-end">
-          <div className="bg-white director-admin-profile-bottom-section-right p-4">
-            <h5 className="yellow-font small-font">Total Amount</h5>
-            <input
-              type="text"
-              value="500000"
-              className="w-100 input-css fw-600 mb-2 small-font"
-              readOnly
-            />
+        <hr className="dashed-line mb-4" style={{ color: "black" }} />
 
-            <h5 className="yellow-font small-font">Paid Amount</h5>
-            <input
-              type="text"
-              value="500000"
-              className="w-100 input-css fw-600 small-font mb-2"
-              readOnly
-            />
+        {/* Main Content Container */}
 
-            <h5 className="yellow-font small-font">Net P/L</h5>
-            <input
-              type="text"
-              value="500000"
-              className="w-100 input-css fw-600 small-font mb-2"
-              readOnly
-            />
+        <div className="row px-4">
+          <div className="col-8">
+            <div className="row d-flex gap-3 ">
+              <h6 className="small-font">Sports/Casino</h6>
+              {bottomCardsData.map((card, index) => (
+                <div
+                  className="col-4 card border border-grey p-0 direct-admin-profile-bottom-card"
+                  key={index}
+                >
+                  <Card
+                    title={card.title}
+                    backgroundColor={card.backgroundColor}
+                    value={card.value}
+                    valueClass={card.valueClass}
+                    icon={card.icon}
+                    bootstrapClassesTop={card.bootstrapClassesTop}
+                    bootstrapClassesBottom={card.bootstrapClassesBottom}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Side Container */}
+          <div className="col-4 align-self-end">
+            <div className="bg-white director-admin-profile-bottom-section-right p-4">
+              <h5 className="yellow-font small-font">Total Amount</h5>
+              <input
+                type="text"
+                value="500000"
+                className="w-100 input-css fw-600 mb-2 small-font"
+                readOnly
+              />
+
+              <h5 className="yellow-font small-font">Paid Amount</h5>
+              <input
+                type="text"
+                value="500000"
+                className="w-100 input-css fw-600 small-font mb-2"
+                readOnly
+              />
+
+              <h5 className="yellow-font small-font">Net P/L</h5>
+              <input
+                type="text"
+                value="500000"
+                className="w-100 input-css fw-600 small-font mb-2"
+                readOnly
+              />
+            </div>
           </div>
         </div>
       </div>
+      <ConfirmationPopup
+        confirmationPopupOpen={confirmationPopupOpen}
+        setConfirmationPopupOpen={setConfirmationPopupOpen}
+        discription={`Are you sure want to ${
+          userData?.status === 1 ? "In-Acctive" : "Active"
+        }`}
+        submitButton={`${userData?.status === 1 ? "In-Active" : "Active"}`}
+        onSubmit={blockUnblock}
+      />
+
+      <SuccessPopup
+        successPopupOpen={showSuccessPopup}
+        // onHide={() => setShowSuccessPopup(false)}
+        setSuccessPopupOpen={() => setShowSuccessPopup(false)}
+        discription={msg}
+      />
+      <ErrorPopup
+        errorPopupOpen={errorPopupOpen}
+        setErrorPopupOpen={setErrorPopupOpen}
+        discription={error}
+      />
     </div>
   );
 };
@@ -337,25 +410,26 @@ const UserProfileDashboard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [directorData, setDirectorData] = useState([]);
+  console.log(directorData, "---directorData");
   const [error, setError] = useState("");
-  const [editData, setEditData] = useState([])
+  const [editData, setEditData] = useState([]);
   // errorPopupOpen, setErrorPopupOpen, discription
-  const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [editedDtat, setEditedDtat] = useState([]);
-
+  const dispatch = useDispatch();
   const { id } = useParams();
-
+  const navigate = useNavigate();
 
   const handleEdit = (id) => {
     setShowEditProfilePopup(true);
-    getDirectorDetailsById(id)
-  }
-  const resetDirectorPassword = (data) => {
+    getDirectorDetailsById(id);
+  };
+  const resetDirectorPswd = (data) => {
     if (!id) {
-      setDesciption("Invalid Id")
-      setErrorPopupOpen(true)
+      setDesciption("Invalid Id");
+      setErrorPopupOpen(true);
       return;
     }
 
@@ -365,40 +439,33 @@ const UserProfileDashboard = () => {
       parent_password: data.managementPassword,
     };
 
-    resetDirectorPasswordInProfile(id, payload)
+    resetDirectorPassword(id, payload)
       .then((response) => {
         if (response.status === true) {
-          setEditedDtat(response.data)
-          setDesciption(response.message)
+          setEditedDtat(response.data);
+          setDesciption(response.message);
           setShowSuccessPopup(true);
-          handleResetPasswordClose()
-
-
-
+          handleResetPasswordClose();
         } else {
-          setDesciption("Something went Wrong")
-          setErrorPopupOpen(true)
+          setDesciption("Something went Wrong");
+          setErrorPopupOpen(true);
           setShowResetPasswordPopup(false);
-
         }
       })
       .catch((error) => {
-        setDesciption(error.message)
-        setErrorPopupOpen(true)
+        setDesciption(error.message);
+        setErrorPopupOpen(true);
         setShowResetPasswordPopup(false);
-
       });
   };
-  useEffect(() => {
-    if (!id) return; // Prevent calling API if id is undefined
 
+  const getById = () => {
     getDirectorDetailsById(id)
       .then((response) => {
         if (response) {
-
           console.log(response, "response12357");
           setDirectorData(response.data);
-
+          dispatch(setDirProfileData(response?.data));
         } else {
           setError("No employee data found");
         }
@@ -406,13 +473,17 @@ const UserProfileDashboard = () => {
       .catch((error) => {
         console.error("API Call Error:", error);
         setError(error?.message || "Login failed");
-        setDesciption(error.message)
-        setErrorPopupOpen(true)
+        setDesciption(error.message);
+        setErrorPopupOpen(true);
         setShowResetPasswordPopup(false);
       });
+  };
+
+  useEffect(() => {
+    if (id) {
+      getDirectorDetailsById(id);
+    }
   }, [id]); // Now it runs only when `id` changes
-
-
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -421,15 +492,31 @@ const UserProfileDashboard = () => {
   const handleResetPasswordClose = () => {
     // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
-
   };
+  const allCountries = useSelector((item) => item.allCountries);
+  console.log(allCountries, "allCountries");
 
+  const getCountryName = (id) => {
+    const country = allCountries.find((c) => c.id === id);
+    return country ? country.name : "Unknown";
+  };
 
   return (
     <div>
       <div className="gap-3 director-admin-profile-top-con rounded">
         {/* User Information Section */}
+
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
+          <div
+            className="director-admin-profile-top-bg-dark d-flex align-items-center gap-2 px-3 text-white rounded-pill"
+            onClick={() => navigate(-1)}
+          >
+            <span className="fw-600 small-font">
+              <IoArrowBack className="yellow-font" size={20} />
+            </span>
+            <span className="fw-600 small-font">Back</span>
+          </div>
+
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-4 px-3 text-white rounded-pill">
             <span className="fw-600 small-font">User Name</span>
             <span className="fw-600 small-font">{directorData.login_name}</span>
@@ -437,15 +524,15 @@ const UserProfileDashboard = () => {
 
           <div className="director-admin-profile-top-bg-dark d-flex align-items-center gap-1 text-white rounded-pill px-3">
             <div className="d-flex align-items-center gap-4 px-2">
-              <span className="fw-600 small-font">Password</span>
-              <span className="fw-600 small-font"> {showPassword ? "1234567823" : "********"}</span>
+              <span className="fw-600 small-font">Reset Password</span>
+              {/* <span className="fw-600 small-font">
+                {" "}
+                {showPassword ? "1234567823" : "********"}
+              </span> */}
             </div>
 
             <div className="d-flex align-items-center gap-1 my-1">
-              {/* <div className="director-top-bg-icon px-2 py-1">
-                <MdRemoveRedEye className="text-warning large-font pointer" />
-              </div> */}
-              <div
+              {/* <div
                 className="director-top-bg-icon px-2 py-1 pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
@@ -454,7 +541,7 @@ const UserProfileDashboard = () => {
                 ) : (
                   <MdRemoveRedEye className="text-warning large-font" />
                 )}
-              </div>
+              </div> */}
               <div className="director-top-bg-icon px-2 py-1">
                 <MdLockReset
                   className="text-warning large-font pointer"
@@ -470,17 +557,17 @@ const UserProfileDashboard = () => {
           {/* Profile Details */}
           <div className="row">
             <div className="col-2 super-admin-top-container">
-              <img
-                src={directorData.photo ? `${imgUrl}/directorProfilePhotos/${directorData.photo}` : `${Images.defaultProfileImage}`}
-                loading="lazy"
-                alt="Profile Photo Loading"
-                className="super-admin-profile-img-con"
-                onError={(e) => {
-                  e.target.onerror = null;  // Prevent infinite loop if the fallback image also fails
-                  e.target.src = `${Images.defaultProfileImage}`;  // Set a default image as fallback if the image fails to load
-                }}
-              />
-
+              <div className="profile-default super-admin-profile-img-con">
+                <img
+                  src={`${imgUrl}/directorProfilePhotos/${directorData.photo}`}
+                  loading="lazy"
+                  alt="Profile Photo Loading"
+                  // className="super-admin-profile-img-con"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              </div>
 
               <div
                 className="d-flex gap-2 super-admin-img-down-content align-items-end"
@@ -498,15 +585,25 @@ const UserProfileDashboard = () => {
                 <div className="d-flex gap-4 align-items-center">
                   <div className="d-flex gap-2 align-items-end">
                     <FaUserTie className="large-font" />
-                    <span className="small-font">Director</span>
+                    <span className="small-font">{`${
+                      directorData?.type === 2 ? "Super Admin" : "Director"
+                    }`}</span>
                   </div>
                   <div className="d-flex gap-2 align-items-end">
                     <FaMapMarkerAlt className="large-font" />
-                    <span className="small-font">India</span>
+                    <span className="small-font">
+                      {getCountryName(directorData?.county)}
+                    </span>
                   </div>
                 </div>
-                <span className="director-admin-profile-active-btn rounded-pill py-2 px-4 small-font m-1">
-                  Active
+                <span
+                  className={`${
+                    directorData?.status === 1
+                      ? "director-admin-profile-active-btn"
+                      : "red-btn"
+                  } rounded-pill py-2 px-4 small-font m-1`}
+                >
+                  {`${directorData?.status === 1 ? "Active" : "In-Active"}`}
                 </span>
               </div>
 
@@ -533,7 +630,7 @@ const UserProfileDashboard = () => {
       <ResetPasswordPopup
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
-        onSubmit={resetDirectorPassword}
+        onSubmit={resetDirectorPswd}
       />
       <EditProfilePopup
         show={showEditProfilePopup}
@@ -556,34 +653,46 @@ const UserProfileDashboard = () => {
       {/* Tabs Section */}
       <div className="row py-3 px-3">
         <div className="col-7 p-0">
-          <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3z">
+          <div className="d-flex justify-content-between align-items-center director-profile-tab-btn h-100 gap-3">
             <button
-              className={`small-font rounded p-2 w-25 ${activeTab === "websitesLimit" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 w-25 ${
+                activeTab === "websitesLimit" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("websitesLimit")}
             >
               Websites/Limit
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${activeTab === "paymentGateway" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "paymentGateway" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("paymentGateway")}
             >
               Payment Gateway
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${activeTab === "transaction" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "transaction" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("transaction")}
             >
               Transaction
             </button>
             <button
-              className={`small-font rounded p-2 text-center w-25 ${activeTab === "betHistory" && "saffron-btn"
-                }`}
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "betHistory" && "saffron-btn"
+              }`}
               onClick={() => handleTabClick("betHistory")}
             >
               Bet History
+            </button>
+            <button
+              className={`small-font rounded p-2 text-center w-25 ${
+                activeTab === "multimarket" && "saffron-btn"
+              }`}
+              onClick={() => handleTabClick("multimarket")}
+            >
+              MultiMarket
             </button>
           </div>
         </div>
@@ -610,10 +719,17 @@ const UserProfileDashboard = () => {
 
       {/* Conditional Rendering of Components */}
       <div className="table-parent-container mt-2">
-        {activeTab === "websitesLimit" && <DefaultBottomShow />}
-        {activeTab === "paymentGateway" && <PaymentGateway  dwnlnId={id}/>}
+        {activeTab === "websitesLimit" && (
+          <DefaultBottomShow
+            id={id}
+            userData={directorData}
+            getById={getById}
+          />
+        )}
+        {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
+        {activeTab === "multimarket" && <MultimarketDashboard />}
       </div>
     </div>
   );
