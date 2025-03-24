@@ -89,7 +89,6 @@ function Login() {
 
       if (response?.status === true) {
         dispatch(setLoginData(response));
-        console.log(response, "====>response?.token");
         // await setSecureItem("jwt_token", response?.token);
         localStorage.setItem("jwt_token", response?.token);
         localStorage.setItem("user_id", response?.user?.id);

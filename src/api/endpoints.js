@@ -117,9 +117,8 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/banners/user/${id}${
-        query ? `?${query}` : ""
-      }`;
+      return `/${user}/${userID()}/banners/user/${id}${query ? `?${query}` : ""
+        }`;
     },
   },
 
@@ -369,9 +368,8 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/broadcastings/${id}${
-        query ? `?${query}` : ""
-      }`;
+      return `/${user}/${userID()}/broadcastings/${id}${query ? `?${query}` : ""
+        }`;
     },
   },
 
@@ -615,8 +613,7 @@ const endpoints = {
   readNotificationsforDirector: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/notifications/${data.id}/readStatus/${
-        data.status
+      `/director/${userID()}/notifications/${data.id}/readStatus/${data.status
       }`,
   },
   DirectorOffilneDepositTicket: {
@@ -782,17 +779,69 @@ const endpoints = {
       return `/user/${userID()}/offlineDeposits/directors?${query}`;
     },
   },
-  getDirById:{
-    method:"get",
+  // http://localhost:9001/rest2/0.1/user/1/offlineDeposits/directors/1/websites
+
+  getDirById: {
+    method: "get",
     url: (params) => {
       const { userId, ...filteredParams } = params;
-      const query = new URLSearchParams(filteredParams).toString();
+      const query = new URLSearchParams(params.params).toString();
       return `/user/${userID()}/offlineDeposits/directors/${userId}/websites?${query}`;
     },
 
     // url:(id,...params)=>`/user/${userID()}/offlineDeposits/directors/${id}/websites?${query}
     // adminPanId=1&userPanId=2`
   },
+
+  getSettlementTransactionById: {
+    method: "get",
+    url: (params) => {
+      const { userId } = params;
+      const query = new URLSearchParams(params.params).toString();
+      return `/user/${userID()}/director/${userId}/settlements?${query}`;
+    }
+  },
+
+  creditSettlements: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/director/${id}/settleCredit`,
+  },
+
+  getSettlementSummeryById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/${id}/accountsSummery`,
+  },
+
+  getDownlineTransactionById: {
+    method: "get",
+    url: (params) => {
+      const { id } = params;
+      const query = new URLSearchParams(params.params).toString();
+      return `/user/${userID()}/director/${id}/transactionHistory?${query}`;
+    }
+  },
+
+  getCreditUSersList: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/creditSettlement?${query}`;
+    }
+  },
+
+  returnCreditChips: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/director/${id}/returnCreditChips`,
+  },
+
+  creditFullSettlement: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/directors/fullSettlement`,
+  },
+
 };
 
 export default endpoints;

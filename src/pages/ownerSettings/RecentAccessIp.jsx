@@ -20,6 +20,7 @@ const RecentAccessIp = () => {
   const [totalRecords, setTotalaRecords] = useState(null)
   const userRole = localStorage.getItem("role_code");
   const activeTab = localStorage.getItem("activeTab");
+
   const ACTIVITY_COLUMNS = [
     { header: "Prod", field: "prod", width: "10%" },
     { header: "First Date/Time", field: "firstDateTime", width: "20%" },
@@ -29,6 +30,7 @@ const RecentAccessIp = () => {
     { header: "Login Url", field: "loginurl", width: "20%" },
     { header: "Configure", field: "configure", width: "10%" },
   ];
+
   const [logData, setLogsData] = useState([])
   const [error, setError] = useState("")
   const getAllLogsById = (limit, offset) => {
@@ -50,6 +52,7 @@ const RecentAccessIp = () => {
         setError(error?.message || "API request failed");
       });
   }
+
   const getDirectorLogsById = (limit, offset) => {
     getDirectorLoginLogsById({
       id: decodedUserId,
@@ -69,6 +72,7 @@ const RecentAccessIp = () => {
         setError(error?.message || "API request failed");
       });
   }
+
   const getDirectorEmplyessLogsById = (limit, offset) => {
     getDirectorEmployeesLoginLogsByEmployeeId({
       id: decodedUserId,
@@ -143,10 +147,6 @@ const RecentAccessIp = () => {
   }));
 
   useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
     const limit = itemsPerPage
     const offset = (currentPage - 1) * itemsPerPage
     if (userRole === "director") {
@@ -183,6 +183,7 @@ const RecentAccessIp = () => {
       }
     }
   };
+  
   return (
     <div>
       <div className="mt-2">

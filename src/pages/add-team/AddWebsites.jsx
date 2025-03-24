@@ -37,7 +37,6 @@ const AddWibsites = () => {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const allCountries = useSelector((item) => item?.allCountries);
-  console.log(allCountries, "====>allCountries")
 
   const getAllWebsiteList = (limit, offset) => {
     getWebsitesList({
@@ -113,6 +112,7 @@ const AddWibsites = () => {
       width: "10%",
     },
   ];
+
   const getLocationName = (locationId) => {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
@@ -122,8 +122,6 @@ const AddWibsites = () => {
     admin: (
       <div>
         {" "}
-        {/* {`${website?.ref_type === 1 ? "Ravana" : "Brahma"}/ ${website?.panel_type === 1 ? "Admin" : "User"
-          } `} */}
         {`${website?.panel_type === 1 ? "Admin" : "User"
           } `}
       </div>

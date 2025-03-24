@@ -482,7 +482,6 @@ const getInActiveUsers = (params) => {
   return apiRequest("getInActiveUsers", {}, params);
 };
 const getAdminUserWebsites = (id, data) => {
-  console.log(id, data, "iddddpppp");
   return apiRequest("getAdminUserWebsites", data, id);
 };
 const suspendInActiveUsers = (websiteId, id) => {
@@ -493,6 +492,32 @@ const getOfflineDWDirectors = (params) => {
 };
 const getDirById = (params) => {
   return apiRequest("getDirById", {}, params);
+};
+const getSettlementTransactionById = (params) => {
+  return apiRequest("getSettlementTransactionById", {}, params);
+};
+
+const creditSettlements = (id, data) => {
+  return apiRequest("creditSettlements", data, id);
+};
+
+const getSettlementSummeryById = (id, data) => {
+  return apiRequest("getSettlementSummeryById", data, id);
+};
+
+const getDownlineTransactionById = (params) => {
+  return apiRequest("getDownlineTransactionById", {}, params);
+};
+
+const getCreditUSersList = (params) => {
+  return apiRequest("getCreditUSersList", {}, params);
+};
+
+const returnCreditChips = (id, data) => {
+  return apiRequest("returnCreditChips", data, id);
+};
+const creditFullSettlement = (data) => {
+  return apiRequest("creditFullSettlement", data);
 };
 
 export {
@@ -620,4 +645,11 @@ export {
   suspendInActiveUsers,
   getOfflineDWDirectors,
   getDirById,
+  getSettlementTransactionById,
+  creditSettlements,
+  getSettlementSummeryById,
+  getDownlineTransactionById,
+  getCreditUSersList,
+  returnCreditChips,
+  creditFullSettlement,
 };

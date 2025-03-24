@@ -111,13 +111,9 @@ const AddNePaymentGateway = () => {
       });
   };
   useEffect(() => {
-    if (isInitialRendering.current) {
-      isInitialRendering.current = false
-      return
-    }
     OfflineModesdata();
     getOwnersPaymentModes();
-  }, [isInitialRendering]);
+  }, []);
 
 
 

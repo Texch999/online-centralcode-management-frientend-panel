@@ -3,7 +3,8 @@ import Table from "../../components/Table";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { getOfflineDWDirectors } from "../../api/apiMethods";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import OfflineDepositWithdrawPopup from "../popups/OfflineDepositWithdrawPopup";
+import OfflineDepositPopup from "../popups/OfflineDepositPopup";
+import OfflineWithdrawPopup from "../popups/OfflineWithdrawPopup";
 
 const OfflineDW = () => {
   const [activeSport, setActiveSport] = useState("Sports & Casino");
@@ -19,7 +20,8 @@ const OfflineDW = () => {
   const itemsPerPage = 4;
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
-  const [depositWithdrawPopup, setDepositWithdrawPopup] = useState(false);
+  const [depositPopup, setDepositPopup] = useState(false);
+  const [withdrawPopup, setWithdrawPopup] = useState(false);
   const handlePageChange = ({ limit, offset }) => {
     fetchData(limit, offset);
   };
@@ -29,16 +31,16 @@ const OfflineDW = () => {
     navigate(`/offline-deposit-withdraw/${id}/${name}`);
   };
 
-  const toggleChildRow = (index, action, ) => {
+  const toggleChildRow = (index, action,) => {
     // setSelectedDetails(siteDetails);
-    setDepositWithdrawPopup(true);
-    // setDirAndSADetails((prevData) =>
-    //   prevData.map((row, i) => ({
-    //     ...row,
-    //     showChildRow: i === index ? !row.showChildRow : false,
-    //   }))
-    // );
     setActionType(action);
+    if(action == "DEPOSIT"){
+      setDepositPopup(true);
+    }else{
+      setWithdrawPopup(true);
+
+    }
+
     // setApiErrors(null);
   };
 
@@ -113,7 +115,7 @@ const OfflineDW = () => {
     fetchData(limit, offset);
   }, []);
 
-  const tableData = data?.map((item,index) => ({
+  const tableData = data?.map((item, index) => ({
     nameRole: (
       <div>
         <span className="dark-yellow px-1 py-1 black-font small-font mx-2">
@@ -210,12 +212,22 @@ const OfflineDW = () => {
           />
         </div>
       </div>
-      <OfflineDepositWithdrawPopup
-        actionType={actionType}
-        depositWithdrawPopup={depositWithdrawPopup}
-        // selectedDetails={selectedDetails}
-        setDepositWithdrawPopup={setDepositWithdrawPopup}
-      />
+      {depositPopup && (
+        <OfflineDepositPopup
+          actionType={actionType}
+          depositPopup={depositPopup}
+          // selectedDetails={selectedDetails}
+          setDepositPopup={setDepositPopup}
+        />
+      )}
+      {withdrawPopup && (
+        <OfflineWithdrawPopup
+        withdrawPopup={withdrawPopup}
+          // selectedDetails={selectedDetails}
+          setWithdrawPopup={setWithdrawPopup}
+        />
+      )}
+
     </>
   );
 };

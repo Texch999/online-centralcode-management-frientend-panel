@@ -80,10 +80,6 @@ function MyDepositWithdraw() {
 
 
   useEffect(() => {
-    if (initialRendering.current) {
-      initialRendering.current = false
-      return
-    }
 
     getDepositTickets(limit, offset)
   }, [])

@@ -9,8 +9,10 @@ const Enums = {
   },
   
   brahmaSelectPages: {
-    "HOME": 1,
-    "IN PLAY": 2,
+    "IN PLAY": 1,
+    "CRICKET": 2,
+    "FOOT BALL/SOCCER": 3,
+    "TENNIS": 4,
     // "ELECTIONS": 3,
     // "CRICKET": 4,
     // "FOOT BALL": 5,
@@ -50,9 +52,9 @@ const Enums = {
     "CASINO": 9,
     "BASE BALL": 10,
     "MULTI MARKET": 11,
-    "SPORTS BOOK":12,
-    "EXCHANGE":13,
-    "VIRTUAL SPORTS":14,
+    // "SPORTS BOOK":12,
+    // "EXCHANGE":13,
+    // "VIRTUAL SPORTS":14,
     "HOME":15,
   },
 
