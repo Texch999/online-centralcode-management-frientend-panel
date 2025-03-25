@@ -481,7 +481,7 @@ const UserProfileDashboard = () => {
 
   useEffect(() => {
     if (id) {
-      getDirectorDetailsById(id);
+      getById(id);
     }
   }, [id]); // Now it runs only when `id` changes
 
