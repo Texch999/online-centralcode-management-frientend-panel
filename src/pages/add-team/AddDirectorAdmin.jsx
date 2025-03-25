@@ -51,6 +51,7 @@ const AddDirectorAdmin = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [discription, setDiscription] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [stats, setStats] = useState(null);
 
   const handleResetPasswordOpen = (id) => {
     setSelectedDirectorId(id);
@@ -61,10 +62,6 @@ const AddDirectorAdmin = () => {
   const handleResetPasswordClose = () => {
     setResetPasswordPopup(false);
   };
-
-  const filteredData = tableData?.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleBlockUserOpen = (id) => {
     const director = tableData.find((user) => user.id === id);
@@ -126,10 +123,11 @@ const AddDirectorAdmin = () => {
       });
   };
 
-  const GetAllDirectors = (limit, offset) => {
+  const GetAllDirectors = (limit, offset, name) => {
     const params = {
       limit: limit,
       offset: offset,
+      name: name
     };
     setLoading(true);
     getOfflineDWDirectors(params)
@@ -137,6 +135,7 @@ const AddDirectorAdmin = () => {
         if (response.list) {
           setTableData(response?.list);
           setTotalRecords(response?.count);
+          setStats(response?.sum)
         } else {
           console.error("Something Went Wrong");
         }
@@ -158,6 +157,21 @@ const AddDirectorAdmin = () => {
       GetAllDirectors(limit, offset);
     }
   }, [role]);
+
+  useEffect(() => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    // Fetch data based on role and filterName
+    if (searchTerm.trim() === "") {
+      if (role === "management") {
+        GetAllDirectors(limit, offset);
+      } else {
+        console.log("director panel")
+      }
+    }
+  }, [searchTerm, role, page, itemsPerPage]);
+
+
 
   const onDirectorResetPassword = (data) => {
     if (!selectedDirectorId) {
@@ -254,7 +268,7 @@ const AddDirectorAdmin = () => {
     }
   }
 
-  const TableData = filteredData?.map((user) => {
+  const TableData = tableData?.map((user) => {
     return {
       role: <div className="d-flex flex-row">
         <div className="me-1" > <span className="role-bg p-1">{user.type === 1 ? "Dir" : "SA"}</span> </div>
@@ -322,7 +336,7 @@ const AddDirectorAdmin = () => {
             size={20}
             className={`black-text pointer ${user.status === 2 ? "disabled" : ""
               }`}
-            onClick={() => handleNavigateUserDashboard(user?.id)}
+            onClick={() => navigate("/downline-list", { state: { userId: user?.id, } })}
           />
 
         </div>
@@ -472,11 +486,14 @@ const AddDirectorAdmin = () => {
     );
   };
 
+  const DWBalance = stats?.totDeposits - stats?.totWith || 0
+  const netPL = DWBalance + stats?.pndl || 0
+
   const cardData = [
     {
       title: "Deposits",
       backgroundColor: "#7DA0FA",
-      value: "500000000",
+      value: stats?.totDeposits || 0,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -491,7 +508,7 @@ const AddDirectorAdmin = () => {
     {
       title: "Withdraw",
       backgroundColor: "#7DA0FA",
-      value: "500000000",
+      value: stats?.totWith || 0,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -507,7 +524,7 @@ const AddDirectorAdmin = () => {
     {
       title: "D-W",
       backgroundColor: "#7DA0FA",
-      value: "0.00",
+      value: DWBalance,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -522,7 +539,7 @@ const AddDirectorAdmin = () => {
     {
       title: "Profit/Loss (S/R)",
       backgroundColor: "#7DA0FA",
-      value: "300000000",
+      value: stats?.pndl || 0,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -537,7 +554,7 @@ const AddDirectorAdmin = () => {
     {
       title: "Net Profit/Loss",
       backgroundColor: "#7DA0FA",
-      value: "300000000",
+      value: netPL,
       icon: (
         <img
           src={Images.adminProfileShareRevenue}
@@ -550,6 +567,18 @@ const AddDirectorAdmin = () => {
       color: "#18B962"
     },
   ];
+
+  const handleFiltration = async (e) => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    if (e.key === "Enter") {
+      if (role === "management") {
+        GetAllDirectors(limit, offset, searchTerm)
+      } else {
+        console.log("dierctor")
+      }
+    }
+  };
 
   return (
     <div>
@@ -566,9 +595,10 @@ const AddDirectorAdmin = () => {
             <FaSearch size={16} className="grey-clr me-2" />
             <input
               className="small-font all-none"
-              placeholder="Search..."
+              placeholder="Enter D/SA name."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value.trim())}
+              onKeyDown={handleFiltration}
             />
           </div>
           <button

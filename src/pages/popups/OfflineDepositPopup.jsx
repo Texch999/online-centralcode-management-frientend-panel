@@ -72,14 +72,12 @@ const OfflineDepositPopup = ({
         ManagementOfflineDepositeTicketCreation(selectedDetails?.id, payload)
             .then((response) => {
                 setSuccessPopupOpen(true);
-                setDiscription(
-                    `${actionType === "DEPOSIT" ? "Deposit" : "Withdraw"} Ticket Created Successfully`
-                );
+                setDiscription(`Deposit Ticket Created Successfully`);
                 setApiErrors(null);
                 setTimeout(() => {
                     setSuccessPopupOpen(false);
                     setDepositPopup(false);
-                }, 3000);
+                }, 2000);
 
             })
             .catch((error) => {
@@ -213,8 +211,8 @@ const OfflineDepositPopup = ({
                                 placeholder="Enter"
                                 value={finalPaidAmount}
                                 onChange={handlePaidAmountChange}
-                                onFocus={() => setIsFinalPaidAmountFocused(true)} 
-                                onBlur={() => setIsFinalPaidAmountFocused(false)} 
+                                onFocus={() => setIsFinalPaidAmountFocused(true)}
+                                onBlur={() => setIsFinalPaidAmountFocused(false)}
                                 min="0"
                             />
 

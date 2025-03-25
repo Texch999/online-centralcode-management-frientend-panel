@@ -6,6 +6,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
 import { getDirectorEmployeesLoginLogsByEmployeeId, getDirectorLoginLogsById, getLoggedInLogsById } from "../../api/apiMethods";
+import { CircleLoader } from "react-spinners";
 
 const RecentAccessIp = () => {
   const [activeRow, setActiveRow] = useState(null);
@@ -20,7 +21,7 @@ const RecentAccessIp = () => {
   const [totalRecords, setTotalaRecords] = useState(null)
   const userRole = localStorage.getItem("role_code");
   const activeTab = localStorage.getItem("activeTab");
-
+  const [apiLoading, setApiLoading] = useState(false);
   const ACTIVITY_COLUMNS = [
     { header: "Prod", field: "prod", width: "10%" },
     { header: "First Date/Time", field: "firstDateTime", width: "20%" },
@@ -34,61 +35,58 @@ const RecentAccessIp = () => {
   const [logData, setLogsData] = useState([])
   const [error, setError] = useState("")
   const getAllLogsById = (limit, offset) => {
+    setApiLoading(true)
     getLoggedInLogsById({
       id: decodedUserId,
       limit,
       offset,
     })
       .then((response) => {
-        if (response?.status) {
-          setLogsData(response.data);
-          setTotalaRecords(response.totalCount)
-        } else {
-          setError("Something Went Wrong");
-        }
+        setLogsData(response.data);
+        setTotalaRecords(response.totalCount)
+        setApiLoading(false)
       })
       .catch((error) => {
         setLogsData([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   }
 
   const getDirectorLogsById = (limit, offset) => {
+    setApiLoading(true)
     getDirectorLoginLogsById({
       id: decodedUserId,
       limit,
       offset,
     })
       .then((response) => {
-        if (response?.status) {
-          setLogsData(response.data);
-          setTotalaRecords(response.totalCount)
-        } else {
-          setError("Something Went Wrong");
-        }
+        setLogsData(response.data);
+        setTotalaRecords(response.totalCount)
+        setApiLoading(false)
       })
       .catch((error) => {
         setLogsData([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   }
 
   const getDirectorEmplyessLogsById = (limit, offset) => {
+    setApiLoading(true)
     getDirectorEmployeesLoginLogsByEmployeeId({
       id: decodedUserId,
       limit,
       offset,
     })
       .then((response) => {
-        if (response?.status) {
-          setLogsData(response.data);
-          setTotalaRecords(response.totalCount)
-        } else {
-          setError("Something Went Wrong");
-        }
+        setLogsData(response.data);
+        setTotalaRecords(response.totalCount)
+        setApiLoading(false)
       })
       .catch((error) => {
         setLogsData([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   }
@@ -183,7 +181,7 @@ const RecentAccessIp = () => {
       }
     }
   };
-  
+
   return (
     <div>
       <div className="mt-2">
@@ -199,15 +197,22 @@ const RecentAccessIp = () => {
           </div>
         </div>
       </div>
-      <div className="mt-4">
-        <Table
-          columns={ACTIVITY_COLUMNS}
-          data={ACTIVITY_DATA}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-          totalRecords={totalRecords}
-        />
-      </div>
+      {apiLoading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>) :
+        <div className="mt-4">
+          <Table
+            columns={ACTIVITY_COLUMNS}
+            data={ACTIVITY_DATA}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
+        </div>}
     </div>
   );
 };

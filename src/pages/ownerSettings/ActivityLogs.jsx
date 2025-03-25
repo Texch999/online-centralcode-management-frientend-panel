@@ -5,6 +5,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { IoTv } from "react-icons/io5";
 import { FaMobile } from "react-icons/fa";
 import { getDirectorLoginLogs, getLoggedInLogs, getDirectorEmployeesLoginLogsList } from "../../api/apiMethods";
+import { CircleLoader } from "react-spinners";
 
 const ActivityLogs = () => {
   const navigation = useNavigate();
@@ -28,7 +29,7 @@ const ActivityLogs = () => {
     navigation(`/userActivity/${encodedUserId}/${encodedUserActivity}`);
   };
   const [errors, setErrors] = useState({ fromDate: "", toDate: "" });
-
+  const [apiLoading, setApiLoading] = useState(false);
   const validateDates = () => {
     const newErrors = { fromDate: "", toDate: "" };
 
@@ -49,6 +50,7 @@ const ActivityLogs = () => {
     return !newErrors.fromDate && !newErrors.toDate;
   };
   const getEmployeeAllLogs = (limit, offset, fromDate, toDate) => {
+    setApiLoading(true)
     getLoggedInLogs({
       limit,
       offset,
@@ -56,19 +58,18 @@ const ActivityLogs = () => {
       toDate
     })
       .then((response) => {
-        if (response?.status) {
-          setLogsData(response.data);
-          setTotalaRecords(response?.totalCount)
-        } else {
-          setError("Something Went Wrong");
-        }
+        setLogsData(response.data);
+        setTotalaRecords(response?.totalCount)
+        setApiLoading(false)
       })
       .catch((error) => {
         setLogsData([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   };
   const getDownlineLogs = (limit, offset, fromDate, toDate) => {
+    setApiLoading(true)
     getDirectorLoginLogs({
       limit,
       offset,
@@ -78,20 +79,18 @@ const ActivityLogs = () => {
       toDate
     })
       .then((response) => {
-        if (response?.status === true) {
-          setLogsData(response.data);
-          setTotalaRecords(response.totalCount)
-        } else {
-          setLogsData([]);
-          setError("Something Went Wrong");
-        }
+        setLogsData(response.data);
+        setTotalaRecords(response.totalCount)
+        setApiLoading(false)
       })
       .catch((error) => {
         setLogsData([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   };
   const getDirectorDownlineLoginLogsList = (limit, offset, fromDate, toDate) => {
+    setApiLoading(true)
     getDirectorEmployeesLoginLogsList({
       limit,
       offset,
@@ -100,15 +99,13 @@ const ActivityLogs = () => {
       toDate
     })
       .then((response) => {
-        if (response?.status) {
-          setLogsData(response.data);
-          setTotalaRecords(response.totalCount)
-        } else {
-          setError("Something Went Wrong");
-        }
+        setLogsData(response.data);
+        setTotalaRecords(response.totalCount)
+        setApiLoading(false)
       })
       .catch((error) => {
         setLogsData([]);
+        setApiLoading(false)
         setError(error?.message || "API request failed");
       });
   };
@@ -312,15 +309,22 @@ const ActivityLogs = () => {
       </div>
 
       {/* Table */}
-      <div className="mt-4">
-        <Table
-          columns={ACTIVITY_COLUMNS}
-          data={ACTIVITY_DATA}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-          totalRecords={totalRecords}
-        />
-      </div>
+      {apiLoading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>) :
+        <div className="mt-4">
+          <Table
+            columns={ACTIVITY_COLUMNS}
+            data={ACTIVITY_DATA}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
+        </div>}
     </div>
   );
 };

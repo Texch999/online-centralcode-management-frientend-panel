@@ -19,6 +19,7 @@ import {
 } from "../../api/apiMethods";
 import utcDate from "../../utils/utcDateConversion";
 import { rfloor } from "../../utils/mathFunctions";
+import { CircleLoader } from "react-spinners";
 
 function Tickets() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
@@ -48,7 +49,7 @@ function Tickets() {
   const [selectedType, setSelectedType] = useState(null);
   const [ticketType, setTicketType] = useState("");
   const [spinner, setSpinner] = useState(false);
-
+  const [apiLoading, setApiLoading] = useState(false);
   const [errors, setErrors] = useState({ startDate: "", fromDate: "", selectedType: "" });
 
   const typeOptions = [
@@ -72,13 +73,15 @@ function Tickets() {
     } else {            // director Downline Tickets
       fetchDeposits = getOwnerDownlineDepositeTicketsList
     }
-
+    setApiLoading(true)
     await fetchDeposits({ limit, offset, startDate, fromDate, type })
       .then((response) => {
+        setApiLoading(false)
         setDeposiTikcteslist(response?.records);
         setTotalRecords(response?.total)
       })
       .catch((error) => {
+        setApiLoading(false)
         setError(error?.message);
         console.log("fetchDeposits error", error);
       })
@@ -432,14 +435,20 @@ function Tickets() {
           <button className="w-100 saffron-btn2 small-font" onClick={handleDataFilter}>Submit</button>
         </div>
       </div>
-
-      <Table
+      {apiLoading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>) : <Table
         columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
         data={MY_TRANSACTIONS_MANAGEMENT_DATA}
         itemsPerPage={itemsPerPage}
         totalRecords={totalRecords}
         onPageChange={handlePageChange}
-      />
+      />}
+
 
       {depositWithdrawPopupOpen && (
         <DepositWithdrawPopup
