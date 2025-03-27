@@ -729,7 +729,7 @@ const UserProfileDashboard = () => {
         {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
         {activeTab === "transaction" && <Transaction />}
         {activeTab === "betHistory" && <BetHistory />}
-        {activeTab === "multimarket" && <MultimarketDashboard />}
+        {activeTab === "multimarket" && <MultimarketDashboard dwnlnId={id}/>}
       </div>
     </div>
   );
