@@ -846,7 +846,6 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directors/fullSettlement`,
   },
-
   getMultiMarket: {
     method: "get",
     url: (id) => `/user/${userID()}/director/websiteAcss/${id}`,
