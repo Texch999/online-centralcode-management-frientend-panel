@@ -1125,25 +1125,25 @@ function EditNewDirector() {
             {/* Credit Reference Input */}
             {isCreditAllowed && (
               <div className="col-3">
-                <div className="p-1 position-relative">
-                  <label className="small-font">Credit Reference</label>
-                  <input
-                    type="number"
-                    className="small-font rounded all-none input-css w-100"
-                    placeholder="Enter"
-                    value={creditreference}
-                    maxLength={9}
-                    onChange={(e) => {
-                      const numericValue = e.target.value.replace(/\D/g, "");
-                      setCreditReference(numericValue);
-                    }}
-                    onKeyPress={(e) => {
-                      if (e.charCode < 48 || e.charCode > 57) {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                </div>
+              <div className="p-1 position-relative">
+  <label className="small-font">Credit Limit</label>
+  <input
+    type="text"
+    className="small-font rounded all-none input-css w-100"
+    placeholder="Enter"
+    value={creditreference}
+    onChange={(e) => {
+      const numericValue = e.target.value.replace(/\D/g, "").slice(0, 9);
+      setCreditReference(numericValue);
+    }}
+    onKeyPress={(e) => {
+      if (e.charCode < 48 || e.charCode > 57) {
+        e.preventDefault();
+      }
+    }}
+  />
+</div>
+
               </div>
             )}
 
