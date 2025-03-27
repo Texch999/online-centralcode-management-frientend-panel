@@ -179,7 +179,7 @@ const SettlementTransaction = () => {
             />
           </span>
           <span> Credit Settlement History</span>
-          <span className="Breadcrumbs px-2 rounded text-white ms-1 text-capitalize"> {userName}</span>
+          <span className="Breadcrumbs px-2 rounded medium-font ms-1 text-capitalize black-text "> {userName}</span>
           <span className="ms-1 black-text medium-font"> {roleType == "1" ? "Director" : "Super Admin"} <MdOutlineKeyboardArrowRight size={17} /> </span>
         </div>
       </div>
