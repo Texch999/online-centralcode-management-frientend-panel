@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../components/Table";
 import { IoAdd } from "react-icons/io5";
 import { MdBlock, MdDelete, MdOutlineModeEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { getMultiMarket } from "../../../api/apiMethods";
 
-const MultimarketDashboard = () => {
+const MultimarketDashboard = (dwnlnId) => {
   const navigate = useNavigate();
-
+  console.log("dwnlnId===>", dwnlnId.dwnlnId);
+  const [webMarketDtls, setWebMarketDtls] = useState({});
+  const getWebMarketDtls = (id) => {
+    getMultiMarket(id)
+    .then((res)=>{
+      setWebMarketDtls(res.data);
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+  useEffect (()=> {
+    getWebMarketDtls(dwnlnId.dwnlnId);
+  }, [])
   const columns = [
     {
       header: (
@@ -42,6 +57,7 @@ const MultimarketDashboard = () => {
           <div className="d-flex flex-between">
             <div className="d-flex flex-column">
               <div className="fw-700">Brahma</div>
+              
               <div>User website:</div>
               <div className="d-flex flex-column">
                 <div>diamondexchangenew.com</div>
