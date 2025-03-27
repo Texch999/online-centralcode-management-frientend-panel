@@ -1126,3 +1126,11 @@ input[type="number"] {
 .grey-bg-clr {
   background-color: #F2F2F2 !important;
 }
+
+.green-clr {
+  color: #029122 
+}
+
+.red-clr {
+  color: #FF1818 !important;
+}

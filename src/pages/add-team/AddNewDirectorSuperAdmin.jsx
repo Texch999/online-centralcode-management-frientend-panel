@@ -2967,6 +2967,7 @@ function AddNewDirectorSuperAdmin() {
                   <div className="custom-select-wrapper">
                     <Select
                       className="small-font"
+                      isSearchable={false}
                       placeholder="Select"
                       styles={customStyles}
                       options={adminWebsite?.map((admin) => ({
@@ -3006,6 +3007,7 @@ function AddNewDirectorSuperAdmin() {
                             <Select
                               className="small-font rounded all-none my-2 w-100"
                               placeholder="Select a website"
+                              isSearchable={false}
                               options={getAvailableUserSites(
                                 form.id,
                                 selectedAdmins[form.id]?.value
@@ -3064,6 +3066,7 @@ function AddNewDirectorSuperAdmin() {
                                 placeholder="Comm Type"
                                 options={commissionOptions}
                                 styles={customStyles}
+                                isSearchable={false}
                                 isDisabled={!selectedSiteIds[form.id]}
                                 onChange={(selectedOption) => {
                                   handleAccountTypeChange(
@@ -3104,9 +3107,9 @@ function AddNewDirectorSuperAdmin() {
                                 <div className="col d-flex">
                                   <div className="col-2 position-relative mx-1 mt-2">
                                     <label className="fw-600 my-1 small-font">
-                                      Downline Share
+                                      Downline Share 
                                     </label>
-                                    <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
+                                    {/* <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
                                       <input
                                         type="text"
                                         className="small-font bg-none all-none w-50"
@@ -3181,12 +3184,67 @@ function AddNewDirectorSuperAdmin() {
                                         defaultValue={0}
                                       />
                                       <span>%</span>
-                                    </div>
-                                    {renderErrorMessage(
+                                    </div> */}
+                                    <div className="rounded input-css d-flex justify-content-between align-items-center small-font">
+  <input
+    type="text"
+    className="small-font bg-none all-none w-50"
+    onChange={(e) => {
+      let value = e.target.value;
+
+      // Allow only numbers with up to 4 decimal places
+      if (/^\d*\.?\d{0,4}$/.test(value)) {
+        let numericValue = parseFloat(value);
+
+        if (!isNaN(numericValue)) {
+          if (numericValue <= 100) {
+            handleInputChange(form.id, selectedSiteIds[form.id], "share", value);
+          } else {
+            setValidationErrors((prevErrors) => ({
+              ...prevErrors,
+              [form.id]: {
+                ...prevErrors[form.id],
+                [selectedSiteIds[form.id]]: {
+                  ...prevErrors[form.id]?.[selectedSiteIds[form.id]],
+                  share: "Value less than 100",
+                },
+              },
+            }));
+            e.target.value = "100";
+          }
+        }
+      } else {
+        // Remove extra decimals beyond 4 places
+        e.target.value = value.replace(/(\.\d{4})\d+$/, "$1").replace(/[^0-9.]/g, "");
+      }
+    }}
+    onBlur={(e) => {
+      let numericValue = parseFloat(e.target.value);
+
+      if (isNaN(numericValue) || numericValue < 0) {
+        e.target.value = "0";
+      } else if (numericValue > 100) {
+        e.target.value = "100";
+      } else {
+        // Format value to 4 decimal places
+        e.target.value = parseFloat(numericValue).toFixed(4);
+      }
+
+      handleInputChange(form.id, selectedSiteIds[form.id], "share", e.target.value);
+    }}
+    defaultValue={0}
+  />
+  <span>%</span>
+</div>
+
+<div className="small-font">
+{renderErrorMessage(
                                       form.id,
                                       selectedSiteIds[form.id],
                                       "share"
                                     )}
+</div>
+                                  
                                   </div>
                                   <div className="col-2 position-relative mt-1 mx-3">
                                     <label className="fw-600  small-font">
@@ -3272,6 +3330,8 @@ function AddNewDirectorSuperAdmin() {
                                           );
                                         }}
                                       />
+
+                                      
                                       <span>%</span>
                                     </div>
                                     {renderErrorMessage(

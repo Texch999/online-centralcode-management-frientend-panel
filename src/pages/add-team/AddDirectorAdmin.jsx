@@ -580,6 +580,9 @@ const AddDirectorAdmin = () => {
     }
   };
 
+  const handleSuccesPopup = () => {
+    setSuccessPopupOpen(true)
+  }
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -731,6 +734,8 @@ const AddDirectorAdmin = () => {
           depositPopup={depositPopup}
           selectedDetails={selectedDetails}
           setDepositPopup={setDepositPopup}
+          handleSuccesPopup={handleSuccesPopup}
+          setDiscription={setDiscription}
         />
       )}
       {withdrawPopup && (
@@ -738,6 +743,15 @@ const AddDirectorAdmin = () => {
           withdrawPopup={withdrawPopup}
           selectedDetails={selectedDetails}
           setWithdrawPopup={setWithdrawPopup}
+          handleSuccesPopup={handleSuccesPopup}
+          setDiscription={setDiscription}
+        />
+      )}
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={discription}
         />
       )}
 
