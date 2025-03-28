@@ -1156,7 +1156,7 @@ function EditNewDirector() {
           <div className="row  align-items-center">
             {/* Checkbox for CREDIT ALLOWED */}
             <div className="col-2 mt-3  d-flex align-items-center">
-            <label className="fw-600 small-font"> </label>
+              <label className="fw-600 small-font"> </label>
               <div className="input-css w-100 mt-2 d-flex justify-content-start align-items-center small-font">
                 <input
                   type="checkbox"
@@ -1568,7 +1568,7 @@ function EditNewDirector() {
                                 Downline Share
                               </label>
                               <div className="position-relative">
-                                <input
+                                {/* <input
                                   type="text"
                                   className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100 pe-4"
                                   value={userWebsite.share || ""}
@@ -1599,7 +1599,64 @@ function EditNewDirector() {
                                     };
                                     setUserWebsites(updatedWebsites);
                                   }}
+                                /> */}
+
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100 pe-4"
+                                  value={userWebsite.share || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+
+                                    // Allow only numbers and a single decimal point
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9.]/g,
+                                      ""
+                                    );
+
+                                    // Prevent multiple dots
+                                    const dotCount = (
+                                      numericValue.match(/\./g) || []
+                                    ).length;
+                                    let finalValue = numericValue;
+                                    if (dotCount > 1) {
+                                      finalValue = numericValue.slice(
+                                        0,
+                                        numericValue.lastIndexOf(".")
+                                      );
+                                    }
+
+                                    // Split the value by the dot to ensure proper formatting
+                                    const parts = finalValue.split(".");
+                                    if (
+                                      parts.length === 2 &&
+                                      parts[1].length > 2
+                                    ) {
+                                      // Limit decimal places to 2
+                                      finalValue = `${
+                                        parts[0]
+                                      }.${parts[1].slice(0, 2)}`;
+                                    }
+
+                                    // Clamp value between 0 and 100
+                                    const clampedValue =
+                                      finalValue !== "" &&
+                                      !isNaN(finalValue) &&
+                                      Number(finalValue) <= 100
+                                        ? finalValue
+                                        : finalValue === "" // Allow empty input
+                                        ? ""
+                                        : "100";
+
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      share: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
                                 />
+
                                 <span className="position-absolute end-0 top-50 translate-middle-y me-3">
                                   %
                                 </span>
@@ -1615,7 +1672,7 @@ function EditNewDirector() {
                                 Downline Comm
                               </label>
                               <div className="position-relative">
-                                <input
+                                {/* <input
                                   type="text"
                                   className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                   value={userWebsite.downline_comm || ""}
@@ -1647,7 +1704,64 @@ function EditNewDirector() {
                                     };
                                     setUserWebsites(updatedWebsites);
                                   }}
+                                /> */}
+
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+
+                                    // Allow only numbers and a single dot
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9.]/g,
+                                      ""
+                                    );
+
+                                    // Prevent multiple dots
+                                    const dotCount = (
+                                      numericValue.match(/\./g) || []
+                                    ).length;
+                                    let finalValue = numericValue;
+                                    if (dotCount > 1) {
+                                      finalValue = numericValue.slice(
+                                        0,
+                                        numericValue.lastIndexOf(".")
+                                      );
+                                    }
+
+                                    // Split the value by the dot to ensure proper formatting
+                                    const parts = finalValue.split(".");
+                                    if (
+                                      parts.length === 2 &&
+                                      parts[1].length > 2
+                                    ) {
+                                      // Limit decimal places to 2
+                                      finalValue = `${
+                                        parts[0]
+                                      }.${parts[1].slice(0, 2)}`;
+                                    }
+
+                                    // Clamp value between 0 and 100
+                                    const clampedValue =
+                                      finalValue !== "" &&
+                                      !isNaN(finalValue) &&
+                                      Number(finalValue) <= 100
+                                        ? finalValue
+                                        : finalValue === "" // Allow empty input
+                                        ? ""
+                                        : "100";
+
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
                                 />
+
                                 <span className="position-absolute end-0 top-50 translate-middle-y me-3">
                                   %
                                 </span>
@@ -1760,7 +1874,7 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1 fw-600">
-                              Commission
+                                Commission
                               </label>
                               <div className="position-relative">
                                 <input
@@ -1808,7 +1922,7 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1 fw-600">
-                              Casino chip Value
+                                Casino chip Value
                               </label>
                               <input
                                 type="text"
