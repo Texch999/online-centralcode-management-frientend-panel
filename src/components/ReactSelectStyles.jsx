@@ -12,11 +12,11 @@ export const customStyles = {
   }),
   placeholder: (provided) => ({
     ...provided,
-    padding: "6px", // Adjust padding as needed
+    padding: "5px", // Adjust padding as needed
   }),
   singleValue: (provided) => ({
       ...provided,
-      padding: "6px", // Adjust padding as needed
+      padding: "5px", // Adjust padding as needed
 
     }),
   option: (base, state) => ({
