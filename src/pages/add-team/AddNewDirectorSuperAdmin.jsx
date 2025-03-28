@@ -1807,8 +1807,6 @@
 
 // export default AddNewDirectorSuperAdmin;
 
-
-
 import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
@@ -2270,7 +2268,8 @@ function AddNewDirectorSuperAdmin() {
         if (response.status === true) {
           setSuccessPopupOpen(true);
           setCreateDescription(
-            `${selectedRole == 1 ? "Director" : "Superadmin"
+            `${
+              selectedRole == 1 ? "Director" : "Superadmin"
             } Added Successfully`
           );
           setTimeout(() => {
@@ -2340,12 +2339,12 @@ function AddNewDirectorSuperAdmin() {
             ) /
               parseInt(
                 websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
-                0
+                  0
               )) *
             100;
           websiteData.max_chips_monthly = parseInt(
             websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
-            null
+              null
           );
           //casino allowed
           websiteData.is_casino =
@@ -2483,7 +2482,7 @@ function AddNewDirectorSuperAdmin() {
   const addAnotherForm = () => {
     const newFormId = Date.now();
     setForms((prev) => [...prev, { id: newFormId }]);
-    
+
     // If there's a last selected admin, automatically select it in the new form
     if (lastSelectedAdmin) {
       setSelectedAdmins((prev) => ({
@@ -2610,11 +2609,11 @@ function AddNewDirectorSuperAdmin() {
                 value={
                   selectedCountryCode
                     ? {
-                      value: selectedCountryCode,
-                      label: countryData?.find(
-                        (country) => country.id === selectedCountryCode
-                      )?.name,
-                    }
+                        value: selectedCountryCode,
+                        label: countryData?.find(
+                          (country) => country.id === selectedCountryCode
+                        )?.name,
+                      }
                     : null
                 }
                 onChange={(selectedOption) =>
@@ -2658,18 +2657,18 @@ function AddNewDirectorSuperAdmin() {
                 value={
                   selectedCurrencyCode
                     ? {
-                      value: selectedCurrencyCode,
-                      label:
-                        currencyData?.find(
-                          (currency) =>
-                            currency.country_id === selectedCurrencyCode
-                        )?.currency_name +
-                        " --- " +
-                        currencyData?.find(
-                          (currency) =>
-                            currency.country_id === selectedCurrencyCode
-                        )?.name,
-                    }
+                        value: selectedCurrencyCode,
+                        label:
+                          currencyData?.find(
+                            (currency) =>
+                              currency.country_id === selectedCurrencyCode
+                          )?.currency_name +
+                          " --- " +
+                          currencyData?.find(
+                            (currency) =>
+                              currency.country_id === selectedCurrencyCode
+                          )?.name,
+                      }
                     : null
                 }
                 onChange={(selectedOption) =>
@@ -3018,13 +3017,13 @@ function AddNewDirectorSuperAdmin() {
                               value={
                                 selectedSiteIds[form.id]
                                   ? {
-                                    value: selectedSiteIds[form.id],
-                                    label:
-                                      userWebsitesList[form.id].find(
-                                        (site) =>
-                                          site.id === selectedSiteIds[form.id]
-                                      )?.web_url || "",
-                                  }
+                                      value: selectedSiteIds[form.id],
+                                      label:
+                                        userWebsitesList[form.id].find(
+                                          (site) =>
+                                            site.id === selectedSiteIds[form.id]
+                                        )?.web_url || "",
+                                    }
                                   : null
                               }
                               onChange={(selectedOption) => {
@@ -3086,7 +3085,7 @@ function AddNewDirectorSuperAdmin() {
                                     (option) =>
                                       option.value ===
                                       accountTypes[form.id]?.[
-                                      selectedSiteIds[form.id]
+                                        selectedSiteIds[form.id]
                                       ]
                                   ) || null
                                 }
@@ -3102,14 +3101,14 @@ function AddNewDirectorSuperAdmin() {
                               selectedSiteIds[form.id]
                             ] === "2" ||
                               accountTypes[form.id]?.[
-                              selectedSiteIds[form.id]
+                                selectedSiteIds[form.id]
                               ] === "3") && (
-                                <div className="col d-flex">
-                                  <div className="col-2 position-relative mx-1 mt-2">
-                                    <label className="fw-600 my-1 small-font">
-                                      Downline Share 
-                                    </label>
-                                    {/* <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
+                              <div className="col d-flex">
+                                <div className="col-2 position-relative mx-1 mt-2">
+                                  <label className="fw-600 my-1 small-font">
+                                    Downline Share
+                                  </label>
+                                  {/* <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
                                       <input
                                         type="text"
                                         className="small-font bg-none all-none w-50"
@@ -3185,232 +3184,258 @@ function AddNewDirectorSuperAdmin() {
                                       />
                                       <span>%</span>
                                     </div> */}
-                                    <div className="rounded input-css d-flex justify-content-between align-items-center small-font">
-  <input
-    type="text"
-    className="small-font bg-none all-none w-50"
-    onChange={(e) => {
-      let value = e.target.value;
+                                  <div className="rounded input-css d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      type="text"
+                                      className="small-font bg-none all-none w-50"
+                                      onChange={(e) => {
+                                        let value = e.target.value;
 
-      // Allow only numbers with up to 4 decimal places
-      if (/^\d*\.?\d{0,4}$/.test(value)) {
-        let numericValue = parseFloat(value);
+                                        // Allow only numbers with up to 4 decimal places
+                                        if (/^\d*\.?\d{0,4}$/.test(value)) {
+                                          let numericValue = parseFloat(value);
 
-        if (!isNaN(numericValue)) {
-          if (numericValue <= 100) {
-            handleInputChange(form.id, selectedSiteIds[form.id], "share", value);
-          } else {
-            setValidationErrors((prevErrors) => ({
-              ...prevErrors,
-              [form.id]: {
-                ...prevErrors[form.id],
-                [selectedSiteIds[form.id]]: {
-                  ...prevErrors[form.id]?.[selectedSiteIds[form.id]],
-                  share: "Value less than 100",
-                },
-              },
-            }));
-            e.target.value = "100";
-          }
-        }
-      } else {
-        // Remove extra decimals beyond 4 places
-        e.target.value = value.replace(/(\.\d{4})\d+$/, "$1").replace(/[^0-9.]/g, "");
-      }
-    }}
-    onBlur={(e) => {
-      let numericValue = parseFloat(e.target.value);
+                                          if (!isNaN(numericValue)) {
+                                            if (numericValue <= 100) {
+                                              handleInputChange(
+                                                form.id,
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                value
+                                              );
+                                            } else {
+                                              setValidationErrors(
+                                                (prevErrors) => ({
+                                                  ...prevErrors,
+                                                  [form.id]: {
+                                                    ...prevErrors[form.id],
+                                                    [selectedSiteIds[form.id]]:
+                                                      {
+                                                        ...prevErrors[
+                                                          form.id
+                                                        ]?.[
+                                                          selectedSiteIds[
+                                                            form.id
+                                                          ]
+                                                        ],
+                                                        share:
+                                                          "Value less than 100",
+                                                      },
+                                                  },
+                                                })
+                                              );
+                                              e.target.value = "100";
+                                            }
+                                          }
+                                        } else {
+                                          // Remove extra decimals beyond 4 places
+                                          e.target.value = value
+                                            .replace(/(\.\d{4})\d+$/, "$1")
+                                            .replace(/[^0-9.]/g, "");
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        let numericValue = parseFloat(
+                                          e.target.value
+                                        );
 
-      if (isNaN(numericValue) || numericValue < 0) {
-        e.target.value = "0";
-      } else if (numericValue > 100) {
-        e.target.value = "100";
-      } else {
-        // Format value to 4 decimal places
-        e.target.value = parseFloat(numericValue).toFixed(4);
-      }
+                                        if (
+                                          isNaN(numericValue) ||
+                                          numericValue < 0
+                                        ) {
+                                          e.target.value = "0";
+                                        } else if (numericValue > 100) {
+                                          e.target.value = "100";
+                                        } else {
+                                          // Format value to 4 decimal places
+                                          e.target.value =
+                                            parseFloat(numericValue).toFixed(4);
+                                        }
 
-      handleInputChange(form.id, selectedSiteIds[form.id], "share", e.target.value);
-    }}
-    defaultValue={0}
-  />
-  <span>%</span>
-</div>
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "share",
+                                          e.target.value
+                                        );
+                                      }}
+                                      defaultValue={0}
+                                    />
+                                    <span>%</span>
+                                  </div>
 
-<div className="small-font">
-{renderErrorMessage(
+                                  <div className="small-font">
+                                    {renderErrorMessage(
                                       form.id,
                                       selectedSiteIds[form.id],
                                       "share"
                                     )}
-</div>
-                                  
                                   </div>
-                                  <div className="col-2 position-relative mt-1 mx-3">
-                                    <label className="fw-600  small-font">
-                                      Commission
-                                    </label>
-                                    <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                      <input
-                                        type="number"
-                                        className="small-font bg-none all-none w-50"
-                                        defaultValue={0}
-                                        onChange={(e) => {
-                                          let value = e.target.value;
+                                </div>
+                                <div className="col-2 position-relative mt-1 mx-3">
+                                  <label className="fw-600  small-font">
+                                    Commission
+                                  </label>
+                                  <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      type="number"
+                                      className="small-font bg-none all-none w-50"
+                                      defaultValue={0}
+                                      onChange={(e) => {
+                                        let value = e.target.value;
 
-                                          if (
-                                            value === "" ||
-                                            (parseInt(value) >= 0 &&
-                                              parseInt(value) <= 5)
-                                          ) {
-                                            setValidationErrors((prevErrors) => ({
-                                              ...prevErrors,
-                                              [form.id]: {
-                                                ...prevErrors[form.id],
-                                                [selectedSiteIds[form.id]]: {
-                                                  ...prevErrors[form.id]?.[
+                                        if (
+                                          value === "" ||
+                                          (parseInt(value) >= 0 &&
+                                            parseInt(value) <= 5)
+                                        ) {
+                                          setValidationErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            [form.id]: {
+                                              ...prevErrors[form.id],
+                                              [selectedSiteIds[form.id]]: {
+                                                ...prevErrors[form.id]?.[
                                                   selectedSiteIds[form.id]
-                                                  ],
-                                                  downline_comm: "", // Clear error if valid
-                                                },
+                                                ],
+                                                downline_comm: "", // Clear error if valid
                                               },
-                                            }));
-                                            handleInputChange(
-                                              form.id,
-                                              selectedSiteIds[form.id],
-                                              "downline_comm",
-                                              value
-                                            );
-                                          }
-                                          // Handle invalid input (value > 5)
-                                          else {
-                                            setValidationErrors((prevErrors) => ({
-                                              ...prevErrors,
-                                              [form.id]: {
-                                                ...prevErrors[form.id],
-                                                [selectedSiteIds[form.id]]: {
-                                                  ...prevErrors[form.id]?.[
-                                                  selectedSiteIds[form.id]
-                                                  ],
-                                                  downline_comm:
-                                                    "Value less than 5%", // Show error
-                                                },
-                                              },
-                                            }));
-
-                                            // Auto-correct value to 5
-                                            e.target.value = Math.min(
-                                              Math.max(parseInt(value), 0),
-                                              5
-                                            );
-                                          }
-                                        }}
-                                        onBlur={(e) => {
-                                          let numericValue = parseInt(
-                                            e.target.value,
-                                            10
-                                          );
-
-                                          // Ensure value is valid on blur
-                                          if (
-                                            isNaN(numericValue) ||
-                                            numericValue < 0
-                                          ) {
-                                            e.target.value = "0";
-                                          } else if (numericValue > 5) {
-                                            e.target.value = "5";
-                                          }
-
-                                          // Final value update onBlur
+                                            },
+                                          }));
                                           handleInputChange(
                                             form.id,
                                             selectedSiteIds[form.id],
                                             "downline_comm",
-                                            e.target.value
+                                            value
                                           );
-                                        }}
-                                      />
+                                        }
+                                        // Handle invalid input (value > 5)
+                                        else {
+                                          setValidationErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            [form.id]: {
+                                              ...prevErrors[form.id],
+                                              [selectedSiteIds[form.id]]: {
+                                                ...prevErrors[form.id]?.[
+                                                  selectedSiteIds[form.id]
+                                                ],
+                                                downline_comm:
+                                                  "Value less than 5%", // Show error
+                                              },
+                                            },
+                                          }));
 
-                                      
-                                      <span>%</span>
-                                    </div>
-                                    {renderErrorMessage(
-                                      form.id,
-                                      selectedSiteIds[form.id],
-                                      "downline_comm"
-                                    )}
+                                          // Auto-correct value to 5
+                                          e.target.value = Math.min(
+                                            Math.max(parseInt(value), 0),
+                                            5
+                                          );
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        let numericValue = parseInt(
+                                          e.target.value,
+                                          10
+                                        );
+
+                                        // Ensure value is valid on blur
+                                        if (
+                                          isNaN(numericValue) ||
+                                          numericValue < 0
+                                        ) {
+                                          e.target.value = "0";
+                                        } else if (numericValue > 5) {
+                                          e.target.value = "5";
+                                        }
+
+                                        // Final value update onBlur
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "downline_comm",
+                                          e.target.value
+                                        );
+                                      }}
+                                    />
+
+                                    <span>%</span>
                                   </div>
-                                  <div className="col-2 position-relative mx-3">
-                                    <label className="fw-600 my-1 small-font">
-                                      Casino chip Value
-                                    </label>
-                                    <div className="input-css rounded mt-2 d-flex justify-content-between align-items-center small-font">
+                                  {renderErrorMessage(
+                                    form.id,
+                                    selectedSiteIds[form.id],
+                                    "downline_comm"
+                                  )}
+                                </div>
+                                <div className="col-2 position-relative mx-3">
+                                  <label className="fw-600 my-1 small-font">
+                                    Casino chip Value
+                                  </label>
+                                  <div className="input-css rounded mt-2 d-flex justify-content-between align-items-center small-font">
+                                    <input
+                                      className="small-font bg-none all-none  w-100"
+                                      type="text"
+                                      inputMode="numeric"
+                                      pattern="[0-9]*"
+                                      maxLength={4}
+                                      defaultValue={0}
+                                      onKeyPress={(event) => {
+                                        if (
+                                          event.charCode < 48 ||
+                                          event.charCode > 57
+                                        ) {
+                                          event.preventDefault();
+                                        }
+                                      }}
+                                      onChange={(e) => {
+                                        const numericValue =
+                                          e.target.value.replace(/\D/g, "");
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "caschip_values",
+                                          numericValue
+                                        );
+                                      }}
+                                    />
+                                  </div>
+                                  {renderErrorMessage(
+                                    form.id,
+                                    selectedSiteIds[form.id],
+                                    "caschip_values"
+                                  )}
+                                </div>
+                                <div className="col-2 ">
+                                  <label className="fw-600 my-1 small-font">
+                                    Is Primary
+                                  </label>
+
+                                  <div className="input-css mt-2">
+                                    <div className="w-70 flex-between">
                                       <input
-                                        className="small-font bg-none all-none  w-100"
-                                        type="text"
-                                        inputMode="numeric"
-                                        pattern="[0-9]*"
-                                        maxLength={4}
-                                        defaultValue={0}
-                                        onKeyPress={(event) => {
-                                          if (
-                                            event.charCode < 48 ||
-                                            event.charCode > 57
-                                          ) {
-                                            event.preventDefault();
-                                          }
-                                        }}
-                                        onChange={(e) => {
-                                          const numericValue =
-                                            e.target.value.replace(/\D/g, "");
+                                        type="checkbox"
+                                        checked={
+                                          websiteDetails[form.id]?.[
+                                            selectedSiteIds[form.id]
+                                          ]?.isPrimary == 1
+                                            ? true
+                                            : false
+                                        }
+                                        onChange={(e) =>
                                           handleInputChange(
                                             form.id,
                                             selectedSiteIds[form.id],
-                                            "caschip_values",
-                                            numericValue
-                                          );
-                                        }}
+                                            "isPrimary",
+                                            e.target.checked ? 1 : 2
+                                          )
+                                        }
                                       />
-                                    </div>
-                                    {renderErrorMessage(
-                                      form.id,
-                                      selectedSiteIds[form.id],
-                                      "caschip_values"
-                                    )}
-                                  </div>
-                                  <div className="col-2 ">
-                                    <label className="fw-600 my-1 small-font">
-                                      Is Primary
-                                    </label>
-
-                                    <div className="input-css mt-2">
-                                      <div className="w-70 flex-between">
-                                        <input
-                                          type="checkbox"
-                                          checked={
-                                            websiteDetails[form.id]?.[
-                                              selectedSiteIds[form.id]
-                                            ]?.isPrimary == 1
-                                              ? true
-                                              : false
-                                          }
-                                          onChange={(e) =>
-                                            handleInputChange(
-                                              form.id,
-                                              selectedSiteIds[form.id],
-                                              "isPrimary",
-                                              e.target.checked ? 1 : 2
-                                            )
-                                          }
-                                        />
-                                        <label className="small-font mx-2">
-                                          IS PRIMARY{" "}
-                                        </label>
-                                      </div>
+                                      <label className="small-font mx-2">
+                                        IS PRIMARY{" "}
+                                      </label>
                                     </div>
                                   </div>
                                 </div>
-                              )}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -3473,10 +3498,6 @@ function AddNewDirectorSuperAdmin() {
 }
 
 export default AddNewDirectorSuperAdmin;
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import {
