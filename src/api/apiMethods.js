@@ -522,6 +522,12 @@ const returnCreditChips = (id, data) => {
 const creditFullSettlement = (data) => {
   return apiRequest("creditFullSettlement", data);
 };
+const getMultiMarket = (id, data) => {
+  return apiRequest("getMultiMarket", data, id);
+};
+const suspendWebsiteProfile = (id, data) => {
+  return apiRequest("suspendWebsiteProfile", data, id);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -656,4 +662,6 @@ export {
   getCreditUSersList,
   returnCreditChips,
   creditFullSettlement,
+  getMultiMarket,
+  suspendWebsiteProfile,
 };

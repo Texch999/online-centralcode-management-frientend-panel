@@ -35,7 +35,7 @@ const columns = [
   { header: "Country", field: "country", width: "10%" },
   { header: "Currency", field: "currency", width: "10%" },
   { header: "Status", field: "status", width: "10%" },
-  { header: "Action", field: "action", width: "10%" },
+  // { header: "Action", field: "action", width: "10%" },
 ];
 
 const PaymentGateway = ({ dwnlnId }) => {
@@ -188,20 +188,20 @@ const PaymentGateway = ({ dwnlnId }) => {
         </span>
       ),
 
-      action: (
-        <spna>
-          {item?.status === 1 ? (
-            <SlPencil
-              size={17}
-              onClick={() =>
-                handleEdit(item?.id, item?.gateway_type, item?.currency_id)
-              }
-            />
-          ) : (
-            <SlPencil size={17} />
-          )}
-        </spna>
-      ),
+      // action: (
+      //   <spna>
+      //     {item?.status === 1 ? (
+      //       <SlPencil
+      //         size={17}
+      //         onClick={() =>
+      //           handleEdit(item?.id, item?.gateway_type, item?.currency_id)
+      //         }
+      //       />
+      //     ) : (
+      //       <SlPencil size={17} />
+      //     )}
+      //   </spna>
+      // ),
     };
   });
 

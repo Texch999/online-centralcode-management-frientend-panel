@@ -307,7 +307,6 @@
   outline: none;
   color: #1c1c1c;
   font-weight: 500;
-
   border-radius: 0.35rem;
 }
 
@@ -1124,13 +1123,24 @@ input[type="number"] {
 }
 
 .grey-bg-clr {
-  background-color: #F2F2F2 !important;
+  background-color: #f2f2f2 !important;
+}
+.flex-border-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 8px 0;
+  /* border-bottom: 1px solid #ddd; */
+  min-height: 40px;
 }
 
 .green-clr {
-  color: #029122 
+  color: #029122;
 }
 
 .red-clr {
-  color: #FF1818 !important;
+  color: #ff1818 !important;
+}
+.border-0 {
+  margin-bottom: 6px;
 }
