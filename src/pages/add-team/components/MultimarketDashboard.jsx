@@ -38,26 +38,17 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         <div className="d-flex flex-between">
           <div className="">Website Name</div>
           <div className="">Share/Rent</div>
+          <div className="">Last Updated</div>
         </div>
       ),
       field: "name",
       width: "40%",
     },
 
-    // {
-    //   header: <div className="">Website Name</div>,
-    //   field: "name",
-    //   width: "30%",
-    // },
-    // {
-    //   header: <div className="">Share/Rent</div>,
-    //   field: "share",
-    //   width: "10%",
-    // },
     {
-      header: <div className="flex-center w-100">Last Updated</div>,
+      header: <div className="flex-center w-100"></div>,
       field: "last",
-      width: "40%",
+      width: "10%",
     },
     {
       header: <div className="">Status</div>,
@@ -81,30 +72,35 @@ const MultimarketDashboard = ({ dwnlnId }) => {
             <div key={panel.user_panel_id} className="flex-border-bottom">
               <span>{panel.user_panel_name}</span>
               <span>{panel.share}%</span>
+              <span>{new Date(panel.updated_date).toLocaleDateString()}</span>
             </div>
           ))}
         </div>
       </div>
     ),
-    // share: (
-    //   <div className="d-flex flex-center self-align-end">
-    //     <div className="d-flex flex-column">
-    //       <div>{website.user_panels[0]?.share}%</div>
-    //     </div>
-    //   </div>
-    // ),
+
     last: (
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <div>
-          {new Date(website.user_panels[0]?.updated_date).toLocaleDateString()}
-        </div>
+      <div className="d-flex flex-column">
+        {/* {website.user_panels?.map((panel) => (
+          <div
+            key={panel.user_panel_id}
+            className="d-flex flex-column align-items-center flex-border-bottom"
+          >
+            <span>{new Date(panel.updated_date).toLocaleDateString()}</span>
+          </div>
+        ))} */}
       </div>
     ),
     status: (
-      <div className="badge payment-gateway-status-badge p-2">
-        {website.user_panels[0]?.status === 1 ? "Active" : "Inactive"}
+      <div>
+        {website?.user_panels[0]?.status === 1 ? (
+          <div className="badge payment-gateway-status-badge p-2">Active</div>
+        ) : (
+          <div className="red-btn p-2">In-Active</div>
+        )}
       </div>
     ),
+
     action: (
       <div className="d-flex gap-2 flex-center">
         <span className="pointer">
@@ -120,83 +116,10 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         >
           <MdBlock size={20} />
         </span>
-        <span>
-          <MdDelete size={20} />
-        </span>
       </div>
     ),
   }));
 
-  // const data = [
-  //   {
-  //     name: (
-  //       <div>
-  //         <div className="d-flex flex-between">
-  //           <div className="d-flex flex-column">
-  //             <div className="fw-700">Brahma</div>
-
-  //             <div>User website:</div>
-  //             <div className="d-flex flex-column">
-  //               <div>diamondexchangenew.com</div>
-  //               <div>starsports247.com</div>
-  //             </div>
-  //           </div>
-  //           <div className="d-flex flex-column ">
-  //             <div className="fw-700"></div>
-  //             <div></div>
-  //             <div className="d-flex flex-column">
-  //               <div>10%</div>
-  //               <div>5000</div>
-  //             </div>
-  //           </div>
-  //         </div>
-  //         <div className="d-flex my-2 flex-between">
-  //           <div className="d-flex flex-column">
-  //             <div className="fw-700">Ravana</div>
-  //             <div>User website:</div>
-  //             <div className="d-flex flex-column">
-  //               <div>diamondexchangenew.com</div>
-  //               <div>starsports247.com</div>
-  //             </div>
-  //           </div>
-  //           <div className="d-flex flex-column ">
-  //             <div className="fw-700"></div>
-  //             <div></div>
-  //             <div className="d-flex flex-column">
-  //               <div>10%</div>
-  //               <div>5000</div>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     ),
-
-  //     last: (
-  //       <div className="d-flex flex-column justify-content-center align-items-center">
-  //         <div>26/09/2024</div>
-  //       </div>
-  //     ),
-  //     status: (
-  //       <div className="badge payment-gateway-status-badge p-2">active</div>
-  //     ),
-  //     action: (
-  //       <div className="d-flex gap-2 flex-center">
-  //         <span className="pointer">
-  //           <MdOutlineModeEdit
-  //             size={20}
-  //             onClick={() => navigate("/director-admin/editDirector")}
-  //           />
-  //         </span>
-  //         <span>
-  //           <MdBlock size={20} />
-  //         </span>
-  //         <span>
-  //           <MdDelete size={20} />
-  //         </span>
-  //       </div>
-  //     ),
-  //   },
-  // ];
   return (
     <div>
       <div className="py-4 bg-white shadow rounded">
@@ -221,6 +144,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         dwnlnId={dwnlnId}
         webList={webMarketDtls}
         adminWebsiteId={adminWebsiteId}
+        getWebMarketDtls={getWebMarketDtls}
       />
     </div>
   );

@@ -670,14 +670,14 @@ const UserProfileDashboard = () => {
             >
               Payment Gateway
             </button>
-            <button
+            {/* <button
               className={`small-font rounded p-2 text-center w-25 ${
                 activeTab === "transaction" && "saffron-btn"
               }`}
               onClick={() => handleTabClick("transaction")}
             >
               Transaction
-            </button>
+            </button> */}
             <button
               className={`small-font rounded p-2 text-center w-25 ${
                 activeTab === "betHistory" && "saffron-btn"
@@ -727,7 +727,7 @@ const UserProfileDashboard = () => {
           />
         )}
         {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
-        {activeTab === "transaction" && <Transaction />}
+        {/* {activeTab === "transaction" && <Transaction />} */}
         {activeTab === "betHistory" && <BetHistory />}
         {activeTab === "multimarket" && <MultimarketDashboard dwnlnId={id}/>}
       </div>

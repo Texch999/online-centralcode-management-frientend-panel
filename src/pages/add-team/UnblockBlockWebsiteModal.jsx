@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Alert, Modal } from "react-bootstrap";
 import { IoClose, IoEye, IoEyeOff } from "react-icons/io5";
 import { suspendWebsiteProfile } from "../../api/apiMethods";
-import ConfirmationPopup from "../popups/ConfirmationPopup";
-import e from "cors";
 import SuccessPopup from "./../popups/SuccessPopup";
 
 const UnblockBlockWebsiteModal = ({
@@ -12,6 +10,7 @@ const UnblockBlockWebsiteModal = ({
   dwnlnId,
   webList,
   adminWebsiteId,
+  getWebMarketDtls,
 }) => {
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
@@ -79,6 +78,7 @@ const UnblockBlockWebsiteModal = ({
         setTimeout(() => {
           setSuccessModal(false);
         }, 3000);
+        getWebMarketDtls();
       })
       .catch((error) => {
         if (error?.errors?.length > 0) {
@@ -93,8 +93,6 @@ const UnblockBlockWebsiteModal = ({
       const existingWebsite = selectedWebsites.find(
         (web) => web?.user_panel_id === item?.user_panel_id
       );
-
-      // Determine checked state based on existing status or initial item status
       const isChecked =
         existingWebsite?.status !== undefined
           ? existingWebsite.status === 2
