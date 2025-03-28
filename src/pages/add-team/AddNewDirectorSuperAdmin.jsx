@@ -3541,7 +3541,7 @@ function AddNewDirectorSuperAdmin() {
                                   </label>
 
                                   <div className="input-css mt-2">
-                                    <div className="w-70 flex-between">
+                                    <div className="w-70 flex-center">
                                       <input
                                         type="checkbox"
                                         checked={
@@ -3561,7 +3561,7 @@ function AddNewDirectorSuperAdmin() {
                                         }
                                       />
                                       <label className="small-font mx-2">
-                                        IS PRIMARY{" "}
+                                        IS PRIMARY
                                       </label>
                                     </div>
                                   </div>

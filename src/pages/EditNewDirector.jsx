@@ -1952,7 +1952,7 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1 fw-600">
-                                Commission (less than 5%)1
+                                Commission (less than 5%)
                               </label>
                               <div className="position-relative">
                                 {/* <input
@@ -2144,6 +2144,7 @@ function EditNewDirector() {
                           placeholder="Select"
                           options={transformedOptions}
                           value={selectedOption}
+                          styles={customStyles}
                           onChange={(selectedOption) => {
                             setSelectedOption(selectedOption);
                             handleAdminRoleChange(form.id, selectedOption);
@@ -2174,6 +2175,7 @@ function EditNewDirector() {
                         <Select
                           className="small-font"
                           placeholder="Select"
+                          styles={customStyles}
                           options={adminWebsite?.map((admin) => ({
                             value: admin.id,
                             label: admin.web_name,
