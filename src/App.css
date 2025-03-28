@@ -307,7 +307,6 @@
   outline: none;
   color: #1c1c1c;
   font-weight: 500;
-
   border-radius: 0.35rem;
 }
 
@@ -1133,4 +1132,15 @@ input[type="number"] {
   padding: 8px 0;
   /* border-bottom: 1px solid #ddd; */
   min-height: 40px;
+}
+
+.green-clr {
+  color: #029122;
+}
+
+.red-clr {
+  color: #ff1818 !important;
+}
+.border-0 {
+  margin-bottom: 6px;
 }

@@ -11,7 +11,9 @@ const OfflineDepositPopup = ({
     actionType,
     depositPopup,
     selectedDetails,
-    setDepositPopup
+    setDepositPopup,
+    handleSuccesPopup,
+    setDiscription
 }) => {
 
     const allCountries = useSelector((item) => item?.allCountries);
@@ -23,7 +25,6 @@ const OfflineDepositPopup = ({
     const [masterPassword, setMasterPassword] = useState("")
     const [fieldError, setFieldError] = useState('')
     const [apiErrors, setApiErrors] = useState(null);
-    const [discription, setDiscription] = useState("")
     const [loading, setLoading] = useState(null);
     const [successPopupOpen, setSuccessPopupOpen] = useState(false)
     const [isFinalPaidAmountFocused, setIsFinalPaidAmountFocused] = useState(false);
@@ -66,19 +67,13 @@ const OfflineDepositPopup = ({
             remarks: remark,
             parentPassword: masterPassword,
         };
-
         setIsLoading(true);
-
         ManagementOfflineDepositeTicketCreation(selectedDetails?.id, payload)
             .then((response) => {
-                setSuccessPopupOpen(true);
+                handleSuccesPopup();
+                setDepositPopup(false);
                 setDiscription(`Deposit Ticket Created Successfully`);
                 setApiErrors(null);
-                setTimeout(() => {
-                    setSuccessPopupOpen(false);
-                    setDepositPopup(false);
-                }, 2000);
-
             })
             .catch((error) => {
                 setApiErrors(error?.message || "API request failed");
@@ -287,13 +282,7 @@ const OfflineDepositPopup = ({
 
                 </Modal.Body>
             </Modal>
-            {successPopupOpen && (
-                <SuccessPopup
-                    successPopupOpen={successPopupOpen}
-                    setSuccessPopupOpen={setSuccessPopupOpen}
-                    discription={discription}
-                />
-            )}
+
         </div >
     );
 };

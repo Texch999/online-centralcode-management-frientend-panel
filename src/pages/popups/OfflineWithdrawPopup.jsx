@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { getSettlementSummeryById, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
-import SuccessPopup from "./SuccessPopup";
 import { useSelector } from "react-redux";
 
 const OfflineWithdrawPopup = ({
@@ -10,6 +9,8 @@ const OfflineWithdrawPopup = ({
     withdrawPopup,
     selectedDetails,
     setWithdrawPopup,
+    handleSuccesPopup,
+    setDiscription
 }) => {
     const allCountries = useSelector((item) => item?.allCountries);
     const [errors, setErrors] = useState({});
@@ -18,7 +19,6 @@ const OfflineWithdrawPopup = ({
     const [masterPassword, setMasterPassword] = useState("");
     const [fieldError, setFieldError] = useState("");
     const [apiErrors, setApiErrors] = useState(null);
-    const [discription, setDiscription] = useState("");
     const [loading, setLoading] = useState(null);
     const [successPopupOpen, setSuccessPopupOpen] = useState(false);
     const [settleDetails, setSettleDetails] = useState({});
@@ -82,15 +82,11 @@ const OfflineWithdrawPopup = ({
         setIsLoading(true);
         ManagementOfflineWithdrawTicketCreation(selectedDetails?.id, payload)
             .then((response) => {
-                setSuccessPopupOpen(true);
-                setDiscription(`"Withdraw Ticket Created Successfully`);
+                setWithdrawPopup(false);
+                handleSuccesPopup()
+                setDiscription(`Withdraw Ticket Created Successfully`);
                 setApiErrors(null);
                 setErrors({});
-                setTimeout(() => {
-                    setSuccessPopupOpen(false);
-                    setWithdrawPopup(false);
-                }, 3000);
-
             })
             .catch((error) => {
                 setLoading(false);
@@ -154,19 +150,42 @@ const OfflineWithdrawPopup = ({
                         </div>
 
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Pending Credit</label>
+                            <label className="small-font mb-1">Credit Balance</label>
                             <input
                                 type="text"
                                 name="selectedChips"
-                                className="w-100 small-font rounded input-css all-none input-bg input-border"
+                                className="w-100 small-font rounded input-css all-none input-bg input-border red-clr"
                                 placeholder="Enter Chips"
                                 value={settleDetails?.creditAllowed == 1 ? settleDetails?.creditBalance : 0}
+                                readOnly
+                            />
+                        </div>
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Profit/Loss</label>
+                            <input
+                                type="text"
+                                name="selectedChips"
+                                className="w-100 small-font rounded input-css all-none input-bg input-border green-clr"
+                                placeholder="Enter Chips"
+                                value={settleDetails?.pnl == 1 ? settleDetails?.pnl : 0}
                                 readOnly
                             />
                         </div>
                     </div>
 
                     <div className="row">
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Available Wallet Balance</label>
+                            <input
+                                type="text"
+                                name="selectedChips"
+                                className="w-100 small-font rounded input-css all-none input-bg input-border"
+                                placeholder="Enter Chips"
+                                value={(settleDetails?.avilChips - (settleDetails?.pnl + settleDetails?.creditBalance)) || 0}
+                                readOnly
+                            />
+                        </div>
+
                         <div className="col mb-2">
                             <label className="small-font mb-1">Remaining Wallet Balance</label>
                             <input
@@ -255,13 +274,7 @@ const OfflineWithdrawPopup = ({
                     </div>
                 </Modal.Body>
             </Modal>
-            {successPopupOpen && (
-                <SuccessPopup
-                    successPopupOpen={successPopupOpen}
-                    setSuccessPopupOpen={setSuccessPopupOpen}
-                    discription={discription}
-                />
-            )}
+
         </div>
     );
 };
