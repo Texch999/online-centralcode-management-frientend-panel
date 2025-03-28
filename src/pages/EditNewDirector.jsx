@@ -1241,7 +1241,7 @@ function EditNewDirector() {
                       userWebsite.commission_type;
 
                     return (
-                      <div key={userIndex} className="w-100 mt-3 my-2 row">
+                      <div key={userIndex} className="w-100 mt-3 my-2  row">
                         <div className="col-2 d-flex flex-column mt-4">
                           <select
                             className="small-font w-100 grey-bg-clr rounded p-2 no-cursor border-0"
@@ -1288,7 +1288,7 @@ function EditNewDirector() {
                             </select>
                           </div> */}
 
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex  align-items-center">
                             <Select
                               className="w-100"
                               classNamePrefix="react-select"
@@ -1564,8 +1564,8 @@ function EditNewDirector() {
                         {currentCommissionType == "2" && (
                           <>
                             <div className="col-2">
-                              <label className="small-font my-1">
-                                Downline Share
+                              <label className="small-font my-1 fw-600">
+                                Downline Share (upto 100%)
                               </label>
                               <div className="position-relative">
                                 {/* <input
@@ -1638,6 +1638,18 @@ function EditNewDirector() {
                                       }.${parts[1].slice(0, 2)}`;
                                     }
 
+                                    // Check if the value is a valid number and within the range
+                                    const numericValueWithoutDot = parts[0]; // Get the part before the decimal
+                                    if (
+                                      numericValueWithoutDot.length > 2 &&
+                                      Number(numericValueWithoutDot) !== 100
+                                    ) {
+                                      finalValue = numericValueWithoutDot.slice(
+                                        0,
+                                        2
+                                      ); // Restrict to 2 digits if not 100
+                                    }
+
                                     // Clamp value between 0 and 100
                                     const clampedValue =
                                       finalValue !== "" &&
@@ -1668,8 +1680,8 @@ function EditNewDirector() {
                               )}
                             </div>
                             <div className="col-2">
-                              <label className="small-font my-1">
-                                Downline Comm
+                              <label className="small-font my-1 fw-600">
+                                Commission (less than 5%)
                               </label>
                               <div className="position-relative">
                                 {/* <input
@@ -1724,6 +1736,7 @@ function EditNewDirector() {
                                       numericValue.match(/\./g) || []
                                     ).length;
                                     let finalValue = numericValue;
+
                                     if (dotCount > 1) {
                                       finalValue = numericValue.slice(
                                         0,
@@ -1731,34 +1744,30 @@ function EditNewDirector() {
                                       );
                                     }
 
-                                    // Split the value by the dot to ensure proper formatting
+                                    // Split value by the dot to handle decimal places
                                     const parts = finalValue.split(".");
                                     if (
                                       parts.length === 2 &&
                                       parts[1].length > 2
                                     ) {
-                                      // Limit decimal places to 2
                                       finalValue = `${
                                         parts[0]
                                       }.${parts[1].slice(0, 2)}`;
                                     }
 
-                                    // Clamp value between 0 and 100
-                                    const clampedValue =
-                                      finalValue !== "" &&
-                                      !isNaN(finalValue) &&
-                                      Number(finalValue) <= 100
-                                        ? finalValue
-                                        : finalValue === "" // Allow empty input
-                                        ? ""
-                                        : "100";
-
-                                    const updatedWebsites = [...userWebsites];
-                                    updatedWebsites[userIndex] = {
-                                      ...updatedWebsites[userIndex],
-                                      downline_comm: clampedValue,
-                                    };
-                                    setUserWebsites(updatedWebsites);
+                                    // Allow input only if less than or equal to 5
+                                    if (
+                                      finalValue === "" || // Allow empty input for reset
+                                      (!isNaN(finalValue) &&
+                                        Number(finalValue) <= 5)
+                                    ) {
+                                      const updatedWebsites = [...userWebsites];
+                                      updatedWebsites[userIndex] = {
+                                        ...updatedWebsites[userIndex],
+                                        downline_comm: finalValue,
+                                      };
+                                      setUserWebsites(updatedWebsites);
+                                    }
                                   }}
                                 />
 
@@ -1772,9 +1781,9 @@ function EditNewDirector() {
                                 </span>
                               )}
                             </div>
-                            <div className="col-2">
-                              <label className="small-font my-1">
-                                Caschip Values
+                            <div className="col-1">
+                              <label className="small-font my-1 white-space fw-600">
+                                Casino chip Value
                               </label>
                               <input
                                 type="text"
@@ -1803,7 +1812,7 @@ function EditNewDirector() {
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
-                            <div className="col grey-bg-clr flex-between white-space input-css ms-2 d-flex border-0 mt-4">
+                            <div className="col-1 grey-bg-clr flex-center  white-space input-css4 ms-2 d-flex border-0 mt-4">
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary === 1}
@@ -1816,7 +1825,7 @@ function EditNewDirector() {
                                   setUserWebsites(updatedWebsites);
                                 }}
                               />
-                              <label className="small-font me-2">
+                              <label className="small-font mx-2">
                                 Is Primary
                               </label>
                             </div>
@@ -1827,10 +1836,10 @@ function EditNewDirector() {
                           <>
                             <div className="col-2">
                               <label className="small-font my-1 fw-600">
-                                Downline Share
+                                Downline Share (upto 100%)
                               </label>
                               <div className="position-relative">
-                                <input
+                                {/* <input
                                   type="text"
                                   className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                   value={userWebsite.share || ""}
@@ -1861,7 +1870,76 @@ function EditNewDirector() {
                                     };
                                     setUserWebsites(updatedWebsites);
                                   }}
+                                /> */}
+
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
+                                  value={userWebsite.share || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+
+                                    // Allow only numbers and a single decimal point
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9.]/g,
+                                      ""
+                                    );
+
+                                    // Prevent multiple dots
+                                    const dotCount = (
+                                      numericValue.match(/\./g) || []
+                                    ).length;
+                                    let finalValue = numericValue;
+                                    if (dotCount > 1) {
+                                      finalValue = numericValue.slice(
+                                        0,
+                                        numericValue.lastIndexOf(".")
+                                      );
+                                    }
+
+                                    // Split the value by the dot to ensure proper formatting
+                                    const parts = finalValue.split(".");
+                                    if (
+                                      parts.length === 2 &&
+                                      parts[1].length > 2
+                                    ) {
+                                      // Limit decimal places to 2
+                                      finalValue = `${
+                                        parts[0]
+                                      }.${parts[1].slice(0, 2)}`;
+                                    }
+
+                                    // Check if the value is a valid number and within the range
+                                    const numericValueWithoutDot = parts[0]; // Get the part before the decimal
+                                    if (
+                                      numericValueWithoutDot.length > 2 &&
+                                      Number(numericValueWithoutDot) !== 100
+                                    ) {
+                                      finalValue = numericValueWithoutDot.slice(
+                                        0,
+                                        2
+                                      ); // Restrict to 2 digits if not 100
+                                    }
+
+                                    // Clamp value between 0 and 100
+                                    const clampedValue =
+                                      finalValue !== "" &&
+                                      !isNaN(finalValue) &&
+                                      Number(finalValue) <= 100
+                                        ? finalValue
+                                        : finalValue === "" // Allow empty input
+                                        ? ""
+                                        : "100";
+
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      share: clampedValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
                                 />
+
                                 <span className="position-absolute end-0 top-50 translate-middle-y me-3">
                                   %
                                 </span>
@@ -1874,10 +1952,10 @@ function EditNewDirector() {
                             </div>
                             <div className="col-2">
                               <label className="small-font my-1 fw-600">
-                                Commission
+                                Commission (less than 5%)1
                               </label>
                               <div className="position-relative">
-                                <input
+                                {/* <input
                                   type="text"
                                   className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
                                   value={userWebsite.downline_comm || ""}
@@ -1909,7 +1987,65 @@ function EditNewDirector() {
                                     };
                                     setUserWebsites(updatedWebsites);
                                   }}
+                                /> */}
+
+                                <input
+                                  type="text"
+                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
+                                  value={userWebsite.downline_comm || ""}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+
+                                    // Allow only numbers and a single dot
+                                    const numericValue = inputValue.replace(
+                                      /[^0-9.]/g,
+                                      ""
+                                    );
+
+                                    // Prevent multiple dots
+                                    const dotCount = (
+                                      numericValue.match(/\./g) || []
+                                    ).length;
+                                    let finalValue = numericValue;
+
+                                    if (dotCount > 1) {
+                                      finalValue = numericValue.slice(
+                                        0,
+                                        numericValue.lastIndexOf(".")
+                                      );
+                                    }
+
+                                    // Split value by the dot to handle decimal places
+                                    const parts = finalValue.split(".");
+                                    if (
+                                      parts.length === 2 &&
+                                      parts[1].length > 2
+                                    ) {
+                                      // Limit decimal places to 2
+                                      finalValue = `${
+                                        parts[0]
+                                      }.${parts[1].slice(0, 2)}`;
+                                    }
+
+                                    // Block input greater than 5 (doesn't allow it at all)
+                                    if (
+                                      finalValue !== "" && // Allow empty input
+                                      !isNaN(finalValue) &&
+                                      Number(finalValue) > 5
+                                    ) {
+                                      return; // Block invalid input beyond 5
+                                    }
+
+                                    // Update the state only if valid input
+                                    const updatedWebsites = [...userWebsites];
+                                    updatedWebsites[userIndex] = {
+                                      ...updatedWebsites[userIndex],
+                                      downline_comm: finalValue,
+                                    };
+                                    setUserWebsites(updatedWebsites);
+                                  }}
                                 />
+
                                 <span className="position-absolute end-0 top-50 translate-middle-y me-3">
                                   %
                                 </span>
@@ -1920,8 +2056,8 @@ function EditNewDirector() {
                                 </span>
                               )}
                             </div>
-                            <div className="col-2">
-                              <label className="small-font my-1 fw-600">
+                            <div className="col-1">
+                              <label className="small-font my-1 white-space fw-600">
                                 Casino chip Value
                               </label>
                               <input
@@ -1950,7 +2086,7 @@ function EditNewDirector() {
                               )}
                             </div>
                             {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
-                            <div className="col grey-bg-clr flex-between white-space input-css ms-2 d-flex border-0 mt-4">
+                            <div className="col-1 grey-bg-clr flex-center  white-space input-css4 ms-2 border-0 d-flex  mt-4">
                               <input
                                 type="checkbox"
                                 checked={userWebsite.is_primary == 1}
@@ -2924,7 +3060,7 @@ function EditNewDirector() {
                           {selectedSiteIds[form.id] && (
                             <>
                               <div className="col-md-2 col-12">
-                                <label className="small-font  d-block">
+                                <label className="small-font fw-600   d-block">
                                   Commission Type
                                 </label>
                                 <Select

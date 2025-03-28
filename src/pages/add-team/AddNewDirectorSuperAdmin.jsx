@@ -3105,8 +3105,8 @@ function AddNewDirectorSuperAdmin() {
                               ] === "3") && (
                               <div className="col d-flex">
                                 <div className="col-2 position-relative mx-1 mt-2">
-                                  <label className="fw-600 my-1 small-font">
-                                    Downline Share
+                                  <label className="fw-600 my-1 white-space small-font">
+                                    Downline Share (upto 100%)
                                   </label>
                                   {/* <div className=" rounded input-css  d-flex justify-content-between align-items-center small-font">
                                       <input
@@ -3185,7 +3185,7 @@ function AddNewDirectorSuperAdmin() {
                                       <span>%</span>
                                     </div> */}
                                   <div className="rounded input-css d-flex justify-content-between align-items-center small-font">
-                                    <input
+                                    {/* <input
                                       type="text"
                                       className="small-font bg-none all-none w-50"
                                       onChange={(e) => {
@@ -3260,7 +3260,91 @@ function AddNewDirectorSuperAdmin() {
                                         );
                                       }}
                                       defaultValue={0}
+                                    /> */}
+
+                                    <input
+                                      type="text"
+                                      className="small-font bg-none all-none w-50"
+                                      onChange={(e) => {
+                                        let value = e.target.value;
+
+                                        // Allow only numbers and optional decimal with up to 2 places
+                                        if (
+                                          /^\d{0,2}(\.\d{0,2})?$|^100(\.0{0,2})?$/.test(
+                                            value
+                                          )
+                                        ) {
+                                          let numericValue = parseFloat(value);
+
+                                          if (!isNaN(numericValue)) {
+                                            // Check if value is <= 100
+                                            if (numericValue <= 100) {
+                                              handleInputChange(
+                                                form.id,
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                value
+                                              );
+                                            } else {
+                                              // Prevent value greater than 100
+                                              setValidationErrors(
+                                                (prevErrors) => ({
+                                                  ...prevErrors,
+                                                  [form.id]: {
+                                                    ...prevErrors[form.id],
+                                                    [selectedSiteIds[form.id]]:
+                                                      {
+                                                        ...prevErrors[
+                                                          form.id
+                                                        ]?.[
+                                                          selectedSiteIds[
+                                                            form.id
+                                                          ]
+                                                        ],
+                                                        share:
+                                                          "Value should be less than or equal to 100",
+                                                      },
+                                                  },
+                                                })
+                                              );
+                                              e.target.value = "100";
+                                            }
+                                          }
+                                        } else {
+                                          // Remove invalid characters and extra decimals
+                                          e.target.value = value
+                                            .replace(/[^0-9.]/g, "") // Remove non-numeric & non-dot
+                                            .replace(/(\.\d{2})\d+$/, "$1") // Limit decimals to 2 places
+                                            .replace(/^(\d{2})\d+/, "$1"); // Prevent > 2 digits before decimal if < 100
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        let numericValue = parseFloat(
+                                          e.target.value
+                                        );
+
+                                        if (
+                                          isNaN(numericValue) ||
+                                          numericValue < 0
+                                        ) {
+                                          e.target.value = "0"; // Reset to 0 if invalid
+                                        } else if (numericValue > 100) {
+                                          e.target.value = "100";
+                                        } else {
+                                          // Format to 2 decimal places if valid
+                                          e.target.value =
+                                            parseFloat(numericValue).toFixed(2);
+                                        }
+
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "share",
+                                          e.target.value
+                                        );
+                                      }}
                                     />
+
                                     <span>%</span>
                                   </div>
 
@@ -3274,13 +3358,13 @@ function AddNewDirectorSuperAdmin() {
                                 </div>
                                 <div className="col-2 position-relative mt-1 mx-3">
                                   <label className="fw-600  small-font">
-                                    Commission
+                                    Commission (less than 5%)
                                   </label>
                                   <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      type="number"
+                                    {/* <input
+                                      type="text"
                                       className="small-font bg-none all-none w-50"
-                                      defaultValue={0}
+                                      
                                       onChange={(e) => {
                                         let value = e.target.value;
 
@@ -3355,6 +3439,55 @@ function AddNewDirectorSuperAdmin() {
                                           e.target.value
                                         );
                                       }}
+                                    /> */}
+
+                                    <input
+                                      type="text"
+                                      className="small-font bg-none all-none w-50"
+                                      onChange={(e) => {
+                                        let value = e.target.value;
+
+                                        // Allow numbers between 0-5 with up to 2 decimal places
+                                        if (
+                                          /^([0-4](\.\d{0,2})?|5(\.0{0,2})?)?$/.test(
+                                            value
+                                          )
+                                        ) {
+                                          handleInputChange(
+                                            form.id,
+                                            selectedSiteIds[form.id],
+                                            "downline_comm",
+                                            value
+                                          );
+                                        } else {
+                                          // Prevent invalid characters from being entered
+                                          e.target.value = value.slice(0, -1);
+                                        }
+                                      }}
+                                      onBlur={(e) => {
+                                        let numericValue = parseFloat(
+                                          e.target.value
+                                        );
+
+                                        if (
+                                          isNaN(numericValue) ||
+                                          numericValue < 0
+                                        ) {
+                                          numericValue = 0;
+                                        } else if (numericValue > 5) {
+                                          numericValue = 5;
+                                        }
+
+                                        e.target.value =
+                                          numericValue.toFixed(2); // Format to 2 decimal places
+
+                                        handleInputChange(
+                                          form.id,
+                                          selectedSiteIds[form.id],
+                                          "downline_comm",
+                                          e.target.value
+                                        );
+                                      }}
                                     />
 
                                     <span>%</span>
@@ -3376,7 +3509,6 @@ function AddNewDirectorSuperAdmin() {
                                       inputMode="numeric"
                                       pattern="[0-9]*"
                                       maxLength={4}
-                                      defaultValue={0}
                                       onKeyPress={(event) => {
                                         if (
                                           event.charCode < 48 ||
