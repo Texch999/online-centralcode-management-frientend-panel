@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Table from "../../../components/Table";
 import { IoAdd } from "react-icons/io5";
 import { MdBlock, MdDelete, MdOutlineModeEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getMultiMarket } from "../../../api/apiMethods";
 import WebsiteContrl from "./../WebsiteContrl";
+import UnblockBlockWebsiteModal from "../UnblockBlockWebsiteModal";
 
-const MultimarketDashboard = (dwnlnId) => {
+const MultimarketDashboard = ({ dwnlnId }) => {
   const navigate = useNavigate();
-  console.log("dwnlnId===>", dwnlnId.dwnlnId);
+  const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
-  console.log(webMarketDtls, "webMarketDtls");
-  const getWebMarketDtls = (id) => {
-    getMultiMarket(id)
+  const [webList, setWebList] = useState([]);
+  const [adminWebsiteId, setAdminWebsiteId] = useState(null);
+  const dataFetched = useRef(false);
+  const handleBlock = (id) => {
+    setBlockWebsiteModal(true);
+    setAdminWebsiteId(id);
+  };
+  const getWebMarketDtls = () => {
+    getMultiMarket(dwnlnId)
       .then((res) => {
         setWebMarketDtls(res.data);
+        setWebList(res?.data?.accessWebsites);
         console.log(res);
       })
       .catch((error) => {
@@ -22,8 +30,8 @@ const MultimarketDashboard = (dwnlnId) => {
       });
   };
   useEffect(() => {
-    getWebMarketDtls(dwnlnId.dwnlnId);
-  }, []);
+    getWebMarketDtls();
+  }, [dwnlnId]);
   const columns = [
     {
       header: (
@@ -33,9 +41,19 @@ const MultimarketDashboard = (dwnlnId) => {
         </div>
       ),
       field: "name",
-      width: "43%",
+      width: "40%",
     },
 
+    // {
+    //   header: <div className="">Website Name</div>,
+    //   field: "name",
+    //   width: "30%",
+    // },
+    // {
+    //   header: <div className="">Share/Rent</div>,
+    //   field: "share",
+    //   width: "10%",
+    // },
     {
       header: <div className="flex-center w-100">Last Updated</div>,
       field: "last",
@@ -52,27 +70,29 @@ const MultimarketDashboard = (dwnlnId) => {
       width: "20%",
     },
   ];
-  const [websiteModal, setWebisteModal] = useState(false);
 
   const data = webMarketDtls?.accessWebsites?.map((website) => ({
     name: (
-      <div className="d-flex flex-between">
+      <div className="d-flex flex-column">
+        <div className="fw-700 medium-font">{website.admin_panel_name}</div>
+        <div>User websites:</div>
         <div className="d-flex flex-column">
-          <div className="fw-700">{website.admin_panel_name}</div>
-          <div>User website:</div>
-          <div className="d-flex flex-column">
-            {website.user_panels?.map((panel) => (
-              <div key={panel.user_panel_id}>{panel.user_panel_name}</div>
-            ))}
-          </div>
-        </div>
-        <div className="d-flex flex-column">
-          <div className="d-flex flex-column">
-            <div>{website.user_panels[0]?.share}%</div>
-          </div>
+          {website.user_panels?.map((panel) => (
+            <div key={panel.user_panel_id} className="flex-border-bottom">
+              <span>{panel.user_panel_name}</span>
+              <span>{panel.share}%</span>
+            </div>
+          ))}
         </div>
       </div>
     ),
+    // share: (
+    //   <div className="d-flex flex-center self-align-end">
+    //     <div className="d-flex flex-column">
+    //       <div>{website.user_panels[0]?.share}%</div>
+    //     </div>
+    //   </div>
+    // ),
     last: (
       <div className="d-flex flex-column justify-content-center align-items-center">
         <div>
@@ -94,7 +114,10 @@ const MultimarketDashboard = (dwnlnId) => {
           />
         </span>
 
-        <span className="pointer" onClick={() => setWebisteModal(true)} >
+        <span
+          className="pointer"
+          onClick={() => handleBlock(website?.admin_panel_id)}
+        >
           <MdBlock size={20} />
         </span>
         <span>
@@ -192,7 +215,13 @@ const MultimarketDashboard = (dwnlnId) => {
           <Table data={data} columns={columns} itemsPerPage={3} />
         </div>
       </div>
-      <WebsiteContrl show={websiteModal} setShow={setWebisteModal} />
+      <UnblockBlockWebsiteModal
+        show={blockWebsiteModal}
+        setShow={setBlockWebsiteModal}
+        dwnlnId={dwnlnId}
+        webList={webMarketDtls}
+        adminWebsiteId={adminWebsiteId}
+      />
     </div>
   );
 };

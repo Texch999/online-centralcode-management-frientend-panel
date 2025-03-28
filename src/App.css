@@ -1124,5 +1124,13 @@ input[type="number"] {
 }
 
 .grey-bg-clr {
-  background-color: #F2F2F2 !important;
+  background-color: #f2f2f2 !important;
+}
+.flex-border-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 8px 0;
+  /* border-bottom: 1px solid #ddd; */
+  min-height: 40px;
 }

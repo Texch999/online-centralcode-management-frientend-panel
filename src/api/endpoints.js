@@ -850,6 +850,10 @@ const endpoints = {
     method: "get",
     url: (id) => `/user/${userID()}/director/websiteAcss/${id}`,
   },
+  suspendWebsiteProfile: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/suspend/website`,
+  },
 };
 
 export default endpoints;
