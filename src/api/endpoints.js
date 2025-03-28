@@ -846,6 +846,14 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/directors/fullSettlement`,
   },
+  getMultiMarket: {
+    method: "get",
+    url: (id) => `/user/${userID()}/director/websiteAcss/${id}`,
+  },
+  suspendWebsiteProfile: {
+    method: "post",
+    url: (id) => `/user/${userID()}/director/${id}/suspend/website`,
+  },
 };
 
 export default endpoints;
