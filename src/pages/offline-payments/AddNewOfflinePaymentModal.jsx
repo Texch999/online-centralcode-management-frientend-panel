@@ -26,6 +26,7 @@ const AddNewOfflinePaymentModal = ({
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [apiErrors, setApiErrors] = useState(null);
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [imgName, setImgName] = useState(null);
@@ -91,7 +92,7 @@ const AddNewOfflinePaymentModal = ({
     if (editId && isEdit && role_code === "management") {
       getOffPaymnetDetailsById();
     }
-  }, [editId,isEdit]);
+  }, [editId, isEdit]);
 
   const validateForm = () => {
     let newErrors = {};
@@ -150,20 +151,21 @@ const AddNewOfflinePaymentModal = ({
         console.log("error");
       }
     } catch (error) {
+      setApiErrors(error?.message || error?.message)
       setErrorMsg(error?.message[0]?.message);
 
-      setShowAddModal(false);
-      setErrorPopupOpen(true);
-      setTimeout(() => {
-        setErrorPopupOpen(false);
-      }, [2000]);
-      getAllManPaymentModes(page, pageSize);
-      setImage(null);
-      setImgName(null);
-      setSelectedType(null);
-      setSelectedCurrency(null);
-      setName("");
-      setErrors({});
+      // setShowAddModal(false);
+      // setErrorPopupOpen(true);
+      // setTimeout(() => {
+      //   setErrorPopupOpen(false);
+      // }, [2000]);
+      // getAllManPaymentModes(page, pageSize);
+      // setImage(null);
+      // setImgName(null);
+      // setSelectedType(null);
+      // setSelectedCurrency(null);
+      // setName("");
+      // setErrors({});
     }
   };
 
@@ -186,7 +188,21 @@ const AddNewOfflinePaymentModal = ({
               className="pointer"
             />
           </div>
-
+          {apiErrors && (
+            <div className="alert alert-danger mt-1">
+              {Array.isArray(apiErrors) ? (
+                <ul className="ps-2 mb-0">
+                  {apiErrors.map((error, index) => (
+                    <li className="small-font" key={index}>
+                      {error.message || error}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="small-font ps-2">{apiErrors.message || apiErrors}</p>
+              )}
+            </div>
+          )}
           <div className="row mb-3">
             <div className="col-6">
               <label className="small-font mb-1">Select Currency</label>
