@@ -179,7 +179,7 @@ const OfflineWithdrawPopup = ({
 
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font mb-1">Available Wallet Bal.</label>
+                            <label className="small-font white-space mb-1">Available Wallet Bal.</label>
                             <input
                                 type="text"
                                 name="selectedChips"
@@ -191,7 +191,7 @@ const OfflineWithdrawPopup = ({
                         </div>
 
                         <div className="col mb-2 ">
-                            <label className="small-font mb-1">Remaining Wallet Bal.</label>
+                            <label className="small-font white-space mb-1">Remaining Wallet Bal.</label>
                             <input
                                 type="text"
                                 name="selectedChips"
