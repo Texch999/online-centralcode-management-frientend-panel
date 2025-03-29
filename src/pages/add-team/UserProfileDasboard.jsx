@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
-import {
-  MdLockReset,
-  MdRemoveRedEye,
-  MdOutlineVisibilityOff,
-} from "react-icons/md";
+import { MdLockReset } from "react-icons/md";
 import { FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Images } from "../../images";
 import PaymentGateway from "./components/PaymentGateway";
-import Transaction from "./components/Transaction";
 import BetHistory from "./components/BetHistory";
 import ResetPasswordPopup from "../../pages/popups/ResetPasswordPopup";
 import EditProfilePopup from "./popups/EditProfilePopup";
@@ -263,7 +258,7 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
 
   const handleToggle = (e) => {
     setStatus(e.target.checked ? 1 : 2);
-    setConfirmationPopupOpen(true); // 1 for Active, 2 for Inactive
+    setConfirmationPopupOpen(true);
   };
 
   const blockUnblock = () => {
@@ -390,7 +385,6 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
 
       <SuccessPopup
         successPopupOpen={showSuccessPopup}
-        // onHide={() => setShowSuccessPopup(false)}
         setSuccessPopupOpen={() => setShowSuccessPopup(false)}
         discription={msg}
       />
@@ -413,7 +407,6 @@ const UserProfileDashboard = () => {
   console.log(directorData, "---directorData");
   const [error, setError] = useState("");
   const [editData, setEditData] = useState([]);
-  // errorPopupOpen, setErrorPopupOpen, discription
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [description, setDesciption] = useState("");
@@ -444,18 +437,17 @@ const UserProfileDashboard = () => {
         if (response.status === true) {
           setEditedDtat(response.data);
           setDesciption(response.message);
-          setShowSuccessPopup(true);
           handleResetPasswordClose();
+          setShowSuccessPopup(true);
+          setTimeout(() => {
+            setShowSuccessPopup(false);
+          }, 3000);
         } else {
           setDesciption("Something went Wrong");
-          setErrorPopupOpen(true);
-          setShowResetPasswordPopup(false);
         }
       })
       .catch((error) => {
-        setDesciption(error.message);
-        setErrorPopupOpen(true);
-        setShowResetPasswordPopup(false);
+        setError(error?.message);
       });
   };
 
@@ -483,14 +475,13 @@ const UserProfileDashboard = () => {
     if (id) {
       getById(id);
     }
-  }, [id]); // Now it runs only when `id` changes
+  }, [id]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
   const handleResetPasswordClose = () => {
-    // setShowSuccessPopup(true);
     setShowResetPasswordPopup(false);
   };
   const allCountries = useSelector((item) => item.allCountries);
@@ -504,8 +495,6 @@ const UserProfileDashboard = () => {
   return (
     <div>
       <div className="gap-3 director-admin-profile-top-con rounded">
-        {/* User Information Section */}
-
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
           <div
             className="director-admin-profile-top-bg-dark d-flex align-items-center gap-2 px-3 text-white rounded-pill"
@@ -557,12 +546,12 @@ const UserProfileDashboard = () => {
           {/* Profile Details */}
           <div className="row">
             <div className="col-2 super-admin-top-container">
-              <div className="profile-default super-admin-profile-img-con">
+              <div className="profile-default super-admin-profile-img-con br-5">
                 <img
-                  src={`${imgUrl}/directorProfilePhotos/${directorData.photo}`}
+                  src={`${imgUrl}/directorProfilePhotos/${directorData?.photo}`}
                   loading="lazy"
                   alt="Profile Photo Loading"
-                  // className="super-admin-profile-img-con"
+                  className="br-5"
                   onError={(e) => {
                     e.target.style.display = "none";
                   }}
@@ -580,7 +569,8 @@ const UserProfileDashboard = () => {
                 <h6 className="small-font mb-0">{directorData?.name}</h6>
               </div>
             </div>
-            <div className="col-10">
+            <div className="col-1"></div>
+            <div className="col-9">
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <div className="d-flex gap-4 align-items-center">
                   <div className="d-flex gap-2 align-items-end">
@@ -631,6 +621,7 @@ const UserProfileDashboard = () => {
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
         onSubmit={resetDirectorPswd}
+        error={error}
       />
       <EditProfilePopup
         show={showEditProfilePopup}
@@ -729,7 +720,7 @@ const UserProfileDashboard = () => {
         {activeTab === "paymentGateway" && <PaymentGateway dwnlnId={id} />}
         {/* {activeTab === "transaction" && <Transaction />} */}
         {activeTab === "betHistory" && <BetHistory />}
-        {activeTab === "multimarket" && <MultimarketDashboard dwnlnId={id}/>}
+        {activeTab === "multimarket" && <MultimarketDashboard dwnlnId={id} />}
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ const UnblockBlockWebsiteModal = ({
   webList,
   adminWebsiteId,
   getWebMarketDtls,
+  adminStatusId,
 }) => {
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
@@ -31,26 +32,66 @@ const UnblockBlockWebsiteModal = ({
 
   console.log(adminWebsiteId, "adminWebsiteId");
 
-  const handleBlock = (status, userweb, adminweb) => {
-    setStatusId(status);
-    setSelectedWebsites((prev) => {
-      const exists = prev.find((item) => item.user_panel_id === userweb);
-      if (exists) {
-        return prev.map((item) =>
-          item.user_panel_id === userweb ? { ...item, status } : item
-        );
-      } else {
-        return [
-          ...prev,
-          {
+  const handleBlock = (status, userweb, adminweb, isAdmin = false) => {
+    if (isAdmin) {
+      // Toggle Admin Website and block/unblock all user websites
+      const newStatus = status === 1 ? 2 : 1; // Toggle between Active (1) and Inactive (2)
+      setStatusId(newStatus);
+      setAdminWebId(adminweb);
+
+      // Get all user websites linked to this admin
+      const updatedUserWebsites =
+        webList?.accessWebsites
+          .find((item) => item.admin_panel_id === adminweb)
+          ?.user_panels.map((item) => ({
             admin_panel_id: adminweb,
-            user_panel_id: userweb,
-            status: status,
-          },
-        ];
-      }
-    });
+            user_panel_id: item.user_panel_id,
+            status: newStatus, // Apply same status to all user websites
+          })) || [];
+
+      setSelectedWebsites(updatedUserWebsites);
+    } else {
+      // Toggle individual user website
+      setSelectedWebsites((prev) => {
+        const exists = prev.find((item) => item.user_panel_id === userweb);
+        if (exists) {
+          return prev.map((item) =>
+            item.user_panel_id === userweb ? { ...item, status } : item
+          );
+        } else {
+          return [
+            ...prev,
+            {
+              admin_panel_id: adminweb,
+              user_panel_id: userweb,
+              status: status,
+            },
+          ];
+        }
+      });
+    }
   };
+
+  // const handleBlock = (status, userweb, adminweb) => {
+  //   setStatusId(status);
+  //   setSelectedWebsites((prev) => {
+  //     const exists = prev.find((item) => item.user_panel_id === userweb);
+  //     if (exists) {
+  //       return prev.map((item) =>
+  //         item.user_panel_id === userweb ? { ...item, status } : item
+  //       );
+  //     } else {
+  //       return [
+  //         ...prev,
+  //         {
+  //           admin_panel_id: adminweb,
+  //           user_panel_id: userweb,
+  //           status: status,
+  //         },
+  //       ];
+  //     }
+  //   });
+  // };
 
   const handleSubmit = () => {
     if (!pswd) {
@@ -64,10 +105,19 @@ const UnblockBlockWebsiteModal = ({
 
   const blockUnblock = () => {
     setShowAlert(false);
+
     const payload = {
       parent_password: pswd,
+      // if(adminStatusId){
+      //   status: adminStatusId === 1 ? 2 : 1,
+      // },
+
       websites: selectedWebsites,
     };
+    if (adminWebId) {
+      // Only send status if admin website was toggled
+      payload.status = statusId;
+    }
     console.log(payload, "payloadddd");
     suspendWebsiteProfile(dwnlnId, payload)
       .then((response) => {
@@ -146,14 +196,22 @@ const UnblockBlockWebsiteModal = ({
                   {item.admin_panel_name}
                 </div>
               ))}
-              <div class="form-check form-switch">
-                <input
-                  class="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  checked
-                  id="flexSwitchCheckDefault"
-                />
+              <div className="d-flex gap-2 align-items-center">
+                <div>
+                  {adminStatusId === 1 ? (
+                    <div className="green-font">Active</div>
+                  ) : (
+                    <div className="red-font">In-Active</div>
+                  )}
+                </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input w-40"
+                    type="checkbox"
+                    role="switch"
+                    id="flexSwitchCheckDefault"
+                  />
+                </div>
               </div>
             </div>
           </div>

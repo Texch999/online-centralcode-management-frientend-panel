@@ -170,6 +170,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const[error,setError]=useState("")
 
   const dirProfileData = useSelector((item) => item?.dirProfileData);
   console.log(dirProfileData, "dirProfileData");
@@ -177,7 +178,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
   // Validation error states
   const [nameError, setNameError] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
-  const[profileImg,setProfileImg]=useState(null)
+  const [profileImg, setProfileImg] = useState(null);
 
   // Populate form when data changes
   useEffect(() => {
@@ -189,14 +190,12 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
     }
   }, [data]);
 
-  
-
   // Handle profile photo change
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfilePhoto(file);
-      setProfileImg(file?.name)
+      setProfileImg(file?.name);
     }
   };
 
@@ -234,14 +233,13 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
   const handlePhoneNumberChange = (e) => {
     const value = e.target.value.replace(/\D/g, "");
     setPhoneNumber(value);
-    validatePhoneNumber(value); // Validate on change
+    validatePhoneNumber(value);
   };
 
   // Submit form
   const handleSubmit = async () => {
-    // Validate before submitting
     if (!validateName(name)) {
-      return; // Stop submission if validation fails
+      return;
     }
 
     const formData = new FormData();
@@ -255,14 +253,14 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
       const response = await updateDirectorProfileDetails(data.id, formData);
       setDesciption(response.message);
       setShowSuccessPopup(true);
-      onHide(); // Close modal after success
-      // dirProfileData;
-    } catch (error) {
-      setDesciption(
-        "Failed to update profile: " + (error.message || "Unknown error")
-      );
-      setErrorPopupOpen(true);
       onHide();
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 3000);
+    } catch (error) {
+      setError(error?.message);
+
+      // setErrorPopupOpen(true);
     }
   };
 
@@ -306,7 +304,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 className="all-none rounded input-css w-100 small-font"
                 placeholder="Enter"
                 value={phoneNumber}
-                onChange={handlePhoneNumberChange} 
+                onChange={handlePhoneNumberChange}
                 maxLength={15}
               />
               {phoneNumberError && (
@@ -333,10 +331,12 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                   htmlFor="profilePhoto"
                   className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                 >
-                  <span className="small-font text-ellipsis">{`${profilePhoto ? profileImg: "Upload"}`}</span>
+                  <span className="small-font text-ellipsis">{`${
+                    profilePhoto ? profileImg : "Upload"
+                  }`}</span>
                   <AiOutlineCloudUpload size={20} />
                 </label>
-              </div>    
+              </div>
             </div>
 
             {/* Submit Button */}
@@ -351,6 +351,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 </button>
               </div>
             </div>
+            {error && <div className="red-font">{error}</div>}
           </div>
         </Modal.Body>
       </Modal>
