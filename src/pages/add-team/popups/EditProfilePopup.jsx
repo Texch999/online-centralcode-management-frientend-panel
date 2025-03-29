@@ -172,11 +172,12 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
 
   const dirProfileData = useSelector((item) => item?.dirProfileData);
-  console.log(dirProfileData,"dirProfileData")
+  console.log(dirProfileData, "dirProfileData");
 
   // Validation error states
   const [nameError, setNameError] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
+  const[profileImg,setProfileImg]=useState(null)
 
   // Populate form when data changes
   useEffect(() => {
@@ -188,11 +189,14 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
     }
   }, [data]);
 
+  
+
   // Handle profile photo change
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfilePhoto(file);
+      setProfileImg(file?.name)
     }
   };
 
@@ -228,7 +232,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
 
   // Handle Phone Number Change
   const handlePhoneNumberChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/\D/g, "");
     setPhoneNumber(value);
     validatePhoneNumber(value); // Validate on change
   };
@@ -302,7 +306,8 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 className="all-none rounded input-css w-100 small-font"
                 placeholder="Enter"
                 value={phoneNumber}
-                onChange={handlePhoneNumberChange} // Handle phone number change with validation
+                onChange={handlePhoneNumberChange} 
+                maxLength={15}
               />
               {phoneNumberError && (
                 <div className="text-danger small-font">{phoneNumberError}</div>
@@ -319,6 +324,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 <input
                   id="profilePhoto"
                   type="file"
+                  accept="image/*"
                   className="form-control all-none"
                   onChange={handleProfilePhotoChange}
                   style={{ display: "none" }}
@@ -327,10 +333,10 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                   htmlFor="profilePhoto"
                   className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                 >
-                  <span className="small-font">Upload</span>
+                  <span className="small-font text-ellipsis">{`${profilePhoto ? profileImg: "Upload"}`}</span>
                   <AiOutlineCloudUpload size={20} />
                 </label>
-              </div>
+              </div>    
             </div>
 
             {/* Submit Button */}
