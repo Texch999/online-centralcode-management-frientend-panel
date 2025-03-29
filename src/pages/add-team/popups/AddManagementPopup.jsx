@@ -109,7 +109,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <Modal.Body>
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center fw-600">
           {Role === "management" ? (
             <h6 className="yellow-font mb-0 py-2 border-bottom-grey">
               Add Management Team 
@@ -288,7 +288,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     onClick={() => togglePasswordVisibility("password")}
                     style={{
                       position: "absolute",
-                      right: "10%",
+                      right: "5%",
                       top: "50%",
                       cursor: "pointer",
                     }}
@@ -327,7 +327,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     onClick={() => togglePasswordVisibility("confirmPassword")}
                     style={{
                       position: "absolute",
-                      right: "10%",
+                      right: "5%",
                       top: "40%",
                       cursor: "pointer",
                     }}
@@ -343,8 +343,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                 )}
               </div>
             </div>
-            <div className="col-md-4">
-              <label className="small-font mb-1">Email:</label>
+            <div className="col-md-4 ">
+              <label className="small-font mb-1 mt-3">Email:</label>
               <input
                 type="email"
                 {...register("email", {
@@ -376,13 +376,13 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             </div>
             <div className="col-md-4">
               <div className="position-relative">
-                <label className="small-font mb-1">Management Password</label>
+                <label className="small-font mb-1 mt-3">Management Password</label>
 
                 <div className="input-css w-100 rounded">
                   <input
                     type={showPassword.managementPassword ? "text" : "password"}
                     {...register("managementPassword", {
-                      required: "Management Password is required",
+                      required: "Password is required ",
                     })}
                     className="small-font rounded all-none  w-80"
                     placeholder="Enter Password"
@@ -396,8 +396,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     }
                     style={{
                       position: "absolute",
-                      right: "10%",
-                      top: "50%",
+                      right: "5%",
+                      top: "60%",
                       cursor: "pointer",
                     }}
                   >
@@ -418,7 +418,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
 
             </div>
 
-            <div className=" col-4 flex-center ">
+            <div className=" col-4 flex-center mt-3">
               <button className="saffron-btn br-5  mt-3 w-100" type="submit">
                 Submit
               </button>
