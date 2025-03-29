@@ -2809,9 +2809,8 @@ function AddNewDirectorSuperAdmin() {
               </div>
             </div>
             {isCreditAllowed && (
-              <div className="col-3">
-                <div className="w-100 position-relative mt-1">
-                  <label className="fw-600 small-font">Credit Limit</label>
+              <div className="col-3 ">
+                <label className="fw-600  small-font">Credit Limit</label>
                   <div className="input-css mt-2 d-flex justify-content-between align-items-center small-font">
                     <input
                       type="text"
@@ -2830,7 +2829,6 @@ function AddNewDirectorSuperAdmin() {
                       }}
                     />
                   </div>
-                </div>
                 {errors?.creditreference && (
                   <span className="small-font error">
                     {errors?.creditreference}
@@ -2870,7 +2868,7 @@ function AddNewDirectorSuperAdmin() {
               </div>
             </div>
 
-            <div className="col-3 small-font position-relative mt-3">
+            <div className="col-3 small-font position-relative mt-2">
               <label className="fw-600 small-font mb-2">Deposit Remark</label>
               <Select
                 value={
