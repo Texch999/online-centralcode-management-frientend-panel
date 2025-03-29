@@ -20,8 +20,8 @@ import SuccessPopup from "../popups/SuccessPopup";
 const AddNePaymentGateway = () => {
 
   const [error, setError] = useState(null);
-  const country_id = parseInt(localStorage.getItem("currency_id"))
-  const [selectedCountryId, setSelectedCountryId] = useState(country_id);
+  const currencyId = parseInt(localStorage.getItem("currency_id"))
+  const [selectedCountryId, setSelectedCountryId] = useState(currencyId);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [paymentModes, setPaymentModes] = useState([]);
