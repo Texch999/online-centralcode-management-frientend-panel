@@ -8,7 +8,7 @@ import WebsiteContrl from "./../WebsiteContrl";
 import UnblockBlockWebsiteModal from "../UnblockBlockWebsiteModal";
 import { CgUnblock } from "react-icons/cg";
 
-const MultimarketDashboard = ({ dwnlnId }) => {
+const MultimarketDashboard = ({ dwnlnId ,getById}) => {
   const navigate = useNavigate();
   const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
@@ -67,9 +67,9 @@ const MultimarketDashboard = ({ dwnlnId }) => {
 
   const statusElement =
     webMarketDtls?.status === 1 ? (
-      <div className="green-btn">Active</div>
+      <div className="green-btn mb-4">Active</div>
     ) : (
-      <div className="red-btn">In-Active</div>
+      <div className="red-btn mb-4" >In-Active</div>
     );
 
   const data = webMarketDtls?.accessWebsites?.map((website) => ({
@@ -93,7 +93,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     status: statusElement,
 
     action: (
-      <div className="d-flex gap-2 flex-center">
+      <div className="d-flex gap-2 mb-4 flex-center">
         <span className="pointer">
           <MdOutlineModeEdit
             size={20}
@@ -147,6 +147,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         adminWebsiteId={adminWebsiteId}
         getWebMarketDtls={getWebMarketDtls}
         adminStatusId={adminStatusId}
+        getById={getById}
       />
     </div>
   );

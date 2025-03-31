@@ -12,6 +12,7 @@ const UnblockBlockWebsiteModal = ({
   adminWebsiteId,
   getWebMarketDtls,
   adminStatusId,
+  getById,
 }) => {
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
@@ -29,9 +30,10 @@ const UnblockBlockWebsiteModal = ({
   const handlePswd = () => {
     setPswdVisible((prev) => !prev);
   };
-
-  const handleBlock = (status, userweb, adminweb) => {
-    setStatusId(status);
+  const [adminStatus, setAdminStatus] = useState(adminStatusId);
+  const [requireUserSelection, setRequireUserSelection] = useState(false);
+  const [isAdminStatusChanged, setIsAdminStatusChanged] = useState(false);
+  const handleBlockUserWebsite = (status, userweb, adminweb) => {
     setSelectedWebsites((prev) => {
       const exists = prev.find((item) => item.user_panel_id === userweb);
       if (exists) {
@@ -52,24 +54,55 @@ const UnblockBlockWebsiteModal = ({
   };
 
   const handleBlockAdmin = (status) => {
-    setStatusId(status);
+    setAdminStatus(status);
+    setIsAdminStatusChanged(true); // Mark that admin status was changed
 
-    // Update all user websites to match the admin status
-    const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
-      website.user_panels?.map((item) => ({
-        admin_panel_id: website?.admin_panel_id,
-        user_panel_id: item?.user_panel_id,
-        status: status, // Update all user websites based on admin status
-      }))
-    );
+    if (status === 2) {
+      // Deactivating admin
+      // Block all user websites
+      const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
+        website.user_panels?.map((item) => ({
+          admin_panel_id: website?.admin_panel_id,
+          user_panel_id: item?.user_panel_id,
+          status: 2, // Block all
+        }))
+      );
+      setSelectedWebsites(updatedUserWebsites);
+      setRequireUserSelection(false);
+    } else {
+      // Activating admin
+      setRequireUserSelection(true);
+    }
+  };
 
-    setSelectedWebsites(updatedUserWebsites);
+  const validatePassword = (password) => {
+    if (!password) return "Password is required";
+
+    const pattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+
+    if (!pattern.test(password)) {
+      return "Password must contain at least one lowercase, one uppercase, one number, and one special character";
+    }
+
+    return "";
   };
 
   const handleSubmit = () => {
-    if (!pswd) {
-      setError("Password is required");
+    const passwordError = validatePassword(pswd);
+    if (passwordError) {
+      setError(passwordError);
       return;
+    }
+
+    if (requireUserSelection && adminStatus === 1) {
+      const hasActiveUserWebsite = selectedWebsites.some(
+        (website) => website.status === 1
+      );
+      if (!hasActiveUserWebsite) {
+        setError("Please select at least one user website to activate");
+        return;
+      }
     }
 
     setError("");
@@ -81,9 +114,15 @@ const UnblockBlockWebsiteModal = ({
 
     const payload = {
       parent_password: pswd,
-      status: statusId,
+      ...(isAdminStatusChanged && { status: adminStatus }),
       websites: selectedWebsites,
     };
+
+    // const payload = {
+    //   parent_password: pswd,
+    //   status: statusId,
+    //   websites: selectedWebsites,
+    // };
 
     console.log(payload, "payloadddd");
     suspendWebsiteProfile(dwnlnId, payload)
@@ -92,28 +131,29 @@ const UnblockBlockWebsiteModal = ({
         setMsg(response?.message);
         setShow(false);
         setSuccessModal(true);
+        setPswd("");
+        getById();
         setTimeout(() => {
           setSuccessModal(false);
         }, 3000);
-        getWebMarketDtls();
       })
       .catch((error) => {
-        if (error?.errors?.length > 0) {
-          setError(error?.errors[0]?.message);
-        } else {
-          setError("Something went wrong. Please try again.");
-        }
+        setError(error?.message);
+        setPswd("");
       });
   };
+
   const userwebsites = webList?.accessWebsites?.flatMap((website) =>
     website.user_panels?.map((item) => {
       const existingWebsite = selectedWebsites.find(
         (web) => web?.user_panel_id === item?.user_panel_id
       );
       const isChecked =
-        existingWebsite?.status !== undefined
-          ? existingWebsite.status === 2
-          : item?.status === 2;
+        adminStatus === 2
+          ? false
+          : existingWebsite?.status !== undefined
+          ? existingWebsite.status === 1
+          : item?.status === 1;
       return {
         name: <div>{item.user_panel_name}</div>,
         control: (
@@ -124,12 +164,13 @@ const UnblockBlockWebsiteModal = ({
               role="switch"
               checked={isChecked}
               onChange={() =>
-                handleBlock(
-                  item?.status === 2 ? 1 : 2,
+                handleBlockUserWebsite(
+                  isChecked ? 2 : 1,
                   item?.user_panel_id,
                   website?.admin_panel_id
                 )
               }
+              disabled={adminStatus === 2}
               id={`switch-${item.user_panel_id}`}
             />
           </div>
@@ -148,7 +189,10 @@ const UnblockBlockWebsiteModal = ({
               <IoClose
                 className="fw-700"
                 size={23}
-                onClick={() => setShow(false)}
+                onClick={() => {
+                  setShow(false);
+                  setPswd("");
+                }}
               />
             </div>
           </div>
@@ -187,6 +231,12 @@ const UnblockBlockWebsiteModal = ({
             </div>
           </div>
 
+          {requireUserSelection && adminStatus === 1 && (
+            <div className="red-font font-11 mb-2">
+              Please select at least one user website to activate
+            </div>
+          )}
+
           <div className="medium-font my-1">User Website</div>
           <div className="d-flex flex-column">
             {userwebsites?.map((item) => (
@@ -206,6 +256,7 @@ const UnblockBlockWebsiteModal = ({
                   placeholder="Enetr Password"
                   value={pswd}
                   onChange={(e) => setPswd(e.target.value)}
+                  maxLength={36}
                 />
                 {pswdVisible ? (
                   <IoEye
@@ -229,14 +280,14 @@ const UnblockBlockWebsiteModal = ({
               </div>
             </div>
             <div className="py-1">
-              {error && <div className="red-font font-11">{error}</div>}
+              {error && <div className="red-font font-11 mt-1">{error}</div>}
             </div>
           </div>
           {showAlert && (
             <Alert variant="warning" className="mt-3 mb-2">
-              <div className="d-flex medium-font flex-column align-items-center">
+              <div className="d-flex medium-font flex-column flex-center align-items-center">
                 {`Are you sure you want to ${
-                  statusId === 1 ? "In-Active" : "Active"
+                  statusId === 1 ? "Active" : "In-Active"
                 } these selected websites?`}
                 <div className="mt-2 d-flex gap-3 align-items-center">
                   <div

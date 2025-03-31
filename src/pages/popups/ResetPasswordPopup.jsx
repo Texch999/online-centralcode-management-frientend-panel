@@ -100,6 +100,7 @@ function ResetPasswordPopup({
                         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
                     },
                   })}
+                  maxLength={36}
                 />
 
                 {showPassword ? (
@@ -156,6 +157,7 @@ function ResetPasswordPopup({
                         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
                     },
                   })}
+                  maxLength={36}
                 />
 
                 {showConfirmPassword ? (
@@ -194,6 +196,7 @@ function ResetPasswordPopup({
                   {...register("managementPassword", {
                     required: "Management password is required",
                   })}
+                  maxLength={36}
                 />
                 {showManagementPassword ? (
                   <FaEye
