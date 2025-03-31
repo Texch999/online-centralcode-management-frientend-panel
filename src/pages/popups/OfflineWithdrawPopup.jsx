@@ -28,13 +28,13 @@ const OfflineWithdrawPopup = ({
     const validateForm = () => {
         const newErrors = {};
         if (!paidAmount || Number(paidAmount) < 0) {
-            newErrors.paidAmount = "Paid amount is required";
+            newErrors.paidAmount = "required field";
         }
         if (!remark || remark == "") {
-            newErrors.remark = "Enter remark for more information";
+            newErrors.remark = "required field";
         }
         if (!masterPassword || masterPassword == "") {
-            newErrors.masterPassword = "Master password is required";
+            newErrors.masterPassword = "required field";
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -85,7 +85,7 @@ const OfflineWithdrawPopup = ({
             .then((response) => {
                 setWithdrawPopup(false);
                 handleSuccesPopup()
-                setDiscription(`Withdraw Ticket Created Successfully`);
+                setDiscription(`Withdraw Successfully`);
                 setApiErrors(null);
                 setErrors({});
             })
@@ -292,7 +292,7 @@ const OfflineWithdrawPopup = ({
                             </button>
                         </div>
 
-                        {errors.parentpassword && <p className="text-danger small-font">{errors.parentpassword}</p>}
+                        {errors.masterPassword && <p className="text-danger small-font">{errors.masterPassword}</p>}
                     </div>
                 </Modal.Body>
             </Modal>

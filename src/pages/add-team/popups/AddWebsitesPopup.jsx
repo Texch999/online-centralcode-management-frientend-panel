@@ -19,14 +19,15 @@ const AddWebsitesPopup = ({ show, onHide,
     city: "",
     websiteName: "",
     websiteURL: "",
-    ref_type: null
+    ref_type: null,
+    queue_name: "",
+    routing_key: "",
   });
-  const isInitialRendering = useRef(true)
+
   const itemsPerPage = 9
   const userId = localStorage.getItem("user_id");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
-  const [currentPage, setCurrentPage] = useState(page);
   const [errors, setErrors] = useState({
     deployType: "",
     panelType: "",
@@ -99,7 +100,7 @@ const AddWebsitesPopup = ({ show, onHide,
         } else if (!/^[a-zA-Z0-9._\s-]+$/.test(value)) {
           newErrors.websiteName = "Website Name can only contain letters, numbers, dots, and underscores.";
         } else {
-          delete newErrors.websiteName; 
+          delete newErrors.websiteName;
         }
         break;
 
@@ -113,6 +114,32 @@ const AddWebsitesPopup = ({ show, onHide,
           } else {
             delete newErrors.websiteURL; // Clear the error if validation passes
           }
+        }
+        break;
+
+      // if (!formData.queue_name.trim()) {routing_key
+
+      case "queue_name":
+        if (!value.trim()) {
+          newErrors.queue_name = "Queue Name is required.";
+        } else if (value.length < 2 || value.length > 50) {
+          newErrors.queue_name = "Queue Name must be between 2 and 50 characters.";
+        } else if (!/^[a-z0-9.]+$/.test(value)) {
+          newErrors.queue_name = "Queue Name can only contain letters, and spaces.";
+        } else {
+          delete newErrors.queue_name;
+        }
+        break;
+
+      case "routing_key":
+        if (!value.trim()) {
+          newErrors.routing_key = "Routing Key is required.";
+        } else if (value.length < 2 || value.length > 30) {
+          newErrors.routing_key = "Routing Key must be between 2 and 30 characters.";
+        } else if (!/^[a-z0-9.]+$/.test(value)) {
+          newErrors.routing_key = "Routing Key can only contain letters, and spaces.";
+        } else {
+          delete newErrors.routing_key;
         }
         break;
 
@@ -162,6 +189,8 @@ const AddWebsitesPopup = ({ show, onHide,
               websiteURL: data?.web_url.replace(/^https?:\/\//i, "") || "",
               created_by: data?.created_by || null,
               ref_type: refTypesOptions.find((opt) => opt.value === data?.ref_type) || null,
+              queue_name: data?.queue_name,
+              routing_key: data?.routing_key
             });
             setStatus(data?.status);
             setApiError("");
@@ -181,7 +210,9 @@ const AddWebsitesPopup = ({ show, onHide,
         websiteName: "",
         websiteURL: "",
         created_by: null,
-        ref_type: null
+        ref_type: null,
+        queue_name: "",
+        routing_key: "",
       });
     }
   }, [editMode, websiteId]);
@@ -221,9 +252,25 @@ const AddWebsitesPopup = ({ show, onHide,
       newErrors.websiteURL = "Website URL is required.";
     } else {
       const urlPattern = /^(?!https?:\/\/|www\.)[\w.-]+\.\w{2,}$/i;
-      if (!urlPattern.test(formData.websiteURL.replace(/^https?:\/\//i, ""))) {
-        newErrors.websiteURL = "Invalid website URL. Please include http:// or https://.";
+      if (!urlPattern.test(formData.websiteURL)) {
+        newErrors.websiteURL = "Invalid website URL. Please not include http://, https://, www or spl char";
       }
+    }
+
+    if (!formData.queue_name?.trim()) {
+      newErrors.queue_name = "Queue Name is required.";
+    } else if (formData.queue_name.length < 2 || formData.queue_name.length > 50) {
+      newErrors.queue_name = "Queue Name must be between 4 and 45 characters.";
+    } else if (!/^[a-z0-9.]+$/.test(formData.queue_name)) {
+      newErrors.queue_name = "Queue Namey can only contain small letters , numbers and dots.";
+    }
+
+    if (!formData.routing_key?.trim()) {
+      newErrors.routing_key = "Routing Key is required.";
+    } else if (formData.routing_key.length < 2 || formData.routing_key.length > 50) {
+      newErrors.routing_key = "Routing Key must be between 4 and 45 characters.";
+    } else if (!/^[a-z0-9.]+$/.test(formData.routing_key)) {
+      newErrors.routing_key = "Routing Key can only contain small letters , numbers and dots.";
     }
 
     setErrors(newErrors);
@@ -239,6 +286,8 @@ const AddWebsitesPopup = ({ show, onHide,
       city: "",
       websiteName: "",
       websiteURL: "",
+      queue_name: "",
+      routing_key: "",
     });
     setErrors({
       deployType: "",
@@ -250,6 +299,8 @@ const AddWebsitesPopup = ({ show, onHide,
       ref_type: "",
       websiteNameExists: "",
       websiteURLExists: "",
+      queue_name: "",
+      routing_key: "",
     });
     setApiError("");
   };
@@ -264,7 +315,7 @@ const AddWebsitesPopup = ({ show, onHide,
   const handleSubmit = () => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    setApiError(""); // Clear previous API errors
+    setApiError(""); 
     if (validateForm()) {
       const finalData = editMode ? {
         deploy_type: formData?.deployType?.value,
@@ -272,19 +323,23 @@ const AddWebsitesPopup = ({ show, onHide,
         web_name: formData?.websiteName,
         web_url: formData?.websiteURL.replace(/^https?:\/\//i, ""),
         location_id: formData?.location?.value,
-        prefix: "TXE",
+        // prefix: "BMA",
         city: formData?.city,
         status: status,
         created_by: formData.created_by,
+        queue_name: formData.queue_name,
+        routing_key: formData.routing_key,
       } : {
         deploy_type: formData?.deployType?.value,
         panel_type: formData?.panelType?.value,
         web_name: formData?.websiteName,
         web_url: formData?.websiteURL,
         location_id: formData?.location?.value,
-        prefix: "TXE",
+        // prefix: "BMA",
         city: formData?.city,
         created_by: userId,
+        queue_name: formData.queue_name,
+        routing_key: formData.routing_key,
       };
 
       const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData);
@@ -309,16 +364,14 @@ const AddWebsitesPopup = ({ show, onHide,
         })
         .catch((error) => {
           const errorMessage = error?.message
+          console.log(error)
           // Handle backend validation errors
           if (errorMessage.includes("Website name already exists.")) {
             setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "This website already taken" }));
           } else if (errorMessage.includes("Website Url already exists")) {
             setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "This website url already taken" }));
-          }
-          else if (errorMessage.includes("API Error, please try again.")) {
-            setApiError("Please Try Again ");
           } else {
-            setApiError("Please Try Again ");
+            setApiError(error.errors);
           }
 
         });
@@ -345,14 +398,6 @@ const AddWebsitesPopup = ({ show, onHide,
             {/* Deploy Type Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Deploy Type</label>
-              {/* <Select
-                className="small-font"
-                options={filteredOptions} // Use filtered options
-                placeholder="Select"
-                styles={customStyles}
-                value={formData.deployType}
-                onChange={(option) => handleSelectChange("deployType", option)}
-              />; */}
               <Select
                 className="small-font"
                 options={filteredOptions} // Use the filtered options
@@ -377,32 +422,24 @@ const AddWebsitesPopup = ({ show, onHide,
             {/* Panel Type Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Panel Type</label>
-              {/* <Select
+
+              <Select
                 className="small-font"
-                options={PanelOptions}
+                options={filteredPanels}
                 placeholder="Select"
                 styles={customStyles}
                 value={formData.panelType}
                 onChange={(option) => handleSelectChange("panelType", option)}
-              /> */}
-
-              <Select
-                className="small-font"
-                options={filteredPanels} // Use the filtered options
-                placeholder="Select"
-                styles={customStyles} // Apply custom styles
-                value={formData.panelType}
-                onChange={(option) => handleSelectChange("panelType", option)}
                 filterOption={(option, inputValue) => {
-                  if (!inputValue) return true; // Show all options when the input is empty
+                  if (!inputValue) return true;
                   return (
-                    /^[A-Za-z\s]+$/.test(inputValue) && // Allow alphabetic characters and spaces
+                    /^[A-Za-z\s]+$/.test(inputValue) &&
                     option.label.toLowerCase().includes(inputValue.toLowerCase())
                   );
                 }}
                 onInputChange={(inputValue, { action }) => {
                   if (action === "input-change" && !/^[A-Za-z\s]*$/.test(inputValue)) {
-                    return inputValue.replace(/[^A-Za-z\s]/g, ""); // Remove non-alphabetic characters (except spaces)
+                    return inputValue.replace(/[^A-Za-z\s]/g, "");
                   }
                   return inputValue;
                 }}
@@ -413,48 +450,29 @@ const AddWebsitesPopup = ({ show, onHide,
               {errors.panelType && <p className="text-danger small-font">{errors.panelType}</p>}
             </div>
 
-            {/* Reference Type  */}
-            {/* <div className="col-4">
-              <label className="small-font mb-1">Reference Type</label>
-              <Select
-                className="small-font"
-                options={refTypesOptions}
-                placeholder="Select"
-                styles={customStyles}
-                value={formData.ref_type}
-                onChange={(option) => handleSelectChange("ref_type", option)}
-              />
-              {errors.ref_type && <p className="text-danger small-font">{errors.ref_type}</p>}
-            </div> */}
+
 
             {/* Location Dropdown */}
             <div className="col-4">
               <label className="small-font mb-1">Country</label>
-              {/* <Select
-                className="small-font"
-                options={formattedCountries}
-                placeholder="Select"
-                styles={customStyles}
-                value={formData.location}
-                onChange={(option) => handleSelectChange("location", option)}
-              /> */}
+
               <Select
                 className="small-font"
-                options={filterCountries} // Use the formatted countries
+                options={filterCountries}
                 placeholder="Select"
                 styles={customStyles}
                 value={formData.location}
                 onChange={(option) => handleSelectChange("location", option)}
                 filterOption={(option, inputValue) => {
-                  if (!inputValue) return true; // Show all options when the input is empty
+                  if (!inputValue) return true;
                   return (
-                    /^[A-Za-z\s]+$/.test(inputValue) && // Allow alphabetic characters and spaces
+                    /^[A-Za-z\s]+$/.test(inputValue) &&
                     option.label.toLowerCase().includes(inputValue.toLowerCase())
                   );
                 }}
                 onInputChange={(inputValue, { action }) => {
                   if (action === "input-change" && !/^[A-Za-z\s]*$/.test(inputValue)) {
-                    return inputValue.replace(/[^A-Za-z\s]/g, ""); // Remove non-alphabetic characters (except spaces)
+                    return inputValue.replace(/[^A-Za-z\s]/g, "");
                   }
                   return inputValue;
                 }}
@@ -467,21 +485,21 @@ const AddWebsitesPopup = ({ show, onHide,
 
             {/* City Input */}
             <div className="col-4">
-  <label className="small-font mb-1">City</label>
-  <input
-    type="text"
-    name="city"
-    className="w-100 small-font rounded input-css all-none"
-    placeholder="Enter"
-    value={formData.city}
-    onChange={(e) => {
-      // Remove any character that is not a letter or space
-      const filteredValue = e.target.value.replace(/[^A-Za-z\s]/g, "");
-      handleChange({ target: { name: "city", value: filteredValue } });
-    }}
-  />
-  {errors.city && <p className="text-danger small-font">{errors.city}</p>}
-</div>
+              <label className="small-font mb-1">City</label>
+              <input
+                type="text"
+                name="city"
+                className="w-100 small-font rounded input-css all-none"
+                placeholder="Enter"
+                value={formData.city}
+                onChange={(e) => {
+
+                  const filteredValue = e.target.value.replace(/[^A-Za-z\s]/g, "");
+                  handleChange({ target: { name: "city", value: filteredValue } });
+                }}
+              />
+              {errors.city && <p className="text-danger small-font">{errors.city}</p>}
+            </div>
 
 
             {/* Website Name Input */}
@@ -512,6 +530,32 @@ const AddWebsitesPopup = ({ show, onHide,
               />
               {errors.websiteURL && <p className="text-danger small-font">{errors.websiteURL}</p>}
               {errors.websiteURLExists && <p className="text-danger small-font">{errors.websiteURLExists}</p>}
+            </div>
+
+            {/* Queue_Name*/}
+            <div className="col-4">
+              <label className="small-font mb-1">Queue Name</label>
+              <input
+                type="text"
+                name="queue_name"
+                className="w-100 small-font rounded input-css all-none"
+                placeholder="Enter"
+                value={formData.queue_name}
+                onChange={handleChange}
+              />
+              {errors.queue_name && <p className="text-danger small-font">{errors.queue_name}</p>}
+            </div>
+            <div className="col-4">
+              <label className="small-font mb-1">Routing Key</label>
+              <input
+                type="text"
+                name="routing_key"
+                className="w-100 small-font rounded input-css all-none"
+                placeholder="Enter"
+                value={formData.routing_key}
+                onChange={handleChange}
+              />
+              {errors.routing_key && <p className="text-danger small-font">{errors.routing_key}</p>}
             </div>
           </div>
 

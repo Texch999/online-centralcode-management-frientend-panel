@@ -86,9 +86,9 @@ const OfflinePaymentModes = () => {
     return currency ? currency.currency_name : "Unknown";
   };
 
-  const getAllManPaymentModes = (page, pageSize) => {
+  const getAllManPaymentModes = (page, pageSize, bankName) => {
     setLoading(true);
-    getManagementOfflinePaymentModes({ page, pageSize })
+    getManagementOfflinePaymentModes({ page, pageSize, bankName })
       .then((response) => {
         if (response.status === true) {
           setPaymentModes(response.data);
@@ -117,11 +117,20 @@ const OfflinePaymentModes = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const pagee = intialpage;
+    const pageSizee = itemsPerPage;
+    // Fetch data based on role and filterName
+    if (searchInput.trim() === "") {
+      getAllManPaymentModes(pagee, pageSizee);
+    }
+  }, [searchInput]);
+
   const handlePageChange = ({ limit, offset }) => {
     setCurrentLimit(limit);
     setCurrentOffset(offset);
     if (role_code === "management") {
-      getAllManPaymentModes(intialpage, pageSize);
+      getAllManPaymentModes(intialpage, pageSize, searchInput);
     }
   };
 
@@ -131,19 +140,19 @@ const OfflinePaymentModes = () => {
     setStatusId(status);
   };
 
-  const filteredManOfflinePayments = paymentModes.filter((item) => {
-    const type = typeOptions[item?.avil_modes]?.toLowerCase();
-    const currency = getCurrencyName(item?.currency)?.toLowerCase();
-    const name = item?.name?.toLowerCase();
-    const country = getCountryName(item?.country)?.toLowerCase();
-    const searchTerm = searchInput.toLowerCase();
-    return (
-      type?.includes(searchTerm) ||
-      currency?.includes(searchTerm) ||
-      name?.includes(searchTerm) ||
-      country?.includes(searchTerm)
-    );
-  });
+  // const filteredManOfflinePayments = paymentModes.filter((item) => {
+  //   const type = typeOptions[item?.avil_modes]?.toLowerCase();
+  //   const currency = getCurrencyName(item?.currency)?.toLowerCase();
+  //   const name = item?.name?.toLowerCase();
+  //   const country = getCountryName(item?.country)?.toLowerCase();
+  //   const searchTerm = searchInput.toLowerCase();
+  //   return (
+  //     type?.includes(searchTerm) ||
+  //     currency?.includes(searchTerm) ||
+  //     name?.includes(searchTerm) ||
+  //     country?.includes(searchTerm)
+  //   );
+  // });
 
   const suspendStatus = (currentLimit, currentOffset) => {
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
@@ -159,7 +168,7 @@ const OfflinePaymentModes = () => {
       .catch((error) => {
         setError(error?.message[0]?.message);
         setConfirmationModal(false);
-    
+
         setErrorPopup(true);
         setTimeout(() => {
           setErrorPopup(false);
@@ -173,7 +182,7 @@ const OfflinePaymentModes = () => {
     { header: "Name", field: "name", width: "15%" },
     { header: "Image", field: "image", width: "15%" },
     { header: "type", field: "type", width: "10%" },
-    { header: <div className="">Status</div>, field: "status", width: "12%" },
+    { header: <div className="" >Status</div>, field: "status", width: "12%" },
     {
       header: <div className="">Actions</div>,
       field: "action",
@@ -181,7 +190,7 @@ const OfflinePaymentModes = () => {
     },
   ];
 
-  const data = filteredManOfflinePayments?.map((item) => {
+  const data = paymentModes?.map((item) => {
     return {
       country: getCountryName(item?.country_id),
       currency: getCurrencyName(item?.currency),
@@ -230,11 +239,19 @@ const OfflinePaymentModes = () => {
     };
   });
 
+  const handleFiltration = async (e) => {
+    const pageSiz = itemsPerPage;
+    const pag = 1
+    if (e.key === "Enter") {
+      setError(null);
+      getAllManPaymentModes(pag, pageSiz, searchInput);
+    }
+  };
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
         <h6 className="col-2 yellow-font medium-font mb-0 white-space">
-        Offline Payment Cards
+          Offline Payment Cards
         </h6>
 
         <div className="col-6 d-flex justify-content-end gap-3 medium-font">
@@ -244,7 +261,8 @@ const OfflinePaymentModes = () => {
               className="small-font all-none"
               placeholder="Search..."
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={(e) => setSearchInput(e.target.value.trim())}
+              onKeyDown={handleFiltration}
             />
           </div>
 

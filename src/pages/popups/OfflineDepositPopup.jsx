@@ -32,16 +32,16 @@ const OfflineDepositPopup = ({
         const newErrors = {};
         // Validate INR Chips
         if (!selectedChips || Number(selectedChips) <= 0) {
-            newErrors.selectedChips = "Deposit chips is required";
+            newErrors.selectedChips = "required field";
         }
         if (!paidAmount || Number(paidAmount) < 0) {
-            newErrors.paidAmount = "Paid amount is required";
+            newErrors.paidAmount = "required field";
         }
         if (!remark || remark == "") {
-            newErrors.remark = "Enter remark for more information";
+            newErrors.remark = "required field";
         }
         if (!masterPassword || masterPassword == "") {
-            newErrors.masterPassword = "master password is required";
+            newErrors.masterPassword = "required field";
         }
 
         setErrors(newErrors);
@@ -70,7 +70,7 @@ const OfflineDepositPopup = ({
             .then((response) => {
                 handleSuccesPopup();
                 setDepositPopup(false);
-                setDiscription(`Deposit Ticket Created Successfully`);
+                setDiscription(`Deposit Successfully`);
                 setApiErrors(null);
             })
             .catch((error) => {
@@ -160,8 +160,8 @@ const OfflineDepositPopup = ({
                                 value={selectedDetails?.creditAllowed == 1 && finalPaidAmount ? ((Number(paidAmount) - Number(finalPaidAmount)) < 0 ? 0 : Number(paidAmount) - Number(finalPaidAmount)) : 0}
                                 readOnly
                             />
-                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                            {/* {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                            {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>} */}
                         </div>
                     </div>
 
@@ -199,8 +199,7 @@ const OfflineDepositPopup = ({
                                 onChange={(e) => setPaidAmount(e.target.value)}
                                 readOnly
                             />
-                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
+                      
                         </div>
 
                         <div className="col mb-2">
@@ -231,6 +230,8 @@ const OfflineDepositPopup = ({
                                     )}
                                 </>
                             )}
+                                  {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                            {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
                         </div>
                     </div>
 
@@ -299,7 +300,7 @@ const OfflineDepositPopup = ({
                             </button>
                         </div>
 
-                        {errors.parentpassword && <p className="text-danger small-font">{errors.parentpassword}</p>}
+                        {errors.masterPassword && <p className="text-danger small-font">{errors.masterPassword}</p>}
                     </div>
 
                 </Modal.Body>

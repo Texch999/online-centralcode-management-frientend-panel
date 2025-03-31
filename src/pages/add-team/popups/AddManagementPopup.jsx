@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
@@ -13,6 +13,7 @@ import {
 import "../style.css";
 import "../../../App.css";
 import SuccessPopup from "../../popups/SuccessPopup";
+import ErrorComponent from "../../../components/ErrorComponent";
 
 const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [showPassword, setShowPassword] = useState({
@@ -27,6 +28,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(null);
   const [focusedField, setFocusedField] = useState(null);
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
@@ -37,6 +39,8 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     trigger,
   } = useForm();
 
+  console.log(errors, "==>errors");
+
   const password = watch("password");
   const token = localStorage.getItem("jwt_token");
 
@@ -45,12 +49,21 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       .then((response) => {
         if (response?.status === true && response.data) {
           const roles = response.data
-            .filter((role) => role.role !== 1 && role.role !== 2)
+            .filter(
+              (role) => role.role !== 1 && role.role !== 2 && role.role !== 5
+            )
             .map((role) => ({
               value: role.role,
               label: role.name,
             }));
-          setRoleOptions(roles);
+          // setRoleOptions(roles);
+          setRoleOptions(
+            roles.map((role, index) =>
+              index === 1 && role.label === "promotion"
+                ? { ...role, label: "Designing Team" }
+                : role
+            )
+          );
         } else {
           setError("Failed to fetch roles");
         }
@@ -69,6 +82,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
   };
 
   const onSubmitHandler = (data) => {
+    setLoader(true);
     const payload = {
       role: data.role,
       name: data.name,
@@ -83,14 +97,17 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
     addManagemnentTeam(payload)
       .then((response) => {
         if (response?.status === true) {
+          setLoader(false);
           if (onSubmit) onSubmit();
           setSuccessPopupOpen(true);
         } else {
           setError("Something Went Wrong");
+          setLoader(false);
         }
       })
       .catch((error) => {
         setError(error?.message);
+        setLoader(false);
       });
   };
 
@@ -111,13 +128,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       <Modal.Body>
         <div className="d-flex justify-content-between align-items-center fw-600">
           {Role === "management" ? (
-            <h6 className="yellow-font mb-0 py-2 border-bottom-grey">
-              Add Management Team 
-            </h6>
+            <h6 className="yellow-font mb-0 py-2 ">Add Management Team</h6>
           ) : (
-            <h5 className="yellow-font mb-0 py-2 border-bottom-grey">
-              Add Director Team
-            </h5>
+            <h5 className="yellow-font mb-0 py-2 ">Add Director Team</h5>
           )}
 
           <MdOutlineClose
@@ -127,7 +140,10 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             aria-label="Close"
           />
         </div>
-        <div className="red-font small-font mt-2">{error}</div>
+        {/* <div className="red-font small-font mt-2">{error}</div> */}
+
+        {error && <ErrorComponent error={error} />}
+
         <form
           className="add-management-popup-form mt-2"
           onSubmit={handleSubmit(onSubmitHandler)}
@@ -138,6 +154,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
               <Select
                 className="small-font text-capitalize"
                 options={roleOptions}
+                required="Role is Required"
                 value={roleOptions.find(
                   (option) => option.value === selectedRoleId
                 )}
@@ -376,7 +393,9 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
             </div>
             <div className="col-md-4">
               <div className="position-relative">
-                <label className="small-font mb-1 mt-3">Management Password</label>
+                <label className="small-font mb-1 mt-3">
+                  Management Password
+                </label>
 
                 <div className="input-css w-100 rounded">
                   <input
@@ -409,25 +428,42 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                   </span>
                 </div>
               </div>
-              
+
               {errors.managementPassword && (
                 <span className="text-danger small-font">
                   {errors.managementPassword.message}
                 </span>
               )}
-
             </div>
 
-            <div className=" col-4 flex-center mt-3">
-              <button className="saffron-btn br-5  mt-3 w-100" type="submit">
-                Submit
+            <div
+              className={`col-4 flex-center  ${
+                errors.managementPassword ? "mt-3" : "mt-4"
+              }`}
+            >
+              <button
+                className={`saffron-btn br-5   w-100   ${
+                  errors.managementPassword ? "" : "mt-2"
+                }`}
+                type="submit"
+                disabled={loader === true ? true : false}
+              >
+                {loader === true ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  ""
+                )}
+
+                <span className="ms-2">Submit</span>
               </button>
             </div>
           </div>
-
-          {/* <div className="row mb-3 align-items-end">
-           
-          </div> */}
         </form>
       </Modal.Body>
     </Modal>

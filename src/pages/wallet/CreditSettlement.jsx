@@ -20,7 +20,7 @@ const CreditSettlement = () => {
   const [creditUserList, setCreditUserList] = useState([]);
   const [totalRecords, setTotalRecords] = useState([]);
   const [settlementAmounts, setSettlementAmounts] = useState({});
-  const [payload, setPayload] = useState([]); // State to store the payload
+  const [payload, setPayload] = useState([]); 
   const itemsPerPage = 9;
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
@@ -38,6 +38,7 @@ const CreditSettlement = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [discription, setDiscription] = useState("");
   const [apiLoading, setApiLoading] = useState(false);
+
   const GetAllDirectors = () => {
     getOfflineDWDirectors()
       .then((response) => {
@@ -205,16 +206,25 @@ const CreditSettlement = () => {
       console.log("director panel");
     }
   };
+  const [validation, setValidation] = useState(null)
 
   const hanldeSettlement = () => {
+
     if (!payload || Object.keys(payload).length === 0) {
       return;
     }
+
+    if (!parentPassword) {
+      setValidation("Password is Required")
+    }
+
+
 
     const data = {
       list: payload,
       parentPassword: parentPassword,
     };
+
     setIsLoading(true)
     creditFullSettlement(data)
       .then(() => {
@@ -224,6 +234,8 @@ const CreditSettlement = () => {
         setIsLoading(false)
         setSuccessPopupOpen(true)
         setDiscription("Credit Settled Successfully");
+        setPayload([])
+        setParentPassword("")
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 3000);
@@ -311,6 +323,7 @@ const CreditSettlement = () => {
               footer={footer}
               verLine={true}
               onPageChange={handlePageChange}
+              totalRecords={totalRecords}
             />
           </div>
         )}
@@ -340,6 +353,9 @@ const CreditSettlement = () => {
                 />
               )}
             </div>
+            {validation && (
+              <span>{validation}</span>
+            )}
           </div>
           <div className="col-2">
             <div className="saffron-btn2 pointer" onClick={handleFillAll}>Fill all</div>

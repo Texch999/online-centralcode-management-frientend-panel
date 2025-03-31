@@ -1144,3 +1144,30 @@ input[type="number"] {
 .border-0 {
   margin-bottom: 6px;
 }
+
+button:disabled{
+  opacity: 0.5; 
+}
+.error-bg{
+  background: #FFC6C6;
+  color: #FF3C3C;
+
+}
+.s-errors li{
+  margin-bottom: 2px;
+
+}
+.s-errors li:last-child{
+  margin-bottom: 0px;
+}
+.profile-default {
+  background-image: url('../public/assets/user.png'); 
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border-radius: 50%; */
+}

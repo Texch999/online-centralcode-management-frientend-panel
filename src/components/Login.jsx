@@ -98,7 +98,12 @@ function Login() {
 
         // await setSecureItem("isLoggedIn", "true");
         // await setSecureItem("emp_role_id", response?.user?.role?.role_id);
-        localStorage.setItem("role_name", response?.user?.role?.role_name);
+        // localStorage.setItem("role_name", response?.user?.role?.role_name);
+        localStorage.setItem(
+          "role_name",
+          response?.user?.role?.role_name === "promotion" ? "Designing Team" : response?.user?.role?.role_name
+        );
+        
         localStorage.setItem("role_code", response?.user?.role?.role_name);
         if (response?.user?.role?.role_name === "management") {
           localStorage.setItem("currency_id", 107);
