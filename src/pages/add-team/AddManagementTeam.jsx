@@ -49,12 +49,12 @@ const AddManagementTeam = () => {
     managementPassword: "",
   });
   const [loading, setLoading] = useState(true);
-  const [passwordLoader,setPasswordLoader]=useState(false)
-  const [blockLoader,setBlockLoader]=useState(false)
+  const [passwordLoader, setPasswordLoader] = useState(false)
+  const [blockLoader, setBlockLoader] = useState(false)
   const [resetPasswordErrrors, setResetPasswordErrors] = useState("");
 
 
-  
+
 
   const GetEmployee = () => {
     getEmployees({ limit: 10, offset: 0 })
@@ -62,9 +62,13 @@ const AddManagementTeam = () => {
         if (response?.status === true) {
           setTableData(response.data);
           setLoading(false);
+        } else {
+          setTableData([]);
+          setLoading(false);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.error(error?.message || "Failed to fetch employees");
       });
   };
@@ -170,8 +174,8 @@ const AddManagementTeam = () => {
       })
       .catch((error) => {
         setPasswordLoader(false)
-       
-        
+
+
         setResetPasswordErrors(error?.message[0] || "Request failed");
       });
   };
@@ -236,13 +240,12 @@ const AddManagementTeam = () => {
           />
           <MdBlockFlipped
             size={18}
-            className={`pointer ${
-              employee.status === 1
-                ? "green-font"
-                : employee.status === 2
+            className={`pointer ${employee.status === 1
+              ? "green-font"
+              : employee.status === 2
                 ? "clr-red"
                 : ""
-            }`}
+              }`}
             onClick={() =>
               handleBlockPopup(
                 employee.id,
@@ -292,9 +295,8 @@ const AddManagementTeam = () => {
           <div className="d-flex gap-3 flex-center">
             <SlPencil
               size={18}
-              className={`pointer black-text ${
-                employee.status !== 1 ? "disabled-icon" : ""
-              }`}
+              className={`pointer black-text ${employee.status !== 1 ? "disabled-icon" : ""
+                }`}
               onClick={
                 employee.status === 1 ? () => handleEditShow(employee.id) : null
               }
@@ -318,13 +320,12 @@ const AddManagementTeam = () => {
             />
             <MdBlockFlipped
               size={18}
-              className={`pointer ${
-                employee.status === 1
-                  ? "green-font"
-                  : employee.status === 2
+              className={`pointer ${employee.status === 1
+                ? "green-font"
+                : employee.status === 2
                   ? "clr-red"
                   : ""
-              }`}
+                }`}
               onClick={() =>
                 handleBlockPopup(
                   employee.id,
@@ -397,9 +398,8 @@ const AddManagementTeam = () => {
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
         setConfirmationPopupOpen={setBlockPopup}
-        discription={`Are you sure you want to ${
-          selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser} (${selectedUser?.loginName})?`}
+        discription={`Are you sure you want to ${selectedUser?.status === 1 ? "block" : "unblock"
+          } ${selectedUser} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
         blockLoader={blockLoader}
@@ -407,9 +407,8 @@ const AddManagementTeam = () => {
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
         setConfirmationPopupOpen={setBlockPopup}
-        discription={`Are you sure you want to ${
-          selectedUser?.status === 1 ? "block" : "unblock"
-        } ${selectedUser?.name} (${selectedUser?.loginName})?`}
+        discription={`Are you sure you want to ${selectedUser?.status === 1 ? "block" : "unblock"
+          } ${selectedUser?.name} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
         blockLoader={blockLoader}

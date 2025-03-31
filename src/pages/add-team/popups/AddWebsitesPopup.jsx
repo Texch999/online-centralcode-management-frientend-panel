@@ -7,6 +7,7 @@ import { createWebsite, getWebsiteDetails, updateWebsite } from "../../../api/ap
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const AddWebsitesPopup = ({ show, onHide,
   countries, getWebsitesCallback, editMode,
@@ -23,7 +24,7 @@ const AddWebsitesPopup = ({ show, onHide,
     queue_name: "",
     routing_key: "",
   });
-
+  const [initialLoading, setInitialLoadig] = useState(false);
   const itemsPerPage = 9
   const userId = localStorage.getItem("user_id");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,19 +43,23 @@ const AddWebsitesPopup = ({ show, onHide,
   const [apiError, setApiError] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [displayMsg, setDisplayeMsg] = useState("");
 
   const PanelOptions = [
     { value: 1, label: "Admin Panel" },
     { value: 2, label: "User Panel" },
   ];
+
   const refTypesOptions = [
     { value: 1, label: "Ravana Admin" },
     { value: 2, label: "Brahma Admin" },
   ];
+
   const DeployOptions = [
     { value: 1, label: "Company" },
   ];
+  
   const [status, setStatus] = useState(null);
   const formattedCountries = countries?.map((country) => ({
     value: country.id,
@@ -176,6 +181,7 @@ const AddWebsitesPopup = ({ show, onHide,
 
   useEffect(() => {
     if (editMode && websiteId) {
+      setInitialLoadig(true)
       getWebsiteDetails(websiteId)
         .then((response) => {
           if (response?.status === true) {
@@ -192,14 +198,17 @@ const AddWebsitesPopup = ({ show, onHide,
               queue_name: data?.queue_name,
               routing_key: data?.routing_key
             });
+            setInitialLoadig(false)
             setStatus(data?.status);
             setApiError("");
           } else {
             setApiError("Something Went Wrong");
+            setInitialLoadig(false)
           }
         })
         .catch((error) => {
           setApiError(error?.message || "API request failed");
+          setInitialLoadig(false)
         });
     } else {
       setFormData({
@@ -315,7 +324,7 @@ const AddWebsitesPopup = ({ show, onHide,
   const handleSubmit = () => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    setApiError(""); 
+    setApiError("");
     if (validateForm()) {
       const finalData = editMode ? {
         deploy_type: formData?.deployType?.value,
@@ -341,7 +350,7 @@ const AddWebsitesPopup = ({ show, onHide,
         queue_name: formData.queue_name,
         routing_key: formData.routing_key,
       };
-
+      setLoader(true)
       const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData);
       apiCall
         .then((response) => {
@@ -352,6 +361,7 @@ const AddWebsitesPopup = ({ show, onHide,
             setApiError("");
             setEditMode(false);
             onHide();
+            setLoader(false)
             setSuccessPopupOpen(true);
             setTimeout(() => {
               resetData();
@@ -359,12 +369,13 @@ const AddWebsitesPopup = ({ show, onHide,
               setSuccessPopupOpen(false);
             }, 2000);
           } else {
+            setLoader(false)
             setApiError("Something Went Wrong");
           }
         })
         .catch((error) => {
           const errorMessage = error?.message
-          console.log(error)
+          setLoader(false)
           // Handle backend validation errors
           if (errorMessage.includes("Website name already exists.")) {
             setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "This website already taken" }));
@@ -381,6 +392,8 @@ const AddWebsitesPopup = ({ show, onHide,
   return (
     <div>
       <Modal centered show={show} onHide={handleClose} size="md">
+        {initialLoading && editMode && (<div className="my-load">
+          <div className="loader "></div></div>)}
         <Modal.Body>
           {/* API Error Display */}
           {apiError && (
@@ -560,9 +573,29 @@ const AddWebsitesPopup = ({ show, onHide,
           </div>
 
           {/* Submit Button */}
-          <div className="mt-3 d-flex flex-row w-100 justify-content-end">
+          {/* <div className="mt-3 d-flex flex-row w-100 justify-content-end">
             <button className="saffron-btn small-font rounded col-4" onClick={handleSubmit}>
               Submit
+            </button> */}
+          <div className="mt-3 d-flex flex-row w-100 justify-content-end">
+            <button className={`saffron-btn br-5   w-100   ${errors.managementPassword ? "" : "mt-2"
+              }`}
+              type="submit"
+              disabled={loader === true ? true : false}
+              onClick={handleSubmit}>
+
+              {loader === true ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (
+                ""
+              )}
+             <span className="ps-2">  {loader === true ? "Submiting ...." : "Submit"}</span>
             </button>
           </div>
         </Modal.Body>

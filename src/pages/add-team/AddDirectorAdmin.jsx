@@ -583,67 +583,71 @@ const AddDirectorAdmin = () => {
   const handleSuccesPopup = () => {
     setSuccessPopupOpen(true)
   }
+
   return (
     <div>
-      <div className="flex-between mb-3 mt-2">
-        {role === "management" ? (
-          <h6 className="yellow-font medium-font mb-0">
-            Add Director & Super Admin
-          </h6>
-        ) : (
-          <h6 className="yellow-font mb-0">Add Super Admin</h6>
-        )}
-        <div className="d-flex align-items-center">
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input
-              className="small-font all-none"
-              placeholder="Enter D/SA name."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value.trim())}
-              onKeyDown={handleFiltration}
-            />
-          </div>
-          <button
-            className="small-font rounded-pill input-pill blue-font px-3 py-1"
-            onClick={() =>
-              navigate("/director-admin/addnewdirector", {
-                state: { mode: "add" },
-              })
-            }
-          >
-            <FaPlus className="me-2" />
-            Add New
-          </button>
-        </div>
-      </div>
-      <div className="row ps-2 gap-1 mb-4">
-        <div className="col-12">
-          <div className="row">
-            {cardData.map((card, index) => (
-              <div className="col-2 px-1" key={index}>
-                <Card
-                  title={card.title}
-                  backgroundColor={card.backgroundColor}
-                  value={card.value}
-                  valueClass={card.valueClass}
-                  icon={card.icon}
-                  bootstrapClassesTop={card.bootstrapClassesTop}
-                  bootstrapClassesBottom={card.bootstrapClassesBottom}
-                  clr={card.color}
+      {!loading && (
+        <>
+          <div className="flex-between mb-3 mt-2">
+
+            {role === "management" ? (
+              <h6 className="yellow-font medium-font mb-0">
+                Add Director & Super Admin
+              </h6>
+            ) : (
+              <h6 className="yellow-font mb-0">Add Super Admin</h6>
+            )}
+            <div className="d-flex align-items-center">
+              <div className="input-pill d-flex align-items-center rounded-pill px-2 me-3">
+                <FaSearch size={16} className="grey-clr me-2" />
+                <input
+                  className="small-font all-none"
+                  placeholder="Enter D/SA name."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value.trim())}
+                  onKeyDown={handleFiltration}
                 />
               </div>
-            ))}
+              <button
+                className="small-font rounded-pill input-pill blue-font px-3 py-1"
+                onClick={() =>
+                  navigate("/director-admin/addnewdirector", {
+                    state: { mode: "add" },
+                  })
+                }
+              >
+                <FaPlus className="me-2" />
+                Add New
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
+          <div className="row ps-2 gap-1 mb-4">
+            <div className="col-12">
+              <div className="row">
+                {!loading && cardData.map((card, index) => (
+                  <div className="col-2 px-1" key={index}>
+                    <Card
+                      title={card.title}
+                      backgroundColor={card.backgroundColor}
+                      value={card.value}
+                      valueClass={card.valueClass}
+                      icon={card.icon}
+                      bootstrapClassesTop={card.bootstrapClassesTop}
+                      bootstrapClassesBottom={card.bootstrapClassesBottom}
+                      clr={card.color}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
 
       {loading ? (
-        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
-          <CircleLoader color="#3498db" size={40} />
-          <div className="medium-font black-font my-3">
-            Just a moment...............⏳
-          </div>
+        <div className="spinner">
+          <div className="spinner-circle"></div>
         </div>
       ) : (
         <>
