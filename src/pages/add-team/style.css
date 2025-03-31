@@ -263,50 +263,24 @@ input[type="number"] {
 }
 /* HTML: <div class="loader"></div> */
 .loader {
-  --c1: #673b14;
-  --c2: #f8b13b;
-  width: 40px;
-  height: 80px;
-  border-top: 4px solid var(--c1);
-  border-bottom: 4px solid var(--c1);
-  background: linear-gradient(
-      90deg,
-      var(--c1) 2px,
-      var(--c2) 0 5px,
-      var(--c1) 0
-    )
-    50%/7px 8px no-repeat;
-  display: grid;
-  overflow: hidden;
-  animation: l5-0 2s infinite linear;
+  width: 95px;
+  position: absolute;
+  z-index: 9;
+  top: 30%;
+  left: 40%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: 
+    radial-gradient(farthest-side,#db7e0c 94%,#0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%,#f4a908);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+  animation: l13 1s infinite linear;
 }
-.loader::before,
-.loader::after {
-  content: "";
-  grid-area: 1/1;
-  width: 75%;
-  height: calc(50% - 4px);
-  margin: 0 auto;
-  border: 2px solid var(--c1);
-  border-top: 0;
-  box-sizing: content-box;
-  border-radius: 0 0 40% 40%;
-  -webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  background: linear-gradient(var(--d, 0deg), var(--c2) 50%, #0000 0) bottom /
-      100% 205%,
-    linear-gradient(var(--c2) 0 0) center/0 100%;
-  background-repeat: no-repeat;
-  animation: inherit;
-  animation-name: l5-1;
+@keyframes l13{ 
+  100%{transform: rotate(1turn)}
 }
-.loader::after {
-  transform-origin: 50% calc(100% + 2px);
-  transform: scaleY(-1);
-  --s: 3px;
-  --d: 180deg;
+@keyframes l24 {
+  100% {transform: rotate(1turn)}
 }
 @keyframes l5-0 {
   80% {
@@ -316,13 +290,16 @@ input[type="number"] {
     transform: rotate(0.5turn);
   }
 }
-@keyframes l5-1 {
-  10%,
-  70% {
-    background-size: 100% 205%, var(--s, 0) 100%;
-  }
-  70%,
-  100% {
-    background-position: top, center;
-  }
+.white-opacity{
+  background-color: #ffffff;
+  opacity: 0.7;
+}
+.my-load{
+  height: 100%;
+  width: 100%;
+background-color: #ffffff;
+position: absolute;
+  z-index: 10;
+  opacity: 0.5;
+  
 }

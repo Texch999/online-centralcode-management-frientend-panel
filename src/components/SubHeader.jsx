@@ -55,12 +55,12 @@ function SubHeader() {
           // {
           //   label: "Offline Deposit/Withdraw",
           //   path: "/offline-deposit-withdraw",
-          // }, // new screens 
+          // }, // new screens
           {
             // label: "Offline Deposit/Withdraw",
             label: "Credit & Settlement",
             path: "/credit-settlement",
-          }, // new screens 
+          }, // new screens
           { label: "Downline Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
           // {label:"Settlement Transaction",path:"/settlement-transaction"}
@@ -182,74 +182,74 @@ function SubHeader() {
       },
     ],
 
-    super_admin: [
-      {
-        label: "Adding",
-        options: [
-          { label: "Add Admin", path: "/director-admin" },
-          { label: "View Downline List", path: "/downline-list" },
-          { label: "Payment Details", path: "/payment-details" },
-          { label: "Available Websites", path: "/websites" },
-        ],
-      },
-      {
-        label: "Live/Block",
-        options: [
-          { label: "In-active Users", path: "/inactive-users" },
-          { label: "Bet Block Users", path: "/bet-block-users" },
-        ],
-      },
-      {
-        label: "Risk Management",
-        options: [
-          { label: "Sports", path: "/risk-sports" },
-          { label: "Casino", path: "/risk-casino" },
-          { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
-          { label: "Deleted Bet History", path: "/deleted-bet-history" },
-          { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
-        ],
-      },
-      {
-        label: "Wallet",
-        options: [
-          { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
-          { label: "Tickets", path: "/tickets" },
-          { label: "Gateway Transactions", path: "/gateway-transactions" },
-          { label: "Bonus Chips", path: "/bonus-chips" },
-        ],
-      },
-      {
-        label: "Reports",
-        options: [
-          { label: "My Statement", path: "/my-statement" },
-          {
-            label: "P/L Report Downline Admins",
-            path: "/pl-report-downline",
-          },
-          { label: "P/L Casino Report", path: "/pl-casino-report" },
-          { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
-          { label: "P/L Report by Users", path: "/pl-report-users" },
-          { label: "Match Wise P/L", path: "/match-wise-pl" },
-        ],
-      },
-      {
-        label: "SA Settings",
-        options: [
-          { label: "Edit Profile", path: "/edit-profile" },
-          { label: "Reset Password", path: "/reset-password" },
-          { label: "Activity Logs", path: "/activity-logs" },
-        ],
-      },
-      {
-        label: "Promotions",
-        options: [
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
-        ],
-      },
-    ],
+    // super_admin: [
+    //   {
+    //     label: "Adding",
+    //     options: [
+    //       { label: "Add Admin", path: "/director-admin" },
+    //       { label: "View Downline List", path: "/downline-list" },
+    //       { label: "Payment Details", path: "/payment-details" },
+    //       { label: "Available Websites", path: "/websites" },
+    //     ],
+    //   },
+    //   {
+    //     label: "Live/Block",
+    //     options: [
+    //       { label: "In-active Users", path: "/inactive-users" },
+    //       { label: "Bet Block Users", path: "/bet-block-users" },
+    //     ],
+    //   },
+    //   {
+    //     label: "Risk Management",
+    //     options: [
+    //       { label: "Sports", path: "/risk-sports" },
+    //       { label: "Casino", path: "/risk-casino" },
+    //       { label: "Live Bet List(Sports/Casino)", path: "/live-bet-list" },
+    //       { label: "Deleted Bet History", path: "/deleted-bet-history" },
+    //       { label: "Cheat/Alert Bets", path: "/cheat-alert-bets" },
+    //     ],
+    //   },
+    //   {
+    //     label: "Wallet",
+    //     options: [
+    //       { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
+    //       { label: "Tickets", path: "/tickets" },
+    //       { label: "Gateway Transactions", path: "/gateway-transactions" },
+    //       { label: "Bonus Chips", path: "/bonus-chips" },
+    //     ],
+    //   },
+    //   {
+    //     label: "Reports",
+    //     options: [
+    //       { label: "My Statement", path: "/my-statement" },
+    //       {
+    //         label: "P/L Report Downline Admins",
+    //         path: "/pl-report-downline",
+    //       },
+    //       { label: "P/L Casino Report", path: "/pl-casino-report" },
+    //       { label: "P/L Report Sports Wise", path: "/pl-report-sports" },
+    //       { label: "P/L Report by Users", path: "/pl-report-users" },
+    //       { label: "Match Wise P/L", path: "/match-wise-pl" },
+    //     ],
+    //   },
+    //   {
+    //     label: "SA Settings",
+    //     options: [
+    //       { label: "Edit Profile", path: "/edit-profile" },
+    //       { label: "Reset Password", path: "/reset-password" },
+    //       { label: "Activity Logs", path: "/activity-logs" },
+    //     ],
+    //   },
+    //   {
+    //     label: "Promotions",
+    //     options: [
+    //       { label: "Sports Promotions", path: "/sports-promotions" },
+    //       { label: "Casino Promotions", path: "/casino-promotions" },
+    //     ],
+    //   },
+    // ],
 
-    promotions: [
+    promotion: [
       {
         label: "Settings",
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
@@ -336,26 +336,27 @@ function SubHeader() {
         options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
       },
     ],
-    designing_team: [
-      {
-        label: "Settings",
-        options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
-      },
-      {
-        label: "Promotions",
-        options: [
-          {
-            label: "Create Promotions Type",
-            path: "/create-promotion-type",
-          },
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
-          { label: "Banners (Casino/Sports)", path: "/banners" },
-          { label: "Broadcasting", path: "/broadcasting" },
-        ],
-      },
-    ],
+    // designing_team: [
+    //   {
+    //     label: "Settings",
+    //     options: [{ label: "Edit Profile" }, { label: "Reset Password" }],
+    //   },
+    //   {
+    //     label: "Promotions",
+    //     options: [
+    //       {
+    //         label: "Create Promotions Type",
+    //         path: "/create-promotion-type",
+    //       },
+    //       { label: "Sports Promotions", path: "/sports-promotions" },
+    //       { label: "Casino Promotions", path: "/casino-promotions" },
+    //       { label: "Banners (Casino/Sports)", path: "/banners" },
+    //       { label: "Broadcasting", path: "/broadcasting" },
+    //     ],
+    //   },
+    // ],
   };
+
   const menuItems = menuConfig[role_code] || [];
 
   const handleDropdownToggle = (index, isOpen) => {
@@ -390,8 +391,9 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
-                } br-0px flex-center w-100`}
+              className={`${
+                activeIndex === index ? "grey-btn" : "balck-btn"
+              } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>

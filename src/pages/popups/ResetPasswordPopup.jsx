@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import CricketLiveStreaming from './../cricket/CricketLiveStreaming';
+import ErrorComponent from "../../components/ErrorComponent";
+import CricketLiveStreaming from "./../cricket/CricketLiveStreaming";
 
 function ResetPasswordPopup({
   resetPasswordPopup,
@@ -12,28 +13,31 @@ function ResetPasswordPopup({
   onSubmit,
   resetPasswordErrrors,
   setResetPasswordErrors,
+  passwordLoader,
   error,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-
+  const [loader, setLoader] = useState(false);
   const token = localStorage.getItem("jwt_token");
   const login_role_name = localStorage.getItem("role_name");
 
+  // Initialize react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues, 
+    getValues,
     reset,
   } = useForm();
 
   const handleCancel = () => {
     setResetPasswordPopup(false);
     reset();
-    // setResetPasswordErrors("");
+    setResetPasswordErrors("");
+    setShowPassword(false);
   };
 
   const handleSuccessClose = () => {
@@ -51,7 +55,9 @@ function ResetPasswordPopup({
         managementPassword: "",
       });
     }
-  }, [resetPasswordPopup, reset]); 
+  }, [resetPasswordPopup, reset]);
+
+  console.log(resetPasswordErrrors, "==>resetPasswordErrrors9999");
 
   return (
     <>
@@ -59,13 +65,18 @@ function ResetPasswordPopup({
       <Modal show={resetPasswordPopup} centered size="sm">
         <Modal.Body>
           <div className="flex-between black-text4">
-            <h6 className="fw-600 mb-0">Reset Password</h6>
+            <h6 className="fw-600 mb-0">Reset Password </h6>
             <IoCloseSharp
               size={20}
               onClick={handleCancel}
               className="pointer"
             />
           </div>
+          {/* <div className="red-font my-2">{resetPasswordErrrors}</div> */}
+          {resetPasswordErrrors?.length > 0 && (
+            <ErrorComponent error={resetPasswordErrrors} />
+          )}
+
           <div className="row small-font mb-3">
             {/* New Password Field */}
             <div className="col-12 flex-column mt-3">
@@ -220,20 +231,28 @@ function ResetPasswordPopup({
                 </span>
               )}
             </div>
-            <div className="red-font my-2">{resetPasswordErrrors}</div>
 
             <div className="col-12 mt-3">
               <button
                 className="w-100 saffron-btn2"
                 onClick={handleSubmit(onSubmit)}
+                disabled={passwordLoader === true ? true : false}
               >
-                Submit
+                {passwordLoader === true ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  ""
+                )}
+                <span className="ms-2">Submit</span>
               </button>
             </div>
-            {error && (
-              <div className="mt-2 red-font">{error}</div>
-
-            )}
+            {error && <div className="mt-2 red-font">{error}</div>}
           </div>
         </Modal.Body>
       </Modal>

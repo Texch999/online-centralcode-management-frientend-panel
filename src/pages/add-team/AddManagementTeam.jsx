@@ -19,7 +19,7 @@ import { Roles } from "../../utils/enum";
 
 const AddManagementTeam = () => {
   const [tableData, setTableData] = useState([]);
-  console.log(tableData, "tableData");
+
   const [modalState, setModalState] = useState({
     showAddModal: false,
     isBlockPopupVisible: false,
@@ -48,16 +48,20 @@ const AddManagementTeam = () => {
     confirmPassword: "",
     managementPassword: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [passwordLoader,setPasswordLoader]=useState(false)
+  const [blockLoader,setBlockLoader]=useState(false)
+  const [resetPasswordErrrors, setResetPasswordErrors] = useState("");
 
-  console.log(selectedUser, "==>selectedUser");
 
-  const [resetPasswordErrrors, setResetPasswordErrors] = useState([]);
+  
 
   const GetEmployee = () => {
     getEmployees({ limit: 10, offset: 0 })
       .then((response) => {
         if (response?.status === true) {
           setTableData(response.data);
+          setLoading(false);
         }
       })
       .catch((error) => {
@@ -69,7 +73,7 @@ const AddManagementTeam = () => {
     GetEmployee();
   }, []);
 
-  console.log(resetPasswordErrrors, "resetPasswordErrrors in main component");
+
 
   const toggleModal = (modalName, value) => {
     setModalState((prev) => ({ ...prev, [modalName]: value }));
@@ -150,9 +154,10 @@ const AddManagementTeam = () => {
       confirm_password: data.confirmPassword,
       management_password: data.managementPassword,
     };
-
+    setPasswordLoader(true)
     resetEmployeePassword(resetPasswordId, requestData)
       .then((response) => {
+        setPasswordLoader(false)
         setSuccessPopupOpen(true);
         setDiscription("Password reset successfully");
         setResetData(true);
@@ -164,7 +169,10 @@ const AddManagementTeam = () => {
         }
       })
       .catch((error) => {
-        setResetPasswordErrors(error?.message || "Request failed");
+        setPasswordLoader(false)
+       
+        
+        setResetPasswordErrors(error?.message[0] || "Request failed");
       });
   };
 
@@ -174,10 +182,14 @@ const AddManagementTeam = () => {
     const requestData = {
       status: newStatus,
     };
+    setBlockLoader(true)
 
     blockEmploye(blockTeamManagementId, requestData)
       .then((response) => {
         if (response.status === true) {
+          setBlockPopup(false)
+          setBlockLoader(false)
+
           if (newStatus === 1) {
             setSuccessPopupOpen(true);
             setDiscription("Unblocked Successfully");
@@ -185,16 +197,15 @@ const AddManagementTeam = () => {
             setSuccessPopupOpen(true);
             setDiscription("Blocked Successfully");
           }
-        
+
           GetEmployee();
 
           toggleModal("isBlockPopupVisible", false);
-        } else {
-          alert("Something went wrong");
         }
       })
       .catch((error) => {
         console.error(error?.message || "Request failed");
+        setBlockLoader(false)
       });
   };
   const TableData = tableData.map((employee) => {
@@ -254,65 +265,80 @@ const AddManagementTeam = () => {
   };
 
   const filteredTableData = tableData
-  .filter((employee) =>
-    employee.login_name?.toLowerCase().includes(searchText)
-  )
-  .map((employee) => {
-    const roleId = Number(employee.role);
-    const role = Roles[roleId] || "Unknown";
+    .filter((employee) =>
+      employee.login_name?.toLowerCase().includes(searchText)
+    )
+    .map((employee) => {
+      const roleId = Number(employee.role);
+      // const role = Roles[roleId] || "Unknown";
+      const role =
+        Roles[roleId] === "promotion"
+          ? "Designing Team"
+          : Roles[roleId] || "Unknown";
 
-    return {
-      id: employee.id,
-      name: employee.name,
-      login_name: employee.login_name,
-      phone_no: employee.phone_no,
-      email: employee.email,
-      role: <div>{role}</div>,
-      status: employee.status === 1 ? "green-clr" : "clr-red",
-      created_date: new Date(employee.created_date).toLocaleString(),
-      updated_date: new Date(employee.updated_date).toLocaleString(),
-      action: (
-        <div className="d-flex gap-3 flex-center">
-          <SlPencil
-            size={18}
-            className={`pointer black-text ${employee.status !== 1 ? "disabled-icon" : ""}`}
-            onClick={employee.status === 1 ? () => handleEditShow(employee.id) : null}
-            style={{ cursor: employee.status === 1 ? "pointer" : "not-allowed", opacity: employee.status === 1 ? 1 : 0.5 }}
-          />
-          <MdLockReset
-            size={18}
-            className="pointer black-text"
-           
+      return {
+        id: employee.id,
+        name: employee.name,
+        login_name: employee.login_name,
+        phone_no: employee.phone_no,
+        email: employee.email,
+        // role: <div>{role}</div>,
+        role: <div>{role.replace(/\b\w/g, (char) => char.toUpperCase())}</div>,
 
-            onClick={employee.status === 1 ? () => handleResetPasswordPopup(employee.id) : null}
-            style={{ cursor: employee.status === 1 ? "pointer" : "not-allowed", opacity: employee.status === 1 ? 1 : 0.5 }}
-       
-          />
-          <MdBlockFlipped
-            size={18}
-            className={`pointer ${
-              employee.status === 1
-                ? "green-font"
-                : employee.status === 2
-                ? "clr-red"
-                : ""
-            }`}
-            onClick={() =>
-              handleBlockPopup(
-                employee.id,
-                employee.name,
-                employee.status,
-                employee.login_name
-              )
-            }
-          />
-        </div>
-      ),
-    };
-  });
+        status: employee.status === 1 ? "green-clr" : "clr-red",
+        created_date: new Date(employee.created_date).toLocaleString(),
+        updated_date: new Date(employee.updated_date).toLocaleString(),
+        action: (
+          <div className="d-flex gap-3 flex-center">
+            <SlPencil
+              size={18}
+              className={`pointer black-text ${
+                employee.status !== 1 ? "disabled-icon" : ""
+              }`}
+              onClick={
+                employee.status === 1 ? () => handleEditShow(employee.id) : null
+              }
+              style={{
+                cursor: employee.status === 1 ? "pointer" : "not-allowed",
+                opacity: employee.status === 1 ? 1 : 0.5,
+              }}
+            />
+            <MdLockReset
+              size={18}
+              className="pointer black-text"
+              onClick={
+                employee.status === 1
+                  ? () => handleResetPasswordPopup(employee.id)
+                  : null
+              }
+              style={{
+                cursor: employee.status === 1 ? "pointer" : "not-allowed",
+                opacity: employee.status === 1 ? 1 : 0.5,
+              }}
+            />
+            <MdBlockFlipped
+              size={18}
+              className={`pointer ${
+                employee.status === 1
+                  ? "green-font"
+                  : employee.status === 2
+                  ? "clr-red"
+                  : ""
+              }`}
+              onClick={() =>
+                handleBlockPopup(
+                  employee.id,
+                  employee.name,
+                  employee.status,
+                  employee.login_name
+                )
+              }
+            />
+          </div>
+        ),
+      };
+    });
 
-
-    
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
@@ -336,14 +362,21 @@ const AddManagementTeam = () => {
           </button>
         </div>
       </div>
-      <div className="management-team-wrapper rounded-bg">
-        <Table
-          className="black-text"
-          data={filteredTableData}
-          columns={columns}
-          itemsPerPage={5}
-        />
-      </div>
+      {loading === true ? (
+        <div className="spinner">
+          <div className="spinner-circle"></div>
+        </div>
+      ) : (
+        <div className="management-team-wrapper rounded-bg">
+          <Table
+            className="black-text"
+            data={filteredTableData}
+            columns={columns}
+            itemsPerPage={5}
+          />
+        </div>
+      )}
+
       {modalState.showAddModal && (
         <AddManagementPopup
           show={modalState.showAddModal}
@@ -369,6 +402,7 @@ const AddManagementTeam = () => {
         } ${selectedUser} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
+        blockLoader={blockLoader}
       />
       <ConfirmationPopup
         confirmationPopupOpen={blockPopup}
@@ -378,6 +412,7 @@ const AddManagementTeam = () => {
         } ${selectedUser?.name} (${selectedUser?.loginName})?`}
         submitButton={selectedUser?.status === 1 ? "Block" : "Unblock"}
         onSubmit={onEmployeeBlockSubmit}
+        blockLoader={blockLoader}
       />
 
       <ResetPasswordPopup
@@ -387,6 +422,7 @@ const AddManagementTeam = () => {
         onSubmit={onEmployeePasswordSubmit}
         resetPasswordErrrors={resetPasswordErrrors}
         setResetPasswordErrors={setResetPasswordErrors}
+        passwordLoader={passwordLoader}
       />
       {successPopupOpen && (
         <SuccessPopup
