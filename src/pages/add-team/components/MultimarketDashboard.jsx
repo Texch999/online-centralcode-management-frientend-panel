@@ -8,7 +8,7 @@ import WebsiteContrl from "./../WebsiteContrl";
 import UnblockBlockWebsiteModal from "../UnblockBlockWebsiteModal";
 import { CgUnblock } from "react-icons/cg";
 
-const MultimarketDashboard = ({ dwnlnId ,getById}) => {
+const MultimarketDashboard = ({ dwnlnId}) => {
   const navigate = useNavigate();
   const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
@@ -147,7 +147,6 @@ const MultimarketDashboard = ({ dwnlnId ,getById}) => {
         adminWebsiteId={adminWebsiteId}
         getWebMarketDtls={getWebMarketDtls}
         adminStatusId={adminStatusId}
-        getById={getById}
       />
     </div>
   );

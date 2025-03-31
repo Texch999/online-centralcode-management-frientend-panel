@@ -12,7 +12,6 @@ const UnblockBlockWebsiteModal = ({
   adminWebsiteId,
   getWebMarketDtls,
   adminStatusId,
-  getById,
 }) => {
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
@@ -129,10 +128,10 @@ const UnblockBlockWebsiteModal = ({
       .then((response) => {
         console.log("popup");
         setMsg(response?.message);
+        getWebMarketDtls()
         setShow(false);
         setSuccessModal(true);
         setPswd("");
-        getById();
         setTimeout(() => {
           setSuccessModal(false);
         }, 3000);
