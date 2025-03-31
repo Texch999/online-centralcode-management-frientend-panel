@@ -6,17 +6,20 @@ import { useNavigate } from "react-router-dom";
 import { getMultiMarket } from "../../../api/apiMethods";
 import WebsiteContrl from "./../WebsiteContrl";
 import UnblockBlockWebsiteModal from "../UnblockBlockWebsiteModal";
+import { CgUnblock } from "react-icons/cg";
 
-const MultimarketDashboard = ({ dwnlnId }) => {
+const MultimarketDashboard = ({ dwnlnId}) => {
   const navigate = useNavigate();
   const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
   const [webList, setWebList] = useState([]);
   const [adminWebsiteId, setAdminWebsiteId] = useState(null);
+  const [adminStatusId, setAdminStatusId] = useState(null);
   const dataFetched = useRef(false);
-  const handleBlock = (id) => {
+  const handleBlock = (id, status) => {
     setBlockWebsiteModal(true);
     setAdminWebsiteId(id);
+    setAdminStatusId(status);
   };
   const getWebMarketDtls = () => {
     getMultiMarket(dwnlnId)
@@ -62,6 +65,13 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     },
   ];
 
+  const statusElement =
+    webMarketDtls?.status === 1 ? (
+      <div className="green-btn mb-4">Active</div>
+    ) : (
+      <div className="red-btn mb-4" >In-Active</div>
+    );
+
   const data = webMarketDtls?.accessWebsites?.map((website) => ({
     name: (
       <div className="d-flex flex-column">
@@ -79,30 +89,11 @@ const MultimarketDashboard = ({ dwnlnId }) => {
       </div>
     ),
 
-    last: (
-      <div className="d-flex flex-column">
-        {/* {website.user_panels?.map((panel) => (
-          <div
-            key={panel.user_panel_id}
-            className="d-flex flex-column align-items-center flex-border-bottom"
-          >
-            <span>{new Date(panel.updated_date).toLocaleDateString()}</span>
-          </div>
-        ))} */}
-      </div>
-    ),
-    status: (
-      <div>
-        {website?.user_panels[0]?.status === 1 ? (
-          <div className="badge payment-gateway-status-badge p-2">Active</div>
-        ) : (
-          <div className="red-btn p-2">In-Active</div>
-        )}
-      </div>
-    ),
+    last: <div className="d-flex flex-column"></div>,
+    status: statusElement,
 
     action: (
-      <div className="d-flex gap-2 flex-center">
+      <div className="d-flex gap-2 mb-4 flex-center">
         <span className="pointer">
           <MdOutlineModeEdit
             size={20}
@@ -112,9 +103,19 @@ const MultimarketDashboard = ({ dwnlnId }) => {
 
         <span
           className="pointer"
-          onClick={() => handleBlock(website?.admin_panel_id)}
+          onClick={() =>
+            handleBlock(website?.admin_panel_id, webMarketDtls?.status)
+          }
         >
-          <MdBlock size={20} />
+          {webMarketDtls?.status === 1 ? (
+            <span className="green-font">
+              <CgUnblock size={20} />
+            </span>
+          ) : (
+            <span className="red-font">
+              <MdBlock size={20} />
+            </span>
+          )}
         </span>
       </div>
     ),
@@ -145,6 +146,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         webList={webMarketDtls}
         adminWebsiteId={adminWebsiteId}
         getWebMarketDtls={getWebMarketDtls}
+        adminStatusId={adminStatusId}
       />
     </div>
   );

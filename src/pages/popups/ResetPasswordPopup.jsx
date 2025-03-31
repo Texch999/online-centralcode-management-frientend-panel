@@ -4,6 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import ErrorComponent from "../../components/ErrorComponent";
+import CricketLiveStreaming from "./../cricket/CricketLiveStreaming";
 
 function ResetPasswordPopup({
   resetPasswordPopup,
@@ -13,6 +14,7 @@ function ResetPasswordPopup({
   resetPasswordErrrors,
   setResetPasswordErrors,
   passwordLoader,
+  error,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -22,14 +24,12 @@ function ResetPasswordPopup({
   const token = localStorage.getItem("jwt_token");
   const login_role_name = localStorage.getItem("role_name");
 
-  console.log(passwordLoader,"==>passwordLoader");
-  
   // Initialize react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues, // Now properly destructured
+    getValues,
     reset,
   } = useForm();
 
@@ -37,7 +37,7 @@ function ResetPasswordPopup({
     setResetPasswordPopup(false);
     reset();
     setResetPasswordErrors("");
-    setShowPassword(false)
+    setShowPassword(false);
   };
 
   const handleSuccessClose = () => {
@@ -53,12 +53,12 @@ function ResetPasswordPopup({
         password: "",
         confirmPassword: "",
         managementPassword: "",
-      }); // Explicitly reset form fields
+      });
     }
-  }, [resetPasswordPopup, reset]); // Ensure reset function is included in dependencies
+  }, [resetPasswordPopup, reset]);
 
-  console.log(resetPasswordErrrors,"==>resetPasswordErrrors9999");
-  
+  console.log(resetPasswordErrrors, "==>resetPasswordErrrors9999");
+
   return (
     <>
       {/* Reset Password Modal */}
@@ -74,8 +74,8 @@ function ResetPasswordPopup({
           </div>
           {/* <div className="red-font my-2">{resetPasswordErrrors}</div> */}
           {resetPasswordErrrors?.length > 0 && (
-  <ErrorComponent error={resetPasswordErrrors} />
-)}
+            <ErrorComponent error={resetPasswordErrrors} />
+          )}
 
           <div className="row small-font mb-3">
             {/* New Password Field */}
@@ -111,6 +111,7 @@ function ResetPasswordPopup({
                         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
                     },
                   })}
+                  maxLength={36}
                 />
 
                 {showPassword ? (
@@ -167,6 +168,7 @@ function ResetPasswordPopup({
                         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
                     },
                   })}
+                  maxLength={36}
                 />
 
                 {showConfirmPassword ? (
@@ -205,6 +207,7 @@ function ResetPasswordPopup({
                   {...register("managementPassword", {
                     required: "Management password is required",
                   })}
+                  maxLength={36}
                 />
                 {showManagementPassword ? (
                   <FaEye
@@ -230,25 +233,26 @@ function ResetPasswordPopup({
             </div>
 
             <div className="col-12 mt-3">
-            <button
-                  className="w-100 saffron-btn2"
-                  onClick={handleSubmit(onSubmit)}
-                  disabled={passwordLoader === true ? true : false}
-                  
-                >
-                  {passwordLoader=== true ?  <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    /> :""}
-                  <span className="ms-2">
-                  Submit
-                  </span>
-                  
-                </button>
+              <button
+                className="w-100 saffron-btn2"
+                onClick={handleSubmit(onSubmit)}
+                disabled={passwordLoader === true ? true : false}
+              >
+                {passwordLoader === true ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  ""
+                )}
+                <span className="ms-2">Submit</span>
+              </button>
             </div>
+            {error && <div className="mt-2 red-font">{error}</div>}
           </div>
         </Modal.Body>
       </Modal>
