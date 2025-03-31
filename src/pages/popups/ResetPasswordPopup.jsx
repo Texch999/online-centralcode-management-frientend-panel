@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import CricketLiveStreaming from './../cricket/CricketLiveStreaming';
 
 function ResetPasswordPopup({
   resetPasswordPopup,
@@ -11,6 +12,7 @@ function ResetPasswordPopup({
   onSubmit,
   resetPasswordErrrors,
   setResetPasswordErrors,
+  error,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -20,12 +22,11 @@ function ResetPasswordPopup({
   const token = localStorage.getItem("jwt_token");
   const login_role_name = localStorage.getItem("role_name");
 
-  // Initialize react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues, // Now properly destructured
+    getValues, 
     reset,
   } = useForm();
 
@@ -48,9 +49,9 @@ function ResetPasswordPopup({
         password: "",
         confirmPassword: "",
         managementPassword: "",
-      }); // Explicitly reset form fields
+      });
     }
-  }, [resetPasswordPopup, reset]); // Ensure reset function is included in dependencies
+  }, [resetPasswordPopup, reset]); 
 
   return (
     <>
@@ -99,6 +100,7 @@ function ResetPasswordPopup({
                         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
                     },
                   })}
+                  maxLength={36}
                 />
 
                 {showPassword ? (
@@ -155,6 +157,7 @@ function ResetPasswordPopup({
                         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
                     },
                   })}
+                  maxLength={36}
                 />
 
                 {showConfirmPassword ? (
@@ -193,6 +196,7 @@ function ResetPasswordPopup({
                   {...register("managementPassword", {
                     required: "Management password is required",
                   })}
+                  maxLength={36}
                 />
                 {showManagementPassword ? (
                   <FaEye
@@ -226,6 +230,10 @@ function ResetPasswordPopup({
                 Submit
               </button>
             </div>
+            {error && (
+              <div className="mt-2 red-font">{error}</div>
+
+            )}
           </div>
         </Modal.Body>
       </Modal>
