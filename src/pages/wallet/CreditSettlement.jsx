@@ -206,16 +206,25 @@ const CreditSettlement = () => {
       console.log("director panel");
     }
   };
+  const [validation, setValidation] = useState(null)
 
   const hanldeSettlement = () => {
+
     if (!payload || Object.keys(payload).length === 0) {
       return;
     }
+
+    if (!parentPassword) {
+      setValidation("Password is Required")
+    }
+
+
 
     const data = {
       list: payload,
       parentPassword: parentPassword,
     };
+
     setIsLoading(true)
     creditFullSettlement(data)
       .then(() => {
@@ -344,6 +353,9 @@ const CreditSettlement = () => {
                 />
               )}
             </div>
+            {validation && (
+              <span>{validation}</span>
+            )}
           </div>
           <div className="col-2">
             <div className="saffron-btn2 pointer" onClick={handleFillAll}>Fill all</div>

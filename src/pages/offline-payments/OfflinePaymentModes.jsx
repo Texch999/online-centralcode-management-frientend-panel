@@ -124,7 +124,6 @@ const OfflinePaymentModes = () => {
     if (searchInput.trim() === "") {
       getAllManPaymentModes(pagee, pageSizee);
     }
-
   }, [searchInput]);
 
   const handlePageChange = ({ limit, offset }) => {

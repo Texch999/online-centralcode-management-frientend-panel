@@ -44,7 +44,7 @@ const PaymentGateway = () => {
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const [dirEditId, setDirEditId] = useState(null);
   const [dirGatewayId, setDirGatewayId] = useState(null);
-  const itemsPerPage = 6;
+  const itemsPerPage = 3;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
@@ -105,10 +105,10 @@ const PaymentGateway = () => {
   };
 
   // get all
-  const fetchManagementPaymentDetails = async (limit, offset) => {
+  const fetchManagementPaymentDetails = async (limit, offset, holder) => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails({ limit, offset });
+      const response = await getManagementPaymentDetails({ limit, offset, holder });
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
         setTotalRecords(response?.meta?.totalCount);
@@ -132,8 +132,9 @@ const PaymentGateway = () => {
     }
   }, []);
   const onPageChange = ({ limit, offset }) => {
+
     if (role_code === "management") {
-      fetchManagementPaymentDetails(limit, offset);
+      fetchManagementPaymentDetails(limit, offset, searchInput);
     }
   };
 
@@ -158,22 +159,23 @@ const PaymentGateway = () => {
       });
   };
 
-  const filteredPayments = managementPaymentDetails.filter((item) => {
-    const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
-    const bankName = item?.bank_name?.toLowerCase();
-    const upiProviderId = item?.upi_id?.toLowerCase();
-    const countryName = getCountryName(item?.country)?.toLowerCase();
-    const accholder = item?.accholder?.toLowerCase();
-    const searchTerm = searchInput.toLowerCase();
+  // const filteredPayments = managementPaymentDetails.filter((item) => {
+  //   const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
+  //   const bankName = item?.bank_name?.toLowerCase();
+  //   const upiProviderId = item?.upi_id?.toLowerCase();
+  //   const countryName = getCountryName(item?.country)?.toLowerCase();
+  //   const accholder = item?.accholder?.toLowerCase();
+  //   const searchTerm = searchInput.toLowerCase();
 
-    return (
-      gatewayName?.includes(searchTerm) ||
-      bankName?.includes(searchTerm) ||
-      upiProviderId?.includes(searchTerm) ||
-      countryName?.includes(searchTerm) ||
-      accholder?.includes(searchTerm)
-    );
-  });
+  //   return (
+  //     gatewayName?.includes(searchTerm) ||
+  //     bankName?.includes(searchTerm) ||
+  //     upiProviderId?.includes(searchTerm) ||
+  //     countryName?.includes(searchTerm) ||
+  //     accholder?.includes(searchTerm)
+  //   );
+  // });
+  const filteredPayments = managementPaymentDetails
 
   const managementPaymentData = filteredPayments.map((item, index) => ({
     gatewayName: gatewayTypeMap[item?.gateway_type],
@@ -337,22 +339,24 @@ const PaymentGateway = () => {
       });
   };
 
-  const filteredDirPayments = accountList.filter((item) => {
-    const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
-    const bankName = item?.bank_name?.toLowerCase();
-    const upiProviderId = item?.upi_id?.toLowerCase();
-    const countryName = getCountryName(item?.country)?.toLowerCase();
-    const accholder = item?.accholder?.toLowerCase();
-    const searchTerm = searchInput.toLowerCase();
+  // const filteredDirPayments = accountList.filter((item) => {
+  //   const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
+  //   const bankName = item?.bank_name?.toLowerCase();
+  //   const upiProviderId = item?.upi_id?.toLowerCase();
+  //   const countryName = getCountryName(item?.country)?.toLowerCase();
+  //   const accholder = item?.accholder?.toLowerCase();
+  //   const searchTerm = searchInput.toLowerCase();
 
-    return (
-      gatewayName?.includes(searchTerm) ||
-      bankName?.includes(searchTerm) ||
-      upiProviderId?.includes(searchTerm) ||
-      countryName?.includes(searchTerm) ||
-      accholder?.includes(searchTerm)
-    );
-  });
+  //   return (
+  //     gatewayName?.includes(searchTerm) ||
+  //     bankName?.includes(searchTerm) ||
+  //     upiProviderId?.includes(searchTerm) ||
+  //     countryName?.includes(searchTerm) ||
+  //     accholder?.includes(searchTerm)
+  //   );
+  // });
+
+  const filteredDirPayments = accountList
 
   const transformedData = filteredDirPayments?.map((item) => ({
     gatewayName: gatewayTypeMap[item.gateway_type],
@@ -427,6 +431,24 @@ const PaymentGateway = () => {
     ),
   }));
 
+  const handleFiltration = async (e) => {
+    const limit = itemsPerPage
+    const offset = 0
+    if (e.key === "Enter") {
+      setError(null);
+      fetchManagementPaymentDetails(limit, offset, searchInput);
+    }
+  };
+
+  useEffect(() => {
+    const limit = itemsPerPage
+    const offset = (page - 1) * itemsPerPage
+    // Fetch data based on role and filterName
+    if (searchInput.trim() === "") {
+      fetchManagementPaymentDetails(limit, offset);
+    }
+  }, [searchInput]);
+
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -437,9 +459,10 @@ const PaymentGateway = () => {
             <FaSearch size={16} className="grey-clr me-2" />
             <input
               className="small-font all-none"
-              placeholder="Search..."
+              placeholder="Enter Account Holder Name"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={(e) => setSearchInput(e.target.value.trim())}
+              onKeyDown={handleFiltration}
             />
           </div>
 

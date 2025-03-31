@@ -40,12 +40,12 @@ const AddWibsites = () => {
   const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
 
-  const getAllWebsiteList = (limit, offset) => {
+  const getAllWebsiteList = (limit, offset, web_name) => {
     setLoading(true)
     getWebsitesList({
       limit,
       offset,
-      web_name: filterName,
+      web_name,
     })
       .then((response) => {
         if (response?.status) {
@@ -55,10 +55,12 @@ const AddWibsites = () => {
         } else {
           setError("Something Went Wrong");
           setWebsite([]);
+          setLoading(false)
         }
       })
       .catch((error) => {
         setWebsite([]);
+        setLoading(false)
         setError(error?.message || "API request failed");
       });
   };
@@ -91,7 +93,7 @@ const AddWibsites = () => {
     // Fetch data based on role and filterName
     if (filterName.trim() === "") {
       if (role === "management") {
-        getAllWebsiteList(limit, offset);
+        getAllWebsiteList(limit, offset, filterName);
       } else {
         getAllDirectorWebsiteList(limit, offset);
       }
@@ -100,7 +102,7 @@ const AddWibsites = () => {
 
   const handlePageChange = ({ limit, offset }) => {
     if (role === "management") {
-      getAllWebsiteList(limit, offset);
+      getAllWebsiteList(limit, offset, filterName);
     } else {
       getAllDirectorWebsiteList(limit, offset);
     }
@@ -195,18 +197,20 @@ const AddWibsites = () => {
       )),
     }))
   );
+
   const handleFiltration = async (e) => {
     const limit = itemsPerPage;
-    const offset = (page - 1) * itemsPerPage;
+    const offset = 0;
     if (e.key === "Enter") {
       if (role === "management") {
         setError(null);
-        getAllWebsiteList(limit, offset);
+        getAllWebsiteList(limit, offset, filterName);
       } else {
         getAllDirectorWebsiteList(limit, offset);
       }
     }
   };
+
   const handleBlockAndUnblock = () => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
@@ -234,12 +238,13 @@ const AddWibsites = () => {
         }, 2000);
       });
   };
-  const getWebsitesCallback = () => {
 
+  const getWebsitesCallback = () => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
     getAllWebsiteList(limit, offset)
   }
+
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
@@ -297,35 +302,45 @@ const AddWibsites = () => {
         )
       }
 
+      {onAddwebsitePopup && (
+        <AddWebsitesPopup
+          show={onAddwebsitePopup}
+          onHide={() => setOnAddwebsitePopup(false)}
+          countries={allCountries}
+          getWebsitesCallback={getWebsitesCallback}
+          editMode={editMode}
+          websiteId={websiteId}
+          setEditMode={setEditMode}
+          setWebsiteId={setWebsiteId}
+        />
+      )}
 
+      {confirmationPopupOpen && (
+        <ConfirmationPopup
+          confirmationPopupOpen={confirmationPopupOpen}
+          setConfirmationPopupOpen={setConfirmationPopupOpen}
+          discription={`Are you sure you want to ${status === 1 ? "block" : "unblock"} this website?`}
+          submitButton={status === 1 ? "Block" : "Unblock"}
+          onSubmit={handleBlockAndUnblock}
+        />
+      )}
+      
+      {openSuccessPopup && (
+        <SuccessPopup
+          successPopupOpen={openSuccessPopup}
+          setSuccessPopupOpen={setOpenSuccessPopup}
+          discription={displayMsg}
+        />
+      )}
 
-      <AddWebsitesPopup
-        show={onAddwebsitePopup}
-        onHide={() => setOnAddwebsitePopup(false)}
-        countries={allCountries}
-        getWebsitesCallback={getWebsitesCallback}
-        editMode={editMode}
-        websiteId={websiteId}
-        setEditMode={setEditMode}
-        setWebsiteId={setWebsiteId}
-      />
-      <ConfirmationPopup
-        confirmationPopupOpen={confirmationPopupOpen}
-        setConfirmationPopupOpen={setConfirmationPopupOpen}
-        discription={`Are you sure you want to ${status === 1 ? "block" : "unblock"} this website?`}
-        submitButton={status === 1 ? "Block" : "Unblock"}
-        onSubmit={handleBlockAndUnblock}
-      />
-      <SuccessPopup
-        successPopupOpen={openSuccessPopup}
-        setSuccessPopupOpen={setOpenSuccessPopup}
-        discription={displayMsg}
-      />
-      <ErrorPopup
-        errorPopupOpen={errorPopupOpen}
-        setErrorPopupOpen={setErrorPopupOpen}
-        discription={displayMsg}
-      />
+      {errorPopupOpen && (
+        <ErrorPopup
+          errorPopupOpen={errorPopupOpen}
+          setErrorPopupOpen={setErrorPopupOpen}
+          discription={displayMsg}
+        />
+      )}
+
     </div>
   );
 };
