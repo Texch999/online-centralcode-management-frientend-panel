@@ -30,68 +30,41 @@ const UnblockBlockWebsiteModal = ({
     setPswdVisible((prev) => !prev);
   };
 
-  console.log(adminWebsiteId, "adminWebsiteId");
-
-  const handleBlock = (status, userweb, adminweb, isAdmin = false) => {
-    if (isAdmin) {
-      // Toggle Admin Website and block/unblock all user websites
-      const newStatus = status === 1 ? 2 : 1; // Toggle between Active (1) and Inactive (2)
-      setStatusId(newStatus);
-      setAdminWebId(adminweb);
-
-      // Get all user websites linked to this admin
-      const updatedUserWebsites =
-        webList?.accessWebsites
-          .find((item) => item.admin_panel_id === adminweb)
-          ?.user_panels.map((item) => ({
+  const handleBlock = (status, userweb, adminweb) => {
+    setStatusId(status);
+    setSelectedWebsites((prev) => {
+      const exists = prev.find((item) => item.user_panel_id === userweb);
+      if (exists) {
+        return prev.map((item) =>
+          item.user_panel_id === userweb ? { ...item, status } : item
+        );
+      } else {
+        return [
+          ...prev,
+          {
             admin_panel_id: adminweb,
-            user_panel_id: item.user_panel_id,
-            status: newStatus, // Apply same status to all user websites
-          })) || [];
-
-      setSelectedWebsites(updatedUserWebsites);
-    } else {
-      // Toggle individual user website
-      setSelectedWebsites((prev) => {
-        const exists = prev.find((item) => item.user_panel_id === userweb);
-        if (exists) {
-          return prev.map((item) =>
-            item.user_panel_id === userweb ? { ...item, status } : item
-          );
-        } else {
-          return [
-            ...prev,
-            {
-              admin_panel_id: adminweb,
-              user_panel_id: userweb,
-              status: status,
-            },
-          ];
-        }
-      });
-    }
+            user_panel_id: userweb,
+            status: status,
+          },
+        ];
+      }
+    });
   };
 
-  // const handleBlock = (status, userweb, adminweb) => {
-  //   setStatusId(status);
-  //   setSelectedWebsites((prev) => {
-  //     const exists = prev.find((item) => item.user_panel_id === userweb);
-  //     if (exists) {
-  //       return prev.map((item) =>
-  //         item.user_panel_id === userweb ? { ...item, status } : item
-  //       );
-  //     } else {
-  //       return [
-  //         ...prev,
-  //         {
-  //           admin_panel_id: adminweb,
-  //           user_panel_id: userweb,
-  //           status: status,
-  //         },
-  //       ];
-  //     }
-  //   });
-  // };
+  const handleBlockAdmin = (status) => {
+    setStatusId(status);
+
+    // Update all user websites to match the admin status
+    const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
+      website.user_panels?.map((item) => ({
+        admin_panel_id: website?.admin_panel_id,
+        user_panel_id: item?.user_panel_id,
+        status: status, // Update all user websites based on admin status
+      }))
+    );
+
+    setSelectedWebsites(updatedUserWebsites);
+  };
 
   const handleSubmit = () => {
     if (!pswd) {
@@ -108,16 +81,10 @@ const UnblockBlockWebsiteModal = ({
 
     const payload = {
       parent_password: pswd,
-      // if(adminStatusId){
-      //   status: adminStatusId === 1 ? 2 : 1,
-      // },
-
+      status: statusId,
       websites: selectedWebsites,
     };
-    if (adminWebId) {
-      // Only send status if admin website was toggled
-      payload.status = statusId;
-    }
+
     console.log(payload, "payloadddd");
     suspendWebsiteProfile(dwnlnId, payload)
       .then((response) => {
@@ -210,6 +177,10 @@ const UnblockBlockWebsiteModal = ({
                     type="checkbox"
                     role="switch"
                     id="flexSwitchCheckDefault"
+                    checked={adminStatusId === 1}
+                    onChange={() =>
+                      handleBlockAdmin(adminStatusId === 1 ? 2 : 1)
+                    }
                   />
                 </div>
               </div>
