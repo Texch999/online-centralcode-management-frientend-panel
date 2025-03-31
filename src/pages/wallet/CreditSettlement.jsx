@@ -20,7 +20,7 @@ const CreditSettlement = () => {
   const [creditUserList, setCreditUserList] = useState([]);
   const [totalRecords, setTotalRecords] = useState([]);
   const [settlementAmounts, setSettlementAmounts] = useState({});
-  const [payload, setPayload] = useState([]); // State to store the payload
+  const [payload, setPayload] = useState([]); 
   const itemsPerPage = 9;
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
