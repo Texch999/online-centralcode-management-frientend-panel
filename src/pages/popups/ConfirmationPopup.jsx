@@ -3,6 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Images } from "../../images";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
@@ -10,8 +11,9 @@ function ConfirmationPopup({
   discription,
   submitButton,
   onSubmit,
+  blockLoader,
 }) {
-  const itemsPerPage=4;
+  const itemsPerPage = 4;
   const [searchParams, setSearchParams] = useSearchParams();
   const intialpage = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(intialpage);
@@ -22,8 +24,8 @@ function ConfirmationPopup({
   };
 
   const handleSunmit = async () => {
-    onSubmit(page,pageSize);
-    setConfirmationPopupOpen(false);
+    onSubmit(page, pageSize);
+    // setConfirmationPopupOpen(false);
   };
 
   return (
@@ -58,11 +60,27 @@ function ConfirmationPopup({
               >
                 Cancel
               </button>
+
               <button
                 className="w-50 saffron-btn2 ms-2"
                 onClick={() => handleSunmit()}
+                disabled={blockLoader === true ? true : false}
               >
-                {submitButton}
+                <div className="d-flex flex-center">
+                {blockLoader === true ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  ""
+                )}
+                <div className="ms-2"> {submitButton}</div>
+                </div>
+               
               </button>
             </div>
           </center>
