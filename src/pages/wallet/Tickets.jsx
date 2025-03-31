@@ -39,7 +39,6 @@ function Tickets() {
   const [fromDate, setFromDate] = useState(new Date().toISOString().split('T')[0]);
   const [rejectionReasons, setRejectionReasons] = useState(null);
   const [error, setError] = useState([])
-  const initialRendering = useRef(true)
   const [ticketDetails, setTicketDetails] = useState(null)
   const [ticketId, setTicketId] = useState(null)
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -116,8 +115,8 @@ function Tickets() {
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
     { header: "Name & Role", field: "nameRole" },
-    { header: "Admin/User Website", field: "adminuserwebiste" },
-    { header: "UTR No/ DepositeType", field: "utrno" },
+    // { header: "Admin/User Website", field: "adminuserwebiste" },
+    { header: "UTR No/ Payment Mode", field: "utrno" },
     { header: "D/W", field: "dw" },
     { header: "IsCredit", field: "iscredit" },
     { header: "Chips", field: "chips" },
@@ -231,16 +230,16 @@ function Tickets() {
         dateTime: utcDate(record.date),
         nameRole: (
           <div>
-            {record.dirName} - Director
+            {record.dirName} -  {record.reqBy == 1 ? "Director" : "Super Admin"}
             <br />
-            {record.shareType === 1 ? "Rental" : "Share Royalty"} - {record.sharePer}%
+            {record.shareType === 1 ? "Rental" : "Share Royalty"}
           </div>
         ),
-        adminuserwebiste: (<div>
-          {record.admPanNam}
-          <br />
-          {record.usePanNam}
-        </div>),
+        // adminuserwebiste: (<div>
+        //   {record.admPanNam}
+        //   <br />
+        //   {record.usePanNam}
+        // </div>),
         utrno: <div >{record.transacId}</div>,
         dw: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>
           {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
@@ -284,11 +283,6 @@ function Tickets() {
     getDepositTickets(limit, offset)
   }, [])
 
-  // const handleDeposit = (action) => {
-  //   navigate("/addnew-payments", {
-  //     state: { actionType: action },
-  //   });
-  // }
 
   const handleDepositAndWithdraw = (id) => {
     if (id) {
@@ -336,22 +330,6 @@ function Tickets() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">Downline Tickets</h6>
-        {/* <---------- deposit and withdraw buttons ------->*/}
-
-        {/* {userRole !== "management" ?
-          <div className="d-flex align-items-center gap-1">
-            <button className={`me-3 dark-green-bg px-3`} onClick={() =>
-              handleDeposit("Deposit")
-            }>Deposit</button>
-            <button className={`me-3 saffron-btn2 px-3`} onClick={() =>
-              handleDeposit("Withdraw")
-            } > Withdraw</button>
-          </div>
-          :
-          <div className="input-pill d-flex align-items-center rounded-pill px-2">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input className="small-font all-none" placeholder="Search..." />
-          </div>} */}
 
       </div>
 

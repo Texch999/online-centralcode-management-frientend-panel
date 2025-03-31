@@ -38,6 +38,7 @@ const CreditSettlement = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [discription, setDiscription] = useState("");
   const [apiLoading, setApiLoading] = useState(false);
+
   const GetAllDirectors = () => {
     getOfflineDWDirectors()
       .then((response) => {
@@ -224,6 +225,8 @@ const CreditSettlement = () => {
         setIsLoading(false)
         setSuccessPopupOpen(true)
         setDiscription("Credit Settled Successfully");
+        setPayload([])
+        setParentPassword("")
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 3000);
@@ -311,6 +314,7 @@ const CreditSettlement = () => {
               footer={footer}
               verLine={true}
               onPageChange={handlePageChange}
+              totalRecords={totalRecords}
             />
           </div>
         )}

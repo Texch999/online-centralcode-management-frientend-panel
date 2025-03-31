@@ -70,7 +70,7 @@ const OfflineDepositPopup = ({
             .then((response) => {
                 handleSuccesPopup();
                 setDepositPopup(false);
-                setDiscription(`Deposit Ticket Created Successfully`);
+                setDiscription(`Deposit Successfully`);
                 setApiErrors(null);
             })
             .catch((error) => {

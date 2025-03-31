@@ -85,7 +85,7 @@ const OfflineWithdrawPopup = ({
             .then((response) => {
                 setWithdrawPopup(false);
                 handleSuccesPopup()
-                setDiscription(`Withdraw Ticket Created Successfully`);
+                setDiscription(`Withdraw Successfully`);
                 setApiErrors(null);
                 setErrors({});
             })
