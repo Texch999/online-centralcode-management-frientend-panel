@@ -90,10 +90,8 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         </div>
       </div>
     ),
-
     last: <div className="d-flex flex-column"></div>,
     status: statusElement,
-
     action: (
       <div className="d-flex gap-2 mb-5 flex-center">
         <span className="pointer">

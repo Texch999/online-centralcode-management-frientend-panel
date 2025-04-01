@@ -226,10 +226,9 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
 
   // Handle Name Change
   const handleNameChange = (e) => {
-    const value = e.target.value;
-    // setName(value);
+    const value = e.target.value.replace(/[^A-Za-z\s]/g, "");
     setName(value.trimStart());
-    validateName(value); // Validate on change
+    validateName(value);
   };
 
   // Handle Phone Number Change
@@ -292,7 +291,7 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
                 className="all-none rounded input-css w-100 small-font"
                 placeholder="Enter"
                 value={name}
-                onChange={handleNameChange} 
+                onChange={handleNameChange}
               />
               {nameError && (
                 <div className="text-danger small-font">{nameError}</div>

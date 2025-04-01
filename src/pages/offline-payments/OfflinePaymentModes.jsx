@@ -15,6 +15,7 @@ import { imgUrl } from "../../api/baseUrl";
 import { useSearchParams } from "react-router-dom";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useSelector } from "react-redux";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const OfflinePaymentModes = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -42,6 +43,8 @@ const OfflinePaymentModes = () => {
   const [errorPopup, setErrorPopup] = useState(false);
   const status_id = statusId === 1 ? 2 : 1;
   const allCountries = useSelector((item) => item?.allCountries);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const hanldeAddModal = () => {
     setShowAddModal(true);
@@ -93,8 +96,6 @@ const OfflinePaymentModes = () => {
         if (response.status === true) {
           setPaymentModes(response.data);
           setTotalRecords(response?.totalCount);
-        } else {
-          setError(response?.message);
         }
       })
       .catch((error) => {
@@ -154,25 +155,25 @@ const OfflinePaymentModes = () => {
   //   );
   // });
 
-  const suspendStatus = (currentLimit, currentOffset) => {
+  const suspendStatus = () => {
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
-        console.log(response);
         if (response.status === true) {
-          getAllManPaymentModes(currentLimit, currentOffset);
-          console.log(response, "Suspended");
-        } else {
-          console.log(response.message);
+          getAllManPaymentModes(page, pageSize);
+          setMsg(response?.message);
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+          }, 3000);
         }
       })
       .catch((error) => {
         setError(error?.message[0]?.message);
         setConfirmationModal(false);
-
-        setErrorPopup(true);
-        setTimeout(() => {
-          setErrorPopup(false);
-        }, 2000);
+        // setErrorPopup(true);
+        // setTimeout(() => {
+        //   setErrorPopup(false);
+        // }, 2000);
       });
   };
 
@@ -182,7 +183,7 @@ const OfflinePaymentModes = () => {
     { header: "Name", field: "name", width: "15%" },
     { header: "Image", field: "image", width: "15%" },
     { header: "type", field: "type", width: "10%" },
-    { header: <div className="" >Status</div>, field: "status", width: "12%" },
+    { header: <div className="">Status</div>, field: "status", width: "12%" },
     {
       header: <div className="">Actions</div>,
       field: "action",
@@ -212,7 +213,11 @@ const OfflinePaymentModes = () => {
 
       action: (
         <div className="d-flex gap-2 my-1">
-          {console.log(item?.status, Number(item?.status) === 1, "===>  item?.status === ")}
+          {console.log(
+            item?.status,
+            Number(item?.status) === 1,
+            "===>  item?.status === "
+          )}
           {item?.status === 1 ? (
             <span>
               <SlPencil
@@ -241,7 +246,7 @@ const OfflinePaymentModes = () => {
 
   const handleFiltration = async (e) => {
     const pageSiz = itemsPerPage;
-    const pag = 1
+    const pag = 1;
     if (e.key === "Enter") {
       setError(null);
       getAllManPaymentModes(pag, pageSiz, searchInput);
@@ -307,8 +312,9 @@ const OfflinePaymentModes = () => {
       <ConfirmationPopup
         confirmationPopupOpen={confirmationModal}
         setConfirmationPopupOpen={() => setConfirmationModal(false)}
-        discription={`Are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
-          } this Payment Mode?`}
+        discription={`Are you sure you want to ${
+          statusId === 1 ? "In-Active" : "Active"
+        } this Payment Mode?`}
         submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
         onSubmit={suspendStatus}
       />
@@ -316,6 +322,11 @@ const OfflinePaymentModes = () => {
         discription={error}
         errorPopupOpen={errorPopup}
         setErrorPopupOpen={setErrorPopup}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={msg}
       />
     </div>
   );
