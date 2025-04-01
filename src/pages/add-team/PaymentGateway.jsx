@@ -20,6 +20,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
 
 const PaymentGateway = () => {
+
   const navigate = useNavigate();
   const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false);
   const [onBlockPopup, setOnBlockPopup] = useState(false);
@@ -89,12 +90,12 @@ const PaymentGateway = () => {
     },
   ];
 
-  // management payment details =========================== management payment details =========================
-
   const handleManagementSuspend = (id, status) => {
+
     setSuspendPayment(true);
     setSuspendManagementPaymentId(id);
     setSuspendManagementPaymentStatus(status);
+
   };
 
   const handleEditManagePayment = (id, gateway_type) => {
@@ -104,7 +105,6 @@ const PaymentGateway = () => {
     setAvailablePaymentModeId(gateway_type);
   };
 
-  // get all
   const fetchManagementPaymentDetails = async (limit, offset, holder) => {
     setLoading(true);
     try {
@@ -124,21 +124,20 @@ const PaymentGateway = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (role_code === "management") {
-      if (paymentDetailsDataFetched.current) return;
-      paymentDetailsDataFetched.current = true;
-      fetchManagementPaymentDetails(limit, offset);
-    }
-  }, []);
-  const onPageChange = ({ limit, offset }) => {
 
+  useEffect(() => {
+    const limit = itemsPerPage;
+    const offset = (pages - 1) * itemsPerPage;
+    fetchManagementPaymentDetails(limit, offset);
+
+  }, []);
+
+  const onPageChange = ({ limit, offset }) => {
     if (role_code === "management") {
       fetchManagementPaymentDetails(limit, offset, searchInput);
     }
   };
 
-  //suspend api
   const suspendManPaymnet = (limit, offset) => {
     suspendManagementPaymentDetails(suspendManagementPaymentId)
       .then((response) => {
@@ -159,22 +158,6 @@ const PaymentGateway = () => {
       });
   };
 
-  // const filteredPayments = managementPaymentDetails.filter((item) => {
-  //   const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
-  //   const bankName = item?.bank_name?.toLowerCase();
-  //   const upiProviderId = item?.upi_id?.toLowerCase();
-  //   const countryName = getCountryName(item?.country)?.toLowerCase();
-  //   const accholder = item?.accholder?.toLowerCase();
-  //   const searchTerm = searchInput.toLowerCase();
-
-  //   return (
-  //     gatewayName?.includes(searchTerm) ||
-  //     bankName?.includes(searchTerm) ||
-  //     upiProviderId?.includes(searchTerm) ||
-  //     countryName?.includes(searchTerm) ||
-  //     accholder?.includes(searchTerm)
-  //   );
-  // });
   const filteredPayments = managementPaymentDetails
 
   const managementPaymentData = filteredPayments.map((item, index) => ({
@@ -248,8 +231,6 @@ const PaymentGateway = () => {
     ),
   }));
 
-  // management payment details =================== management payment details====================
-
   const handleDirectorEdit = (id, gateway_id, currency_id) => {
     setDirEditId(id);
     setAvailablePaymentModeId(gateway_id);
@@ -292,7 +273,7 @@ const PaymentGateway = () => {
     if (role_code !== "management") {
       if (paymentDetailsDataFetched.current) return;
       paymentDetailsDataFetched.current = true;
-      getDirectorAccountData(page, pageSize);
+      getDirectorAccountData(pages, pageSize);
     }
   }, []);
 
@@ -338,23 +319,6 @@ const PaymentGateway = () => {
         }, [2000]);
       });
   };
-
-  // const filteredDirPayments = accountList.filter((item) => {
-  //   const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
-  //   const bankName = item?.bank_name?.toLowerCase();
-  //   const upiProviderId = item?.upi_id?.toLowerCase();
-  //   const countryName = getCountryName(item?.country)?.toLowerCase();
-  //   const accholder = item?.accholder?.toLowerCase();
-  //   const searchTerm = searchInput.toLowerCase();
-
-  //   return (
-  //     gatewayName?.includes(searchTerm) ||
-  //     bankName?.includes(searchTerm) ||
-  //     upiProviderId?.includes(searchTerm) ||
-  //     countryName?.includes(searchTerm) ||
-  //     accholder?.includes(searchTerm)
-  //   );
-  // });
 
   const filteredDirPayments = accountList
 
@@ -442,8 +406,7 @@ const PaymentGateway = () => {
 
   useEffect(() => {
     const limit = itemsPerPage
-    const offset = (page - 1) * itemsPerPage
-    // Fetch data based on role and filterName
+    const offset = (pages - 1) * itemsPerPage
     if (searchInput.trim() === "") {
       fetchManagementPaymentDetails(limit, offset);
     }
@@ -479,16 +442,9 @@ const PaymentGateway = () => {
         </div>
       )}
 
-
       {role_code === "management" ? (
         <div className="mt-2">
           {loading ? (
-            // <div className="d-flex flex-column flex-center mt-10rem align-items-center">
-            //   <CircleLoader color="#3498db" size={40} />
-            //   <div className="medium-font black-font my-3">
-            //     Just a moment...............⏳
-            //   </div>
-            // </div>
             <div className="spinner">
               <div className="spinner-circle"></div>
             </div>

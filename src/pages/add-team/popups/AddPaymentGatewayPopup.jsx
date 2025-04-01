@@ -12,6 +12,8 @@ import {
 } from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
+import ErrorComponent from "../../../components/ErrorComponent";
+import { useSearchParams } from "react-router-dom";
 
 const AddPaymentGatewayPopup = ({
   show,
@@ -30,7 +32,7 @@ const AddPaymentGatewayPopup = ({
   getDirectorAccountData,
   //man profile
 }) => {
-  console.log("getDirectorAccountData", dirEditId);
+
   const [upiID, setUpiID] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [bankIFSC, setBankIFSC] = useState("");
@@ -39,6 +41,8 @@ const AddPaymentGatewayPopup = ({
   const [error, setError] = useState("");
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [manPaymentData, setManPaymentData] = useState([]);
   const role_code = localStorage.getItem("role_code");
@@ -50,9 +54,11 @@ const AddPaymentGatewayPopup = ({
     setQrCode(file);
     setQrName(file?.name);
   };
+  const itemsPerPage = 3;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pages = parseInt(searchParams.get("page") || 1);
   const [validationErrors, setValidationErrors] = useState({});
   const [msg, setMsg] = useState("");
-  const [loading, setLoading] = useState(false);
   const resetFields = () => {
     setUpiID("");
     setAccountNumber("");
@@ -68,14 +74,14 @@ const AddPaymentGatewayPopup = ({
   };
 
   const onHide = () => {
-    // setOnAddPaymentGateway(false);
     setOnAddPaymentGateway();
     resetFields();
+    setManagementPaymentEditId(null)
   };
 
-  // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
   const [updateId, setUpdateId] = useState(null);
   const fetchManagementPaymentDetailsById = () => {
+    setInitialLoading(true)
     getManagementPaymentDetailsById(managementPaymentEditId)
       .then((response) => {
         console.log("response", response);
@@ -92,8 +98,10 @@ const AddPaymentGatewayPopup = ({
           setQrName(response?.data?.qr_code_image || "");
           console.log(response?.data?.gateway_type, "success");
         }
+        setInitialLoading(false)
       })
       .catch((error) => {
+        setInitialLoading(false)
         setError(error?.message);
         console.log(error?.message, "errorr");
       });
@@ -192,30 +200,26 @@ const AddPaymentGatewayPopup = ({
       const response = managementPaymentEdit
         ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
         : await createManagementPaymentDetails(formData);
+
       if (response.status === true) {
         setOnAddPaymentGateway(false);
         setMsg(response?.message);
         fetchManagementPaymentDetails();
-        setLoading(false)
         setSuccessPopupOpen(true);
+        setLoading(false)
+        setManagementPaymentEditId(null)
         setTimeout(() => {
           setSuccessPopupOpen(false);
-        }, 2000);
+        }, 3000);
         resetFields();
       }
     } catch (error) {
-      setError(error?.message);
-      setErrorPopupOpen(true);
       setLoading(false)
-      setTimeout(() => {
-        setErrorPopupOpen(false);
-      }, 2000);
+      setError(error?.message);
       console.log(error?.message, "errorr");
     }
   };
-  // managemnet paymnet details edit and post get apis ============================ managemnet paymnet details edit and post get apis
 
-  // director payment apis ===================================================================== director
   const [dirPaymentDataById, setDirPaymentDataById] = useState(null);
   console.log(dirPaymentDataById, "setDirPaymentDataById");
   const [dirUpdateId, setDirUpdateId] = useState(null);
@@ -337,12 +341,12 @@ const AddPaymentGatewayPopup = ({
         : await postDirectorAccountDetails(formData);
       if (response.status === true) {
         setMsg(response?.message);
-        setOnAddPaymentGateway(false);
         setSuccessPopupOpen(true);
         resetFields();
         getDirectorAccountData();
         setTimeout(() => {
           setSuccessPopupOpen(false);
+          setOnAddPaymentGateway(false);
         }, 2000);
       }
     } catch (error) {
@@ -355,11 +359,12 @@ const AddPaymentGatewayPopup = ({
     }
   };
 
-  //director payment apis ================================================================= director
-  console.log(availablePaymentModeId, "===>availablePaymentModeId");
+
   return (
     <>
       <Modal centered show={show} onHide={onHide} size="md">
+        {initialLoading && managementPaymentEdit && (<div className="my-load">
+          <div className="loader "></div></div>)}
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">
@@ -369,7 +374,9 @@ const AddPaymentGatewayPopup = ({
             </h5>
             <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
-
+          {error && (
+            <ErrorComponent error={error} />
+          )}
           <div className="row mb-3">
             <div className="col-6">
               <label className="small-font mb-1">Account Holder Name</label>
@@ -557,19 +564,34 @@ const AddPaymentGatewayPopup = ({
             )}
           </div>
 
-          <div className="row d-flex mt-3 justify-content-end">
+          {/* <div className="row d-flex mt-3 justify-content-end">
             <div className="col-6">
-              
-              <button className="w-100 saffron-btn rounded small-font"
-                type="submit"
-                disabled={loading === true ? true : false}
+              <button
+                type="button"
+                className="w-100 saffron-btn rounded small-font"
                 onClick={
                   role_code === "management"
                     ? handleManagementPayments
                     : handleDirectorPayments
                 }
               >
+                {managementPaymentEdit ? "Update" : "Submit"}
+              </button>
+            </div>
+          </div> */}
 
+          <div className="row d-flex mt-3 justify-content-end">
+            <div className="col-6">
+
+              <button className="w-100 saffron-btn rounded small-font"
+                type="submit"
+                disabled={loading}
+                onClick={
+                  role_code === "management"
+                    ? handleManagementPayments
+                    : handleDirectorPayments
+                }
+              >
                 {loading ? (
                   <Spinner
                     as="span"
@@ -582,7 +604,9 @@ const AddPaymentGatewayPopup = ({
                   ""
                 )}
                 <span className="ps-2">
-                  {loading === true ? managementPaymentEdit ? "Updating" : "Submiting" : managementPaymentEdit ? "Update" : "Submit"}</span>
+                  {loading === true
+                    ? managementPaymentEdit ? "Updating" :
+                      "Submiting" : managementPaymentEdit ? "Update" : "Submit"}</span>
               </button>
             </div>
           </div>
