@@ -59,7 +59,7 @@ const AddNePaymentGateway = () => {
     { title: "Payment Gateway", mode: 5 },
   ];
   const getOwnersPaymentModes = () => {
-    setLoading(true);
+
     let fetchPaymentModes = null;
 
     if (userRole === "director") {
@@ -74,48 +74,42 @@ const AddNePaymentGateway = () => {
       fetchPaymentModes
         .then((response) => {
           setPaymentModes(response?.data);
+
         })
         .catch((error) => {
           setError(error?.message);
           console.log("getDirectorAccountDetails error", error);
+
         })
-        .finally(() => {
-          setLoading(false);
-        });
     } else {
-      setLoading(false);
       console.log("No valid fetch function executed");
     }
   };
 
-
   const OfflineModesdata = () => {
-    setLoading(true);
     let fetchPaymentModes;
     if (userRole === "director") {
       fetchPaymentModes = DirectorAvailablePaymentsModes();
     } else {
       fetchPaymentModes = ownersAvailablePaymentsModes();
     }
-
+    setLoading(true);
     fetchPaymentModes
       .then((response) => {
         setOfflinePaymentModes(response?.data);
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         setError(error?.message);
         console.log("getDirectorAccountDetails error", error);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      ;
   };
   useEffect(() => {
     OfflineModesdata();
     getOwnersPaymentModes();
   }, []);
-
-
 
   useEffect(() => {
     if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
@@ -143,7 +137,6 @@ const AddNePaymentGateway = () => {
     }
   }, [offlinePaymentModes, paymentModes]);
 
-
   const allCountries = useSelector((item) => item?.allCountries);
   const formattedCountries = allCountries.map((country) => ({
     value: country.id,
@@ -160,7 +153,6 @@ const AddNePaymentGateway = () => {
   const hasNoRecords = filteredPaymentModes.length === 0;
 
   const handleDepositAndWithdraw = (paymentDetails) => {
-
     if (actionType === "Deposit") {
       setDepositePopup(true);
       setSelectedPayment(paymentDetails);
@@ -173,121 +165,136 @@ const AddNePaymentGateway = () => {
   const handleSuccessPopupOpen = () => {
     setSuccessPopupOpen(true)
   }
-
   return (
-    <div>
-      <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-        <div className="yellow-font medium-font mb-0">Add New Gateway</div>
+    <>
+      {loading ? <div className="spinner" style={{ zIndex: 1000 }}>
+        {console.log("loading......")}
+        <div className="spinner-circle"></div>
+      </div> :
 
-        <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
-          <span className="small-font" style={{ color: "#fff" }} >
-            Back
-          </span>
-        </div>
-      </div>
-      <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
-        <div className="row mb-3">
-          <div className="col-3">
-            <label htmlFor="paymentMethod" className="medium-font mb-1">
-              Currency
-            </label>
-            <Select
-              className="small-font text-capitalize"
-              options={formattedCountries}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={300}
-              menuPlacement="auto"
-              value={formattedCountries.find(
-                (option) => option.value === selectedCountryId
-              )}
-              onChange={(selected) => setSelectedCountryId(selected.value)}
-              formatOptionLabel={(option) => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    textTransform: "text-capitalize",
-                  }}
-                >
-                  <span>{option.label.split(" - ")[0]}</span>
-                  <span>{option.label.split(" - ")[1]}</span>
-                </div>
-              )}
-            />
+        <div>
+          <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
+            <div className="yellow-font medium-font mb-0">Add New Gateway</div>
+
+            <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
+              <span className="small-font" style={{ color: "#fff" }} >
+                Back
+              </span>
+            </div>
           </div>
-        </div>
-        {hasNoRecords ? (
-          <NoDataFound />
-        ) : (
-          <>
-            <div className="d-flex justify-content-start ms-3">
-              <div className="row mb-2 gap-2">
-                {tabNames.map((tabName, index) => (
-                  <div
-                    key={index}
-                    className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 px2" : "rounded"
-                      }`}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setSelectedTab(index)}
-                  >
-                    {tabName}
-                  </div>
-                ))}
+          <div className="mt-2 min-h-screen bg-white rounded-md ps-2 pb-4">
+            <div className="row mb-3">
+              <div className="col-3">
+                <label htmlFor="paymentMethod" className="medium-font mb-1">
+                  Currency
+                </label>
+                <Select
+                  className="small-font text-capitalize"
+                  options={formattedCountries}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={300}
+                  menuPlacement="auto"
+                  value={formattedCountries.find(
+                    (option) => option.value === selectedCountryId
+                  )}
+                  onChange={(selected) => setSelectedCountryId(selected.value)}
+                  formatOptionLabel={(option) => (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        textTransform: "text-capitalize",
+                      }}
+                    >
+                      <span>{option.label.split(" - ")[0]}</span>
+                      <span>{option.label.split(" - ")[1]}</span>
+                    </div>
+                  )}
+                />
               </div>
             </div>
 
-            <PaymentModes
-              modes={modes}
-              filteredPaymentModes={filteredPaymentModes}
-              userRole={userRole}
-              actionType={actionType}
-              handleDepositAndWithdraw={handleDepositAndWithdraw}
-              handleAddModal={handleAddModal}
-              selectedTab={selectedTab}
-            />
-          </>
-        )}
-      </div>
-      {AddPaymentGatewayModal && (
-        <AddPaymentGatewayPopup
-          show={AddPaymentGatewayModal}
-          setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
-          addpaymentId={addpaymentId}
-          setAddPaymentId={setAddPaymentId}
-          countryId={countryId}
-          setCountryId={setCountryId}
-          availablePaymentModeId={availablePaymentModeId}
-          setAvailablePaymentModeId={setAvailablePaymentModeId}
-        />
-      )}
-      {actionType === "Deposit" && depositePopup && (
-        <DepositePopup
-          setDepositePopup={setDepositePopup}
-          depositePopup={depositePopup}
-          actionType={actionType}
-          selectedPayment={selectedPayment}
-          handleSuccessPopupOpen={handleSuccessPopupOpen}
-          setDiscription={setDiscription}
-        />
-      )}
+            {hasNoRecords ? (
+              <NoDataFound />
+            ) : (
+              <>
+                <div className="d-flex justify-content-start ms-3">
+                  <div className="row mb-2 gap-2">
+                    {tabNames.map((tabName, index) => (
+                      <div
+                        key={index}
+                        className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 px2" : "rounded"
+                          }`}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setSelectedTab(index)}
+                      >
+                        {tabName}
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-      {actionType === "Withdraw" && withdrawPopup && (
-        <WithdrawPopup
-          setWithdrawPopup={setWithdrawPopup}
-          withdrawPopup={withdrawPopup}
-          actionType={actionType}
-          selectedPayment={selectedPayment}
-          handleSuccessPopupOpen={handleSuccessPopupOpen}
-          setDiscription={setDiscription}
-        />
-      )}
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={discription}
-      />
-    </div>
+                <PaymentModes
+                  modes={modes}
+                  filteredPaymentModes={filteredPaymentModes}
+                  userRole={userRole}
+                  actionType={actionType}
+                  handleDepositAndWithdraw={handleDepositAndWithdraw}
+                  handleAddModal={handleAddModal}
+                  selectedTab={selectedTab}
+                />
+              </>
+            )}
+          </div>
+
+          {AddPaymentGatewayModal && (
+            <AddPaymentGatewayPopup
+              show={AddPaymentGatewayModal}
+              setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
+              addpaymentId={addpaymentId}
+              setAddPaymentId={setAddPaymentId}
+              countryId={countryId}
+              setCountryId={setCountryId}
+              availablePaymentModeId={availablePaymentModeId}
+              setAvailablePaymentModeId={setAvailablePaymentModeId}
+            />
+          )}
+
+          {actionType === "Deposit" && depositePopup && (
+            <DepositePopup
+              setDepositePopup={setDepositePopup}
+              depositePopup={depositePopup}
+              actionType={actionType}
+              selectedPayment={selectedPayment}
+              handleSuccessPopupOpen={handleSuccessPopupOpen}
+              setDiscription={setDiscription}
+            />
+          )}
+
+          {actionType === "Withdraw" && withdrawPopup && (
+            <WithdrawPopup
+              setWithdrawPopup={setWithdrawPopup}
+              withdrawPopup={withdrawPopup}
+              actionType={actionType}
+              selectedPayment={selectedPayment}
+              handleSuccessPopupOpen={handleSuccessPopupOpen}
+              setDiscription={setDiscription}
+            />
+          )}
+
+          {successPopupOpen && (
+            <SuccessPopup
+              successPopupOpen={successPopupOpen}
+              setSuccessPopupOpen={setSuccessPopupOpen}
+              discription={discription}
+            />
+          )}
+
+        </div>
+      }
+
+    </>
   );
 };
 

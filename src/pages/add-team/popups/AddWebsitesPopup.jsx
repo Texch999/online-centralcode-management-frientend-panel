@@ -578,25 +578,7 @@ const AddWebsitesPopup = ({ show, onHide,
               Submit
             </button> */}
           <div className="mt-3 d-flex flex-row w-100 justify-content-end">
-            <button className={`saffron-btn br-5   w-100   ${errors.managementPassword ? "" : "mt-2"
-              }`}
-              type="submit"
-              disabled={loader === true ? true : false}
-              onClick={handleSubmit}>
-
-              {loader === true ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              ) : (
-                ""
-              )}
-             <span className="ps-2">  {loader === true ? "Submiting ...." : "Submit"}</span>
-            </button>
+            c
           </div>
         </Modal.Body>
       </Modal>
