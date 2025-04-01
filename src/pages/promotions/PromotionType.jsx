@@ -667,15 +667,6 @@ const PromotionType = () => {
                 </button>
               </div>
             </div>
-            {/* <div className="input-pill d-flex align-items-center rounded-pill px-2">
-              <FaSearch size={16} className="grey-clr me-2" />
-              <input
-                className="small-font all-none"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div> */}
           </div>
 
           <Table

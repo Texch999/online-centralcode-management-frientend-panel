@@ -261,8 +261,7 @@ function SubHeader() {
             label: "Create Promotions Type",
             path: "/create-promotion-type",
           },
-          { label: "Sports Promotions", path: "/sports-promotions" },
-          { label: "Casino Promotions", path: "/casino-promotions" },
+
           { label: "Banners (Casino/Sports)", path: "/banners" },
           { label: "Broadcasting", path: "/broadcasting" },
         ],
