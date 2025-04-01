@@ -35,7 +35,7 @@ const OfflineDepositPopup = ({
         if (!selectedChips || Number(selectedChips) <= 0) {
             newErrors.selectedChips = "required field";
         }
-        if (!paidAmount || Number(paidAmount) < 0) {
+        if (!finalPaidAmount || Number(finalPaidAmount) < 0) {
             newErrors.paidAmount = "required field";
         }
         if (!remark || remark == "") {
@@ -75,6 +75,7 @@ const OfflineDepositPopup = ({
                 setApiErrors(null);
             })
             .catch((error) => {
+                console.log(error, "==>catch")
                 setApiErrors(error?.message || "API request failed");
             })
             .finally(() => {
@@ -90,6 +91,7 @@ const OfflineDepositPopup = ({
         if (Number(value) <= Number(paidAmount)) {
             setFinalPaidAmount(value);
         }
+        validateForm()
     };
     const getCurrency = (id) => {
         const country = allCountries.find((item) => item.id === id);
@@ -99,6 +101,24 @@ const OfflineDepositPopup = ({
     const handleEncryptOrDecrypt = () => {
         setShowHide(!showHide)
     }
+
+    const handleChipsChange = (e) => {
+        const inputValue = e.target.value.replace(/[^0-9]/g, '');
+        validateForm()
+        if (inputValue.length <= 11) {
+            setSelectedChips(inputValue);
+            setPaidAmount(inputValue);
+            if (Number(selectedChips) < Number(finalPaidAmount)) {
+                setFinalPaidAmount(inputValue)
+            }
+            // Clear paid amount if chips are cleared
+            if (!inputValue) {
+                setFinalPaidAmount("");
+            }
+
+        }
+    };
+
     return (
         <div>
             <Modal show={depositPopup} centered className="confirm-popup" size="md">
@@ -135,7 +155,7 @@ const OfflineDepositPopup = ({
                     )} */}
 
                     {apiErrors && (
-                        <ErrorComponent error={apiErrors}/>
+                        <ErrorComponent error={apiErrors} />
                     )}
 
 
@@ -173,7 +193,7 @@ const OfflineDepositPopup = ({
                     </div>
 
                     <div className="row">
-                        <div className="col mb-2">
+                        {/* <div className="col mb-2">
                             <label className="small-font mb-1">Enter Deposit Chips </label>
                             <input
                                 type="text"
@@ -186,6 +206,9 @@ const OfflineDepositPopup = ({
                                     if (inputValue.length <= 11) {
                                         setSelectedChips(inputValue)
                                         setPaidAmount(inputValue)
+                                        if (Number(selectedChips) < Number(finalPaidAmount)) {
+                                            setFinalPaidAmount(inputValue)
+                                        }
                                     }
                                 }}
                                 // pattern="[0-9]*"
@@ -193,6 +216,22 @@ const OfflineDepositPopup = ({
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                        </div> */}
+
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Deposit Chips</label>
+                            <input
+                                type="text"
+                                name="selectedChips"
+                                className={`w-100 small-font rounded input-css all-none input-bg ${errors.selectedChips ? "border-danger" : ""
+                                    }`}
+                                placeholder="Enter Chips"
+                                value={selectedChips}
+                                onChange={handleChipsChange}
+                            />
+                            {errors.selectedChips && (
+                                <p className="text-danger small-font">{errors.selectedChips}</p>
+                            )}
                         </div>
 
                         <div className="col mb-2">
@@ -206,7 +245,6 @@ const OfflineDepositPopup = ({
                                 onChange={(e) => setPaidAmount(e.target.value)}
                                 readOnly
                             />
-
                         </div>
 
                         <div className="col mb-2">
@@ -221,8 +259,8 @@ const OfflineDepositPopup = ({
                                 onFocus={() => setIsFinalPaidAmountFocused(true)}
                                 onBlur={() => setIsFinalPaidAmountFocused(false)}
                                 min="0"
+                                max={Number(selectedChips)}
                             />
-
                             {isFinalPaidAmountFocused && (
                                 <>
                                     {selectedDetails?.creditAllowed == 2 && finalPaidAmount !== paidAmount && (
@@ -256,6 +294,7 @@ const OfflineDepositPopup = ({
                                     if (inputValue.length <= 250) {
                                         setRemark(inputValue)
                                     }
+                                    validateForm()
                                 }}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
@@ -320,6 +359,7 @@ const OfflineDepositPopup = ({
                                         if (inputValue.length <= 36) {
                                             setMasterPassword(inputValue)
                                         }
+                                        validateForm()
                                     }}
                                     autocomplete="off"
                                 />
