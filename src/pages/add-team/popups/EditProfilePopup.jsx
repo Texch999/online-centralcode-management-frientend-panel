@@ -181,6 +181,11 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
   const [phoneNumberError, setPhoneNumberError] = useState("");
   const [profileImg, setProfileImg] = useState(null);
 
+
+  const handleClose=()=>{
+    onHide(false)
+    setError("")
+  }
   // Populate form when data changes
   useEffect(() => {
     if (data) {
@@ -226,10 +231,9 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
 
   // Handle Name Change
   const handleNameChange = (e) => {
-    const value = e.target.value;
-    // setName(value);
+    const value = e.target.value.replace(/[^A-Za-z\s]/g, "");
     setName(value.trimStart());
-    validateName(value); // Validate on change
+    validateName(value);
   };
 
   // Handle Phone Number Change
@@ -241,6 +245,7 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
 
   // Submit form
   const handleSubmit = async () => {
+    setError("")
     if (!validateName(name)) {
       return;
     }
@@ -257,25 +262,32 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
       setDesciption(response.message);
       setShowSuccessPopup(true);
       onHide();
+
       setTimeout(() => {
         setShowSuccessPopup(false);
       }, 3000);
       getById();
-    } catch (error) {
+      setNameError("");
+      setPhoneNumberError("");
+    } catch (error) { 
       setError(error?.message);
-      getById();
+      // getById();
+      setNameError("");
+      setPhoneNumberError("");
 
       // setErrorPopupOpen(true);
     }
   };
 
+  console.log(error,"pranayyyyy")
+
   return (
     <>
-      <Modal centered show={show} onHide={onHide} size="md">
+      <Modal centered show={show} onHide={handleClose} size="md">
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="small-font fw-600">Edit Profile</h5>
-            <MdOutlineClose size={22} onClick={onHide} className="pointer" />
+            <MdOutlineClose size={22} onClick={handleClose} className="pointer" />
           </div>
 
           {error?.length > 0 && <ErrorComponent error={error} />}
@@ -292,7 +304,7 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
                 className="all-none rounded input-css w-100 small-font"
                 placeholder="Enter"
                 value={name}
-                onChange={handleNameChange} 
+                onChange={handleNameChange}
               />
               {nameError && (
                 <div className="text-danger small-font">{nameError}</div>
