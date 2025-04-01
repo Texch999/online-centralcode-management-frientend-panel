@@ -157,8 +157,10 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   };
 
   const resetPassword = async () => {
-    if (!validatePasswords()) return;
-
+    if (!validatePasswords()) {
+      setError("Please enter valid values")
+      return;
+    }
     const payload = {
       old_password: oldPswd,
       new_password: newPswd,
