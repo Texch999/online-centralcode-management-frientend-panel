@@ -28,7 +28,8 @@ function EditNewDirector() {
   const navigate = useNavigate();
   const location = useLocation();
   const mode = location.state?.mode || "add";
-  const userId = location.state?.userId || null;
+  const userId = location.state?.userId;
+  console.log(userId, "idddd userparams")
   const Role = localStorage.getItem("role_code");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);

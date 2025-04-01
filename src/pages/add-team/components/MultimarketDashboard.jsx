@@ -7,8 +7,10 @@ import { getMultiMarket } from "../../../api/apiMethods";
 import WebsiteContrl from "./../WebsiteContrl";
 import UnblockBlockWebsiteModal from "../UnblockBlockWebsiteModal";
 import { CgUnblock } from "react-icons/cg";
+import { SlPencil } from "react-icons/sl";
 
-const MultimarketDashboard = ({ dwnlnId}) => {
+const MultimarketDashboard = ({ dwnlnId }) => {
+  console.log(dwnlnId, "dwnlniddd");
   const navigate = useNavigate();
   const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
@@ -38,14 +40,14 @@ const MultimarketDashboard = ({ dwnlnId}) => {
   const columns = [
     {
       header: (
-        <div className="d-flex flex-between">
-          <div className="">Website Name</div>
-          <div className="">Share/Rent</div>
-          <div className="">Last Updated</div>
+        <div className="d-flex flex-between w-100">
+          <div className="w-25">Website Name</div>
+          <div className="d-flex flex-center w-55">Share/Rent</div>
+          <div className="w-10 white-space">Last Updated</div>
         </div>
       ),
       field: "name",
-      width: "40%",
+      width: "50%",
     },
 
     {
@@ -67,9 +69,9 @@ const MultimarketDashboard = ({ dwnlnId}) => {
 
   const statusElement =
     webMarketDtls?.status === 1 ? (
-      <div className="green-btn mb-4">Active</div>
+      <div className="green-btn mb-5">Active</div>
     ) : (
-      <div className="red-btn mb-4" >In-Active</div>
+      <div className="red-btn mb-5">In-Active</div>
     );
 
   const data = webMarketDtls?.accessWebsites?.map((website) => ({
@@ -79,10 +81,10 @@ const MultimarketDashboard = ({ dwnlnId}) => {
         <div>User websites:</div>
         <div className="d-flex flex-column">
           {website.user_panels?.map((panel) => (
-            <div key={panel.user_panel_id} className="flex-border-bottom">
-              <span>{panel.user_panel_name}</span>
-              <span>{panel.share}%</span>
-              <span>{new Date(panel.updated_date).toLocaleDateString()}</span>
+            <div key={panel.user_panel_id} className="flex-border-bottom w-100">
+              <span className="w-20">{panel.user_panel_name}</span>
+              <span className="d-flex  flex-center w-30">{panel.share}%</span>
+              <span >{new Date(panel.updated_date).toLocaleDateString()}</span>
             </div>
           ))}
         </div>
@@ -93,11 +95,15 @@ const MultimarketDashboard = ({ dwnlnId}) => {
     status: statusElement,
 
     action: (
-      <div className="d-flex gap-2 mb-4 flex-center">
+      <div className="d-flex gap-2 mb-5 flex-center">
         <span className="pointer">
-          <MdOutlineModeEdit
+          <SlPencil
             size={20}
-            onClick={() => navigate("/director-admin/editDirector")}
+            onClick={() =>
+              navigate(`/director-admin/editDirector`, {
+                state: { userId: dwnlnId, mode: "edit" },
+              })
+            }
           />
         </span>
 
@@ -109,7 +115,7 @@ const MultimarketDashboard = ({ dwnlnId}) => {
         >
           {webMarketDtls?.status === 1 ? (
             <span className="green-font">
-              <CgUnblock size={20} />
+              <MdBlock size={20} />
             </span>
           ) : (
             <span className="red-font">
@@ -128,7 +134,12 @@ const MultimarketDashboard = ({ dwnlnId}) => {
           <h6 className="medium-font">Multimarket</h6>
           <div
             className="d-flex gap-2 align-items-center small-font rounded-pill input-pill blue-font px-1 py-1"
-            onClick={() => navigate("/director-admin/editDirector")}
+            // onClick={() => navigate("/director-admin/addnewdirector")}
+            onClick={() =>
+              navigate("/director-admin/addnewdirector", {
+                state: { mode: "add" },
+              })
+            }
           >
             <IoAdd className="blue-font" size={16} />
             Add New
