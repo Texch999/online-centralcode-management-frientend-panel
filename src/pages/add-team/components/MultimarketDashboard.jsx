@@ -94,7 +94,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     status: statusElement,
     action: (
       <div className="d-flex gap-2 mb-5 flex-center">
-        <span className="pointer">
+        {/* <span className="pointer">
           <SlPencil
             size={20}
             onClick={() =>
@@ -103,7 +103,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
               })
             }
           />
-        </span>
+        </span> */}
 
         <span
           className="pointer"
@@ -131,16 +131,16 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         <div className="px-3 d-flex justify-content-between align-items-center mb-3">
           <h6 className="medium-font">Multimarket</h6>
           <div
-            className="d-flex gap-2 align-items-center small-font rounded-pill input-pill blue-font px-1 py-1"
+            className="d-flex gap-2 align-items-center small-font pointer rounded-pill input-pill blue-font px-1 py-1"
             // onClick={() => navigate("/director-admin/addnewdirector")}
             onClick={() =>
-              navigate("/director-admin/addnewdirector", {
-                state: { mode: "add" },
+              navigate(`/director-admin/editDirector`, {
+                state: { userId: dwnlnId, mode: "add" },
               })
             }
           >
             <IoAdd className="blue-font" size={16} />
-            Add New
+            Add More
           </div>
         </div>
 
