@@ -91,7 +91,10 @@ const OfflineDepositPopup = ({
         if (Number(value) <= Number(paidAmount)) {
             setFinalPaidAmount(value);
         }
-        validateForm()
+        
+        if (errors) {
+            validateForm()
+        }
     };
     const getCurrency = (id) => {
         const country = allCountries.find((item) => item.id === id);
@@ -104,7 +107,9 @@ const OfflineDepositPopup = ({
 
     const handleChipsChange = (e) => {
         const inputValue = e.target.value.replace(/[^0-9]/g, '');
-        validateForm()
+        if (errors) {
+            validateForm()
+        }
         if (inputValue.length <= 11) {
             setSelectedChips(inputValue);
             setPaidAmount(inputValue);
@@ -294,7 +299,9 @@ const OfflineDepositPopup = ({
                                     if (inputValue.length <= 250) {
                                         setRemark(inputValue)
                                     }
-                                    validateForm()
+                                    if (errors) {
+                                        validateForm()
+                                    }
                                 }}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
@@ -359,7 +366,10 @@ const OfflineDepositPopup = ({
                                         if (inputValue.length <= 36) {
                                             setMasterPassword(inputValue)
                                         }
-                                        validateForm()
+
+                                        if (errors) {
+                                            validateForm()
+                                        }
                                     }}
                                     autocomplete="off"
                                 />
