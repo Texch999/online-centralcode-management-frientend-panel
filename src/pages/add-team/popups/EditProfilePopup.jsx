@@ -162,15 +162,16 @@ import { updateDirectorProfileDetails } from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
 import { useSelector } from "react-redux";
+import ErrorComponent from "../../../components/ErrorComponent";
 
-const EditProfilePopup = ({ show, onHide, data, reload }) => {
+const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-  const[error,setError]=useState("")
+  const [error, setError] = useState("");
 
   const dirProfileData = useSelector((item) => item?.dirProfileData);
   console.log(dirProfileData, "dirProfileData");
@@ -201,7 +202,8 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
 
   // Validate Name
   const validateName = (name) => {
-    if (!name || name.length < 2) {
+    const trimmedName = name.trim();
+    if (!trimmedName || trimmedName.length < 2) {
       setNameError("Name must be at least 2 characters long.");
       return false;
     } else {
@@ -224,9 +226,9 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
 
   // Handle Name Change
   const handleNameChange = (e) => {
-    const value = e.target.value;
-    setName(value);
-    validateName(value); // Validate on change
+    const value = e.target.value.replace(/[^A-Za-z\s]/g, "");
+    setName(value.trimStart());
+    validateName(value);
   };
 
   // Handle Phone Number Change
@@ -254,15 +256,24 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
       setDesciption(response.message);
       setShowSuccessPopup(true);
       onHide();
+
       setTimeout(() => {
         setShowSuccessPopup(false);
       }, 3000);
-    } catch (error) {
+      getById();
+      setNameError("");
+      setPhoneNumberError("");
+    } catch (error) { 
       setError(error?.message);
+      // getById();
+      setNameError("");
+      setPhoneNumberError("");
 
       // setErrorPopupOpen(true);
     }
   };
+
+  console.log(error,"pranayyyyy")
 
   return (
     <>
@@ -272,6 +283,8 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
             <h5 className="small-font fw-600">Edit Profile</h5>
             <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
+
+          {error?.length > 0 && <ErrorComponent error={error} />}
 
           <div className="row d-flex mb-3">
             {/* Name Field */}
@@ -285,7 +298,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 className="all-none rounded input-css w-100 small-font"
                 placeholder="Enter"
                 value={name}
-                onChange={handleNameChange} // Handle name change with validation
+                onChange={handleNameChange}
               />
               {nameError && (
                 <div className="text-danger small-font">{nameError}</div>
@@ -351,7 +364,7 @@ const EditProfilePopup = ({ show, onHide, data, reload }) => {
                 </button>
               </div>
             </div>
-            {error && <div className="red-font">{error}</div>}
+            {/* {error && <div className="red-font">{error}</div>} */}
           </div>
         </Modal.Body>
       </Modal>

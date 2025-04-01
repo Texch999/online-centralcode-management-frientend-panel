@@ -4,6 +4,7 @@ import { Images } from "../../images";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
+import SuccessPopup from "./SuccessPopup";
 
 function ConfirmationPopup({
   confirmationPopupOpen,
@@ -25,7 +26,7 @@ function ConfirmationPopup({
 
   const handleSunmit = async () => {
     onSubmit(page, pageSize);
-    // setConfirmationPopupOpen(false);
+    setConfirmationPopupOpen(false);
   };
 
   return (
@@ -86,6 +87,7 @@ function ConfirmationPopup({
           </center>
         </Modal.Body>
       </Modal>
+      
     </>
   );
 }
