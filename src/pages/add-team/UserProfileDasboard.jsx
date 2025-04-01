@@ -252,6 +252,7 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+ 
 
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -411,6 +412,7 @@ const UserProfileDashboard = () => {
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [editedDtat, setEditedDtat] = useState([]);
+  const [passwordLoader,setPasswordLoader]=useState(false)
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -432,9 +434,12 @@ const UserProfileDashboard = () => {
       parent_password: data.managementPassword,
     };
 
+    setPasswordLoader(true)
+
     resetDirectorPassword(id, payload)
       .then((response) => {
         if (response.status === true) {
+          setPasswordLoader(false)
           setEditedDtat(response.data);
           setDesciption(response.message);
           handleResetPasswordClose();
@@ -448,6 +453,7 @@ const UserProfileDashboard = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setPasswordLoader(false)
       });
   };
 
@@ -621,7 +627,8 @@ const UserProfileDashboard = () => {
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
         onSubmit={resetDirectorPswd}
-        error={error}
+        passwordLoader={passwordLoader}
+        resetPasswordErrrors={error}
       />
       <EditProfilePopup
         show={showEditProfilePopup}

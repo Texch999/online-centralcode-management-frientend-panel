@@ -3137,8 +3137,8 @@ function EditNewDirector() {
                                   ] === "2" && (
                                     <>
                                       <div className="col position-relative">
-                                        <label className="small-font my-1 d-block">
-                                          Downline Sharing
+                                        <label className="small-font my-1 fw-600 d-block">
+                                        Downline Share (upto 100%)
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                           <input
@@ -3179,8 +3179,8 @@ function EditNewDirector() {
                                       </div>
 
                                       <div className="col position-relative">
-                                        <label className="small-font my-1 d-block">
-                                          Commission
+                                        <label className="small-font my-1 fw-600 d-block">
+                                        Commission (less than 5%)
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                           <input
@@ -3223,8 +3223,8 @@ function EditNewDirector() {
                                       </div>
 
                                       <div className="col position-relative">
-                                        <label className="small-font my-1 d-block">
-                                          Casino Chip Value
+                                        <label className="small-font fw-600 my-1 d-block">
+                                        Casino chip Value
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                           <input
@@ -3263,7 +3263,7 @@ function EditNewDirector() {
                                         )}
                                       </div>
 
-                                      <div className="col position-relative">
+                                      <div className="col-2 position-relative">
                                         <label
                                           className="small-font my-1 d-block"
                                           style={{ visibility: "hidden" }}
@@ -3429,8 +3429,8 @@ function EditNewDirector() {
                                         )}
                                       </div>
 
-                                      <div className="col position-relative">
-                                        <label
+                                      <div className="col-2 position-relative">
+                                      <label
                                           className="small-font my-1 d-block"
                                           style={{ visibility: "hidden" }}
                                         >
