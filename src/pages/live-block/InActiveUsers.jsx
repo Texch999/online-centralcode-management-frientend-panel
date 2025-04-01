@@ -213,6 +213,7 @@ function InActiveUsers() {
           console.log(response?.data);
           fetchAllUsers(limit, offset, website_id);
           setMsg(response?.message);
+          setShowDeletePopup(false)
           setSuccessPopupOpen(true);
           setTimeout(() => {
             setSuccessPopupOpen(false);
@@ -223,6 +224,7 @@ function InActiveUsers() {
       })
       .catch((error) => {
         setError(error?.message);
+        setShowDeletePopup(false)
       });
   };
 
