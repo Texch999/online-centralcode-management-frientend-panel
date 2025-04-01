@@ -29,7 +29,7 @@ function EditNewDirector() {
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId;
-  console.log(userId, "idddd userparams")
+  console.log(userId, "idddd userparams");
   const Role = localStorage.getItem("role_code");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
@@ -74,14 +74,14 @@ function EditNewDirector() {
   const [allSelectedUserWebsites, setAllSelectedUserWebsites] = useState([]);
   const [selectedUserWebsitesPerAdmin, setSelectedUserWebsitesPerAdmin] =
     useState({});
-    const [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
   const getLocationName = (locationId) => {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
-  console.log(loader,"==>loader");
-  
+  console.log(loader, "==>loader");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -293,12 +293,12 @@ function EditNewDirector() {
 
   useEffect(() => {
     if (userId) {
-      setLoader(true)
+      setLoader(true);
       if (Role === "management") {
         getDirectorDetailsById(userId)
           .then((response) => {
             if (response.status) {
-              setLoader(false)
+              setLoader(false);
               setIndividualDirectorData(response.data);
               setName(response.data.name || "");
               setLoginName(response.data.login_name || "");
@@ -381,11 +381,11 @@ function EditNewDirector() {
             console.error("Error fetching director details:", error)
           );
       } else if (Role === "director") {
-        getSuperAdminDetailsById(userId)
+        getSuperAdminDetailsById(userId);
         setLoader(true)
           .then((response) => {
             if (response.status) {
-              setLoader(false)
+              setLoader(false);
               setIndividualSuperAdminData(response.data);
               setName(response.data.login_name || "");
               setLoginName(response.data.login_name || "");
@@ -458,14 +458,10 @@ function EditNewDirector() {
               }
             }
           })
-          .catch((error) =>{
-            console.error("Error fetching super admin details:", error)
-            setLoader(false)
-          }
-           
-    
-
-          );
+          .catch((error) => {
+            console.error("Error fetching super admin details:", error);
+            setLoader(false);
+          });
       }
     }
   }, [mode, userId]);
@@ -477,8 +473,6 @@ function EditNewDirector() {
   }, [websiteEditErrors]);
 
   const handleManagementSubmit = () => {
-   
-    
     const adminUserSiteErrors = {};
     forms.forEach((form) => {
       if (!selectedAdmins[form.id]) {
@@ -578,20 +572,19 @@ function EditNewDirector() {
       payload.credit_reference = creditreference;
     }
 
-
-    setLoader(true)
+    setLoader(true);
 
     updateDirectorByID(userId, payload)
       .then((response) => {
         if (response.status) {
-          setLoader(false)
+          setLoader(false);
           setSuccessPopupOpen(true);
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
       .catch((error) => {
         console.error("Error updating director:", error);
-        setLoader(false)
+        setLoader(false);
         setShowWebsiteEditErrors(error.message[0].message || error.message[0]);
       });
   };
@@ -1054,8 +1047,11 @@ function EditNewDirector() {
   return (
     <>
       <div>
-      {loader && <div className="my-load">
-        <div className="loader "></div></div>}
+        {loader && (
+          <div className="my-load">
+            <div className="loader "></div>
+          </div>
+        )}
         <div className="d-flex align-items-center justify-content-between">
           <h5 className="yellow-font ">
             {role === "management"
@@ -1070,9 +1066,7 @@ function EditNewDirector() {
           </span>
         </div>
 
-        {websiteEditErrors && (
-          <ErrorComponent error={websiteEditErrors}/>
-        )}
+        {websiteEditErrors && <ErrorComponent error={websiteEditErrors} />}
         <div className="white-bg br-10 login-box-shadow w-100 p-2 m-2">
           <div className="row  p-2">
             <div className="col-2 p-1">
@@ -1197,7 +1191,7 @@ function EditNewDirector() {
             {isCreditAllowed && (
               <div className="col-2">
                 <div className="p-1 position-relative">
-                  <label className="small-font">Credit Limit</label>
+                  <label className="small-font">Credit Limit </label>
                   <input
                     type="text"
                     className="small-font rounded all-none input-css w-100"
@@ -3138,10 +3132,11 @@ function EditNewDirector() {
                                     <>
                                       <div className="col position-relative">
                                         <label className="small-font my-1 fw-600 d-block">
-                                        Downline Share (upto 100%)
+                                          Downline Share (upto 100%)1
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                          <input
+                                          {/* <input
+                                          type="text"
                                             className="small-font bg-transparent p-2 flex-grow-1"
                                             style={{
                                               border: "none",
@@ -3158,7 +3153,57 @@ function EditNewDirector() {
                                             }
                                             max={10}
                                             min={0}
+                                          /> */}
+                                          <input
+                                            type="text"
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none",
+                                            }}
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                e.target.value
+                                              )
+                                            }
+                                            onInput={(e) => {
+                                              let value = e.target.value;
+
+                                              // Allow only numbers & decimals
+                                              value = value.replace(
+                                                /[^0-9.]/g,
+                                                ""
+                                              );
+
+                                              // Ensure only one decimal point
+                                              const decimalCount = (
+                                                value.match(/\./g) || []
+                                              ).length;
+                                              if (decimalCount > 1) {
+                                                value = value.slice(0, -1); // Remove extra decimal
+                                              }
+
+                                              // Restrict to 2 decimal places
+                                              if (value.includes(".")) {
+                                                let parts = value.split(".");
+                                                value =
+                                                  parts[0] +
+                                                  "." +
+                                                  parts[1].slice(0, 2);
+                                              }
+
+                                              // Prevent values greater than 100 but allow typing naturally
+                                              if (parseFloat(value) > 100) {
+                                                value = value.slice(0, -1); // Remove last entered digit
+                                              }
+
+                                              e.target.value = value;
+                                            }}
                                           />
+
                                           <span className="px-2 text-muted">
                                             %
                                           </span>
@@ -3180,10 +3225,11 @@ function EditNewDirector() {
 
                                       <div className="col position-relative">
                                         <label className="small-font my-1 fw-600 d-block">
-                                        Commission (less than 5%)
+                                          Commission (less than 5%)
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                          <input
+                                          {/* <input
+                                          type="text"
                                             className="small-font bg-transparent p-2 flex-grow-1"
                                             style={{
                                               border: "none",
@@ -3200,7 +3246,70 @@ function EditNewDirector() {
                                             }
                                             max={10}
                                             min={0}
+                                          /> */}
+
+                                          <input
+                                            type="text"
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none",
+                                            }}
+                                            // placeholder="Enter Commission"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "downline_comm",
+                                                e.target.value
+                                              )
+                                            }
+                                            onInput={(e) => {
+                                              let value = e.target.value;
+
+                                              // Allow only numbers & decimals
+                                              value = value.replace(
+                                                /[^0-9.]/g,
+                                                ""
+                                              );
+
+                                              // Ensure only one decimal point
+                                              const decimalCount = (
+                                                value.match(/\./g) || []
+                                              ).length;
+                                              if (decimalCount > 1) {
+                                                value = value.slice(0, -1); // Remove extra decimal
+                                              }
+
+                                              // Restrict to 2 decimal places
+                                              if (value.includes(".")) {
+                                                let parts = value.split(".");
+                                                value =
+                                                  parts[0] +
+                                                  "." +
+                                                  parts[1].slice(0, 2);
+                                              }
+
+                                              // Prevent values greater than 5 or less than 0
+                                              if (parseFloat(value) > 5) {
+                                              } else if (
+                                                parseFloat(value) < 0
+                                              ) {
+                                                value = "0"; // Set to 0 if less than 0
+                                              }
+
+                                              // If the value is not between 0 and 5, don't accept it
+                                              if (
+                                                parseFloat(value) < 0 ||
+                                                parseFloat(value) > 5
+                                              ) {
+                                                e.target.value = ""; // Clear the input if it's out of range
+                                              } else {
+                                                e.target.value = value; // Otherwise, set the valid value
+                                              }
+                                            }}
                                           />
+
                                           <span className="px-2 text-muted">
                                             %
                                           </span>
@@ -3224,7 +3333,7 @@ function EditNewDirector() {
 
                                       <div className="col position-relative">
                                         <label className="small-font fw-600 my-1 d-block">
-                                        Casino chip Value
+                                          Casino chip Value
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                           <input
@@ -3234,7 +3343,7 @@ function EditNewDirector() {
                                               outline: "none",
                                               boxShadow: "none",
                                             }}
-                                            placeholder="Casino Chip Value"
+                                            // placeholder="Casino Chip Value"
                                             onChange={(e) =>
                                               handleInputChange(
                                                 selectedSiteIds[form.id],
@@ -3242,8 +3351,7 @@ function EditNewDirector() {
                                                 e.target.value
                                               )
                                             }
-                                            max={10}
-                                            min={0}
+                                          maxLength={4}
                                           />
                                         </div>
                                         {errors[
@@ -3304,10 +3412,11 @@ function EditNewDirector() {
                                     <>
                                       <div className="col position-relative">
                                         <label className="small-font fw-600 my-1 d-block">
-                                        Downline Share (upto 100%)  
+                                          Downline Share (upto 100%)
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                          <input
+                                          {/* <input
+                                          type="text"
                                             className="small-font bg-transparent p-2 flex-grow-1"
                                             style={{
                                               border: "none",
@@ -3322,9 +3431,60 @@ function EditNewDirector() {
                                                 e.target.value
                                               )
                                             }
-                                            max={10}
-                                            min={0}
+                                       
+                                          /> */}
+
+                                          <input
+                                            type="text"
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none",
+                                            }}
+                                            // placeholder="Downline Sharing"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "share",
+                                                e.target.value
+                                              )
+                                            }
+                                            onInput={(e) => {
+                                              let value = e.target.value;
+
+                                              // Allow only numbers & decimals
+                                              value = value.replace(
+                                                /[^0-9.]/g,
+                                                ""
+                                              );
+
+                                              // Ensure only one decimal point
+                                              const decimalCount = (
+                                                value.match(/\./g) || []
+                                              ).length;
+                                              if (decimalCount > 1) {
+                                                value = value.slice(0, -1); // Remove extra decimal
+                                              }
+
+                                              // Restrict to 2 decimal places
+                                              if (value.includes(".")) {
+                                                let parts = value.split(".");
+                                                value =
+                                                  parts[0] +
+                                                  "." +
+                                                  parts[1].slice(0, 2);
+                                              }
+
+                                              // Prevent values greater than 100 but allow natural typing
+                                              if (parseFloat(value) > 100) {
+                                                value = value.slice(0, -1); // Remove last entered digit
+                                              }
+
+                                              e.target.value = value;
+                                            }}
                                           />
+
                                           <span className="px-2 text-muted">
                                             %
                                           </span>
@@ -3346,10 +3506,11 @@ function EditNewDirector() {
 
                                       <div className="col position-relative">
                                         <label className="small-font fw-600 my-1 d-block">
-                                        Commission (less than 5%)
+                                          Commission (less than 5%)
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                          <input
+                                          {/* <input
+                                          type="text"
                                             className="small-font bg-transparent p-2 flex-grow-1"
                                             style={{
                                               border: "none",
@@ -3364,9 +3525,72 @@ function EditNewDirector() {
                                                 e.target.value
                                               )
                                             }
-                                            max={10}
-                                            min={0}
+                                           
+                                          /> */}
+
+                                          <input
+                                            type="text"
+                                            className="small-font bg-transparent p-2 flex-grow-1"
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              boxShadow: "none",
+                                            }}
+                                            // placeholder="Enter Commission"
+                                            onChange={(e) =>
+                                              handleInputChange(
+                                                selectedSiteIds[form.id],
+                                                "downline_comm",
+                                                e.target.value
+                                              )
+                                            }
+                                            onInput={(e) => {
+                                              let value = e.target.value;
+
+                                              // Allow only numbers & decimals
+                                              value = value.replace(
+                                                /[^0-9.]/g,
+                                                ""
+                                              );
+
+                                              // Ensure only one decimal point
+                                              const decimalCount = (
+                                                value.match(/\./g) || []
+                                              ).length;
+                                              if (decimalCount > 1) {
+                                                value = value.slice(0, -1); // Remove extra decimal
+                                              }
+
+                                              // Restrict to 2 decimal places
+                                              if (value.includes(".")) {
+                                                let parts = value.split(".");
+                                                value =
+                                                  parts[0] +
+                                                  "." +
+                                                  parts[1].slice(0, 2);
+                                              }
+
+                                              // Prevent values greater than 5 or less than 0
+                                              if (parseFloat(value) > 5) {
+                                                // Set to 5 if exceeds
+                                              } else if (
+                                                parseFloat(value) < 0
+                                              ) {
+                                                value = "0"; // Set to 0 if less than 0
+                                              }
+
+                                              // If the value is not between 0 and 5, don't accept it
+                                              if (
+                                                parseFloat(value) < 0 ||
+                                                parseFloat(value) > 5
+                                              ) {
+                                                e.target.value = ""; // Clear the input if it's out of range
+                                              } else {
+                                                e.target.value = value; // Otherwise, set the valid value
+                                              }
+                                            }}
                                           />
+
                                           <span className="px-2 text-muted">
                                             %
                                           </span>
@@ -3390,7 +3614,7 @@ function EditNewDirector() {
 
                                       <div className="col position-relative">
                                         <label className="small-font my-1 fw-600 d-block">
-                                          Casino Chip Value
+                                          Casino Chip Value 
                                         </label>
                                         <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                           <input
@@ -3400,7 +3624,7 @@ function EditNewDirector() {
                                               outline: "none",
                                               boxShadow: "none",
                                             }}
-                                            placeholder="Casino Chip Value"
+                                            // placeholder="Casino Chip Value"
                                             onChange={(e) =>
                                               handleInputChange(
                                                 selectedSiteIds[form.id],
@@ -3408,8 +3632,7 @@ function EditNewDirector() {
                                                 e.target.value
                                               )
                                             }
-                                            max={10}
-                                            min={0}
+                                           maxLength={4}
                                           />
                                         </div>
                                         {errors[
@@ -3430,7 +3653,7 @@ function EditNewDirector() {
                                       </div>
 
                                       <div className="col-2 position-relative">
-                                      <label
+                                        <label
                                           className="small-font my-1 d-block"
                                           style={{ visibility: "hidden" }}
                                         >
