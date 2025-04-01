@@ -240,6 +240,7 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
 
   // Submit form
   const handleSubmit = async () => {
+    setError("")
     if (!validateName(name)) {
       return;
     }
