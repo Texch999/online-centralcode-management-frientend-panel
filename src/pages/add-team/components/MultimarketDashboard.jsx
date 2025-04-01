@@ -94,7 +94,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     status: statusElement,
     action: (
       <div className="d-flex gap-2 mb-5 flex-center">
-        <span className="pointer">
+        {/* <span className="pointer">
           <SlPencil
             size={20}
             onClick={() =>
@@ -103,7 +103,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
               })
             }
           />
-        </span>
+        </span> */}
 
         <span
           className="pointer"
@@ -140,7 +140,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
             }
           >
             <IoAdd className="blue-font" size={16} />
-            Add New
+            Add More
           </div>
         </div>
 
