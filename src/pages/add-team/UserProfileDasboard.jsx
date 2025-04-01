@@ -497,7 +497,7 @@ const UserProfileDashboard = () => {
       <div className="gap-3 director-admin-profile-top-con rounded">
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
           <div
-            className="director-admin-profile-top-bg-dark d-flex align-items-center gap-2 px-3 text-white rounded-pill"
+            className="director-admin-profile-top-bg-dark d-flex align-items-center pointer gap-2 px-3 text-white rounded-pill"
             onClick={() => navigate(-1)}
           >
             <span className="fw-600 small-font">
