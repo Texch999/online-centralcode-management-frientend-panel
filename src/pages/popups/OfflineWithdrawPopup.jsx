@@ -4,6 +4,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { getSettlementSummeryById, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
 import { IoEyeOffSharp, IoEye } from "react-icons/io5";
+import ErrorComponent from "../../components/ErrorComponent";
 
 const OfflineWithdrawPopup = ({
     actionType,
@@ -122,7 +123,7 @@ const OfflineWithdrawPopup = ({
                         </div>
                     </div>
 
-                    {apiErrors && (
+                    {/* {apiErrors && (
                         <div className="alert alert-danger pb-1">
                             {Array.isArray(apiErrors) ? (
                                 <ul className="pb-1 ps-1">
@@ -134,7 +135,11 @@ const OfflineWithdrawPopup = ({
                                 <p className="small-font ps-1">{apiErrors.message || apiErrors}</p>
                             )}
                         </div>
-                    )}
+                    )} */}
+
+                      {apiErrors && (
+                                            <ErrorComponent error={apiErrors}/>
+                                        )}
 
                     <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
                         {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${selectedDetails?.name} - ${getCurrency(selectedDetails?.currId)}`}
