@@ -194,7 +194,8 @@ const AddPaymentGatewayPopup = ({
     if (availablePaymentModeId === 3 && qrCode) {
       formData.append("qr_code_image", qrCode);
     }
-
+    const limit = itemsPerPage;
+    const offset = (pages - 1) * itemsPerPage;
     try {
       setLoading(true)
       const response = managementPaymentEdit
@@ -204,7 +205,7 @@ const AddPaymentGatewayPopup = ({
       if (response.status === true) {
         setOnAddPaymentGateway(false);
         setMsg(response?.message);
-        fetchManagementPaymentDetails();
+        fetchManagementPaymentDetails(limit, offset);
         setSuccessPopupOpen(true);
         setLoading(false)
         setManagementPaymentEditId(null)

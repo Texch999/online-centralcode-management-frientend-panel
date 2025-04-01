@@ -547,21 +547,18 @@ const PaymentGateway = () => {
         <ConfirmationPopup
           confirmationPopupOpen={suspendPayment}
           setConfirmationPopupOpen={setSuspendPayment}
-          discription={`Are you sure you want to ${
-            suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
-          } this payment gateway?`}
-          submitButton={`${
-            suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
-          }`}
+          discription={`Are you sure you want to ${suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
+            } this payment gateway?`}
+          submitButton={`${suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
+            }`}
           onSubmit={suspendManPaymnet}
         />
       ) : (
         <ConfirmationPopup
           confirmationPopupOpen={onBlockPopup}
           setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-          discription={`are you sure you want to ${
-            statusId === 1 ? "In-Active" : "Active"
-          } this Gateway?`}
+          discription={`are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
+            } this Gateway?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
         />
