@@ -25,7 +25,7 @@ function ConfirmationPopup({
 
   const handleSunmit = async () => {
     onSubmit(page, pageSize);
-    // setConfirmationPopupOpen(false);
+    setConfirmationPopupOpen(false);
   };
 
   return (
