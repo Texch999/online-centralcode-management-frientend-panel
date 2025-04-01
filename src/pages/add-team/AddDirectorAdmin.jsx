@@ -52,6 +52,7 @@ const AddDirectorAdmin = () => {
   const [discription, setDiscription] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [stats, setStats] = useState(null);
+  const [passwordLoader,setPasswordLoader]=useState(false)
 
   const handleResetPasswordOpen = (id) => {
     setSelectedDirectorId(id);
@@ -185,8 +186,10 @@ const AddDirectorAdmin = () => {
       parent_password: data.managementPassword,
     };
 
+    setPasswordLoader(true)
     resetDirectorPassword(selectedDirectorId, requestData)
       .then((response) => {
+        setPasswordLoader(false)
         setResetPasswordPopup(false);
         setSuccessPopupOpen(true);
         setDiscription("Password reset successfully");
@@ -201,6 +204,7 @@ const AddDirectorAdmin = () => {
       })
       .catch((error) => {
         setResetPasswordErrors(error?.message || "Request failed");
+        setPasswordLoader(false)
       });
   };
 
@@ -592,7 +596,7 @@ const AddDirectorAdmin = () => {
 
             {role === "management" ? (
               <h6 className="yellow-font medium-font mb-0">
-                Add Director & Super Admin
+                Add Director & Super Admin 
               </h6>
             ) : (
               <h6 className="yellow-font mb-0">Add Super Admin</h6>
@@ -683,6 +687,7 @@ const AddDirectorAdmin = () => {
           setResetPasswordPopup={handleResetPasswordClose}
           resetPasswordErrrors={resetPasswordErrrors}
           setResetPasswordErrors={setResetPasswordErrors}
+          passwordLoader={passwordLoader}
           onSubmit={
             role === "management"
               ? onDirectorResetPassword

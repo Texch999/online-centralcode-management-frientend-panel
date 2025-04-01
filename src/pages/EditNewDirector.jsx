@@ -22,6 +22,7 @@ import SuccessPopup from "./popups/SuccessPopup";
 import Select from "react-select";
 import { customStyles } from "../components/ReactSelectStyles";
 import { useSelector } from "react-redux";
+import ErrorComponent from "../components/ErrorComponent";
 
 function EditNewDirector() {
   const navigate = useNavigate();
@@ -72,11 +73,14 @@ function EditNewDirector() {
   const [allSelectedUserWebsites, setAllSelectedUserWebsites] = useState([]);
   const [selectedUserWebsitesPerAdmin, setSelectedUserWebsitesPerAdmin] =
     useState({});
+    const [loader,setLoader]=useState(false)
   const allCountries = useSelector((item) => item?.allCountries);
   const getLocationName = (locationId) => {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
+  console.log(loader,"==>loader");
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -288,10 +292,12 @@ function EditNewDirector() {
 
   useEffect(() => {
     if (userId) {
+      setLoader(true)
       if (Role === "management") {
         getDirectorDetailsById(userId)
           .then((response) => {
             if (response.status) {
+              setLoader(false)
               setIndividualDirectorData(response.data);
               setName(response.data.name || "");
               setLoginName(response.data.login_name || "");
@@ -375,8 +381,10 @@ function EditNewDirector() {
           );
       } else if (Role === "director") {
         getSuperAdminDetailsById(userId)
+        setLoader(true)
           .then((response) => {
             if (response.status) {
+              setLoader(false)
               setIndividualSuperAdminData(response.data);
               setName(response.data.login_name || "");
               setLoginName(response.data.login_name || "");
@@ -449,14 +457,27 @@ function EditNewDirector() {
               }
             }
           })
-          .catch((error) =>
+          .catch((error) =>{
             console.error("Error fetching super admin details:", error)
+            setLoader(false)
+          }
+           
+    
+
           );
       }
     }
   }, [mode, userId]);
 
+  useEffect(() => {
+    if (websiteEditErrors && Object.keys(websiteEditErrors).length > 0) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [websiteEditErrors]);
+
   const handleManagementSubmit = () => {
+   
+    
     const adminUserSiteErrors = {};
     forms.forEach((form) => {
       if (!selectedAdmins[form.id]) {
@@ -521,6 +542,7 @@ function EditNewDirector() {
               }),
         })),
       ],
+
       addWebsites:
         addWebsites.length > 0
           ? addWebsites.map((site) => ({
@@ -555,15 +577,20 @@ function EditNewDirector() {
       payload.credit_reference = creditreference;
     }
 
+
+    setLoader(true)
+
     updateDirectorByID(userId, payload)
       .then((response) => {
         if (response.status) {
+          setLoader(false)
           setSuccessPopupOpen(true);
           setTimeout(() => navigate("/director-admin"), 2000);
         }
       })
       .catch((error) => {
         console.error("Error updating director:", error);
+        setLoader(false)
         setShowWebsiteEditErrors(error.message[0].message || error.message[0]);
       });
   };
@@ -1026,6 +1053,8 @@ function EditNewDirector() {
   return (
     <>
       <div>
+      {loader && <div className="my-load">
+        <div className="loader "></div></div>}
         <div className="d-flex align-items-center justify-content-between">
           <h5 className="yellow-font ">
             {role === "management"
@@ -1041,11 +1070,7 @@ function EditNewDirector() {
         </div>
 
         {websiteEditErrors && (
-          <div className="error-popup-container col-6 p-1 br-5 m-2">
-            <ul>
-              <li className="fw-600 small-font">{websiteEditErrors}</li>
-            </ul>
-          </div>
+          <ErrorComponent error={websiteEditErrors}/>
         )}
         <div className="white-bg br-10 login-box-shadow w-100 p-2 m-2">
           <div className="row  p-2">
