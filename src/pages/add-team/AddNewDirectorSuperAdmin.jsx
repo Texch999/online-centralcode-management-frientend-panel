@@ -3357,7 +3357,7 @@ function AddNewDirectorSuperAdmin() {
                                   </div>
                                   <div className="col-2 position-relative mt-1 mx-3">
                                     <label className="fw-600  small-font">
-                                      Commission ({`<= 5%`})
+                                      Commission ({`upto 5%`})
                                     </label>
                                     <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
                                       {/* <input
