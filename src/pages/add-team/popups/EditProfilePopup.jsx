@@ -181,6 +181,11 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
   const [phoneNumberError, setPhoneNumberError] = useState("");
   const [profileImg, setProfileImg] = useState(null);
 
+
+  const handleClose=()=>{
+    onHide(false)
+    setError("")
+  }
   // Populate form when data changes
   useEffect(() => {
     if (data) {
@@ -278,11 +283,11 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
 
   return (
     <>
-      <Modal centered show={show} onHide={onHide} size="md">
+      <Modal centered show={show} onHide={handleClose} size="md">
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="small-font fw-600">Edit Profile</h5>
-            <MdOutlineClose size={22} onClick={onHide} className="pointer" />
+            <MdOutlineClose size={22} onClick={handleClose} className="pointer" />
           </div>
 
           {error?.length > 0 && <ErrorComponent error={error} />}

@@ -633,7 +633,7 @@ const UserProfileDashboard = () => {
         show={showEditProfilePopup}
         data={directorData}
         // reload = {getDirectorDetailsById}
-        onHide={() => setShowEditProfilePopup(false)}
+        onHide={setShowEditProfilePopup}
         getById={getById}
       />
       <SuccessPopup
