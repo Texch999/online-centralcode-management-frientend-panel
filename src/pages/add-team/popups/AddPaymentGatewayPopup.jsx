@@ -18,21 +18,16 @@ import { useSearchParams } from "react-router-dom";
 const AddPaymentGatewayPopup = ({
   show,
   setOnAddPaymentGateway,
-  addpaymentId,
-  availablePaymentModeId,
-  setAvailablePaymentModeId,
   managementPaymentEdit,
-  setManagementPaymentEdit,
   fetchManagementPaymentDetails,
   managementPaymentEditId,
   setManagementPaymentEditId,
+  availablePaymentModeId,
   countryId,
-  //dir
   dirEditId,
   getDirectorAccountData,
-  //man profile
+  addpaymentId,
 }) => {
-
   const [upiID, setUpiID] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [bankIFSC, setBankIFSC] = useState("");
@@ -40,15 +35,17 @@ const AddPaymentGatewayPopup = ({
   const [country, setCountry] = useState("");
   const [error, setError] = useState("");
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [manPaymentData, setManPaymentData] = useState([]);
   const role_code = localStorage.getItem("role_code");
   const [details, setDetails] = useState("");
   const [accHolderName, setAccHolderName] = useState("");
+  const [msg, setMsg] = useState("");
   const [qrName, setQrName] = useState("");
+  const [desciption, setDesciption] = useState("");
   const handleQrCodeChange = (e) => {
     const file = e.target.files[0];
     setQrCode(file);
@@ -58,7 +55,7 @@ const AddPaymentGatewayPopup = ({
   const [searchParams, setSearchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
   const [validationErrors, setValidationErrors] = useState({});
-  const [msg, setMsg] = useState("");
+
   const resetFields = () => {
     setUpiID("");
     setAccountNumber("");
@@ -74,12 +71,15 @@ const AddPaymentGatewayPopup = ({
   };
 
   const onHide = () => {
-    setOnAddPaymentGateway();
+    if (setManagementPaymentEditId) {
+      setManagementPaymentEditId(null);
+    }
     resetFields();
-    setManagementPaymentEditId(null)
+    setOnAddPaymentGateway();
   };
 
   const [updateId, setUpdateId] = useState(null);
+
   const fetchManagementPaymentDetailsById = () => {
     setInitialLoading(true)
     getManagementPaymentDetailsById(managementPaymentEditId)
@@ -198,22 +198,34 @@ const AddPaymentGatewayPopup = ({
     const offset = (pages - 1) * itemsPerPage;
     try {
       setLoading(true)
-      const response = managementPaymentEdit
-        ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
-        : await createManagementPaymentDetails(formData);
 
-      if (response.status === true) {
-        setOnAddPaymentGateway(false);
-        setMsg(response?.message);
-        fetchManagementPaymentDetails(limit, offset);
-        setSuccessPopupOpen(true);
-        setLoading(false)
-        setManagementPaymentEditId(null)
-        setTimeout(() => {
-          setSuccessPopupOpen(false);
-        }, 3000);
-        resetFields();
-      }
+      const response = managementPaymentEdit
+        ? updateManagementPaymentDetails(manPaymentData?.id, formData)
+        : createManagementPaymentDetails(formData);
+      await response
+        .then(() => {
+          // Show success if functions exist
+          if (setSuccessPopupOpen && setDesciption) {
+            setSuccessPopupOpen(true);
+            setDesciption(response?.message || "Operation successful");
+          }
+
+          setSuccessPopupOpen(true);
+          setDesciption(response?.message)
+          setLoading(false)
+
+          if(typeof setManagementPaymentEditId === "function"){
+            setManagementPaymentEditId(null)
+          }
+
+          resetFields();
+          setOnAddPaymentGateway(false);
+        })
+        .catch((error) => {
+          setLoading(false)
+          setError(error?.message);
+          console.log(error?.message, "errorr");
+        })
     } catch (error) {
       setLoading(false)
       setError(error?.message);
@@ -222,8 +234,9 @@ const AddPaymentGatewayPopup = ({
   };
 
   const [dirPaymentDataById, setDirPaymentDataById] = useState(null);
-  console.log(dirPaymentDataById, "setDirPaymentDataById");
+
   const [dirUpdateId, setDirUpdateId] = useState(null);
+
   const fetchDirectorPaymentDetailsById = () => {
     getDirectorAccountById(dirEditId)
       .then((response) => {
@@ -359,7 +372,6 @@ const AddPaymentGatewayPopup = ({
       console.log(error?.message, "errorr");
     }
   };
-
 
   return (
     <>
@@ -613,17 +625,14 @@ const AddPaymentGatewayPopup = ({
           </div>
         </Modal.Body>
       </Modal>
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={desciption}
+        />
+      )}
 
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={msg}
-      // discription={
-      //   managementPaymentEdit
-      //     ? "Successfully updated!"
-      //     : "Successfully added!"
-      // }
-      />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
         setErrorPopupOpen={setErrorPopupOpen}
