@@ -248,37 +248,46 @@ const AddWibsites = () => {
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
+        {!loading && (
+          <>
         <h6 className="col-2 yellow-font medium-font mb-0">Websites List</h6>
+          <div className="col-6 d-flex justify-content-end gap-3 medium-font">
+            <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
+              <FaSearch size={16} className="grey-clr me-2" />
+              <input
+                className="small-font all-none"
+                placeholder="Enter website name"
+                onChange={(e) => setFilterName(e.target.value.trim())}
+                onKeyDown={handleFiltration}
+              />
+            </div>
 
-        <div className="col-6 d-flex justify-content-end gap-3 medium-font">
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input
-              className="small-font all-none"
-              placeholder="Enter website name"
-              onChange={(e) => setFilterName(e.target.value.trim())}
-              onKeyDown={handleFiltration}
-            />
+            {role === "management" ? (
+              <button
+                className="rounded-pill input-pill blue-font small-font px-2"
+                onClick={() => setOnAddwebsitePopup(true)}
+              >
+                <FaPlus /> Add New Website{" "}
+              </button>
+            ) : (
+              ""
+            )}
           </div>
+          </>
+        )}
 
-          {role === "management" ? (
-            <button
-              className="rounded-pill input-pill blue-font small-font px-2"
-              onClick={() => setOnAddwebsitePopup(true)}
-            >
-              <FaPlus /> Add New Website{" "}
-            </button>
-          ) : (
-            ""
-          )}
-        </div>
       </div>
-      {loading ? (<div className="d-flex flex-column flex-center mt-10rem align-items-center">
-        <CircleLoader color="#3498db" size={40} />
-        <div className="medium-font black-font my-3">
-          Just a moment...............⏳
+      {loading ? (
+        //   <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+        //   <CircleLoader color="#3498db" size={40} />
+        //   <div className="medium-font black-font my-3">
+        //     Just a moment...............⏳
+        //   </div>
+        // </div>
+        <div className="spinner">
+          <div className="spinner-circle"></div>
         </div>
-      </div>) :
+      ) :
         role === "management" ? (
           <div className="mt-2">
             <Table
@@ -324,7 +333,7 @@ const AddWibsites = () => {
           onSubmit={handleBlockAndUnblock}
         />
       )}
-      
+
       {openSuccessPopup && (
         <SuccessPopup
           successPopupOpen={openSuccessPopup}

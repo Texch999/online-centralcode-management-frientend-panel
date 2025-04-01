@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { ManagementOfflineDepositeTicketCreation } from "../../api/apiMethods";
 
@@ -199,7 +199,7 @@ const OfflineDepositPopup = ({
                                 onChange={(e) => setPaidAmount(e.target.value)}
                                 readOnly
                             />
-                      
+
                         </div>
 
                         <div className="col mb-2">
@@ -230,7 +230,7 @@ const OfflineDepositPopup = ({
                                     )}
                                 </>
                             )}
-                                  {fieldError && <p className="text-danger small-font">{fieldError}</p>}
+                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
                         </div>
                     </div>
@@ -282,22 +282,47 @@ const OfflineDepositPopup = ({
                                 }
 
                             </div>
-                            <button
-                                className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
+
+                            {/* <button
+                                className={`saffron-btn br-5   w-100   ${errors.managementPassword ? "" : "mt-2"
+                                    }`}
+                                type="submit"
                                 onClick={handleSubmit}
                                 disabled={isLoading} // Disable button when loading
                             >
                                 {isLoading ? (
-                                    <div
-                                        className="spinner-border spinner-border-sm" // Bootstrap spinner
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
                                         role="status"
-                                    >
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
+                                        aria-hidden="true"
+                                    />
                                 ) : (
-                                    "Submit"
+                                    ""
                                 )}
+                                <span className="visually-hidden ps-2"> {isLoading === true ? "Submiting ...." : "Submit"}</span>
+                            </button> */}
+
+                            <button className={`saffron-btn br-5 ms-2  w-100`}
+                                type="submit"
+                                disabled={isLoading === true ? true : false}
+                                onClick={handleSubmit}>
+
+                                {isLoading === true ? (
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    ""
+                                )}
+                                <span className="ps-2 small-font">  {isLoading === true ? "Submiting ...." : "Submit"}</span>
                             </button>
+
                         </div>
 
                         {errors.masterPassword && <p className="text-danger small-font">{errors.masterPassword}</p>}

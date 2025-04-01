@@ -20,7 +20,7 @@ const CreditSettlement = () => {
   const [creditUserList, setCreditUserList] = useState([]);
   const [totalRecords, setTotalRecords] = useState([]);
   const [settlementAmounts, setSettlementAmounts] = useState({});
-  const [payload, setPayload] = useState([]); 
+  const [payload, setPayload] = useState([]);
   const itemsPerPage = 9;
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
@@ -209,16 +209,15 @@ const CreditSettlement = () => {
   const [validation, setValidation] = useState(null)
 
   const hanldeSettlement = () => {
-
+    console.log(parentPassword, "==parentPassword")
     if (!payload || Object.keys(payload).length === 0) {
       return;
     }
 
     if (!parentPassword) {
       setValidation("Password is Required")
+      return
     }
-
-
 
     const data = {
       list: payload,
@@ -354,7 +353,7 @@ const CreditSettlement = () => {
               )}
             </div>
             {validation && (
-              <span>{validation}</span>
+              <span className="text-danger small-font">{validation}</span>
             )}
           </div>
           <div className="col-2">
