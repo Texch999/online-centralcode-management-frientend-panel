@@ -252,6 +252,7 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+ 
 
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -411,6 +412,7 @@ const UserProfileDashboard = () => {
   const [resetPasswordPopup, setResetPasswordPopup] = useState(false);
   const [description, setDesciption] = useState("");
   const [editedDtat, setEditedDtat] = useState([]);
+  const [passwordLoader,setPasswordLoader]=useState(false)
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -432,9 +434,12 @@ const UserProfileDashboard = () => {
       parent_password: data.managementPassword,
     };
 
+    setPasswordLoader(true)
+
     resetDirectorPassword(id, payload)
       .then((response) => {
         if (response.status === true) {
+          setPasswordLoader(false)
           setEditedDtat(response.data);
           setDesciption(response.message);
           handleResetPasswordClose();
@@ -448,6 +453,7 @@ const UserProfileDashboard = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setPasswordLoader(false)
       });
   };
 
@@ -497,7 +503,7 @@ const UserProfileDashboard = () => {
       <div className="gap-3 director-admin-profile-top-con rounded">
         <div className="d-flex w-100 justify-content-end mb-3 gap-4 px-3">
           <div
-            className="director-admin-profile-top-bg-dark d-flex align-items-center gap-2 px-3 text-white rounded-pill"
+            className="director-admin-profile-top-bg-dark d-flex align-items-center pointer gap-2 px-3 text-white rounded-pill"
             onClick={() => navigate(-1)}
           >
             <span className="fw-600 small-font">
@@ -621,13 +627,15 @@ const UserProfileDashboard = () => {
         resetPasswordPopup={showResetPasswordPopup}
         setResetPasswordPopup={handleResetPasswordClose}
         onSubmit={resetDirectorPswd}
-        error={error}
+        passwordLoader={passwordLoader}
+        resetPasswordErrrors={error}
       />
       <EditProfilePopup
         show={showEditProfilePopup}
         data={directorData}
         // reload = {getDirectorDetailsById}
         onHide={() => setShowEditProfilePopup(false)}
+        getById={getById}
       />
       <SuccessPopup
         successPopupOpen={showSuccessPopup}

@@ -36,7 +36,7 @@ function ResetPasswordPopup({
   const handleCancel = () => {
     setResetPasswordPopup(false);
     reset();
-    setResetPasswordErrors("");
+    // setResetPasswordErrors("");
     setShowPassword(false);
   };
 
@@ -44,7 +44,7 @@ function ResetPasswordPopup({
     setShowSuccessPopup(false);
     setResetPasswordPopup(false);
     reset();
-    setResetPasswordErrors("");
+    // setResetPasswordErrors("");
   };
 
   useEffect(() => {

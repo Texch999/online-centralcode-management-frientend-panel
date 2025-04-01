@@ -18,6 +18,7 @@ import { CircleLoader } from "react-spinners";
 import ErrorPopup from "../popups/ErrorPopup";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const PaymentGateway = () => {
   const navigate = useNavigate();
@@ -54,6 +55,8 @@ const PaymentGateway = () => {
   const page = pages;
   const pageSize = itemsPerPage;
   const [countryId, setCountryId] = useState(null);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -108,7 +111,11 @@ const PaymentGateway = () => {
   const fetchManagementPaymentDetails = async (limit, offset, holder) => {
     setLoading(true);
     try {
-      const response = await getManagementPaymentDetails({ limit, offset, holder });
+      const response = await getManagementPaymentDetails({
+        limit,
+        offset,
+        holder,
+      });
       if (response?.status === true) {
         setManagementPaymentDetails(response?.data);
         setTotalRecords(response?.meta?.totalCount);
@@ -132,7 +139,6 @@ const PaymentGateway = () => {
     }
   }, []);
   const onPageChange = ({ limit, offset }) => {
-
     if (role_code === "management") {
       fetchManagementPaymentDetails(limit, offset, searchInput);
     }
@@ -147,6 +153,11 @@ const PaymentGateway = () => {
           setSuspendPayment(false);
           setSuspendManagementPaymentId(null);
           setSuspendManagementPaymentStatus(null);
+          setMsg(response?.message);
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+          }, 3000);
         }
       })
       .catch((error) => {
@@ -175,7 +186,7 @@ const PaymentGateway = () => {
   //     accholder?.includes(searchTerm)
   //   );
   // });
-  const filteredPayments = managementPaymentDetails
+  const filteredPayments = managementPaymentDetails;
 
   const managementPaymentData = filteredPayments.map((item, index) => ({
     gatewayName: gatewayTypeMap[item?.gateway_type],
@@ -329,6 +340,11 @@ const PaymentGateway = () => {
       .then((response) => {
         getDirectorAccountData();
         setOnBlockPopup(false);
+        setMsg(response?.message);
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 3000);
       })
       .catch((error) => {
         setError(error.message);
@@ -356,7 +372,7 @@ const PaymentGateway = () => {
   //   );
   // });
 
-  const filteredDirPayments = accountList
+  const filteredDirPayments = accountList;
 
   const transformedData = filteredDirPayments?.map((item) => ({
     gatewayName: gatewayTypeMap[item.gateway_type],
@@ -432,8 +448,8 @@ const PaymentGateway = () => {
   }));
 
   const handleFiltration = async (e) => {
-    const limit = itemsPerPage
-    const offset = 0
+    const limit = itemsPerPage;
+    const offset = 0;
     if (e.key === "Enter") {
       setError(null);
       fetchManagementPaymentDetails(limit, offset, searchInput);
@@ -441,8 +457,8 @@ const PaymentGateway = () => {
   };
 
   useEffect(() => {
-    const limit = itemsPerPage
-    const offset = (page - 1) * itemsPerPage
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     // Fetch data based on role and filterName
     if (searchInput.trim() === "") {
       fetchManagementPaymentDetails(limit, offset);
@@ -451,40 +467,47 @@ const PaymentGateway = () => {
 
   return (
     <div>
-      <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0">Payment Gateway</h6>
+      {!loading && (
+        <div className="row justify-content-between align-items-center mb-3 mt-2">
+          <h6 className="col-2 yellow-font medium-font mb-0">
+            Payment Gateway
+          </h6>
 
-        <div className="col-6 d-flex justify-content-end gap-3 medium-font">
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input
-              className="small-font all-none"
-              placeholder="Enter Account Holder Name"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value.trim())}
-              onKeyDown={handleFiltration}
-            />
+          <div className="col-6 d-flex justify-content-end gap-3 medium-font">
+            <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
+              <FaSearch size={16} className="grey-clr me-2" />
+              <input
+                className="small-font all-none"
+                placeholder="Enter Account Holder Name"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value.trim())}
+                onKeyDown={handleFiltration}
+              />
+            </div>
+
+            <button
+              className="rounded-pill input-pill blue-font small-font px-2"
+              onClick={() => {
+                navigate("/addnew-payments");
+              }}
+            >
+              <FaPlus /> Add New Gateway
+            </button>
           </div>
-
-          <button
-            className="rounded-pill input-pill blue-font small-font px-2"
-            onClick={() => {
-              navigate("/addnew-payments");
-            }}
-          >
-            <FaPlus /> Add New Gateway
-          </button>
         </div>
-      </div>
+      )}
 
       {role_code === "management" ? (
         <div className="mt-2">
           {loading ? (
-            <div className="d-flex flex-column flex-center mt-10rem align-items-center">
-              <CircleLoader color="#3498db" size={40} />
-              <div className="medium-font black-font my-3">
-                Just a moment...............⏳
-              </div>
+            // <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+            //   <CircleLoader color="#3498db" size={40} />
+            //   <div className="medium-font black-font my-3">
+            //     Just a moment...............⏳
+            //   </div>
+            // </div>
+            <div className="spinner">
+              <div className="spinner-circle"></div>
             </div>
           ) : (
             <Table
@@ -549,18 +572,21 @@ const PaymentGateway = () => {
         <ConfirmationPopup
           confirmationPopupOpen={suspendPayment}
           setConfirmationPopupOpen={setSuspendPayment}
-          discription={`Are you sure you want to ${suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
-            } this payment gateway?`}
-          submitButton={`${suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
-            }`}
+          discription={`Are you sure you want to ${
+            suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
+          } this payment gateway?`}
+          submitButton={`${
+            suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
+          }`}
           onSubmit={suspendManPaymnet}
         />
       ) : (
         <ConfirmationPopup
           confirmationPopupOpen={onBlockPopup}
           setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-          discription={`are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
-            } this Gateway?`}
+          discription={`are you sure you want to ${
+            statusId === 1 ? "In-Active" : "Active"
+          } this Gateway?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
         />
@@ -570,6 +596,11 @@ const PaymentGateway = () => {
         discription={error}
         errorPopupOpen={errorPopup}
         setErrorPopupOpen={setErrorPopup}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={msg}
       />
     </div>
   );
