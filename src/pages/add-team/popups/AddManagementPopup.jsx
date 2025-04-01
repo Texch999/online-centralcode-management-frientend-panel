@@ -128,7 +128,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
       <Modal.Body>
         <div className="d-flex justify-content-between align-items-center fw-600">
           {Role === "management" ? (
-            <h6 className="yellow-font mb-0 py-2 ">Add Management Team</h6>
+            <h6 className="yellow-font mb-0 py-2 ">Add Management Team </h6>
           ) : (
             <h5 className="yellow-font mb-0 py-2 ">Add Director Team</h5>
           )}
@@ -345,7 +345,7 @@ const AddManagementPopup = ({ onClose, onSubmit, show, editingRowId }) => {
                     style={{
                       position: "absolute",
                       right: "5%",
-                      top: "40%",
+                      top: errors.confirmPassword ? "40%" : "50%",
                       cursor: "pointer",
                     }}
                   >

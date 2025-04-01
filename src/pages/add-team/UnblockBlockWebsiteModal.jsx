@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Modal } from "react-bootstrap";
 import { IoClose, IoEye, IoEyeOff } from "react-icons/io5";
 import { suspendWebsiteProfile } from "../../api/apiMethods";
@@ -25,11 +25,13 @@ const UnblockBlockWebsiteModal = ({
   const [selectedWebsites, setSelectedWebsites] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [checked, setChecked] = useState(adminStatusId === 1);
+  // Initialize adminStatus with the prop value
+  const [adminStatus, setAdminStatus] = useState(adminStatusId);
 
   const handlePswd = () => {
     setPswdVisible((prev) => !prev);
   };
-  const [adminStatus, setAdminStatus] = useState(adminStatusId);
   const [requireUserSelection, setRequireUserSelection] = useState(false);
   const [isAdminStatusChanged, setIsAdminStatusChanged] = useState(false);
   const handleBlockUserWebsite = (status, userweb, adminweb) => {
@@ -52,24 +54,47 @@ const UnblockBlockWebsiteModal = ({
     });
   };
 
-  const handleBlockAdmin = (status) => {
-    setAdminStatus(status);
-    setIsAdminStatusChanged(true); // Mark that admin status was changed
+  useEffect(() => {
+    setChecked(adminStatusId === 1);
+    setAdminStatus(adminStatusId);
+  }, [adminStatusId]);
 
-    if (status === 2) {
-      // Deactivating admin
-      // Block all user websites
+  // const handleBlockAdmin = (status) => {
+  //   setStatusId(status)
+  //   setAdminStatus(status);
+  //   setIsAdminStatusChanged(true);
+
+  //   if (status === 2) {
+  //     const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
+  //       website.user_panels?.map((item) => ({
+  //         admin_panel_id: website?.admin_panel_id,
+  //         user_panel_id: item?.user_panel_id,
+  //         status: 2,
+  //       }))
+  //     );
+  //     setSelectedWebsites(updatedUserWebsites);
+  //     setRequireUserSelection(false);
+  //   } else {
+  //     setRequireUserSelection(true);
+  //   }
+  // };
+
+  const handleBlockAdmin = (newStatus) => {
+    setAdminStatus(newStatus);
+    setIsAdminStatusChanged(true);
+    setChecked(newStatus === 1);
+
+    if (newStatus === 2) {
       const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
         website.user_panels?.map((item) => ({
           admin_panel_id: website?.admin_panel_id,
           user_panel_id: item?.user_panel_id,
-          status: 2, // Block all
+          status: 2,
         }))
       );
       setSelectedWebsites(updatedUserWebsites);
       setRequireUserSelection(false);
     } else {
-      // Activating admin
       setRequireUserSelection(true);
     }
   };
@@ -128,7 +153,7 @@ const UnblockBlockWebsiteModal = ({
       .then((response) => {
         console.log("popup");
         setMsg(response?.message);
-        getWebMarketDtls()
+        getWebMarketDtls();
         setShow(false);
         setSuccessModal(true);
         setPswd("");
@@ -215,15 +240,27 @@ const UnblockBlockWebsiteModal = ({
                   )}
                 </div>
                 <div class="form-check form-switch">
-                  <input
-                    class="form-check-input w-40"
+                  {/* <input
+                    className="form-check-input w-40"
                     type="checkbox"
                     role="switch"
-                    id="flexSwitchCheckDefault"
                     checked={adminStatusId === 1}
                     onChange={() =>
                       handleBlockAdmin(adminStatusId === 1 ? 2 : 1)
                     }
+                    // onChange={() => {
+                    //   const newStatus = adminStatus === 1 ? 2 : 1;
+                    //   setAdminStatus(newStatus);
+                    //   handleBlockAdmin(newStatus);
+                    // }}
+                  /> */}
+
+                  <input
+                    className="form-check-input w-40"
+                    type="checkbox"
+                    role="switch"
+                    checked={checked}
+                    onChange={() => handleBlockAdmin(checked ? 2 : 1)}
                   />
                 </div>
               </div>
@@ -231,9 +268,11 @@ const UnblockBlockWebsiteModal = ({
           </div>
 
           {requireUserSelection && adminStatus === 1 && (
-            <div className="red-font font-11 mb-2">
-              Please select at least one user website to activate
-            </div>
+            <Alert>
+              <div className="red-font font-11">
+                Please select at least one user website to activate
+              </div>
+            </Alert>
           )}
 
           <div className="medium-font my-1">User Website</div>
@@ -286,7 +325,7 @@ const UnblockBlockWebsiteModal = ({
             <Alert variant="warning" className="mt-3 mb-2">
               <div className="d-flex medium-font flex-column flex-center align-items-center">
                 {`Are you sure you want to ${
-                  statusId === 1 ? "Active" : "In-Active"
+                  adminStatus  === 1 ? "Active" : "In-Active"
                 } these selected websites?`}
                 <div className="mt-2 d-flex gap-3 align-items-center">
                   <div
