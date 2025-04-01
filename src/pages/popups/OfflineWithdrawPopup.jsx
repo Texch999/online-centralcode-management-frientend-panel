@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { getSettlementSummeryById, ManagementOfflineWithdrawTicketCreation } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
@@ -179,7 +179,8 @@ const OfflineWithdrawPopup = ({
 
                     <div className="row">
                         <div className="col mb-2">
-                            <label className="small-font white-space mb-1">Available Wallet Bal.</label>
+                            {/* <label className="small-font white-space mb-1">Available Wallet Bal.</label> */}
+                            <label className="small-font white-space mb-1">Avl. Withdraw Bal.</label>
                             <input
                                 type="text"
                                 name="selectedChips"
@@ -280,12 +281,22 @@ const OfflineWithdrawPopup = ({
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
+
                                     <div
-                                        className="spinner-border spinner-border-sm"
+                                        // className="spinner-border spinner-border-sm"
+                                        className="flex-row"
                                         role="status"
                                     >
-                                        <span className="visually-hidden">Submiting...</span>
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        <span className="ps-2">Submiting...</span>
                                     </div>
+
                                 ) : (
                                     "Submit"
                                 )}

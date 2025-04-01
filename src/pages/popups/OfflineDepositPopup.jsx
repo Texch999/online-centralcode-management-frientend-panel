@@ -258,8 +258,49 @@ const OfflineDepositPopup = ({
 
                     <div className="d-flex flex-column w-100">
                         <div className="small-font mb-1 ">Enter Password</div>
-                        <div className="d-flex flex-row justify-content-between me-1">
+                        {/* <div className="d-flex flex-row justify-content-between me-1">
+                        <div className="white-btn2 w-100 flex-between">
+                                <input
+                                    className="all-none p-0 small-font"
+                                    placeholder="Enter"
+                                    type={`${showHide ? "text" : "password"}`}
+                                    name="parentpassword"
+                                    value={masterPassword || ""}
+                                    onChange={(e) => {
+                                        const inputValue = e.target.value
+                                        if (inputValue.length <= 36) {
+                                            setMasterPassword(inputValue)
+                                        }
+                                    }}
+                                    autocomplete="off"
+                                />
+                                {showHide ?
+                                    <IoEye className="large-font pointer" onClick={handleEncryptOrDecrypt} />
+                                    :
+                                    <IoEyeOffSharp className="large-font pointer" onClick={handleEncryptOrDecrypt} />
+                                }
+                            </div>
+                            <button className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
+                                type="submit"
+                                disabled={isLoading === true ? true : false}
+                                onClick={handleSubmit}>
 
+                                {isLoading === true ? (
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    ""
+                                )}
+                                <span className="ps-2 small-font">  {isLoading === true ? "Submiting ...." : "Submit"}</span>
+                            </button>
+                        </div> */}
+
+                        <div className="d-flex flex-row justify-content-between me-1">
                             <div className="white-btn2 w-100 flex-between">
                                 <input
                                     className="all-none p-0 small-font"
@@ -282,47 +323,32 @@ const OfflineDepositPopup = ({
                                 }
 
                             </div>
-
-                            {/* <button
-                                className={`saffron-btn br-5   w-100   ${errors.managementPassword ? "" : "mt-2"
-                                    }`}
-                                type="submit"
+                            <button
+                                className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
                                 onClick={handleSubmit}
-                                disabled={isLoading} // Disable button when loading
+                                disabled={isLoading}
                             >
                                 {isLoading ? (
-                                    <Spinner
-                                        as="span"
-                                        animation="border"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                    />
-                                ) : (
-                                    ""
-                                )}
-                                <span className="visually-hidden ps-2"> {isLoading === true ? "Submiting ...." : "Submit"}</span>
-                            </button> */}
 
-                            <button className={`saffron-btn br-5 ms-2  w-100`}
-                                type="submit"
-                                disabled={isLoading === true ? true : false}
-                                onClick={handleSubmit}>
-
-                                {isLoading === true ? (
-                                    <Spinner
-                                        as="span"
-                                        animation="border"
-                                        size="sm"
+                                    <div
+                                        // className="spinner-border spinner-border-sm"
+                                        className="flex-row"
                                         role="status"
-                                        aria-hidden="true"
-                                    />
+                                    >
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        <span className="ps-2">Submiting...</span>
+                                    </div>
+
                                 ) : (
-                                    ""
+                                    "Submit"
                                 )}
-                                <span className="ps-2 small-font">  {isLoading === true ? "Submiting ...." : "Submit"}</span>
                             </button>
-
                         </div>
 
                         {errors.masterPassword && <p className="text-danger small-font">{errors.masterPassword}</p>}
