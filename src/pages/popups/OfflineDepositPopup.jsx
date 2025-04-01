@@ -34,9 +34,6 @@ const OfflineDepositPopup = ({
     if (!selectedChips || Number(selectedChips) <= 0) {
       newErrors.selectedChips = "required field";
     }
-    if (!finalPaidAmount || Number(finalPaidAmount) < 0) {
-      newErrors.paidAmount = "required field";
-    }
     if (!remark || remark == "") {
       newErrors.remark = "required field";
     }
@@ -58,7 +55,7 @@ const OfflineDepositPopup = ({
         ? selectedDetails.creditBalance
         : 0,
       chipAmount: paidAmount,
-      paidAmount: finalPaidAmount,
+      paidAmount: finalPaidAmount || 0,
       totalCredit:
         (selectedDetails?.creditBalance ? selectedDetails.creditBalance : 0) +
         (selectedDetails?.creditAllowed == 1
@@ -89,17 +86,34 @@ const OfflineDepositPopup = ({
       ? Number(selectedChips) - Number(paidAmount)
       : 0;
 
+  // const handlePaidAmountChange = (e) => {
+  //   const value = e.target.value;
+
+  //   if (Number(value) <= Number(paidAmount)) {
+  //     setFinalPaidAmount(value);
+  //   }
+
+  //   if (errors) {
+  //     validateForm();
+  //   }
+  // };
+
   const handlePaidAmountChange = (e) => {
     const value = e.target.value;
-
-    if (Number(value) <= Number(paidAmount)) {
-      setFinalPaidAmount(value);
-    }
-
-    if (errors) {
-      validateForm();
+  
+    // Allow only numbers
+    if (/^\d*$/.test(value)) {
+      if (Number(value) <= Number(paidAmount)) {
+        setFinalPaidAmount(value);
+      }
+  
+      if (errors) {
+        validateForm();
+      }
     }
   };
+  
+
   const getCurrency = (id) => {
     const country = allCountries.find((item) => item.id === id);
     return country?.currency_name;
@@ -266,7 +280,7 @@ const OfflineDepositPopup = ({
             <div className="col mb-2">
               <label className="small-font mb-1">Paid Amount </label>
               <input
-                type="number"
+                type="text"
                 className="w-100 small-font rounded input-css all-none input-bg"
                 placeholder="Enter"
                 value={finalPaidAmount}

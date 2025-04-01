@@ -92,7 +92,7 @@ const AddDirectorAdmin = () => {
 
   const columns = [
     { header: "Name", field: "role" },
-    { header: "Credit Ref.", field: "creditref" },
+    { header: "Credit Limit", field: "creditref" },
     { header: "Credit", field: "credit" },
     { header: "Deposit", field: "deposit" },
     { header: "Withdraw", field: "withdraw" },
