@@ -35,7 +35,7 @@ const OfflineDepositPopup = ({
         if (!selectedChips || Number(selectedChips) <= 0) {
             newErrors.selectedChips = "required field";
         }
-        if (!paidAmount || Number(paidAmount) < 0) {
+        if (!finalPaidAmount || Number(finalPaidAmount) < 0) {
             newErrors.paidAmount = "required field";
         }
         if (!remark || remark == "") {
@@ -75,6 +75,7 @@ const OfflineDepositPopup = ({
                 setApiErrors(null);
             })
             .catch((error) => {
+                console.log(error, "==>catch")
                 setApiErrors(error?.message || "API request failed");
             })
             .finally(() => {
@@ -90,6 +91,10 @@ const OfflineDepositPopup = ({
         if (Number(value) <= Number(paidAmount)) {
             setFinalPaidAmount(value);
         }
+        
+        if (errors) {
+            validateForm()
+        }
     };
     const getCurrency = (id) => {
         const country = allCountries.find((item) => item.id === id);
@@ -99,6 +104,26 @@ const OfflineDepositPopup = ({
     const handleEncryptOrDecrypt = () => {
         setShowHide(!showHide)
     }
+
+    const handleChipsChange = (e) => {
+        const inputValue = e.target.value.replace(/[^0-9]/g, '');
+        if (errors) {
+            validateForm()
+        }
+        if (inputValue.length <= 11) {
+            setSelectedChips(inputValue);
+            setPaidAmount(inputValue);
+            if (Number(selectedChips) < Number(finalPaidAmount)) {
+                setFinalPaidAmount(inputValue)
+            }
+            // Clear paid amount if chips are cleared
+            if (!inputValue) {
+                setFinalPaidAmount("");
+            }
+
+        }
+    };
+
     return (
         <div>
             <Modal show={depositPopup} centered className="confirm-popup" size="md">
@@ -135,7 +160,7 @@ const OfflineDepositPopup = ({
                     )} */}
 
                     {apiErrors && (
-                        <ErrorComponent error={apiErrors}/>
+                        <ErrorComponent error={apiErrors} />
                     )}
 
 
@@ -173,7 +198,7 @@ const OfflineDepositPopup = ({
                     </div>
 
                     <div className="row">
-                        <div className="col mb-2">
+                        {/* <div className="col mb-2">
                             <label className="small-font mb-1">Enter Deposit Chips </label>
                             <input
                                 type="text"
@@ -186,6 +211,9 @@ const OfflineDepositPopup = ({
                                     if (inputValue.length <= 11) {
                                         setSelectedChips(inputValue)
                                         setPaidAmount(inputValue)
+                                        if (Number(selectedChips) < Number(finalPaidAmount)) {
+                                            setFinalPaidAmount(inputValue)
+                                        }
                                     }
                                 }}
                                 // pattern="[0-9]*"
@@ -193,6 +221,22 @@ const OfflineDepositPopup = ({
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
                             {errors.selectedChips && <p className="text-danger small-font">{errors.selectedChips}</p>}
+                        </div> */}
+
+                        <div className="col mb-2">
+                            <label className="small-font mb-1">Enter Deposit Chips</label>
+                            <input
+                                type="text"
+                                name="selectedChips"
+                                className={`w-100 small-font rounded input-css all-none input-bg ${errors.selectedChips ? "border-danger" : ""
+                                    }`}
+                                placeholder="Enter Chips"
+                                value={selectedChips}
+                                onChange={handleChipsChange}
+                            />
+                            {errors.selectedChips && (
+                                <p className="text-danger small-font">{errors.selectedChips}</p>
+                            )}
                         </div>
 
                         <div className="col mb-2">
@@ -206,7 +250,6 @@ const OfflineDepositPopup = ({
                                 onChange={(e) => setPaidAmount(e.target.value)}
                                 readOnly
                             />
-
                         </div>
 
                         <div className="col mb-2">
@@ -221,8 +264,8 @@ const OfflineDepositPopup = ({
                                 onFocus={() => setIsFinalPaidAmountFocused(true)}
                                 onBlur={() => setIsFinalPaidAmountFocused(false)}
                                 min="0"
+                                max={Number(selectedChips)}
                             />
-
                             {isFinalPaidAmountFocused && (
                                 <>
                                     {selectedDetails?.creditAllowed == 2 && finalPaidAmount !== paidAmount && (
@@ -256,6 +299,9 @@ const OfflineDepositPopup = ({
                                     if (inputValue.length <= 250) {
                                         setRemark(inputValue)
                                     }
+                                    if (errors) {
+                                        validateForm()
+                                    }
                                 }}
                             />
                             {fieldError && <p className="text-danger small-font">{fieldError}</p>}
@@ -265,9 +311,8 @@ const OfflineDepositPopup = ({
 
                     <div className="d-flex flex-column w-100">
                         <div className="small-font mb-1 ">Enter Password</div>
-                        <div className="d-flex flex-row justify-content-between me-1">
-
-                            <div className="white-btn2 w-100 flex-between">
+                        {/* <div className="d-flex flex-row justify-content-between me-1">
+                        <div className="white-btn2 w-100 flex-between">
                                 <input
                                     className="all-none p-0 small-font"
                                     placeholder="Enter"
@@ -287,31 +332,8 @@ const OfflineDepositPopup = ({
                                     :
                                     <IoEyeOffSharp className="large-font pointer" onClick={handleEncryptOrDecrypt} />
                                 }
-
                             </div>
-
-                            {/* <button
-                                className={`saffron-btn br-5   w-100   ${errors.managementPassword ? "" : "mt-2"
-                                    }`}
-                                type="submit"
-                                onClick={handleSubmit}
-                                disabled={isLoading} // Disable button when loading
-                            >
-                                {isLoading ? (
-                                    <Spinner
-                                        as="span"
-                                        animation="border"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                    />
-                                ) : (
-                                    ""
-                                )}
-                                <span className="visually-hidden ps-2"> {isLoading === true ? "Submiting ...." : "Submit"}</span>
-                            </button> */}
-
-                            <button className={`saffron-btn br-5 ms-2  w-100`}
+                            <button className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
                                 type="submit"
                                 disabled={isLoading === true ? true : false}
                                 onClick={handleSubmit}>
@@ -329,7 +351,61 @@ const OfflineDepositPopup = ({
                                 )}
                                 <span className="ps-2 small-font">  {isLoading === true ? "Submiting ...." : "Submit"}</span>
                             </button>
+                        </div> */}
 
+                        <div className="d-flex flex-row justify-content-between me-1">
+                            <div className="white-btn2 w-100 flex-between">
+                                <input
+                                    className="all-none p-0 small-font"
+                                    placeholder="Enter"
+                                    type={`${showHide ? "text" : "password"}`}
+                                    name="parentpassword"
+                                    value={masterPassword || ""}
+                                    onChange={(e) => {
+                                        const inputValue = e.target.value
+                                        if (inputValue.length <= 36) {
+                                            setMasterPassword(inputValue)
+                                        }
+
+                                        if (errors) {
+                                            validateForm()
+                                        }
+                                    }}
+                                    autocomplete="off"
+                                />
+                                {showHide ?
+                                    <IoEye className="large-font pointer" onClick={handleEncryptOrDecrypt} />
+                                    :
+                                    <IoEyeOffSharp className="large-font pointer" onClick={handleEncryptOrDecrypt} />
+                                }
+
+                            </div>
+                            <button
+                                className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
+                                onClick={handleSubmit}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+
+                                    <div
+                                        // className="spinner-border spinner-border-sm"
+                                        className="flex-row"
+                                        role="status"
+                                    >
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        <span className="ps-2">Submiting...</span>
+                                    </div>
+
+                                ) : (
+                                    "Submit"
+                                )}
+                            </button>
                         </div>
 
                         {errors.masterPassword && <p className="text-danger small-font">{errors.masterPassword}</p>}

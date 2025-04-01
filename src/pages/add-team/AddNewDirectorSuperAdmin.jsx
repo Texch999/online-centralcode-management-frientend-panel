@@ -731,10 +731,10 @@ function AddNewDirectorSuperAdmin() {
         <div className="d-flex align-items-center justify-content-between py-2">
           <h5 className="yellow-font">Add Director & Super Admin </h5>
           <span
-            className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer"
+            className="white-font me-2  p-2 br-10 yellow-bg  cursor-pointer small-font"
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft className="mx-2" /> Back
+            <FaArrowLeft className="mx-1" /> Back
           </span>
         </div>
         <div className="p-3 white-bg br-10 login-box-shadow">

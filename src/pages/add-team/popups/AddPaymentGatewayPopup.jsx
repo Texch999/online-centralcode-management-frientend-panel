@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import {
@@ -52,6 +52,7 @@ const AddPaymentGatewayPopup = ({
   };
   const [validationErrors, setValidationErrors] = useState({});
   const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const resetFields = () => {
     setUpiID("");
     setAccountNumber("");
@@ -187,6 +188,7 @@ const AddPaymentGatewayPopup = ({
     }
 
     try {
+      setLoading(true)
       const response = managementPaymentEdit
         ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
         : await createManagementPaymentDetails(formData);
@@ -194,6 +196,7 @@ const AddPaymentGatewayPopup = ({
         setOnAddPaymentGateway(false);
         setMsg(response?.message);
         fetchManagementPaymentDetails();
+        setLoading(false)
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -203,6 +206,7 @@ const AddPaymentGatewayPopup = ({
     } catch (error) {
       setError(error?.message);
       setErrorPopupOpen(true);
+      setLoading(false)
       setTimeout(() => {
         setErrorPopupOpen(false);
       }, 2000);
@@ -286,7 +290,7 @@ const AddPaymentGatewayPopup = ({
           "Bank Name can only contain letters, numbers, and spaces.";
       }
       if (!qrCode) errors.qrCode = "QR Code Image is required.";
-    } 
+    }
     else if (availablePaymentModeId === 4) {
       if (!details.trim()) {
         errors.details = "Details are required.";
@@ -555,16 +559,30 @@ const AddPaymentGatewayPopup = ({
 
           <div className="row d-flex mt-3 justify-content-end">
             <div className="col-6">
-              <button
-                type="button"
-                className="w-100 saffron-btn rounded small-font"
+              
+              <button className="w-100 saffron-btn rounded small-font"
+                type="submit"
+                disabled={loading === true ? true : false}
                 onClick={
                   role_code === "management"
                     ? handleManagementPayments
                     : handleDirectorPayments
                 }
               >
-                {managementPaymentEdit ? "Update" : "Submit"}
+
+                {loading ? (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  ""
+                )}
+                <span className="ps-2">
+                  {loading === true ? managementPaymentEdit ? "Updating" : "Submiting" : managementPaymentEdit ? "Update" : "Submit"}</span>
               </button>
             </div>
           </div>
@@ -575,11 +593,11 @@ const AddPaymentGatewayPopup = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={msg}
-        // discription={
-        //   managementPaymentEdit
-        //     ? "Successfully updated!"
-        //     : "Successfully added!"
-        // }
+      // discription={
+      //   managementPaymentEdit
+      //     ? "Successfully updated!"
+      //     : "Successfully added!"
+      // }
       />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
