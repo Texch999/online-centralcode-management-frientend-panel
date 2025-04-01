@@ -62,6 +62,7 @@ const AddDirectorAdmin = () => {
 
   const handleResetPasswordClose = () => {
     setResetPasswordPopup(false);
+    setResetPasswordErrors("")
   };
 
   const handleBlockUserOpen = (id) => {
@@ -191,12 +192,14 @@ const AddDirectorAdmin = () => {
       .then((response) => {
         setPasswordLoader(false)
         setResetPasswordPopup(false);
+        setResetPasswordErrors("")
         setSuccessPopupOpen(true);
         setDiscription("Password reset successfully");
 
         if (response) {
           setTimeout(() => {
             setResetPasswordPopup(false);
+            setResetPasswordErrors("")
           }, 1000);
         } else {
           setResetPasswordErrors("Something went wrong");
