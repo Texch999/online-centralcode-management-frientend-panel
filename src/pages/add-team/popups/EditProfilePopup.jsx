@@ -256,17 +256,24 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
       setDesciption(response.message);
       setShowSuccessPopup(true);
       onHide();
+
       setTimeout(() => {
         setShowSuccessPopup(false);
       }, 3000);
       getById();
-    } catch (error) {
+      setNameError("");
+      setPhoneNumberError("");
+    } catch (error) { 
       setError(error?.message);
-      getById();
+      // getById();
+      setNameError("");
+      setPhoneNumberError("");
 
       // setErrorPopupOpen(true);
     }
   };
+
+  console.log(error,"pranayyyyy")
 
   return (
     <>

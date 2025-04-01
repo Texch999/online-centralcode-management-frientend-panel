@@ -284,7 +284,6 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
       });
   };
 
-  console.log(userData, "=====userdata");
 
   return (
     <div>
