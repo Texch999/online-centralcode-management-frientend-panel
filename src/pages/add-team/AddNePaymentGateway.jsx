@@ -258,6 +258,8 @@ const AddNePaymentGateway = () => {
               setCountryId={setCountryId}
               availablePaymentModeId={availablePaymentModeId}
               setAvailablePaymentModeId={setAvailablePaymentModeId}
+              setDiscription={setDiscription}
+              setSuccessPopupOpen={setSuccessPopupOpen}
             />
           )}
 
@@ -280,6 +282,7 @@ const AddNePaymentGateway = () => {
               selectedPayment={selectedPayment}
               handleSuccessPopupOpen={handleSuccessPopupOpen}
               setDiscription={setDiscription}
+              setSuccessPopupOpen={setSuccessPopupOpen}
             />
           )}
 

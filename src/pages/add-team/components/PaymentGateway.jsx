@@ -138,6 +138,11 @@ const PaymentGateway = ({ dwnlnId }) => {
     }
   };
 
+  const filterOption = ({ label }, inputValue) => {
+    return /^[A-Za-z\s]*$/.test(inputValue) && label.toLowerCase().includes(inputValue.toLowerCase());
+  };
+  
+
   const PAYMENT_DATA = showPaymentGatewayData?.map((item, index) => {
     return {
       gatewayName: gatewayTypeMap[item?.gateway_type],
@@ -289,6 +294,15 @@ const PaymentGateway = ({ dwnlnId }) => {
                   (c) => c?.value === selectedCountry
                 )}
                 onChange={handleStatusChange}
+                filterOption={(option, searchText) => {
+                  const lettersOnly = searchText.replace(/[^a-zA-Z]/g, "");
+                  return option.label
+                    .toLowerCase()
+                    .includes(lettersOnly.toLowerCase());
+                }}
+                onInputChange={(inputValue) => {
+                  return inputValue.replace(/[^a-zA-Z]/g, "");
+                }} 
               />
             </div>
           </div>

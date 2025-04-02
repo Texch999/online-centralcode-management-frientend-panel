@@ -578,7 +578,7 @@ const AddWebsitesPopup = ({ show, onHide,
               Submit
             </button> */}
           <div className="mt-3 d-flex flex-row w-100 justify-content-end">
-            c
+          Submit
           </div>
         </Modal.Body>
       </Modal>
