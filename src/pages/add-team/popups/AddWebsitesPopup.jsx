@@ -570,16 +570,24 @@ const AddWebsitesPopup = ({ show, onHide,
               />
               {errors.routing_key && <p className="text-danger small-font">{errors.routing_key}</p>}
             </div>
-          </div>
+           
 
-          {/* Submit Button */}
-          {/* <div className="mt-3 d-flex flex-row w-100 justify-content-end">
-            <button className="saffron-btn small-font rounded col-4" onClick={handleSubmit}>
+
+            <div className="col-4">
+              <label className="small-font mt-1">&nbsp;</label>
+             <button className="saffron-btn small-font rounded w-100 mt-1 " onClick={handleSubmit} disabled={loader === true ? true:false}>
               Submit
-            </button> */}
-          <div className="mt-3 d-flex flex-row w-100 justify-content-end">
-            c
-          </div>
+            </button>
+         
+            </div>
+          
+            </div>
+          
+         
+
+        
+        
+        
         </Modal.Body>
       </Modal>
 
@@ -588,6 +596,7 @@ const AddWebsitesPopup = ({ show, onHide,
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={displayMsg}
+        loader={loader}
       />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
