@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Modal } from "react-bootstrap";
 import { IoClose, IoEye, IoEyeOff } from "react-icons/io5";
-import { suspendWebsiteProfile } from "../../api/apiMethods";
+import {
+  getAdminUserWebsitesList,
+  getAdminUserWebsitesListProfile,
+  suspendWebsiteProfile,
+} from "../../api/apiMethods";
 import SuccessPopup from "./../popups/SuccessPopup";
 
 const UnblockBlockWebsiteModal = ({
   show,
   setShow,
   dwnlnId,
-  webList,
+  // webList,
   adminWebsiteId,
   getWebMarketDtls,
   adminStatusId,
@@ -16,7 +20,6 @@ const UnblockBlockWebsiteModal = ({
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
-  console.log(webList, "webList");
   const [statusId, setStatusId] = useState(null);
   const [userWebName, setUserWebName] = useState("");
   const [userWebId, setUserWebId] = useState(null);
@@ -28,18 +31,36 @@ const UnblockBlockWebsiteModal = ({
   const [checked, setChecked] = useState(adminStatusId === 1);
   // Initialize adminStatus with the prop value
   const [adminStatus, setAdminStatus] = useState(adminStatusId);
+  const [webList, setWebList] = useState([]);
 
   const handlePswd = () => {
     setPswdVisible((prev) => !prev);
   };
   const [requireUserSelection, setRequireUserSelection] = useState(false);
   const [isAdminStatusChanged, setIsAdminStatusChanged] = useState(false);
+
+  const getAdminUserWebsites = () => {
+    getAdminUserWebsitesListProfile(dwnlnId, adminWebsiteId)
+      .then((response) => {
+        if (response?.status === true) {
+          console.log(response?.data, "resdatataaa");
+          setWebList(response?.data);
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    getAdminUserWebsites();
+  }, [adminWebsiteId]);
+
   const handleBlockUserWebsite = (status, userweb, adminweb) => {
     setSelectedWebsites((prev) => {
-      const exists = prev.find((item) => item.user_panel_id === userweb);
+      const exists = prev.find((item) => item.id === userweb);
       if (exists) {
         return prev.map((item) =>
-          item.user_panel_id === userweb ? { ...item, status } : item
+          item.id === userweb ? { ...item, status } : item
         );
       } else {
         return [
@@ -59,39 +80,20 @@ const UnblockBlockWebsiteModal = ({
     setAdminStatus(adminStatusId);
   }, [adminStatusId]);
 
-  // const handleBlockAdmin = (status) => {
-  //   setStatusId(status)
-  //   setAdminStatus(status);
-  //   setIsAdminStatusChanged(true);
-
-  //   if (status === 2) {
-  //     const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
-  //       website.user_panels?.map((item) => ({
-  //         admin_panel_id: website?.admin_panel_id,
-  //         user_panel_id: item?.user_panel_id,
-  //         status: 2,
-  //       }))
-  //     );
-  //     setSelectedWebsites(updatedUserWebsites);
-  //     setRequireUserSelection(false);
-  //   } else {
-  //     setRequireUserSelection(true);
-  //   }
-  // };
-
   const handleBlockAdmin = (newStatus) => {
     setAdminStatus(newStatus);
     setIsAdminStatusChanged(true);
     setChecked(newStatus === 1);
 
     if (newStatus === 2) {
-      const updatedUserWebsites = webList?.accessWebsites?.flatMap((website) =>
-        website.user_panels?.map((item) => ({
-          admin_panel_id: website?.admin_panel_id,
-          user_panel_id: item?.user_panel_id,
+      const updatedUserWebsites =
+        // webList?.adminPanDtls?.flatMap((website) =>
+        webList.user_panels?.map((item) => ({
+          admin_panel_id: webList?.adminPanDtls?.id,
+          user_panel_id: item?.id,
           status: 2,
-        }))
-      );
+        }));
+
       setSelectedWebsites(updatedUserWebsites);
       setRequireUserSelection(false);
     } else {
@@ -167,41 +169,40 @@ const UnblockBlockWebsiteModal = ({
       });
   };
 
-  const userwebsites = webList?.accessWebsites?.flatMap((website) =>
-    website.user_panels?.map((item) => {
-      const existingWebsite = selectedWebsites.find(
-        (web) => web?.user_panel_id === item?.user_panel_id
-      );
-      const isChecked =
-        adminStatus === 2
-          ? false
-          : existingWebsite?.status !== undefined
-          ? existingWebsite.status === 1
-          : item?.status === 1;
-      return {
-        name: <div>{item.user_panel_name}</div>,
-        control: (
-          <div className="form-check form-switch">
-            <input
-              className="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              checked={isChecked}
-              onChange={() =>
-                handleBlockUserWebsite(
-                  isChecked ? 2 : 1,
-                  item?.user_panel_id,
-                  website?.admin_panel_id
-                )
-              }
-              disabled={adminStatus === 2}
-              id={`switch-${item.user_panel_id}`}
-            />
-          </div>
-        ),
-      };
-    })
-  );
+  const userwebsites = webList?.user_panels?.map((item) => {
+    const existingWebsite = selectedWebsites.find(
+      (web) => web?.user_panel_id === item?.user_panel_id
+    );
+    const isChecked =
+      adminStatus === 2
+        ? false
+        : existingWebsite?.status !== undefined
+        ? existingWebsite.status === 1
+        : item?.status === 1;
+    return {
+      name: <div>{item.web_name}</div>,
+      control: (
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input w-40"
+            type="checkbox"
+            role="switch"
+            checked={isChecked}
+            onChange={() =>
+              handleBlockUserWebsite(
+                isChecked ? 2 : 1,
+                item?.id,
+                webList?.adminPanDtls?.id
+                // website?.admin_panel_id
+              )
+            }
+            disabled={adminStatus === 2}
+            id={`switch-${item.user_panel_id}`}
+          />
+        </div>
+      ),
+    };
+  });
 
   return (
     <div>
@@ -223,14 +224,11 @@ const UnblockBlockWebsiteModal = ({
           <div className="d-flex flex-column">
             <div className="medium-font my-1">Admin Website</div>
             <div className="input-bg flex-between br-5 my-1 p-2 align-items-center black-font small-font">
-              {webList?.accessWebsites?.map((item) => (
-                <div
-                  key={item.admin_panel_id}
-                  className="black-font medium-font"
-                >
-                  {item.admin_panel_name}
+              {webList?.adminPanDtls && (
+                <div className="black-font medium-font">
+                  {webList.adminPanDtls.web_name}
                 </div>
-              ))}
+              )}
               <div className="d-flex gap-2 align-items-center">
                 <div>
                   {adminStatusId === 1 ? (
@@ -278,7 +276,10 @@ const UnblockBlockWebsiteModal = ({
           <div className="medium-font my-1">User Website</div>
           <div className="d-flex flex-column">
             {userwebsites?.map((item) => (
-              <div className="input-bg flex-between br-5 my-1 p-2 align-items-center small-font">
+              <div
+                key={item?.user_panel_id}
+                className="input-bg flex-between br-5 my-1 p-2 align-items-center small-font"
+              >
                 <div className="black-font">{item?.name}</div>
                 <div>{item?.control}</div>
               </div>
@@ -325,7 +326,7 @@ const UnblockBlockWebsiteModal = ({
             <Alert variant="warning" className="mt-3 mb-2">
               <div className="d-flex medium-font flex-column flex-center align-items-center">
                 {`Are you sure you want to ${
-                  adminStatus  === 1 ? "Active" : "In-Active"
+                  adminStatus === 1 ? "Active" : "In-Active"
                 } these selected websites?`}
                 <div className="mt-2 d-flex gap-3 align-items-center">
                   <div

@@ -15,7 +15,6 @@ import "../../App.css";
 import "../../index.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { imgUrl } from "../../api/baseUrl";
-
 import {
   dirProfileBlockUnblock,
   getDirectorDetailsById,
@@ -128,21 +127,21 @@ const addDirectorTabsRowCardsData = [
 ];
 
 const bottomCardsData = [
-  {
-    title: "Buying Chips",
-    backgroundColor: "#7DA0FA",
-    value: "500000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileBuyingChips}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "downline-list-card-top",
-    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-  },
+  // {
+  //   title: "Buying Chips",
+  //   backgroundColor: "#7DA0FA",
+  //   value: "500000000",
+  //   valueClass: "text-dark",
+  //   icon: (
+  //     <img
+  //       src={Images.adminProfileBuyingChips}
+  //       alt="ShareRevenue"
+  //       className="chat-img"
+  //     />
+  //   ),
+  //   bootstrapClassesTop: "downline-list-card-top",
+  //   bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+  // },
   {
     title: "Exposer",
     backgroundColor: "#7DA0FA",
@@ -158,51 +157,51 @@ const bottomCardsData = [
     bootstrapClassesTop: "downline-list-card-top",
     bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
   },
-  {
-    title: "Sale Chips",
-    backgroundColor: "#7DA0FA",
-    value: "500000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileTotalPaid}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "downline-list-card-top",
-    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-  },
-  {
-    title: "Downline Available Chips",
-    backgroundColor: "#7DA0FA",
-    value: "500000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileAvailableChips}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "downline-list-card-top",
-    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-  },
-  {
-    title: "Balance Chips",
-    backgroundColor: "#7DA0FA",
-    value: "500000000",
-    valueClass: "text-dark",
-    icon: (
-      <img
-        src={Images.adminProfileBalanceChips}
-        alt="ShareRevenue"
-        className="chat-img"
-      />
-    ),
-    bootstrapClassesTop: "downline-list-card-top",
-    bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
-  },
+  // {
+  //   title: "Sale Chips",
+  //   backgroundColor: "#7DA0FA",
+  //   value: "500000000",
+  //   valueClass: "text-dark",
+  //   icon: (
+  //     <img
+  //       src={Images.adminProfileTotalPaid}
+  //       alt="ShareRevenue"
+  //       className="chat-img"
+  //     />
+  //   ),
+  //   bootstrapClassesTop: "downline-list-card-top",
+  //   bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+  // },
+  // {
+  //   title: "Downline Available Chips",
+  //   backgroundColor: "#7DA0FA",
+  //   value: "500000000",
+  //   valueClass: "text-dark",
+  //   icon: (
+  //     <img
+  //       src={Images.adminProfileAvailableChips}
+  //       alt="ShareRevenue"
+  //       className="chat-img"
+  //     />
+  //   ),
+  //   bootstrapClassesTop: "downline-list-card-top",
+  //   bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+  // },
+  // {
+  //   title: "Balance Chips",
+  //   backgroundColor: "#7DA0FA",
+  //   value: "500000000",
+  //   valueClass: "text-dark",
+  //   icon: (
+  //     <img
+  //       src={Images.adminProfileBalanceChips}
+  //       alt="ShareRevenue"
+  //       className="chat-img"
+  //     />
+  //   ),
+  //   bootstrapClassesTop: "downline-list-card-top",
+  //   bootstrapClassesBottom: "mb-0 fw-bold downline-list-card-bottom",
+  // },
   {
     title: "Downline P/L Chips",
     backgroundColor: "#7DA0FA",
@@ -320,13 +319,13 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
 
         {/* Main Content Container */}
 
-        <div className="row px-4">
-          <div className="col-8">
-            <div className="row d-flex gap-3 ">
+        <div className="px-4">
+          {/* <div className="col"> */}
+            <div className="row d-flex gap-3">
               <h6 className="small-font">Sports/Casino</h6>
               {bottomCardsData.map((card, index) => (
                 <div
-                  className="col-4 card border border-grey p-0 direct-admin-profile-bottom-card"
+                  className="col-6 card border border-grey p-0 direct-admin-profile-bottom-card"
                   key={index}
                 >
                   <Card
@@ -340,11 +339,11 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
                   />
                 </div>
               ))}
-            </div>
+            {/* </div> */}
           </div>
 
           {/* Right Side Container */}
-          <div className="col-4 align-self-end">
+          {/* <div className="col-4 align-self-end">
             <div className="bg-white director-admin-profile-bottom-section-right p-4">
               <h5 className="yellow-font small-font">Total Amount</h5>
               <input
@@ -370,8 +369,11 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
                 readOnly
               />
             </div>
-          </div>
+          </div> */}
+
         </div>
+
+        
       </div>
       <ConfirmationPopup
         confirmationPopupOpen={confirmationPopupOpen}

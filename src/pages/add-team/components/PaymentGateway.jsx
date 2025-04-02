@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/Table";
-import { SlPencil } from "react-icons/sl";
-import Form from "react-bootstrap/Form";
 import "../style.css";
-import AddPaymentGatewayPopup from "../popups/AddPaymentGatewayPopup";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
 import {
@@ -43,7 +40,7 @@ const PaymentGateway = ({ dwnlnId }) => {
   const [showPaymentGatewayData, setShowPaymentGatewayData] = useState([]);
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item.allCountries);
-  console.log(allCountries,"allCountries")
+  console.log(allCountries, "allCountries");
   const itemsPerPage = 2;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -100,13 +97,13 @@ const PaymentGateway = ({ dwnlnId }) => {
 
   const getDirPaymentDetails = (page, pageSize, currencyId) => {
     setLoading(true);
-    const params={
-      page:page,
-      pageSize:pageSize,
-      currencyId:currencyId,
-      dwnlnId:dwnlnId
-    }
-    managementDwnProfileDirPaymentDetails( params)
+    const params = {
+      page: page,
+      pageSize: pageSize,
+      // currencyId: currencyId,
+      dwnlnId: dwnlnId,
+    };
+    managementDwnProfileDirPaymentDetails(params)
       .then((response) => {
         if (response.status === true) {
           console.log(response.data, "response.data");
@@ -128,7 +125,7 @@ const PaymentGateway = ({ dwnlnId }) => {
     if (role_code === "management") {
       getDirPaymentDetails(limit, offset, selectedCountry);
     }
-  }, [selectedCountry,currentPage]);
+  }, [selectedCountry, currentPage]);
 
   const handlePageChange = ({ limit, offset }) => {
     setCurrentLimit(limit);
@@ -138,77 +135,76 @@ const PaymentGateway = ({ dwnlnId }) => {
     }
   };
 
-  const filterOption = ({ label }, inputValue) => {
-    return /^[A-Za-z\s]*$/.test(inputValue) && label.toLowerCase().includes(inputValue.toLowerCase());
-  };
-  
+  const PAYMENT_DATA = showPaymentGatewayData
+    ?.filter((item) =>
+      selectedCountry ? item?.countryId === selectedCountry : true
+    )
+    ?.map((item, index) => {
+      return {
+        gatewayName: gatewayTypeMap[item?.gateway_type],
+        paymentDetails: (() => {
+          switch (item?.gateway_type) {
+            case 1:
+              return (
+                <div className="d-flex flex-column align-items-start">
+                  <span className="">bank_name: {item?.bank_name}</span>
+                  <span>Acc No: {item?.bank_acc_no}</span>
+                  <span>IFSC: {item?.bank_ifsc}</span>
+                </div>
+              );
+            case 2:
+              return (
+                <div className="d-flex align-items-center">
+                  <span className="fw-bold">{item?.upi_id}</span>
+                </div>
+              );
+            case 3:
+              return (
+                <div className="d-flex align-items-center">
+                  <img
+                    src={`${imgUrl}/directorpayment/${item?.qr_code_image}`}
+                    alt="QR Code"
+                    className="w-30 h-7vh me-2"
+                    loading="lazy"
+                  />
+                  <span className="fw-bold">{item?.bank_name}</span>
+                </div>
+              );
+            case 4:
+              return <div className="fw-bold">{item?.acc_hold_name}</div>;
+            default:
+              return <span className="text-muted">N/A</span>;
+          }
+        })(),
+        lastUpdated: moment(item?.last_updated).format("YYYY-MM-DD"),
+        country: getCountryName(item.currency_id),
+        currency: getCurrencySymbol(item.currency_id),
+        status: (
+          <span className="">
+            {item?.status === 1 ? (
+              <div className="green-btn badge py-2 px-3">Active</div>
+            ) : (
+              <div className="red-btn badge py-2 px-3">In-Active</div>
+            )}
+          </span>
+        ),
 
-  const PAYMENT_DATA = showPaymentGatewayData?.map((item, index) => {
-    return {
-      gatewayName: gatewayTypeMap[item?.gateway_type],
-      paymentDetails: (() => {
-        switch (item?.gateway_type) {
-          case 1:
-            return (
-              <div className="d-flex flex-column align-items-start">
-                <span className="">bank_name: {item?.bank_name}</span>
-                <span>Acc No: {item?.bank_acc_no}</span>
-                <span>IFSC: {item?.bank_ifsc}</span>
-              </div>
-            );
-          case 2:
-            return (
-              <div className="d-flex align-items-center">
-                <span className="fw-bold">{item?.upi_id}</span>
-              </div>
-            );
-          case 3:
-            return (
-              <div className="d-flex align-items-center">
-                <img
-                  src={`${imgUrl}/directorpayment/${item?.qr_code_image}`}
-                  alt="QR Code"
-                  className="w-30 h-7vh me-2"
-                  loading="lazy"
-                />
-                <span className="fw-bold">{item?.bank_name}</span>
-              </div>
-            );
-          case 4:
-            return <div className="fw-bold">{item?.acc_hold_name}</div>;
-          default:
-            return <span className="text-muted">N/A</span>;
-        }
-      })(),
-      lastUpdated: moment(item?.last_updated).format("YYYY-MM-DD"),
-      country: getCountryName(item.currency_id),
-      currency: getCurrencySymbol(item.currency_id),
-      status: (
-        <span className="">
-          {item?.status === 1 ? (
-            <div className="green-btn badge py-2 px-3">Active</div>
-          ) : (
-            <div className="red-btn badge py-2 px-3">In-Active</div>
-          )}
-        </span>
-      ),
-
-      // action: (
-      //   <spna>
-      //     {item?.status === 1 ? (
-      //       <SlPencil
-      //         size={17}
-      //         onClick={() =>
-      //           handleEdit(item?.id, item?.gateway_type, item?.currency_id)
-      //         }
-      //       />
-      //     ) : (
-      //       <SlPencil size={17} />
-      //     )}
-      //   </spna>
-      // ),
-    };
-  });
+        // action: (
+        //   <spna>
+        //     {item?.status === 1 ? (
+        //       <SlPencil
+        //         size={17}
+        //         onClick={() =>
+        //           handleEdit(item?.id, item?.gateway_type, item?.currency_id)
+        //         }
+        //       />
+        //     ) : (
+        //       <SlPencil size={17} />
+        //     )}
+        //   </spna>
+        // ),
+      };
+    });
 
   return (
     <div>
@@ -302,7 +298,7 @@ const PaymentGateway = ({ dwnlnId }) => {
                 }}
                 onInputChange={(inputValue) => {
                   return inputValue.replace(/[^a-zA-Z]/g, "");
-                }} 
+                }}
               />
             </div>
           </div>

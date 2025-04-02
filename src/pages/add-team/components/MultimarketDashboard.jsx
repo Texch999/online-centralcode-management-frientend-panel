@@ -23,6 +23,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     setAdminWebsiteId(id);
     setAdminStatusId(status);
   };
+  console.log(adminWebsiteId,"adminWebsiteId")
   const getWebMarketDtls = () => {
     getMultiMarket(dwnlnId)
       .then((res) => {
@@ -156,6 +157,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
         adminWebsiteId={adminWebsiteId}
         getWebMarketDtls={getWebMarketDtls}
         adminStatusId={adminStatusId}
+        
       />
     </div>
   );
