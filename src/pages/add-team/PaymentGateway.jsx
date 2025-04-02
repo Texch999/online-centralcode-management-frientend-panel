@@ -49,7 +49,7 @@ const PaymentGateway = () => {
   const itemsPerPage = 3;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const pages = parseInt(searchParams.get("page") || 1);
+  const pages = parseInt(searchParams.get("page") || 3);
   const [currentPage, setCurrentPage] = useState(pages);
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
