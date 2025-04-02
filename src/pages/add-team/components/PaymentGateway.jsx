@@ -126,7 +126,8 @@ const PaymentGateway = ({ dwnlnId }) => {
   };
   useEffect(() => {
     if (role_code === "management") {
-      getDirPaymentDetails(limit, offset, selectedCountry);
+      
+      getDirPaymentDetails(pages, itemsPerPage, selectedCountry);
     }
   }, [selectedCountry,currentPage]);
 
