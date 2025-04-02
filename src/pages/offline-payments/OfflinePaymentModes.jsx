@@ -121,7 +121,6 @@ const OfflinePaymentModes = () => {
   useEffect(() => {
     const pagee = intialpage;
     const pageSizee = itemsPerPage;
-    // Fetch data based on role and filterName
     if (searchInput.trim() === "") {
       getAllManPaymentModes(pagee, pageSizee);
     }
@@ -170,10 +169,6 @@ const OfflinePaymentModes = () => {
       .catch((error) => {
         setError(error?.message[0]?.message);
         setConfirmationModal(false);
-        // setErrorPopup(true);
-        // setTimeout(() => {
-        //   setErrorPopup(false);
-        // }, 2000);
       });
   };
 
@@ -264,7 +259,7 @@ const OfflinePaymentModes = () => {
             <FaSearch size={16} className="grey-clr me-2" />
             <input
               className="small-font all-none"
-              placeholder="Search..."
+              placeholder="Search by name"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value.trim())}
               onKeyDown={handleFiltration}

@@ -32,7 +32,6 @@ const AddPaymentGatewayPopup = ({
   getDirectorAccountData,
   //man profile
 }) => {
-
   const [upiID, setUpiID] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [bankIFSC, setBankIFSC] = useState("");
@@ -70,21 +69,19 @@ const AddPaymentGatewayPopup = ({
     setQrCode(null);
     setQrName("");
     setValidationErrors({});
-    setMsg("");
   };
 
   const onHide = () => {
     setOnAddPaymentGateway();
     resetFields();
-    setManagementPaymentEditId(null)
+    setManagementPaymentEditId(null);
   };
 
   const [updateId, setUpdateId] = useState(null);
   const fetchManagementPaymentDetailsById = () => {
-    setInitialLoading(true)
+    setInitialLoading(true);
     getManagementPaymentDetailsById(managementPaymentEditId)
       .then((response) => {
-        console.log("response", response);
         if (response.status === true) {
           setManPaymentData(response?.data);
           setUpdateId(response?.data?.payment_mode_id);
@@ -96,14 +93,12 @@ const AddPaymentGatewayPopup = ({
           setDetails(response?.data?.others_details || "");
           setQrCode(response?.data?.qr_code_image || null);
           setQrName(response?.data?.qr_code_image || "");
-          console.log(response?.data?.gateway_type, "success");
         }
-        setInitialLoading(false)
+        setInitialLoading(false);
       })
       .catch((error) => {
-        setInitialLoading(false)
+        setInitialLoading(false);
         setError(error?.message);
-        console.log(error?.message, "errorr");
       });
   };
 
@@ -197,27 +192,24 @@ const AddPaymentGatewayPopup = ({
     const limit = itemsPerPage;
     const offset = (pages - 1) * itemsPerPage;
     try {
-      setLoading(true)
+      setLoading(true);
       const response = managementPaymentEdit
         ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
         : await createManagementPaymentDetails(formData);
-
       if (response.status === true) {
-        setOnAddPaymentGateway(false);
         setMsg(response?.message);
-        fetchManagementPaymentDetails(limit, offset);
         setSuccessPopupOpen(true);
-        setLoading(false)
-        setManagementPaymentEditId(null)
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 3000);
+        setOnAddPaymentGateway(false);
+        fetchManagementPaymentDetails(limit, offset);
+        setManagementPaymentEditId(null);
         resetFields();
       }
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       setError(error?.message);
-      console.log(error?.message, "errorr");
     }
   };
 
@@ -227,7 +219,6 @@ const AddPaymentGatewayPopup = ({
   const fetchDirectorPaymentDetailsById = () => {
     getDirectorAccountById(dirEditId)
       .then((response) => {
-        console.log("response", response);
         if (response.status === true) {
           setDirPaymentDataById(response?.data?.id);
           setDirUpdateId(response?.data?.offlinmods_id);
@@ -243,7 +234,6 @@ const AddPaymentGatewayPopup = ({
       })
       .catch((error) => {
         setError(error?.message);
-        console.log(error?.message, "errorr");
       });
   };
 
@@ -295,8 +285,7 @@ const AddPaymentGatewayPopup = ({
           "Bank Name can only contain letters, numbers, and spaces.";
       }
       if (!qrCode) errors.qrCode = "QR Code Image is required.";
-    }
-    else if (availablePaymentModeId === 4) {
+    } else if (availablePaymentModeId === 4) {
       if (!details.trim()) {
         errors.details = "Details are required.";
       } else if (!/^[a-zA-Z0-9 ]*$/.test(details)) {
@@ -343,12 +332,12 @@ const AddPaymentGatewayPopup = ({
       if (response.status === true) {
         setMsg(response?.message);
         setSuccessPopupOpen(true);
-        resetFields();
-        getDirectorAccountData();
         setTimeout(() => {
           setSuccessPopupOpen(false);
-          setOnAddPaymentGateway(false);
         }, 2000);
+        resetFields();
+        setOnAddPaymentGateway(false);
+        getDirectorAccountData();
       }
     } catch (error) {
       setError(error?.message);
@@ -360,12 +349,14 @@ const AddPaymentGatewayPopup = ({
     }
   };
 
-
   return (
     <>
       <Modal centered show={show} onHide={onHide} size="md">
-        {initialLoading && managementPaymentEdit && (<div className="my-load">
-          <div className="loader "></div></div>)}
+        {initialLoading && managementPaymentEdit && (
+          <div className="my-load">
+            <div className="loader "></div>
+          </div>
+        )}
         <Modal.Body className="p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">
@@ -375,9 +366,7 @@ const AddPaymentGatewayPopup = ({
             </h5>
             <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
-          {error && (
-            <ErrorComponent error={error} />
-          )}
+          {error && <ErrorComponent error={error} />}
           <div className="row mb-3">
             <div className="col-6">
               <label className="small-font mb-1">Account Holder Name</label>
@@ -583,8 +572,8 @@ const AddPaymentGatewayPopup = ({
 
           <div className="row d-flex mt-3 justify-content-end">
             <div className="col-6">
-
-              <button className="w-100 saffron-btn rounded small-font"
+              <button
+                className="w-100 saffron-btn rounded small-font"
                 type="submit"
                 disabled={loading}
                 onClick={
@@ -606,8 +595,13 @@ const AddPaymentGatewayPopup = ({
                 )}
                 <span className="ps-2">
                   {loading === true
-                    ? managementPaymentEdit ? "Updating" :
-                      "Submiting" : managementPaymentEdit ? "Update" : "Submit"}</span>
+                    ? managementPaymentEdit
+                      ? "Updating"
+                      : "Submiting"
+                    : managementPaymentEdit
+                    ? "Update"
+                    : "Submit"}
+                </span>
               </button>
             </div>
           </div>
@@ -618,12 +612,8 @@ const AddPaymentGatewayPopup = ({
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
         discription={msg}
-      // discription={
-      //   managementPaymentEdit
-      //     ? "Successfully updated!"
-      //     : "Successfully added!"
-      // }
       />
+      
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}
         setErrorPopupOpen={setErrorPopupOpen}

@@ -170,23 +170,23 @@ const PaymentGateway = () => {
       });
   };
 
-  // const filteredPayments = managementPaymentDetails.filter((item) => {
-  //   const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
-  //   const bankName = item?.bank_name?.toLowerCase();
-  //   const upiProviderId = item?.upi_id?.toLowerCase();
-  //   const countryName = getCountryName(item?.country)?.toLowerCase();
-  //   const accholder = item?.accholder?.toLowerCase();
-  //   const searchTerm = searchInput.toLowerCase();
+  const filteredPayments = managementPaymentDetails.filter((item) => {
+    const gatewayName = gatewayTypeMap[item?.gateway_type]?.toLowerCase();
+    const bankName = item?.bank_name?.toLowerCase();
+    const upiProviderId = item?.upi_id?.toLowerCase();
+    const countryName = getCountryName(item?.country)?.toLowerCase();
+    const accholder = item?.accholder?.toLowerCase();
+    const searchTerm = searchInput.toLowerCase();
 
-  //   return (
-  //     gatewayName?.includes(searchTerm) ||
-  //     bankName?.includes(searchTerm) ||
-  //     upiProviderId?.includes(searchTerm) ||
-  //     countryName?.includes(searchTerm) ||
-  //     accholder?.includes(searchTerm)
-  //   );
-  // });
-  const filteredPayments = managementPaymentDetails
+    return (
+      gatewayName?.includes(searchTerm) ||
+      bankName?.includes(searchTerm) ||
+      upiProviderId?.includes(searchTerm) ||
+      countryName?.includes(searchTerm) ||
+      accholder?.includes(searchTerm)
+    );
+  });
+  // const filteredPayments = managementPaymentDetails
 
   const managementPaymentData = filteredPayments.map((item, index) => ({
     gatewayName: gatewayTypeMap[item?.gateway_type],
@@ -336,7 +336,7 @@ const PaymentGateway = () => {
   const suspendStatus = () => {
     suspendDirectorAccountPaymentDetails(paymentId, status_id)
       .then((response) => {
-        getDirectorAccountData();
+        getDirectorAccountData(page,pageSize);
         setOnBlockPopup(false);
         setMsg(response?.message);
         setSuccessPopupOpen(true);

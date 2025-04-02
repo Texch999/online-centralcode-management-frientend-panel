@@ -1186,3 +1186,7 @@ button:disabled {
   align-items: center;
   z-index: 1000;
 }
+.table-parent-container .table-wrapper tbody tr td {
+  padding-left: 15px !important;
+  vertical-align: top !important
+}

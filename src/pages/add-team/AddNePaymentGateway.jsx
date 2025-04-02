@@ -18,9 +18,8 @@ import PaymentModes from "../../components/PaymentModes";
 import SuccessPopup from "../popups/SuccessPopup";
 
 const AddNePaymentGateway = () => {
-
   const [error, setError] = useState(null);
-  const currencyId = parseInt(localStorage.getItem("currency_id"))
+  const currencyId = parseInt(localStorage.getItem("currency_id"));
   const [selectedCountryId, setSelectedCountryId] = useState(currencyId);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -36,21 +35,27 @@ const AddNePaymentGateway = () => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [offlinePaymentModes, setOfflinePaymentModes] = useState([]);
   const [combinedPaymentModes, setCombinedPaymentModes] = useState([]);
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
-  const [discription, setDiscription] = useState("")
-  const isInitialRendering = useRef(true)
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [discription, setDiscription] = useState("");
+  const isInitialRendering = useRef(true);
   const location = useLocation();
   const { actionType } = location.state || {};
 
-
   const handleAddModal = (id, country, available_id) => {
-    console.log("add paymnetdetails popup")
+    console.log("add paymnetdetails popup");
     setAddPaymentId(id);
     setCountryId(country);
     setOnAddPaymentGateway(true);
     setAvailablePaymentModeId(available_id);
   };
-  const tabNames = ["All", "Bank Transfe", "E-Wallets", 'QR Codes', "Cash", "Payment Gateway"];
+  const tabNames = [
+    "All",
+    "Bank Transfe",
+    "E-Wallets",
+    "QR Codes",
+    "Cash",
+    "Payment Gateway",
+  ];
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -59,7 +64,6 @@ const AddNePaymentGateway = () => {
     { title: "Payment Gateway", mode: 5 },
   ];
   const getOwnersPaymentModes = () => {
-
     let fetchPaymentModes = null;
 
     if (userRole === "director") {
@@ -74,13 +78,11 @@ const AddNePaymentGateway = () => {
       fetchPaymentModes
         .then((response) => {
           setPaymentModes(response?.data);
-
         })
         .catch((error) => {
           setError(error?.message);
           console.log("getDirectorAccountDetails error", error);
-
-        })
+        });
     } else {
       console.log("No valid fetch function executed");
     }
@@ -103,8 +105,7 @@ const AddNePaymentGateway = () => {
         setLoading(false);
         setError(error?.message);
         console.log("getDirectorAccountDetails error", error);
-      })
-      ;
+      });
   };
   useEffect(() => {
     OfflineModesdata();
@@ -114,7 +115,6 @@ const AddNePaymentGateway = () => {
   useEffect(() => {
     if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
       const combinedData = offlinePaymentModes.flatMap((offlineMode) => {
-
         // Extract the numeric payment_mode_id from offlineMode.id
         const slicedId = Number(offlineMode.id.slice(3, -3));
 
@@ -126,10 +126,10 @@ const AddNePaymentGateway = () => {
         // If matching records exist, merge them, otherwise keep offlineMode as is
         return matchingPaymentModes.length > 0
           ? matchingPaymentModes.map((paymentMode) => ({
-            ...offlineMode,
-            ...paymentMode,
-            isEnabled: true,
-          }))
+              ...offlineMode,
+              ...paymentMode,
+              isEnabled: true,
+            }))
           : [{ ...offlineMode, isEnabled: false }];
       });
 
@@ -143,8 +143,10 @@ const AddNePaymentGateway = () => {
     label: `${country.name} - ${country.currency_symbol} ${country.currency_name}`,
   }));
 
-  const asignData = actionType === "Deposit" || actionType === "Withdraw" ?
-    combinedPaymentModes : offlinePaymentModes
+  const asignData =
+    actionType === "Deposit" || actionType === "Withdraw"
+      ? combinedPaymentModes
+      : offlinePaymentModes;
 
   const filteredPaymentModes = asignData?.filter(
     (mode) => mode.country_id === selectedCountryId
@@ -163,21 +165,25 @@ const AddNePaymentGateway = () => {
   };
 
   const handleSuccessPopupOpen = () => {
-    setSuccessPopupOpen(true)
-  }
+    setSuccessPopupOpen(true);
+  };
   return (
     <>
-      {loading ? <div className="spinner" style={{ zIndex: 1000 }}>
-        {console.log("loading......")}
-        <div className="spinner-circle"></div>
-      </div> :
-
+      {loading ? (
+        <div className="spinner" style={{ zIndex: 1000 }}>
+          {console.log("loading......")}
+          <div className="spinner-circle"></div>
+        </div>
+      ) : (
         <div>
           <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
             <div className="yellow-font medium-font mb-0">Add New Gateway</div>
 
-            <div className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer" onClick={() => window.history.back()}>
-              <span className="small-font" style={{ color: "#fff" }} >
+            <div
+              className="d-flex align-items-center back-btn-bg me-3 py-1 px-3 white-clr pointer"
+              onClick={() => window.history.back()}
+            >
+              <span className="small-font" style={{ color: "#fff" }}>
                 Back
               </span>
             </div>
@@ -224,8 +230,9 @@ const AddNePaymentGateway = () => {
                     {tabNames.map((tabName, index) => (
                       <div
                         key={index}
-                        className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 px2" : "rounded"
-                          }`}
+                        className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
+                          selectedTab === index ? "saffron-btn2 px2" : "rounded"
+                        }`}
                         style={{ cursor: "pointer" }}
                         onClick={() => setSelectedTab(index)}
                       >
@@ -290,10 +297,8 @@ const AddNePaymentGateway = () => {
               discription={discription}
             />
           )}
-
         </div>
-      }
-
+      )}
     </>
   );
 };

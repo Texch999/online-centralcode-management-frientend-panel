@@ -133,7 +133,6 @@ const AddNewOfflinePaymentModal = ({
         ? await updateManagementOfflinePaymentDetails(paymnetEditId, formData)
         : await createManagementOfflinePaymentModes(formData);
       if (response.status === true) {
-        console.log("resposne successs", response);
         setMsg(response?.message);
         getAllManPaymentModes(page, pageSize);
         setImage(null);
@@ -151,7 +150,7 @@ const AddNewOfflinePaymentModal = ({
         console.log("error");
       }
     } catch (error) {
-      setApiErrors(error?.message || error?.message)
+      setApiErrors(error?.message || error?.message);
       setErrorMsg(error?.message[0]?.message);
 
       // setShowAddModal(false);
@@ -199,7 +198,9 @@ const AddNewOfflinePaymentModal = ({
                   ))}
                 </ul>
               ) : (
-                <p className="small-font ps-2">{apiErrors.message || apiErrors}</p>
+                <p className="small-font ps-2">
+                  {apiErrors.message || apiErrors}
+                </p>
               )}
             </div>
           )}
@@ -213,6 +214,7 @@ const AddNewOfflinePaymentModal = ({
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
+                isDisabled={isEdit}
                 value={
                   currencyOptions.find(
                     (option) => option.value === selectedCurrency
@@ -271,6 +273,7 @@ const AddNewOfflinePaymentModal = ({
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
+                isDisabled={isEdit}
                 value={
                   typeOptions.find((option) => option.value === selectedType) ||
                   selectedType
@@ -283,7 +286,6 @@ const AddNewOfflinePaymentModal = ({
                   }));
                 }}
                 filterOption={(option, inputValue) => {
-                  // Allow filtering only if the input contains text (letters)
                   if (!inputValue) return true;
                   return (
                     /^[A-Za-z]+$/.test(inputValue) &&
@@ -293,7 +295,6 @@ const AddNewOfflinePaymentModal = ({
                   );
                 }}
                 onInputChange={(inputValue, { action }) => {
-                  // Restrict input to only text (letters)
                   if (
                     action === "input-change" &&
                     !/^[A-Za-z]*$/.test(inputValue)
@@ -385,7 +386,7 @@ const AddNewOfflinePaymentModal = ({
       <SuccessPopup
         successPopupOpen={successPopupOpen}
         setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={isEdit ? "Successfully updated!" : msg}
+        discription={msg}
       />
       <ErrorPopup
         errorPopupOpen={errorPopupOpen}

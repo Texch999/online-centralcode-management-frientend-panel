@@ -16,7 +16,9 @@ const UnblockBlockWebsiteModal = ({
   adminWebsiteId,
   getWebMarketDtls,
   adminStatusId,
+  dirId,
 }) => {
+  console.log(dirId, "dirId");
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -27,11 +29,12 @@ const UnblockBlockWebsiteModal = ({
   const [pswd, setPswd] = useState("");
   const [selectedWebsites, setSelectedWebsites] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-  const [successModal, setSuccessModal] = useState(false);
-  const [checked, setChecked] = useState(adminStatusId === 1);
-  // Initialize adminStatus with the prop value
-  const [adminStatus, setAdminStatus] = useState(adminStatusId);
   const [webList, setWebList] = useState([]);
+  const [successModal, setSuccessModal] = useState(false);
+  const [checked, setChecked] = useState(webList?.adminPanDtls?.adminStatus === 1);
+  // Initialize adminStatus with the prop value
+  const [adminStatus, setAdminStatus] = useState(webList?.adminPanDtls?.adminStatus);
+
 
   const handlePswd = () => {
     setPswdVisible((prev) => !prev);
@@ -40,7 +43,7 @@ const UnblockBlockWebsiteModal = ({
   const [isAdminStatusChanged, setIsAdminStatusChanged] = useState(false);
 
   const getAdminUserWebsites = () => {
-    getAdminUserWebsitesListProfile(dwnlnId, adminWebsiteId)
+    getAdminUserWebsitesListProfile(dirId, adminWebsiteId)
       .then((response) => {
         if (response?.status === true) {
           console.log(response?.data, "resdatataaa");
@@ -52,8 +55,10 @@ const UnblockBlockWebsiteModal = ({
       });
   };
   useEffect(() => {
-    getAdminUserWebsites();
-  }, [adminWebsiteId]);
+    if (dirId && adminWebsiteId) {
+      getAdminUserWebsites();
+    }
+  }, [dirId, adminWebsiteId]);
 
   const handleBlockUserWebsite = (status, userweb, adminweb) => {
     setSelectedWebsites((prev) => {
@@ -86,13 +91,11 @@ const UnblockBlockWebsiteModal = ({
     setChecked(newStatus === 1);
 
     if (newStatus === 2) {
-      const updatedUserWebsites =
-        // webList?.adminPanDtls?.flatMap((website) =>
-        webList.user_panels?.map((item) => ({
-          admin_panel_id: webList?.adminPanDtls?.id,
-          user_panel_id: item?.id,
-          status: 2,
-        }));
+      const updatedUserWebsites = webList.user_panels?.map((item) => ({
+        admin_panel_id: webList?.adminPanDtls?.id,
+        user_panel_id: item?.id,
+        status: 2,
+      }));
 
       setSelectedWebsites(updatedUserWebsites);
       setRequireUserSelection(false);
@@ -151,9 +154,8 @@ const UnblockBlockWebsiteModal = ({
     // };
 
     console.log(payload, "payloadddd");
-    suspendWebsiteProfile(dwnlnId, payload)
+    suspendWebsiteProfile(dirId, payload)
       .then((response) => {
-        console.log("popup");
         setMsg(response?.message);
         getWebMarketDtls();
         setShow(false);
@@ -226,33 +228,18 @@ const UnblockBlockWebsiteModal = ({
             <div className="input-bg flex-between br-5 my-1 p-2 align-items-center black-font small-font">
               {webList?.adminPanDtls && (
                 <div className="black-font medium-font">
-                  {webList.adminPanDtls.web_name}
+                  {webList?.adminPanDtls?.web_name}
                 </div>
               )}
               <div className="d-flex gap-2 align-items-center">
                 <div>
-                  {adminStatusId === 1 ? (
+                  {webList?.adminPanDtls?.adminStatus === 1 ? (
                     <div className="green-font">Active</div>
                   ) : (
                     <div className="red-font">In-Active</div>
                   )}
                 </div>
                 <div class="form-check form-switch">
-                  {/* <input
-                    className="form-check-input w-40"
-                    type="checkbox"
-                    role="switch"
-                    checked={adminStatusId === 1}
-                    onChange={() =>
-                      handleBlockAdmin(adminStatusId === 1 ? 2 : 1)
-                    }
-                    // onChange={() => {
-                    //   const newStatus = adminStatus === 1 ? 2 : 1;
-                    //   setAdminStatus(newStatus);
-                    //   handleBlockAdmin(newStatus);
-                    // }}
-                  /> */}
-
                   <input
                     className="form-check-input w-40"
                     type="checkbox"
