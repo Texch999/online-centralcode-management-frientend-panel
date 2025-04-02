@@ -14,31 +14,44 @@ const OfflineWithdrawPopup = ({
     handleSuccesPopup,
     setDiscription
 }) => {
+
     const allCountries = useSelector((item) => item?.allCountries);
     const [errors, setErrors] = useState({});
     const [paidAmount, setPaidAmount] = useState("");
     const [remark, setRemark] = useState("");
     const [masterPassword, setMasterPassword] = useState("");
-    const [fieldError, setFieldError] = useState("");
     const [apiErrors, setApiErrors] = useState(null);
     const [loading, setLoading] = useState(null);
     const [settleDetails, setSettleDetails] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [showHide, setShowHide] = useState(false);
 
+    // Validate form on submit
     const validateForm = () => {
         const newErrors = {};
-        if (!paidAmount || Number(paidAmount) < 0) {
-            newErrors.paidAmount = "required field";
+        if (!paidAmount || Number(paidAmount) <= 0) {
+            newErrors.paidAmount = "Amount is required";
         }
-        if (!remark || remark == "") {
-            newErrors.remark = "required field";
+        if (!remark || remark.trim() === "") {
+            newErrors.remark = "Remark is required";
+        } else if (remark.length > 250) {
+            newErrors.remark = "Remark cannot exceed 250 characters";
         }
-        if (!masterPassword || masterPassword == "") {
-            newErrors.masterPassword = "required field";
+        if (!masterPassword || masterPassword.trim() === "") {
+            newErrors.masterPassword = "Password is required";
+        } else if (masterPassword.length < 6) {
+            newErrors.masterPassword = "Password must be at least 6 characters";
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
+    };
+
+    const clearError = (fieldName) => {
+        if (errors[fieldName]) {
+            const newErrors = { ...errors };
+            delete newErrors[fieldName];
+            setErrors(newErrors);
+        }
     };
 
     const GetAllDirectors = (id) => {
@@ -63,14 +76,13 @@ const OfflineWithdrawPopup = ({
         }
     };
 
-    const handleSubmit = (siteData) => {
+    const handleSubmit = () => {
         const maxWithdrawAmount = calculateMaxWithdrawAmount();
-
         if (Number(paidAmount) > maxWithdrawAmount) {
             setErrors({ ...errors, paidAmount: `Withdraw amount cannot exceed ${maxWithdrawAmount}` });
             return;
         }
-        if (!validateForm(siteData)) return;
+        if (!validateForm()) return;
         const payload = {
             currency: settleDetails?.currencyId,
             walletBalance: settleDetails?.avilChips,
@@ -95,7 +107,7 @@ const OfflineWithdrawPopup = ({
                 setApiErrors(error?.message || "API request failed");
             })
             .finally(() => {
-                setIsLoading(false); // Stop loading
+                setIsLoading(false);
             });
     };
 
@@ -109,8 +121,47 @@ const OfflineWithdrawPopup = ({
     };
 
     const handleEncryptOrDecrypt = () => {
-        setShowHide(!showHide)
-    }
+        setShowHide(!showHide);
+    };
+
+    const handleWithdrawAmountChange = (e) => {
+        const value = e.target.value.replace(/[^0-9]/g, '');
+        const maxWithdrawAmount = calculateMaxWithdrawAmount();
+
+        if (value === "" || (Number(value) <= maxWithdrawAmount && Number(value) >= 0)) {
+            setPaidAmount(value);
+            clearError('paidAmount');
+        }
+    };
+
+    // Handle remark change with validation
+    const handleRemarkChange = (e) => {
+        const value = e.target.value.slice(0, 250); // Limit to 250 characters
+        setRemark(value);
+
+        if (value.length === 0) {
+            setErrors(prev => ({ ...prev, remark: "Remark is required" }));
+        } else if (value.length > 250) {
+            setErrors(prev => ({ ...prev, remark: "Remark cannot exceed 250 characters" }));
+        } else {
+            clearError('remark');
+        }
+    };
+
+    // Handle password change with validation
+    const handlePasswordChange = (e) => {
+        const value = e.target.value.slice(0, 36); // Limit to 36 characters
+        setMasterPassword(value);
+
+        if (value.length === 0) {
+            setErrors(prev => ({ ...prev, masterPassword: "Password is required" }));
+        } else if (value.length < 6) {
+            setErrors(prev => ({ ...prev, masterPassword: "Password must be at least 6 characters" }));
+        } else {
+            clearError('masterPassword');
+        }
+    };
+
     return (
         <div>
             <Modal show={withdrawPopup} centered className="confirm-popup" size="md">
@@ -123,23 +174,7 @@ const OfflineWithdrawPopup = ({
                         </div>
                     </div>
 
-                    {/* {apiErrors && (
-                        <div className="alert alert-danger pb-1">
-                            {Array.isArray(apiErrors) ? (
-                                <ul className="pb-1 ps-1">
-                                    {apiErrors.map((error, index) => (
-                                        <li className="small-font" key={index}>{error.message || error}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p className="small-font ps-1">{apiErrors.message || apiErrors}</p>
-                            )}
-                        </div>
-                    )} */}
-
-                      {apiErrors && (
-                                            <ErrorComponent error={apiErrors}/>
-                                        )}
+                    {apiErrors && <ErrorComponent error={apiErrors} />}
 
                     <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2">
                         {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${selectedDetails?.name} - ${getCurrency(selectedDetails?.currId)}`}
@@ -150,9 +185,7 @@ const OfflineWithdrawPopup = ({
                             <label className="small-font mb-1">Wallet Balance</label>
                             <input
                                 type="number"
-                                name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
-                                placeholder="Enter Chips"
                                 value={settleDetails?.avilChips ? settleDetails.avilChips : 0}
                                 readOnly
                             />
@@ -162,9 +195,7 @@ const OfflineWithdrawPopup = ({
                             <label className="small-font mb-1">Credit Balance</label>
                             <input
                                 type="text"
-                                name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border red-clr"
-                                placeholder="Enter Chips"
                                 value={settleDetails?.creditAllowed == 1 ? settleDetails?.creditBalance : 0}
                                 readOnly
                             />
@@ -173,9 +204,7 @@ const OfflineWithdrawPopup = ({
                             <label className="small-font mb-1">Profit/Loss</label>
                             <input
                                 type="text"
-                                name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border green-clr"
-                                placeholder="Enter Chips"
                                 value={settleDetails?.pnl == 1 ? settleDetails?.pnl : 0}
                                 readOnly
                             />
@@ -184,25 +213,20 @@ const OfflineWithdrawPopup = ({
 
                     <div className="row">
                         <div className="col mb-2">
-                            {/* <label className="small-font white-space mb-1">Available Wallet Bal.</label> */}
                             <label className="small-font white-space mb-1">Avl. Withdraw Bal.</label>
                             <input
                                 type="text"
-                                name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
-                                placeholder="Enter Chips"
                                 value={(settleDetails?.avilChips - (settleDetails?.pnl + settleDetails?.creditBalance)) || 0}
                                 readOnly
                             />
                         </div>
 
-                        <div className="col mb-2 ">
+                        <div className="col mb-2">
                             <label className="small-font white-space mb-1">Remaining Wallet Bal.</label>
                             <input
                                 type="text"
-                                name="selectedChips"
                                 className="w-100 small-font rounded input-css all-none input-bg input-border"
-                                placeholder="Enter Chips"
                                 value={paidAmount ? settleDetails?.avilChips - Number(paidAmount) : 0}
                                 readOnly
                             />
@@ -212,25 +236,16 @@ const OfflineWithdrawPopup = ({
                             <label className="small-font mb-1">Enter Withdraw</label>
                             <input
                                 type="text"
-                                name="paidAmount"
-                                className="w-100 small-font rounded input-css all-none input-bg input-border"
-                                placeholder="Enter"
+                                className={`w-100 small-font rounded input-css all-none input-bg input-border ${errors.paidAmount ? "is-invalid" : ""
+                                    }`}
+                                placeholder="Enter amount"
                                 value={paidAmount}
-                                onChange={(e) => {
-                                    const value = e.target.value.replace(/[^0-9]/g, '')
-                                    const maxWithdrawAmount = calculateMaxWithdrawAmount();
-                                    if (Number(value) <= maxWithdrawAmount) {
-                                        setPaidAmount(value);
-                                    }
-                                }}
-                                max={calculateMaxWithdrawAmount()}
+                                onChange={handleWithdrawAmountChange}
                             />
-                            {paidAmount > calculateMaxWithdrawAmount() && (
-                                <div className="text-danger small-font mt-1">
-                                    Withdraw amount cannot exceed {calculateMaxWithdrawAmount()}.
-                                </div>
+                            {errors.paidAmount && (
+                                <p className="text-danger small-font">{errors.paidAmount}</p>
                             )}
-                            {errors.paidAmount && <p className="text-danger small-font">{errors.paidAmount}</p>}
+
                         </div>
                     </div>
 
@@ -239,46 +254,37 @@ const OfflineWithdrawPopup = ({
                             <label className="small-font mb-1">Remark</label>
                             <input
                                 type="text"
-                                name="remark"
-                                className="w-100 small-font rounded input-css all-none input-bg input-border fw-600"
-                                placeholder="Enter Description"
+                                className={`w-100 small-font rounded input-css all-none input-bg input-border fw-600 ${errors.remark ? "is-invalid" : ""
+                                    }`}
+                                placeholder="Enter description (max 250 chars)"
                                 value={remark}
-                                onChange={(e) => {
-                                    const inputValue = e.target.value
-                                    if (inputValue.length <= 250) {
-                                        setRemark(inputValue)
-                                    }
-                                }}
+                                onChange={handleRemarkChange}
                             />
-                            {fieldError && <p className="text-danger small-font">{fieldError}</p>}
-                            {errors.remark && <p className="text-danger small-font">{errors.remark}</p>}
+                            {errors.remark && (
+                                <p className="text-danger small-font">{errors.remark}</p>
+                            )}
+
                         </div>
                     </div>
 
                     <div className="d-flex flex-column w-100">
                         <div className="small-font mb-1">Enter Password</div>
                         <div className="d-flex flex-row justify-content-between me-1">
-                            <div className="white-btn2 w-100 flex-between">
+                            <div className={`white-btn2 w-100 flex-between ${errors.masterPassword ? "is-invalid" : ""
+                                }`}>
                                 <input
                                     className="all-none p-0 small-font"
-                                    placeholder="Enter"
+                                    placeholder="Enter password (min 6 chars)"
                                     type={`${showHide ? "text" : "password"}`}
-                                    name="parentpassword"
-                                    value={masterPassword || ""}
-                                    onChange={(e) => {
-                                        const inputValue = e.target.value
-                                        if (inputValue.length <= 36) {
-                                            setMasterPassword(inputValue)
-                                        }
-                                    }}
-                                    autocomplete="off"
+                                    value={masterPassword}
+                                    onChange={handlePasswordChange}
+                                    autoComplete="off"
                                 />
-                                {showHide ?
+                                {showHide ? (
                                     <IoEye className="large-font pointer" onClick={handleEncryptOrDecrypt} />
-                                    :
+                                ) : (
                                     <IoEyeOffSharp className="large-font pointer" onClick={handleEncryptOrDecrypt} />
-                                }
-
+                                )}
                             </div>
                             <button
                                 className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
@@ -286,12 +292,7 @@ const OfflineWithdrawPopup = ({
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
-
-                                    <div
-                                        // className="spinner-border spinner-border-sm"
-                                        className="flex-row"
-                                        role="status"
-                                    >
+                                    <div className="flex-row" role="status">
                                         <Spinner
                                             as="span"
                                             animation="border"
@@ -299,20 +300,20 @@ const OfflineWithdrawPopup = ({
                                             role="status"
                                             aria-hidden="true"
                                         />
-                                        <span className="ps-2">Submiting...</span>
+                                        <span className="ps-2">Submitting...</span>
                                     </div>
-
                                 ) : (
                                     "Submit"
                                 )}
                             </button>
                         </div>
+                        {errors.masterPassword && (
+                            <p className="text-danger small-font">{errors.masterPassword}</p>
+                        )}
 
-                        {errors.masterPassword && <p className="text-danger small-font">{errors.masterPassword}</p>}
                     </div>
                 </Modal.Body>
             </Modal>
-
         </div>
     );
 };

@@ -8,7 +8,6 @@ import {
   suspenManagementOfflinePaymentModes,
 } from "../../api/apiMethods";
 import { useRef } from "react";
-import { CircleLoader } from "react-spinners";
 import { RiDeleteBinLine } from "react-icons/ri";
 import ConfirmationPopup from "./../popups/ConfirmationPopup";
 import { imgUrl } from "../../api/baseUrl";
@@ -25,7 +24,6 @@ const OfflinePaymentModes = () => {
   const [error, setError] = useState("");
   const role_code = localStorage.getItem("role_code");
   const dataFetched = useRef(false);
-  const [countries, setCountries] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [offlinePaymnetModeId, setOfflinePaymentModeId] = useState(null);
@@ -51,6 +49,7 @@ const OfflinePaymentModes = () => {
     setIsEdit(false);
     setEditId(null);
   };
+
   const handleEditModal = (id) => {
     setEditId(id);
     setIsEdit(true);
@@ -63,20 +62,6 @@ const OfflinePaymentModes = () => {
     3: "QR Code",
     4: "Cash",
   };
-
-  // const getAllCountries = () => {
-  //   getCountries()
-  //     .then((response) => {
-  //       if (response?.status === true) {
-  //         setCountries(response?.data);
-  //       } else {
-  //         setError("Something Went Wrong");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message || "API request failed");
-  //     });
-  // };
 
   const getCountryName = (id) => {
     const country = allCountries.find((c) => c.id === id);
@@ -141,20 +126,6 @@ const OfflinePaymentModes = () => {
     setStatusId(status);
   };
 
-  // const filteredManOfflinePayments = paymentModes.filter((item) => {
-  //   const type = typeOptions[item?.avil_modes]?.toLowerCase();
-  //   const currency = getCurrencyName(item?.currency)?.toLowerCase();
-  //   const name = item?.name?.toLowerCase();
-  //   const country = getCountryName(item?.country)?.toLowerCase();
-  //   const searchTerm = searchInput.toLowerCase();
-  //   return (
-  //     type?.includes(searchTerm) ||
-  //     currency?.includes(searchTerm) ||
-  //     name?.includes(searchTerm) ||
-  //     country?.includes(searchTerm)
-  //   );
-  // });
-
   const suspendStatus = () => {
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
@@ -162,18 +133,15 @@ const OfflinePaymentModes = () => {
           getAllManPaymentModes(page, pageSize);
           setMsg(response?.message);
           setSuccessPopupOpen(true);
-          setTimeout(() => {
-            setSuccessPopupOpen(false);
-          }, 3000);
         }
       })
       .catch((error) => {
         setError(error?.message[0]?.message);
         setConfirmationModal(false);
-        // setErrorPopup(true);
-        // setTimeout(() => {
-        //   setErrorPopup(false);
-        // }, 2000);
+        setErrorPopup(true);
+        setTimeout(() => {
+          setErrorPopup(false);
+        }, 2000);
       });
   };
 
@@ -254,39 +222,38 @@ const OfflinePaymentModes = () => {
   };
   return (
     <div>
-      <div className="row justify-content-between align-items-center mb-3 mt-2">
-        <h6 className="col-2 yellow-font medium-font mb-0 white-space">
-          Offline Payment Cards
-        </h6>
+      {!loading && (
+        <div className="row justify-content-between align-items-center mb-3 mt-2">
+          <h6 className="col-2 yellow-font medium-font mb-0 white-space">
+            Offline Payment Cards
+          </h6>
 
-        <div className="col-6 d-flex justify-content-end gap-3 medium-font">
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input
-              className="small-font all-none"
-              placeholder="Search..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value.trim())}
-              onKeyDown={handleFiltration}
-            />
+          <div className="col-6 d-flex justify-content-end gap-3 medium-font">
+            <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
+              <FaSearch size={16} className="grey-clr me-2" />
+              <input
+                className="small-font all-none"
+                placeholder="Search..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value.trim())}
+                onKeyDown={handleFiltration}
+              />
+            </div>
+            <button
+              className="rounded-pill input-pill blue-font small-font px-2"
+              onClick={hanldeAddModal}
+            >
+              <FaPlus /> Add New
+            </button>
           </div>
-
-          <button
-            className="rounded-pill input-pill blue-font small-font px-2"
-            onClick={hanldeAddModal}
-          >
-            <FaPlus /> Add New
-          </button>
         </div>
-      </div>
+      )}
+
 
       <div className="mt-2">
         {loading ? (
-          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
-            <CircleLoader color="#3498db" size={40} />
-            <div className="medium-font black-font my-3">
-              Just a moment......⏳
-            </div>
+          <div className="spinner">
+            <div className="spinner-circle"></div>
           </div>
         ) : (
           <Table
@@ -299,35 +266,48 @@ const OfflinePaymentModes = () => {
         )}
       </div>
 
-      <AddNewOfflinePaymentModal
-        showAddModal={showAddModal}
-        setShowAddModal={setShowAddModal}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        editId={editId}
-        setEditId={setEditId}
-        countries={allCountries}
-        getAllManPaymentModes={getAllManPaymentModes}
-      />
-      <ConfirmationPopup
-        confirmationPopupOpen={confirmationModal}
-        setConfirmationPopupOpen={() => setConfirmationModal(false)}
-        discription={`Are you sure you want to ${
-          statusId === 1 ? "In-Active" : "Active"
-        } this Payment Mode?`}
-        submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
-        onSubmit={suspendStatus}
-      />
-      <ErrorPopup
-        discription={error}
-        errorPopupOpen={errorPopup}
-        setErrorPopupOpen={setErrorPopup}
-      />
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={msg}
-      />
+      {showAddModal && (
+        <AddNewOfflinePaymentModal
+          showAddModal={showAddModal}
+          setShowAddModal={setShowAddModal}
+          isEdit={isEdit}
+          setIsEdit={setIsEdit}
+          editId={editId}
+          setEditId={setEditId}
+          countries={allCountries}
+          getAllManPaymentModes={getAllManPaymentModes}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          setMsg={setMsg}
+        />
+      )}
+
+      {confirmationModal && (
+        <ConfirmationPopup
+          confirmationPopupOpen={confirmationModal}
+          setConfirmationPopupOpen={() => setConfirmationModal(false)}
+          discription={`Are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
+            } this Payment Mode?`}
+          submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
+          onSubmit={suspendStatus}
+        />
+      )}
+
+      {error && (
+        <ErrorPopup
+          discription={error}
+          errorPopupOpen={errorPopup}
+          setErrorPopupOpen={setErrorPopup}
+        />
+      )}
+
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={msg}
+        />
+      )}
+
     </div>
   );
 };

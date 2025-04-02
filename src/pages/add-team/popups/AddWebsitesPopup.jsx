@@ -3,15 +3,26 @@ import { Modal } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
 import Select from "react-select";
 import { customStyles } from "../../../components/ReactSelectStyles";
-import { createWebsite, getWebsiteDetails, updateWebsite } from "../../../api/apiMethods";
+import {
+  createWebsite,
+  getWebsiteDetails,
+  updateWebsite,
+} from "../../../api/apiMethods";
 import SuccessPopup from "../../popups/SuccessPopup";
 import ErrorPopup from "../../popups/ErrorPopup";
 import { useSearchParams } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 
-const AddWebsitesPopup = ({ show, onHide,
-  countries, getWebsitesCallback, editMode,
-  websiteId, setEditMode, setWebsiteId }) => {
+const AddWebsitesPopup = ({
+  show,
+  onHide,
+  countries,
+  getWebsitesCallback,
+  editMode,
+  websiteId,
+  setEditMode,
+  setWebsiteId,
+}) => {
   const [formData, setFormData] = useState({
     deployType: null,
     panelType: null,
@@ -25,7 +36,7 @@ const AddWebsitesPopup = ({ show, onHide,
     routing_key: "",
   });
   const [initialLoading, setInitialLoadig] = useState(false);
-  const itemsPerPage = 9
+  const itemsPerPage = 9;
   const userId = localStorage.getItem("user_id");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
@@ -56,19 +67,16 @@ const AddWebsitesPopup = ({ show, onHide,
     { value: 2, label: "Brahma Admin" },
   ];
 
-  const DeployOptions = [
-    { value: 1, label: "Company" },
-  ];
-  
+  const DeployOptions = [{ value: 1, label: "Company" }];
+
   const [status, setStatus] = useState(null);
   const formattedCountries = countries?.map((country) => ({
     value: country.id,
     label: country.name
       .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" "),
   }));
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -101,9 +109,11 @@ const AddWebsitesPopup = ({ show, onHide,
         if (!value.trim()) {
           newErrors.websiteName = "Website Name is required.";
         } else if (value.length < 2 || value.length > 100) {
-          newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
+          newErrors.websiteName =
+            "Website Name must be between 2 and 100 characters.";
         } else if (!/^[a-zA-Z0-9._\s-]+$/.test(value)) {
-          newErrors.websiteName = "Website Name can only contain letters, numbers, dots, and underscores.";
+          newErrors.websiteName =
+            "Website Name can only contain letters, numbers, dots, and underscores.";
         } else {
           delete newErrors.websiteName;
         }
@@ -115,7 +125,8 @@ const AddWebsitesPopup = ({ show, onHide,
         } else {
           const urlPattern = /^(?!https?:\/\/|www\.)[\w.-]+\.\w{2,}$/i;
           if (!urlPattern.test(value)) {
-            newErrors.websiteURL = "Invalid website URL. Please not include http://, https://, www or spl char";
+            newErrors.websiteURL =
+              "Invalid website URL. Please not include http://, https://, www or spl char";
           } else {
             delete newErrors.websiteURL; // Clear the error if validation passes
           }
@@ -128,9 +139,11 @@ const AddWebsitesPopup = ({ show, onHide,
         if (!value.trim()) {
           newErrors.queue_name = "Queue Name is required.";
         } else if (value.length < 2 || value.length > 50) {
-          newErrors.queue_name = "Queue Name must be between 2 and 50 characters.";
+          newErrors.queue_name =
+            "Queue Name must be between 2 and 50 characters.";
         } else if (!/^[a-z0-9.]+$/.test(value)) {
-          newErrors.queue_name = "Queue Name can only contain letters, and spaces.";
+          newErrors.queue_name =
+            "Queue Name can only contain letters, and spaces.";
         } else {
           delete newErrors.queue_name;
         }
@@ -140,9 +153,11 @@ const AddWebsitesPopup = ({ show, onHide,
         if (!value.trim()) {
           newErrors.routing_key = "Routing Key is required.";
         } else if (value.length < 2 || value.length > 30) {
-          newErrors.routing_key = "Routing Key must be between 2 and 30 characters.";
+          newErrors.routing_key =
+            "Routing Key must be between 2 and 30 characters.";
         } else if (!/^[a-z0-9.]+$/.test(value)) {
-          newErrors.routing_key = "Routing Key can only contain letters, and spaces.";
+          newErrors.routing_key =
+            "Routing Key can only contain letters, and spaces.";
         } else {
           delete newErrors.routing_key;
         }
@@ -181,34 +196,43 @@ const AddWebsitesPopup = ({ show, onHide,
 
   useEffect(() => {
     if (editMode && websiteId) {
-      setInitialLoadig(true)
+      setInitialLoadig(true);
       getWebsiteDetails(websiteId)
         .then((response) => {
           if (response?.status === true) {
             const data = response?.data;
             setFormData({
-              deployType: DeployOptions.find((opt) => opt.value === data?.deploy_type) || null,
-              panelType: PanelOptions.find((opt) => opt.value === data?.panel_type) || null,
-              location: formattedCountries.find((opt) => opt.value === data?.location_id) || null,
+              deployType:
+                DeployOptions.find((opt) => opt.value === data?.deploy_type) ||
+                null,
+              panelType:
+                PanelOptions.find((opt) => opt.value === data?.panel_type) ||
+                null,
+              location:
+                formattedCountries.find(
+                  (opt) => opt.value === data?.location_id
+                ) || null,
               city: data?.city || "",
               websiteName: data?.web_name || "",
               websiteURL: data?.web_url.replace(/^https?:\/\//i, "") || "",
               created_by: data?.created_by || null,
-              ref_type: refTypesOptions.find((opt) => opt.value === data?.ref_type) || null,
+              ref_type:
+                refTypesOptions.find((opt) => opt.value === data?.ref_type) ||
+                null,
               queue_name: data?.queue_name,
-              routing_key: data?.routing_key
+              routing_key: data?.routing_key,
             });
-            setInitialLoadig(false)
+            setInitialLoadig(false);
             setStatus(data?.status);
             setApiError("");
           } else {
             setApiError("Something Went Wrong");
-            setInitialLoadig(false)
+            setInitialLoadig(false);
           }
         })
         .catch((error) => {
           setApiError(error?.message || "API request failed");
-          setInitialLoadig(false)
+          setInitialLoadig(false);
         });
     } else {
       setFormData({
@@ -251,10 +275,15 @@ const AddWebsitesPopup = ({ show, onHide,
 
     if (!formData.websiteName.trim()) {
       newErrors.websiteName = "Website Name is required.";
-    } else if (formData.websiteName.length < 2 || formData.websiteName.length > 100) {
-      newErrors.websiteName = "Website Name must be between 2 and 100 characters.";
+    } else if (
+      formData.websiteName.length < 2 ||
+      formData.websiteName.length > 100
+    ) {
+      newErrors.websiteName =
+        "Website Name must be between 2 and 100 characters.";
     } else if (!/^[a-zA-Z0-9._\s-]+$/.test(formData.websiteName)) {
-      newErrors.websiteName = "Website Name can only contain letters, numbers, and hyphens.";
+      newErrors.websiteName =
+        "Website Name can only contain letters, numbers, and hyphens.";
     }
 
     if (!formData.websiteURL.trim()) {
@@ -262,24 +291,34 @@ const AddWebsitesPopup = ({ show, onHide,
     } else {
       const urlPattern = /^(?!https?:\/\/|www\.)[\w.-]+\.\w{2,}$/i;
       if (!urlPattern.test(formData.websiteURL)) {
-        newErrors.websiteURL = "Invalid website URL. Please not include http://, https://, www or spl char";
+        newErrors.websiteURL =
+          "Invalid website URL. Please not include http://, https://, www or spl char";
       }
     }
 
     if (!formData.queue_name?.trim()) {
       newErrors.queue_name = "Queue Name is required.";
-    } else if (formData.queue_name.length < 2 || formData.queue_name.length > 50) {
+    } else if (
+      formData.queue_name.length < 2 ||
+      formData.queue_name.length > 50
+    ) {
       newErrors.queue_name = "Queue Name must be between 4 and 45 characters.";
     } else if (!/^[a-z0-9.]+$/.test(formData.queue_name)) {
-      newErrors.queue_name = "Queue Namey can only contain small letters , numbers and dots.";
+      newErrors.queue_name =
+        "Queue Namey can only contain small letters , numbers and dots.";
     }
 
     if (!formData.routing_key?.trim()) {
       newErrors.routing_key = "Routing Key is required.";
-    } else if (formData.routing_key.length < 2 || formData.routing_key.length > 50) {
-      newErrors.routing_key = "Routing Key must be between 4 and 45 characters.";
+    } else if (
+      formData.routing_key.length < 2 ||
+      formData.routing_key.length > 50
+    ) {
+      newErrors.routing_key =
+        "Routing Key must be between 4 and 45 characters.";
     } else if (!/^[a-z0-9.]+$/.test(formData.routing_key)) {
-      newErrors.routing_key = "Routing Key can only contain small letters , numbers and dots.";
+      newErrors.routing_key =
+        "Routing Key can only contain small letters , numbers and dots.";
     }
 
     setErrors(newErrors);
@@ -326,32 +365,37 @@ const AddWebsitesPopup = ({ show, onHide,
     const offset = (page - 1) * itemsPerPage;
     setApiError("");
     if (validateForm()) {
-      const finalData = editMode ? {
-        deploy_type: formData?.deployType?.value,
-        panel_type: formData?.panelType?.value,
-        web_name: formData?.websiteName,
-        web_url: formData?.websiteURL.replace(/^https?:\/\//i, ""),
-        location_id: formData?.location?.value,
-        // prefix: "BMA",
-        city: formData?.city,
-        status: status,
-        created_by: formData.created_by,
-        queue_name: formData.queue_name,
-        routing_key: formData.routing_key,
-      } : {
-        deploy_type: formData?.deployType?.value,
-        panel_type: formData?.panelType?.value,
-        web_name: formData?.websiteName,
-        web_url: formData?.websiteURL,
-        location_id: formData?.location?.value,
-        // prefix: "BMA",
-        city: formData?.city,
-        created_by: userId,
-        queue_name: formData.queue_name,
-        routing_key: formData.routing_key,
-      };
-      setLoader(true)
-      const apiCall = editMode === true ? updateWebsite(websiteId, finalData) : createWebsite(finalData);
+      const finalData = editMode
+        ? {
+            deploy_type: formData?.deployType?.value,
+            panel_type: formData?.panelType?.value,
+            web_name: formData?.websiteName,
+            web_url: formData?.websiteURL.replace(/^https?:\/\//i, ""),
+            location_id: formData?.location?.value,
+            // prefix: "BMA",
+            city: formData?.city,
+            status: status,
+            created_by: formData.created_by,
+            queue_name: formData.queue_name,
+            routing_key: formData.routing_key,
+          }
+        : {
+            deploy_type: formData?.deployType?.value,
+            panel_type: formData?.panelType?.value,
+            web_name: formData?.websiteName,
+            web_url: formData?.websiteURL,
+            location_id: formData?.location?.value,
+            // prefix: "BMA",
+            city: formData?.city,
+            created_by: userId,
+            queue_name: formData.queue_name,
+            routing_key: formData.routing_key,
+          };
+      setLoader(true);
+      const apiCall =
+        editMode === true
+          ? updateWebsite(websiteId, finalData)
+          : createWebsite(finalData);
       apiCall
         .then((response) => {
           if (response?.status === true) {
@@ -361,7 +405,7 @@ const AddWebsitesPopup = ({ show, onHide,
             setApiError("");
             setEditMode(false);
             onHide();
-            setLoader(false)
+            setLoader(false);
             setSuccessPopupOpen(true);
             setTimeout(() => {
               resetData();
@@ -369,22 +413,27 @@ const AddWebsitesPopup = ({ show, onHide,
               setSuccessPopupOpen(false);
             }, 2000);
           } else {
-            setLoader(false)
+            setLoader(false);
             setApiError("Something Went Wrong");
           }
         })
         .catch((error) => {
-          const errorMessage = error?.message
-          setLoader(false)
+          const errorMessage = error?.message;
+          setLoader(false);
           // Handle backend validation errors
           if (errorMessage.includes("Website name already exists.")) {
-            setErrors((prevErrors) => ({ ...prevErrors, websiteNameExists: "This website already taken" }));
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              websiteNameExists: "This website already taken",
+            }));
           } else if (errorMessage.includes("Website Url already exists")) {
-            setErrors((prevErrors) => ({ ...prevErrors, websiteURLExists: "This website url already taken" }));
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              websiteURLExists: "This website url already taken",
+            }));
           } else {
             setApiError(error.errors);
           }
-
         });
     }
   };
@@ -392,19 +441,26 @@ const AddWebsitesPopup = ({ show, onHide,
   return (
     <div>
       <Modal centered show={show} onHide={handleClose} size="md">
-        {initialLoading && editMode && (<div className="my-load">
-          <div className="loader "></div></div>)}
+        {initialLoading && editMode && (
+          <div className="my-load">
+            <div className="loader "></div>
+          </div>
+        )}
         <Modal.Body>
           {/* API Error Display */}
           {apiError && (
-            <div className="alert alert-danger small-font mb-3">
-              {apiError}
-            </div>
+            <div className="alert alert-danger small-font mb-3">{apiError}</div>
           )}
 
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h5 className="medium-font fw-600">{editMode ? "Update" : "Add"} Website</h5>
-            <MdOutlineClose size={22} onClick={handleClose} className="pointer" />
+            <h5 className="medium-font fw-600">
+              {editMode ? "Update" : "Add"} Website
+            </h5>
+            <MdOutlineClose
+              size={22}
+              onClick={handleClose}
+              className="pointer"
+            />
           </div>
 
           <div className="row mb-3">
@@ -420,16 +476,26 @@ const AddWebsitesPopup = ({ show, onHide,
                 onChange={(option) => handleSelectChange("deployType", option)}
                 filterOption={(option, inputValue) => {
                   if (!inputValue) return true;
-                  return /^[A-Za-z]+$/.test(inputValue) && option.label.toLowerCase().includes(inputValue.toLowerCase());
+                  return (
+                    /^[A-Za-z]+$/.test(inputValue) &&
+                    option.label
+                      .toLowerCase()
+                      .includes(inputValue.toLowerCase())
+                  );
                 }}
                 onInputChange={(inputValue, { action }) => {
-                  if (action === "input-change" && !/^[A-Za-z]*$/.test(inputValue)) {
+                  if (
+                    action === "input-change" &&
+                    !/^[A-Za-z]*$/.test(inputValue)
+                  ) {
                     return inputValue.replace(/[^A-Za-z]/g, "");
                   }
                   return inputValue;
                 }}
               />
-              {errors.deployType && <p className="text-danger small-font">{errors.deployType}</p>}
+              {errors.deployType && (
+                <p className="text-danger small-font">{errors.deployType}</p>
+              )}
             </div>
 
             {/* Panel Type Dropdown */}
@@ -447,11 +513,16 @@ const AddWebsitesPopup = ({ show, onHide,
                   if (!inputValue) return true;
                   return (
                     /^[A-Za-z\s]+$/.test(inputValue) &&
-                    option.label.toLowerCase().includes(inputValue.toLowerCase())
+                    option.label
+                      .toLowerCase()
+                      .includes(inputValue.toLowerCase())
                   );
                 }}
                 onInputChange={(inputValue, { action }) => {
-                  if (action === "input-change" && !/^[A-Za-z\s]*$/.test(inputValue)) {
+                  if (
+                    action === "input-change" &&
+                    !/^[A-Za-z\s]*$/.test(inputValue)
+                  ) {
                     return inputValue.replace(/[^A-Za-z\s]/g, "");
                   }
                   return inputValue;
@@ -460,10 +531,10 @@ const AddWebsitesPopup = ({ show, onHide,
                   inputValue ? "No matching options" : "No options available"
                 }
               />
-              {errors.panelType && <p className="text-danger small-font">{errors.panelType}</p>}
+              {errors.panelType && (
+                <p className="text-danger small-font">{errors.panelType}</p>
+              )}
             </div>
-
-
 
             {/* Location Dropdown */}
             <div className="col-4">
@@ -480,11 +551,16 @@ const AddWebsitesPopup = ({ show, onHide,
                   if (!inputValue) return true;
                   return (
                     /^[A-Za-z\s]+$/.test(inputValue) &&
-                    option.label.toLowerCase().includes(inputValue.toLowerCase())
+                    option.label
+                      .toLowerCase()
+                      .includes(inputValue.toLowerCase())
                   );
                 }}
                 onInputChange={(inputValue, { action }) => {
-                  if (action === "input-change" && !/^[A-Za-z\s]*$/.test(inputValue)) {
+                  if (
+                    action === "input-change" &&
+                    !/^[A-Za-z\s]*$/.test(inputValue)
+                  ) {
                     return inputValue.replace(/[^A-Za-z\s]/g, "");
                   }
                   return inputValue;
@@ -493,7 +569,9 @@ const AddWebsitesPopup = ({ show, onHide,
                   inputValue ? "No matching options" : "No options available"
                 }
               />
-              {errors.location && <p className="text-danger small-font">{errors.location}</p>}
+              {errors.location && (
+                <p className="text-danger small-font">{errors.location}</p>
+              )}
             </div>
 
             {/* City Input */}
@@ -506,14 +584,19 @@ const AddWebsitesPopup = ({ show, onHide,
                 placeholder="Enter"
                 value={formData.city}
                 onChange={(e) => {
-
-                  const filteredValue = e.target.value.replace(/[^A-Za-z\s]/g, "");
-                  handleChange({ target: { name: "city", value: filteredValue } });
+                  const filteredValue = e.target.value.replace(
+                    /[^A-Za-z\s]/g,
+                    ""
+                  );
+                  handleChange({
+                    target: { name: "city", value: filteredValue },
+                  });
                 }}
               />
-              {errors.city && <p className="text-danger small-font">{errors.city}</p>}
+              {errors.city && (
+                <p className="text-danger small-font">{errors.city}</p>
+              )}
             </div>
-
 
             {/* Website Name Input */}
             <div className="col-4">
@@ -526,8 +609,14 @@ const AddWebsitesPopup = ({ show, onHide,
                 value={formData.websiteName}
                 onChange={handleChange}
               />
-              {errors.websiteName && <p className="text-danger small-font">{errors.websiteName}</p>}
-              {errors.websiteNameExists && <p className="text-danger small-font">{errors.websiteNameExists}</p>}
+              {errors.websiteName && (
+                <p className="text-danger small-font">{errors.websiteName}</p>
+              )}
+              {errors.websiteNameExists && (
+                <p className="text-danger small-font">
+                  {errors.websiteNameExists}
+                </p>
+              )}
             </div>
 
             {/* Website URL Input */}
@@ -541,8 +630,14 @@ const AddWebsitesPopup = ({ show, onHide,
                 value={formData.websiteURL}
                 onChange={handleChange}
               />
-              {errors.websiteURL && <p className="text-danger small-font">{errors.websiteURL}</p>}
-              {errors.websiteURLExists && <p className="text-danger small-font">{errors.websiteURLExists}</p>}
+              {errors.websiteURL && (
+                <p className="text-danger small-font">{errors.websiteURL}</p>
+              )}
+              {errors.websiteURLExists && (
+                <p className="text-danger small-font">
+                  {errors.websiteURLExists}
+                </p>
+              )}
             </div>
 
             {/* Queue_Name*/}
@@ -556,7 +651,9 @@ const AddWebsitesPopup = ({ show, onHide,
                 value={formData.queue_name}
                 onChange={handleChange}
               />
-              {errors.queue_name && <p className="text-danger small-font">{errors.queue_name}</p>}
+              {errors.queue_name && (
+                <p className="text-danger small-font">{errors.queue_name}</p>
+              )}
             </div>
             <div className="col-4">
               <label className="small-font mb-1">Routing Key</label>
@@ -568,26 +665,22 @@ const AddWebsitesPopup = ({ show, onHide,
                 value={formData.routing_key}
                 onChange={handleChange}
               />
-              {errors.routing_key && <p className="text-danger small-font">{errors.routing_key}</p>}
+              {errors.routing_key && (
+                <p className="text-danger small-font">{errors.routing_key}</p>
+              )}
             </div>
-           
-
 
             <div className="col-4">
               <label className="small-font mt-1">&nbsp;</label>
-             <button className="saffron-btn small-font rounded w-100 mt-1 " onClick={handleSubmit} disabled={loader === true ? true:false}>
-              Submit
-            </button>
-         
+              <button
+                className="saffron-btn small-font rounded w-100 mt-1 "
+                onClick={handleSubmit}
+                disabled={loader === true ? true : false}
+              >
+                Submit
+              </button>
             </div>
-          
-            </div>
-          
-         
-
-        
-        
-        
+          </div>
         </Modal.Body>
       </Modal>
 
