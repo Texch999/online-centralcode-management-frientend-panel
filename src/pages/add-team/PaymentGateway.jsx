@@ -591,7 +591,7 @@ const PaymentGateway = () => {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={desciption}
+          discription={msg}
         />
       )}
 

@@ -25,7 +25,7 @@ const AddPaymentGatewayPopup = ({
   dirEditId,
   getDirectorAccountData,
   addpaymentId,
-  setDiscription,
+  // setDiscription,
   setSuccessPopupOpen
 }) => {
   const [upiID, setUpiID] = useState("");
@@ -47,6 +47,7 @@ const AddPaymentGatewayPopup = ({
   const [searchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
   const [validationErrors, setValidationErrors] = useState({});
+  const[description,setDescription]=useState("")
 
   // Reset all form fields
   const resetFields = () => {
@@ -60,7 +61,7 @@ const AddPaymentGatewayPopup = ({
     setQrCode(null);
     setQrName("");
     setValidationErrors({});
-    setMsg("");
+    // setMsg("");
   };
 
   const onHide = () => {
@@ -284,7 +285,8 @@ const AddPaymentGatewayPopup = ({
         : await createManagementPaymentDetails(formData);
 
       setSuccessPopupOpen(true);
-      setDiscription(response?.message || "Payment details added");
+      setDescription(response?.message);
+      setMsg(response?.message)
       resetFields();
       setOnAddPaymentGateway(false);
       if (setManagementPaymentEditId) setManagementPaymentEditId(null);

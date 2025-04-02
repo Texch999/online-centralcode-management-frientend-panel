@@ -43,7 +43,7 @@ const PaymentGateway = ({ dwnlnId }) => {
   const [showPaymentGatewayData, setShowPaymentGatewayData] = useState([]);
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item.allCountries);
-  console.log(allCountries,"allCountries")
+  console.log(allCountries, "allCountries");
   const itemsPerPage = 2;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -100,13 +100,13 @@ const PaymentGateway = ({ dwnlnId }) => {
 
   const getDirPaymentDetails = (page, pageSize, currencyId) => {
     setLoading(true);
-    const params={
-      page:page,
-      pageSize:pageSize,
-      currencyId:currencyId,
-      dwnlnId:dwnlnId
-    }
-    managementDwnProfileDirPaymentDetails( params)
+    const params = {
+      page: page,
+      pageSize: pageSize,
+      currencyId: currencyId,
+      dwnlnId: dwnlnId,
+    };
+    managementDwnProfileDirPaymentDetails(params)
       .then((response) => {
         if (response.status === true) {
           console.log(response.data, "response.data");
@@ -126,10 +126,9 @@ const PaymentGateway = ({ dwnlnId }) => {
   };
   useEffect(() => {
     if (role_code === "management") {
-      
       getDirPaymentDetails(pages, itemsPerPage, selectedCountry);
     }
-  }, [selectedCountry,currentPage]);
+  }, [selectedCountry, currentPage]);
 
   const handlePageChange = ({ limit, offset }) => {
     setCurrentLimit(limit);
@@ -140,9 +139,11 @@ const PaymentGateway = ({ dwnlnId }) => {
   };
 
   const filterOption = ({ label }, inputValue) => {
-    return /^[A-Za-z\s]*$/.test(inputValue) && label.toLowerCase().includes(inputValue.toLowerCase());
+    return (
+      /^[A-Za-z\s]*$/.test(inputValue) &&
+      label.toLowerCase().includes(inputValue.toLowerCase())
+    );
   };
-  
 
   const PAYMENT_DATA = showPaymentGatewayData?.map((item, index) => {
     return {
@@ -303,7 +304,7 @@ const PaymentGateway = ({ dwnlnId }) => {
                 }}
                 onInputChange={(inputValue) => {
                   return inputValue.replace(/[^a-zA-Z]/g, "");
-                }} 
+                }}
               />
             </div>
           </div>
