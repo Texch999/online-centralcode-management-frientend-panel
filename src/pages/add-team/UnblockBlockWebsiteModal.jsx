@@ -18,7 +18,6 @@ const UnblockBlockWebsiteModal = ({
   adminStatusId,
   dirId,
 }) => {
-  console.log(dirId, "dirId");
   const [pswdVisible, setPswdVisible] = useState(false);
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -31,10 +30,13 @@ const UnblockBlockWebsiteModal = ({
   const [showAlert, setShowAlert] = useState(false);
   const [webList, setWebList] = useState([]);
   const [successModal, setSuccessModal] = useState(false);
-  const [checked, setChecked] = useState(webList?.adminPanDtls?.adminStatus === 1);
+  const [checked, setChecked] = useState(
+    webList?.adminPanDtls?.adminStatus === 1
+  );
   // Initialize adminStatus with the prop value
-  const [adminStatus, setAdminStatus] = useState(webList?.adminPanDtls?.adminStatus);
-
+  const [adminStatus, setAdminStatus] = useState(
+    webList?.adminPanDtls?.adminStatus
+  );
 
   const handlePswd = () => {
     setPswdVisible((prev) => !prev);
@@ -173,7 +175,7 @@ const UnblockBlockWebsiteModal = ({
 
   const userwebsites = webList?.user_panels?.map((item) => {
     const existingWebsite = selectedWebsites.find(
-      (web) => web?.user_panel_id === item?.user_panel_id
+      (web) => web?.user_panel_id === item?.id
     );
     const isChecked =
       adminStatus === 2
