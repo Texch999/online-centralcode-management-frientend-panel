@@ -243,7 +243,7 @@ function Tickets() {
         utrno: <div >{record.transacId}</div>,
         dw: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>
           {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
-        iscredit: <div >{record?.iscredit == 1 ? "YES" : "NO"}</div>,
+        iscredit: <div >{record?.credit > 0 ? "YES" : "NO"}</div>,
         chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips}</div>,
         currtypeamount: <div >{Number(record.paidAmount).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
         currRate: <div >{record?.curRate ? rfloor((record?.curRate), -6) : 0}<br />{getCurrency(record.reqCurrency)}</div>,
@@ -383,6 +383,7 @@ function Tickets() {
               }),
             }}
             value={selectedType}
+            isSearchable={false}
             onChange={(option) => setSelectedType(option)}
           />
           <p className="small-font red-font">{errors.selectedType}</p>
