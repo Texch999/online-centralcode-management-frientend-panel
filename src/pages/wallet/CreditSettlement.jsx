@@ -10,6 +10,8 @@ import ReturnCreditModal from "./ReturnCreditModal";
 import { creditFullSettlement, getCreditUSersList, getOfflineDWDirectors } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import { CircleLoader } from "react-spinners";
+import { Spinner } from "react-bootstrap";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const CreditSettlement = () => {
   const navigate = useNavigate();
@@ -38,7 +40,8 @@ const CreditSettlement = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [discription, setDiscription] = useState("");
   const [apiLoading, setApiLoading] = useState(false);
-
+  const [errorPopup, setErrorPopup] = useState(false);
+  const [errorDiscription, setErrorDiscription] = useState(false);
   const GetAllDirectors = () => {
     getOfflineDWDirectors()
       .then((response) => {
@@ -206,17 +209,26 @@ const CreditSettlement = () => {
       console.log("director panel");
     }
   };
-  const [validation, setValidation] = useState(null)
+  const [validation, setValidation] = useState({})
 
   const hanldeSettlement = () => {
-    console.log(parentPassword, "==parentPassword")
+    let errors = {};
+
+    // Check if payload is empty or has no items
     if (!payload || Object.keys(payload).length === 0) {
-      return;
+      setErrorPopup(true)
+      setErrorDiscription("Please select at least one settlement")
     }
 
-    if (!parentPassword) {
-      setValidation("Password is Required")
-      return
+    if (!parentPassword || parentPassword.trim() === "") {
+      errors.parentPassword = "Password is required";
+    } else if (parentPassword.length < 6 || parentPassword.length > 36) {
+      errors.parentPassword = "Password must be at least 6 and max 36 characters";
+    }
+
+    if (Object.keys(errors).length !== 0) {
+      setValidation(errors);
+      return;
     }
 
     const data = {
@@ -224,30 +236,31 @@ const CreditSettlement = () => {
       parentPassword: parentPassword,
     };
 
-    setIsLoading(true)
+    setIsLoading(true);
     creditFullSettlement(data)
       .then(() => {
         const limit = itemsPerPage;
         const offset = (page - 1) * itemsPerPage;
         getAllCreditUsersList(limit, offset);
-        setIsLoading(false)
-        setSuccessPopupOpen(true)
+        setIsLoading(false);
+        setSuccessPopupOpen(true);
         setDiscription("Credit Settled Successfully");
-        setPayload([])
-        setParentPassword("")
+        setPayload([]);
+        setParentPassword("");
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 3000);
       })
       .catch((error) => {
-        setApiError(error?.message)
-        setIsLoading(false)
+        setApiError(error?.message);
+        setIsLoading(false);
       });
   };
 
   const handleClearAll = () => {
     setPayload([])
   }
+
   return (
     <>
       <div>
@@ -256,7 +269,7 @@ const CreditSettlement = () => {
             <span>
               <MdOutlineKeyboardArrowLeft
                 size={22}
-                onClick={() => navigate(-1)}
+              // onClick={() => navigate(-1)}
               />
             </span>
             <span className="yellow-font">Credit & Settlement</span>
@@ -279,41 +292,42 @@ const CreditSettlement = () => {
             <span className="green-font mx-1">88,414</span>
           </div>
         </div>
-        <div className="d-flex my-1">
-          <div className="flex-column col-2 me-3">
-            <label className="black-text4 small-font mb-1 ms-1">
-              Select Admin Name
-            </label>
-            <Select
-              className="small-font"
-              options={downlines}
-              placeholder="Select"
-              styles={customStyles}
-              onChange={(option) => {
-                setSelectedAdminId(option);
-                setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
-              }}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-            {errors.selectedAdminId && (
-              <div className="text-danger small-font">
-                {errors.selectedAdminId}
-              </div>
-            )}
-          </div>
-          <div className="flex-column col-1 d-flex align-items-end justify-content-end">
-            <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
-          </div>
-        </div>
-        {apiLoading ? (
-          <div className="d-flex flex-column flex-center mt-10rem align-items-center">
-            <CircleLoader color="#3498db" size={40} />
-            <div className="medium-font black-font my-3">
-              Just a moment...............⏳
+        <div className="flex-column">
+          <div className="d-flex my-1">
+            <div className="flex-column col-2 me-3">
+              <label className="black-text4 small-font mb-1 ms-1">
+                Select Admin Name
+              </label>
+              <Select
+                className="small-font"
+                options={downlines}
+                placeholder="Select"
+                styles={customStyles}
+                onChange={(option) => {
+                  setSelectedAdminId(option);
+                  setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
+                }}
+                maxMenuHeight={120}
+                menuPlacement="auto"
+                classNamePrefix="custom-react-select"
+              />
+            </div>
+            <div className="flex-column col-1 d-flex align-items-end justify-content-end">
+              <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
             </div>
           </div>
+          {errors.selectedAdminId && (
+            <div className="text-danger small-font ps-1">
+              {errors.selectedAdminId}
+            </div>
+          )}
+        </div>
+        {apiLoading ? (
+
+          <div className="spinner">
+            <div className="spinner-circle"></div>
+          </div>
+
         ) : (
           <div className="mt-3" style={{ zIndex: "10" }}>
             <Table
@@ -327,13 +341,12 @@ const CreditSettlement = () => {
           </div>
         )}
 
-        <div className="row small-font my-2 align-items-center">
-          <div className="small-font my-1 col-2">Management Password</div>
-
+        <div className="row flex-even small-font my-2 align-items-center">
           <div className="col-4">
-            <div className="input-bg d-flex br-5 py-2 px-2 flex-between">
+            <label className="small-font">Management Password</label>
+            <div className="input-bg d-flex br-5 py-2 px-2 flex-between border-grey3">
               <input
-                className="all-none w-100"
+                className="w-100 small-font rounded all-none"
                 type={pswdVisible ? "text" : "password"}
                 placeholder="Enter Password"
                 onChange={(e) => setParentPassword(e.target.value)}
@@ -352,31 +365,43 @@ const CreditSettlement = () => {
                 />
               )}
             </div>
-            {validation && (
-              <span className="text-danger small-font">{validation}</span>
+            {validation.parentPassword && (
+              <span className="text-danger smallfont">{validation.parentPassword}</span>
             )}
           </div>
+
           <div className="col-2">
-            <div className="saffron-btn2 pointer" onClick={handleFillAll}>Fill all</div>
+            <label className="small-font">{" "}</label>
+            <button className="w-100 saffron-btn rounded medium-font" onClick={handleFillAll}>Fill all</button>
           </div>
+
           <div className="col-2">
-            <div className="saffron-btn2 pointer" onClick={hanldeSettlement} disabled={isLoading}
-            >
+            <label className="small-font">{" "}</label>
+            <button
+              className="w-100 saffron-btn rounded medium-font"
+              type="submit"
+              disabled={isLoading}
+              onClick={hanldeSettlement}>
               {isLoading ? (
-                <div
-                  className="spinner-border spinner-border-sm"
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
                   role="status"
-                >
-                  <span className="visually-hidden">Submiting...</span>
-                </div>
-              ) : (
-                "Settled"
-              )}
-            </div>
+                  aria-hidden="true"
+                />
+              ) : null}
+              <span className="ps-2">
+                {isLoading ? "Submitting..." : "Settled"}
+              </span>
+            </button>
           </div>
+
           <div className="col-2">
-            <div className="white-btn2 pointer" onClick={handleClearAll}>Clear All</div>
+            <label className="small-font">{" "}</label>
+            <button className="w-100 white-btn2 pointer" onClick={handleClearAll}>Clear All</button>
           </div>
+
         </div>
         <div>{apiError}</div>
       </div >
@@ -389,11 +414,20 @@ const CreditSettlement = () => {
           getAllCreditUsersList={getAllCreditUsersList}
         />
       )}
+
       {successPopupOpen && (
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
           discription={discription}
+        />
+      )}
+
+      {errorPopup && (
+        <ErrorPopup
+          discription={errorDiscription}
+          errorPopupOpen={errorPopup}
+          setErrorPopupOpen={setErrorPopup}
         />
       )}
     </>

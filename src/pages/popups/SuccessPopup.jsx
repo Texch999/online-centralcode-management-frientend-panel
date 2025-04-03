@@ -6,6 +6,7 @@ const SuccessPopup = ({
   successPopupOpen,
   setSuccessPopupOpen,
   discription,
+  loader,
 }) => {
   const handleCancel = () => {
     setSuccessPopupOpen(false);
@@ -18,11 +19,14 @@ const SuccessPopup = ({
         </div>
         <center>
           <img src={Images?.check} alt="Check_Mark" />
-          <div className="black-text4 fw-600 mt-2 mb-3 medium-font d-flex flex-center flex-wrap">{discription}</div>
-         
+          <div className="black-text4 fw-600 mt-2 mb-3 medium-font d-flex flex-center flex-wrap">
+            {discription}
+          </div>
+
           <button
             className="w-50 black-text2 border p-2 rounded white-bg mt-4 mb-3 medium-font"
             onClick={handleCancel}
+            disabled={loader === true ? true : false}
           >
             OK
           </button>

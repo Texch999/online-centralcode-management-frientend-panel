@@ -49,7 +49,7 @@ const PaymentGateway = () => {
   const itemsPerPage = 3;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const pages = parseInt(searchParams.get("page") || 1);
+  const pages = parseInt(searchParams.get("page") || 3);
   const [currentPage, setCurrentPage] = useState(pages);
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
@@ -58,6 +58,7 @@ const PaymentGateway = () => {
   const [countryId, setCountryId] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  const [desciption, setDesciption] = useState("");
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -446,6 +447,17 @@ const PaymentGateway = () => {
     }
   }, [searchInput]);
 
+  // successPopupOpen={successPopupOpen}
+  // setSuccessPopupOpen={setSuccessPopupOpen}
+  // discription={msg}
+
+  const hanldeGetAllDetails = () => {
+    const limit = itemsPerPage;
+    const offset = (pages - 1) * itemsPerPage;
+    fetchManagementPaymentDetails(limit, offset);
+
+  }
+
   return (
     <div>
       {!loading && (
@@ -515,20 +527,24 @@ const PaymentGateway = () => {
         </div>
       )}
 
-      {role_code === "management" ? (
+      {onAddPaymentGateway && (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
           setOnAddPaymentGateway={setOnAddPaymentGateway}
-          data={countries}
           managementPaymentEdit={managementPaymentEdit}
           setManagementPaymentEdit={setManagementPaymentEdit}
           fetchManagementPaymentDetails={fetchManagementPaymentDetails}
           managementPaymentEditId={managementPaymentEditId}
           setManagementPaymentEditId={setManagementPaymentEditId}
           availablePaymentModeId={availablePaymentModeId}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          setDesciption={setDesciption}
+          msg={msg}
+          successPopupOpen={successPopupOpen}
         />
-      ) : (
-        <AddPaymentGatewayPopup
+      )}
+
+      {/* <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
           setOnAddPaymentGateway={setOnAddPaymentGateway}
           dirEditId={dirEditId}
@@ -540,8 +556,10 @@ const PaymentGateway = () => {
           availablePaymentModeId={availablePaymentModeId}
           managementPaymentEdit={managementPaymentEdit}
           countryId={countryId}
-        />
-      )}
+          setManagementPaymentEditId={setManagementPaymentEditId}
+          fetchManagementPaymentDetails={hanldeGetAllDetails}
+
+        /> */}
 
       {role_code === "management" ? (
         <ConfirmationPopup
@@ -563,17 +581,22 @@ const PaymentGateway = () => {
           onSubmit={suspendStatus}
         />
       )}
+      {errorPopup && (
+        <ErrorPopup
+          discription={error}
+          errorPopupOpen={errorPopup}
+          setErrorPopupOpen={setErrorPopup}
+        />
+      )}
 
-      <ErrorPopup
-        discription={error}
-        errorPopupOpen={errorPopup}
-        setErrorPopupOpen={setErrorPopup}
-      />
-      <SuccessPopup
-        successPopupOpen={successPopupOpen}
-        setSuccessPopupOpen={setSuccessPopupOpen}
-        discription={msg}
-      />
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={msg}
+        />
+      )}
+
     </div>
   );
 };
