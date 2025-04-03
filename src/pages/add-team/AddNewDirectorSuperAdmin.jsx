@@ -1563,7 +1563,7 @@
 //                                     {/* <input
 //                                       type="text"
 //                                       className="small-font bg-none all-none w-50"
-                                      
+
 //                                       onChange={(e) => {
 //                                         let value = e.target.value;
 
@@ -2253,10 +2253,10 @@ function AddNewDirectorSuperAdmin() {
       const accotypeid = accountTypes[formId]?.[websiteId];
 
       if (!accotypeid) return null;
-      
+
       // For SuperAdmin, use the first selected admin for all forms
-      const adminId = selectedRole === "2" 
-        ? firstSelectedAdmin?.value 
+      const adminId = selectedRole === "2"
+        ? firstSelectedAdmin?.value
         : selectedAdmins[formId]?.value;
 
       let websiteData = {
@@ -2324,8 +2324,7 @@ function AddNewDirectorSuperAdmin() {
           setLoader(false);
           setSuccessPopupOpen(true);
           setCreateDescription(
-            `${
-              selectedRole == 1 ? "Director" : "Superadmin"
+            `${selectedRole == 1 ? "Director" : "Superadmin"
             } Created Successfully`
           );
           setTimeout(() => {
@@ -2397,12 +2396,12 @@ function AddNewDirectorSuperAdmin() {
             ) /
               parseInt(
                 websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
-                  0
+                0
               )) *
             100;
           websiteData.max_chips_monthly = parseInt(
             websiteDetails[userSite.website_access_id]?.max_chips_monthly ||
-              null
+            null
           );
           //casino allowed
           websiteData.is_casino =
@@ -2521,9 +2520,9 @@ function AddNewDirectorSuperAdmin() {
           newErrors.addDepositChips = "addDepositChips is required.";
         }
 
-         if (chipsValue < paidAmount) {
+        if (chipsValue < paidAmount) {
           newErrors.enteredPaidAmount = `Paid amount cannot exceed the ${chipsValue}`;
-        } 
+        }
       }
     }
 
@@ -2596,8 +2595,8 @@ function AddNewDirectorSuperAdmin() {
   return (
     <>
       <div className="m-2 ">
-      {loader && <div className="my-load">
-        <div className="loader "></div></div>}
+        {loader && <div className="my-load">
+          <div className="loader "></div></div>}
         <div className="d-flex align-items-center justify-content-between py-2">
           <h5 className="yellow-font">Add Director & Super Admin </h5>
           <span
@@ -2682,11 +2681,11 @@ function AddNewDirectorSuperAdmin() {
                 value={
                   selectedCountryCode
                     ? {
-                        value: selectedCountryCode,
-                        label: countryData?.find(
-                          (country) => country.id === selectedCountryCode
-                        )?.name,
-                      }
+                      value: selectedCountryCode,
+                      label: countryData?.find(
+                        (country) => country.id === selectedCountryCode
+                      )?.name,
+                    }
                     : null
                 }
                 onChange={(selectedOption) =>
@@ -2730,18 +2729,18 @@ function AddNewDirectorSuperAdmin() {
                 value={
                   selectedCurrencyCode
                     ? {
-                        value: selectedCurrencyCode,
-                        label:
-                          currencyData?.find(
-                            (currency) =>
-                              currency.country_id === selectedCurrencyCode
-                          )?.currency_name +
-                          " --- " +
-                          currencyData?.find(
-                            (currency) =>
-                              currency.country_id === selectedCurrencyCode
-                          )?.name,
-                      }
+                      value: selectedCurrencyCode,
+                      label:
+                        currencyData?.find(
+                          (currency) =>
+                            currency.country_id === selectedCurrencyCode
+                        )?.currency_name +
+                        " --- " +
+                        currencyData?.find(
+                          (currency) =>
+                            currency.country_id === selectedCurrencyCode
+                        )?.name,
+                    }
                     : null
                 }
                 onChange={(selectedOption) =>
@@ -3089,8 +3088,8 @@ function AddNewDirectorSuperAdmin() {
                               isSearchable={false}
                               options={getAvailableUserSites(
                                 form.id,
-                                selectedRole === "2" 
-                                  ? firstSelectedAdmin?.value 
+                                selectedRole === "2"
+                                  ? firstSelectedAdmin?.value
                                   : selectedAdmins[form.id]?.value
                               ).map((site) => ({
                                 value: site.id,
@@ -3099,13 +3098,13 @@ function AddNewDirectorSuperAdmin() {
                               value={
                                 selectedSiteIds[form.id]
                                   ? {
-                                      value: selectedSiteIds[form.id],
-                                      label:
-                                        userWebsitesList[form.id].find(
-                                          (site) =>
-                                            site.id === selectedSiteIds[form.id]
-                                        )?.web_url || "",
-                                    }
+                                    value: selectedSiteIds[form.id],
+                                    label:
+                                      userWebsitesList[form.id].find(
+                                        (site) =>
+                                          site.id === selectedSiteIds[form.id]
+                                      )?.web_url || "",
+                                  }
                                   : null
                               }
                               onChange={(selectedOption) => {
@@ -3129,8 +3128,8 @@ function AddNewDirectorSuperAdmin() {
                                 handleCheckboxChange(form.id, selectedSiteId);
                                 handleUserSiteSelection(
                                   form.id,
-                                  selectedRole === "2" 
-                                    ? firstSelectedAdmin?.value 
+                                  selectedRole === "2"
+                                    ? firstSelectedAdmin?.value
                                     : selectedAdmins[form.id]?.value,
                                   selectedSiteId
                                 );
@@ -3169,7 +3168,7 @@ function AddNewDirectorSuperAdmin() {
                                     (option) =>
                                       option.value ===
                                       accountTypes[form.id]?.[
-                                        selectedSiteIds[form.id]
+                                      selectedSiteIds[form.id]
                                       ]
                                   ) || null
                                 }
@@ -3185,238 +3184,238 @@ function AddNewDirectorSuperAdmin() {
                               selectedSiteIds[form.id]
                             ] === "2" ||
                               accountTypes[form.id]?.[
-                                selectedSiteIds[form.id]
+                              selectedSiteIds[form.id]
                               ] === "3") && (
-                              <div className="col d-flex">
-                                <div className="col-2 position-relative mx-1 mt-2">
-                                  <label className="fw-600 my-1 white-space small-font">
-                                    Downline Share (upto 100%)
-                                  </label>
-                                  <div className="rounded input-css d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      type="text"
-                                      className="small-font bg-none all-none w-50"
-                                      onChange={(e) => {
-                                        let value = e.target.value;
+                                <div className="col d-flex">
+                                  <div className="col-2 position-relative mx-1 mt-2">
+                                    <label className="fw-600 my-1 white-space small-font">
+                                      Downline Share (upto 100%)
+                                    </label>
+                                    <div className="rounded input-css d-flex justify-content-between align-items-center small-font">
+                                      <input
+                                        type="text"
+                                        className="small-font bg-none all-none w-50"
+                                        onChange={(e) => {
+                                          let value = e.target.value;
 
-                                        // Allow numbers between 0-100 with up to 2 decimal places
-                                        if (
-                                          /^([0-9]{1,2}(\.\d{0,2})?|100(\.0{0,2})?)?$/.test(
-                                            value
-                                          )
-                                        ) {
-                                          let numericValue = parseFloat(value);
+                                          // Allow numbers between 0-100 with up to 2 decimal places
+                                          if (
+                                            /^([0-9]{1,2}(\.\d{0,2})?|100(\.0{0,2})?)?$/.test(
+                                              value
+                                            )
+                                          ) {
+                                            let numericValue = parseFloat(value);
 
-                                          if (!isNaN(numericValue)) {
-                                            if (numericValue <= 100) {
-                                              handleInputChange(
-                                                form.id,
-                                                selectedSiteIds[form.id],
-                                                "share",
-                                                value
-                                              );
-                                            } else {
-                                              setValidationErrors(
-                                                (prevErrors) => ({
-                                                  ...prevErrors,
-                                                  [form.id]: {
-                                                    ...prevErrors[form.id],
-                                                    [selectedSiteIds[form.id]]:
+                                            if (!isNaN(numericValue)) {
+                                              if (numericValue <= 100) {
+                                                handleInputChange(
+                                                  form.id,
+                                                  selectedSiteIds[form.id],
+                                                  "share",
+                                                  value
+                                                );
+                                              } else {
+                                                setValidationErrors(
+                                                  (prevErrors) => ({
+                                                    ...prevErrors,
+                                                    [form.id]: {
+                                                      ...prevErrors[form.id],
+                                                      [selectedSiteIds[form.id]]:
                                                       {
                                                         ...prevErrors[
-                                                          form.id
+                                                        form.id
                                                         ]?.[
-                                                          selectedSiteIds[
-                                                            form.id
-                                                          ]
+                                                        selectedSiteIds[
+                                                        form.id
+                                                        ]
                                                         ],
                                                         share:
                                                           "Value should be less than or equal to 100",
                                                       },
-                                                  },
-                                                })
-                                              );
-                                              e.target.value = "100";
+                                                    },
+                                                  })
+                                                );
+                                                e.target.value = "100";
+                                              }
                                             }
+                                          } else {
+                                            // Remove invalid characters and extra decimals
+                                            e.target.value = value
+                                              .replace(/[^0-9.]/g, "") // Remove non-numeric & non-dot
+                                              .replace(/(\.\d{2})\d+$/, "$1") // Limit decimals to 2 places
+                                              .replace(/^(\d{2})\d+/, "$1"); // Prevent > 2 digits before decimal if < 100
                                           }
-                                        } else {
-                                          // Remove invalid characters and extra decimals
-                                          e.target.value = value
-                                            .replace(/[^0-9.]/g, "") // Remove non-numeric & non-dot
-                                            .replace(/(\.\d{2})\d+$/, "$1") // Limit decimals to 2 places
-                                            .replace(/^(\d{2})\d+/, "$1"); // Prevent > 2 digits before decimal if < 100
-                                        }
-                                      }}
-                                      onBlur={(e) => {
-                                        let numericValue = parseFloat(
-                                          e.target.value
-                                        );
+                                        }}
+                                        onBlur={(e) => {
+                                          let numericValue = parseFloat(
+                                            e.target.value
+                                          );
 
-                                        if (
-                                          isNaN(numericValue) ||
-                                          numericValue < 0
-                                        ) {
-                                          e.target.value = "0"; // Reset to 0 if invalid
-                                        } else if (numericValue > 100) {
-                                          e.target.value = "100";
-                                        } else {
-                                          // Format to 2 decimal places if valid
+                                          if (
+                                            isNaN(numericValue) ||
+                                            numericValue < 0
+                                          ) {
+                                            e.target.value = "0"; // Reset to 0 if invalid
+                                          } else if (numericValue > 100) {
+                                            e.target.value = "100";
+                                          } else {
+                                            // Format to 2 decimal places if valid
+                                            e.target.value =
+                                              parseFloat(numericValue).toFixed(2);
+                                          }
+
+                                          handleInputChange(
+                                            form.id,
+                                            selectedSiteIds[form.id],
+                                            "share",
+                                            e.target.value
+                                          );
+                                        }}
+                                      />
+
+                                      <span>%</span>
+                                    </div>
+
+                                    <div className="small-font">
+                                      {renderErrorMessage(
+                                        form.id,
+                                        selectedSiteIds[form.id],
+                                        "share"
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="col-2 position-relative mt-1 mx-3">
+                                    <label className="fw-600  small-font">
+                                      Commission ({`upto 5%`})
+                                    </label>
+                                    <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
+                                      <input
+                                        type="text"
+                                        className="small-font bg-none all-none w-50"
+                                        onChange={(e) => {
+                                          let value = e.target.value;
+
+                                          // Allow numbers between 0-5 with up to 2 decimal places
+                                          if (
+                                            /^([0-4](\.\d{0,2})?|5(\.0{0,2})?)?$/.test(
+                                              value
+                                            )
+                                          ) {
+                                            handleInputChange(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "downline_comm",
+                                              value
+                                            );
+                                          } else {
+                                            // Prevent invalid characters from being entered
+                                            e.target.value = value.slice(0, -1);
+                                          }
+                                        }}
+                                        onBlur={(e) => {
+                                          let numericValue = parseFloat(
+                                            e.target.value
+                                          );
+
+                                          if (
+                                            isNaN(numericValue) ||
+                                            numericValue < 0
+                                          ) {
+                                            numericValue = 0;
+                                          } else if (numericValue > 5) {
+                                            numericValue = 5;
+                                          }
+
                                           e.target.value =
-                                            parseFloat(numericValue).toFixed(2);
-                                        }
+                                            numericValue.toFixed(2); // Format to 2 decimal places
 
-                                        handleInputChange(
-                                          form.id,
-                                          selectedSiteIds[form.id],
-                                          "share",
-                                          e.target.value
-                                        );
-                                      }}
-                                    />
-
-                                    <span>%</span>
-                                  </div>
-
-                                  <div className="small-font">
-                                    {renderErrorMessage(
-                                      form.id,
-                                      selectedSiteIds[form.id],
-                                      "share"
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="col-2 position-relative mt-1 mx-3">
-                                  <label className="fw-600  small-font">
-                                    Commission ({`upto 5%`})
-                                  </label>
-                                  <div className=" input-css mt-2 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      type="text"
-                                      className="small-font bg-none all-none w-50"
-                                      onChange={(e) => {
-                                        let value = e.target.value;
-
-                                        // Allow numbers between 0-5 with up to 2 decimal places
-                                        if (
-                                          /^([0-4](\.\d{0,2})?|5(\.0{0,2})?)?$/.test(
-                                            value
-                                          )
-                                        ) {
                                           handleInputChange(
                                             form.id,
                                             selectedSiteIds[form.id],
                                             "downline_comm",
-                                            value
+                                            e.target.value
                                           );
-                                        } else {
-                                          // Prevent invalid characters from being entered
-                                          e.target.value = value.slice(0, -1);
-                                        }
-                                      }}
-                                      onBlur={(e) => {
-                                        let numericValue = parseFloat(
-                                          e.target.value
-                                        );
+                                        }}
+                                      />
 
-                                        if (
-                                          isNaN(numericValue) ||
-                                          numericValue < 0
-                                        ) {
-                                          numericValue = 0;
-                                        } else if (numericValue > 5) {
-                                          numericValue = 5;
-                                        }
-
-                                        e.target.value =
-                                          numericValue.toFixed(2); // Format to 2 decimal places
-
-                                        handleInputChange(
-                                          form.id,
-                                          selectedSiteIds[form.id],
-                                          "downline_comm",
-                                          e.target.value
-                                        );
-                                      }}
-                                    />
-
-                                    <span>%</span>
+                                      <span>%</span>
+                                    </div>
+                                    {renderErrorMessage(
+                                      form.id,
+                                      selectedSiteIds[form.id],
+                                      "downline_comm"
+                                    )}
                                   </div>
-                                  {renderErrorMessage(
-                                    form.id,
-                                    selectedSiteIds[form.id],
-                                    "downline_comm"
-                                  )}
-                                </div>
-                                <div className="col-2 position-relative mx-3">
-                                  <label className="fw-600 my-1 small-font">
-                                    Casino chip Value
-                                  </label>
-                                  <div className="input-css rounded mt-2 d-flex justify-content-between align-items-center small-font">
-                                    <input
-                                      className="small-font bg-none all-none  w-100"
-                                      type="text"
-                                      inputMode="numeric"
-                                      pattern="[0-9]*"
-                                      maxLength={4}
-                                      onKeyPress={(event) => {
-                                        if (
-                                          event.charCode < 48 ||
-                                          event.charCode > 57
-                                        ) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onChange={(e) => {
-                                        const numericValue =
-                                          e.target.value.replace(/\D/g, "");
-                                        handleInputChange(
-                                          form.id,
-                                          selectedSiteIds[form.id],
-                                          "caschip_values",
-                                          numericValue
-                                        );
-                                      }}
-                                    />
-                                  </div>
-                                  {renderErrorMessage(
-                                    form.id,
-                                    selectedSiteIds[form.id],
-                                    "caschip_values"
-                                  )}
-                                </div>
-                                <div className="col-2 ">
-                                  <label className="fw-600 my-1 small-font">
-                                    Is Primary
-                                  </label>
-
-                                  <div className="input-css mt-2">
-                                    <div className="w-70 flex-center">
+                                  <div className="col-2 position-relative mx-3">
+                                    <label className="fw-600 my-1 small-font">
+                                      Casino chip Value
+                                    </label>
+                                    <div className="input-css rounded mt-2 d-flex justify-content-between align-items-center small-font">
                                       <input
-                                        type="checkbox"
-                                        checked={
-                                          websiteDetails[form.id]?.[
-                                            selectedSiteIds[form.id]
-                                          ]?.isPrimary == 1
-                                            ? true
-                                            : false
-                                        }
-                                        onChange={(e) =>
+                                        className="small-font bg-none all-none  w-100"
+                                        type="text"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        maxLength={4}
+                                        onKeyPress={(event) => {
+                                          if (
+                                            event.charCode < 48 ||
+                                            event.charCode > 57
+                                          ) {
+                                            event.preventDefault();
+                                          }
+                                        }}
+                                        onChange={(e) => {
+                                          const numericValue =
+                                            e.target.value.replace(/\D/g, "");
                                           handleInputChange(
                                             form.id,
                                             selectedSiteIds[form.id],
-                                            "isPrimary",
-                                            e.target.checked ? 1 : 2
-                                          )
-                                        }
+                                            "caschip_values",
+                                            numericValue
+                                          );
+                                        }}
                                       />
-                                      <label className="small-font mx-2">
-                                        IS PRIMARY
-                                      </label>
+                                    </div>
+                                    {renderErrorMessage(
+                                      form.id,
+                                      selectedSiteIds[form.id],
+                                      "caschip_values"
+                                    )}
+                                  </div>
+                                  <div className="col-2 ">
+                                    <label className="fw-600 my-1 small-font">
+                                      Is Primary
+                                    </label>
+
+                                    <div className="input-css mt-2">
+                                      <div className="w-70 flex-center">
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            websiteDetails[form.id]?.[
+                                              selectedSiteIds[form.id]
+                                            ]?.isPrimary == 1
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              form.id,
+                                              selectedSiteIds[form.id],
+                                              "isPrimary",
+                                              e.target.checked ? 1 : 2
+                                            )
+                                          }
+                                        />
+                                        <label className="small-font mx-2">
+                                          IS PRIMARY
+                                        </label>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
                           </div>
                         </div>
                       </div>
