@@ -12,6 +12,7 @@ import SuccessPopup from "../popups/SuccessPopup";
 import { CircleLoader } from "react-spinners";
 import { Spinner } from "react-bootstrap";
 import ErrorPopup from "../popups/ErrorPopup";
+import ErrorComponent from "../../components/ErrorComponent";
 
 const CreditSettlement = () => {
   const navigate = useNavigate();
@@ -35,12 +36,11 @@ const CreditSettlement = () => {
   });
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [parentPassword, setParentPassword] = useState("");
-  const [apiError, setApiError] = useState("");
+  const [apiError, setApiError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [discription, setDiscription] = useState("");
   const [apiLoading, setApiLoading] = useState(false);
-  const [errorPopup, setErrorPopup] = useState(false);
   const [errorDiscription, setErrorDiscription] = useState(false);
   const GetAllDirectors = () => {
     getOfflineDWDirectors()
@@ -144,7 +144,19 @@ const CreditSettlement = () => {
     balCredit: <div className="red-font">{list?.credit_balance}</div>,
     entersa: (
       <div className="d-flex flex-between">
-        <div className="white-btn2">{settlementAmounts[list.id] || "0.0"}</div>
+        <div className="white-btn2 col-6">
+          <input
+            className="w-100 small-font rounded all-none"
+            type="text"
+            placeholder="Enter credit"
+            value={settlementAmounts[list.id]}
+            onChange={(e) => {
+              const iptVal = e.target.value.replace(/[^0-9]/g, "");
+              handleFullSettled(list.id, iptVal)
+            }}
+          />
+          {/* {settlementAmounts[list.id] || "0.0"} */}
+        </div>
         <div
           className="saffron-btn2 white-space"
           onClick={() => handleFullSettled(list.id, list.credit_balance)}
@@ -212,22 +224,21 @@ const CreditSettlement = () => {
   const [validation, setValidation] = useState({})
 
   const hanldeSettlement = () => {
-    let errors = {};
+    let errors = [];
 
     // Check if payload is empty or has no items
-    if (!payload || Object.keys(payload).length === 0) {
-      setErrorPopup(true)
-      setErrorDiscription("Please select at least one settlement")
+    if (!payload || payload.length === 0) {
+      errors.push("Please select at least one settlement");
     }
 
     if (!parentPassword || parentPassword.trim() === "") {
-      errors.parentPassword = "Password is required";
+      errors.push("Password is required");
     } else if (parentPassword.length < 6 || parentPassword.length > 36) {
-      errors.parentPassword = "Password must be at least 6 and max 36 characters";
+      errors.push("Password must be at least 6 and max 36 characters");
     }
 
-    if (Object.keys(errors).length !== 0) {
-      setValidation(errors);
+    if (errors.length > 0) {
+      setApiError(errors);
       return;
     }
 
@@ -235,7 +246,7 @@ const CreditSettlement = () => {
       list: payload,
       parentPassword: parentPassword,
     };
-
+    setApiError('');
     setIsLoading(true);
     creditFullSettlement(data)
       .then(() => {
@@ -252,6 +263,7 @@ const CreditSettlement = () => {
         }, 3000);
       })
       .catch((error) => {
+        // setErrorDiscription("Please select at least one settlement")
         setApiError(error?.message);
         setIsLoading(false);
       });
@@ -259,6 +271,7 @@ const CreditSettlement = () => {
 
   const handleClearAll = () => {
     setPayload([])
+    setSettlementAmounts({})
   }
 
   return (
@@ -322,6 +335,7 @@ const CreditSettlement = () => {
             </div>
           )}
         </div>
+        <ErrorComponent error={apiError} />
         {apiLoading ? (
 
           <div className="spinner">
@@ -342,8 +356,9 @@ const CreditSettlement = () => {
         )}
 
         <div className="row flex-even small-font my-2 align-items-center">
+          <div className="col-2 small-font">Management Password</div>
+
           <div className="col-4">
-            <label className="small-font">Management Password</label>
             <div className="input-bg d-flex br-5 py-2 px-2 flex-between border-grey3">
               <input
                 className="w-100 small-font rounded all-none"
@@ -365,18 +380,15 @@ const CreditSettlement = () => {
                 />
               )}
             </div>
-            {validation.parentPassword && (
-              <span className="text-danger smallfont">{validation.parentPassword}</span>
-            )}
           </div>
 
           <div className="col-2">
-            <label className="small-font">{" "}</label>
+            <label className="small-font pb-2">{" "}</label>
             <button className="w-100 saffron-btn rounded medium-font" onClick={handleFillAll}>Fill all</button>
           </div>
 
           <div className="col-2">
-            <label className="small-font">{" "}</label>
+            <label className="small-font pb-2">{" "}</label>
             <button
               className="w-100 saffron-btn rounded medium-font"
               type="submit"
@@ -398,12 +410,14 @@ const CreditSettlement = () => {
           </div>
 
           <div className="col-2">
-            <label className="small-font">{" "}</label>
+            <label className="small-font pb-2">{" "}</label>
             <button className="w-100 white-btn2 pointer" onClick={handleClearAll}>Clear All</button>
           </div>
 
         </div>
-        <div>{apiError}</div>
+        <div>{validation.parentPassword && (
+          <span className="text-danger smallfont">{validation.parentPassword}</span>
+        )}</div>
       </div >
 
       {returnCreditModal && (
@@ -420,14 +434,6 @@ const CreditSettlement = () => {
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
           discription={discription}
-        />
-      )}
-
-      {errorPopup && (
-        <ErrorPopup
-          discription={errorDiscription}
-          errorPopupOpen={errorPopup}
-          setErrorPopupOpen={setErrorPopup}
         />
       )}
     </>

@@ -25,7 +25,7 @@ const AddPaymentGatewayPopup = ({
   dirEditId,
   getDirectorAccountData,
   addpaymentId,
-  // setDiscription,
+  setDiscription,
   setSuccessPopupOpen
 }) => {
   const [upiID, setUpiID] = useState("");
@@ -47,7 +47,7 @@ const AddPaymentGatewayPopup = ({
   const [searchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
   const [validationErrors, setValidationErrors] = useState({});
-  const[description,setDescription]=useState("")
+  const [description, setDescription] = useState("")
 
   // Reset all form fields
   const resetFields = () => {
@@ -285,14 +285,14 @@ const AddPaymentGatewayPopup = ({
         : await createManagementPaymentDetails(formData);
 
       setSuccessPopupOpen(true);
-      setDescription(response?.message);
+      setDiscription(response?.message);
       setMsg(response?.message)
       resetFields();
       setOnAddPaymentGateway(false);
       if (setManagementPaymentEditId) setManagementPaymentEditId(null);
     } catch (error) {
       setError(error?.message);
-      setErrorPopupOpen(true);
+      // setErrorPopupOpen(true);
     } finally {
       setLoading(false);
     }
@@ -596,11 +596,6 @@ const AddPaymentGatewayPopup = ({
           </div>
         </Modal.Body>
       </Modal>
-      <ErrorPopup
-        errorPopupOpen={errorPopupOpen}
-        setErrorPopupOpen={setErrorPopupOpen}
-        discription={error}
-      />
     </>
   );
 };
