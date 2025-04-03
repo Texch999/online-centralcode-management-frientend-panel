@@ -1320,12 +1320,14 @@ function EditNewDirector() {
                                   label,
                                 })
                               )}
-                              value={{
+                              value={
+                                {
                                 value: currentCommissionType,
                                 label:
                                   commissionTypes[currentCommissionType] ||
                                   "Select",
-                              }}
+                              }
+                            }
                               onChange={(selectedOption) =>
                                 handleCommissionTypeChange(
                                   userWebsite.website_access_id,

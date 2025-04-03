@@ -185,19 +185,19 @@ function Tickets() {
 
     await apiCAll(ticketId, data)
       .then((response) => {
-        setSpinner(false);
         getDepositTickets(limit, offset);
-        setSuccessPopupOpen(true);
-        setDepositWithdrawPopupOpen(false);
-        setErroDiscription("");
+        setSuccessPopupOpen(true)
+        setDepositWithdrawPopupOpen(false)
+        setErroDiscription("")
+        setSpinner(false)
       })
       .catch((error) => {
         setError(error?.message);
-        setErroDiscription(error?.message);
-        setErrorPopupOpen(true);
-        setSpinner(false);
-      });
-  };
+        setErroDiscription(error?.message)
+        setErrorPopupOpen(true)
+        setSpinner(false)
+      })
+  }
 
   // <====================== Withdraw Approve and Rejection =====================>
 
