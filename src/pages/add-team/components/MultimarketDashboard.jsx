@@ -13,7 +13,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
   const navigate = useNavigate();
   const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
-  console.log(webMarketDtls,"webMarketDtls")
+  console.log(webMarketDtls, "webMarketDtls");
   const [webList, setWebList] = useState([]);
   const [adminWebsiteId, setAdminWebsiteId] = useState(null);
   const [adminStatusId, setAdminStatusId] = useState(null);
@@ -40,6 +40,7 @@ const MultimarketDashboard = ({ dwnlnId }) => {
   useEffect(() => {
     getWebMarketDtls();
   }, [dwnlnId]);
+
   const columns = [
     {
       header: (
@@ -56,17 +57,17 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     {
       header: <div className="flex-center w-100"></div>,
       field: "last",
-      width: "10%",
+      width: "5%",
     },
     {
       header: <div className="d-flex flex-center">Status</div>,
       field: "status",
-      width: "10%",
+      width: "20%",
     },
     {
       header: <div className="text-center w-100">Action</div>,
       field: "action",
-      width: "20%",
+      width: "15%",
     },
   ];
 
@@ -88,27 +89,16 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     ),
     last: <div className="d-flex flex-column"></div>,
     status: (
-      <div className="d-flex flex-center ">
+      <div className="d-flex flex-center mb-5 pb-2rem">
         {webMarketDtls?.status === 1 ? (
-          <div className="green-btn mb-5">Active</div>
+          <div className="green-btn">Active</div>
         ) : (
-          <div className="red-btn mb-5">In-Active</div>
+          <div className="red-btn">In-Active</div>
         )}
       </div>
     ),
     action: (
-      <div className="d-flex gap-2 mb-5 flex-center">
-        {/* <span className="pointer">
-          <SlPencil
-            size={20}
-            onClick={() =>
-              navigate(`/director-admin/editDirector`, {
-                state: { userId: dwnlnId, mode: "edit" },
-              })
-            }
-          />
-        </span> */}
-
+      <div className="d-flex gap-2 pb-2rem mb-5 flex-center">
         <span
           className="pointer"
           onClick={() =>
