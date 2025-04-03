@@ -172,18 +172,17 @@ function Tickets() {
 
     await apiCAll(ticketId, data)
       .then((response) => {
-        if (response.status === true) {
-          getDepositTickets(limit, offset);
-          setSuccessPopupOpen(true)
-          setDepositWithdrawPopupOpen(false)
-          setErroDiscription("")
-          setSpinner(false)
-        }
+        getDepositTickets(limit, offset);
+        setSuccessPopupOpen(true)
+        setDepositWithdrawPopupOpen(false)
+        setErroDiscription("")
+        setSpinner(false)
       })
       .catch((error) => {
         setError(error?.message);
         setErroDiscription(error?.message)
         setErrorPopupOpen(true)
+        setSpinner(false)
       })
   }
 

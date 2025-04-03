@@ -1174,6 +1174,8 @@ function AddNewDirectorSuperAdmin() {
                       onChange={(selectedOption) =>
                         handleAdminRoleChange(form.id, selectedOption)
                       }
+                      // disabled={Number(selectedRole) === 2}  // Using Number() instead of parseInt
+                      // isDisabled={Number(selectedRole) === 2}
                     />
                   </div>
                 </div>
