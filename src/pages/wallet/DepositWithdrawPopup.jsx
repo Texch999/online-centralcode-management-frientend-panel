@@ -320,7 +320,7 @@ function DepositWithdrawPopup({
                             role="status"
                             aria-hidden="true"
                           ></span>{" "}
-                          <span> {` Approve ...`}</span>{" "}
+                          <span> {` Approve ...`}</span>
                         </>
                       ) : (
                         <span>Approve</span>

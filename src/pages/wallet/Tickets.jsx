@@ -24,23 +24,29 @@ import { CircleLoader } from "react-spinners";
 function Tickets() {
   const [depositWithdrawPopupOpen, setDepositWithdrawPopupOpen] =
     useState(false);
-  const [totalRecords, setTotalRecords] = useState(null)
+  const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
-  const itemsPerPage = 4
-  const limit = itemsPerPage
-  const offset = (currentPage - 1) * itemsPerPage
+  const itemsPerPage = 4;
+  const limit = itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
   const userRole = localStorage.getItem("role_code");
-  const handleDepositWithdrawPopupOpen = () => { setDepositWithdrawPopupOpen(true) };
-  const navigate = useNavigate()
-  const [deposiTikcteslist, setDeposiTikcteslist] = useState([])
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
-  const [fromDate, setFromDate] = useState(new Date().toISOString().split('T')[0]);
+  const handleDepositWithdrawPopupOpen = () => {
+    setDepositWithdrawPopupOpen(true);
+  };
+  const navigate = useNavigate();
+  const [deposiTikcteslist, setDeposiTikcteslist] = useState([]);
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [fromDate, setFromDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [rejectionReasons, setRejectionReasons] = useState(null);
-  const [error, setError] = useState([])
-  const [ticketDetails, setTicketDetails] = useState(null)
-  const [ticketId, setTicketId] = useState(null)
+  const [error, setError] = useState([]);
+  const [ticketDetails, setTicketDetails] = useState(null);
+  const [ticketId, setTicketId] = useState(null);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
   const [ErroDiscription, setErroDiscription] = useState("");
@@ -49,7 +55,11 @@ function Tickets() {
   const [ticketType, setTicketType] = useState("");
   const [spinner, setSpinner] = useState(false);
   const [apiLoading, setApiLoading] = useState(false);
-  const [errors, setErrors] = useState({ startDate: "", fromDate: "", selectedType: "" });
+  const [errors, setErrors] = useState({
+    startDate: "",
+    fromDate: "",
+    selectedType: "",
+  });
 
   const typeOptions = [
     { label: "All", value: null },
@@ -61,34 +71,39 @@ function Tickets() {
   const allCountries = useSelector((item) => item?.allCountries);
   const getCurrency = (id) => {
     const country = allCountries.find((item) => item.id === id);
-    return country?.currency_name
+    return country?.currency_name;
   };
 
-  const getDepositTickets = async (limit, offset, startDate, fromDate, type) => {
-
+  const getDepositTickets = async (
+    limit,
+    offset,
+    startDate,
+    fromDate,
+    type
+  ) => {
     let fetchDeposits;
     if (userRole === "management") {
       fetchDeposits = getOwnerDownlineDepositeTicketsList;
-    } else {            // director Downline Tickets
-      fetchDeposits = getOwnerDownlineDepositeTicketsList
+    } else {
+      // director Downline Tickets
+      fetchDeposits = getOwnerDownlineDepositeTicketsList;
     }
-    setApiLoading(true)
+    setApiLoading(true);
     await fetchDeposits({ limit, offset, startDate, fromDate, type })
       .then((response) => {
-        setApiLoading(false)
+        setApiLoading(false);
         setDeposiTikcteslist(response?.records);
-        setTotalRecords(response?.total)
+        setTotalRecords(response?.total);
       })
       .catch((error) => {
-        setApiLoading(false)
+        setApiLoading(false);
         setError(error?.message);
         console.log("fetchDeposits error", error);
-      })
+      });
   };
 
   // ticket details by the ticket id
   const getTicketDetailsById = async (id) => {
-
     let fetchDeposits;
     if (userRole === "management") {
       fetchDeposits = managementDepositTikcetDetailsById;
@@ -99,7 +114,7 @@ function Tickets() {
       .then((response) => {
         if (userRole === "management") {
           setTicketDetails(response?.records?.details);
-          setRejectionReasons(response?.records?.reasons)
+          setRejectionReasons(response?.records?.reasons);
         } else {
           setTicketDetails(response?.records);
         }
@@ -107,10 +122,8 @@ function Tickets() {
       .catch((error) => {
         setError(error?.message);
         console.log("fetchDeposits error", error);
-      })
-  }
-
-
+      });
+  };
 
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
     { header: "Date & Time", field: "dateTime" },
@@ -130,9 +143,9 @@ function Tickets() {
   const getStatusClass = (status) => {
     switch (status) {
       case 0:
-        return "#FFE2B3";// Yellow background 
+        return "#FFE2B3"; // Yellow background
       case 1:
-        return "#B3FFD6";  // Green background
+        return "#B3FFD6"; // Green background
       case 2:
         return "#FFCAC3"; // Red background
       default:
@@ -143,9 +156,9 @@ function Tickets() {
   const getStatusBorderClass = (status) => {
     switch (status) {
       case 0:
-        return "#FFA310";// Yellow background 
+        return "#FFA310"; // Yellow background
       case 1:
-        return "#18B962";  // Green background
+        return "#18B962"; // Green background
       case 2:
         return "#F43A23"; // Red background
       default:
@@ -155,142 +168,187 @@ function Tickets() {
 
   // <====================== Deposit  Approve and Rejection =====================>
   const handleTikcetApproveRejection = async (action, reason, ticketType) => {
-    const limit = itemsPerPage
-    const offset = (page - 1) * itemsPerPage
-    let apiCAll
-    setTicketAction(action)
-    setTicketType(ticketType)
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    let apiCAll;
+    setTicketAction(action);
+    setTicketType(ticketType);
     const data = {
-      rejId: reason
-    }
+      rejId: reason,
+    };
 
     if (action === "APPROVE") {
-      apiCAll = ownerTicketApprove
+      apiCAll = ownerTicketApprove;
     } else {
-      apiCAll = ownerTicketRejection
+      apiCAll = ownerTicketRejection;
     }
 
     await apiCAll(ticketId, data)
       .then((response) => {
-        if (response.status === true) {
-          getDepositTickets(limit, offset);
-          setSuccessPopupOpen(true)
-          setDepositWithdrawPopupOpen(false)
-          setErroDiscription("")
-          setSpinner(false)
-        }
+        setSpinner(false);
+        getDepositTickets(limit, offset);
+        setSuccessPopupOpen(true);
+        setDepositWithdrawPopupOpen(false);
+        setErroDiscription("");
       })
       .catch((error) => {
         setError(error?.message);
-        setErroDiscription(error?.message)
-        setErrorPopupOpen(true)
-      })
-  }
+        setErroDiscription(error?.message);
+        setErrorPopupOpen(true);
+        setSpinner(false);
+      });
+  };
 
   // <====================== Withdraw Approve and Rejection =====================>
 
-  const handleWithdrwaTicketApproveRejection = async (action, reason, ticketType) => {
-    const limit = itemsPerPage
-    const offset = (page - 1) * itemsPerPage
-    let apiCAll
-    setTicketAction(action)
-    setTicketType(ticketType)
+  const handleWithdrwaTicketApproveRejection = async (
+    action,
+    reason,
+    ticketType
+  ) => {
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    let apiCAll;
+    setTicketAction(action);
+    setTicketType(ticketType);
 
     const data = {
-      rejId: reason
-    }
+      rejId: reason,
+    };
 
     if (action === "APPROVE") {
-      apiCAll = ownerWithdrawTicketApprove
+      apiCAll = ownerWithdrawTicketApprove;
     } else {
-      apiCAll = ownerWithdrawTicketRejection
+      apiCAll = ownerWithdrawTicketRejection;
     }
 
     await apiCAll(ticketId, data)
       .then((response) => {
         if (response.status === true) {
           getDepositTickets(limit, offset);
-          setSuccessPopupOpen(true)
-          setDepositWithdrawPopupOpen(false)
-          setErroDiscription("")
-
+          setSuccessPopupOpen(true);
+          setDepositWithdrawPopupOpen(false);
+          setErroDiscription("");
         }
       })
       .catch((error) => {
         setError(error?.message);
-        setErroDiscription(error?.message)
-        setErrorPopupOpen(true)
-      })
-  }
+        setErroDiscription(error?.message);
+        setErrorPopupOpen(true);
+      });
+  };
 
+  const MY_TRANSACTIONS_MANAGEMENT_DATA = deposiTikcteslist.map(
+    (record, index) => ({
+      dateTime: utcDate(record.date),
+      nameRole: (
+        <div>
+          {record.dirName} - {record.reqBy == 1 ? "Director" : "Super Admin"}
+          <br />
+          {record.shareType === 1 ? "Rental" : "Share Royalty"}
+        </div>
+      ),
+      // adminuserwebiste: (<div>
+      //   {record.admPanNam}
+      //   <br />
+      //   {record.usePanNam}
+      // </div>),
+      utrno: <div>{record.transacId}</div>,
+      dw: (
+        <div
+          style={{
+            color: `${
+              record.ticketType === 1 || record.ticketType === 0
+                ? "#18B962"
+                : "#D0431C"
+            }`,
+          }}
+        >
+          {record.ticketType === 1 || record.ticketType === 0
+            ? "Deposit"
+            : "Withdaw"}
+        </div>
+      ),
+      iscredit: <div>{record?.credit > 0 ? "YES" : "NO"}</div>,
+      chips: (
+        <div
+          style={{
+            color: `${
+              record.ticketType === 1 || record.ticketType === 0
+                ? "#18B962"
+                : "#D0431C"
+            }`,
+          }}
+        >
+          {record?.requChips}
+        </div>
+      ),
+      currtypeamount: (
+        <div>
+          {Number(record.paidAmount).toFixed(2)}
+          <br />
+          {getCurrency(record.reqCurrency)}
+        </div>
+      ),
+      currRate: (
+        <div>
+          {record?.curRate ? rfloor(record?.curRate, -6) : 0}
+          <br />
+          {getCurrency(record.reqCurrency)}
+        </div>
+      ),
+      yourChips: <div>{Number(record?.inrChips).toFixed(2)}</div>,
+      yourcurramount: (
+        <div>
+          {Number(record?.totCur).toFixed(2)}
+          <br />
+          {getCurrency(107)}
+        </div>
+      ),
+      view: (
+        <div className="w-100 flex-center status-container d-flex flex-column justify-content-center">
+          {/* Status Bar Button */}
+          <span
+            className="status-bar"
+            style={{
+              background: getStatusClass(record.status),
+              border: `1px solid ${getStatusBorderClass(record.status)}`,
+              color: getStatusBorderClass(record.status),
+            }}
+          >
+            {record.status === 0
+              ? "Pending"
+              : record.status === 1
+              ? " Approved"
+              : "Rejected"}
+          </span>
 
-  const MY_TRANSACTIONS_MANAGEMENT_DATA =
-    deposiTikcteslist.map((record, index) => (
-      {
-        dateTime: utcDate(record.date),
-        nameRole: (
-          <div>
-            {record.dirName} -  {record.reqBy == 1 ? "Director" : "Super Admin"}
-            <br />
-            {record.shareType === 1 ? "Rental" : "Share Royalty"}
-          </div>
-        ),
-        // adminuserwebiste: (<div>
-        //   {record.admPanNam}
-        //   <br />
-        //   {record.usePanNam}
-        // </div>),
-        utrno: <div >{record.transacId}</div>,
-        dw: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>
-          {record.ticketType === 1 || record.ticketType === 0 ? "Deposit" : "Withdaw"}</div>,
-        iscredit: <div >{record?.credit > 0 ? "YES" : "NO"}</div>,
-        chips: <div style={{ color: `${record.ticketType === 1 || record.ticketType === 0 ? "#18B962" : "#D0431C"}` }}>{record?.requChips}</div>,
-        currtypeamount: <div >{Number(record.paidAmount).toFixed(2)}<br />{getCurrency(record.reqCurrency)}</div>,
-        currRate: <div >{record?.curRate ? rfloor((record?.curRate), -6) : 0}<br />{getCurrency(record.reqCurrency)}</div>,
-        yourChips: <div >{Number(record?.inrChips).toFixed(2)}</div>,
-        yourcurramount: <div >{Number(record?.totCur).toFixed(2)}<br />{getCurrency(107)}</div>,
-        view: (
-          <div className="w-100 flex-center status-container d-flex flex-column justify-content-center">
-            {/* Status Bar Button */}
-            <span
-              className="status-bar"
-              style={{
-                background: getStatusClass(record.status),
-                border: `1px solid ${getStatusBorderClass(record.status)}`,
-                color: getStatusBorderClass(record.status),
+          {/* Eye Icon Button */}
+          <div className="w-100 flex-center status-container d-flex flex-row justify-content-center">
+            <BsEye
+              size={22}
+              className="eye-icon pointer m-2 pointer"
+              onClick={() => {
+                handleDepositAndWithdraw(record?.id);
               }}
-            >
-              {record.status === 0 ? "Pending" : (record.status === 1 ? " Approved" : "Rejected")}
-            </span>
-
-            {/* Eye Icon Button */}
-            <div className="w-100 flex-center status-container d-flex flex-row justify-content-center">
-              < BsEye
-                size={22}
-                className="eye-icon pointer m-2 pointer"
-                onClick={() => {
-                  handleDepositAndWithdraw(record?.id)
-                }
-                }
-              />
-            </div>
-          </div >
-        ),
-      }
-    ));
+            />
+          </div>
+        </div>
+      ),
+    })
+  );
 
   useEffect(() => {
-    getDepositTickets(limit, offset)
-  }, [])
-
+    getDepositTickets(limit, offset);
+  }, []);
 
   const handleDepositAndWithdraw = (id) => {
     if (id) {
-      setTicketId(id)
-      getTicketDetailsById(id)
-      handleDepositWithdrawPopupOpen(true)
+      setTicketId(id);
+      getTicketDetailsById(id);
+      handleDepositWithdrawPopupOpen(true);
     }
-  }
+  };
 
   const handlePageChange = ({ limit, offset }) => {
     getDepositTickets(limit, offset);
@@ -319,8 +377,8 @@ function Tickets() {
       setErrors(newErrors);
       return;
     }
-    const limit = itemsPerPage
-    const offset = (page - 1) * itemsPerPage
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
 
     setErrors({ startDate: "", fromDate: "", selectedType: "" });
     getDepositTickets(limit, offset, startDate, fromDate, selectedType.value);
@@ -330,7 +388,6 @@ function Tickets() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">Downline Tickets</h6>
-
       </div>
 
       <div className="grey-bg2 d-flex w-100 py-3 rounded">
@@ -406,12 +463,18 @@ function Tickets() {
             className="input-css2 small-font"
             value={new Date(fromDate).toISOString().split("T")[0]}
             onChange={(e) => setFromDate(e.target.value)}
-            type="date" />
+            type="date"
+          />
           <p className="small-font red-font">{errors.fromDate}</p>
         </div>
 
         <div className="col flex-column  justify-content-center">
-          <button className="w-100 saffron-btn2 small-font" onClick={handleDataFilter}>Submit</button>
+          <button
+            className="w-100 saffron-btn2 small-font"
+            onClick={handleDataFilter}
+          >
+            Submit
+          </button>
         </div>
       </div>
       {apiLoading ? (
@@ -420,14 +483,16 @@ function Tickets() {
           <div className="medium-font black-font my-3">
             Just a moment...............⏳
           </div>
-        </div>) : <Table
-        columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
-        data={MY_TRANSACTIONS_MANAGEMENT_DATA}
-        itemsPerPage={itemsPerPage}
-        totalRecords={totalRecords}
-        onPageChange={handlePageChange}
-      />}
-
+        </div>
+      ) : (
+        <Table
+          columns={MY_TRANSACTIONS_MANAGEMENT_COLUMNS}
+          data={MY_TRANSACTIONS_MANAGEMENT_DATA}
+          itemsPerPage={itemsPerPage}
+          totalRecords={totalRecords}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       {depositWithdrawPopupOpen && (
         <DepositWithdrawPopup
@@ -439,7 +504,9 @@ function Tickets() {
           rejectionReasons={rejectionReasons}
           fromPath="tickets"
           handleTikcetApproveRejection={handleTikcetApproveRejection}
-          handleWithdrwaTicketApproveRejection={handleWithdrwaTicketApproveRejection}
+          handleWithdrwaTicketApproveRejection={
+            handleWithdrwaTicketApproveRejection
+          }
           spinner={spinner}
           setSpinner={setSpinner}
         />
@@ -449,7 +516,9 @@ function Tickets() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={`${ticketType} Ticket ${ticketAction === "APPROVE" ? "Approved" : "Rejected"} successfully`}
+          discription={`${ticketType} Ticket ${
+            ticketAction === "APPROVE" ? "Approved" : "Rejected"
+          } successfully`}
         />
       )}
 
@@ -458,11 +527,9 @@ function Tickets() {
           errorPopupOpen={errorPopupOpen}
           setErrorPopupOpen={setErrorPopupOpen}
           discription={ErroDiscription}
-
         />
       )}
-
-    </div >
+    </div>
   );
 }
 
