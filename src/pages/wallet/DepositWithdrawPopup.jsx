@@ -27,6 +27,7 @@ function DepositWithdrawPopup({
     setDepositWithdrawPopupOpen(false);
   };
 
+
   const userRole = localStorage.getItem("role_code");
   const allCountries = useSelector((item) => item?.allCountries);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -304,6 +305,30 @@ function DepositWithdrawPopup({
                     )}
                   </div>
                   <div className="col-6 mt-3">
+
+
+                    {/* 
+                  <button
+                                className="saffron-btn small-font rounded w-100 ms-1 d-flex align-items-center justify-content-center"
+                                onClick={handleSubmit}
+                                disabled={isLoading}
+                            >
+                                {spinner && setTicketAction === ""  ? (spinner,setTicketAction
+                                    <div className="flex-row" role="status">
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />
+                                        <span className="ps-2">Submitting...</span>
+                                    </div>
+                                ) : (
+                                    "Submit"
+                                )}
+                            </button> */}
+
                     <button
                       className="w-100 saffron-btn2"
                       onClick={() =>
@@ -312,6 +337,7 @@ function DepositWithdrawPopup({
                           ticketData?.ticketType === 1 ? "Deposit" : "Withdraw"
                         )
                       }
+                      disabled={spinner && ticketaction == "APPROVE" }
                     >
                       {spinner && ticketaction == "APPROVE" ? (
                         <>
@@ -336,6 +362,7 @@ function DepositWithdrawPopup({
                           ticketData?.ticketType === 1 ? "Deposit" : "Withdraw"
                         )
                       }
+                      disabled={spinner && ticketaction == "REJECT" }
                     >
                       {spinner && ticketaction == "REJECT" ? (
                         <>

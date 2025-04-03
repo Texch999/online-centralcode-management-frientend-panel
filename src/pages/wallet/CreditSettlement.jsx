@@ -706,63 +706,69 @@ const CreditSettlement = () => {
   return (
     <>
       <div>
-        <div className="flex-between mb-3 mt-1">
-          <div className="d-flex align-items-center yellow-font fw-600">
-            <span>
-              <MdOutlineKeyboardArrowLeft
-                size={22}
-              />
-            </span>
-            <span className="yellow-font">Credit & Settlement</span>
-          </div>
+        {!apiLoading && (
+          <>
+            <div className="flex-between mb-3 mt-1">
+              <div className="d-flex align-items-center yellow-font fw-600">
+                <span>
+                  <MdOutlineKeyboardArrowLeft
+                    size={22}
+                  />
+                </span>
+                <span className="yellow-font">Credit & Settlement</span>
+              </div>
 
-          <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
-            <FaSearch size={16} className="grey-clr me-2" />
-            <input
-              className="small-font all-none"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="input-css px-2 medium-font">
-          <div className="d-flex flex-start">
-            {" "}
-            <span className="border-right px-1">Your Balance</span>{" "}
-            <span className="green-font mx-1">88,414</span>
-          </div>
-        </div>
-        <div className="flex-column">
-          <div className="d-flex my-1">
-            <div className="flex-column col-2 me-3">
-              <label className="black-text4 small-font mb-1 ms-1">
-                Select Admin Name
-              </label>
-              <Select
-                className="small-font"
-                options={downlines}
-                placeholder="Select"
-                styles={customStyles}
-                onChange={(option) => {
-                  setSelectedAdminId(option);
-                  setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
-                }}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                classNamePrefix="custom-react-select"
-              />
+              <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
+                <FaSearch size={16} className="grey-clr me-2" />
+                <input
+                  className="small-font all-none"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="flex-column col-1 d-flex align-items-end justify-content-end">
-              <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
+            <div className="input-css px-2 medium-font">
+              <div className="d-flex flex-start">
+                {" "}
+                <span className="border-right px-1">Your Balance</span>{" "}
+                <span className="green-font mx-1">88,414</span>
+              </div>
             </div>
-          </div>
-          {errors.selectedAdminId && (
-            <div className="text-danger small-font ps-1">
-              {errors.selectedAdminId}
+            <div className="flex-column">
+              <div className="d-flex my-1">
+                <div className="flex-column col-2 me-3">
+                  <label className="black-text4 small-font mb-1 ms-1">
+                    Select Admin Name
+                  </label>
+                  <Select
+                    className="small-font"
+                    options={downlines}
+                    placeholder="Select"
+                    styles={customStyles}
+                    onChange={(option) => {
+                      setSelectedAdminId(option);
+                      setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
+                    }}
+                    maxMenuHeight={120}
+                    menuPlacement="auto"
+                    classNamePrefix="custom-react-select"
+                  />
+                </div>
+                <div className="flex-column col-1 d-flex align-items-end justify-content-end">
+                  <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
+                </div>
+              </div>
+              {errors.selectedAdminId && (
+                <div className="text-danger small-font ps-1">
+                  {errors.selectedAdminId}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
+
+
         <ErrorComponent error={apiError} />
         {apiLoading ? (
           <div className="spinner">

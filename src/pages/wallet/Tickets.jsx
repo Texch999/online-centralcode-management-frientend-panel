@@ -257,11 +257,10 @@ function Tickets() {
       dw: (
         <div
           style={{
-            color: `${
-              record.ticketType === 1 || record.ticketType === 0
-                ? "#18B962"
-                : "#D0431C"
-            }`,
+            color: `${record.ticketType === 1 || record.ticketType === 0
+              ? "#18B962"
+              : "#D0431C"
+              }`,
           }}
         >
           {record.ticketType === 1 || record.ticketType === 0
@@ -273,11 +272,10 @@ function Tickets() {
       chips: (
         <div
           style={{
-            color: `${
-              record.ticketType === 1 || record.ticketType === 0
-                ? "#18B962"
-                : "#D0431C"
-            }`,
+            color: `${record.ticketType === 1 || record.ticketType === 0
+              ? "#18B962"
+              : "#D0431C"
+              }`,
           }}
         >
           {record?.requChips}
@@ -319,8 +317,8 @@ function Tickets() {
             {record.status === 0
               ? "Pending"
               : record.status === 1
-              ? " Approved"
-              : "Rejected"}
+                ? " Approved"
+                : "Rejected"}
           </span>
 
           {/* Eye Icon Button */}
@@ -385,104 +383,114 @@ function Tickets() {
   };
 
   return (
+
     <div>
-      <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font mb-0">Downline Tickets</h6>
-      </div>
-
-      <div className="grey-bg2 d-flex w-100 py-3 rounded">
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Total Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">1000000</span>
+      {!apiLoading && (
+        <>
+          <div className="flex-between mb-3 mt-2">
+            <h6 className="d-flex yellow-font mb-0">Downline Tickets</h6>
           </div>
-        </div>
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Total Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">1000000</span>
+
+          <div className="grey-bg2 d-flex w-100 py-3 rounded">
+            <div className="col-3 px-3">
+              <div className="white-bg rounded flex-between">
+                <span className="saffron-btn small-font rounded">
+                  Total Tickets
+                </span>
+                <span className="medium-font black-text4 pe-2">1000000</span>
+              </div>
+            </div>
+            <div className="col-3 px-3">
+              <div className="white-bg rounded flex-between">
+                <span className="saffron-btn small-font rounded">
+                  Total Tickets
+                </span>
+                <span className="medium-font black-text4 pe-2">1000000</span>
+              </div>
+            </div>{" "}
+            <div className="col-3 px-3">
+              <div className="white-bg rounded flex-between">
+                <span className="saffron-btn small-font rounded">
+                  Approved Tickets
+                </span>
+                <span className="medium-font black-text4 pe-2">9000</span>
+              </div>
+            </div>{" "}
+            <div className="col-3 px-3">
+              <div className="white-bg rounded flex-between">
+                <span className="saffron-btn small-font rounded">
+                  Rejected Tickets
+                </span>
+                <span className="medium-font black-text4 pe-2">100</span>
+              </div>
+            </div>
           </div>
-        </div>{" "}
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Approved Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">9000</span>
+
+          <div className="w-70 row mt-3">
+            <div className="col flex-column">
+              <label className="black-text4  small-font mb-1">Ticket Type</label>
+              <Select
+                className="small-font white-bg input-border rounded"
+                options={typeOptions}
+                placeholder="Select Type"
+                styles={{
+                  ...customStyles,
+                  control: (base) => ({
+                    ...base,
+                    backgroundColor: "white",
+                  }),
+                }}
+                value={selectedType}
+                isSearchable={false}
+                onChange={(option) => setSelectedType(option)}
+              />
+              <p className="small-font red-font">{errors.selectedType}</p>
+            </div>
+
+            <div className="col flex-column">
+              <label className="black-text4 small-font mb-1">From</label>
+              <input
+                className="input-css2 small-font"
+                type="date"
+                value={new Date(startDate).toISOString().split("T")[0]}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <p className="small-font red-font">{errors.startDate}</p>
+            </div>
+
+            <div className="col flex-column">
+              <label className="black-text4 small-font mb-1">To</label>
+              <input
+                className="input-css2 small-font"
+                value={new Date(fromDate).toISOString().split("T")[0]}
+                onChange={(e) => setFromDate(e.target.value)}
+                type="date"
+              />
+              <p className="small-font red-font">{errors.fromDate}</p>
+            </div>
+
+            <div className="col flex-column  justify-content-center">
+              <button
+                className="w-100 saffron-btn2 small-font"
+                onClick={handleDataFilter}
+              >
+                Submit
+              </button>
+            </div>
           </div>
-        </div>{" "}
-        <div className="col-3 px-3">
-          <div className="white-bg rounded flex-between">
-            <span className="saffron-btn small-font rounded">
-              Rejected Tickets
-            </span>
-            <span className="medium-font black-text4 pe-2">100</span>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
 
-      <div className="w-70 row mt-3">
-        <div className="col flex-column">
-          <label className="black-text4  small-font mb-1">Ticket Type</label>
-          <Select
-            className="small-font white-bg input-border rounded"
-            options={typeOptions}
-            placeholder="Select Type"
-            styles={{
-              ...customStyles,
-              control: (base) => ({
-                ...base,
-                backgroundColor: "white",
-              }),
-            }}
-            value={selectedType}
-            isSearchable={false}
-            onChange={(option) => setSelectedType(option)}
-          />
-          <p className="small-font red-font">{errors.selectedType}</p>
-        </div>
 
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">From</label>
-          <input
-            className="input-css2 small-font"
-            type="date"
-            value={new Date(startDate).toISOString().split("T")[0]}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-          <p className="small-font red-font">{errors.startDate}</p>
-        </div>
-
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">To</label>
-          <input
-            className="input-css2 small-font"
-            value={new Date(fromDate).toISOString().split("T")[0]}
-            onChange={(e) => setFromDate(e.target.value)}
-            type="date"
-          />
-          <p className="small-font red-font">{errors.fromDate}</p>
-        </div>
-
-        <div className="col flex-column  justify-content-center">
-          <button
-            className="w-100 saffron-btn2 small-font"
-            onClick={handleDataFilter}
-          >
-            Submit
-          </button>
-        </div>
-      </div>
       {apiLoading ? (
-        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
-          <CircleLoader color="#3498db" size={40} />
-          <div className="medium-font black-font my-3">
-            Just a moment...............⏳
-          </div>
+        // <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+        //   <CircleLoader color="#3498db" size={40} />
+        //   <div className="medium-font black-font my-3">
+        //     Just a moment...............⏳
+        //   </div>
+        // </div>
+        <div className="spinner">
+          <div className="spinner-circle"></div>
         </div>
       ) : (
         <Table
@@ -516,9 +524,8 @@ function Tickets() {
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={`${ticketType} Ticket ${
-            ticketAction === "APPROVE" ? "Approved" : "Rejected"
-          } successfully`}
+          discription={`${ticketType} Ticket ${ticketAction === "APPROVE" ? "Approved" : "Rejected"
+            } successfully`}
         />
       )}
 
