@@ -13,6 +13,7 @@ import {
 import ErrorPopup from "../../popups/ErrorPopup";
 import ErrorComponent from "../../../components/ErrorComponent";
 import { useSearchParams } from "react-router-dom";
+import SuccessPopup from "../../popups/SuccessPopup";
 
 const AddPaymentGatewayPopup = ({
   show,
@@ -69,6 +70,32 @@ const AddPaymentGatewayPopup = ({
       setManagementPaymentEditId(null);
     }
     resetFields();
+    setManagementPaymentEditId(null);
+  };
+
+  // const [updateId, setUpdateId] = useState(null);
+  const fetchManagementPaymentDetailsById = () => {
+    setInitialLoading(true);
+    getManagementPaymentDetailsById(managementPaymentEditId)
+      .then((response) => {
+        if (response.status === true) {
+          setManPaymentData(response?.data);
+          setUpdateId(response?.data?.payment_mode_id);
+          setAccHolderName(response?.data?.acc_hold_name || "");
+          setAccountNumber(response?.data?.bank_acc_no || "");
+          setBankIFSC(response?.data?.bank_ifsc || "");
+          setBankName(response?.data?.bank_name || "");
+          setUpiID(response?.data?.upi_id || "");
+          setDetails(response?.data?.others_details || "");
+          setQrCode(response?.data?.qr_code_image || null);
+          setQrName(response?.data?.qr_code_image || "");
+        }
+        setInitialLoading(false);
+      })
+      .catch((error) => {
+        setInitialLoading(false);
+        setError(error?.message);
+      });
     setOnAddPaymentGateway(false);
   };
 
@@ -80,107 +107,107 @@ const AddPaymentGatewayPopup = ({
     if (file) {
       setQrCode(file);
       setQrName(file.name);
-      setValidationErrors(prev => ({ ...prev, qrCode: "" }));
+      setValidationErrors((prev) => ({ ...prev, qrCode: "" }));
     }
   };
 
   // Account Holder Name validation
   const handleAccHolderNameChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z ]/g, '').slice(0, 100);
+    const value = e.target.value.replace(/[^a-zA-Z ]/g, "").slice(0, 100);
     setAccHolderName(value);
 
     if (value.length < 4 && value.length > 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        accHolderName: "Must be at least 4 characters"
+        accHolderName: "Must be at least 4 characters",
       }));
     } else if (value.length === 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        accHolderName: "Account Holder Name is required"
+        accHolderName: "Account Holder Name is required",
       }));
     } else {
-      setValidationErrors(prev => ({ ...prev, accHolderName: "" }));
+      setValidationErrors((prev) => ({ ...prev, accHolderName: "" }));
     }
   };
 
   // Bank Account Number validation
   const handleAccountNumberChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 34);
+    const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 34);
     setAccountNumber(value);
 
     if (value.length < 8 && value.length > 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        accountNumber: "Must be 8-34 digits"
+        accountNumber: "Must be 8-34 digits",
       }));
     } else if (value.length === 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        accountNumber: "Account Number is required"
+        accountNumber: "Account Number is required",
       }));
     } else {
-      setValidationErrors(prev => ({ ...prev, accountNumber: "" }));
+      setValidationErrors((prev) => ({ ...prev, accountNumber: "" }));
     }
   };
 
   // Bank IFSC validation
   const handleBankIFSCChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 15);
+    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, "").slice(0, 15);
     setBankIFSC(value.toUpperCase());
 
     if (value.length < 11 && value.length > 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        bankIFSC: "Must be 11-15 characters"
+        bankIFSC: "Must be 11-15 characters",
       }));
     } else if (value.length === 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        bankIFSC: "IFSC is required"
+        bankIFSC: "IFSC is required",
       }));
     } else {
-      setValidationErrors(prev => ({ ...prev, bankIFSC: "" }));
+      setValidationErrors((prev) => ({ ...prev, bankIFSC: "" }));
     }
   };
 
   // Bank Name validation
   const handleBankNameChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z ]/g, '').slice(0, 150);
+    const value = e.target.value.replace(/[^a-zA-Z ]/g, "").slice(0, 150);
     setBankName(value);
 
     if (value.length < 2 && value.length > 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        bankName: "Must be at least 2 characters"
+        bankName: "Must be at least 2 characters",
       }));
     } else if (value.length === 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        bankName: "Bank Name is required"
+        bankName: "Bank Name is required",
       }));
     } else {
-      setValidationErrors(prev => ({ ...prev, bankName: "" }));
+      setValidationErrors((prev) => ({ ...prev, bankName: "" }));
     }
   };
 
   // UPI ID validation
   const handleUpiIDChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z0-9@.]/g, '').slice(0, 50);
+    const value = e.target.value.replace(/[^a-zA-Z0-9@.]/g, "").slice(0, 50);
     setUpiID(value.toLowerCase());
 
     if (value.length < 3 && value.length > 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        upiID: "Must be at least 3 characters"
+        upiID: "Must be at least 3 characters",
       }));
     } else if (value.length === 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        upiID: "UPI ID is required"
+        upiID: "UPI ID is required",
       }));
     } else {
-      setValidationErrors(prev => ({ ...prev, upiID: "" }));
+      setValidationErrors((prev) => ({ ...prev, upiID: "" }));
     }
   };
 
@@ -190,12 +217,12 @@ const AddPaymentGatewayPopup = ({
     setDetails(value);
 
     if (value.length === 0) {
-      setValidationErrors(prev => ({
+      setValidationErrors((prev) => ({
         ...prev,
-        details: "Details are required"
+        details: "Details are required",
       }));
     } else {
-      setValidationErrors(prev => ({ ...prev, details: "" }));
+      setValidationErrors((prev) => ({ ...prev, details: "" }));
     }
   };
 
@@ -204,7 +231,9 @@ const AddPaymentGatewayPopup = ({
     const fetchManagementPaymentDetailsById = async () => {
       setInitialLoading(true);
       try {
-        const response = await getManagementPaymentDetailsById(managementPaymentEditId);
+        const response = await getManagementPaymentDetailsById(
+          managementPaymentEditId
+        );
         if (response.status === true) {
           setManPaymentData(response.data);
           setUpdateId(response.data?.payment_mode_id);
@@ -234,9 +263,11 @@ const AddPaymentGatewayPopup = ({
     // Final validation check
     let errors = {};
 
-    if (!accHolderName.trim()) errors.accHolderName = "Account Holder Name is required";
+    if (!accHolderName.trim())
+      errors.accHolderName = "Account Holder Name is required";
     if (availablePaymentModeId === 1) {
-      if (!accountNumber.trim()) errors.accountNumber = "Account Number is required";
+      if (!accountNumber.trim())
+        errors.accountNumber = "Account Number is required";
       if (!bankIFSC.trim()) errors.bankIFSC = "IFSC is required";
       if (!bankName.trim()) errors.bankName = "Bank Name is required";
     } else if (availablePaymentModeId === 2) {
@@ -295,26 +326,68 @@ const AddPaymentGatewayPopup = ({
       // setErrorPopupOpen(true);
     } finally {
       setLoading(false);
+      setError(error?.message);
     }
   };
 
-  // Handle form submission for director payments
+  const [dirPaymentDataById, setDirPaymentDataById] = useState(null);
+  console.log(dirPaymentDataById, "setDirPaymentDataById");
+  const [dirUpdateId, setDirUpdateId] = useState(null);
+  const fetchDirectorPaymentDetailsById = () => {
+    getDirectorAccountById(dirEditId)
+      .then((response) => {
+        if (response.status === true) {
+          setDirPaymentDataById(response?.data?.id);
+          setDirUpdateId(response?.data?.offlinmods_id);
+          setAccHolderName(response?.data?.acc_hold_name || "");
+          setAccountNumber(response?.data?.bank_acc_no || "");
+          setBankIFSC(response?.data?.bank_ifsc || "");
+          setBankName(response?.data?.bank_name || "");
+          setUpiID(response?.data?.upi_id || "");
+          setDetails(response?.data?.others_details || "");
+          setQrCode(response?.data?.qr_code_image || null);
+          setQrName(response?.data?.qr_code_image || "");
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  useEffect(() => {
+    if (dirEditId && managementPaymentEdit) {
+      fetchDirectorPaymentDetailsById();
+    }
+  }, [dirEditId && managementPaymentEdit]);
+
   const handleDirectorPayments = async () => {
     // Similar validation as above
     let errors = {};
 
-    if (!accHolderName.trim()) errors.accHolderName = "Account Holder Name is required";
+    if (!accHolderName.trim())
+      errors.accHolderName = "Account Holder Name is required";
     if (availablePaymentModeId === 1) {
-      if (!accountNumber.trim()) errors.accountNumber = "Account Number is required";
+      if (!accountNumber.trim())
+        errors.accountNumber = "Account Number is required";
       if (!bankIFSC.trim()) errors.bankIFSC = "IFSC is required";
       if (!bankName.trim()) errors.bankName = "Bank Name is required";
     } else if (availablePaymentModeId === 2) {
       if (!upiID.trim()) errors.upiID = "UPI ID is required";
     } else if (availablePaymentModeId === 3) {
-      if (!bankName.trim()) errors.bankName = "Bank Name is required";
-      if (!qrCode) errors.qrCode = "QR Code is required";
+      if (!bankName.trim()) {
+        errors.bankName = "Bank Name is required.";
+      } else if (!/^[a-zA-Z0-9 ]*$/.test(bankName)) {
+        errors.bankName =
+          "Bank Name can only contain letters, numbers, and spaces.";
+      }
+      if (!qrCode) errors.qrCode = "QR Code Image is required.";
     } else if (availablePaymentModeId === 4) {
-      if (!details.trim()) errors.details = "Details are required";
+      if (!details.trim()) {
+        errors.details = "Details are required.";
+      } else if (!/^[a-zA-Z0-9 ]*$/.test(details)) {
+        errors.details =
+          "Details can only contain letters, numbers, and spaces.";
+      }
     }
 
     if (Object.keys(errors).length > 0) {
@@ -323,7 +396,9 @@ const AddPaymentGatewayPopup = ({
     }
 
     // Prepare form data
-    const pay_id = dirEditId ? dirEditId.slice(3, -3) : addpaymentId.slice(3, -3);
+    const pay_id = dirEditId
+      ? dirEditId.slice(3, -3)
+      : addpaymentId.slice(3, -3);
     const formData = new FormData();
     formData.append("offlinmods_id", pay_id);
     formData.append("gateway_type", availablePaymentModeId);
@@ -350,15 +425,16 @@ const AddPaymentGatewayPopup = ({
       const response = managementPaymentEdit
         ? await updateDirectorAccountDetails(dirEditId, formData)
         : await postDirectorAccountDetails(formData);
-
-      setMsg(response?.message);
-      setSuccessPopupOpen(true);
-      resetFields();
-      getDirectorAccountData();
-      setTimeout(() => {
-        setSuccessPopupOpen(false);
+      if (response.status === true) {
+        setMsg(response?.message);
+        setSuccessPopupOpen(true);
+        setTimeout(() => {
+          setSuccessPopupOpen(false);
+        }, 2000);
+        resetFields();
         setOnAddPaymentGateway(false);
-      }, 2000);
+        getDirectorAccountData();
+      }
     } catch (error) {
       setError(error?.message);
       setErrorPopupOpen(true);
@@ -377,7 +453,8 @@ const AddPaymentGatewayPopup = ({
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="medium-font fw-600">
               {managementPaymentEdit ? "Edit" : "Add"}{" "}
-              {role_code === "director" ? "Director" : "Management"} Payment Gateway
+              {role_code === "director" ? "Director" : "Management"} Payment
+              Gateway
             </h5>
             <MdOutlineClose size={22} onClick={onHide} className="pointer" />
           </div>
@@ -390,8 +467,9 @@ const AddPaymentGatewayPopup = ({
               <label className="small-font mb-1">Account Holder Name</label>
               <input
                 type="text"
-                className={`w-100 small-font rounded input-css all-none ${validationErrors.accHolderName ? "is-invalid" : ""
-                  }`}
+                className={`w-100 small-font rounded input-css all-none ${
+                  validationErrors.accHolderName ? "is-invalid" : ""
+                }`}
                 placeholder="Enter name (4-100 chars)"
                 value={accHolderName}
                 onChange={handleAccHolderNameChange}
@@ -401,7 +479,6 @@ const AddPaymentGatewayPopup = ({
                   {validationErrors.accHolderName}
                 </p>
               )}
-
             </div>
 
             {/* Bank Payment Mode Fields */}
@@ -411,8 +488,9 @@ const AddPaymentGatewayPopup = ({
                   <label className="small-font mb-1">Bank Account Number</label>
                   <input
                     type="text"
-                    className={`w-100 small-font rounded input-css all-none ${validationErrors.accountNumber ? "is-invalid" : ""
-                      }`}
+                    className={`w-100 small-font rounded input-css all-none ${
+                      validationErrors.accountNumber ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter (8-34 digits)"
                     value={accountNumber}
                     onChange={handleAccountNumberChange}
@@ -422,15 +500,15 @@ const AddPaymentGatewayPopup = ({
                       {validationErrors.accountNumber}
                     </p>
                   )}
-
                 </div>
 
                 <div className="col-6">
                   <label className="small-font mb-1">Bank IFSC</label>
                   <input
                     type="text"
-                    className={`w-100 small-font rounded input-css all-none ${validationErrors.bankIFSC ? "is-invalid" : ""
-                      }`}
+                    className={`w-100 small-font rounded input-css all-none ${
+                      validationErrors.bankIFSC ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter (11-15 chars)"
                     value={bankIFSC}
                     onChange={handleBankIFSCChange}
@@ -440,15 +518,15 @@ const AddPaymentGatewayPopup = ({
                       {validationErrors.bankIFSC}
                     </p>
                   )}
-
                 </div>
 
                 <div className="col-6">
                   <label className="small-font mb-1">Bank Name</label>
                   <input
                     type="text"
-                    className={`w-100 small-font rounded input-css all-none ${validationErrors.bankName ? "is-invalid" : ""
-                      }`}
+                    className={`w-100 small-font rounded input-css all-none ${
+                      validationErrors.bankName ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter bank name (2-150 chars)"
                     value={bankName}
                     onChange={handleBankNameChange}
@@ -458,7 +536,6 @@ const AddPaymentGatewayPopup = ({
                       {validationErrors.bankName}
                     </p>
                   )}
-
                 </div>
               </>
             )}
@@ -469,8 +546,9 @@ const AddPaymentGatewayPopup = ({
                 <label className="small-font mb-1">UPI ID</label>
                 <input
                   type="text"
-                  className={`w-100 small-font rounded input-css all-none ${validationErrors.upiID ? "is-invalid" : ""
-                    }`}
+                  className={`w-100 small-font rounded input-css all-none ${
+                    validationErrors.upiID ? "is-invalid" : ""
+                  }`}
                   placeholder="Enter UPI ID (e.g., name@upi)"
                   value={upiID}
                   onChange={handleUpiIDChange}
@@ -480,7 +558,6 @@ const AddPaymentGatewayPopup = ({
                     {validationErrors.upiID}
                   </p>
                 )}
-
               </div>
             )}
 
@@ -491,8 +568,9 @@ const AddPaymentGatewayPopup = ({
                   <label className="small-font mb-1">Bank Name</label>
                   <input
                     type="text"
-                    className={`w-100 small-font rounded input-css all-none ${validationErrors.bankName ? "is-invalid" : ""
-                      }`}
+                    className={`w-100 small-font rounded input-css all-none ${
+                      validationErrors.bankName ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter bank name (2-150 chars)"
                     value={bankName}
                     onChange={handleBankNameChange}
@@ -502,7 +580,6 @@ const AddPaymentGatewayPopup = ({
                       {validationErrors.bankName}
                     </p>
                   )}
-
                 </div>
 
                 <div className="col-6">
@@ -514,8 +591,9 @@ const AddPaymentGatewayPopup = ({
                       id="qrCode"
                       type="file"
                       accept="image/*"
-                      className={`w-100 small-font rounded input-css all-none ${validationErrors.qrCode ? "is-invalid" : ""
-                        }`}
+                      className={`w-100 small-font rounded input-css all-none ${
+                        validationErrors.qrCode ? "is-invalid" : ""
+                      }`}
                       onChange={handleQrCodeChange}
                       style={{ display: "none" }}
                     />
@@ -543,8 +621,9 @@ const AddPaymentGatewayPopup = ({
               <div className="col-12 my-2">
                 <label className="small-font mb-1">Details</label>
                 <textarea
-                  className={`w-100 small-font rounded input-css all-none ${validationErrors.details ? "is-invalid" : ""
-                    }`}
+                  className={`w-100 small-font rounded input-css all-none ${
+                    validationErrors.details ? "is-invalid" : ""
+                  }`}
                   placeholder="Enter payment details (max 250 chars)"
                   value={details}
                   onChange={handleDetailsChange}
@@ -556,43 +635,24 @@ const AddPaymentGatewayPopup = ({
                     {validationErrors.details}
                   </p>
                 )}
-
               </div>
             )}
           </div>
 
           <div className="row d-flex mt-3 justify-content-end">
             <div className="col-6">
-              <button
-                className="w-100 saffron-btn rounded small-font"
-                type="submit"
-                disabled={loading}
-                onClick={
-                  role_code === "management"
-                    ? handleManagementPayments
-                    : handleDirectorPayments
-                }
-              >
-                {loading ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : null}
+              <button className="w-100 saffron-btn rounded small-font">
                 <span className="ps-2">
                   {loading
                     ? managementPaymentEdit
                       ? "Updating..."
                       : "Submitting..."
                     : managementPaymentEdit
-                      ? "Update"
-                      : "Submit"}
+                    ? "Update"
+                    : "Submit"}
                 </span>
               </button>
-            </div>
+              </div>
           </div>
         </Modal.Body>
       </Modal>

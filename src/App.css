@@ -1186,3 +1186,6 @@ button:disabled {
   align-items: center;
   z-index: 1000;
 }
+.pb-2rem{
+  padding-bottom: 2rem;
+}

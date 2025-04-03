@@ -528,6 +528,9 @@ const getMultiMarket = (id, data) => {
 const suspendWebsiteProfile = (id, data) => {
   return apiRequest("suspendWebsiteProfile", data, id);
 };
+const getAdminUserWebsitesListProfile = (dirId, adminPanelId) => {
+  return apiRequest("getAdminUserWebsitesListProfile", dirId, { dirId, adminPanelId });
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -664,4 +667,5 @@ export {
   creditFullSettlement,
   getMultiMarket,
   suspendWebsiteProfile,
+  getAdminUserWebsitesListProfile,
 };

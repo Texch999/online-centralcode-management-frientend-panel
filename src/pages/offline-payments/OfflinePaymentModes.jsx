@@ -106,7 +106,6 @@ const OfflinePaymentModes = () => {
   useEffect(() => {
     const pagee = intialpage;
     const pageSizee = itemsPerPage;
-    // Fetch data based on role and filterName
     if (searchInput.trim() === "") {
       getAllManPaymentModes(pagee, pageSizee);
     }
@@ -249,7 +248,6 @@ const OfflinePaymentModes = () => {
         </div>
       )}
 
-
       <div className="mt-2">
         {loading ? (
           <div className="spinner">
@@ -285,8 +283,9 @@ const OfflinePaymentModes = () => {
         <ConfirmationPopup
           confirmationPopupOpen={confirmationModal}
           setConfirmationPopupOpen={() => setConfirmationModal(false)}
-          discription={`Are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
-            } this Payment Mode?`}
+          discription={`Are you sure you want to ${
+            statusId === 1 ? "In-Active" : "Active"
+          } this Payment Mode?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
         />
@@ -307,7 +306,6 @@ const OfflinePaymentModes = () => {
           discription={msg}
         />
       )}
-
     </div>
   );
 };

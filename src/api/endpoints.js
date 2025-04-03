@@ -854,6 +854,11 @@ const endpoints = {
     method: "post",
     url: (id) => `/user/${userID()}/director/${id}/suspend/website`,
   },
+  getAdminUserWebsitesListProfile: {
+    method: "get",
+    url: (data) =>
+      `/user/${userID()}/director/${data?.dirId}/adminPanel/${data?.adminPanelId}`,
+  },
 };
 
 export default endpoints;
