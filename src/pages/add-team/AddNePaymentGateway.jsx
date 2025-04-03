@@ -267,6 +267,19 @@ const AddNePaymentGateway = () => {
               setAvailablePaymentModeId={setAvailablePaymentModeId}
               setDiscription={setDiscription}
               setSuccessPopupOpen={setSuccessPopupOpen}
+
+
+              // show={AddPaymentGatewayModal}
+              // setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
+              // addpaymentId={addpaymentId}
+              // setAddPaymentId={setAddPaymentId}
+              // countryId={countryId}
+              // setCountryId={setCountryId}
+              // availablePaymentModeId={availablePaymentModeId}
+              // setAvailablePaymentModeId={setAvailablePaymentModeId}
+              // setDiscription={setDiscription}
+              // setSuccessPopupOpen={setSuccessPopupOpen}
+
             />
           )}
 
