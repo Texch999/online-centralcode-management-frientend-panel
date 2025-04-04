@@ -31,7 +31,7 @@ function InActiveUsers() {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const limit = itemsPerPage;
-  const offset = (page - 1) * itemsPerPage;
+  const offset = (currentPage - 1) * itemsPerPage;
   const website_id = selectedAdminWebsite
     ? selectedUserWebsite
     : selectedUserWebsite.slice(3, -3);
@@ -82,7 +82,7 @@ function InActiveUsers() {
         <span>Super Admin - {item?.superadmin_name}</span>
         <span>Admin - {item?.admin_name}</span>
         <span>Master - {item?.master_name}</span>
-        <span>Agent - {item?.agent_name}</span>
+        {/* <span>Agent - {item?.agent_name}</span> */}
       </div>
     ),
     userloginname: (
