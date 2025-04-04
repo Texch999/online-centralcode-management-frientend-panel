@@ -727,7 +727,6 @@ const AddPaymentGatewayPopup = ({
     setQrCode(null);
     setQrName("");
     setValidationErrors({});
-    setMsg("");
   };
 
   const onHide = () => {
@@ -956,13 +955,14 @@ const AddPaymentGatewayPopup = ({
       console.log(response, "==>response")
       // Handle successful response
       setLoading(false);
-      setDiscription(managementPaymentEdit ? "Payment updated" : response?.message);
+      setDiscription(response?.message);
       setSuccessPopupOpen(true);
       resetFields();
       setError("");
-      if(setMsg){
+      if (managementPaymentEdit) {
         setMsg(response?.message)
       }
+
       if (setManagementPaymentEditId) setManagementPaymentEditId(null);
       setOnAddPaymentGateway(false);
     } catch (error) {
