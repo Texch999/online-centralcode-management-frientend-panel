@@ -367,35 +367,35 @@ const AddWebsitesPopup = ({
     if (validateForm()) {
       const finalData = editMode
         ? {
-            deploy_type: formData?.deployType?.value,
-            panel_type: formData?.panelType?.value,
-            web_name: formData?.websiteName,
-            web_url: formData?.websiteURL.replace(/^https?:\/\//i, ""),
-            location_id: formData?.location?.value,
-            // prefix: "BMA",
-            city: formData?.city,
-            status: status,
-            created_by: formData.created_by,
-            queue_name: formData.queue_name,
-            routing_key: formData.routing_key,
-          }
+          deploy_type: formData?.deployType?.value,
+          panel_type: formData?.panelType?.value,
+          web_name: formData?.websiteName,
+          web_url: formData?.websiteURL.replace(/^https?:\/\//i, ""),
+          location_id: formData?.location?.value,
+          // prefix: "BMA",
+          city: formData?.city,
+          status: status,
+          created_by: formData.created_by,
+          queue_name: formData.queue_name,
+          routing_key: formData.routing_key,
+        }
         : {
-            deploy_type: formData?.deployType?.value,
-            panel_type: formData?.panelType?.value,
-            web_name: formData?.websiteName,
-            web_url: formData?.websiteURL,
-            location_id: formData?.location?.value,
-            // prefix: "BMA",
-            city: formData?.city,
-            created_by: userId,
-            queue_name: formData.queue_name,
-            routing_key: formData.routing_key,
-          };
+          deploy_type: formData?.deployType?.value,
+          panel_type: formData?.panelType?.value,
+          web_name: formData?.websiteName,
+          web_url: formData?.websiteURL,
+          location_id: formData?.location?.value,
+          // prefix: "BMA",
+          city: formData?.city,
+          created_by: userId,
+          queue_name: formData.queue_name,
+          routing_key: formData.routing_key,
+        };
       setLoader(true);
       const apiCall =
         editMode === true
           ? updateWebsite(websiteId, finalData)
-          : createWebsite(finalData);
+          : createWebsite(finalData)
       apiCall
         .then((response) => {
           if (response?.status === true) {
@@ -680,27 +680,27 @@ const AddWebsitesPopup = ({
                 Submit
               </button> */}
 
-                 
-                  <button
-                              className="saffron-btn small-font rounded w-100 mt-1 "
-                                onClick={handleSubmit}
-                                disabled={loader}
-                            >
-                                {loader  ? (
-                                    <div className="flex-row" role="status">
-                                        <Spinner
-                                            as="span"
-                                            animation="border"
-                                            size="sm"
-                                            role="status"
-                                            aria-hidden="true"
-                                        />
-                                        <span className="ps-2">Submitting...</span>
-                                    </div>
-                                ) : (
-                                    "Submit"
-                                )}
-                            </button>
+
+              <button
+                className="saffron-btn small-font rounded w-100 mt-1 "
+                onClick={handleSubmit}
+                disabled={loader}
+              >
+                {loader ? (
+                  <div className="flex-row" role="status">
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    <span className="ps-2">Submitting...</span>
+                  </div>
+                ) : (
+                  "Submit"
+                )}
+              </button>
             </div>
           </div>
         </Modal.Body>
