@@ -1267,8 +1267,8 @@ function EditNewDirector() {
                             className="small-font w-100 grey-bg-clr rounded p-2 no-cursor border-0"
                             disabled
                           >
-                            <option value={userWebsite.web_url}>
-                              {userWebsite.web_url}
+                            <option value={userWebsite.id}>
+                              {userWebsite.web_name}
                             </option>
                           </select>
                           {errors[`user_paner_id_${userWebsite.id}`] && (
@@ -3036,7 +3036,7 @@ function EditNewDirector() {
                               options={userWebsitesList[form.id].map(
                                 (site) => ({
                                   value: site.id,
-                                  label: site.web_url,
+                                  label: site.web_name,
                                 })
                               )}
                               value={

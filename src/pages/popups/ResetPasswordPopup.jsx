@@ -95,7 +95,7 @@ function ResetPasswordPopup({
                   })} */}
 
                 <input
-                  className="all-none"
+                  className="all-none w-100 pe-1"
                   placeholder="Enter Password"
                   type={showPassword ? "text" : "password"}
                   {...register("password", {
