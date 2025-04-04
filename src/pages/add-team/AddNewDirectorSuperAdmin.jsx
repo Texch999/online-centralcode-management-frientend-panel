@@ -3093,7 +3093,7 @@ function AddNewDirectorSuperAdmin() {
                                   : selectedAdmins[form.id]?.value
                               ).map((site) => ({
                                 value: site.id,
-                                label: site.web_url,
+                                label: site.web_name,
                               }))}
                               value={
                                 selectedSiteIds[form.id]
