@@ -55,6 +55,7 @@ function Tickets() {
   const [ticketType, setTicketType] = useState("");
   const [spinner, setSpinner] = useState(false);
   const [apiLoading, setApiLoading] = useState(false);
+  const [isPopupSpnner, setIsPopupSpnner] = useState(false);
   const [errors, setErrors] = useState({
     startDate: "",
     fromDate: "",
@@ -104,6 +105,8 @@ function Tickets() {
 
   // ticket details by the ticket id
   const getTicketDetailsById = async (id) => {
+    // [isPopupSpnner, setIsPopupSpnner]
+    setIsPopupSpnner(true)
     let fetchDeposits;
     if (userRole === "management") {
       fetchDeposits = managementDepositTikcetDetailsById;
@@ -112,6 +115,7 @@ function Tickets() {
     }
     await fetchDeposits(id)
       .then((response) => {
+        setIsPopupSpnner(false)
         if (userRole === "management") {
           setTicketDetails(response?.records?.details);
           setRejectionReasons(response?.records?.reasons);
@@ -120,6 +124,7 @@ function Tickets() {
         }
       })
       .catch((error) => {
+        setIsPopupSpnner(false)
         setError(error?.message);
         console.log("fetchDeposits error", error);
       });
@@ -517,6 +522,9 @@ function Tickets() {
           }
           spinner={spinner}
           setSpinner={setSpinner}
+          isPopupSpnner={isPopupSpnner}
+          setIsPopupSpnner={setIsPopupSpnner}
+          // [isPopupSpnner, setIsPopupSpnner]
         />
       )}
 
