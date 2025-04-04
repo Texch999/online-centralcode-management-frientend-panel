@@ -692,7 +692,8 @@ const AddPaymentGatewayPopup = ({
   getDirectorAccountData,
   addpaymentId,
   setDiscription,
-  setSuccessPopupOpen
+  setSuccessPopupOpen,
+  setMsg
 }) => {
   const [upiID, setUpiID] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
@@ -708,7 +709,7 @@ const AddPaymentGatewayPopup = ({
   const role_code = localStorage.getItem("role_code");
   const [details, setDetails] = useState("");
   const [accHolderName, setAccHolderName] = useState("");
-  const [msg, setMsg] = useState("");
+  // const [msg, setMsg] = useState("");
   const [qrName, setQrName] = useState("");
   const [searchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
@@ -726,7 +727,6 @@ const AddPaymentGatewayPopup = ({
     setQrCode(null);
     setQrName("");
     setValidationErrors({});
-    setMsg("");
   };
 
   const onHide = () => {
@@ -918,47 +918,56 @@ const AddPaymentGatewayPopup = ({
       return;
     }
 
-    // Prepare request data
-    const pay_id = updateId ? manPaymentData?.payment_mode_id : addpaymentId.slice(3, -3);
-    const requestData = {
-      payment_mode_id: Number(pay_id),
-      acc_hold_name: accHolderName,
-    };
-
-    if (availablePaymentModeId === 1) {
-      requestData.bank_acc_no = accountNumber;
-      requestData.bank_ifsc = bankIFSC;
-      requestData.bank_name = bankName;
-    } else if (availablePaymentModeId === 2) {
-      requestData.upi_id = upiID;
-    } else if (availablePaymentModeId === 3) {
-      requestData.bank_name = bankName;
-    } else if (availablePaymentModeId === 4) {
-      requestData.details = details;
-    }
-
-    const formData = new FormData();
-    formData.append("body", JSON.stringify(requestData));
-    if (availablePaymentModeId === 3 && qrCode) {
-      formData.append("qr_code_image", qrCode);
-    }
-
     try {
-      setLoading(true);
-      const response = managementPaymentEdit
-        ? await updateManagementPaymentDetails(manPaymentData?.id, formData)
-        : await createManagementPaymentDetails(formData);
+      // Prepare request data
+      const pay_id = updateId ? manPaymentData?.payment_mode_id : addpaymentId.slice(3, -3);
+      const requestData = {
+        payment_mode_id: Number(pay_id),
+        acc_hold_name: accHolderName,
+      };
 
+      if (availablePaymentModeId === 1) {
+        requestData.bank_acc_no = accountNumber;
+        requestData.bank_ifsc = bankIFSC;
+        requestData.bank_name = bankName;
+      } else if (availablePaymentModeId === 2) {
+        requestData.upi_id = upiID;
+      } else if (availablePaymentModeId === 3) {
+        requestData.bank_name = bankName;
+      } else if (availablePaymentModeId === 4) {
+        requestData.details = details;
+      }
+
+      const formData = new FormData();
+      formData.append("body", JSON.stringify(requestData));
+      if (availablePaymentModeId === 3 && qrCode) {
+        formData.append("qr_code_image", qrCode);
+      }
+      setError("");
+      setLoading(true);
+      // Make the API call
+      let response;
+      if (managementPaymentEdit) {
+        response = await updateManagementPaymentDetails(manPaymentData?.id, formData);
+      } else {
+        response = await createManagementPaymentDetails(formData);
+      }
+      console.log(response, "==>response")
+      // Handle successful response
+      setLoading(false);
+      setDiscription(response?.message);
       setSuccessPopupOpen(true);
-      setDiscription(response?.message || "Payment details added");
-      console.log(setDiscription(), "==>setDiscription")
       resetFields();
-      setOnAddPaymentGateway(false);
+      setError("");
+      if (managementPaymentEdit) {
+        setMsg(response?.message)
+      }
+
       if (setManagementPaymentEditId) setManagementPaymentEditId(null);
+      setOnAddPaymentGateway(false);
     } catch (error) {
+      // Handle errors
       setError(error?.message);
-      // setErrorPopupOpen(true);
-    } finally {
       setLoading(false);
     }
   };
@@ -1020,6 +1029,7 @@ const AddPaymentGatewayPopup = ({
       setSuccessPopupOpen(true);
       resetFields();
       getDirectorAccountData();
+      console.log("api calling dir")
       setTimeout(() => {
         setSuccessPopupOpen(false);
         setOnAddPaymentGateway(false);
