@@ -16,6 +16,8 @@ import SuccessPopup from "../pages/popups/SuccessPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { imgUrl } from "../api/baseUrl";
 import { setProfilePhoto } from "../redux/action";
+import { isPlainObject } from "redux";
+import { CircleLoader } from "react-spinners";
 
 const ProfileUpdate = ({ setUpdateProfille }) => {
   const [openResetDropdown, setResetDropdown] = useState(false);
@@ -149,6 +151,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       setConfirmPswdError("Passwords do not match.");
       isValid = false;
     } else {
+      setError("");
       setNewPswdError("");
       setConfirmPswdError("");
     }
@@ -156,9 +159,11 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
     return isValid;
   };
 
+  const [loading, setLoading] = useState(false);
+
   const resetPassword = async () => {
     if (!validatePasswords()) {
-      setError("Please enter valid values")
+      setError("Please Enter valid values");
       return;
     }
     const payload = {
@@ -180,6 +185,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         setError("Unauthorized role.");
         return;
       }
+      setLoading(true);
 
       if (response?.status === true) {
         setMsg(response?.message);
@@ -188,6 +194,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         setConfirmPaswd("");
         setSuccessPopupOpen(true);
         setTimeout(() => setSuccessPopupOpen(false), 3000);
+        setLoading(false);
       } else {
         setError(response?.message);
       }
@@ -234,9 +241,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         setError(response?.message || "Something went wrong.");
       }
     } catch (error) {
-      setError(
-        error?.errors?.message
-      );
+      setError(error?.errors?.message);
     }
   };
 
@@ -331,7 +336,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         >
           <div className="d-flex gap-2">
             <MdLockReset className="white-font" size={18} />
-            Reset Password 
+            Reset Password
           </div>
 
           <span>
@@ -440,13 +445,19 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
                   // }`}
                   className={`w-100  small-font ${
                     !oldPswd || !newPswd || !confirmPswd
-                      ? "disabled-btn py-2 rounded "
+                      ? "saffron-btn py-2 disabled-btn rounded "
                       : "pointer rounded  saffron-btn"
                   }`}
                   onClick={resetPassword}
-                  disabled={!oldPswd || !newPswd || !confirmPswd}
+                  // disabled={!oldPswd || !newPswd || !confirmPswd}
                 >
-                  Submit
+                  {loading ? (
+                    <div className="d-flex flex-center align-items-center">
+                      <CircleLoader size={15} className="black-text" />
+                    </div>
+                  ) : (
+                    <div className="white-text small-font">Submit</div>
+                  )}
                 </button>
               </div>
               {error && <p className="red-font my-2 small-font">{error}</p>}

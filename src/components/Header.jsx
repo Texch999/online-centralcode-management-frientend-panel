@@ -56,8 +56,8 @@ function Header() {
   const handleNavigate = () => {
     role_code === "white_label" && navigate("/white-label-setting");
   };
-  const profilePic =useSelector((item)=>item?.profilePic)
-  console.log(profilePic,"profi")
+  const profilePic = useSelector((item) => item?.profilePic);
+  console.log(profilePic, "profi");
 
   const loginData = useSelector((item) => item?.loginData);
   const handleRegisterBtn = () => {
@@ -186,11 +186,14 @@ function Header() {
             >
               {/* <IoMdNotificationsOutline size={26} className="black-clr" /> */}
               {unreadCount === 0 ? (
-                <IoMdNotificationsOutline size={26} className="black-clr" />
+                <IoMdNotificationsOutline size={26} className="black-text" />
               ) : (
-                <span className="notification-count d-flex flex-center white-text small-font px-1">
-                  {unreadCount}
-                </span>
+                <div>
+                  <IoMdNotificationsOutline size={26} className="black-text" />
+                  <span className="notification-count d-flex flex-center white-text small-font px-1">
+                    {unreadCount}
+                  </span>
+                </div>
               )}
               {/* <span className="notification-count d-flex flex-center white-text small-font px-1">
                 {unreadCount}
