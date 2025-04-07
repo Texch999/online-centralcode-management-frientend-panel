@@ -919,7 +919,7 @@ const AddPaymentGatewayPopup = ({
     }
 
     // Prepare request data
-    const pay_id = updateId ? manPaymentData?.id : addpaymentId.slice(3, -3);
+    const pay_id = updateId ? manPaymentData?.payment_mode_id : addpaymentId.slice(3, -3);
     const requestData = {
       payment_mode_id: Number(pay_id),
       acc_hold_name: accHolderName,
