@@ -219,8 +219,8 @@ const AddWebsitesPopup = ({
               ref_type:
                 refTypesOptions.find((opt) => opt.value === data?.ref_type) ||
                 null,
-              queue_name: data?.queue_name,
-              routing_key: data?.routing_key,
+              queue_name: data?.queueName,
+              routing_key: data?.routingkey,
             });
             setInitialLoadig(false);
             setStatus(data?.status);
@@ -672,12 +672,33 @@ const AddWebsitesPopup = ({
 
             <div className="col-4">
               <label className="small-font mt-1">&nbsp;</label>
-              <button
+              {/* <button
                 className="saffron-btn small-font rounded w-100 mt-1 "
                 onClick={handleSubmit}
                 disabled={loader === true ? true : false}
               >
                 Submit
+              </button> */}
+
+              <button
+                className="saffron-btn small-font rounded w-100 mt-1 "
+                onClick={handleSubmit}
+                disabled={loader}
+              >
+                {loader ? (
+                  <div className="flex-row" role="status">
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    <span className="ps-2">Submitting...</span>
+                  </div>
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </div>

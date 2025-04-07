@@ -708,7 +708,7 @@ const CreditSettlement = () => {
       <div>
         {!apiLoading && (
           <>
-            <div className="flex-between mb-3 mt-1">
+            <div className="flex-start mb-3 mt-1">
               <div className="d-flex align-items-center yellow-font fw-600">
                 <span>
                   <MdOutlineKeyboardArrowLeft
@@ -718,7 +718,7 @@ const CreditSettlement = () => {
                 <span className="yellow-font">Credit & Settlement</span>
               </div>
 
-              <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
+              {/* <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
                 <FaSearch size={16} className="grey-clr me-2" />
                 <input
                   className="small-font all-none"
@@ -726,7 +726,7 @@ const CreditSettlement = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="input-css px-2 medium-font">
               <div className="d-flex flex-start">
@@ -857,6 +857,8 @@ const CreditSettlement = () => {
           setShow={setReturnCreditModal}
           selectedUserId={selectedUserId}
           getAllCreditUsersList={getAllCreditUsersList}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          setDiscription={setDiscription}
         />
       )}
 

@@ -134,7 +134,7 @@ function EditNewDirector() {
     }
     if (isCreditAllowed) {
       if (!creditreference) {
-        newErrors.creditreference = "creditreference is required.";
+        newErrors.creditreference = "Credit Limit is required.";
       }
     }
     setErrors(newErrors);
@@ -315,6 +315,7 @@ function EditNewDirector() {
                       id: site.website_access_id,
                       user_paner_id: site.user_paner_id,
                       web_url: site.user_panel_url,
+                      web_name: site.user_panel_name,
                       admin_panel_id: site.admin_panel_id,
                       commission_type: site.commission_type || "",
                       status: site.status === 1 ? "Active" : "Inactive",
@@ -1175,9 +1176,9 @@ function EditNewDirector() {
           </div>
           <div className="row  align-items-center">
             {/* Checkbox for CREDIT ALLOWED */}
-            <div className="col-2 mt-3  d-flex align-items-center">
+            <div className={`col-2  ${errors?.creditreference ?"": "mt-3"}  d-flex align-items-center`}>
               <label className="fw-600 small-font"> </label>
-              <div className="input-css w-100 mt-2 d-flex justify-content-start align-items-center small-font">
+              <div className={`input-css w-100 ${errors?.creditreference ?"": "mt-2"} d-flex justify-content-start align-items-center small-font`}>
                 <input
                   type="checkbox"
                   checked={isCreditAllowed}
@@ -1196,7 +1197,7 @@ function EditNewDirector() {
                     type="text"
                     className="small-font rounded all-none input-css w-100"
                     placeholder="Enter"
-                    value={creditreference}
+                    value={creditreference||""}
                     onChange={(e) => {
                       const numericValue = e.target.value
                         .replace(/\D/g, "")
@@ -1210,11 +1211,16 @@ function EditNewDirector() {
                     }}
                   />
                 </div>
+                {errors?.creditreference && (
+                <span className="text-danger  error">
+                  {errors?.creditreference}
+                </span>
+              )}
               </div>
             )}
 
             {isCreditAllowed && (
-              <div className="col-2">
+              <div className="col-2 ">
                 <div className="p-1 position-relative">
                   <label className="small-font"> Credit Balance</label>
                   <input
@@ -1225,6 +1231,7 @@ function EditNewDirector() {
                     readOnly
                   />
                 </div>
+               
               </div>
             )}
           </div>
@@ -1259,7 +1266,7 @@ function EditNewDirector() {
                     const currentCommissionType =
                       commissionTypeChanges[userWebsite.website_access_id] ||
                       userWebsite.commission_type;
-
+console.log(userWebsite,"===>userWebsite")
                     return (
                       <div key={userIndex} className="w-100 mt-3 my-2  row">
                         <div className="col-2 d-flex flex-column mt-4">
@@ -1267,8 +1274,8 @@ function EditNewDirector() {
                             className="small-font w-100 grey-bg-clr rounded p-2 no-cursor border-0"
                             disabled
                           >
-                            <option value={userWebsite.web_url}>
-                              {userWebsite.web_url}
+                            <option value={userWebsite.id}>
+                              {userWebsite.web_name}
                             </option>
                           </select>
                           {errors[`user_paner_id_${userWebsite.id}`] && (
@@ -3036,7 +3043,7 @@ function EditNewDirector() {
                               options={userWebsitesList[form.id].map(
                                 (site) => ({
                                   value: site.id,
-                                  label: site.web_url,
+                                  label: site.web_name,
                                 })
                               )}
                               value={

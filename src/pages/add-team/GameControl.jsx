@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { IoArrowBack, IoArrowDown, IoEye, IoEyeOff } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const GameControl = () => {
+  const navigate = useNavigate();
   const [active, setActive] = useState(0);
   const handleActive = (index) => {
     setActive(index);
@@ -80,7 +82,10 @@ const GameControl = () => {
   ];
   return (
     <div>
-      <span className="d-flex align-items-center yellow-font">
+      <span
+        className="d-flex align-items-center yellow-font pointer"
+        onClick={() => navigate(-1)}
+      >
         <IoIosArrowBack />
         Game Control
       </span>
@@ -240,10 +245,8 @@ const GameControl = () => {
         </div>
 
         <div className="mt-2">
-        
           <div className="row small-font align-items-center">
-
-          <div className="small-font my-1 col-2">Management Password</div>
+            <div className="small-font my-1 col-2">Management Password</div>
 
             <div className="col-6">
               <div className="input-bg d-flex br-5 py-2 px-2 flex-between">

@@ -527,7 +527,7 @@ const PaymentGateway = () => {
         </div>
       )}
 
-      {onAddPaymentGateway && (
+      {onAddPaymentGateway  && (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
           setOnAddPaymentGateway={setOnAddPaymentGateway}
@@ -538,8 +538,9 @@ const PaymentGateway = () => {
           setManagementPaymentEditId={setManagementPaymentEditId}
           availablePaymentModeId={availablePaymentModeId}
           setSuccessPopupOpen={setSuccessPopupOpen}
-          setDesciption={setDesciption}
+          setDiscription={setDesciption}
           msg={msg}
+          setMsg={setMsg}
           successPopupOpen={successPopupOpen}
         />
       )}

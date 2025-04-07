@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import { MdOutlineClose } from "react-icons/md";
@@ -21,7 +20,8 @@ const OfflineDepositPopup = ({
   const [remark, setRemark] = useState("");
   const [masterPassword, setMasterPassword] = useState("");
   const [apiErrors, setApiErrors] = useState(null);
-  const [isFinalPaidAmountFocused, setIsFinalPaidAmountFocused] = useState(false);
+  const [isFinalPaidAmountFocused, setIsFinalPaidAmountFocused] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showHide, setShowHide] = useState(false);
 
@@ -109,10 +109,13 @@ const OfflineDepositPopup = ({
   const handlePaidAmountChange = (e) => {
     const value = e.target.value;
     // Allow empty value or numeric value within limits
-    if (value === "" || (Number(value) >= 0 && Number(value) <= Number(selectedChips))) {
+    if (
+      value === "" ||
+      (Number(value) >= 0 && Number(value) <= Number(selectedChips))
+    ) {
       setFinalPaidAmount(value);
     }
-    clearError('paidAmount');
+    clearError("paidAmount");
   };
 
   const getCurrency = (id) => {
@@ -125,11 +128,15 @@ const OfflineDepositPopup = ({
     if (inputValue.length <= 11) {
       setSelectedChips(inputValue);
       // If chips are reduced below current paid amount, adjust paid amount
-      if (inputValue && finalPaidAmount && Number(inputValue) < Number(finalPaidAmount)) {
+      if (
+        inputValue &&
+        finalPaidAmount &&
+        Number(inputValue) < Number(finalPaidAmount)
+      ) {
         setFinalPaidAmount(inputValue);
       }
     }
-    clearError('selectedChips');
+    clearError("selectedChips");
   };
 
   const handleRemarkChange = (e) => {
@@ -137,7 +144,7 @@ const OfflineDepositPopup = ({
     if (inputValue.length <= 250) {
       setRemark(inputValue);
     }
-    clearError('remark');
+    clearError("remark");
   };
 
   const handlePasswordChange = (e) => {
@@ -145,7 +152,7 @@ const OfflineDepositPopup = ({
     if (inputValue.length <= 36) {
       setMasterPassword(inputValue);
     }
-    clearError('masterPassword');
+    clearError("masterPassword");
   };
 
   const calculateNewCredit = () => {
@@ -169,6 +176,10 @@ const OfflineDepositPopup = ({
     setShowHide(!showHide);
   };
 
+  const remainingCreditBal =
+    selectedDetails?.maxCreditLimit - selectedDetails?.creditBalance > 0
+      ? selectedDetails?.maxCreditLimit - selectedDetails?.creditBalance
+      : 0;
   return (
     <Modal show={depositPopup} centered className="confirm-popup" size="md">
       <Modal.Body>
@@ -192,8 +203,9 @@ const OfflineDepositPopup = ({
         {apiErrors && <ErrorComponent error={apiErrors} />}
 
         <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2 text-capitalize">
-          {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${selectedDetails?.name
-            } - ${getCurrency(selectedDetails?.currId)}`}
+          {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${
+            selectedDetails?.name
+          } - ${getCurrency(selectedDetails?.currId)}`}
         </div>
 
         <div className="row">
@@ -206,7 +218,15 @@ const OfflineDepositPopup = ({
               readOnly
             />
           </div>
-
+          <div className="col mb-2">
+            <label className="small-font mb-1">Remaining Credit</label>
+            <input
+              type="text"
+              className="w-100 small-font rounded input-css all-none input-bg"
+              value={remainingCreditBal}
+              readOnly
+            />
+          </div>
           <div className="col mb-2">
             <label className="small-font mb-1">New Credit Deposit</label>
             <input
@@ -223,8 +243,9 @@ const OfflineDepositPopup = ({
             <label className="small-font mb-1">Enter Deposit Chips</label>
             <input
               type="text"
-              className={`w-100 small-font rounded input-css all-none input-bg ${errors.selectedChips ? "is-invalid" : ""
-                }`}
+              className={`w-100 small-font rounded input-css all-none input-bg ${
+                errors.selectedChips ? "is-invalid" : ""
+              }`}
               placeholder="Enter amount"
               value={selectedChips}
               onChange={handleChipsChange}
@@ -241,9 +262,12 @@ const OfflineDepositPopup = ({
               </label>
               <input
                 type="number"
-                className={`w-100 small-font rounded input-css all-none input-bg ${errors.paidAmount ? "is-invalid" : ""
-                  }`}
-                placeholder={finalPaidAmount === "" ? "Optional" : "Enter amount"}
+                className={`w-100 small-font rounded input-css all-none input-bg ${
+                  errors.paidAmount ? "is-invalid" : ""
+                }`}
+                placeholder={
+                  finalPaidAmount === "" ? "Optional" : "Enter amount"
+                }
                 value={finalPaidAmount}
                 onChange={handlePaidAmountChange}
                 onFocus={() => setIsFinalPaidAmountFocused(true)}
@@ -265,8 +289,9 @@ const OfflineDepositPopup = ({
               <label className="small-font mb-1">Paid Amount</label>
               <input
                 type="number"
-                className={`w-100 small-font rounded input-css all-none input-bg ${errors.paidAmount ? "is-invalid" : ""
-                  }`}
+                className={`w-100 small-font rounded input-css all-none input-bg ${
+                  errors.paidAmount ? "is-invalid" : ""
+                }`}
                 placeholder="Enter amount"
                 value={selectedChips} // Auto-fill with chips value when credit not allowed
                 readOnly
@@ -283,8 +308,9 @@ const OfflineDepositPopup = ({
             <label className="small-font mb-1">Remark</label>
             <input
               type="text"
-              className={`w-100 small-font rounded input-css all-none input-bg ${errors.remark ? "is-invalid" : ""
-                }`}
+              className={`w-100 small-font rounded input-css all-none input-bg ${
+                errors.remark ? "is-invalid" : ""
+              }`}
               placeholder="Enter description"
               value={remark}
               onChange={handleRemarkChange}
@@ -298,8 +324,11 @@ const OfflineDepositPopup = ({
         <div className="d-flex flex-column w-100">
           <div className="small-font mb-1">Enter Password</div>
           <div className="d-flex flex-row justify-content-between me-1">
-            <div className={`white-btn2 w-100 flex-between ${errors.masterPassword ? "is-invalid" : ""
-              }`}>
+            <div
+              className={`white-btn2 w-100 flex-between ${
+                errors.masterPassword ? "is-invalid" : ""
+              }`}
+            >
               <input
                 className="all-none p-0 small-font"
                 placeholder="Enter password"
