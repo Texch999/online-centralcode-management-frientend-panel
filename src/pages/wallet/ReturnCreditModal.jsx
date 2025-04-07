@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { IoClose } from "react-icons/io5";
-import { getSettlementSummeryById, returnCreditChips } from "../../api/apiMethods";
+import {
+  getSettlementSummeryById,
+  returnCreditChips,
+} from "../../api/apiMethods";
 import { useSelector } from "react-redux";
 import SuccessPopup from "../popups/SuccessPopup";
 
-const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersList }) => {
+const ReturnCreditModal = ({
+  show,
+  setShow,
+  selectedUserId,
+  getAllCreditUsersList,
+  setSuccessPopupOpen,
+  setDiscription,
+}) => {
   const [settleDetails, setSettleDetails] = useState({});
   const [creditChips, setCreditChips] = useState("");
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item?.allCountries);
   const [parentPassword, setParentPassword] = useState("");
   const [remark, setRemark] = useState("");
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [apiErrors, setApiErrors] = useState(null);
-  const [discription, setDiscription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
 
   // Fetch settlement details
   const GetAllDirectors = (id) => {
@@ -56,7 +63,9 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
       const walletBalance = settleDetails?.avilChips;
 
       if (walletBalance < pendingCreditChips) {
-        setError("Insufficient chips in wallet to return pending credit chips.");
+        setError(
+          "Insufficient chips in wallet to return pending credit chips."
+        );
         setCreditChips(0);
         return;
       }
@@ -78,8 +87,10 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
     const updatedAvailableChips = settleDetails?.avilChips - enteredChips;
     const updatedCreditBalance = settleDetails?.creditBalance - enteredChips;
     return {
-      updatedAvailableChips: updatedAvailableChips >= 0 ? updatedAvailableChips : 0,
-      updatedCreditBalance: updatedCreditBalance >= 0 ? updatedCreditBalance : 0,
+      updatedAvailableChips:
+        updatedAvailableChips >= 0 ? updatedAvailableChips : 0,
+      updatedCreditBalance:
+        updatedCreditBalance >= 0 ? updatedCreditBalance : 0,
     };
   };
 
@@ -97,12 +108,12 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
       setError(`Entered chips cannot exceed ${pendingCreditChips}`);
       return;
     }
-    setIsLoading(true)
+    setIsLoading(true);
     const payload = {
       currency: settleDetails?.currencyId,
       walletBalance: settleDetails?.avilChips,
       creditBalance: settleDetails?.creditBalance,
-      availBalance: settleDetails?.avilChips - Number(creditChips),
+      availBalance: settleDetails?.avilChips - settleDetails?.creditBalance,
       refundedAmount: Number(creditChips),
       remarks: remark,
       parentPassword: parentPassword,
@@ -111,25 +122,23 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
     returnCreditChips(selectedUserId.id, payload)
       .then((response) => {
         setSuccessPopupOpen(true);
-        setIsLoading(false)
-        getAllCreditUsersList()
-        setTimeout(() => {
-          setShow(false);
-          setSuccessPopupOpen(false);
-        }, 3000);
+        setIsLoading(false);
+        getAllCreditUsersList();
+        setShow(false);
         setDiscription("Credit Settled Successfully");
       })
       .catch((error) => {
-        setIsLoading(false)
+        setIsLoading(false);
         setApiErrors(error.message);
         console.error("Failed to submit settlement:", error);
       });
   };
 
-  const { updatedAvailableChips, updatedCreditBalance } = calculateAvailableChips();
+  const { updatedAvailableChips, updatedCreditBalance } =
+    calculateAvailableChips();
 
   return (
-    <Modal show={show} onHide={() => setShow(false)} centered size="sm">
+    <Modal show={show} onHide={() => setShow(false)} centered size="md">
       <div className="white-bg p-3 br-10">
         <div className="d-flex flex-between align-items-center">
           <div className="d-flex flex-center medium-font green-font">
@@ -144,22 +153,30 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
           </div>
         </div>
         <div className="grey-border br-5 px-2 py-1 mt-2 small-font">
-          {`${selectedUserId?.type == "1" ? "D" : "SA"} - ${selectedUserId?.name} - ${getLocationName(settleDetails?.currencyId)}`}
+          {`${selectedUserId?.type == "1" ? "D" : "SA"} - ${
+            selectedUserId?.name
+          } - ${getLocationName(settleDetails?.currencyId)}`}
         </div>
         {apiErrors && (
           <div className="alert alert-danger pb-1">
             {Array.isArray(apiErrors) ? (
               <ul className="pb-1 ps-1">
                 {apiErrors.map((error, index) => (
-                  <li className="small-font" key={index}>{error.message || error}</li>
+                  <li className="small-font" key={index}>
+                    {error.message || error}
+                  </li>
                 ))}
               </ul>
             ) : (
-              <p className="small-font ps-1">{apiErrors.message || apiErrors}</p>
+              <p className="small-font ps-1">
+                {apiErrors.message || apiErrors}
+              </p>
             )}
           </div>
         )}
-        <form onSubmit={handleSubmit}> {/* Add onSubmit handler to the form */}
+        <form onSubmit={handleSubmit}>
+          {" "}
+          {/* Add onSubmit handler to the form */}
           <div className="row mt-3">
             <div className="col-4">
               <label className="small-font">Wallet Balance</label>
@@ -213,7 +230,6 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
               />
             </div>
           </div>
-
           <div className="col-12 mt-2">
             <label className="small-font">Enter Refund Credit Chips</label>
             <input
@@ -225,7 +241,6 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
             />
             {error && <p className="text-danger small-font mt-1">{error}</p>}
           </div>
-
           <div className="col-12">
             <label className="small-font">Remarks</label>
             <textarea
@@ -269,13 +284,13 @@ const ReturnCreditModal = ({ show, setShow, selectedUserId, getAllCreditUsersLis
           </div>
         </form>
       </div>
-      {successPopupOpen && (
+      {/* {successPopupOpen && (
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
           discription={discription}
         />
-      )}
+      )} */}
     </Modal>
   );
 };

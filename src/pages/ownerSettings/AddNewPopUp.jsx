@@ -15,6 +15,7 @@ import {
 import SuccessPopup from "../popups/SuccessPopup";
 import { useForm } from "react-hook-form";
 import ErrorPopup from "../popups/ErrorPopup";
+import { useSearchParams } from "react-router-dom";
 
 const AddNewPopUp = ({
   addNewModalRejection,
@@ -56,6 +57,11 @@ const AddNewPopUp = ({
   const [errorPopup, setErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [msg, setMsg] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const intialpage = parseInt(searchParams.get("page") || 1);
+  const itemsPerPage = 2;
+  const page = intialpage;
+  const pageSize = itemsPerPage;
 
   const selectOptions = [
     { value: 1, label: "Active" },
@@ -134,15 +140,15 @@ const AddNewPopUp = ({
           setSuccessPopupOpen(false);
         }, 1000);
         reset();
-        getRejReasons();
+        getRejReasons(page, pageSize);
         setAddNewModalRejection(false);
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true);
-        setTimeout(() => {
-          setErrorPopup(false);
-        }, 1000);
+        // setErrorPopup(true);
+        // setTimeout(() => {
+        //   setErrorPopup(false);
+        // }, 1000);
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -197,27 +203,29 @@ const AddNewPopUp = ({
           setSuccessPopupOpen(false);
         }, 1000);
         reset();
-        getSecurityQuestions();
+        getSecurityQuestions(page, pageSize);
         setAddNewModalSecurity(false);
       })
       .catch((error) => {
         setError(error?.message);
-        setErrorPopup(true);
-        setTimeout(() => {
-          setErrorPopup(false);
-        }, 1000);
+        // setErrorPopup(true);
+        // setTimeout(() => {
+        //   setErrorPopup(false);
+        // }, 1000);
       })
       .finally(() => {
         setIsSubmitting(false);
       });
   };
 
+  const currentStatus = watch("status")?.value;
+
   const handleQuestionChange = (e) => {
     const value = e.target.value;
 
     if (value.length < 2) {
       setValue("securityQns", value);
-      trigger("securityQns"); // Trigger validation to update errors
+      trigger("securityQns");
     } else {
       setValue("securityQns", value, { shouldValidate: true });
     }
@@ -225,10 +233,9 @@ const AddNewPopUp = ({
 
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
-
     if (value.length < 2) {
       setValue("description", value);
-      trigger("description"); // Trigger validation to update errors
+      trigger("description");
     } else {
       setValue("description", value, { shouldValidate: true });
     }
@@ -335,6 +342,7 @@ const AddNewPopUp = ({
                     type="text"
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
+                    readOnly={currentStatus === 2}
                     {...register("reason", {
                       required: "Reason is required",
                       minLength: {
@@ -363,6 +371,7 @@ const AddNewPopUp = ({
                   <textarea
                     placeholder="Enter"
                     className="all-none input-bg small-font p-2 rounded"
+                    readOnly={currentStatus === 2}
                     rows="4"
                     style={{ resize: "none" }}
                     {...register("description", {
@@ -422,14 +431,14 @@ const AddNewPopUp = ({
                     placeholder="Select"
                     styles={customStyles}
                     value={watch("status") || null}
-                    {...register("status", { required: "Status is required" })} 
+                    {...register("status", { required: "Status is required" })}
                     onChange={(selectedOption) => {
                       setValue("status", selectedOption, {
                         shouldValidate: true,
                       });
-                      trigger("status"); // Trigger validation on change
+                      trigger("status");
                     }}
-                    isSearchable={false} // Disable typing
+                    isSearchable={false}
                   />
                   {errors.status && (
                     <p className="text-danger small-font">
@@ -443,10 +452,8 @@ const AddNewPopUp = ({
                   <input
                     type="text"
                     placeholder="Enter"
+                    readOnly={currentStatus === 2}
                     className="all-none input-bg small-font p-2 rounded"
-                    // {...register("securityQns", {
-                    //   required: "Question is required",
-                    // })}
                     {...register("securityQns", {
                       required: "Question is required",
                       validate: (value) => {
