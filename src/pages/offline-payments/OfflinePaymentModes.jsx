@@ -95,7 +95,7 @@ const OfflinePaymentModes = () => {
       });
   };
   useEffect(() => {
-    if (role_code === "management") {
+    if (role_code === "management" || role_code === "accounts") {
       if (dataFetched.current) return;
       dataFetched.current = true;
       getAllManPaymentModes(page, pageSize);
@@ -114,7 +114,7 @@ const OfflinePaymentModes = () => {
   const handlePageChange = ({ limit, offset }) => {
     setCurrentLimit(limit);
     setCurrentOffset(offset);
-    if (role_code === "management") {
+    if (role_code === "management" || role_code === "accounts") {
       getAllManPaymentModes(intialpage, pageSize, searchInput);
     }
   };

@@ -313,6 +313,17 @@ function SubHeader() {
 
     accounts: [
       {
+        label: "Adding",
+        options: [
+          // { label: "Management Team", path: "/management-team" },
+          { label: "Director & Super Admin", path: "/director-admin" },
+          // { label: "View Downline List", path: "/downline-list" },
+          { label: "Offline Payment Cards", path: "/offline-payment-modes" },
+          { label: "Payment Details", path: "/payment-details" },
+        
+        ],
+      },
+      {
         label: "Wallet",
         options: [
           { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },

@@ -836,7 +836,7 @@ const CreditSettlement = () => {
                 />
               ) : null}
               <span className="ps-2">
-                {isLoading ? "Submitting..." : "Settled"}
+                {isLoading ? "Submitting..." : "Settle"}
               </span>
             </button>
           </div>
