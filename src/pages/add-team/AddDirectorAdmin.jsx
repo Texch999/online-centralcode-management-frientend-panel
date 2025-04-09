@@ -675,8 +675,18 @@ const AddDirectorAdmin = () => {
   };
 
   const handleSuccesPopup = () => {
-    setSuccessPopupOpen(true);
-  };
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    setSuccessPopupOpen(true)
+    setSelectedDetails(null)
+    if (role === "director") {
+      GetAllSuperAdmin(limit, offset);
+    } else if (role === "management") {
+      GetAllDirectors(limit, offset);
+      console.log("halde popup calling")
+    }
+
+  }
 
   return (
     <div>
@@ -836,6 +846,7 @@ const AddDirectorAdmin = () => {
           setDepositPopup={setDepositPopup}
           handleSuccesPopup={handleSuccesPopup}
           setDiscription={setDiscription}
+          GetAllSuperAdmin={GetAllSuperAdmin}
         />
       )}
       {withdrawPopup && (

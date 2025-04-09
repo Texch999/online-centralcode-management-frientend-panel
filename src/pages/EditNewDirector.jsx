@@ -1329,12 +1329,12 @@ console.log(userWebsite,"===>userWebsite")
                               )}
                               value={
                                 {
-                                value: currentCommissionType,
-                                label:
-                                  commissionTypes[currentCommissionType] ||
-                                  "Select",
+                                  value: currentCommissionType,
+                                  label:
+                                    commissionTypes[currentCommissionType] ||
+                                    "Select",
+                                }
                               }
-                            }
                               onChange={(selectedOption) =>
                                 handleCommissionTypeChange(
                                   userWebsite.website_access_id,
@@ -3137,7 +3137,7 @@ console.log(userWebsite,"===>userWebsite")
                                       <>
                                         <div className="col position-relative">
                                           <label className="small-font my-1 fw-600 d-block">
-                                            Downline Share (upto 100%)1
+                                            Downline Share (upto 100%)
                                           </label>
                                           <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
                                             {/* <input
@@ -3353,6 +3353,29 @@ console.log(userWebsite,"===>userWebsite")
                                                   e.target.value
                                                 )
                                               }
+                                              onInput={(e) => {
+                                                let value = e.target.value;
+                                                value = value.replace(
+                                                  /[^0-9]/g,
+                                                  ""
+                                                );
+
+                                                if (parseInt(value) > 9999) {
+                                                } else if (
+                                                  parseInt(value) < 0
+                                                ) {
+                                                  value = "0";
+                                                }
+
+                                                if (
+                                                  parseInt(value) < 0 ||
+                                                  parseInt(value) > 9999
+                                                ) {
+                                                  e.target.value = ""; 
+                                                } else {
+                                                  e.target.value = value; 
+                                                }
+                                              }}
                                               maxLength={4}
                                             />
                                           </div>
@@ -3629,6 +3652,31 @@ console.log(userWebsite,"===>userWebsite")
                                                   e.target.value
                                                 )
                                               }
+                                              onInput={(e) => {
+                                                let value = e.target.value;
+                                                // Allow only numbers & decimals
+                                                value = value.replace(
+                                                  /[^0-9]/g,
+                                                  ""
+                                                );
+
+                                                if (parseInt(value) > 9999) {
+                                                } else if (
+                                                  parseInt(value) < 0
+                                                ) {
+                                                  value = "0";
+                                                }
+
+                                                // If the value is not between 0 and 5, don't accept it
+                                                if (
+                                                  parseInt(value) < 0 ||
+                                                  parseInt(value) > 9999
+                                                ) {
+                                                  e.target.value = ""; // Clear the input if it's out of range
+                                                } else {
+                                                  e.target.value = value; // Otherwise, set the valid value
+                                                }
+                                              }}
                                               maxLength={4}
                                             />
                                           </div>
