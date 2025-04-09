@@ -183,7 +183,7 @@ const ReturnCreditModal = ({
             )}
           </div>
         )} */}
-        
+
         <ErrorComponent error={apiErrors} />
 
         <form onSubmit={handleSubmit}>
@@ -276,10 +276,11 @@ const ReturnCreditModal = ({
               />
             </div> */}
 
-            <div className="col-4">
+            <div className="col-6 ">
+              <label className="small-font">Enter Password</label>
               <div className="input-bg d-flex br-5 py-2 px-2 flex-between border-grey3">
                 <input
-                  className="w-100 small-font rounded all-none"
+                  className="all-none input-css w-100 small-font"
                   type={pswdVisible ? "text" : "password"}
                   placeholder="Enter Password"
                   onChange={(e) => setParentPassword(e.target.value)}
