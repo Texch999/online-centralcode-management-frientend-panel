@@ -43,6 +43,9 @@ const OfflinePaymentModes = () => {
   const allCountries = useSelector((item) => item?.allCountries);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  const [blockLoader,setBlockLoader]=useState(false)
+  console.log(blockLoader,"==>blockLoader");
+  
 
   const hanldeAddModal = () => {
     setShowAddModal(true);
@@ -126,18 +129,26 @@ const OfflinePaymentModes = () => {
   };
 
   const suspendStatus = () => {
+    console.log("active mode");
+    
+    setBlockLoader(true)
+    setConfirmationModal(true);
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         if (response.status === true) {
+          setConfirmationModal(false);
+          setSuccessPopupOpen(true);
+          setBlockLoader(false)
           getAllManPaymentModes(page, pageSize);
           setMsg(response?.message);
-          setSuccessPopupOpen(true);
+          
         }
       })
       .catch((error) => {
         setError(error?.message[0]?.message);
         setConfirmationModal(false);
         setErrorPopup(true);
+        setBlockLoader(false)
         setTimeout(() => {
           setErrorPopup(false);
         }, 2000);
@@ -219,6 +230,9 @@ const OfflinePaymentModes = () => {
       getAllManPaymentModes(pag, pageSiz, searchInput);
     }
   };
+
+
+  
   return (
     <div>
       {!loading && (
@@ -288,6 +302,7 @@ const OfflinePaymentModes = () => {
           } this Payment Mode?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
+          blockLoader={blockLoader}
         />
       )}
 

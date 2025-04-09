@@ -23,6 +23,8 @@ function ConfirmationPopup({
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
+  console.log(blockLoader,"==>blockLoader123");
+  
 
   const handleSunmit = async () => {
     onSubmit(page, pageSize);
