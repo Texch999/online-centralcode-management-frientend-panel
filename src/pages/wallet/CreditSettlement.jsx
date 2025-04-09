@@ -654,7 +654,7 @@ const CreditSettlement = () => {
   };
 
   const handlePageChange = ({ limit, offset }) => {
-    if (role === "management") {
+    if (role === "management" || role === "accounts") {
       getAllCreditUsersList(limit, offset);
     } else {
       console.log("director panel");

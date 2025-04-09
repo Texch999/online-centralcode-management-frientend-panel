@@ -22,12 +22,12 @@ function DepositWithdrawPopup({
   isPopupSpnner,
   setIsPopupSpnner,
 }) {
+
   const handleCancel = () => {
     setTicketDetails(null);
     setRejectionReasons(null);
     setDepositWithdrawPopupOpen(false);
   };
-
 
   const userRole = localStorage.getItem("role_code");
   const allCountries = useSelector((item) => item?.allCountries);
@@ -293,7 +293,7 @@ function DepositWithdrawPopup({
                 </div>
               )}
 
-              {fromPath === "tickets" ? (
+              {fromPath === "tickets" || fromPath === "mydepositwithdraw" ? (
                 <>
                   {ticketData?.status === 0 ? (
                     <>

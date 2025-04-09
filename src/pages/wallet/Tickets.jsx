@@ -83,7 +83,7 @@ function Tickets() {
     type
   ) => {
     let fetchDeposits;
-    if (userRole === "management") {
+    if (userRole === "management" || userRole === "accounts") {
       fetchDeposits = getOwnerDownlineDepositeTicketsList;
     } else {
       // director Downline Tickets
@@ -108,7 +108,7 @@ function Tickets() {
     // [isPopupSpnner, setIsPopupSpnner]
     setIsPopupSpnner(true)
     let fetchDeposits;
-    if (userRole === "management") {
+    if (userRole === "management"|| userRole === "accounts") {
       fetchDeposits = managementDepositTikcetDetailsById;
     } else {
       fetchDeposits = managementDepositTikcetDetailsById;
@@ -116,7 +116,7 @@ function Tickets() {
     await fetchDeposits(id)
       .then((response) => {
         setIsPopupSpnner(false)
-        if (userRole === "management") {
+        if (userRole === "management"|| userRole === "accounts") {
           setTicketDetails(response?.records?.details);
           setRejectionReasons(response?.records?.reasons);
         } else {
@@ -524,7 +524,7 @@ function Tickets() {
           setSpinner={setSpinner}
           isPopupSpnner={isPopupSpnner}
           setIsPopupSpnner={setIsPopupSpnner}
-          // [isPopupSpnner, setIsPopupSpnner]
+        // [isPopupSpnner, setIsPopupSpnner]
         />
       )}
 
