@@ -683,16 +683,16 @@ const CreditSettlement = () => {
     };
     setApiError('');
     setIsLoading(true);
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     creditFullSettlement(data)
       .then(() => {
-        const limit = itemsPerPage;
-        const offset = (page - 1) * itemsPerPage;
         getAllCreditUsersList(limit, offset);
+        setParentPassword("");
         setIsLoading(false);
         setSuccessPopupOpen(true);
         setDiscription("Credit Settled Successfully");
         setPayload([]);
-        setParentPassword("");
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 3000);

@@ -293,7 +293,7 @@ function DepositWithdrawPopup({
                 </div>
               )}
 
-              {fromPath === "tickets" || fromPath === "mydepositwithdraw" ? (
+              {fromPath === "tickets" ? (
                 <>
                   {ticketData?.status === 0 ? (
                     <>
