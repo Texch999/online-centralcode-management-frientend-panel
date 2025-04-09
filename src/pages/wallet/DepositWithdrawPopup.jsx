@@ -307,6 +307,7 @@ function DepositWithdrawPopup({
                           placeholder="Select"
                           styles={customStyles}
                           maxMenuHeight={120}
+                          isSearchable={false}
                           menuPlacement="auto"
                           onChange={handleChange}
                           value={selectedOption?.value}
