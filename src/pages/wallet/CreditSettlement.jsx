@@ -857,6 +857,8 @@ const CreditSettlement = () => {
           setShow={setReturnCreditModal}
           selectedUserId={selectedUserId}
           getAllCreditUsersList={getAllCreditUsersList}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          setDiscription={setDiscription}
         />
       )}
 

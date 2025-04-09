@@ -307,14 +307,8 @@ const AddDirectorAdmin = () => {
           </div>
         </div>
       ),
-      creditref: (
-        <div>{user.creditAllowed == 1 ? user.maxCreditLimit : "--"}</div>
-      ),
-      credit: (
-        <div className="red-font">
-          {user.creditAllowed == 1 ? user.creditBalance : "--"}
-        </div>
-      ),
+      creditref: <div>{user.maxCreditLimit || "--"}</div>,
+      credit: <div className="red-font">{user.creditBalance || "--"}</div>,
       deposit: (
         <div className="green-block">
           {" "}
