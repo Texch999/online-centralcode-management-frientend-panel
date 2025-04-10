@@ -108,7 +108,7 @@ function Tickets() {
     // [isPopupSpnner, setIsPopupSpnner]
     setIsPopupSpnner(true)
     let fetchDeposits;
-    if (userRole === "management"|| userRole === "accounts") {
+    if (userRole === "management" || userRole === "accounts") {
       fetchDeposits = managementDepositTikcetDetailsById;
     } else {
       fetchDeposits = managementDepositTikcetDetailsById;
@@ -116,7 +116,7 @@ function Tickets() {
     await fetchDeposits(id)
       .then((response) => {
         setIsPopupSpnner(false)
-        if (userRole === "management"|| userRole === "accounts") {
+        if (userRole === "management" || userRole === "accounts") {
           setTicketDetails(response?.records?.details);
           setRejectionReasons(response?.records?.reasons);
         } else {
@@ -161,13 +161,13 @@ function Tickets() {
   const getStatusBorderClass = (status) => {
     switch (status) {
       case 0:
-        return "#FFA310"; // Yellow background
+        return "#FFA310";
       case 1:
-        return "#18B962"; // Green background
+        return "#18B962";
       case 2:
-        return "#F43A23"; // Red background
+        return "#F43A23";
       default:
-        return "bg-gray"; // Default gray background
+        return "bg-gray";
     }
   };
 
@@ -190,11 +190,12 @@ function Tickets() {
 
     await apiCAll(ticketId, data)
       .then((response) => {
+        setSpinner(false)
         getDepositTickets(limit, offset);
         setSuccessPopupOpen(true)
         setDepositWithdrawPopupOpen(false)
         setErroDiscription("")
-        setSpinner(false)
+
       })
       .catch((error) => {
         setError(error?.message);
@@ -229,14 +230,15 @@ function Tickets() {
 
     await apiCAll(ticketId, data)
       .then((response) => {
-        if (response.status === true) {
+          setSpinner(false)
           getDepositTickets(limit, offset);
           setSuccessPopupOpen(true);
           setDepositWithdrawPopupOpen(false);
           setErroDiscription("");
-        }
+      
       })
       .catch((error) => {
+        setSpinner(false)
         setError(error?.message);
         setErroDiscription(error?.message);
         setErrorPopupOpen(true);
@@ -368,11 +370,6 @@ function Tickets() {
 
     if (!fromDate) {
       newErrors.fromDate = "From date is required";
-      isValid = false;
-    }
-
-    if (!selectedType) {
-      newErrors.selectedType = "Type selection is required";
       isValid = false;
     }
 

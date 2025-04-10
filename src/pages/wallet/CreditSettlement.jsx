@@ -597,7 +597,7 @@ const CreditSettlement = () => {
           />
         </div>
         <div
-          className="saffron-btn2 white-space"
+          className="saffron-btn2 white-space pointer"
           onClick={() => handleFullSettled(list.id, list.credit_balance)}
         >
           Full Settled
@@ -647,6 +647,7 @@ const CreditSettlement = () => {
       setErrors(newErrors);
       return;
     }
+    
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
     const userId = selectedAdminId?.value;
