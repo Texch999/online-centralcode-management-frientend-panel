@@ -313,12 +313,25 @@ function SubHeader() {
 
     accounts: [
       {
+        label: "Adding",
+        options: [
+          // { label: "Management Team", path: "/management-team" },
+          { label: "Director & Super Admin", path: "/director-admin" },
+          // { label: "View Downline List", path: "/downline-list" },
+          { label: "Offline Payment Cards", path: "/offline-payment-modes" },
+          { label: "Payment Details", path: "/payment-details" },
+        
+        ],
+      },
+      {
         label: "Wallet",
         options: [
           { label: "My Deposit/Withdraw", path: "/deposit-withdraw" },
           {
-            label: "Offline Deposit/Withdraw",
-            path: "/offline-deposit-withdraw",
+            // label: "Offline Deposit/Withdraw",
+            // path: "/offline-deposit-withdraw",
+            label: "Credit & Settlement",
+            path: "/credit-settlement",
           },
           { label: "Tickets", path: "/tickets" },
           { label: "Gateway Transactions", path: "/gateway-transactions" },
@@ -390,9 +403,8 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${
-                activeIndex === index ? "grey-btn" : "balck-btn"
-              } br-0px flex-center w-100`}
+              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
+                } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>

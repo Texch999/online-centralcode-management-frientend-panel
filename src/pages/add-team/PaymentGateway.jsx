@@ -141,7 +141,7 @@ const PaymentGateway = () => {
   }, []);
 
   const onPageChange = ({ limit, offset }) => {
-    if (role_code === "management") {
+    if (role_code === "management" || role_code === "accounts") {
       fetchManagementPaymentDetails(limit, offset, searchInput);
     }
   };
@@ -299,7 +299,7 @@ const PaymentGateway = () => {
   };
 
   useEffect(() => {
-    if (role_code !== "management") {
+    if (role_code !== "management" && role_code !== "accounts") {
       if (paymentDetailsDataFetched.current) return;
       paymentDetailsDataFetched.current = true;
       getDirectorAccountData(pages, pageSize);
@@ -337,7 +337,7 @@ const PaymentGateway = () => {
   const suspendStatus = () => {
     suspendDirectorAccountPaymentDetails(paymentId, status_id)
       .then((response) => {
-        getDirectorAccountData(page,pageSize);
+        getDirectorAccountData(page, pageSize);
         setOnBlockPopup(false);
         setMsg(response?.message);
         setSuccessPopupOpen(true);
@@ -447,10 +447,6 @@ const PaymentGateway = () => {
     }
   }, [searchInput]);
 
-  // successPopupOpen={successPopupOpen}
-  // setSuccessPopupOpen={setSuccessPopupOpen}
-  // discription={msg}
-
   const hanldeGetAllDetails = () => {
     const limit = itemsPerPage;
     const offset = (pages - 1) * itemsPerPage;
@@ -490,7 +486,7 @@ const PaymentGateway = () => {
         </div>
       )}
 
-      {role_code === "management" ? (
+      {role_code === "management" || role_code === "accounts" ? (
         <div className="mt-2">
           {loading ? (
             <div className="spinner">
@@ -527,7 +523,7 @@ const PaymentGateway = () => {
         </div>
       )}
 
-      {onAddPaymentGateway  && (
+      {onAddPaymentGateway && (
         <AddPaymentGatewayPopup
           show={onAddPaymentGateway}
           setOnAddPaymentGateway={setOnAddPaymentGateway}
@@ -562,7 +558,7 @@ const PaymentGateway = () => {
 
         /> */}
 
-      {role_code === "management" ? (
+      {role_code === "management" || role_code === "accounts" ? (
         <ConfirmationPopup
           confirmationPopupOpen={suspendPayment}
           setConfirmationPopupOpen={setSuspendPayment}

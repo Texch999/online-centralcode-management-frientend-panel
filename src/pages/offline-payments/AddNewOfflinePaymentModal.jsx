@@ -389,7 +389,7 @@ const AddNewOfflinePaymentModal = ({
                 type="submit"
                 disabled={loading}
                 onClick={() => {
-                  if (role_code === "management") {
+                  if (role_code === "management" ||role_code === "accounts" ) {
                     postEditPaymentModes();
                   }
                 }}

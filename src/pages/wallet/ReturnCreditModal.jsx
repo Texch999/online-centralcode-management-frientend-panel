@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import { IoClose } from "react-icons/io5";
 import {
   getSettlementSummeryById,
   returnCreditChips,
 } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
-import SuccessPopup from "../popups/SuccessPopup";
+import { IoEye, IoEyeOff, IoEyeOutline } from "react-icons/io5";
+import ErrorComponent from "../../components/ErrorComponent";
 
 const ReturnCreditModal = ({
   show,
@@ -24,11 +25,14 @@ const ReturnCreditModal = ({
   const [remark, setRemark] = useState("");
   const [apiErrors, setApiErrors] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [apiLoading, setApiLoading] = useState(false);
+  const [pswdVisible, setPswdVisible] = useState(false);
   // Fetch settlement details
   const GetAllDirectors = (id) => {
+    setApiLoading(true)
     getSettlementSummeryById(id)
       .then((response) => {
+        setApiLoading(false)
         if (response?.message) {
           const data = response?.message;
           setSettleDetails(...data);
@@ -37,6 +41,7 @@ const ReturnCreditModal = ({
         }
       })
       .catch((error) => {
+        setApiLoading(false)
         console.error(error?.message || "Failed to fetch directors");
       });
   };
@@ -139,6 +144,11 @@ const ReturnCreditModal = ({
 
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
+      {apiLoading && (
+        <div className="my-load">
+          <div className="loader "></div>
+        </div>
+      )}
       <div className="white-bg p-3 br-10">
         <div className="d-flex flex-between align-items-center">
           <div className="d-flex flex-center medium-font green-font">
@@ -153,11 +163,10 @@ const ReturnCreditModal = ({
           </div>
         </div>
         <div className="grey-border br-5 px-2 py-1 mt-2 small-font">
-          {`${selectedUserId?.type == "1" ? "D" : "SA"} - ${
-            selectedUserId?.name
-          } - ${getLocationName(settleDetails?.currencyId)}`}
+          {`${selectedUserId?.type == "1" ? "D" : "SA"} - ${selectedUserId?.name
+            } - ${getLocationName(settleDetails?.currencyId)}`}
         </div>
-        {apiErrors && (
+        {/* {apiErrors && (
           <div className="alert alert-danger pb-1">
             {Array.isArray(apiErrors) ? (
               <ul className="pb-1 ps-1">
@@ -173,7 +182,10 @@ const ReturnCreditModal = ({
               </p>
             )}
           </div>
-        )}
+        )} */}
+        
+        <ErrorComponent error={apiErrors} />
+
         <form onSubmit={handleSubmit}>
           {" "}
           {/* Add onSubmit handler to the form */}
@@ -253,7 +265,7 @@ const ReturnCreditModal = ({
             />
           </div>
           <div className="row ">
-            <div className="col-6">
+            {/* <div className="col-6">
               <label className="small-font">Enter Password</label>
               <input
                 type="text"
@@ -262,6 +274,30 @@ const ReturnCreditModal = ({
                 onChange={(e) => setParentPassword(e.target.value)}
                 value={parentPassword}
               />
+            </div> */}
+
+            <div className="col-4">
+              <div className="input-bg d-flex br-5 py-2 px-2 flex-between border-grey3">
+                <input
+                  className="w-100 small-font rounded all-none"
+                  type={pswdVisible ? "text" : "password"}
+                  placeholder="Enter Password"
+                  onChange={(e) => setParentPassword(e.target.value)}
+                />
+                {pswdVisible ? (
+                  <IoEye
+                    className="black-font"
+                    size={15}
+                    onClick={() => setPswdVisible(false)}
+                  />
+                ) : (
+                  <IoEyeOff
+                    className="black-font"
+                    size={15}
+                    onClick={() => setPswdVisible(true)}
+                  />
+                )}
+              </div>
             </div>
             <div className="col-6 mt-4">
               <button
@@ -274,6 +310,13 @@ const ReturnCreditModal = ({
                     className="spinner-border spinner-border-sm"
                     role="status"
                   >
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
                     <span className="visually-hidden">Submiting...</span>
                   </div>
                 ) : (

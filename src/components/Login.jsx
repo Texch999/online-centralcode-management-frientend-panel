@@ -89,6 +89,7 @@ function Login() {
 
       if (response?.status === true) {
         dispatch(setLoginData(response));
+        console.log(response?.user, "==>response?.user")
         // await setSecureItem("jwt_token", response?.token);
         localStorage.setItem("jwt_token", response?.token);
         localStorage.setItem("user_id", response?.user?.id);
@@ -103,9 +104,9 @@ function Login() {
           "role_name",
           response?.user?.role?.role_name === "promotion" ? "Designing Team" : response?.user?.role?.role_name
         );
-        
+
         localStorage.setItem("role_code", response?.user?.role?.role_name);
-        if (response?.user?.role?.role_name === "management") {
+        if (response?.user?.role?.role_name === "management" || response?.user?.role?.role_name === "accounts" ) {
           localStorage.setItem("currency_id", 107);
         } else {
           localStorage.setItem("currency_id", response?.user?.currency_id);
@@ -221,9 +222,8 @@ function Login() {
               )}
 
               <button
-                className={`orange-btn mt-4 w-100 ${
-                  !isValid || loading ? "disabled-btn" : ""
-                }`}
+                className={`orange-btn mt-4 w-100 ${!isValid || loading ? "disabled-btn" : ""
+                  }`}
                 type="submit"
                 disabled={!isValid || loading}
               >

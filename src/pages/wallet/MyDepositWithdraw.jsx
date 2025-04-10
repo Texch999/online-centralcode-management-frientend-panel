@@ -61,7 +61,7 @@ function MyDepositWithdraw() {
   const getDepositTickets = async (limit, offset, startDate, fromDate, type) => {
 
     let fetchDeposits;
-    if (userRole === "management") {
+    if (userRole === "management" || userRole === "accounts") {
       fetchDeposits = getOwnerDownlineDepositeTicketsList;
     } else {
       fetchDeposits = getDirectorDepositeTicketsList;
@@ -131,7 +131,7 @@ function MyDepositWithdraw() {
   const getTicketDetailsById = async (id) => {
 
     let fetchDeposits;
-    if (userRole === "management") {
+    if (userRole === "management" || userRole === "accounts") {
       fetchDeposits = managementDepositTikcetDetailsById;
     } else {
       fetchDeposits = depositTikcetDetailsById;
@@ -139,7 +139,7 @@ function MyDepositWithdraw() {
 
     await fetchDeposits(id)
       .then((response) => {
-        if (userRole === "management") {
+        if (userRole === "management" || userRole === "accounts") {
           setTicketDetails(response?.records?.details);
           setRejectionReasons(response?.records?.reasons)
         } else {
@@ -304,6 +304,7 @@ function MyDepositWithdraw() {
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">
           My Deposit & Withdraw</h6>
+
         <div className="d-flex align-items-center gap-1">
           <button className={`me-3 dark-green-bg px-3`} onClick={() =>
             handleDeposit("Deposit")

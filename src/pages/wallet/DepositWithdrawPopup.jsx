@@ -22,12 +22,12 @@ function DepositWithdrawPopup({
   isPopupSpnner,
   setIsPopupSpnner,
 }) {
+
   const handleCancel = () => {
     setTicketDetails(null);
     setRejectionReasons(null);
     setDepositWithdrawPopupOpen(false);
   };
-
 
   const userRole = localStorage.getItem("role_code");
   const allCountries = useSelector((item) => item?.allCountries);
@@ -307,6 +307,7 @@ function DepositWithdrawPopup({
                           placeholder="Select"
                           styles={customStyles}
                           maxMenuHeight={120}
+                          isSearchable={false}
                           menuPlacement="auto"
                           onChange={handleChange}
                           value={selectedOption?.value}

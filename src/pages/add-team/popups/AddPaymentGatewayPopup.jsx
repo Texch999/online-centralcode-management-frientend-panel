@@ -1243,7 +1243,7 @@ const AddPaymentGatewayPopup = ({
                 type="submit"
                 disabled={loading}
                 onClick={
-                  role_code === "management"
+                  role_code === "management" || role_code === "accounts"
                     ? handleManagementPayments
                     : handleDirectorPayments
                 }

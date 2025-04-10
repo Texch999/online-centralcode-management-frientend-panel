@@ -11,6 +11,7 @@ import {
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { Spinner } from "react-bootstrap";
 
 const SettlementTransaction = () => {
 
@@ -18,6 +19,8 @@ const SettlementTransaction = () => {
   const { userId, userName, roleType } = location.state || {};
   const role = localStorage.getItem("role_code");
   const [settleModalShow, setSettleModalShow] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [settleModalTransaction, setSettleModalTransaction] = useState([]);
   const [selectedAdminId, setSelectedAdminId] = useState(null);
   const [downlines, setDownlines] = useState([]);
@@ -57,9 +60,11 @@ const SettlementTransaction = () => {
       startDate: startDate,
       endDate: endDate,
     };
-
+    setApiLoading(true)
     getSettlementTransactionById({ userId, params })
       .then((response) => {
+        setApiLoading(false)
+        setLoading(false)
         if (response.records) {
           setSettleModalTransaction(response.records);
           setTotalCredit(response.totalCredit);
@@ -68,10 +73,14 @@ const SettlementTransaction = () => {
           setTotalrecords(response.count);
           setName(response.name);
         } else {
+          setLoading(false)
+          setApiLoading(false)
           console.error("Something Went Wrong");
         }
       })
       .catch((error) => {
+        setLoading(false)
+        setApiLoading(false)
         console.error(error?.message || "Failed to fetch transactions");
       });
   };
@@ -128,6 +137,7 @@ const SettlementTransaction = () => {
     // If all validations pass, proceed with API call
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
+    setLoading(true)
     getSettleTransaction(limit, offset, type, fromDate, toDate);
   };
 
@@ -161,7 +171,7 @@ const SettlementTransaction = () => {
 
   // Handle page change
   const handlePageChange = ({ limit, offset }) => {
-    if (role === "management") {
+    if (role === "management" || role === "accounts") {
       getSettleTransaction(limit, offset, selectedType, fromDate, toDate);
     } else {
       console.log("director panel");
@@ -170,132 +180,154 @@ const SettlementTransaction = () => {
 
   return (
     <div>
-      <div className="flex-start mb-3 mt-2 align-items-center">
-        <div className="d-flex fw-600 yellow-font mb-0 align-items-center">
-          <span>
-            <MdOutlineKeyboardArrowLeft
-              size={25}
-              onClick={() => navigate(-1)}
-            />
-          </span>
-          <span> Credit Settlement History</span>
-          <span className="Breadcrumbs px-2 rounded medium-font ms-1 text-capitalize black-text "> {userName}</span>
-          <span className="ms-1 black-text medium-font"> {roleType == "1" ? "Director" : "Super Admin"} <MdOutlineKeyboardArrowRight size={17} /> </span>
+      {!apiLoading && (
+        <div className="flex-start mb-3 mt-2 align-items-center">
+          <div className="d-flex fw-600 yellow-font mb-0 align-items-center">
+            <span>
+              <MdOutlineKeyboardArrowLeft
+                size={25}
+                onClick={() => navigate(-1)}
+              />
+            </span>
+            <span> Credit Settlement History</span>
+            <span className="Breadcrumbs px-2 rounded medium-font ms-1 text-capitalize black-text "> {userName}</span>
+            <span className="ms-1 black-text medium-font"> {roleType == "1" ? "Director" : "Super Admin"} <MdOutlineKeyboardArrowRight size={17} /> </span>
+          </div>
         </div>
-      </div>
-      <div className="d-flex flex-column gap-2">
-        <div className="row">
-          <div className="col-2 me-2 align-self-end">
-            <div className="white-btn2 flex-between">
-              <span className="small-font">Total Credit</span>
-              <span className="small-font red-font">
-                {totalCredit > 0 ? totalCredit : 0}
-              </span>
+      )}
+
+      {!apiLoading && (
+        <div className="d-flex flex-column gap-2">
+          <div className="row">
+            <div className="col-2 me-2 align-self-end">
+              <div className="white-btn2 flex-between">
+                <span className="small-font">Total Credit</span>
+                <span className="small-font red-font">
+                  {totalCredit > 0 ? totalCredit : 0}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="col-2 me-2 align-self-end">
-            <div className="white-btn2 flex-between">
-              <span className="small-font">Paid Credit</span>
-              <span className="small-font red-font">
-                {settledCredit > 0 ? settledCredit : 0}
-              </span>
+            <div className="col-2 me-2 align-self-end">
+              <div className="white-btn2 flex-between">
+                <span className="small-font">Paid Credit</span>
+                <span className="small-font red-font">
+                  {settledCredit > 0 ? settledCredit : 0}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="col-2 me-2 align-self-end">
-            <div className="white-btn2 flex-between">
-              <span className="small-font">Bal Credit</span>
-              <span className="small-font red-font">
-                {creditBal > 0 ? creditBal : 0}
-              </span>
+            <div className="col-2 me-2 align-self-end">
+              <div className="white-btn2 flex-between">
+                <span className="small-font">Bal Credit</span>
+                <span className="small-font red-font">
+                  {creditBal > 0 ? creditBal : 0}
+                </span>
+              </div>
             </div>
+            <div className="col-1"></div>
           </div>
-          <div className="col-1"></div>
-        </div>
-        <div className="row justify-content-between align-items-center">
-          <div className="col-10 d-flex flex-wrap align-items-center">
-            <div className="col-2">
-              <div className="d-flex flex-column me-3">
-                <label className="black-text4 small-font mb-1">
-                  Select Type
-                </label>
-                <Select
-                  className="small-font"
-                  options={TrasactionType}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                  classNamePrefix="custom-react-select"
-                  onChange={(option) => {
-                    setSelectedType(option);
-                    setErrors((prev) => ({ ...prev, selectedType: "" })); // Clear error when type is selected
-                  }}
-                />
-                {errors.selectedType && (
-                  <div className="text-danger small-font">
-                    {errors.selectedType}
-                  </div>
-                )}
+          <div className="row justify-content-between align-items-center">
+            <div className="col-10 d-flex flex-wrap align-items-center">
+              <div className="col-2">
+                <div className="d-flex flex-column me-3">
+                  <label className="black-text4 small-font mb-1">
+                    Select Type
+                  </label>
+                  <Select
+                    className="small-font"
+                    options={TrasactionType}
+                    placeholder="Select"
+                    styles={customStyles}
+                    maxMenuHeight={120}
+                    menuPlacement="auto"
+                    classNamePrefix="custom-react-select"
+                    onChange={(option) => {
+                      setSelectedType(option);
+                      setErrors((prev) => ({ ...prev, selectedType: "" })); // Clear error when type is selected
+                    }}
+                  />
+                  {errors.selectedType && (
+                    <div className="text-danger small-font">
+                      {errors.selectedType}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {["From", "To"].map((label) => (
+                <div key={label} className="col-2 d-flex flex-column mx-2">
+                  <label className="black-text4 small-font mb-1">{label}</label>
+                  <input
+                    className="input-css2 small-font"
+                    type="date"
+                    onChange={(e) => {
+                      if (label === "From") {
+                        setFromDate(e.target.value);
+                        setErrors((prev) => ({ ...prev, fromDate: "" })); // Clear error when From date is selected
+                      } else {
+                        setToDate(e.target.value);
+                        setErrors((prev) => ({ ...prev, toDate: "" })); // Clear error when To date is selected
+                      }
+                    }}
+                  />
+                  {label === "From" && errors.fromDate && (
+                    <div className="text-danger small-font">
+                      {errors.fromDate}
+                    </div>
+                  )}
+                  {label === "To" && errors.toDate && (
+                    <div className="text-danger small-font">{errors.toDate}</div>
+                  )}
+                </div>
+              ))}
+
+              <div className="col-1 d-flex align-items-end align-self-end ms-3">
+                <button
+                  className="saffron-btn2 w-100 small-font"
+                  onClick={handleSubmit}
+                >
+                  {loading ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : null}
+
+                  {loading ? "Submiting" : "Submit"}
+                </button>
               </div>
             </div>
 
-            {["From", "To"].map((label) => (
-              <div key={label} className="col-2 d-flex flex-column mx-2">
-                <label className="black-text4 small-font mb-1">{label}</label>
-                <input
-                  className="input-css2 small-font"
-                  type="date"
-                  onChange={(e) => {
-                    if (label === "From") {
-                      setFromDate(e.target.value);
-                      setErrors((prev) => ({ ...prev, fromDate: "" })); // Clear error when From date is selected
-                    } else {
-                      setToDate(e.target.value);
-                      setErrors((prev) => ({ ...prev, toDate: "" })); // Clear error when To date is selected
-                    }
-                  }}
-                />
-                {label === "From" && errors.fromDate && (
-                  <div className="text-danger small-font">
-                    {errors.fromDate}
-                  </div>
-                )}
-                {label === "To" && errors.toDate && (
-                  <div className="text-danger small-font">{errors.toDate}</div>
-                )}
-              </div>
-            ))}
-
-            <div className="col-1 d-flex align-items-end align-self-end ms-3">
-              <button
-                className="saffron-btn2 w-100 small-font"
-                onClick={handleSubmit}
+            <div className="col-2 d-flex justify-content-end align-self-end pointer">
+              <div
+                className="white-bg br-5 px-2 py-2 text-center small-font black-border pointer"
+                onClick={hanldeSettlement}
               >
-                Submit
-              </button>
-            </div>
-          </div>
-
-          <div className="col-2 d-flex justify-content-end align-self-end pointer">
-            <div
-              className="white-bg br-5 px-2 py-2 text-center small-font black-border pointer"
-              onClick={hanldeSettlement}
-            >
-              Settlement
+                Settlement
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="mt-3 py-2">
-        <Table
-          columns={COLUMNS}
-          data={DATA}
-          itemsPerPage={itemsPerPage}
-          totalRecords={totalRecords}
-          onPageChange={handlePageChange}
-        />
-      </div>
-      {console.log(userId, "==>userId")}
+      )}
+
+      {apiLoading ?
+        <div className="spinner">
+          <div className="spinner-circle"></div>
+        </div>
+        :
+        <div className="mt-3 py-2">
+          <Table
+            columns={COLUMNS}
+            data={DATA}
+            itemsPerPage={itemsPerPage}
+            totalRecords={totalRecords}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      }
+
       {settleModalShow && userId && (
         <SettlementTransModal
           setSettleModalShow={setSettleModalShow}
