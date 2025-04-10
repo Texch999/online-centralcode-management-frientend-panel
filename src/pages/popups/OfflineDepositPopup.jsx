@@ -31,9 +31,7 @@ const OfflineDepositPopup = ({
     if (!selectedChips || Number(selectedChips) <= 0) {
       newErrors.selectedChips = "Required field";
     }
-    if (!remark || remark.trim() === "") {
-      newErrors.remark = "Required field";
-    }
+
     if (!masterPassword || masterPassword.trim() === "") {
       newErrors.masterPassword = "Required field";
     }
@@ -43,6 +41,8 @@ const OfflineDepositPopup = ({
         newErrors.paidAmount = "Required field";
       } else if (Number(finalPaidAmount) > Number(selectedChips)) {
         newErrors.paidAmount = `Cannot exceed ${selectedChips}`;
+      } else if (Number(finalPaidAmount) < Number(selectedChips)) {
+        newErrors.paidAmount = `Paid must be ${selectedChips}`;
       }
     }
 
@@ -72,7 +72,7 @@ const OfflineDepositPopup = ({
       newCredit = oldCredit + (chipsValue - paidValue);
     } else {
       // When credit is not allowed: new credit = old + chips (must pay full amount)
-      newCredit = oldCredit + chipsValue;
+      newCredit = 0;
     }
 
     const payload = {
@@ -80,10 +80,13 @@ const OfflineDepositPopup = ({
       oldCredit: oldCredit,
       chipAmount: chipsValue,
       paidAmount: paidValue,
-      totalCredit: newCredit,
-      remarks: remark,
+      totalCredit: oldCredit + newCredit,
+      // remarks: remark,
       parentPassword: masterPassword,
     };
+    if (remark) {
+      payload.remarks = remark;
+    }
 
     setIsLoading(true);
     ManagementOfflineDepositeTicketCreation(selectedDetails?.id, payload)
@@ -168,7 +171,7 @@ const OfflineDepositPopup = ({
       return credit < 0 ? 0 : credit;
     } else {
       // No credit allowed: must pay full amount (new credit = chips)
-      return chips;
+      return 0;
     }
   };
 
@@ -287,15 +290,38 @@ const OfflineDepositPopup = ({
           ) : (
             <div className="col mb-2">
               <label className="small-font mb-1">Paid Amount</label>
-              <input
+              {/* <input
                 type="number"
                 className={`w-100 small-font rounded input-css all-none input-bg ${
                   errors.paidAmount ? "is-invalid" : ""
                 }`}
                 placeholder="Enter amount"
-                value={selectedChips} // Auto-fill with chips value when credit not allowed
+                value={finalPaidAmount} // Auto-fill with chips value when credit not allowed
                 readOnly
+              /> */}
+              <input
+                type="number"
+                className={`w-100 small-font rounded input-css all-none input-bg ${
+                  errors.paidAmount ? "is-invalid" : ""
+                }`}
+                placeholder={
+                  finalPaidAmount === "" ? "Optional" : "Enter amount"
+                }
+                value={finalPaidAmount}
+                onChange={handlePaidAmountChange}
+                onFocus={() => setIsFinalPaidAmountFocused(true)}
+                onBlur={() => setIsFinalPaidAmountFocused(false)}
+                min="0"
+                max={Number(selectedChips)}
               />
+              {/* {isFinalPaidAmountFocused && finalPaidAmount > selectedChips && (
+                <div className="text-danger small-font mt-1">
+                  Cannot exceed {selectedChips}
+                </div>
+              )} */}
+              {/* {!isFinalPaidAmountFocused && errors.paidAmount && (
+                <p className="text-danger small-font">{errors.paidAmount}</p>
+              )} */}
               {errors.paidAmount && (
                 <p className="text-danger small-font">{errors.paidAmount}</p>
               )}

@@ -131,13 +131,13 @@ function EditManagementPopup({
 
   return (
     <Modal show={EditShow} onHide={handleEditShowClose} size="md" centered>
+      {initialLoading && (
+        <div className="my-load">
+          <div className="loader "></div>
+        </div>
+      )}
 
-
-      {initialLoading && <div className="my-load">
-        <div className="loader "></div></div>}
-
-      <Modal.Body >
-
+      <Modal.Body>
         <div className="d-flex   justify-content-between align-items-center fw-600">
           <span className="yellow-font"> Edit Management Team </span>
           <MdOutlineClose
@@ -151,7 +151,6 @@ function EditManagementPopup({
           className="add-management-popup-form mt-2"
           onSubmit={handleSubmit}
         >
-
           <div className="row mb-3 align-items-start">
             {/* <div className="red-font small-font mt-2">{backendErrors}</div> */}
 
@@ -300,13 +299,8 @@ function EditManagementPopup({
               <span className="ms-2">Submit</span>
             </Button>
           </div>
-
         </form>
       </Modal.Body>
-
-
-
-
     </Modal>
   );
 }

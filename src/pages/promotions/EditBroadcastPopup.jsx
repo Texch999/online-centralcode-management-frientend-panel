@@ -87,7 +87,7 @@ const EditBroadcastPopup = ({
     const value = e.target.value;
 
     // Remove special characters while typing
-    const sanitizedValue = value.replace(/[^a-zA-Z0-9]/g, "");
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9 .,!?]/g, "");
 
     // Show error if the length is less than 2 characters
     if (sanitizedValue.length > 0 && sanitizedValue.length < 2) {
