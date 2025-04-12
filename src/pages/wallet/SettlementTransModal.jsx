@@ -6,15 +6,22 @@ import * as Yup from "yup";
 import { creditSettlements, getSettlementSummeryById } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorComponent from "../../components/ErrorComponent";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
-const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDirSAId, getApi }) => {
+const SettlementTransModal = ({
+  setSettleModalShow,
+  settleModalShow,
+  selectedDirSAId,
+  getApi,
+  setSuccessPopupOpen,
+  setDiscription
+}) => {
   const [settleDetails, setSettleDetails] = useState({});
   const [netCreditBalance, setNetCreditBalance] = useState(settleDetails?.creditBalance);
   const [apiErrors, setApiErrors] = useState(null);
-  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [apiLoading, setApiLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [discription, setDiscription] = useState("");
+  const [pswdVisible, setPswdVisible] = useState(false);
 
   const getSettlementSummery = (id) => {
     setApiLoading(true)
@@ -50,10 +57,6 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
         "Password must be 6-36 alphanumeric characters"
       )
       .required("Password is required"),
-    remarks: Yup.string()
-      .min(2, "Remarks must be at least 2 characters")
-      .max(250, "Remarks cannot exceed 250 characters")
-      .required("Remarks are required"),
   });
 
   const formik = useFormik({
@@ -73,21 +76,20 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
         oldCredit: oldCredit,
         paidAmount: paidAmount || 0,
         totalCredit: totalCredit,
-        remarks: values.remarks,
+        // remarks: values.remarks,
         parentPassword: values.password,
       };
+      if (values.remarks) {
+        payload.remarks = values.remarks
+      }
       setLoading(true)
       creditSettlements(selectedDirSAId, payload)
         .then((response) => {
           setLoading(false)
-          setSettleModalShow(true);
-          getApi();
           setSuccessPopupOpen(true)
-          setTimeout(() => {
-            setSettleModalShow(false);
-            setSuccessPopupOpen(false);
-          }, 3000);
           setDiscription("Credit Settled Successfully")
+          getApi();
+          setSettleModalShow(false)
         })
         .catch((error) => {
           setLoading(false)
@@ -148,7 +150,7 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
           </div>
         )} */}
         <ErrorComponent error={apiErrors} />
-        
+
         <form onSubmit={formik.handleSubmit}>
           <div className="row mt-2">
             <div className="col-6">
@@ -193,21 +195,36 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
               <label className="small-font">Enter Paid Amount</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
-                  type="number"
-                  placeholder="1000"
+                  type="text"  // Using text type to have more control over input
+                  inputMode="numeric" // Shows numeric keyboard on mobile devices
+                  placeholder="Enter paid amount"
                   className="all-none small-font w-100"
-                  min="0"
-                  max={settleDetails?.creditBalance}
                   value={formik.values.enterPaidAmount}
                   onChange={(e) => {
-                    const value = e.target.value;
-                    const maxAmount = settleDetails?.creditBalance;
+                    let value = e.target.value;
 
-                    // Cap the value to the maximum allowed amount
-                    const cappedValue = Math.min(Number(value), maxAmount);
+                    // 1. Remove any non-digit characters
+                    value = value.replace(/[^0-9]/g, '');
 
-                    // Update the formik value
-                    formik.setFieldValue("enterPaidAmount", cappedValue);
+                    // 2. Remove leading zeros (but allow single zero)
+                    value = value.replace(/^0+/, '') || '0';
+
+                    // 3. Cap the value to maximum allowed amount if needed
+                    if (settleDetails?.creditBalance) {
+                      const numericValue = parseInt(value, 10);
+                      if (numericValue > settleDetails.creditBalance) {
+                        value = settleDetails.creditBalance.toString();
+                      }
+                    }
+
+                    // 4. Update the formik value
+                    formik.setFieldValue("enterPaidAmount", value === '0' ? '' : value);
+                  }}
+                  onBlur={(e) => {
+                    // When field loses focus, ensure empty values are set to 0
+                    if (e.target.value === '') {
+                      formik.setFieldValue("enterPaidAmount", 0);
+                    }
                   }}
                 />
               </div>
@@ -243,14 +260,9 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
                 {...formik.getFieldProps("remarks")}
               />
             </div>
-            {formik.touched.remarks && formik.errors.remarks && (
-              <div className="text-danger small-font">
-                {formik.errors.remarks}
-              </div>
-            )}
           </div>
           <div className="row mt-2">
-            <div className="col-6 flex-column d-flex">
+            {/* <div className="col-6 flex-column d-flex">
               <label className="small-font">Enter Password</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
@@ -259,6 +271,36 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
                   className="all-none small-font"
                   {...formik.getFieldProps("password")}
                 />
+              </div>
+              {formik.touched.password && formik.errors.password && (
+                <div className="text-danger small-font">
+                  {formik.errors.password}
+                </div>
+              )}
+            </div> */}
+
+            <div className="col-6">
+              <label className="small-font">Enter Password</label>
+              <div className="light-bg br-5 mt-1">
+                <input
+                  type={pswdVisible ? "text" : "password"}
+                  placeholder="Enter Password"
+                  className="all-none small-font input-css4 p-1 "
+                  {...formik.getFieldProps("password")}
+                />
+                {pswdVisible ? (
+                  <IoEye
+                    className="black-font"
+                    size={15}
+                    onClick={() => setPswdVisible(false)}
+                  />
+                ) : (
+                  <IoEyeOff
+                    className="black-font"
+                    size={15}
+                    onClick={() => setPswdVisible(true)}
+                  />
+                )}
               </div>
               {formik.touched.password && formik.errors.password && (
                 <div className="text-danger small-font">
@@ -286,19 +328,18 @@ const SettlementTransModal = ({ setSettleModalShow, settleModalShow, selectedDir
                 ) : (
                   "Submit"
                 )}
-                Submit
               </button>
             </div>
           </div>
         </form>
       </div>
-      {successPopupOpen && (
+      {/* {successPopupOpen && (
         <SuccessPopup
           successPopupOpen={successPopupOpen}
           setSuccessPopupOpen={setSuccessPopupOpen}
           discription={discription}
         />
-      )}
+      )} */}
     </Modal>
   );
 };

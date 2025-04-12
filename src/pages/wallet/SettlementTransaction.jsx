@@ -12,6 +12,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Spinner } from "react-bootstrap";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const SettlementTransaction = () => {
 
@@ -36,6 +37,8 @@ const SettlementTransaction = () => {
   const [creditBal, setCreditBal] = useState("");
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false)
+  const [discription, setDiscription] = useState("")
 
   // State to track field-specific errors
   const [errors, setErrors] = useState({
@@ -242,11 +245,7 @@ const SettlementTransaction = () => {
                       setErrors((prev) => ({ ...prev, selectedType: "" })); // Clear error when type is selected
                     }}
                   />
-                  {errors.selectedType && (
-                    <div className="text-danger small-font">
-                      {errors.selectedType}
-                    </div>
-                  )}
+
                 </div>
               </div>
 
@@ -266,14 +265,6 @@ const SettlementTransaction = () => {
                       }
                     }}
                   />
-                  {label === "From" && errors.fromDate && (
-                    <div className="text-danger small-font">
-                      {errors.fromDate}
-                    </div>
-                  )}
-                  {label === "To" && errors.toDate && (
-                    <div className="text-danger small-font">{errors.toDate}</div>
-                  )}
                 </div>
               ))}
 
@@ -295,6 +286,25 @@ const SettlementTransaction = () => {
                   {loading ? "Submiting" : "Submit"}
                 </button>
               </div>
+            </div>
+            <div className="col-10 d-flex flex-wrap align-items-center">
+              <div className="col-2">
+
+              </div>
+
+              {["From", "To"].map((label) => (
+                <div key={label} className="col-2 d-flex flex-column mx-2">
+
+                  {label === "From" && errors.fromDate && (
+                    <div className="text-danger small-font">
+                      {errors.fromDate}
+                    </div>
+                  )}
+                  {label === "To" && errors.toDate && (
+                    <div className="text-danger small-font">{errors.toDate}</div>
+                  )}
+                </div>
+              ))}
             </div>
 
             <div className="col-2 d-flex justify-content-end align-self-end pointer">
@@ -331,6 +341,15 @@ const SettlementTransaction = () => {
           settleModalShow={settleModalShow}
           selectedDirSAId={userId}
           getApi={getSettleTransaction}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          setDiscription={setDiscription}
+        />
+      )}
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={discription}
         />
       )}
     </div>
