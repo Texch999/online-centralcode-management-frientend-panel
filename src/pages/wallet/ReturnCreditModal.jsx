@@ -305,7 +305,7 @@ const ReturnCreditModal = ({
               <label className="small-font">Enter Password</label>
               <div className={`input-bg d-flex br-5 px-2 flex-between border-grey3`}>
                 <input
-                  className={`all-none input-css w-100 small-font `}
+                  className={`all-none input-css4 p-1 w-100 small-font `}
                   type={pswdVisible ? "text" : "password"}
                   placeholder="Enter Password"
                   onChange={(e) => setParentPassword(e.target.value)}
