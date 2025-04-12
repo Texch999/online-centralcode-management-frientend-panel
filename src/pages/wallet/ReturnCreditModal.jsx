@@ -245,8 +245,9 @@ const ReturnCreditModal = ({
               <label className="small-font">Profit/Loss</label>
               <input
                 type="number"
-                placeholder="1000"
+                placeholder="Profit & Loss"
                 className="all-none input-css w-100 small-font"
+                value={settleDetails?.pnl || 0}
                 readOnly
               />
             </div>
