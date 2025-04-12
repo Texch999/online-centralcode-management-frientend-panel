@@ -1,3 +1,5 @@
+
+
 // import React, { useEffect, useState } from "react";
 // import { FaSearch } from "react-icons/fa";
 // import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
@@ -29,7 +31,7 @@
 //   const [error, setError] = useState("");
 //   const [downlines, setDownlines] = useState([]);
 //   const [selectedAdminId, setSelectedAdminId] = useState(null);
-//   const [errors, setErrors] = useState({selectedAdminId: "" });
+//   const [errors, setErrors] = useState({ selectedAdminId: "" });
 //   const [selectedUserId, setSelectedUserId] = useState(null);
 //   const [parentPassword, setParentPassword] = useState("");
 //   const [apiError, setApiError] = useState(null);
@@ -54,16 +56,16 @@
 //   };
 
 //   const getAllCreditUsersList = (limit, offset, adminId) => {
-//     setApiLoading(true)
+//     setApiLoading(true);
 //     getCreditUSersList({ limit, offset, adminId })
 //       .then((response) => {
-//         setApiLoading(false)
+//         setApiLoading(false);
 //         setCreditUserList(response.records);
 //         setTotalRecords(response.totalCount);
 //       })
 //       .catch((error) => {
 //         setCreditUserList([]);
-//         setApiLoading(false)
+//         setApiLoading(false);
 //         setError(error?.message || "API request failed");
 //       });
 //   };
@@ -79,7 +81,6 @@
 //   }, []);
 
 //   const handleFullSettled = (id, balance) => {
-
 //     setSettlementAmounts((prev) => ({
 //       ...prev,
 //       [id]: balance,
@@ -101,6 +102,11 @@
 
 //     setSettlementAmounts(newSettlementAmounts);
 //     setPayload(newPayload);
+//   };
+
+//   const handleClearAll = () => {
+//     setSettlementAmounts({}); // Reset to empty object
+//     setPayload([]); // Clear payload
 //   };
 
 //   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
@@ -146,16 +152,21 @@
 //             className="w-100 small-font rounded all-none"
 //             type="text"
 //             placeholder="Enter credit"
-//             value={settlementAmounts[list.id]}
+//             value={settlementAmounts[list.id] || ""}
 //             onChange={(e) => {
 //               const iptVal = e.target.value.replace(/[^0-9]/g, "");
-//               handleFullSettled(list.id, iptVal)
+//               if (Number(iptVal) > list?.credit_balance) {
+//                 handleFullSettled(list.id, iptVal);
+
+//               } else {
+//                 handleFullSettled(list.id, iptVal);
+
+//               }
 //             }}
 //           />
-//           {/* {settlementAmounts[list.id] || "0.0"} */}
 //         </div>
 //         <div
-//           className="saffron-btn2 white-space"
+//           className="saffron-btn2 white-space pointer"
 //           onClick={() => handleFullSettled(list.id, list.credit_balance)}
 //         >
 //           Full Settled
@@ -205,6 +216,7 @@
 //       setErrors(newErrors);
 //       return;
 //     }
+
 //     const limit = itemsPerPage;
 //     const offset = (page - 1) * itemsPerPage;
 //     const userId = selectedAdminId?.value;
@@ -212,17 +224,15 @@
 //   };
 
 //   const handlePageChange = ({ limit, offset }) => {
-//     if (role === "management") {
+//     if (role === "management" || role === "accounts") {
 //       getAllCreditUsersList(limit, offset);
 //     } else {
 //       console.log("director panel");
 //     }
 //   };
-//   const [validation, setValidation] = useState({})
 
 //   const hanldeSettlement = () => {
 //     let errors = [];
-//     // Check if payload is empty or has no items
 //     if (!payload || payload.length === 0) {
 //       errors.push("Please select at least one settlement");
 //     }
@@ -243,100 +253,97 @@
 //     };
 //     setApiError('');
 //     setIsLoading(true);
+//     const limit = itemsPerPage;
+//     const offset = (page - 1) * itemsPerPage;
 //     creditFullSettlement(data)
 //       .then(() => {
-//         const limit = itemsPerPage;
-//         const offset = (page - 1) * itemsPerPage;
 //         getAllCreditUsersList(limit, offset);
+//         setParentPassword("");
 //         setIsLoading(false);
 //         setSuccessPopupOpen(true);
 //         setDiscription("Credit Settled Successfully");
 //         setPayload([]);
-//         setParentPassword("");
 //         setTimeout(() => {
 //           setSuccessPopupOpen(false);
 //         }, 3000);
 //       })
 //       .catch((error) => {
-//         // setErrorDiscription("Please select at least one settlement")
 //         setApiError(error?.message);
 //         setIsLoading(false);
 //       });
 //   };
 
-//   const handleClearAll = () => {
-//     setPayload([])
-//     setSettlementAmounts(null)
-//   }
-
 //   return (
 //     <>
 //       <div>
-//         <div className="flex-between mb-3 mt-1">
-//           <div className="d-flex align-items-center yellow-font fw-600">
-//             <span>
-//               <MdOutlineKeyboardArrowLeft
-//                 size={22}
-//               // onClick={() => navigate(-1)}
-//               />
-//             </span>
-//             <span className="yellow-font">Credit & Settlement</span>
-//           </div>
+//         {!apiLoading && (
+//           <>
+//             <div className="flex-start mb-3 mt-1">
+//               <div className="d-flex align-items-center yellow-font fw-600">
+//                 <span>
+//                   <MdOutlineKeyboardArrowLeft
+//                     size={22}
+//                   />
+//                 </span>
+//                 <span className="yellow-font">Credit & Settlement</span>
+//               </div>
 
-//           <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
-//             <FaSearch size={16} className="grey-clr me-2" />
-//             <input
-//               className="small-font all-none"
-//               placeholder="Search..."
-//               value={searchTerm}
-//               onChange={(e) => setSearchTerm(e.target.value)}
-//             />
-//           </div>
-//         </div>
-//         <div className="input-css px-2 medium-font">
-//           <div className="d-flex flex-start">
-//             {" "}
-//             <span className="border-right px-1">Your Balance</span>{" "}
-//             <span className="green-font mx-1">88,414</span>
-//           </div>
-//         </div>
-//         <div className="flex-column">
-//           <div className="d-flex my-1">
-//             <div className="flex-column col-2 me-3">
-//               <label className="black-text4 small-font mb-1 ms-1">
-//                 Select Admin Name
-//               </label>
-//               <Select
-//                 className="small-font"
-//                 options={downlines}
-//                 placeholder="Select"
-//                 styles={customStyles}
-//                 onChange={(option) => {
-//                   setSelectedAdminId(option);
-//                   setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
-//                 }}
-//                 maxMenuHeight={120}
-//                 menuPlacement="auto"
-//                 classNamePrefix="custom-react-select"
-//               />
+//               {/* <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
+//                 <FaSearch size={16} className="grey-clr me-2" />
+//                 <input
+//                   className="small-font all-none"
+//                   placeholder="Search..."
+//                   value={searchTerm}
+//                   onChange={(e) => setSearchTerm(e.target.value)}
+//                 />
+//               </div> */}
 //             </div>
-//             <div className="flex-column col-1 d-flex align-items-end justify-content-end">
-//               <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
+//             <div className="input-css px-2 medium-font">
+//               <div className="d-flex flex-start">
+//                 {" "}
+//                 <span className="border-right px-1">Your Balance</span>{" "}
+//                 <span className="green-font mx-1">88,414</span>
+//               </div>
 //             </div>
-//           </div>
-//           {errors.selectedAdminId && (
-//             <div className="text-danger small-font ps-1">
-//               {errors.selectedAdminId}
+//             <div className="flex-column">
+//               <div className="d-flex my-1">
+//                 <div className="flex-column col-2 me-3">
+//                   <label className="black-text4 small-font mb-1 ms-1">
+//                     Select Admin Name
+//                   </label>
+//                   <Select
+//                     className="small-font"
+//                     options={downlines}
+//                     placeholder="Select"
+//                     styles={customStyles}
+//                     onChange={(option) => {
+//                       setSelectedAdminId(option);
+//                       setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
+//                     }}
+//                     maxMenuHeight={120}
+//                     menuPlacement="auto"
+//                     classNamePrefix="custom-react-select"
+//                   />
+//                 </div>
+//                 <div className="flex-column col-1 d-flex align-items-end justify-content-end">
+//                   <button className="w-100 saffron-btn2 small-font" onClick={handleFiltrationSubmit}>Submit</button>
+//                 </div>
+//               </div>
+//               {errors.selectedAdminId && (
+//                 <div className="text-danger small-font ps-1">
+//                   {errors.selectedAdminId}
+//                 </div>
+//               )}
 //             </div>
-//           )}
-//         </div>
+//           </>
+//         )}
+
+
 //         <ErrorComponent error={apiError} />
 //         {apiLoading ? (
-
 //           <div className="spinner">
 //             <div className="spinner-circle"></div>
 //           </div>
-
 //         ) : (
 //           <div className="mt-3" style={{ zIndex: "10" }}>
 //             <Table
@@ -399,7 +406,7 @@
 //                 />
 //               ) : null}
 //               <span className="ps-2">
-//                 {isLoading ? "Submitting..." : "Settled"}
+//                 {isLoading ? "Submitting..." : "Settle"}
 //               </span>
 //             </button>
 //           </div>
@@ -408,12 +415,11 @@
 //             <label className="small-font pb-2">{" "}</label>
 //             <button className="w-100 white-btn2 pointer" onClick={handleClearAll}>Clear All</button>
 //           </div>
-
 //         </div>
-//         <div>{validation.parentPassword && (
+//         {/* <div>{validation.parentPassword && (
 //           <span className="text-danger smallfont">{validation.parentPassword}</span>
-//         )}</div>
-//       </div >
+//         )}</div> */}
+//       </div>
 
 //       {returnCreditModal && (
 //         <ReturnCreditModal
@@ -421,6 +427,8 @@
 //           setShow={setReturnCreditModal}
 //           selectedUserId={selectedUserId}
 //           getAllCreditUsersList={getAllCreditUsersList}
+//           setSuccessPopupOpen={setSuccessPopupOpen}
+//           setDiscription={setDiscription}
 //         />
 //       )}
 
@@ -436,7 +444,6 @@
 // };
 
 // export default CreditSettlement;
-
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
@@ -460,6 +467,7 @@ const CreditSettlement = () => {
   const [creditUserList, setCreditUserList] = useState([]);
   const [totalRecords, setTotalRecords] = useState([]);
   const [settlementAmounts, setSettlementAmounts] = useState({});
+  const [inputErrors, setInputErrors] = useState({});
   const [payload, setPayload] = useState([]);
   const itemsPerPage = 9;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -497,11 +505,16 @@ const CreditSettlement = () => {
     getCreditUSersList({ limit, offset, adminId })
       .then((response) => {
         setApiLoading(false);
+        setApiError(null)
         setCreditUserList(response.records);
         setTotalRecords(response.totalCount);
+        setSettlementAmounts({});
+        setPayload([]);
+        setInputErrors({});
       })
       .catch((error) => {
         setCreditUserList([]);
+        setApiError(null)
         setApiLoading(false);
         setError(error?.message || "API request failed");
       });
@@ -517,14 +530,51 @@ const CreditSettlement = () => {
     GetAllDirectors();
   }, []);
 
-  const handleFullSettled = (id, balance) => {
-    setSettlementAmounts((prev) => ({
-      ...prev,
-      [id]: balance,
-    }));
+  const validateInputAmount = (id, value, balance) => {
+    if (value === "") {
+      setInputErrors(prev => ({ ...prev, [id]: "Amount cannot be empty" }));
+      return false;
+    }
 
-    const newPayload = [{ id, amount: balance }];
-    setPayload(newPayload);
+    const amount = Number(value);
+    if (isNaN(amount)) {
+      setInputErrors(prev => ({ ...prev, [id]: "Please enter a valid number" }));
+      return false;
+    }
+
+    if (amount <= 0) {
+      setInputErrors(prev => ({ ...prev, [id]: "Amount must be greater than 0" }));
+      return false;
+    }
+
+    if (amount > balance) {
+      setInputErrors(prev => ({ ...prev, [id]: `Amount cannot exceed credit ${balance}` }));
+      return false;
+    }
+
+    setInputErrors(prev => ({ ...prev, [id]: "" }));
+    return true;
+  };
+
+  const handleFullSettled = (id, value) => {
+    if (value === "") {
+      setSettlementAmounts(prev => ({ ...prev, [id]: value }));
+      setPayload(prev => prev.filter(item => item.id !== id));
+      setInputErrors(prev => ({ ...prev, [id]: "Amount cannot be empty" }));
+      return;
+    }
+
+    const user = creditUserList.find(user => user.id === id);
+    if (!user) return;
+
+    const isValid = validateInputAmount(id, value, user.credit_balance);
+    if (!isValid) return;
+
+    setSettlementAmounts(prev => ({ ...prev, [id]: value }));
+    setPayload(prev => {
+      const filtered = prev.filter(item => item.id !== id);
+      return [...filtered, { id, amount: value }];
+    });
   };
 
   const handleFillAll = () => {
@@ -539,11 +589,13 @@ const CreditSettlement = () => {
 
     setSettlementAmounts(newSettlementAmounts);
     setPayload(newPayload);
+    setInputErrors({});
   };
 
   const handleClearAll = () => {
-    setSettlementAmounts({}); // Reset to empty object
-    setPayload([]); // Clear payload
+    setSettlementAmounts({});
+    setPayload([]);
+    setInputErrors({});
   };
 
   const MY_TRANSACTIONS_MANAGEMENT_COLUMNS = [
@@ -583,25 +635,39 @@ const CreditSettlement = () => {
     sAmt: <div>{list?.settled_credit}</div>,
     balCredit: <div className="red-font">{list?.credit_balance}</div>,
     entersa: (
-      <div className="d-flex flex-between">
-        <div className="white-btn2 col-6">
-          <input
-            className="w-100 small-font rounded all-none"
-            type="text"
-            placeholder="Enter credit"
-            value={settlementAmounts[list.id] || ""}
-            onChange={(e) => {
-              const iptVal = e.target.value.replace(/[^0-9]/g, "");
-              handleFullSettled(list.id, iptVal);
-            }}
-          />
+      <div className="d-flex flex-column">
+        <div className="d-flex flex-between">
+          <div className="white-btn2 col-6">
+            <input
+              className={`w-100 small-font rounded all-none`}
+              type="text"
+              placeholder="Enter credit"
+              value={settlementAmounts[list.id] ?? ""}
+              onChange={(e) => {
+                const iptVal = e.target.value.replace(/[^0-9]/g, "");
+                if (iptVal === "") {
+                  handleFullSettled(list.id, "");
+                } else {
+                  const isValid = validateInputAmount(list.id, iptVal, list.credit_balance);
+                  if (isValid) {
+                    handleFullSettled(list.id, iptVal);
+                  }
+                }
+              }}
+            />
+          </div>
+          <div
+            className="saffron-btn2 white-space pointer"
+            onClick={() => handleFullSettled(list.id, list.credit_balance)}
+          >
+            Full Settled
+          </div>
         </div>
-        <div
-          className="saffron-btn2 white-space pointer"
-          onClick={() => handleFullSettled(list.id, list.credit_balance)}
-        >
-          Full Settled
-        </div>
+        {inputErrors[list.id] && (
+          <div className="text-danger small-font ps-1">
+            {inputErrors[list.id]}
+          </div>
+        )}
       </div>
     ),
     view: (
@@ -647,7 +713,7 @@ const CreditSettlement = () => {
       setErrors(newErrors);
       return;
     }
-    
+
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
     const userId = selectedAdminId?.value;
@@ -664,9 +730,27 @@ const CreditSettlement = () => {
 
   const hanldeSettlement = () => {
     let errors = [];
-    if (!payload || payload.length === 0) {
+
+    // Check if any settlement amount is entered
+    const hasSettlementAmounts = Object.keys(settlementAmounts).length > 0;
+    if (!hasSettlementAmounts) {
       errors.push("Please select at least one settlement");
+    } else {
+      // Check if all settlement amounts are valid
+      const invalidEntries = creditUserList.filter(user => {
+        if (settlementAmounts[user.id] !== undefined) {
+          return settlementAmounts[user.id] === "" ||
+            Number(settlementAmounts[user.id]) > user.credit_balance ||
+            Number(settlementAmounts[user.id]) <= 0;
+        }
+        return false;
+      });
+
+      if (invalidEntries.length > 0) {
+        errors.push("Please enter valid settlement amounts for all selected fields");
+      }
     }
+
     if (!parentPassword || parentPassword.trim() === "") {
       errors.push("Password is required");
     } else if (parentPassword.length < 6 || parentPassword.length > 36) {
@@ -679,9 +763,15 @@ const CreditSettlement = () => {
     }
 
     const data = {
-      list: payload,
+      list: payload.filter(item => item.amount !== "" && item.amount > 0),
       parentPassword: parentPassword,
     };
+
+    if (data.list.length === 0) {
+      setApiError(["Please select at least one settlement"]);
+      return;
+    }
+
     setApiError('');
     setIsLoading(true);
     const limit = itemsPerPage;
@@ -694,6 +784,7 @@ const CreditSettlement = () => {
         setSuccessPopupOpen(true);
         setDiscription("Credit Settled Successfully");
         setPayload([]);
+        setSettlementAmounts({});
         setTimeout(() => {
           setSuccessPopupOpen(false);
         }, 3000);
@@ -718,16 +809,6 @@ const CreditSettlement = () => {
                 </span>
                 <span className="yellow-font">Credit & Settlement</span>
               </div>
-
-              {/* <div className="input-pill d-flex align-items-center rounded-pill px-2 py-1">
-                <FaSearch size={16} className="grey-clr me-2" />
-                <input
-                  className="small-font all-none"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div> */}
             </div>
             <div className="input-css px-2 medium-font">
               <div className="d-flex flex-start">
@@ -769,7 +850,6 @@ const CreditSettlement = () => {
           </>
         )}
 
-
         <ErrorComponent error={apiError} />
         {apiLoading ? (
           <div className="spinner">
@@ -797,6 +877,7 @@ const CreditSettlement = () => {
                 className="w-100 small-font rounded all-none"
                 type={pswdVisible ? "text" : "password"}
                 placeholder="Enter Password"
+                value={parentPassword}
                 onChange={(e) => setParentPassword(e.target.value)}
               />
               {pswdVisible ? (
@@ -847,9 +928,6 @@ const CreditSettlement = () => {
             <button className="w-100 white-btn2 pointer" onClick={handleClearAll}>Clear All</button>
           </div>
         </div>
-        {/* <div>{validation.parentPassword && (
-          <span className="text-danger smallfont">{validation.parentPassword}</span>
-        )}</div> */}
       </div>
 
       {returnCreditModal && (
