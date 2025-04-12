@@ -235,9 +235,9 @@ const ReturnCreditModal = ({
               <label className="small-font">After Credit Bal.</label>
               <input
                 type="number"
-                placeholder="1000"
+                placeholder="enter"
                 className="all-none input-css small-font w-100"
-                value={updatedCreditBalance}
+                value={updatedCreditBalance }
                 readOnly
               />
             </div>
@@ -246,7 +246,7 @@ const ReturnCreditModal = ({
             <label className="small-font">Enter Refund Credit Chips</label>
             <input
               type="text"
-              placeholder="1000"
+              placeholder="Enter"
               className="all-none input-css w-100 small-font"
               value={creditChips}
               onChange={handleInputChange}
@@ -278,7 +278,7 @@ const ReturnCreditModal = ({
 
             <div className="col-6 ">
               <label className="small-font">Enter Password</label>
-              <div className="input-bg d-flex br-5 py-2 px-2 flex-between border-grey3">
+              <div className="input-bg d-flex br-5 px-2 flex-between border-grey3">
                 <input
                   className="all-none input-css w-100 small-font"
                   type={pswdVisible ? "text" : "password"}
@@ -303,7 +303,7 @@ const ReturnCreditModal = ({
             <div className="col-6 mt-4">
               <button
                 type="submit"
-                className="saffron-btn w-100 br-5 py-1 px-4 pointer small-font"
+                className="saffron-btn w-100 br-5 py-3 px-4 pointer small-font"
                 disabled={isLoading}
               >
                 {isLoading ? (

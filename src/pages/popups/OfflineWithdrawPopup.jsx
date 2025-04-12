@@ -32,11 +32,7 @@ const OfflineWithdrawPopup = ({
         if (!paidAmount || Number(paidAmount) <= 0) {
             newErrors.paidAmount = "Amount is required";
         }
-        if (!remark || remark.trim() === "") {
-            newErrors.remark = "Remark is required";
-        } else if (remark.length > 250) {
-            newErrors.remark = "Remark cannot exceed 250 characters";
-        }
+
         if (!masterPassword || masterPassword.trim() === "") {
             newErrors.masterPassword = "Password is required";
         } else if (masterPassword.length < 6) {
@@ -92,6 +88,9 @@ const OfflineWithdrawPopup = ({
             remarks: remark,
             parentPassword: masterPassword,
         };
+        if (remark) {
+            payload.remarks = remark
+        }
 
         setIsLoading(true);
         ManagementOfflineWithdrawTicketCreation(selectedDetails?.id, payload)
