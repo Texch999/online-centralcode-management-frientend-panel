@@ -36,7 +36,7 @@ const OfflineDepositPopup = ({
       newErrors.masterPassword = "Required field";
     }
 
-    if (selectedDetails?.creditAllowed !== 1 || finalPaidAmount !== "") {
+    if (selectedDetails?.creditAllowed != 1) {
       if (!finalPaidAmount || Number(finalPaidAmount) < 0) {
         newErrors.paidAmount = "Required field";
       } else if (Number(finalPaidAmount) > Number(selectedChips)) {
@@ -65,11 +65,11 @@ const OfflineDepositPopup = ({
     const chipsValue = Number(selectedChips);
     const paidValue = finalPaidAmount === "" ? 0 : Number(finalPaidAmount);
     const oldCredit = selectedDetails?.creditBalance || 0;
-
+    console.log(paidValue, "==paidValue")
     let newCredit;
     if (selectedDetails?.creditAllowed === 1) {
       // When credit is allowed: new credit = old + (chips - paid)
-      newCredit = oldCredit + (chipsValue - paidValue);
+      newCredit = (chipsValue - paidValue);
     } else {
       // When credit is not allowed: new credit = old + chips (must pay full amount)
       newCredit = 0;
@@ -88,6 +88,7 @@ const OfflineDepositPopup = ({
       payload.remarks = remark;
     }
 
+    console.log(payload, "==>payload")
     setIsLoading(true);
     ManagementOfflineDepositeTicketCreation(selectedDetails?.id, payload)
       .then((response) => {
@@ -183,6 +184,8 @@ const OfflineDepositPopup = ({
     selectedDetails?.maxCreditLimit - selectedDetails?.creditBalance > 0
       ? selectedDetails?.maxCreditLimit - selectedDetails?.creditBalance
       : 0;
+
+  console.log(selectedDetails, "==>selectedDetails")
   return (
     <Modal show={depositPopup} centered className="confirm-popup" size="md">
       <Modal.Body>
@@ -206,9 +209,8 @@ const OfflineDepositPopup = ({
         {apiErrors && <ErrorComponent error={apiErrors} />}
 
         <div className="col w-100 small-font rounded input-css all-none white-bg input-border mb-2 text-capitalize">
-          {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${
-            selectedDetails?.name
-          } - ${getCurrency(selectedDetails?.currId)}`}
+          {`${selectedDetails?.roal == 2 ? "SA" : "Director"} - ${selectedDetails?.name
+            } - ${getCurrency(selectedDetails?.currId)}`}
         </div>
 
         <div className="row">
@@ -246,9 +248,8 @@ const OfflineDepositPopup = ({
             <label className="small-font mb-1">Enter Deposit Chips</label>
             <input
               type="text"
-              className={`w-100 small-font rounded input-css all-none input-bg ${
-                errors.selectedChips ? "is-invalid" : ""
-              }`}
+              className={`w-100 small-font rounded input-css all-none input-bg ${errors.selectedChips ? "is-invalid" : ""
+                }`}
               placeholder="Enter amount"
               value={selectedChips}
               onChange={handleChipsChange}
@@ -265,9 +266,8 @@ const OfflineDepositPopup = ({
               </label>
               <input
                 type="number"
-                className={`w-100 small-font rounded input-css all-none input-bg ${
-                  errors.paidAmount ? "is-invalid" : ""
-                }`}
+                className={`w-100 small-font rounded input-css all-none input-bg ${errors.paidAmount ? "is-invalid" : ""
+                  }`}
                 placeholder={
                   finalPaidAmount === "" ? "Optional" : "Enter amount"
                 }
@@ -278,11 +278,11 @@ const OfflineDepositPopup = ({
                 min="0"
                 max={Number(selectedChips)}
               />
-              {isFinalPaidAmountFocused && finalPaidAmount > selectedChips && (
+              {/* {isFinalPaidAmountFocused && finalPaidAmount > selectedChips && (
                 <div className="text-danger small-font mt-1">
                   Cannot exceed {selectedChips}
                 </div>
-              )}
+              )} */}
               {!isFinalPaidAmountFocused && errors.paidAmount && (
                 <p className="text-danger small-font">{errors.paidAmount}</p>
               )}
@@ -301,9 +301,8 @@ const OfflineDepositPopup = ({
               /> */}
               <input
                 type="number"
-                className={`w-100 small-font rounded input-css all-none input-bg ${
-                  errors.paidAmount ? "is-invalid" : ""
-                }`}
+                className={`w-100 small-font rounded input-css all-none input-bg ${errors.paidAmount ? "is-invalid" : ""
+                  }`}
                 placeholder={
                   finalPaidAmount === "" ? "Optional" : "Enter amount"
                 }
@@ -334,9 +333,8 @@ const OfflineDepositPopup = ({
             <label className="small-font mb-1">Remark</label>
             <input
               type="text"
-              className={`w-100 small-font rounded input-css all-none input-bg ${
-                errors.remark ? "is-invalid" : ""
-              }`}
+              className={`w-100 small-font rounded input-css all-none input-bg ${errors.remark ? "is-invalid" : ""
+                }`}
               placeholder="Enter description"
               value={remark}
               onChange={handleRemarkChange}
@@ -351,9 +349,8 @@ const OfflineDepositPopup = ({
           <div className="small-font mb-1">Enter Password</div>
           <div className="d-flex flex-row justify-content-between me-1">
             <div
-              className={`white-btn2 w-100 flex-between ${
-                errors.masterPassword ? "is-invalid" : ""
-              }`}
+              className={`white-btn2 w-100 flex-between ${errors.masterPassword ? "is-invalid" : ""
+                }`}
             >
               <input
                 className="all-none p-0 small-font"
