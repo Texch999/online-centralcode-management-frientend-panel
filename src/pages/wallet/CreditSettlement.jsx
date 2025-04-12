@@ -512,7 +512,7 @@ const CreditSettlement = () => {
     getCreditUSersList({ limit, offset, adminId })
       .then((response) => {
         setApiLoading(false);
-        setApiError(null)
+        setApiError(null);
         setCreditUserList(response.records);
         setTotalRecords(response.totalCount);
         setSettlementAmounts({});
@@ -521,7 +521,7 @@ const CreditSettlement = () => {
       })
       .catch((error) => {
         setCreditUserList([]);
-        setApiError(null)
+        setApiError(null);
         setApiLoading(false);
         setError(error?.message || "API request failed");
       });
@@ -539,7 +539,18 @@ const CreditSettlement = () => {
 
   const validateInputAmount = (id, value, balance) => {
     if (value === "") {
-      setInputErrors(prev => ({ ...prev, [id]: "Amount cannot be empty" }));
+      // Remove from state if empty
+      setSettlementAmounts(prev => {
+        const newState = {...prev};
+        delete newState[id];
+        return newState;
+      });
+      setPayload(prev => prev.filter(item => item.id !== id));
+      setInputErrors(prev => {
+        const newState = {...prev};
+        delete newState[id];
+        return newState;
+      });
       return false;
     }
 
@@ -565,9 +576,18 @@ const CreditSettlement = () => {
 
   const handleFullSettled = (id, value) => {
     if (value === "") {
-      setSettlementAmounts(prev => ({ ...prev, [id]: value }));
+      // Completely remove the entry if empty
+      setSettlementAmounts(prev => {
+        const newState = {...prev};
+        delete newState[id];
+        return newState;
+      });
       setPayload(prev => prev.filter(item => item.id !== id));
-      setInputErrors(prev => ({ ...prev, [id]: "Amount cannot be empty" }));
+      setInputErrors(prev => {
+        const newState = {...prev};
+        delete newState[id];
+        return newState;
+      });
       return;
     }
 
@@ -646,7 +666,7 @@ const CreditSettlement = () => {
         <div className="d-flex flex-between">
           <div className="white-btn2 col-6">
             <input
-              className={`w-100 small-font rounded all-none`}
+              className={`w-100 small-font rounded all-none ${inputErrors[list.id] ? "border-danger" : ""}`}
               type="text"
               placeholder="Enter credit"
               value={settlementAmounts[list.id] ?? ""}
@@ -723,7 +743,7 @@ const CreditSettlement = () => {
 
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    const userId = selectedAdminId?.label == "All" ? undefined : selectedAdminId?.value
+    const userId = selectedAdminId?.label == "All" ? undefined : selectedAdminId?.value;
     getAllCreditUsersList(limit, offset, userId);
   };
 
@@ -746,9 +766,10 @@ const CreditSettlement = () => {
       // Check if all settlement amounts are valid
       const invalidEntries = creditUserList.filter(user => {
         if (settlementAmounts[user.id] !== undefined) {
-          return settlementAmounts[user.id] === "" ||
-            Number(settlementAmounts[user.id]) > user.credit_balance ||
-            Number(settlementAmounts[user.id]) <= 0;
+          return settlementAmounts[user.id] === "" || 
+                 isNaN(Number(settlementAmounts[user.id])) ||
+                 Number(settlementAmounts[user.id]) > user.credit_balance ||
+                 Number(settlementAmounts[user.id]) <= 0;
         }
         return false;
       });
@@ -835,6 +856,7 @@ const CreditSettlement = () => {
                     options={downlines}
                     placeholder="Select"
                     styles={customStyles}
+                    value={selectedAdminId}
                     onChange={(option) => {
                       setSelectedAdminId(option);
                       setErrors((prev) => ({ ...prev, selectedAdminId: "" }));
