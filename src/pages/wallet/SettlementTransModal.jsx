@@ -4,7 +4,6 @@ import { IoClose } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { creditSettlements, getSettlementSummeryById } from "../../api/apiMethods";
-import SuccessPopup from "../popups/SuccessPopup";
 import ErrorComponent from "../../components/ErrorComponent";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
@@ -76,7 +75,6 @@ const SettlementTransModal = ({
         oldCredit: oldCredit,
         paidAmount: paidAmount || 0,
         totalCredit: totalCredit,
-        // remarks: values.remarks,
         parentPassword: values.password,
       };
       if (values.remarks) {
@@ -195,33 +193,25 @@ const SettlementTransModal = ({
               <label className="small-font">Enter Paid Amount</label>
               <div className="light-bg br-5 mt-1 px-2 py-2">
                 <input
-                  type="text"  // Using text type to have more control over input
-                  inputMode="numeric" // Shows numeric keyboard on mobile devices
+                  type="text"
+                  inputMode="numeric"
                   placeholder="Enter paid amount"
                   className="all-none small-font w-100"
                   value={formik.values.enterPaidAmount}
                   onChange={(e) => {
                     let value = e.target.value;
-
-                    // 1. Remove any non-digit characters
                     value = value.replace(/[^0-9]/g, '');
-
-                    // 2. Remove leading zeros (but allow single zero)
                     value = value.replace(/^0+/, '') || '0';
 
-                    // 3. Cap the value to maximum allowed amount if needed
                     if (settleDetails?.creditBalance) {
                       const numericValue = parseInt(value, 10);
                       if (numericValue > settleDetails.creditBalance) {
                         value = settleDetails.creditBalance.toString();
                       }
                     }
-
-                    // 4. Update the formik value
                     formik.setFieldValue("enterPaidAmount", value === '0' ? '' : value);
                   }}
                   onBlur={(e) => {
-                    // When field loses focus, ensure empty values are set to 0
                     if (e.target.value === '') {
                       formik.setFieldValue("enterPaidAmount", 0);
                     }
@@ -262,23 +252,6 @@ const SettlementTransModal = ({
             </div>
           </div>
           <div className="row mt-2">
-            {/* <div className="col-6 flex-column d-flex">
-              <label className="small-font">Enter Password</label>
-              <div className="light-bg br-5 mt-1 px-2 py-2">
-                <input
-                  type="text"
-                  placeholder="password"
-                  className="all-none small-font"
-                  {...formik.getFieldProps("password")}
-                />
-              </div>
-              {formik.touched.password && formik.errors.password && (
-                <div className="text-danger small-font">
-                  {formik.errors.password}
-                </div>
-              )}
-            </div> */}
-
             <div className="col-6">
               <label className="small-font">Enter Password</label>
               <div className="light-bg br-5 mt-1">
