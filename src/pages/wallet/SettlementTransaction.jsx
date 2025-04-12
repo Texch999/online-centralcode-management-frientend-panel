@@ -108,9 +108,6 @@ const SettlementTransaction = () => {
       toDate: "",
     };
 
-    if (!selectedType?.value) {
-      newErrors.selectedType = "Please select a type.";
-    }
 
     if (!fromDate) {
       newErrors.fromDate = "Please select a 'From' date.";

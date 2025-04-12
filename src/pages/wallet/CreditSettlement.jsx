@@ -489,14 +489,21 @@ const CreditSettlement = () => {
   const GetAllDirectors = () => {
     getOfflineDWDirectors()
       .then((response) => {
-        const options = response?.list?.map((item) => ({
+        const directorOptions = response?.list?.map((item) => ({
           value: item.id,
           label: item.name,
-        }));
+        })) || [];
+
+        const options = [
+          { value: null, label: "All" },
+          ...directorOptions
+        ];
+
         setDownlines(options);
       })
       .catch((error) => {
         console.error(error?.message || "Failed to fetch directors");
+        setDownlines([{ value: null, label: "All" }]);
       });
   };
 
@@ -708,7 +715,7 @@ const CreditSettlement = () => {
       selectedAdminId: "",
     };
 
-    if (!selectedAdminId?.value) {
+    if (!selectedAdminId?.value && selectedAdminId?.label != "All") {
       newErrors.selectedAdminId = "Please select an admin.";
       setErrors(newErrors);
       return;
@@ -716,7 +723,7 @@ const CreditSettlement = () => {
 
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    const userId = selectedAdminId?.value;
+    const userId = selectedAdminId?.label == "All" ? undefined : selectedAdminId?.value
     getAllCreditUsersList(limit, offset, userId);
   };
 
