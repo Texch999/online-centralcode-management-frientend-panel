@@ -6,7 +6,7 @@ import {
   returnCreditChips,
 } from "../../api/apiMethods";
 import { useSelector } from "react-redux";
-import { IoEye, IoEyeOff, IoEyeOutline } from "react-icons/io5";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import ErrorComponent from "../../components/ErrorComponent";
 
 const ReturnCreditModal = ({
@@ -27,6 +27,11 @@ const ReturnCreditModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const [apiLoading, setApiLoading] = useState(false);
   const [pswdVisible, setPswdVisible] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    creditChips: "",
+    parentPassword: ""
+  });
+
   // Fetch settlement details
   const GetAllDirectors = (id) => {
     setApiLoading(true)
@@ -58,32 +63,48 @@ const ReturnCreditModal = ({
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
 
+  const validateCreditChips = (value) => {
+    const pendingCreditChips = settleDetails?.creditBalance || 0;
+    const walletBalance = settleDetails?.avilChips || 0;
+
+    if (!value || value === "") {
+      return "Please enter refund credit chips";
+    }
+
+    if (isNaN(value) || value <= 0) {
+      return "Please enter a valid positive number";
+    }
+
+    if (value > pendingCreditChips) {
+      return `Entered chips cannot exceed ${pendingCreditChips}`;
+    }
+
+    if (walletBalance < value) {
+      return "Insufficient chips in wallet";
+    }
+
+    return "";
+  };
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
 
     if (/^\d*$/.test(inputValue)) {
-      const value = parseInt(inputValue, 10);
+      const value = parseInt(inputValue, 10) || 0;
 
-      const pendingCreditChips = settleDetails?.creditBalance;
-      const walletBalance = settleDetails?.avilChips;
+      // Validate immediately as user types
+      const creditChipsError = validateCreditChips(value);
+      setValidationErrors(prev => ({
+        ...prev,
+        creditChips: creditChipsError
+      }));
 
-      if (walletBalance < pendingCreditChips) {
-        setError(
-          "Insufficient chips in wallet to return pending credit chips."
-        );
-        setCreditChips(0);
-        return;
-      }
-
-      const cappedValue = Math.min(value, pendingCreditChips);
-
-      if (value > pendingCreditChips) {
-        setError(`Entered chips cannot exceed ${pendingCreditChips}`);
-      } else {
+      if (!creditChipsError) {
+        setCreditChips(value);
         setError("");
+      } else {
+        setCreditChips(value);
       }
-
-      setCreditChips(cappedValue ? cappedValue : 0);
     }
   };
 
@@ -99,20 +120,38 @@ const ReturnCreditModal = ({
     };
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      creditChips: "",
+      parentPassword: ""
+    };
+
+    // Validate credit chips
+    newErrors.creditChips = validateCreditChips(creditChips);
+    if (newErrors.creditChips) isValid = false;
+
+    // Validate parent password
+    if (!parentPassword.trim()) {
+      newErrors.parentPassword = "Parent password is required";
+      isValid = false;
+    } else if (parentPassword.length < 6) {
+      newErrors.parentPassword = "Password must be at least 6 characters";
+      isValid = false;
+    }
+
+    setValidationErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const pendingCreditChips = settleDetails?.creditBalance;
-    const walletBalance = settleDetails?.avilChips;
-
-    if (walletBalance < pendingCreditChips) {
-      setError("Insufficient chips in wallet to return pending credit chips.");
-    }
-
-    if (creditChips > pendingCreditChips) {
-      setError(`Entered chips cannot exceed ${pendingCreditChips}`);
+    // Validate form before submission
+    if (!validateForm()) {
       return;
     }
+
     setIsLoading(true);
     const payload = {
       currency: settleDetails?.currencyId,
@@ -120,9 +159,12 @@ const ReturnCreditModal = ({
       creditBalance: settleDetails?.creditBalance,
       availBalance: settleDetails?.avilChips - settleDetails?.creditBalance,
       refundedAmount: Number(creditChips),
-      remarks: remark,
       parentPassword: parentPassword,
     };
+
+    if (remark) {
+      payload.remarks = remark
+    }
 
     returnCreditChips(selectedUserId.id, payload)
       .then((response) => {
@@ -131,6 +173,14 @@ const ReturnCreditModal = ({
         getAllCreditUsersList();
         setShow(false);
         setDiscription("Credit Settled Successfully");
+        // Reset form
+        setCreditChips("");
+        setParentPassword("");
+        setRemark("");
+        setValidationErrors({
+          creditChips: "",
+          parentPassword: ""
+        });
       })
       .catch((error) => {
         setIsLoading(false);
@@ -162,33 +212,14 @@ const ReturnCreditModal = ({
             />
           </div>
         </div>
-        <div className="grey-border br-5 px-2 py-1 mt-2 small-font">
+        <div className="grey-border br-5 px-2 py-2 mt-2 small-font">
           {`${selectedUserId?.type == "1" ? "D" : "SA"} - ${selectedUserId?.name
             } - ${getLocationName(settleDetails?.currencyId)}`}
         </div>
-        {/* {apiErrors && (
-          <div className="alert alert-danger pb-1">
-            {Array.isArray(apiErrors) ? (
-              <ul className="pb-1 ps-1">
-                {apiErrors.map((error, index) => (
-                  <li className="small-font" key={index}>
-                    {error.message || error}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="small-font ps-1">
-                {apiErrors.message || apiErrors}
-              </p>
-            )}
-          </div>
-        )} */}
 
         <ErrorComponent error={apiErrors} />
 
         <form onSubmit={handleSubmit}>
-          {" "}
-          {/* Add onSubmit handler to the form */}
           <div className="row mt-3">
             <div className="col-4">
               <label className="small-font">Wallet Balance</label>
@@ -196,7 +227,7 @@ const ReturnCreditModal = ({
                 type="number"
                 placeholder="1000"
                 className="all-none small-font input-css w-100"
-                value={settleDetails?.avilChips}
+                value={settleDetails?.avilChips || 0}
                 readOnly
               />
             </div>
@@ -206,7 +237,7 @@ const ReturnCreditModal = ({
                 type="number"
                 placeholder="1000"
                 className="all-none input-css w-100 small-font"
-                value={settleDetails?.creditBalance}
+                value={settleDetails?.creditBalance || 0}
                 readOnly
               />
             </div>
@@ -237,7 +268,7 @@ const ReturnCreditModal = ({
                 type="number"
                 placeholder="enter"
                 className="all-none input-css small-font w-100"
-                value={updatedCreditBalance }
+                value={updatedCreditBalance}
                 readOnly
               />
             </div>
@@ -247,11 +278,16 @@ const ReturnCreditModal = ({
             <input
               type="text"
               placeholder="Enter"
-              className="all-none input-css w-100 small-font"
+              className={`all-none input-css w-100 small-font ${validationErrors.creditChips ? "is-invalid" : ""
+                }`}
               value={creditChips}
               onChange={handleInputChange}
             />
-            {error && <p className="text-danger small-font mt-1">{error}</p>}
+            {validationErrors.creditChips && (
+              <div className="text-danger small-font mt-1">
+                {validationErrors.creditChips}
+              </div>
+            )}
           </div>
           <div className="col-12">
             <label className="small-font">Remarks</label>
@@ -264,26 +300,16 @@ const ReturnCreditModal = ({
               rows={2}
             />
           </div>
-          <div className="row ">
-            {/* <div className="col-6">
+          <div className="row">
+            <div className="col-6">
               <label className="small-font">Enter Password</label>
-              <input
-                type="text"
-                placeholder="password"
-                className="all-none input-css w-100 small-font"
-                onChange={(e) => setParentPassword(e.target.value)}
-                value={parentPassword}
-              />
-            </div> */}
-
-            <div className="col-6 ">
-              <label className="small-font">Enter Password</label>
-              <div className="input-bg d-flex br-5 px-2 flex-between border-grey3">
+              <div className={`input-bg d-flex br-5 px-2 flex-between border-grey3`}>
                 <input
-                  className="all-none input-css w-100 small-font"
+                  className={`all-none input-css w-100 small-font `}
                   type={pswdVisible ? "text" : "password"}
                   placeholder="Enter Password"
                   onChange={(e) => setParentPassword(e.target.value)}
+                  value={parentPassword}
                 />
                 {pswdVisible ? (
                   <IoEye
@@ -299,6 +325,11 @@ const ReturnCreditModal = ({
                   />
                 )}
               </div>
+              {validationErrors.parentPassword && (
+                <div className="text-danger small-font mt-1">
+                  {validationErrors.parentPassword}
+                </div>
+              )}
             </div>
             <div className="col-6 mt-4">
               <button
@@ -307,10 +338,7 @@ const ReturnCreditModal = ({
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <div
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                  >
+                  <>
                     <Spinner
                       as="span"
                       animation="border"
@@ -318,8 +346,8 @@ const ReturnCreditModal = ({
                       role="status"
                       aria-hidden="true"
                     />
-                    <span className="visually-hidden">Submiting...</span>
-                  </div>
+                    <span className="visually-hidden">Submitting...</span>
+                  </>
                 ) : (
                   "Submit"
                 )}
@@ -328,13 +356,6 @@ const ReturnCreditModal = ({
           </div>
         </form>
       </div>
-      {/* {successPopupOpen && (
-        <SuccessPopup
-          successPopupOpen={successPopupOpen}
-          setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={discription}
-        />
-      )} */}
     </Modal>
   );
 };
