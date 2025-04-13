@@ -40,7 +40,6 @@ const SettlementTransaction = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false)
   const [discription, setDiscription] = useState("")
 
-  // State to track field-specific errors
   const [errors, setErrors] = useState({
     selectedAdminId: "",
     selectedType: "",
@@ -48,7 +47,6 @@ const SettlementTransaction = () => {
     toDate: "",
   });
 
-  // Fetch settlement transactions
   const getSettleTransaction = (
     limit,
     offset,

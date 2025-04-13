@@ -230,12 +230,12 @@ function Tickets() {
 
     await apiCAll(ticketId, data)
       .then((response) => {
-          setSpinner(false)
-          getDepositTickets(limit, offset);
-          setSuccessPopupOpen(true);
-          setDepositWithdrawPopupOpen(false);
-          setErroDiscription("");
-      
+        setSpinner(false)
+        getDepositTickets(limit, offset);
+        setSuccessPopupOpen(true);
+        setDepositWithdrawPopupOpen(false);
+        setErroDiscription("");
+
       })
       .catch((error) => {
         setSpinner(false)
@@ -369,7 +369,11 @@ function Tickets() {
     }
 
     if (!fromDate) {
-      newErrors.fromDate = "From date is required";
+      newErrors.fromDate = "To date is required";
+      isValid = false;
+    }
+    if (fromDate && fromDate && new Date(startDate) > new Date(fromDate)) {
+      newErrors.fromDate = "Start Date date cannot be greater than To date.";
       isValid = false;
     }
 
@@ -381,7 +385,7 @@ function Tickets() {
     const offset = (page - 1) * itemsPerPage;
 
     setErrors({ startDate: "", fromDate: "", selectedType: "" });
-    getDepositTickets(limit, offset, startDate, fromDate, selectedType.value);
+    getDepositTickets(limit, offset, startDate, fromDate, selectedType?.value);
   };
 
   return (
@@ -446,7 +450,6 @@ function Tickets() {
                 isSearchable={false}
                 onChange={(option) => setSelectedType(option)}
               />
-              <p className="small-font red-font">{errors.selectedType}</p>
             </div>
 
             <div className="col flex-column">
@@ -457,7 +460,6 @@ function Tickets() {
                 value={new Date(startDate).toISOString().split("T")[0]}
                 onChange={(e) => setStartDate(e.target.value)}
               />
-              <p className="small-font red-font">{errors.startDate}</p>
             </div>
 
             <div className="col flex-column">
@@ -468,10 +470,9 @@ function Tickets() {
                 onChange={(e) => setFromDate(e.target.value)}
                 type="date"
               />
-              <p className="small-font red-font">{errors.fromDate}</p>
             </div>
 
-            <div className="col flex-column  justify-content-center">
+            <div className="col flex-column  justify-content-end">
               <button
                 className="w-100 saffron-btn2 small-font"
                 onClick={handleDataFilter}
@@ -479,6 +480,19 @@ function Tickets() {
                 Submit
               </button>
             </div>
+          </div>
+          <div className="w-70 row mt-1">
+            <div className="col-3 flex-column">
+            </div>
+
+            <div className="col-3 flex-column">
+              <p className="small-font red-font">{errors.startDate}</p>
+            </div>
+
+            <div className="col-3 flex-column">
+              <p className="small-font red-font">{errors.fromDate}</p>
+            </div>
+            <div className="col-3 flex-column"></div>
           </div>
         </>
       )}
