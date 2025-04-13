@@ -102,8 +102,7 @@ const SettlementTransModal = ({
     setNetCreditBalance(
       settleDetails?.creditBalance > 0
         ? settleDetails?.creditBalance - paidAmount
-        : 0
-    );
+        : 0);
   }, [formik.values.enterPaidAmount, settleDetails?.creditBalance]);
 
   return (
@@ -114,20 +113,20 @@ const SettlementTransModal = ({
         </div>
       )}
       <div className="white-bg p-4 br-10">
-        <div
-          className="d-flex justify-content-between align-items-center mb-2"
-          style={{ padding: "0 16px" }}
-        >
-          <div style={{ width: "22px" }}>{` `}</div>
-          <div className=" fw-600 mb-0 green-font text-center text-size px-2 rounded">
-            Credit Settlement
-          </div>
-          <div>
-            <IoClose
-              size={22}
-              className="pointer"
-              onClick={() => setSettleModalShow(false)}
-            />
+        <div className="row align-items-center mb-2">
+          <div className="col-12 d-flex justify-content-between align-items-center" style={{ position: "relative" }}>
+            <div className="col-3"></div> {/* Left spacer */}
+            <div className="col-6 fw-600 green-font text-center text-size rounded text-wrap">
+              Credit Settlement
+            </div>
+            <div className="col-3">
+              <IoClose
+                size={25}
+                className="pointer"
+                onClick={() => setSettleModalShow(false)}
+                style={{ position: "absolute", top:-15, right: 0 }}
+              />
+            </div>
           </div>
         </div>
 
@@ -148,7 +147,6 @@ const SettlementTransModal = ({
           </div>
         )} */}
         <ErrorComponent error={apiErrors} />
-
         <form onSubmit={formik.handleSubmit}>
           <div className="row mt-2">
             <div className="col-6">
@@ -258,7 +256,7 @@ const SettlementTransModal = ({
                 <input
                   type={pswdVisible ? "text" : "password"}
                   placeholder="Enter Password"
-                  className="all-none small-font input-css4 p-1 "
+                  className="all-none small-font input-css4 p-1"
                   {...formik.getFieldProps("password")}
                 />
                 {pswdVisible ? (
@@ -285,7 +283,7 @@ const SettlementTransModal = ({
               <button
                 type="submit"
                 className={`saffron-btn br-5 px-4 pointer small-font ${settleDetails?.creditBalance > 0 ? "" : "no-cursor"}`}
-                disabled={settleDetails?.creditBalance <= 0}
+                disabled={settleDetails?.creditBalance <= 0 || loading}
               >
                 {loading ? (
                   <div className="flex-row" role="status">
@@ -306,13 +304,6 @@ const SettlementTransModal = ({
           </div>
         </form>
       </div>
-      {/* {successPopupOpen && (
-        <SuccessPopup
-          successPopupOpen={successPopupOpen}
-          setSuccessPopupOpen={setSuccessPopupOpen}
-          discription={discription}
-        />
-      )} */}
     </Modal>
   );
 };

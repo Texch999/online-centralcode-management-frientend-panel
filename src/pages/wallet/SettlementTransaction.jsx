@@ -117,11 +117,11 @@ const SettlementTransaction = () => {
     }
 
     if (fromDate && !toDate) {
-      newErrors.toDate = "Please select a 'To' date.";
+      newErrors.toDate = "Please select a To date.";
     }
 
     if (fromDate && toDate && new Date(fromDate) > new Date(toDate)) {
-      newErrors.toDate = "'From' date cannot be greater than 'To' date.";
+      newErrors.toDate = "From date cannot be greater than To date.";
     }
 
     setErrors(newErrors);
@@ -283,7 +283,7 @@ const SettlementTransaction = () => {
                     />
                   ) : null}
 
-                  {loading ? "Submiting" : "Submit"}
+                  {loading ? "Submiting..." : "Submit"}
                 </button>
               </div>
             </div>
