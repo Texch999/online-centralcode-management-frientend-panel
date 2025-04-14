@@ -38,6 +38,8 @@ const AddWibsites = () => {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const [loading, setLoading] = useState(false);
+  const [blockLoader,setBlockLoading]=useState(false)
+
   const allCountries = useSelector((item) => item?.allCountries);
 
   const getAllWebsiteList = (limit, offset, web_name) => {
@@ -212,6 +214,7 @@ const AddWibsites = () => {
   };
 
   const handleBlockAndUnblock = () => {
+    setBlockLoading(true)
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
     blockAndUnblock(websiteId)
@@ -219,6 +222,7 @@ const AddWibsites = () => {
         if (response?.status === true) {
           getAllWebsiteList(limit, offset);
           setConfirmationPopupOpen(false);
+          setBlockLoading(false)
           setOpenSuccessPopup(true);
           setDisplayeMsg(response.message);
           setTimeout(() => {
@@ -332,6 +336,7 @@ const AddWibsites = () => {
           discription={`Are you sure you want to ${status === 1 ? "block" : "unblock"} this website?`}
           submitButton={status === 1 ? "Block" : "Unblock"}
           onSubmit={handleBlockAndUnblock}
+          blockLoader={blockLoader}
         />
       )}
 

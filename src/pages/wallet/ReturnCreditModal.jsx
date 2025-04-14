@@ -347,7 +347,8 @@ const ReturnCreditModal = ({
                       role="status"
                       aria-hidden="true"
                     />
-                    <span className="visually-hidden">Submitting...</span>
+                     Submit
+                  
                   </>
                 ) : (
                   "Submit"

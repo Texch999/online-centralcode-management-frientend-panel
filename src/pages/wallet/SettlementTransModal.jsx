@@ -285,7 +285,7 @@ const SettlementTransModal = ({
               <button
                 type="submit"
                 className={`saffron-btn br-5 px-4 pointer small-font ${settleDetails?.creditBalance > 0 ? "" : "no-cursor"}`}
-                disabled={settleDetails?.creditBalance <= 0}
+                disabled={settleDetails?.creditBalance <= 0 || loading}
               >
                 {loading ? (
                   <div className="flex-row" role="status">

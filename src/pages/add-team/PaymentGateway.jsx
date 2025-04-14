@@ -59,6 +59,7 @@ const PaymentGateway = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
   const [desciption, setDesciption] = useState("");
+  const [blockLoader,setBlockLoading]=useState(false)
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -335,11 +336,15 @@ const PaymentGateway = () => {
   const status_id = statusId === 1 ? 2 : 1;
 
   const suspendStatus = () => {
+    setBlockLoading(true)
+    console.log("block clicked again 567");
+    
     suspendDirectorAccountPaymentDetails(paymentId, status_id)
       .then((response) => {
         getDirectorAccountData(page, pageSize);
         setOnBlockPopup(false);
         setMsg(response?.message);
+        setBlockLoading(false)
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -576,6 +581,7 @@ const PaymentGateway = () => {
             } this Gateway?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
+          blockLoader={blockLoader}
         />
       )}
       {errorPopup && (
