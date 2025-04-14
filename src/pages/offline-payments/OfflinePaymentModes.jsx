@@ -126,19 +126,21 @@ const OfflinePaymentModes = () => {
     setConfirmationModal(true);
     setOfflinePaymentModeId(id);
     setStatusId(status);
+   
   };
 
   const suspendStatus = () => {
-    console.log("active mode");
+  
     
     setBlockLoader(true)
     setConfirmationModal(true);
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         if (response.status === true) {
+          setBlockLoader(false)
           setConfirmationModal(false);
           setSuccessPopupOpen(true);
-          setBlockLoader(false)
+         
           getAllManPaymentModes(page, pageSize);
           setMsg(response?.message);
           
@@ -303,6 +305,7 @@ const OfflinePaymentModes = () => {
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
           blockLoader={blockLoader}
+          setBlockLoader={setBlockLoader}
         />
       )}
 

@@ -163,7 +163,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
 
   const resetPassword = async () => {
     if (!validatePasswords()) {
-      setError("Please Enter valid values");
+      setError("Please Enter Password");
       return;
     }
     const payload = {
@@ -307,7 +307,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
               className="saffron-bg pos-abs-profile d-flex align-items-center justify-content-center"
               onClick={() => fileInputRef.current.click()}
             >
-              <IoMdAdd size={28} className="white-font fw-bold" />
+              <IoMdAdd size={28} className="white-font fw-bold pointer" />
             </div>
           </div>
           <input
@@ -331,7 +331,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
         </div>
 
         <div
-          className="black-bg mt-3 d-flex small-font flex-between white-font align-items-center px-1 py-2"
+          className="black-bg mt-3 d-flex small-font flex-between white-font align-items-center pointer px-1 py-2"
           onClick={handleResetSection}
         >
           <div className="d-flex gap-2">

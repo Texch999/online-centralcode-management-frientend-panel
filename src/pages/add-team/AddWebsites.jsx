@@ -218,11 +218,12 @@ const AddWibsites = () => {
       .then((response) => {
         if (response?.status === true) {
           getAllWebsiteList(limit, offset);
+          setConfirmationPopupOpen(false);
           setOpenSuccessPopup(true);
           setDisplayeMsg(response.message);
           setTimeout(() => {
             setError(response?.message);
-            setConfirmationPopupOpen(false);
+           
             setOpenSuccessPopup(false);
           }, 2000);
         } else {

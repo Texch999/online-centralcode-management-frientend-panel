@@ -13,6 +13,7 @@ function ConfirmationPopup({
   submitButton,
   onSubmit,
   blockLoader,
+  setBlockLoader
 }) {
   const itemsPerPage = 4;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,8 +28,11 @@ function ConfirmationPopup({
   
 
   const handleSunmit = async () => {
+  
+     
     onSubmit(page, pageSize);
-    setConfirmationPopupOpen(false);
+    // setConfirmationPopupOpen(false);
+   
   };
 
   return (
