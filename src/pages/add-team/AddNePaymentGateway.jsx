@@ -49,13 +49,14 @@ const AddNePaymentGateway = () => {
     setAvailablePaymentModeId(available_id);
   };
   const tabNames = [
-    "All",
-    "Bank Transfe",
-    "E-Wallets",
-    "QR Codes",
-    "Cash",
+    "Offline Payment Methods",
+    // "Bank Transfe",
+    // "E-Wallets",
+    // "QR Codes",
+    // "Cash",
     "Payment Gateway",
   ];
+  
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -63,6 +64,7 @@ const AddNePaymentGateway = () => {
     { title: "Cash", mode: 4 },
     { title: "Payment Gateway", mode: 5 },
   ];
+
   const getOwnersPaymentModes = () => {
     let fetchPaymentModes = null;
 
@@ -167,7 +169,7 @@ const AddNePaymentGateway = () => {
   const handleSuccessPopupOpen = () => {
     setSuccessPopupOpen(true);
   };
-  
+
   return (
     <>
       {loading ? (
@@ -269,7 +271,6 @@ const AddNePaymentGateway = () => {
               setDiscription={setDiscription}
               setSuccessPopupOpen={setSuccessPopupOpen}
 
-
               // show={AddPaymentGatewayModal}
               // setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
               // addpaymentId={addpaymentId}
@@ -280,7 +281,6 @@ const AddNePaymentGateway = () => {
               // setAvailablePaymentModeId={setAvailablePaymentModeId}
               // setDiscription={setDiscription}
               // setSuccessPopupOpen={setSuccessPopupOpen}
-
             />
           )}
 

@@ -1198,7 +1198,7 @@ const AddPaymentGatewayPopup = ({
                       htmlFor="qrCode"
                       className="upload-input-popup btn d-flex justify-content-between align-items-center rounded w-100 pointer"
                     >
-                      <span className="small-font">
+                      <span className="small-font text-ellipsis">
                         {qrCode ? qrName : "Upload QR Code"}
                       </span>
                       <AiOutlineCloudUpload size={20} />

@@ -21,7 +21,6 @@ import { imgUrl } from "../../api/baseUrl";
 import SuccessPopup from "../popups/SuccessPopup";
 
 const PaymentGateway = () => {
-
   const navigate = useNavigate();
   const [onAddPaymentGateway, setOnAddPaymentGateway] = useState(false);
   const [onBlockPopup, setOnBlockPopup] = useState(false);
@@ -49,7 +48,7 @@ const PaymentGateway = () => {
   const itemsPerPage = 3;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const pages = parseInt(searchParams.get("page") || 3);
+  const pages = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(pages);
   const limit = itemsPerPage;
   const offset = (currentPage - 1) * itemsPerPage;
@@ -59,7 +58,7 @@ const PaymentGateway = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
   const [desciption, setDesciption] = useState("");
-  const [blockLoader,setBlockLoading]=useState(false)
+  const [blockLoader, setBlockLoading] = useState(false);
 
   const gatewayTypeMap = {
     1: "NEFT/RTGS",
@@ -96,11 +95,9 @@ const PaymentGateway = () => {
   ];
 
   const handleManagementSuspend = (id, status) => {
-
     setSuspendPayment(true);
     setSuspendManagementPaymentId(id);
     setSuspendManagementPaymentStatus(status);
-
   };
 
   const handleEditManagePayment = (id, gateway_type) => {
@@ -138,7 +135,6 @@ const PaymentGateway = () => {
     const limit = itemsPerPage;
     const offset = (pages - 1) * itemsPerPage;
     fetchManagementPaymentDetails(limit, offset);
-
   }, []);
 
   const onPageChange = ({ limit, offset }) => {
@@ -336,15 +332,15 @@ const PaymentGateway = () => {
   const status_id = statusId === 1 ? 2 : 1;
 
   const suspendStatus = () => {
-    setBlockLoading(true)
+    setBlockLoading(true);
     console.log("block clicked again 567");
-    
+
     suspendDirectorAccountPaymentDetails(paymentId, status_id)
       .then((response) => {
         getDirectorAccountData(page, pageSize);
         setOnBlockPopup(false);
         setMsg(response?.message);
-        setBlockLoading(false)
+        setBlockLoading(false);
         setSuccessPopupOpen(true);
         setTimeout(() => {
           setSuccessPopupOpen(false);
@@ -444,8 +440,8 @@ const PaymentGateway = () => {
   };
 
   useEffect(() => {
-    const limit = itemsPerPage
-    const offset = (page - 1) * itemsPerPage
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
     // Fetch data based on role and filterName
     if (searchInput.trim() === "") {
       fetchManagementPaymentDetails(limit, offset);
@@ -456,8 +452,7 @@ const PaymentGateway = () => {
     const limit = itemsPerPage;
     const offset = (pages - 1) * itemsPerPage;
     fetchManagementPaymentDetails(limit, offset);
-
-  }
+  };
 
   return (
     <div>
@@ -567,18 +562,21 @@ const PaymentGateway = () => {
         <ConfirmationPopup
           confirmationPopupOpen={suspendPayment}
           setConfirmationPopupOpen={setSuspendPayment}
-          discription={`Are you sure you want to ${suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
-            } this payment gateway?`}
-          submitButton={`${suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
-            }`}
+          discription={`Are you sure you want to ${
+            suspendManagementPaymentStatus === 1 ? "In-Active" : "Activate"
+          } this payment gateway?`}
+          submitButton={`${
+            suspendManagementPaymentStatus === 1 ? "In-Active" : "Active"
+          }`}
           onSubmit={suspendManPaymnet}
         />
       ) : (
         <ConfirmationPopup
           confirmationPopupOpen={onBlockPopup}
           setConfirmationPopupOpen={() => setOnBlockPopup(false)}
-          discription={`are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
-            } this Gateway?`}
+          discription={`are you sure you want to ${
+            statusId === 1 ? "In-Active" : "Active"
+          } this Gateway?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
           blockLoader={blockLoader}
@@ -599,7 +597,6 @@ const PaymentGateway = () => {
           discription={msg}
         />
       )}
-
     </div>
   );
 };
