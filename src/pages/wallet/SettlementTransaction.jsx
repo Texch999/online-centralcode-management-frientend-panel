@@ -40,7 +40,6 @@ const SettlementTransaction = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false)
   const [discription, setDiscription] = useState("")
 
-  // State to track field-specific errors
   const [errors, setErrors] = useState({
     selectedAdminId: "",
     selectedType: "",
@@ -48,7 +47,6 @@ const SettlementTransaction = () => {
     toDate: "",
   });
 
-  // Fetch settlement transactions
   const getSettleTransaction = (
     limit,
     offset,
@@ -117,11 +115,11 @@ const SettlementTransaction = () => {
     }
 
     if (fromDate && !toDate) {
-      newErrors.toDate = "Please select a 'To' date.";
+      newErrors.toDate = "Please select a To date.";
     }
 
     if (fromDate && toDate && new Date(fromDate) > new Date(toDate)) {
-      newErrors.toDate = "'From' date cannot be greater than 'To' date.";
+      newErrors.toDate = "From date cannot be greater than To date.";
     }
 
     setErrors(newErrors);
@@ -283,7 +281,7 @@ const SettlementTransaction = () => {
                     />
                   ) : null}
 
-                  {loading ? "Submiting" : "Submit"}
+                  {loading ? "Submiting..." : "Submit"}
                 </button>
               </div>
             </div>

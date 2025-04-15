@@ -144,7 +144,7 @@ function EditNewDirector() {
 
   const validateAddWebsites = (addWebsites) => {
     const errors = {};
-    // NEW WEBSITEDETAILS VALIDATION
+
     userWebsites.forEach((site) => {
       console.log(site, "===>site");
       if (!site.admin_panel_id) {
@@ -212,8 +212,6 @@ function EditNewDirector() {
       }
     });
 
-    // NEW WEBSITEDETAILS VALIDATION
-    // Validate website details
     addWebsites.forEach((site, index) => {
       if (!site.admin_panel_id) {
         errors[`admin_panel_id${site.id}`] = "admin_panel_id is required.";
@@ -486,12 +484,11 @@ function EditNewDirector() {
       }
     });
 
-    // Validate website details
     const websiteErrors = validateAddWebsites(addWebsites);
     const isFormValid = validateForm();
     if (!isFormValid) {
       console.log("Form is invalid. Errors:");
-      return; // Stop if the form is invalid
+      return;
     }
     const errors = { ...adminUserSiteErrors, ...websiteErrors };
 
@@ -657,10 +654,7 @@ function EditNewDirector() {
       });
   };
 
-  const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({
-    id,
-    name,
-  }));
+  const adminRolesArray = Object.entries(adminRoles).map(([id, name]) => ({ id, name, }));
 
   const transformData = (data) => {
     const adminMap = new Map();
@@ -675,6 +669,13 @@ function EditNewDirector() {
           userWebsites: [],
         });
       }
+
+      const formatFloatValue = (value) => {
+        if (value === null || value === undefined) return 0.00;
+        const num = parseFloat(value);
+        return isNaN(num) ? 0.00 : parseFloat(num.toFixed(2));
+      };
+
       adminMap.get(adminKey).userWebsites.push({
         id: site.website_access_id,
         web_name: site.user_panel_name,
@@ -687,8 +688,8 @@ function EditNewDirector() {
         chip_percentage: site.chip_percentage,
         is_casino: site.is_casino,
         caschip_values: site.caschip_values,
-        downline_comm: site.downline_comm,
-        share: site.share,
+        downline_comm: formatFloatValue(site.downline_comm),
+        share: formatFloatValue(site.share),
         status: site.status,
         is_primary: site.is_primary == 1 ? 1 : 2,
         website_access_id: site.id ? site.id : site.website_access_id,
@@ -801,18 +802,15 @@ function EditNewDirector() {
     }));
 
     if (selectedWebsites[formId]?.[userSiteId]) {
-      // Remove the user site from addWebsites if unchecked
       setAddWebsites((prevAddWebsites) =>
         prevAddWebsites.filter((site) => site.user_paner_id !== userSiteId)
       );
 
-      // Remove the user site from the selectedUserWebsitesPerAdmin state
       setSelectedUserWebsitesPerAdmin((prev) => ({
         ...prev,
         [adminId]: prev[adminId].filter((siteId) => siteId !== userSiteId),
       }));
     } else {
-      // Add the user site to addWebsites if checked
       const adminPanelId = selectedAdmins[formId]?.value || null;
       setAddWebsites((prevAddWebsites) => {
         const existingSiteIndex = prevAddWebsites.findIndex(
@@ -820,7 +818,6 @@ function EditNewDirector() {
         );
 
         if (existingSiteIndex !== -1) {
-          // Replace the existing site with the new one
           const updatedWebsites = [...prevAddWebsites];
           updatedWebsites[existingSiteIndex] = {
             id: userSiteId,
@@ -897,16 +894,10 @@ function EditNewDirector() {
     );
   };
 
-  // const addAnotherForm = () => {
-  //   const newForm = { id: Date.now() };
-  //   setForms((prevForms) => [...prevForms, newForm]);
-  // };
-
   const addAnotherForm = () => {
     const newForm = { id: Date.now() };
     setForms((prevForms) => [...prevForms, newForm]);
 
-    // If type is 2 (SuperAdmin), auto-select the existing admin site
     if (
       parseInt(selectedRole) === 2 &&
       individualDirectorData?.accessWebsites[0]?.admin_panel_id
@@ -923,7 +914,6 @@ function EditNewDirector() {
         },
       }));
 
-      // Get available user websites for this admin
       const availableUserWebsites = getAvailableUserWebsites(adminId);
       setUserWebsitesList((prev) => ({
         ...prev,
@@ -966,7 +956,7 @@ function EditNewDirector() {
   });
 
   const isExpired = (expiryDate) => {
-    if (!expiryDate) return false; // If no expiry date, assume it's not expired
+    if (!expiryDate) return false;
     const today = new Date();
     const expiry = new Date(expiryDate);
     return expiry < today;
@@ -996,7 +986,6 @@ function EditNewDirector() {
       [websiteId]: newCommissionType,
     }));
 
-    // Update the userWebsites state with the new commission type
     setUserWebsites((prevWebsites) =>
       prevWebsites.map((website) =>
         website.website_access_id === websiteId
@@ -1176,9 +1165,9 @@ function EditNewDirector() {
           </div>
           <div className="row  align-items-center">
             {/* Checkbox for CREDIT ALLOWED */}
-            <div className={`col-2  ${errors?.creditreference ?"": "mt-3"}  d-flex align-items-center`}>
+            <div className={`col-2  ${errors?.creditreference ? "" : "mt-3"}  d-flex align-items-center`}>
               <label className="fw-600 small-font"> </label>
-              <div className={`input-css w-100 ${errors?.creditreference ?"": "mt-2"} d-flex justify-content-start align-items-center small-font`}>
+              <div className={`input-css w-100 ${errors?.creditreference ? "" : "mt-2"} d-flex justify-content-start align-items-center small-font`}>
                 <input
                   type="checkbox"
                   checked={isCreditAllowed}
@@ -1197,7 +1186,7 @@ function EditNewDirector() {
                     type="text"
                     className="small-font rounded all-none input-css w-100"
                     placeholder="Enter"
-                    value={creditreference||""}
+                    value={creditreference || ""}
                     onChange={(e) => {
                       const numericValue = e.target.value
                         .replace(/\D/g, "")
@@ -1212,10 +1201,10 @@ function EditNewDirector() {
                   />
                 </div>
                 {errors?.creditreference && (
-                <span className="text-danger  error">
-                  {errors?.creditreference}
-                </span>
-              )}
+                  <span className="text-danger  error">
+                    {errors?.creditreference}
+                  </span>
+                )}
               </div>
             )}
 
@@ -1231,7 +1220,7 @@ function EditNewDirector() {
                     readOnly
                   />
                 </div>
-               
+
               </div>
             )}
           </div>
@@ -1266,7 +1255,7 @@ function EditNewDirector() {
                     const currentCommissionType =
                       commissionTypeChanges[userWebsite.website_access_id] ||
                       userWebsite.commission_type;
-console.log(userWebsite,"===>userWebsite")
+                    console.log(userWebsite, "===>userWebsite")
                     return (
                       <div key={userIndex} className="w-100 mt-3 my-2  row">
                         <div className="col-2 d-flex flex-column mt-4">
@@ -1289,31 +1278,6 @@ console.log(userWebsite,"===>userWebsite")
                           <label className="small-font my-1">
                             Commission Type
                           </label>
-                          {/* <div className="d-flex align-items-center">
-                            <select
-                              className="small-font grey-bg-clr rounded p-2 w-100 border-0"
-                              value={currentCommissionType}
-                              onChange={(e) =>
-                                handleCommissionTypeChange(
-                                  userWebsite.website_access_id,
-                                  e.target.value
-                                )
-                              }
-                              disabled={isExpired(
-                                userWebsite.rent_expiry_date
-                                  ? userWebsite.rent_expiry_date
-                                  : null
-                              )}
-                            >
-                              {Object.entries(commissionTypes).map(
-                                ([value, label]) => (
-                                  <option key={value} value={value}>
-                                    {label}
-                                  </option>
-                                )
-                              )}
-                            </select>
-                          </div> */}
 
                           <div className="d-flex  align-items-center">
                             <Select
@@ -1597,38 +1561,6 @@ console.log(userWebsite,"===>userWebsite")
                                 Downline Share (upto 100%)
                               </label>
                               <div className="position-relative">
-                                {/* <input
-                                  type="text"
-                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100 pe-4"
-                                  value={userWebsite.share || ""}
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-                                    const numericValue = inputValue.replace(
-                                      /[^0-9]/g,
-                                      ""
-                                    );
-
-                                    let finalValue = numericValue;
-                                    if (
-                                      numericValue.length > 2 &&
-                                      numericValue !== "100"
-                                    ) {
-                                      finalValue = numericValue.slice(0, 2);
-                                    }
-
-                                    const clampedValue = Math.min(
-                                      Math.max(Number(finalValue), 0),
-                                      100
-                                    );
-
-                                    const updatedWebsites = [...userWebsites];
-                                    updatedWebsites[userIndex] = {
-                                      ...updatedWebsites[userIndex],
-                                      share: clampedValue,
-                                    };
-                                    setUserWebsites(updatedWebsites);
-                                  }}
-                                /> */}
 
                                 <input
                                   type="text"
@@ -1637,13 +1569,11 @@ console.log(userWebsite,"===>userWebsite")
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
 
-                                    // Allow only numbers and a single decimal point
                                     const numericValue = inputValue.replace(
                                       /[^0-9.]/g,
                                       ""
                                     );
 
-                                    // Prevent multiple dots
                                     const dotCount = (
                                       numericValue.match(/\./g) || []
                                     ).length;
@@ -1655,19 +1585,16 @@ console.log(userWebsite,"===>userWebsite")
                                       );
                                     }
 
-                                    // Split the value by the dot to ensure proper formatting
                                     const parts = finalValue.split(".");
                                     if (
                                       parts.length === 2 &&
                                       parts[1].length > 2
                                     ) {
-                                      // Limit decimal places to 2
                                       finalValue = `${parts[0]
                                         }.${parts[1].slice(0, 2)}`;
                                     }
 
-                                    // Check if the value is a valid number and within the range
-                                    const numericValueWithoutDot = parts[0]; // Get the part before the decimal
+                                    const numericValueWithoutDot = parts[0];
                                     if (
                                       numericValueWithoutDot.length > 2 &&
                                       Number(numericValueWithoutDot) !== 100
@@ -1675,16 +1602,15 @@ console.log(userWebsite,"===>userWebsite")
                                       finalValue = numericValueWithoutDot.slice(
                                         0,
                                         2
-                                      ); // Restrict to 2 digits if not 100
+                                      );
                                     }
 
-                                    // Clamp value between 0 and 100
                                     const clampedValue =
                                       finalValue !== "" &&
                                         !isNaN(finalValue) &&
                                         Number(finalValue) <= 100
                                         ? finalValue
-                                        : finalValue === "" // Allow empty input
+                                        : finalValue === ""
                                           ? ""
                                           : "100";
 
@@ -1712,39 +1638,6 @@ console.log(userWebsite,"===>userWebsite")
                                 Commission (less than 5%)
                               </label>
                               <div className="position-relative">
-                                {/* <input
-                                  type="text"
-                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
-                                  value={userWebsite.downline_comm || ""}
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-
-                                    const numericValue = inputValue.replace(
-                                      /[^0-9]/g,
-                                      ""
-                                    );
-
-                                    let finalValue = numericValue;
-                                    if (
-                                      numericValue.length > 2 &&
-                                      numericValue !== "100"
-                                    ) {
-                                      finalValue = numericValue.slice(0, 2);
-                                    }
-
-                                    const clampedValue = Math.min(
-                                      Math.max(Number(finalValue), 0),
-                                      100
-                                    );
-
-                                    const updatedWebsites = [...userWebsites];
-                                    updatedWebsites[userIndex] = {
-                                      ...updatedWebsites[userIndex],
-                                      downline_comm: clampedValue,
-                                    };
-                                    setUserWebsites(updatedWebsites);
-                                  }}
-                                /> */}
 
                                 <input
                                   type="text"
@@ -1753,13 +1646,11 @@ console.log(userWebsite,"===>userWebsite")
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
 
-                                    // Allow only numbers and a single dot
                                     const numericValue = inputValue.replace(
                                       /[^0-9.]/g,
                                       ""
                                     );
 
-                                    // Prevent multiple dots
                                     const dotCount = (
                                       numericValue.match(/\./g) || []
                                     ).length;
@@ -1772,7 +1663,6 @@ console.log(userWebsite,"===>userWebsite")
                                       );
                                     }
 
-                                    // Split value by the dot to handle decimal places
                                     const parts = finalValue.split(".");
                                     if (
                                       parts.length === 2 &&
@@ -1782,9 +1672,8 @@ console.log(userWebsite,"===>userWebsite")
                                         }.${parts[1].slice(0, 2)}`;
                                     }
 
-                                    // Allow input only if less than or equal to 5
                                     if (
-                                      finalValue === "" || // Allow empty input for reset
+                                      finalValue === "" ||
                                       (!isNaN(finalValue) &&
                                         Number(finalValue) <= 5)
                                     ) {
@@ -1837,7 +1726,6 @@ console.log(userWebsite,"===>userWebsite")
                                 </span>
                               )}
                             </div>
-                            {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
 
                             <div className="col-1 grey-bg-clr flex-center  white-space input-css4 ms-2 d-flex border-0 mt-4">
                               <input
@@ -1866,38 +1754,6 @@ console.log(userWebsite,"===>userWebsite")
                                 Downline Share (upto 100%)
                               </label>
                               <div className="position-relative">
-                                {/* <input
-                                  type="text"
-                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
-                                  value={userWebsite.share || ""}
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-                                    const numericValue = inputValue.replace(
-                                      /[^0-9]/g,
-                                      ""
-                                    );
-
-                                    let finalValue = numericValue;
-                                    if (
-                                      numericValue.length > 2 &&
-                                      numericValue !== "100"
-                                    ) {
-                                      finalValue = numericValue.slice(0, 2);
-                                    }
-
-                                    const clampedValue = Math.min(
-                                      Math.max(Number(finalValue), 0),
-                                      100
-                                    );
-
-                                    const updatedWebsites = [...userWebsites];
-                                    updatedWebsites[userIndex] = {
-                                      ...updatedWebsites[userIndex],
-                                      share: clampedValue,
-                                    };
-                                    setUserWebsites(updatedWebsites);
-                                  }}
-                                /> */}
 
                                 <input
                                   type="text"
@@ -1906,13 +1762,11 @@ console.log(userWebsite,"===>userWebsite")
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
 
-                                    // Allow only numbers and a single decimal point
                                     const numericValue = inputValue.replace(
                                       /[^0-9.]/g,
                                       ""
                                     );
 
-                                    // Prevent multiple dots
                                     const dotCount = (
                                       numericValue.match(/\./g) || []
                                     ).length;
@@ -1924,19 +1778,16 @@ console.log(userWebsite,"===>userWebsite")
                                       );
                                     }
 
-                                    // Split the value by the dot to ensure proper formatting
                                     const parts = finalValue.split(".");
                                     if (
                                       parts.length === 2 &&
                                       parts[1].length > 2
                                     ) {
-                                      // Limit decimal places to 2
                                       finalValue = `${parts[0]
                                         }.${parts[1].slice(0, 2)}`;
                                     }
 
-                                    // Check if the value is a valid number and within the range
-                                    const numericValueWithoutDot = parts[0]; // Get the part before the decimal
+                                    const numericValueWithoutDot = parts[0];
                                     if (
                                       numericValueWithoutDot.length > 2 &&
                                       Number(numericValueWithoutDot) !== 100
@@ -1944,16 +1795,15 @@ console.log(userWebsite,"===>userWebsite")
                                       finalValue = numericValueWithoutDot.slice(
                                         0,
                                         2
-                                      ); // Restrict to 2 digits if not 100
+                                      );
                                     }
 
-                                    // Clamp value between 0 and 100
                                     const clampedValue =
                                       finalValue !== "" &&
                                         !isNaN(finalValue) &&
                                         Number(finalValue) <= 100
                                         ? finalValue
-                                        : finalValue === "" // Allow empty input
+                                        : finalValue === ""
                                           ? ""
                                           : "100";
 
@@ -1981,39 +1831,6 @@ console.log(userWebsite,"===>userWebsite")
                                 Commission (less than 5%)
                               </label>
                               <div className="position-relative">
-                                {/* <input
-                                  type="text"
-                                  className="small-font grey-bg-clr all-none rounded border-0 p-2 w-100"
-                                  value={userWebsite.downline_comm || ""}
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-
-                                    const numericValue = inputValue.replace(
-                                      /[^0-9]/g,
-                                      ""
-                                    );
-
-                                    let finalValue = numericValue;
-                                    if (
-                                      numericValue.length > 2 &&
-                                      numericValue !== "100"
-                                    ) {
-                                      finalValue = numericValue.slice(0, 2);
-                                    }
-
-                                    const clampedValue = Math.min(
-                                      Math.max(Number(finalValue), 0),
-                                      100
-                                    );
-
-                                    const updatedWebsites = [...userWebsites];
-                                    updatedWebsites[userIndex] = {
-                                      ...updatedWebsites[userIndex],
-                                      downline_comm: clampedValue,
-                                    };
-                                    setUserWebsites(updatedWebsites);
-                                  }}
-                                /> */}
 
                                 <input
                                   type="text"
@@ -2022,13 +1839,11 @@ console.log(userWebsite,"===>userWebsite")
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
 
-                                    // Allow only numbers and a single dot
                                     const numericValue = inputValue.replace(
                                       /[^0-9.]/g,
                                       ""
                                     );
 
-                                    // Prevent multiple dots
                                     const dotCount = (
                                       numericValue.match(/\./g) || []
                                     ).length;
@@ -2041,27 +1856,23 @@ console.log(userWebsite,"===>userWebsite")
                                       );
                                     }
 
-                                    // Split value by the dot to handle decimal places
                                     const parts = finalValue.split(".");
                                     if (
                                       parts.length === 2 &&
                                       parts[1].length > 2
                                     ) {
-                                      // Limit decimal places to 2
                                       finalValue = `${parts[0]
                                         }.${parts[1].slice(0, 2)}`;
                                     }
 
-                                    // Block input greater than 5 (doesn't allow it at all)
                                     if (
-                                      finalValue !== "" && // Allow empty input
+                                      finalValue !== "" &&
                                       !isNaN(finalValue) &&
                                       Number(finalValue) > 5
                                     ) {
-                                      return; // Block invalid input beyond 5
+                                      return;
                                     }
 
-                                    // Update the state only if valid input
                                     const updatedWebsites = [...userWebsites];
                                     updatedWebsites[userIndex] = {
                                       ...updatedWebsites[userIndex],
@@ -2110,7 +1921,6 @@ console.log(userWebsite,"===>userWebsite")
                                 </span>
                               )}
                             </div>
-                            {/* Render "Is Primary" checkbox for commission types 2 and 3 */}
                             <div className="col-1 grey-bg-clr flex-center  white-space input-css4 ms-2 border-0 d-flex  mt-4">
                               <input
                                 type="checkbox"
@@ -2208,7 +2018,7 @@ console.log(userWebsite,"===>userWebsite")
                           onChange={(selectedOption) =>
                             handleAdminRoleChange(form.id, selectedOption)
                           }
-                          disabled={Number(selectedRole) === 2}  // Using Number() instead of parseInt
+                          disabled={Number(selectedRole) === 2}
                           isDisabled={Number(selectedRole) === 2}
                         />
                       </div>
@@ -2572,469 +2382,10 @@ console.log(userWebsite,"===>userWebsite")
                       <p className="small-font">No user websites available</p>
                     )
                   ) : (
-                    // <div className="col-12">
-                    //   {userWebsitesList[form.id]?.length > 0 ? (
-                    //     <div className="row">
-                    //       <div className="col-2 input-css5 small-font">
-                    //         <div className="black-font">User Website</div>
-                    //         <Select
-                    //           className="small-font rounded all-none my-2 w-100"
-                    //           placeholder="Select a website"
-                    //           options={userWebsitesList[form.id]
-                    //             .map((site) => ({
-                    //               value: site.id,
-                    //               label: site.web_url,
-                    //             }))
-                    //           }
-                    //           value={
-                    //             selectedSiteIds[form.id]
-                    //               ? {
-                    //                 value: selectedSiteIds[form.id],
-                    //                 label:
-                    //                   userWebsitesList[form.id].find(
-                    //                     (site) => site.id === selectedSiteIds[form.id]
-                    //                   )?.web_url || "",
-                    //               }
-                    //               : null
-                    //           }
-                    //           onChange={(selectedOption) => {
-                    //             const selectedSiteId = selectedOption ? selectedOption.value : null;
-                    //             const adminId = selectedAdmins[form.id]?.value;
-
-                    //             setSelectedSiteIds((prev) => ({
-                    //               ...prev,
-                    //               [form.id]: selectedSiteId,
-                    //             }));
-
-                    //             handleCheckboxChange(form.id, selectedSiteId, null, adminId);
-                    //           }}
-                    //           styles={customStyles}
-                    //         />
-
-                    //         {errors[`userSite_${form.id}`] && (
-                    //           <span className="text-danger small-font">
-                    //             {errors[`userSite_${form.id}`]}
-                    //           </span>
-                    //         )}
-                    //       </div>
-                    //       {selectedSiteIds[form.id] && (
-                    //         <>
-                    //           <div className="col-2 my-1">
-                    //             <label className="small-font my-1 d-block">Commission Type</label>
-                    //             <Select
-                    //               className="small-font white-bg"
-                    //               placeholder="Account Type"
-                    //               options={commissionOptions}
-                    //               styles={customStyles}
-                    //               onChange={(selectedOption) =>
-                    //                 handleAccountTypeChange(
-                    //                   form.id,
-                    //                   selectedSiteIds[form.id],
-                    //                   selectedOption
-                    //                 )
-                    //               }
-                    //               value={
-                    //                 commissionOptions.find(
-                    //                   (option) =>
-                    //                     option.value ===
-                    //                     accountTypes[form.id]?.[selectedSiteIds[form.id]]
-                    //                 ) || null
-                    //               }
-                    //             />
-
-                    //             {errors[`commission_type_${selectedSiteIds[form.id]}`] && (
-                    //               <span className="text-danger small-font">
-                    //                 {errors[`commission_type_${selectedSiteIds[form.id]}`]}
-                    //               </span>
-                    //             )}
-
-                    //           </div>
-
-                    //           {/* Fields for Commission Type 1 */}
-                    //           {/* {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "1" && (
-                    //             <div className="col-10">
-                    //               <div className="row">
-                    //                 <div className="col">
-                    //                   <input
-                    //                     type="text"
-                    //                     className="small-font white-bg rounded border-grey3 p-2 w-100"
-                    //                     placeholder="Monthly Amnt"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "monthly_amount",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                   />
-                    //                   {errors[`monthly_amount_${selectedSiteIds[form.id]}`] && (
-                    //                     <span className="text-danger small-font">
-                    //                       {errors[`monthly_amount_${selectedSiteIds[form.id]}`]}
-                    //                     </span>
-                    //                   )}
-                    //                   {console.log(errors, "==>errors[`commission_type_${selectedSiteIds[form.id]}`]")}
-                    //                 </div>
-
-                    //                 <div className="col">
-                    //                   <input
-                    //                     type="text"
-                    //                     className="small-font white-bg rounded border-grey3 p-2 w-100"
-                    //                     placeholder="Max Chips Monthly"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "max_chips_monthly",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                   />
-                    //                   {errors[`max_chips_monthly_${selectedSiteIds[form.id]}`] && (
-                    //                     <span className="text-danger small-font">
-                    //                       {errors[`max_chips_monthly_${selectedSiteIds[form.id]}`]}
-                    //                     </span>
-                    //                   )}
-                    //                 </div>
-
-                    //                 <div className="col">
-                    //                   <input
-                    //                     type="text"
-                    //                     className="small-font white-bg rounded border-grey3 p-2 w-100"
-                    //                     placeholder="Rent Percentage"
-                    //                     value={
-                    //                       addWebsites.find(
-                    //                         (site) => site.id === selectedSiteIds[form.id]
-                    //                       )?.monthly_amount &&
-                    //                         addWebsites.find(
-                    //                           (site) => site.id === selectedSiteIds[form.id]
-                    //                         )?.max_chips_monthly
-                    //                         ? (
-                    //                           (parseFloat(
-                    //                             addWebsites.find(
-                    //                               (site) => site.id === selectedSiteIds[form.id]
-                    //                             )?.monthly_amount
-                    //                           ) /
-                    //                             parseFloat(
-                    //                               addWebsites.find(
-                    //                                 (site) => site.id === selectedSiteIds[form.id]
-                    //                               )?.max_chips_monthly
-                    //                             )) *
-                    //                           100
-                    //                         ).toFixed(2)
-                    //                         : ""
-                    //                     }
-                    //                     readOnly
-                    //                   />
-                    //                 </div>
-
-                    //                 <div className="col-3">
-                    //                   <div className="white-bg rounded border-grey3 d-flex justify-content-between align-items-center small-font">
-                    //                     <input
-                    //                       type="text"
-                    //                       className="small-font bg-none p-2 w-75"
-                    //                       placeholder="Commission(%)"
-                    //                       onChange={(e) =>
-                    //                         handleInputChange(
-                    //                           selectedSiteIds[form.id],
-                    //                           "downline_comm",
-                    //                           e.target.value
-                    //                         )
-                    //                       }
-                    //                     />
-                    //                     <span className="small-font text-center border-left3 px-1">
-                    //                       <b>My Comm.. 1%</b>
-                    //                     </span>
-
-                    //                   </div>
-                    //                   {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                    //                     <span className="text-danger small-font">
-                    //                       {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                    //                     </span>
-                    //                   )}
-                    //                 </div>
-
-                    //                 <div className="col d-flex align-items-center">
-                    //                   <label className="small-font me-2">Casino Allowed</label>
-                    //                   <input
-                    //                     type="checkbox"
-                    //                     checked={
-                    //                       addWebsites.find(
-                    //                         (site) => site.id === selectedSiteIds[form.id]
-                    //                       )?.is_casino === 1
-                    //                     }
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "is_casino",
-                    //                         e.target.checked ? 1 : 2
-                    //                       )
-                    //                     }
-                    //                   />
-                    //                 </div>
-
-                    //                 {addWebsites.find(
-                    //                   (site) => site.id === selectedSiteIds[form.id]
-                    //                 )?.is_casino === 1 && (
-                    //                     <div className="col">
-                    //                       <input
-                    //                         type="text"
-                    //                         className="small-font white-bg rounded border-grey3 p-2 w-100"
-                    //                         placeholder="Casino Chip Value"
-                    //                         onChange={(e) =>
-                    //                           handleInputChange(
-                    //                             selectedSiteIds[form.id],
-                    //                             "caschip_values",
-                    //                             e.target.value
-                    //                           )
-                    //                         }
-                    //                       />
-                    //                     </div>
-                    //                   )}
-                    //               </div>
-                    //             </div>
-                    //           )} */}
-
-                    //           {/* Fields for Commission Type 2 */}
-                    //           {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "2" && (
-                    //             <div className="col d-flex">
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block">Downline Sharing</label>
-                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
-                    //                   <input
-                    //                     className="small-font bg-transparent p-2 flex-grow-1"
-                    //                     style={{
-                    //                       border: "none",
-                    //                       outline: "none",
-                    //                       boxShadow: "none"
-                    //                     }}
-                    //                     placeholder="Downline Sharing"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "share",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                     max={10}
-                    //                     min={0}
-                    //                   />
-                    //                   <span className="px-2 text-muted">%</span>
-                    //                 </div>
-                    //                 {errors[`share_${selectedSiteIds[form.id]}`] && (
-                    //                   <span className="text-danger small-font">
-                    //                     {errors[`share_${selectedSiteIds[form.id]}`]}
-                    //                   </span>
-                    //                 )}
-                    //               </div>
-
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block">Commission</label>
-                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
-                    //                   <input
-                    //                     className="small-font bg-transparent p-2 flex-grow-1"
-                    //                     style={{
-                    //                       border: "none",
-                    //                       outline: "none",
-                    //                       boxShadow: "none"
-                    //                     }}
-                    //                     placeholder="Enter Commission"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "downline_comm",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                     max={10}
-                    //                     min={0}
-                    //                   />
-                    //                   <span className="px-2 text-muted">%</span>
-                    //                 </div>
-                    //                 {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                    //                   <span className="text-danger small-font">
-                    //                     {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                    //                   </span>
-                    //                 )}
-                    //               </div>
-
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block">Casino Chip Value</label>
-                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
-                    //                   <input
-                    //                     className="small-font bg-transparent p-2 flex-grow-1"
-                    //                     style={{
-                    //                       border: "none",
-                    //                       outline: "none",
-                    //                       boxShadow: "none"
-                    //                     }}
-                    //                     placeholder="Casino Chip Value"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "caschip_values",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                     max={10}
-                    //                     min={0}
-                    //                   />
-                    //                 </div>
-                    //                 {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
-                    //                   <span className="text-danger small-font">
-                    //                     {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
-                    //                   </span>
-                    //                 )}
-                    //               </div>
-
-                    //               <div className="col position-relative mx-1">
-                    //                 <div className="rounded grey-bg-clr d-flex flex-start align-items-center small-font py-2 px-1  border-0">
-                    //                   <input
-                    //                     type="checkbox"
-                    //                     checked={
-                    //                       addWebsites.find(
-                    //                         (site) => site.id === selectedSiteIds[form.id]
-                    //                       )?.is_primary == 1
-                    //                     }
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "is_primary",
-                    //                         e.target.checked ? 1 : 2
-                    //                       )
-                    //                     }
-                    //                   />
-                    //                   <label className="small-font ms-2">Is Primary </label>
-                    //                 </div>
-                    //               </div>
-                    //             </div>
-                    //           )}
-                    //           {/* Fields for Commission Type 3 */}
-                    //           {accountTypes[form.id]?.[selectedSiteIds[form.id]] === "3" && (
-                    //             <div className="col d-flex">
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block">Downline Sharing</label>
-                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
-                    //                   <input
-                    //                     className="small-font bg-transparent p-2 flex-grow-1"
-                    //                     style={{
-                    //                       border: "none",
-                    //                       outline: "none",
-                    //                       boxShadow: "none"
-                    //                     }}
-                    //                     placeholder="Downline Sharing"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "share",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                     max={10}
-                    //                     min={0}
-                    //                   />
-                    //                   <span className="px-2 text-muted">%</span>
-                    //                 </div>
-                    //                 {errors[`share_${selectedSiteIds[form.id]}`] && (
-                    //                   <span className="text-danger small-font">
-                    //                     {errors[`share_${selectedSiteIds[form.id]}`]}
-                    //                   </span>
-                    //                 )}
-                    //               </div>
-
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block">Commission</label>
-                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
-                    //                   <input
-                    //                     className="small-font bg-transparent p-2 flex-grow-1"
-                    //                     style={{
-                    //                       border: "none",
-                    //                       outline: "none",
-                    //                       boxShadow: "none"
-                    //                     }}
-                    //                     placeholder="Enter Commission"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "downline_comm",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                     max={10}
-                    //                     min={0}
-                    //                   />
-                    //                   <span className="px-2 text-muted">%</span>
-                    //                 </div>
-                    //                 {errors[`downline_comm_${selectedSiteIds[form.id]}`] && (
-                    //                   <span className="text-danger small-font">
-                    //                     {errors[`downline_comm_${selectedSiteIds[form.id]}`]}
-                    //                   </span>
-                    //                 )}
-                    //               </div>
-
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block">Casino Chip Value</label>
-                    //                 <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary">
-                    //                   <input
-                    //                     className="small-font bg-transparent p-2 flex-grow-1"
-                    //                     style={{
-                    //                       border: "none",
-                    //                       outline: "none",
-                    //                       boxShadow: "none"
-                    //                     }}
-                    //                     placeholder="Casino Chip Value"
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "caschip_values",
-                    //                         e.target.value
-                    //                       )
-                    //                     }
-                    //                     max={10}
-                    //                     min={0}
-                    //                   />
-                    //                 </div>
-                    //                 {errors[`caschip_values_${selectedSiteIds[form.id]}`] && (
-                    //                   <span className="text-danger small-font">
-                    //                     {errors[`caschip_values_${selectedSiteIds[form.id]}`]}
-                    //                   </span>
-                    //                 )}
-                    //               </div>
-
-                    //               <div className="col position-relative mx-1">
-                    //                 <label className="small-font my-1 d-block" style={{ color: "#fff" }}>Primary</label>
-                    //                 <div className="rounded grey-bg-clr d-flex flex-start align-items-center small-font py-2 px-1  border-0">
-                    //                   <input
-                    //                     type="checkbox"
-                    //                     checked={
-                    //                       addWebsites.find(
-                    //                         (site) => site.id === selectedSiteIds[form.id]
-                    //                       )?.is_primary == 1
-                    //                     }
-                    //                     onChange={(e) =>
-                    //                       handleInputChange(
-                    //                         selectedSiteIds[form.id],
-                    //                         "is_primary",
-                    //                         e.target.checked ? 1 : 2
-                    //                       )
-                    //                     }
-                    //                   />
-                    //                   <label className="small-font ms-2">Is Primary </label>
-                    //                 </div>
-                    //               </div>
-                    //             </div>
-                    //           )}
-                    //         </>
-                    //       )}
-                    //     </div>
-                    //   ) : (
-                    //     <p className="small-font">No user websites available</p>
-                    //   )}
-                    // </div >
                     <div className="col-12">
                       {userWebsitesList[form.id]?.length > 0 ? (
                         <div className="row align-items-center g-2">
                           {" "}
-                          {/* Added align-items-center and g-2 for consistent vertical alignment and gap */}
-                          {/* User Website Select */}
                           <div className="col-md-2 col-12 input-css5 small-font">
                             <div className="black-font">User Website</div>
                             <Select
@@ -3140,25 +2491,7 @@ console.log(userWebsite,"===>userWebsite")
                                             Downline Share (upto 100%)
                                           </label>
                                           <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                            {/* <input
-                                          type="text"
-                                            className="small-font bg-transparent p-2 flex-grow-1"
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              boxShadow: "none",
-                                            }}
-                                            placeholder="Downline Sharing"
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedSiteIds[form.id],
-                                                "share",
-                                                e.target.value
-                                              )
-                                            }
-                                            max={10}
-                                            min={0}
-                                          /> */}
+
                                             <input
                                               type="text"
                                               className="small-font bg-transparent p-2 flex-grow-1"
@@ -3177,35 +2510,49 @@ console.log(userWebsite,"===>userWebsite")
                                               onInput={(e) => {
                                                 let value = e.target.value;
 
-                                                // Allow only numbers & decimals
-                                                value = value.replace(
-                                                  /[^0-9.]/g,
-                                                  ""
-                                                );
+                                                value = value.replace(/[^0-9.]/g, "");
 
-                                                // Ensure only one decimal point
-                                                const decimalCount = (
-                                                  value.match(/\./g) || []
-                                                ).length;
+                                                const decimalCount = (value.match(/\./g) || []).length;
                                                 if (decimalCount > 1) {
-                                                  value = value.slice(0, -1); // Remove extra decimal
+                                                  value = value.slice(0, -1);
                                                 }
 
-                                                // Restrict to 2 decimal places
+                                                if (!value.includes(".") && value.length > 0) {
+                                                }
+
                                                 if (value.includes(".")) {
                                                   let parts = value.split(".");
-                                                  value =
-                                                    parts[0] +
-                                                    "." +
-                                                    parts[1].slice(0, 2);
+                                                  value = parts[0] + "." + (parts[1] || "").slice(0, 2);
                                                 }
 
-                                                // Prevent values greater than 100 but allow typing naturally
                                                 if (parseFloat(value) > 100) {
-                                                  value = value.slice(0, -1); // Remove last entered digit
+                                                  value = value.slice(0, -1);
                                                 }
 
                                                 e.target.value = value;
+                                              }}
+                                              onBlur={(e) => {
+                                                let value = e.target.value;
+                                                if (value && !value.includes(".")) {
+                                                  value = value + ".00";
+                                                  e.target.value = value;
+                                                  handleInputChange(
+                                                    selectedSiteIds[form.id],
+                                                    "share",
+                                                    value
+                                                  );
+                                                } else if (value.includes(".")) {
+                                                  let parts = value.split(".");
+                                                  if (parts[1].length === 1) {
+                                                    value = parts[0] + "." + parts[1] + "0";
+                                                    e.target.value = value;
+                                                    handleInputChange(
+                                                      selectedSiteIds[form.id],
+                                                      "share",
+                                                      value
+                                                    );
+                                                  }
+                                                }
                                               }}
                                             />
 
@@ -3232,25 +2579,6 @@ console.log(userWebsite,"===>userWebsite")
                                             Commission (less than 5%)
                                           </label>
                                           <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                            {/* <input
-                                          type="text"
-                                            className="small-font bg-transparent p-2 flex-grow-1"
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              boxShadow: "none",
-                                            }}
-                                            placeholder="Enter Commission"
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedSiteIds[form.id],
-                                                "downline_comm",
-                                                e.target.value
-                                              )
-                                            }
-                                            max={10}
-                                            min={0}
-                                          /> */}
 
                                             <input
                                               type="text"
@@ -3260,7 +2588,6 @@ console.log(userWebsite,"===>userWebsite")
                                                 outline: "none",
                                                 boxShadow: "none",
                                               }}
-                                              // placeholder="Enter Commission"
                                               onChange={(e) =>
                                                 handleInputChange(
                                                   selectedSiteIds[form.id],
@@ -3272,44 +2599,61 @@ console.log(userWebsite,"===>userWebsite")
                                                 let value = e.target.value;
 
                                                 // Allow only numbers & decimals
-                                                value = value.replace(
-                                                  /[^0-9.]/g,
-                                                  ""
-                                                );
+                                                value = value.replace(/[^0-9.]/g, "");
 
                                                 // Ensure only one decimal point
-                                                const decimalCount = (
-                                                  value.match(/\./g) || []
-                                                ).length;
+                                                const decimalCount = (value.match(/\./g) || []).length;
                                                 if (decimalCount > 1) {
-                                                  value = value.slice(0, -1); // Remove extra decimal
+                                                  value = value.slice(0, -1);
                                                 }
 
-                                                // Restrict to 2 decimal places
+                                                // Restrict to 2 decimal places if decimal exists
                                                 if (value.includes(".")) {
                                                   let parts = value.split(".");
-                                                  value =
-                                                    parts[0] +
-                                                    "." +
-                                                    parts[1].slice(0, 2);
+                                                  value = parts[0] + "." + parts[1].slice(0, 2);
                                                 }
 
-                                                // Prevent values greater than 5 or less than 0
-                                                if (parseFloat(value) > 5) {
-                                                } else if (
-                                                  parseFloat(value) < 0
-                                                ) {
-                                                  value = "0"; // Set to 0 if less than 0
+                                                // Validate range (0-5)
+                                                if (value && !isNaN(value)) {
+                                                  const numValue = parseFloat(value);
+                                                  if (numValue < 0) {
+                                                    value = "0";
+                                                  } else if (numValue > 5) {
+                                                    value = "5";
+                                                  }
                                                 }
 
-                                                // If the value is not between 0 and 5, don't accept it
-                                                if (
-                                                  parseFloat(value) < 0 ||
-                                                  parseFloat(value) > 5
-                                                ) {
-                                                  e.target.value = ""; // Clear the input if it's out of range
-                                                } else {
-                                                  e.target.value = value; // Otherwise, set the valid value
+                                                e.target.value = value;
+                                              }}
+                                              onBlur={(e) => {
+                                                let value = e.target.value;
+
+                                                // Only format if there's a value
+                                                if (value && !isNaN(value)) {
+                                                  // Format whole numbers to 2 decimal places
+                                                  if (!value.includes(".")) {
+                                                    value = value + ".00";
+                                                  }
+                                                  // Format numbers with 1 decimal digit to 2 decimal places
+                                                  else if (value.split(".")[1].length === 1) {
+                                                    value = value + "0";
+                                                  }
+
+                                                  // Final range check
+                                                  const numValue = parseFloat(value);
+                                                  if (numValue > 5) {
+                                                    value = "5.00";
+                                                  } else if (numValue < 0) {
+                                                    value = "0.00";
+                                                  }
+
+                                                  // Update the input and trigger onChange
+                                                  e.target.value = value;
+                                                  handleInputChange(
+                                                    selectedSiteIds[form.id],
+                                                    "downline_comm",
+                                                    value
+                                                  );
                                                 }
                                               }}
                                             />
@@ -3371,9 +2715,9 @@ console.log(userWebsite,"===>userWebsite")
                                                   parseInt(value) < 0 ||
                                                   parseInt(value) > 9999
                                                 ) {
-                                                  e.target.value = ""; 
+                                                  e.target.value = "";
                                                 } else {
-                                                  e.target.value = value; 
+                                                  e.target.value = value;
                                                 }
                                               }}
                                               maxLength={4}
@@ -3428,7 +2772,6 @@ console.log(userWebsite,"===>userWebsite")
                                       </>
                                     )}
 
-                                  {/* Fields for Commission Type 3 */}
                                   {accountTypes[form.id]?.[
                                     selectedSiteIds[form.id]
                                   ] === "3" && (
@@ -3438,24 +2781,6 @@ console.log(userWebsite,"===>userWebsite")
                                             Downline Share (upto 100%)
                                           </label>
                                           <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                            {/* <input
-                                          type="text"
-                                            className="small-font bg-transparent p-2 flex-grow-1"
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              boxShadow: "none",
-                                            }}
-                                            placeholder="Downline Sharing"
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedSiteIds[form.id],
-                                                "share",
-                                                e.target.value
-                                              )
-                                            }
-                                       
-                                          /> */}
 
                                             <input
                                               type="text"
@@ -3465,7 +2790,6 @@ console.log(userWebsite,"===>userWebsite")
                                                 outline: "none",
                                                 boxShadow: "none",
                                               }}
-                                              // placeholder="Downline Sharing"
                                               onChange={(e) =>
                                                 handleInputChange(
                                                   selectedSiteIds[form.id],
@@ -3476,35 +2800,45 @@ console.log(userWebsite,"===>userWebsite")
                                               onInput={(e) => {
                                                 let value = e.target.value;
 
-                                                // Allow only numbers & decimals
-                                                value = value.replace(
-                                                  /[^0-9.]/g,
-                                                  ""
-                                                );
+                                                value = value.replace(/[^0-9.]/g, "");
 
-                                                // Ensure only one decimal point
-                                                const decimalCount = (
-                                                  value.match(/\./g) || []
-                                                ).length;
+                                                const decimalCount = (value.match(/\./g) || []).length;
                                                 if (decimalCount > 1) {
-                                                  value = value.slice(0, -1); // Remove extra decimal
+                                                  value = value.slice(0, -1);
                                                 }
-
-                                                // Restrict to 2 decimal places
                                                 if (value.includes(".")) {
                                                   let parts = value.split(".");
-                                                  value =
-                                                    parts[0] +
-                                                    "." +
-                                                    parts[1].slice(0, 2);
+                                                  value = parts[0] + "." + (parts[1] || "").slice(0, 2);
                                                 }
 
-                                                // Prevent values greater than 100 but allow natural typing
                                                 if (parseFloat(value) > 100) {
-                                                  value = value.slice(0, -1); // Remove last entered digit
+                                                  value = value.slice(0, -1);
                                                 }
 
                                                 e.target.value = value;
+                                              }}
+                                              onBlur={(e) => {
+                                                let value = e.target.value;
+                                                if (value && !value.includes(".")) {
+                                                  value = value + ".00";
+                                                  e.target.value = value;
+                                                  handleInputChange(
+                                                    selectedSiteIds[form.id],
+                                                    "share",
+                                                    value
+                                                  );
+                                                } else if (value.includes(".")) {
+                                                  let parts = value.split(".");
+                                                  if (parts[1].length === 1) {
+                                                    value = parts[0] + "." + parts[1] + "0";
+                                                    e.target.value = value;
+                                                    handleInputChange(
+                                                      selectedSiteIds[form.id],
+                                                      "share",
+                                                      value
+                                                    );
+                                                  }
+                                                }
                                               }}
                                             />
 
@@ -3531,25 +2865,6 @@ console.log(userWebsite,"===>userWebsite")
                                             Commission (less than 5%)
                                           </label>
                                           <div className="grey-bg-clr rounded border-0 d-flex align-items-center small-font focus-within:border-primary h-100">
-                                            {/* <input
-                                          type="text"
-                                            className="small-font bg-transparent p-2 flex-grow-1"
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              boxShadow: "none",
-                                            }}
-                                            placeholder="Enter Commission"
-                                            onChange={(e) =>
-                                              handleInputChange(
-                                                selectedSiteIds[form.id],
-                                                "downline_comm",
-                                                e.target.value
-                                              )
-                                            }
-                                           
-                                          /> */}
-
                                             <input
                                               type="text"
                                               className="small-font bg-transparent p-2 flex-grow-1"
@@ -3558,7 +2873,6 @@ console.log(userWebsite,"===>userWebsite")
                                                 outline: "none",
                                                 boxShadow: "none",
                                               }}
-                                              // placeholder="Enter Commission"
                                               onChange={(e) =>
                                                 handleInputChange(
                                                   selectedSiteIds[form.id],
@@ -3570,45 +2884,56 @@ console.log(userWebsite,"===>userWebsite")
                                                 let value = e.target.value;
 
                                                 // Allow only numbers & decimals
-                                                value = value.replace(
-                                                  /[^0-9.]/g,
-                                                  ""
-                                                );
+                                                value = value.replace(/[^0-9.]/g, "");
 
                                                 // Ensure only one decimal point
-                                                const decimalCount = (
-                                                  value.match(/\./g) || []
-                                                ).length;
+                                                const decimalCount = (value.match(/\./g) || []).length;
                                                 if (decimalCount > 1) {
-                                                  value = value.slice(0, -1); // Remove extra decimal
+                                                  value = value.slice(0, -1);
                                                 }
 
-                                                // Restrict to 2 decimal places
+                                                // Restrict to 2 decimal places if decimal exists
                                                 if (value.includes(".")) {
                                                   let parts = value.split(".");
-                                                  value =
-                                                    parts[0] +
-                                                    "." +
-                                                    parts[1].slice(0, 2);
+                                                  value = parts[0] + "." + parts[1].slice(0, 2);
                                                 }
 
-                                                // Prevent values greater than 5 or less than 0
-                                                if (parseFloat(value) > 5) {
-                                                  // Set to 5 if exceeds
-                                                } else if (
-                                                  parseFloat(value) < 0
-                                                ) {
-                                                  value = "0"; // Set to 0 if less than 0
+                                                // Validate range (0-5)
+                                                if (value && !isNaN(value)) {
+                                                  const numValue = parseFloat(value);
+                                                  if (numValue < 0) {
+                                                    value = "0";
+                                                  } else if (numValue > 5) {
+                                                    value = "5";
+                                                  }
                                                 }
 
-                                                // If the value is not between 0 and 5, don't accept it
-                                                if (
-                                                  parseFloat(value) < 0 ||
-                                                  parseFloat(value) > 5
-                                                ) {
-                                                  e.target.value = ""; // Clear the input if it's out of range
-                                                } else {
-                                                  e.target.value = value; // Otherwise, set the valid value
+                                                e.target.value = value;
+                                              }}
+                                              onBlur={(e) => {
+                                                let value = e.target.value;
+
+                                                if (value && !isNaN(value)) {
+                                                  if (!value.includes(".")) {
+                                                    value = value + ".00";
+                                                  }
+                                                  else if (value.split(".")[1].length === 1) {
+                                                    value = value + "0";
+                                                  }
+
+                                                  const numValue = parseFloat(value);
+                                                  if (numValue > 5) {
+                                                    value = "5.00";
+                                                  } else if (numValue < 0) {
+                                                    value = "0.00";
+                                                  }
+
+                                                  e.target.value = value;
+                                                  handleInputChange(
+                                                    selectedSiteIds[form.id],
+                                                    "downline_comm",
+                                                    value
+                                                  );
                                                 }
                                               }}
                                             />
@@ -3644,7 +2969,6 @@ console.log(userWebsite,"===>userWebsite")
                                                 outline: "none",
                                                 boxShadow: "none",
                                               }}
-                                              // placeholder="Casino Chip Value"
                                               onChange={(e) =>
                                                 handleInputChange(
                                                   selectedSiteIds[form.id],
@@ -3654,7 +2978,6 @@ console.log(userWebsite,"===>userWebsite")
                                               }
                                               onInput={(e) => {
                                                 let value = e.target.value;
-                                                // Allow only numbers & decimals
                                                 value = value.replace(
                                                   /[^0-9]/g,
                                                   ""
@@ -3667,14 +2990,13 @@ console.log(userWebsite,"===>userWebsite")
                                                   value = "0";
                                                 }
 
-                                                // If the value is not between 0 and 5, don't accept it
                                                 if (
                                                   parseInt(value) < 0 ||
                                                   parseInt(value) > 9999
                                                 ) {
-                                                  e.target.value = ""; // Clear the input if it's out of range
+                                                  e.target.value = "";
                                                 } else {
-                                                  e.target.value = value; // Otherwise, set the valid value
+                                                  e.target.value = value;
                                                 }
                                               }}
                                               maxLength={4}
