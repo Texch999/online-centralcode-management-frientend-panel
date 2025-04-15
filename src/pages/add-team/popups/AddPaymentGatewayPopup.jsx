@@ -952,11 +952,10 @@ const AddPaymentGatewayPopup = ({
       } else {
         response = await createManagementPaymentDetails(formData);
       }
-      console.log(response, "==>response")
-      // Handle successful response
       setLoading(false);
       setDiscription(response?.message);
       setSuccessPopupOpen(true);
+      getDirectorAccountData();
       resetFields();
       setError("");
       if (managementPaymentEdit) {
@@ -966,7 +965,6 @@ const AddPaymentGatewayPopup = ({
       if (setManagementPaymentEditId) setManagementPaymentEditId(null);
       setOnAddPaymentGateway(false);
     } catch (error) {
-      // Handle errors
       setError(error?.message);
       setLoading(false);
     }
@@ -974,7 +972,6 @@ const AddPaymentGatewayPopup = ({
 
   // Handle form submission for director payments
   const handleDirectorPayments = async () => {
-    // Similar validation as above
     let errors = {};
 
     if (!accHolderName.trim()) errors.accHolderName = "Account Holder Name is required";

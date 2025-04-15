@@ -44,14 +44,11 @@ const PaymentGateway = () => {
   const [errorPopup, setErrorPopup] = useState(false);
   const [availablePaymentModeId, setAvailablePaymentModeId] = useState(null);
   const [dirEditId, setDirEditId] = useState(null);
-  const [dirGatewayId, setDirGatewayId] = useState(null);
-  const itemsPerPage = 3;
+  const itemsPerPage = 8;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const pages = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(pages);
-  const limit = itemsPerPage;
-  const offset = (currentPage - 1) * itemsPerPage;
   const page = pages;
   const pageSize = itemsPerPage;
   const [countryId, setCountryId] = useState(null);
@@ -529,7 +526,7 @@ const PaymentGateway = () => {
           setOnAddPaymentGateway={setOnAddPaymentGateway}
           managementPaymentEdit={managementPaymentEdit}
           setManagementPaymentEdit={setManagementPaymentEdit}
-          fetchManagementPaymentDetails={fetchManagementPaymentDetails}
+          getDirectorAccountData={fetchManagementPaymentDetails}
           managementPaymentEditId={managementPaymentEditId}
           setManagementPaymentEditId={setManagementPaymentEditId}
           availablePaymentModeId={availablePaymentModeId}
