@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FaAngleLeft, FaChevronLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import { addSportsControl, getSportsList } from "../../api/apiMethods";
+import {
+  addSportsControl,
+  gameControlById,
+  getSportsList,
+} from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorComponent from "../../components/ErrorComponent";
@@ -28,6 +32,7 @@ const AddSportsControl = () => {
   const [msg, setMsg] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [pswd, setPswd] = useState("");
+  const [selectedSportsData, setSelectedSportsData] = useState([]);
 
   const handleToggleSport = (id) => {
     setSelectedSports((prev) =>
@@ -70,6 +75,26 @@ const AddSportsControl = () => {
   };
   useEffect(() => {
     getSports();
+  }, []);
+
+  const getSelectedSports = () => {
+    setLoading(true);
+    gameControlById(websiteId)
+      .then((response) => {
+        if (response) {
+          setLoading(false);
+          const selectedIds = response.data.map((sport) => sport.id); 
+          setSelectedSportsData(response.data);
+          setSelectedSports(selectedIds);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    getSelectedSports();
   }, []);
 
   const handleSubmit = () => {

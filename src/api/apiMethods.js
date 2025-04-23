@@ -541,6 +541,9 @@ const getSportsList = (data) => {
 const addSportsControl = (data) => {
   return apiRequest("addSportsControl", data);
 };
+const gameControlById = (websiteId, data) => {
+  return apiRequest("gameControlById", data, websiteId);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -680,4 +683,5 @@ export {
   getAdminUserWebsitesListProfile,
   getSportsList,
   addSportsControl,
+  gameControlById,
 };
