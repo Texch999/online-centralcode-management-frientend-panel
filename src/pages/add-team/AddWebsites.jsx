@@ -13,18 +13,19 @@ import {
   getDirectorAccessWebites,
 } from "../../api/apiMethods";
 import ErrorPopup from "../popups/ErrorPopup";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CircleLoader } from "react-spinners";
 
 const AddWibsites = () => {
   const role = localStorage.getItem("role_code");
+  const navigate = useNavigate();
   const [onAddwebsitePopup, setOnAddwebsitePopup] = useState(false);
   const [confirmationPopupOpen, setConfirmationPopupOpen] = useState(false);
   const [error, setError] = useState("");
   const [websites, setWebsite] = useState([]);
   const [directorSites, setDirectorSites] = useState([]);
-  const isInitialRendering = useRef(true)
+  const isInitialRendering = useRef(true);
   const [editMode, setEditMode] = useState(false);
   const [websiteId, setWebsiteId] = useState(null);
   const [status, setStatus] = useState(null);
@@ -38,12 +39,12 @@ const AddWibsites = () => {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const [loading, setLoading] = useState(false);
-  const [blockLoader,setBlockLoading]=useState(false)
+  const [blockLoader, setBlockLoading] = useState(false);
 
   const allCountries = useSelector((item) => item?.allCountries);
 
   const getAllWebsiteList = (limit, offset, web_name) => {
-    setLoading(true)
+    setLoading(true);
     getWebsitesList({
       limit,
       offset,
@@ -53,21 +54,21 @@ const AddWibsites = () => {
         if (response?.status) {
           setWebsite(response.data);
           setTotalRecords(response.totalCount);
-          setLoading(false)
+          setLoading(false);
         } else {
           setError("Something Went Wrong");
           setWebsite([]);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((error) => {
         setWebsite([]);
-        setLoading(false)
+        setLoading(false);
         setError(error?.message || "API request failed");
       });
   };
   const getAllDirectorWebsiteList = (limit, offset) => {
-    setLoading(true)
+    setLoading(true);
     getDirectorAccessWebites({
       limit,
       offset,
@@ -77,7 +78,7 @@ const AddWibsites = () => {
         if (response?.status) {
           setDirectorSites(response.data);
           setTotalRecords(response.totalCount);
-          setLoading(false)
+          setLoading(false);
         } else {
           setError("Something Went Wrong");
           setDirectorSites([]);
@@ -110,6 +111,10 @@ const AddWibsites = () => {
     }
   };
 
+  const handleControl = (web,id) => {
+    navigate(`/gamecontrol/${web}/${id}`);
+  };
+
   const columns = [
     { header: "Type", field: "type", width: "15%" },
     { header: "Admin Name", field: "admin", width: "25%" },
@@ -129,18 +134,13 @@ const AddWibsites = () => {
   };
   const data = websites.map((website) => ({
     type: website?.deploy_type === 1 ? "Company" : "White Lable",
-    admin: (
-      <div>
-        {" "}
-        {`${website?.panel_type === 1 ? "Admin" : "User"
-          } `}
-      </div>
-    ),
+    admin: <div> {`${website?.panel_type === 1 ? "Admin" : "User"} `}</div>,
     websiteName: website?.web_name,
     location: (
       <div>
-        {`${website.city.charAt(0).toUpperCase() + website.city.slice(1)
-          }, ${getLocationName(website?.location_id)}`}{" "}
+        {`${
+          website.city.charAt(0).toUpperCase() + website.city.slice(1)
+        }, ${getLocationName(website?.location_id)}`}{" "}
       </div>
     ),
     url: website.web_url.replace(/^https?:\/\//i, "").toLowerCase(),
@@ -149,8 +149,9 @@ const AddWibsites = () => {
         <div>
           <SlPencil
             size={18}
-            className={`pointer ${website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+            className={`pointer ${
+              website.status !== 1 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             style={website.status !== 1 ? { pointerEvents: "none" } : {}}
             onClick={() => {
               if (website.status === 1) {
@@ -164,14 +165,22 @@ const AddWibsites = () => {
 
         <MdBlockFlipped
           size={18}
-          className={`pointer ${website.status === 1 ? "green-clr" : "dark-orange-clr"
-            }`}
+          className={`pointer ${
+            website.status === 1 ? "green-clr" : "dark-orange-clr"
+          }`}
           onClick={() => {
             setConfirmationPopupOpen(true);
             setWebsiteId(website?.id);
             setStatus(website?.status);
           }}
         />
+
+        <div
+          className="yellow-bg white-font br-5 px-2 py-1 pointer"
+          onClick={() => handleControl(website?.web_name,website?.id)}
+        >
+          Control
+        </div>
       </div>
     ),
   }));
@@ -187,12 +196,18 @@ const AddWibsites = () => {
   const directorswebsitedata = directorSites.flatMap((site) =>
     site.admin_websites.map((adminPanel) => ({
       type: adminPanel.admin_deploy_type === 1 ? "Company" : "White Label",
-      admin: <div className="text-capitalize"> {adminPanel.admin_web_name}</div>,
+      admin: (
+        <div className="text-capitalize"> {adminPanel.admin_web_name}</div>
+      ),
       websiteName: adminPanel.users.map((user) => (
-        <div key={user.website_access_id} className="text-capitalize">{user.user_web_name}</div>
+        <div key={user.website_access_id} className="text-capitalize">
+          {user.user_web_name}
+        </div>
       )),
       location: adminPanel.users.map((user) => (
-        <div key={user.website_access_id} className="text-capitalize">{user.user_web_city}</div>
+        <div key={user.website_access_id} className="text-capitalize">
+          {user.user_web_city}
+        </div>
       )),
       url: adminPanel.users.map((user) => (
         <div key={user.website_access_id}>{user.user_web_url}</div>
@@ -214,7 +229,7 @@ const AddWibsites = () => {
   };
 
   const handleBlockAndUnblock = () => {
-    setBlockLoading(true)
+    setBlockLoading(true);
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
     blockAndUnblock(websiteId)
@@ -222,12 +237,12 @@ const AddWibsites = () => {
         if (response?.status === true) {
           getAllWebsiteList(limit, offset);
           setConfirmationPopupOpen(false);
-          setBlockLoading(false)
+          setBlockLoading(false);
           setOpenSuccessPopup(true);
           setDisplayeMsg(response.message);
           setTimeout(() => {
             setError(response?.message);
-           
+
             setOpenSuccessPopup(false);
           }, 2000);
         } else {
@@ -247,40 +262,41 @@ const AddWibsites = () => {
   const getWebsitesCallback = () => {
     const limit = itemsPerPage;
     const offset = (page - 1) * itemsPerPage;
-    getAllWebsiteList(limit, offset)
-  }
+    getAllWebsiteList(limit, offset);
+  };
 
   return (
     <div>
       <div className="row justify-content-between align-items-center mb-3 mt-2">
         {!loading && (
           <>
-        <h6 className="col-2 yellow-font medium-font mb-0">Websites List</h6>
-          <div className="col-6 d-flex justify-content-end gap-3 medium-font">
-            <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
-              <FaSearch size={16} className="grey-clr me-2" />
-              <input
-                className="small-font all-none"
-                placeholder="Enter website name"
-                onChange={(e) => setFilterName(e.target.value.trim())}
-                onKeyDown={handleFiltration}
-              />
-            </div>
+            <h6 className="col-2 yellow-font medium-font mb-0">
+              Websites List
+            </h6>
+            <div className="col-6 d-flex justify-content-end gap-3 medium-font">
+              <div className="input-pill d-flex align-items-center rounded-pill px-2 w-50">
+                <FaSearch size={16} className="grey-clr me-2" />
+                <input
+                  className="small-font all-none"
+                  placeholder="Enter website name"
+                  onChange={(e) => setFilterName(e.target.value.trim())}
+                  onKeyDown={handleFiltration}
+                />
+              </div>
 
-            {role === "management" ? (
-              <button
-                className="rounded-pill input-pill blue-font small-font px-2"
-                onClick={() => setOnAddwebsitePopup(true)}
-              >
-                <FaPlus /> Add New Website{" "}
-              </button>
-            ) : (
-              ""
-            )}
-          </div>
+              {role === "management" ? (
+                <button
+                  className="rounded-pill input-pill blue-font small-font px-2"
+                  onClick={() => setOnAddwebsitePopup(true)}
+                >
+                  <FaPlus /> Add New Website{" "}
+                </button>
+              ) : (
+                ""
+              )}
+            </div>
           </>
         )}
-
       </div>
       {loading ? (
         //   <div className="d-flex flex-column flex-center mt-10rem align-items-center">
@@ -292,29 +308,27 @@ const AddWibsites = () => {
         <div className="spinner">
           <div className="spinner-circle"></div>
         </div>
-      ) :
-        role === "management" ? (
-          <div className="mt-2">
-            <Table
-              data={data}
-              columns={columns}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              totalRecords={totalRecords}
-            />
-          </div>
-        ) : (
-          <div className="mt-2">
-            <Table
-              data={directorswebsitedata}
-              columns={directorswebsitecolumns}
-              itemsPerPage={itemsPerPage}
-              onPageChange={handlePageChange}
-              totalRecords={totalRecords}
-            />
-          </div>
-        )
-      }
+      ) : role === "management" ? (
+        <div className="mt-2">
+          <Table
+            data={data}
+            columns={columns}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
+        </div>
+      ) : (
+        <div className="mt-2">
+          <Table
+            data={directorswebsitedata}
+            columns={directorswebsitecolumns}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            totalRecords={totalRecords}
+          />
+        </div>
+      )}
 
       {onAddwebsitePopup && (
         <AddWebsitesPopup
@@ -333,7 +347,9 @@ const AddWibsites = () => {
         <ConfirmationPopup
           confirmationPopupOpen={confirmationPopupOpen}
           setConfirmationPopupOpen={setConfirmationPopupOpen}
-          discription={`Are you sure you want to ${status === 1 ? "block" : "unblock"} this website?`}
+          discription={`Are you sure you want to ${
+            status === 1 ? "block" : "unblock"
+          } this website?`}
           submitButton={status === 1 ? "Block" : "Unblock"}
           onSubmit={handleBlockAndUnblock}
           blockLoader={blockLoader}
@@ -355,7 +371,6 @@ const AddWibsites = () => {
           discription={displayMsg}
         />
       )}
-
     </div>
   );
 };

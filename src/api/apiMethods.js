@@ -1,3 +1,4 @@
+import { data } from "react-router";
 import apiRequest from "./apiRequest";
 
 const loginManagement = (data) => {
@@ -529,7 +530,16 @@ const suspendWebsiteProfile = (id, data) => {
   return apiRequest("suspendWebsiteProfile", data, id);
 };
 const getAdminUserWebsitesListProfile = (dirId, adminPanelId) => {
-  return apiRequest("getAdminUserWebsitesListProfile", dirId, { dirId, adminPanelId });
+  return apiRequest("getAdminUserWebsitesListProfile", dirId, {
+    dirId,
+    adminPanelId,
+  });
+};
+const getSportsList = (data) => {
+  return apiRequest("getSportsList", data);
+};
+const addSportsControl = (data) => {
+  return apiRequest("addSportsControl", data);
 };
 
 export {
@@ -668,4 +678,6 @@ export {
   getMultiMarket,
   suspendWebsiteProfile,
   getAdminUserWebsitesListProfile,
+  getSportsList,
+  addSportsControl,
 };

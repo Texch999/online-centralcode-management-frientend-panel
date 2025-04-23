@@ -859,6 +859,14 @@ const endpoints = {
     url: (data) =>
       `/user/${userID()}/director/${data?.dirId}/adminPanel/${data?.adminPanelId}`,
   },
+  getSportsList:{
+    method:"get",
+    url:`/user/${userID()}/sportsList`
+  },
+  addSportsControl:{
+    method:"post",
+    url:`/user/${userID()}/website/gameControl`
+  }
 };
 
 export default endpoints;

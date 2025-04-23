@@ -111,6 +111,7 @@ import DwnlineTransactionHistory from "./pages/add-team/DwnlineTransactionHistor
 import GameControl from "./pages/add-team/GameControl";
 import CreditSettlement from "./pages/wallet/CreditSettlement";
 import MultimarketDashboard from "./pages/add-team/components/MultimarketDashboard";
+import AddSportsControl from "./pages/add-team/AddSportsControl";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -369,9 +370,10 @@ function App() {
                   path="/credit-settlement"
                   element={<CreditSettlement />}
                 />
-                       <Route
-                  path="/multimarket"
-                  element={<MultimarketDashboard/>}
+                <Route path="/multimarket" element={<MultimarketDashboard />} />
+                <Route
+                  path="/gamecontrol/:website/:id"
+                  element={<AddSportsControl />}
                 />
               </Routes>
             </div>
