@@ -112,6 +112,8 @@ import GameControl from "./pages/add-team/GameControl";
 import CreditSettlement from "./pages/wallet/CreditSettlement";
 import MultimarketDashboard from "./pages/add-team/components/MultimarketDashboard";
 import AddSportsControl from "./pages/add-team/AddSportsControl";
+import MatchesList from "./pages/matches-list/MatchesList";
+import SportMatches from "./pages/matches-list/SportMatches";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -375,6 +377,8 @@ function App() {
                   path="/gamecontrol/:website/:id"
                   element={<AddSportsControl />}
                 />
+                <Route path="/matches-list" element={<MatchesList />} />
+                <Route path="/matches-list/:match" element={<SportMatches />} />
               </Routes>
             </div>
           </div>
