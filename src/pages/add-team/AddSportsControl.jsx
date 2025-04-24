@@ -124,6 +124,7 @@ const AddSportsControl = () => {
           setSuccessPopupOpen(true);
           setTimeout(() => {
             setSuccessPopupOpen(false);
+            navigate("/websites");
           }, 3000);
           setError("");
           setPswdError("");
@@ -137,17 +138,16 @@ const AddSportsControl = () => {
       });
   };
 
-
   return (
     <div>
       <div className="yellow-font align-items-center d-flex flex-between">
-        <div className="fw-600">{params?.website}</div>
+        <div className="fw-600 capitalize-text">{params?.website}</div>
 
         <div
-          className="yellow-bg px-2  white-font small-font py-1 br-5 pointer"
+          className="yellow-bg px-2  white-font small-font  br-5 align-items-center pointer"
           onClick={() => navigate(-1)}
         >
-          <FaAngleLeft size={18} />
+          <FaAngleLeft size={18} className="my-1"/>
           Back
         </div>
       </div>
@@ -156,7 +156,7 @@ const AddSportsControl = () => {
           {buttons?.map((item, index) => (
             <div
               key={index}
-              className={`br-5 pointer medium-font ${
+              className={`br-5 pointer small-font ${
                 active === index
                   ? "saffron-btn white-font"
                   : "white-btn  black-font"
@@ -189,7 +189,7 @@ const AddSportsControl = () => {
                 key={index}
                 className="light-bg d-flex gap-2 medium-font black-font p-2 align-items-center br-5"
               >
-                <div>{item?.name}</div>
+                <div className="small-font">{item?.name}</div>
                 <input
                   type="checkbox"
                   id="Games"
@@ -203,7 +203,7 @@ const AddSportsControl = () => {
           <div className="my-4 row align-items-center ">
             <div className="col-6">
               <div className="my-1 medium-font">Management Password:</div>
-              <div className="input-bg br-5 py-1 px-2 flex-between border-grey3">
+              <div className="input-bg br-5 py-2 px-2 flex-between border-grey3">
                 <input
                   type={passwordVisible ? "text" : "password"}
                   className="all-none small-font w-100"
@@ -230,7 +230,7 @@ const AddSportsControl = () => {
             <div className="col-6">
               <div className="self-end">
                 <div
-                  className="saffron-btn mt-4 rounded balck-font pointer medium-font"
+                  className="saffron-btn2 white-font py-2 text-center mt-4 rounded balck-font pointer medium-font"
                   onClick={handleSubmit}
                   disabled={isloading === true ? true : false}
                 >

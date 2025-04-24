@@ -1189,3 +1189,6 @@ button:disabled {
 .pb-2rem{
   padding-bottom: 2rem;
 }
+.capitalize-text{
+  text-transform: capitalize;
+}
