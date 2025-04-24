@@ -11,6 +11,7 @@ import SuccessPopup from "../popups/SuccessPopup";
 import ErrorComponent from "../../components/ErrorComponent";
 import { IoEye } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Spinner } from "react-bootstrap";
 
 const AddSportsControl = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const AddSportsControl = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [pswd, setPswd] = useState("");
   const [selectedSportsData, setSelectedSportsData] = useState([]);
+  const [formError, setFormError] = useState("");
 
   const handleToggleSport = (id) => {
     setSelectedSports((prev) =>
@@ -83,7 +85,7 @@ const AddSportsControl = () => {
       .then((response) => {
         if (response) {
           setLoading(false);
-          const selectedIds = response.data.map((sport) => sport.id); 
+          const selectedIds = response.data.map((sport) => sport.id);
           setSelectedSportsData(response.data);
           setSelectedSports(selectedIds);
         }
@@ -99,13 +101,14 @@ const AddSportsControl = () => {
 
   const handleSubmit = () => {
     if (selectedSports.length === 0) {
-      setError("Please select at least one sport.");
+      setFormError("Please select at least one sport.");
       return;
     }
     if (!pswd) {
-      setError("Management Password is required");
+      setFormError("Management Password is required");
       return;
     }
+    setFormError("");
     const payload = {
       websiteId: websiteId,
       sports: selectedSports,
@@ -117,12 +120,15 @@ const AddSportsControl = () => {
       .then((response) => {
         if (response?.status === true) {
           setIsLoading(false);
+          setMsg(response?.message);
           setSuccessPopupOpen(true);
           setTimeout(() => {
             setSuccessPopupOpen(false);
           }, 3000);
-          setMsg(response?.message);
-          console.log(response?.data);
+          setError("");
+          setPswdError("");
+          setPswd("");
+          setFormError("");
         }
       })
       .catch((error) => {
@@ -131,13 +137,19 @@ const AddSportsControl = () => {
       });
   };
 
+
   return (
     <div>
-      <div className="yellow-font align-items-center d-flex gap-1">
-        <div onClick={() => navigate(-1)}>
-          <FaChevronLeft />
+      <div className="yellow-font align-items-center d-flex flex-between">
+        <div className="fw-600">{params?.website}</div>
+
+        <div
+          className="yellow-bg px-2  white-font small-font py-1 br-5 pointer"
+          onClick={() => navigate(-1)}
+        >
+          <FaAngleLeft size={18} />
+          Back
         </div>
-        <div>{params?.website}</div>
       </div>
       <div className="my-3">
         <div className="d-flex gap-3">
@@ -157,7 +169,7 @@ const AddSportsControl = () => {
         </div>
       </div>
 
-      <ErrorComponent error={error} />
+      {error && <ErrorComponent error={error} />}
 
       {loading ? (
         <div className="d-flex flex-column flex-center mt-10rem align-items-center">
@@ -168,10 +180,10 @@ const AddSportsControl = () => {
         </div>
       ) : (
         <div>
-          <div className="yellow-bg py-1 white-font rounded-top px-2 large-font">{`${
+          <div className="yellow-bg py-1 white-font fw-600 rounded-top px-2 medium-font">{`${
             active === 0 ? "Sports" : "Casino"
           } Type`}</div>
-          <div className="white-btn rounded-bottom flex-wrap gap-2">
+          <div className="white-btn rounded-bottom flex-wrap p-2 gap-2">
             {sportsData?.map((item, index) => (
               <div
                 key={index}
@@ -220,14 +232,27 @@ const AddSportsControl = () => {
                 <div
                   className="saffron-btn mt-4 rounded balck-font pointer medium-font"
                   onClick={handleSubmit}
-                  disabled={isloading}
+                  disabled={isloading === true ? true : false}
                 >
-                  {isloading ? <div>loading</div> : <div>Submit</div>}
+                  {isloading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Submit</span>
+                    </>
+                  ) : (
+                    <div>Submit</div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {/* {error && <div className="red-font small-font">{error}</div>} */}
+          {formError && <div className="red-font small-font">{formError}</div>}
         </div>
       )}
 
