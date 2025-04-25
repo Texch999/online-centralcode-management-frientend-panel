@@ -378,7 +378,7 @@ function App() {
                   element={<AddSportsControl />}
                 />
                 <Route path="/matches-list" element={<MatchesList />} />
-                <Route path="/matches-list/:match" element={<SportMatches />} />
+                <Route path="/matches-list/:match/:id" element={<SportMatches />} />
               </Routes>
             </div>
           </div>

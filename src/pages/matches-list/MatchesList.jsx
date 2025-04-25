@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { MdBlock } from "react-icons/md";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getSportsList, getSportsListCentral } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
-import { offset } from "@popperjs/core";
 
 const MatchesList = () => {
   const navigate = useNavigate();
@@ -17,14 +13,13 @@ const MatchesList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [totalRecords, setTotalRecords] = useState(null);
-
   const itemsPerPage = 4;
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
 
-  const handleGameMatches = (match) => {
-    navigate(`/matches-list/${match}`);
+  const handleGameMatches = (match,id) => {
+    navigate(`/matches-list/${match}/${id}`);
   };
 
   const cols = [
@@ -38,8 +33,8 @@ const MatchesList = () => {
     games: <div className="pointer">{item?.name}</div>,
     eye: (
       <div
-        className="pointer d-flex justify-content-end"
-        onClick={() => handleGameMatches(item?.name)}
+        className="pointer d-flex "
+        onClick={() => handleGameMatches(item?.name, item?.id)}
       >
         <BsEye size={18} className="orange-clr" />
       </div>

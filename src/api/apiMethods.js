@@ -547,6 +547,12 @@ const gameControlById = (websiteId, data) => {
 const getSportsListCentral = (params) => {
   return apiRequest("getSportsListCentral", {}, params);
 };
+const getAllMatches = (params) => {
+  return apiRequest("getAllMatches", {}, params);
+};
+const suspendMatchCentral = (id, data) => {
+  return apiRequest("suspendMatchCentral", data, id);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -688,4 +694,6 @@ export {
   addSportsControl,
   gameControlById,
   getSportsListCentral,
+  getAllMatches,
+  suspendMatchCentral,
 };

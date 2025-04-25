@@ -880,6 +880,20 @@ const endpoints = {
       return `/user/${userID()}/sportsList?${query}`;
     },
   },
+  getAllMatches: {
+    method: "get",
+    url: (params) => {
+      const { id, ...filteredParams } = params;
+      console.log(params, "parmasss");
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/sport/${id}/getAllMatches?${query}`;
+    },
+  },
+  suspendMatchCentral: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/sport/${id?.sportId}/match/${id?.matchId}`,
+  },
 };
 
 export default endpoints;
