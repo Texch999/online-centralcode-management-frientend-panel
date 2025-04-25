@@ -873,6 +873,13 @@ const endpoints = {
     method: "get",
     url: (websiteId) => `/user/${userID()}/website/${websiteId}`,
   },
+  getSportsListCentral: {
+    method: "get",
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/sportsList?${query}`;
+    },
+  },
 };
 
 export default endpoints;

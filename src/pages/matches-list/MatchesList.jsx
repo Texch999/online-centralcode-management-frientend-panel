@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { MdBlock } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { getSportsList } from "../../api/apiMethods";
+import { getSportsList, getSportsListCentral } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
+import { offset } from "@popperjs/core";
 
 const MatchesList = () => {
   const navigate = useNavigate();
@@ -15,6 +16,12 @@ const MatchesList = () => {
   const [sportsData, setSportsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [totalRecords, setTotalRecords] = useState(null);
+
+  const itemsPerPage = 4;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
 
   const handleGameMatches = (match) => {
     navigate(`/matches-list/${match}`);
@@ -23,7 +30,7 @@ const MatchesList = () => {
   const cols = [
     { header: "S No", field: "sno", width: "8%" },
     { header: "Games", field: "games", width: "40%" },
-    { header: "", field: "eye", width: "10%" },
+    { header: "Action", field: "eye", width: "10%" },
   ];
 
   const data = sportsData?.map((item, index) => ({
@@ -40,14 +47,15 @@ const MatchesList = () => {
   }));
 
   //integration
-  const getSports = () => {
+  const getSports = (limit, offset) => {
     setLoading(true);
-    getSportsList()
+    getSportsListCentral({ limit, offset })
       .then((response) => {
         if (response) {
           setLoading(false);
           console.log(response?.data);
           setSportsData(response?.data);
+          setTotalRecords(response?.count);
         }
       })
       .catch((error) => {
@@ -56,8 +64,16 @@ const MatchesList = () => {
       });
   };
   useEffect(() => {
-    getSports();
+    const limit = itemsPerPage;
+    const offset = (currentPage - 1) * itemsPerPage;
+    getSports(limit, offset);
   }, []);
+
+  const handlePageChange = () => {
+    const limit = itemsPerPage;
+    const offset = (currentPage - 1) * itemsPerPage;
+    getSports(limit, offset);
+  };
   return (
     <div className="">
       <div className="d-flex flex-between mt-3 mb-2">
@@ -69,16 +85,6 @@ const MatchesList = () => {
             Matches List
           </span>
         </div>
-        <div className="small-font flex-between">
-          {/* <span
-            className="input-css2 rounded-pill me-4 px-3 text-black py-1 flex-center pointer hover-orange-clr"
-            onClick={() => navigate(-1)}
-          >
-            <FaArrowLeft className="me-1 d-flex" />
-            Back
-          </span> */}
-          Total P/L : <span className="green-clr mx-1">20000</span>
-        </div>
       </div>
       {loading ? (
         <div className="d-flex flex-column flex-center mt-10rem align-items-center">
@@ -88,7 +94,13 @@ const MatchesList = () => {
           </div>
         </div>
       ) : (
-        <Table columns={cols} data={data} itemsPerPage={5} />
+        <Table
+          columns={cols}
+          data={data}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          totalRecords={totalRecords}
+        />
       )}
       <ConfirmationPopup
         confirmationPopupOpen={isActive}

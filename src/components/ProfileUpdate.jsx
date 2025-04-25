@@ -98,6 +98,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
   console.log(selectedFile, "sleetdFile");
   const handleImage = (e) => {
     const file = e.target.files[0];
+    setProfileImg(URL.createObjectURL(file));
     if (file) {
       setSelectedFile(file);
       setProfileImg(URL.createObjectURL(file));
@@ -108,22 +109,6 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
     setOldPaswd(e.target.value);
     if (e.target.value) setError("");
   };
-
-  // const handleNewPasswordChange = (e) => {
-  //   setNewPaswd(e.target.value);
-  //   if (passwordPattern.test(e.target.value)) {
-  //     setNewPswdError("");
-  //     setConfirmPswdError("");
-  //   }
-  // };
-
-  // const handleConfirmPasswordChange = (e) => {
-  //   setConfirmPaswd(e.target.value);
-  //   if (e.target.value === newPswd) {
-  //     setConfirmPswdError("");
-  //     setNewPswdError("");
-  //   }
-  // };
 
   const profileSrc =
     role_code === "director"
@@ -334,7 +319,7 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
           className="black-bg mt-3 d-flex small-font flex-between white-font align-items-center pointer px-1 py-2"
           onClick={handleResetSection}
         >
-          <div className="d-flex gap-2">
+          <div className="d-flex gap-2 align-items-center">
             <MdLockReset className="white-font" size={18} />
             Reset Password
           </div>

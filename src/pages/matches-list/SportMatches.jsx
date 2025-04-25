@@ -47,7 +47,7 @@ const SportMatches = () => {
             className="green-font pointer"
             onClick={handleActiveModal}
           />
-          <IoTrash size={18} className="pointer" onClick={handleActiveModal} />
+          {/* <IoTrash size={18} className="pointer" onClick={handleActiveModal} /> */}
         </div>
       ),
     },
@@ -62,7 +62,7 @@ const SportMatches = () => {
       date: <div className="pointer d-flex ">2025-06-09</div>,
       status: (
         <div className="green-clr">
-          <span className="round-green-dot mx-1"></span>Active
+          <span className="round-red-dot mx-1"></span>Blocked
         </div>
       ),
       pl: <div className="dark-orange-clr">50000000</div>,
@@ -73,14 +73,14 @@ const SportMatches = () => {
             className="green-font pointer"
             onClick={handleActiveModal}
           />
-          <IoTrash size={18} className="pointer" onClick={handleActiveModal} />
+          {/* <IoTrash size={18} className="pointer" onClick={handleActiveModal} /> */}
         </div>
       ),
     },
   ];
   return (
     <div className="">
-      <div className="d-flex flex-between mt-3 mb-2">
+      <div className="d-flex flex-between mt-1 mb-2">
         <div className="large-font pointer flex-center">
           <span
             className="black- fw-600 large-font"
@@ -109,7 +109,7 @@ const SportMatches = () => {
       <ConfirmationPopup
         confirmationPopupOpen={isActive}
         setConfirmationPopupOpen={setIsACtive}
-        discription={"Are You Sure to Active this Match"}
+        discription={"Are You Sure to In-Active this Match"}
         submitButton={"Active"}
       />
     </div>
