@@ -13,26 +13,24 @@ function ConfirmationPopup({
   submitButton,
   onSubmit,
   blockLoader,
- 
+  message,
 }) {
   const itemsPerPage = 4;
   const [searchParams, setSearchParams] = useSearchParams();
   const intialpage = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(intialpage);
+  const [successPopup, setSuccessPopup] = useState(false);
   const page = currentPage;
   const pageSize = itemsPerPage;
   const handleCancel = () => {
     setConfirmationPopupOpen(false);
   };
-  console.log(blockLoader,"==>blockLoader123");
-  
+  console.log(blockLoader, "==>blockLoader123");
 
   const handleSunmit = async () => {
-  
-     
     onSubmit(page, pageSize);
+    setSuccessPopup(true);
     // setConfirmationPopupOpen(false);
-   
   };
 
   return (
@@ -74,26 +72,30 @@ function ConfirmationPopup({
                 disabled={blockLoader === true ? true : false}
               >
                 <div className="d-flex flex-center">
-                {blockLoader === true ? (
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  ""
-                )}
-                <div className="ms-2"> {submitButton}</div>
+                  {blockLoader === true ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    ""
+                  )}
+                  <div className="ms-2"> {submitButton}</div>
                 </div>
-               
               </button>
             </div>
           </center>
         </Modal.Body>
       </Modal>
-      
+
+      <SuccessPopup
+        successPopup={successPopup}
+        setSuccessPopup={setSuccessPopup}
+        discription={message}
+      />
     </>
   );
 }

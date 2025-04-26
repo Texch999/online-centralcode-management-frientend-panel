@@ -553,6 +553,15 @@ const getAllMatches = (params) => {
 const suspendMatchCentral = (id, data) => {
   return apiRequest("suspendMatchCentral", data, id);
 };
+const getFancyResults = (sportId, matchId) => {
+  return apiRequest("getFancyResults", sportId, { sportId, matchId });
+};
+const setFancyResults = (id, data) => {
+  return apiRequest("setFancyResults", data, id);
+};
+const suspendFancyResult = (id, data) => {
+  return apiRequest("suspendFancyResult", data, id);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -696,4 +705,7 @@ export {
   getSportsListCentral,
   getAllMatches,
   suspendMatchCentral,
+  getFancyResults,
+  setFancyResults,
+  suspendFancyResult,
 };

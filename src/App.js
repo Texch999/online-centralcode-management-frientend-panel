@@ -264,7 +264,7 @@ function App() {
                 <Route path="/client-rental-sheet" element={<ClientRental />} />
                 {/* Sports Routes */}
                 <Route path="/central-sports" element={<Sports />} />
-                <Route path="/fancy-results" element={<FancyResult />} />
+                <Route path="/fancy-results/:sportId/:matchId" element={<FancyResult />} />
                 <Route path="/market-results" element={<MarketResult />} />
                 <Route
                   path="/central-sports/:vendor/:provider"

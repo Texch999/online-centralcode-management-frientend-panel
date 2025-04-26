@@ -891,8 +891,26 @@ const endpoints = {
   },
   suspendMatchCentral: {
     method: "post",
+    url: (id) => `/user/${userID()}/sport/${id?.sportId}/match/${id?.matchId}`,
+  },
+  getFancyResults: {
+    method: "get",
+    url: (data) =>
+      `/user/${userID()}/sport/${data?.sportId}/match/${data?.matchId}`,
+  },
+  setFancyResults: {
+    method: "post",
     url: (id) =>
-      `/user/${userID()}/sport/${id?.sportId}/match/${id?.matchId}`,
+      `/user/${userID()}/sport/${id?.sportId}/match/${
+        id?.matchId
+      }/announceFancyResult`,
+  },
+  suspendFancyResult: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/sport/${id?.sportId}/match/${
+        id?.matchId
+      }/suspendFancyResult`,
   },
 };
 

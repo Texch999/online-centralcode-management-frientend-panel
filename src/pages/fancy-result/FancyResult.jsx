@@ -1,210 +1,281 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ScrollTable from "./../../components/ScrollTable";
-import { FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 import { whiteReactSelect } from "../../components/ReactSelectStyles";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  getFancyResults,
+  getSportsListCentral,
+  setFancyResults,
+  suspendFancymatch,
+  suspendFancyResult,
+} from "../../api/apiMethods";
+import SuccessPopup from "../popups/SuccessPopup";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
 
 const FancyResult = () => {
   const navigate = useNavigate();
-  const selectSports = [
-    { value: "cricket", label: "Cricket" },
-    { value: "football", label: "Football" },
-    { value: "tennis", label: "Tennis" },
-  ];
-  const selectMatch = [
-    { value: "match1", label: "Match 1" },
-    { value: "match2", label: "Match 2" },
-    { value: "match3", label: "Match 3" },
-  ];
+  const { sportId, matchId } = useParams();
+  console.log(sportId, matchId, "gangaaa");
+  const [sportsData, setSportsData] = useState([]);
+  const [error, setError] = useState("");
+  const [fancyData, setFancyData] = useState([]);
+  const [result, setResult] = useState({});
+  const [successPopup, setSuccessPopup] = useState(false);
+  const [message, setMessage] = useState("");
+  const [resultError, setResultError] = useState({});
+  const [isActive, setIsACtive] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [fancy, setFancy] = useState(null);
+
+  const handleActive = (fancyId, status) => {
+    setIsACtive(!isActive);
+    setStatus(status);
+    setFancy(fancyId);
+  };
+
   const cols = [
     { header: "Sport", field: "sport" },
     { header: "Fancy ID", field: "fid" },
     { header: "Fancy Name", field: "fname" },
     { header: "Match Name", field: "match" },
   ];
-  const data = [
-    {
-      sport: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">Cricket</div>
-          <input
-            type="text"
-            placeholder="Enter Result"
-            className="white-input w-fit "
-          />
-        </div>
-      ),
-      fid: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">2345632345-13FY</div>
-          <div className="px-4 saffron-btn2 w-fit">Set</div>
-        </div>
-      ),
-      fname: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">
-            T20 Women’s World Cup (New Zealand vs South Africa) adv
-          </div>
-          <div className="rust-red-btn w-fit px-4">Suspended</div>
-        </div>
-      ),
-      match: <div>New Zealand vs South Africa</div>,
-    },
-    {
-      sport: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">Cricket</div>
-          <input
-            type="text"
-            placeholder="Enter Result"
-            className="white-input w-fit"
-          />
-        </div>
-      ),
-      fid: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">2345632345-13FY</div>
-          <div className="px-4 saffron-btn2 w-fit">Set</div>
-        </div>
-      ),
-      fname: (
-        <div className="d-flex flex-column small-font">
-          <div className="mb-1">
-            T20 Women’s World Cup (New Zealand vs South Africa) adv
-          </div>
-          <div className="rust-red-btn w-fit px-4">Suspended</div>
-        </div>
-      ),
-      match: <div>New Zealand vs South Africa</div>,
-    },
-  ];
+  const data = fancyData?.fancy?.map((item) => ({
+    sport: (
+      <div className="d-flex flex-column small-font">
+        <div className="mb-1">{fancyData?.matchDetails?.sportName}</div>
+        {/* <input
+          type="text"
+          placeholder="Enter Result"
+          className="white-input w-fit"
+          disabled={item.status === 2} 
+          onChange={(e) => setResult(e.target.value.replace(/\D/g, ""))}
+        />
+        {resultError && (
+          <div className="red-font small-font">{resultError}</div>
+        )} */}
 
-  const sportcols = [
-    {
-      header: "Sport",
-      field: "sport",
-      width: "10%",
-    },
-    { header: "Date & Time", field: "date", width: "15%" },
-    { header: "MatchName", field: "match", width: "45%" },
-    {
-      header: <div className="flex-center">Event Id</div>,
-      field: "eid",
-      width: "10%",
-    },
-    { header: "Market Id", field: "mid", width: "10%" },
-    {
-      header: <div className="flex-center">Result Status</div>,
-      field: "resstatus",
-      width: "10%",
-    },
-    {
-      header: <div className="flex-center">Action</div>,
-      field: "action",
-      width: "10%",
-    },
-  ];
+        <input
+          type="text"
+          placeholder="Enter Result"
+          className="white-input w-fit"
+          value={result[item?.fancyId] || ""}
+          disabled={item.status === 2}
+          onChange={(e) => {
+            const inputVal = e.target.value.replace(/\D/g, "");
+            setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
 
-  const sportData = [
-    {
-      sport: "Cricket",
-      date: <div className="white-space">14-10-2024 13:33:00</div>,
-      match: <div className="mb-1">India vs Sri Lanka</div>,
-      eid: <div className="flex-center">12345673</div>,
-      mid: <div>1.234567366</div>,
-      resstatus: (
-        <div className="flex-center">
-          <div className="active-btn-table px-2">Open</div>
-        </div>
-      ),
-      action: (
-        <div className="flex-center">
-          <BsEye
-            size={18}
-            onClick={() =>
-              navigate("/central-sports/Ranjith/Fancy/Cricket/IndiavsAustralia")
-            }
-          />
-        </div>
-      ),
-    },
-  ];
+            setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+          }}
+        />
+
+        {resultError[item?.fancyId] && (
+          <div className="red-font small-font">
+            {resultError[item?.fancyId]}
+          </div>
+        )}
+      </div>
+    ),
+    fid: (
+      <div className="d-flex flex-column small-font">
+        <div className="mb-1">{item?.fancyId}</div>
+        {item?.status === 1 ? (
+          <div
+            className="px-4 saffron-btn2 w-fit pointer"
+            onClick={() => submitFancyResults(item?.fancyId)}
+          >
+            Set
+          </div>
+        ) : (
+          <div
+            className="px-4 saffron-btn2 w-fit disabled-btn"
+            // onClick={() => submitFancyResults(item?.fancyId)}
+          >
+            Set
+          </div>
+        )}
+      </div>
+    ),
+    fname: (
+      <div className="d-flex flex-column small-font">
+        <div className="mb-1">{item?.name}</div>
+        {item?.status === 1 ? (
+          <div
+            className="green-btn w-fit px-4 pointer"
+            onClick={() => handleActive(item?.fancyId, item?.status)}
+          >
+            Active
+          </div>
+        ) : (
+          <div
+            className="rust-red-btn w-fit px-4 pointer"
+            // onClick={() => handleActive(item?.fancyId, item?.status)}
+          >
+            Suspended
+          </div>
+        )}
+      </div>
+    ),
+    match: <div>{fancyData?.matchDetails?.eventName}</div>,
+  }));
+
+  const fetchFancyResults = () => {
+    getFancyResults(sportId, matchId)
+      .then((response) => {
+        if (response) {
+          console.log(response?.records);
+          setFancyData(response?.records);
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    fetchFancyResults();
+  }, []);
+
+  // facny result
+  // const submitFancyResults = (fancyId) => {
+  //   if (!result) {
+  //     setResultError("Please Enter match result");
+  //   }
+  //   const payload = {
+  //     matchId: matchId,
+  //     fancy_id: fancyId,
+  //     fancy_value: result,
+  //   };
+  //   setFancyResults({ sportId: sportId, matchId: matchId }, payload)
+  //     .then((response) => {
+  //       if (response) {
+  //         console.log(response?.data);
+  //         setMessage(response?.message);
+  //         setSuccessPopup(true);
+  //         setTimeout(() => {
+  //           setSuccessPopup(false);
+  //         }, 3000);
+  //         setResult("");
+  //         setResultError("");
+
+  //         setFancyData((prevData) => {
+  //           const newFancy = prevData.fancy?.filter(
+  //             (item) => item.fancyId !== fancyId
+  //           );
+  //           return { ...prevData, fancy: newFancy };
+  //         });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
+
+  const submitFancyResults = (fancyId) => {
+    if (!result[fancyId]) {
+      setResultError((prev) => ({
+        ...prev,
+        [fancyId]: "Please Enter match result",
+      }));
+      return;
+    }
+
+    const payload = {
+      matchId: matchId,
+      fancy_id: fancyId,
+      fancy_value: result[fancyId],
+    };
+
+    setFancyResults({ sportId: sportId, matchId: matchId }, payload)
+      .then((response) => {
+        if (response) {
+          console.log(response?.data);
+          setMessage(response?.message);
+          setSuccessPopup(true);
+          setTimeout(() => {
+            setSuccessPopup(false);
+          }, 3000);
+
+          setResult((prev) => {
+            const updated = { ...prev };
+            delete updated[fancyId];
+            return updated;
+          });
+          setResultError((prev) => {
+            const updated = { ...prev };
+            delete updated[fancyId];
+            return updated;
+          });
+
+          setFancyData((prevData) => {
+            const newFancy = prevData.fancy?.filter(
+              (item) => item.fancyId !== fancyId
+            );
+            return { ...prevData, fancy: newFancy };
+          });
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  const suspendFancy = () => {
+    const payload = {
+      matchId: matchId,
+      fancy_id: fancy,
+    };
+    suspendFancyResult({ sportId: sportId, matchId: matchId }, payload)
+      .then((response) => {
+        if (response) {
+          console.log(response?.data);
+          setMessage(response?.message);
+          setSuccessPopup(true);
+          setIsACtive(false);
+          setTimeout(() => {
+            setSuccessPopup(false);
+          }, 3000);
+          fetchFancyResults();
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
 
   return (
     <div>
-      <h6 className="my-3">Fancy Result</h6>
-      <div className="my-3 row w-50 text-black small-font">
-        <div className="col d-flex flex-column">
-          <label className="mb-1">Select Sport</label>
-          <Select
-            className="small-font"
-            options={selectSports}
-            placeholder="Select"
-            styles={whiteReactSelect}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-          />
-        </div>
-        <div className="col d-flex flex-column">
-          <label className="mb-1">Select Match</label>
-          <Select
-            className="small-font"
-            options={selectMatch}
-            placeholder="Select"
-            styles={whiteReactSelect}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-          />
-        </div>
-        <div className="col flex-end">
-          <button className="w-100 saffron-btn2">Search</button>
-        </div>
-      </div>
-      <ScrollTable columns={cols} data={data} tableHeight={"table-50vh"} />
-      <div className="row mt-3 w-100 text-black small-font">
-        <div className="col-2 d-flex flex-column">
-          <label className="mb-1">Select Sport</label>
-          <Select
-            className="small-font"
-            options={selectSports}
-            placeholder="Select"
-            styles={whiteReactSelect}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-          />
-        </div>
-        <div className="col-2 d-flex flex-column">
-          <label className="mb-1">From</label>
-          <input className="input-css2 small-font" type="date" />
-        </div>
-        <div className="col-2 d-flex flex-column">
-          <label className="mb-1">To</label>
-          <input className="input-css2 small-font" type="date" />
-        </div>
-        <div className="col-2 flex-end">
-          <button className="w-100 saffron-btn2 br-5 small-font">Submit</button>
-        </div>
-        <div className="col-2"></div>
-        <div className="col-2 flex-end flex-center">
-          <div className="white-bg2 border px-2 py-1 rounded-pill w-100 white-space px-3">
-            <FaSearch size={15} className="grey-clr me-2" />
-            <input
-              className="all-none small-font"
-              placeholder="Search Match..."
-            />
-          </div>
-        </div>
+      <div className="d-flex flex-between mb-2">
+        <h6 className="my-2">Fancy Result</h6>
+        <span
+          className="input-css2 rounded-pill me-1 px-2 text-black py-1 flex-center pointer hover-orange-clr small-font"
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft className="me-1 d-flex" />
+          Back
+        </span>
       </div>
 
-      <div className="my-3">
-        <ScrollTable
-          columns={sportcols}
-          data={sportData}
-          tableHeight={"table-50vh"}
-        />
-      </div>
+      <ScrollTable columns={cols} data={data} tableHeight={"table-80vh"} />
+
+      <SuccessPopup
+        successPopupOpen={successPopup}
+        setSuccessPopupOpen={setSuccessPopup}
+        discription={message}
+      />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={isActive}
+        setConfirmationPopupOpen={setIsACtive}
+        discription={`Are You Sure want to ${
+          status === 1 ? "In-Active" : "Active"
+        } this Match`}
+        submitButton={` ${status === 1 ? "In-Active" : "Active"}`}
+        onSubmit={suspendFancy}
+        setSuccessPopup={setSuccessPopup}
+        message={message}
+      />
     </div>
   );
 };

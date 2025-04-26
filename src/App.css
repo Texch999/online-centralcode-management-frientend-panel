@@ -726,6 +726,7 @@
   background-color: #d3d3d3;
   cursor: not-allowed;
   color: #787676;
+  opacity: 0.6;
 }
 
 .disable-eye {

@@ -10,6 +10,7 @@ import { CircleLoader } from "react-spinners";
 import moment from "moment";
 import { CgUnblock } from "react-icons/cg";
 import { BsEye } from "react-icons/bs";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const SportMatches = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const SportMatches = () => {
   const [matchId, setMatchId] = useState(null);
   const [status, setStatus] = useState(null);
   const [sportId, setSportId] = useState(null);
+  const [message, setMessage] = useState("");
   const handleActiveModal = (id, status, sport) => {
     setIsACtive(!isActive);
     setMatchId(id);
@@ -33,6 +35,10 @@ const SportMatches = () => {
   const [currentPage, setCurrentPage] = useState(page);
   const [matchesData, setMatchesData] = useState([]);
   const [successPopup, setSuccessPopup] = useState(false);
+
+  const handleFancy = (sport,match) => {
+    navigate(`/fancy-results/${sport}/${match}`);
+  };
 
   const cols = [
     { header: "S No", field: "sno", width: "8%" },
@@ -103,8 +109,8 @@ const SportMatches = () => {
             />
           )}
 
-          <div className="pointer d-flex ">
-            <BsEye size={18} className="orange-clr" />
+          <div className="pointer d-flex">
+            <BsEye size={18} className="orange-clr" onClick={()=>handleFancy(item?.sportId,item?.id)} />
           </div>
         </div>
       ),
@@ -147,15 +153,16 @@ const SportMatches = () => {
       matchId: matchId,
       status: statusId,
     };
-
     suspendMatchCentral({ sportId: sportId, matchId: matchId }, payload)
       .then((response) => {
         if (response) {
           console.log(response?.data);
+          setMessage(response?.message);
           setSuccessPopup(true);
+          setIsACtive(false);
           setTimeout(() => {
             setSuccessPopup(false);
-          });
+          }, 3000);
           fetchAllMatches(limit, offset, id);
         }
       })
@@ -218,6 +225,13 @@ const SportMatches = () => {
         } this Match`}
         submitButton={` ${status === 2 ? "In-Active" : "Active"}`}
         onSubmit={suspendMatch}
+        setSuccessPopup={setSuccessPopup}
+        message={message}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopup}
+        setSuccessPopupOpen={setSuccessPopup}
+        discription={message}
       />
     </div>
   );
