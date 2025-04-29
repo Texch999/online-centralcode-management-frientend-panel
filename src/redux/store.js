@@ -4,6 +4,7 @@ const initialState = {
   loginData: [],
   profilePic: null,
   dirProfileData: [],
+  gamesData: [],
 };
 
 const authReducer = (state = initialState, action) => {
@@ -22,6 +23,12 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         dirProfileData: action.payload,
+      };
+
+    case "SET_GAMES_DATA":
+      return {
+        ...state,
+        gamesData: action.payload,
       };
 
     default:

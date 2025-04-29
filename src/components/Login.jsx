@@ -194,14 +194,14 @@ function Login() {
                   autoComplete="current-password"
                   {...register("password", {
                     required: "Password is required",
-                    minLength: { value: 6, message: "Min 6 characters" },
-                    maxLength: { value: 36, message: "Max 36 characters" },
-                    pattern: {
-                      value:
-                        /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/,
-                      message:
-                        "Must include uppercase, lowercase, number, and special character",
-                    },
+                    minLength: { value: 6,  },
+                    maxLength: { value: 36,  },
+                    // pattern: {
+                    //   value:
+                    //     /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])/,
+                    //   message:
+                    //     "Must include uppercase, lowercase, number, and special character",
+                    // },
                   })}
                 />
                 <span

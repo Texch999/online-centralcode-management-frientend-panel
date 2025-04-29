@@ -1201,3 +1201,7 @@ button:disabled {
   padding: 0.5rem;
   text-align: center;
 }
+.custom-padding {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}

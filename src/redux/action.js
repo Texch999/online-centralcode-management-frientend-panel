@@ -10,3 +10,7 @@ export const setDirProfileData = (data) => ({
   type: "SET_DIR_PROFILE_DATA",
   payload: data,
 });
+export const setGamesData = (data) => ({
+  type: "SET_GAMES_DATA",
+  payload: data,
+});

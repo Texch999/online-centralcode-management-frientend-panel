@@ -28,7 +28,7 @@ const AddSportsControl = () => {
   const [isloading, setIsLoading] = useState(false);
   const id = params?.id;
   const websiteId = id.slice(3, -3);
-  console.log(websiteId, "websiteIddddd");
+
   const [selectedSports, setSelectedSports] = useState([]);
   const [msg, setMsg] = useState("");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
@@ -66,13 +66,18 @@ const AddSportsControl = () => {
       .then((response) => {
         if (response) {
           setLoading(false);
-          console.log(response?.data);
+
           setSportsData(response?.data);
         }
       })
       .catch((error) => {
         setLoading(false);
-        setError(error?.message);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
       });
   };
   useEffect(() => {
@@ -92,7 +97,12 @@ const AddSportsControl = () => {
       })
       .catch((error) => {
         setLoading(false);
-        setError(error?.message);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
       });
   };
   useEffect(() => {
@@ -134,7 +144,12 @@ const AddSportsControl = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        setError(error?.message);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
       });
   };
 
@@ -200,9 +215,64 @@ const AddSportsControl = () => {
               </div>
             ))}
           </div>
-          <div className="my-4 row align-items-center ">
+          <div className="my-4 row align-items-end">
             <div className="col-6">
-              <div className="my-1 medium-font">Management Password:</div>
+              <div className="small-font mb-1">Management Password:</div>
+              <div className="input-bg br-5 py-1 px-2 d-flex justify-content-between align-items-center border-grey3">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  className="all-none small-font w-100 me-2"
+                  placeholder="Enter Password"
+                  value={pswd}
+                  onChange={(e) => validatePassword(e.target.value)}
+                />
+                <span
+                  onClick={handlePasswordVisibility}
+                  style={{ cursor: "pointer" }}
+                >
+                  {passwordVisible ? (
+                    <FiEye size={12} />
+                  ) : (
+                    <FiEyeOff size={12} />
+                  )}
+                </span>
+              </div>
+              {pswdError && (
+                <div className="small-font red-font mt-1">{pswdError}</div>
+              )}
+            </div>
+
+            <div className="col-6">
+              <div className="">
+                <div
+                  className={`saffron-bg py-2 px-3 white-font text-center rounded black-font pointer small-font ${
+                    isloading ? "disabled-btn" : ""
+                  }`}
+                  onClick={handleSubmit}
+                  disabled={isloading}
+                >
+                  {isloading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Submit</span>
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="my-4 row align-items-center ">
+            <div className="col-6">
+              <div className=" medium-font">Management Password:</div>
               <div className="input-bg br-5 py-1 px-2 flex-between border-grey3">
                 <input
                   type={passwordVisible ? "text" : "password"}
@@ -216,9 +286,9 @@ const AddSportsControl = () => {
                   style={{ cursor: "pointer" }}
                 >
                   {passwordVisible ? (
-                    <FiEye size={15} />
+                    <FiEye size={14} />
                   ) : (
-                    <FiEyeOff size={15} />
+                    <FiEyeOff size={14} />
                   )}
                 </span>
               </div>
@@ -228,9 +298,9 @@ const AddSportsControl = () => {
             </div>
 
             <div className="col-6">
-              <div className="self-end">
+              <div className="align-self-end mt-4">
                 <div
-                  className={`saffron-bg  py-2 white-font text-center mt-4 rounded balck-font pointer medium-font ${
+                  className={`saffron-bg py-1 white-font text-center rounded balck-font pointer medium-font ${
                     isloading ? "disabled-btn" : ""
                   }`}
                   onClick={handleSubmit}
@@ -253,7 +323,7 @@ const AddSportsControl = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           {formError && <div className="red-font small-font">{formError}</div>}
         </div>
       )}

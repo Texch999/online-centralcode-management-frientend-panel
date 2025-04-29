@@ -912,6 +912,17 @@ const endpoints = {
         id?.matchId
       }/suspendFancyResult`,
   },
+  announceCricketResults: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/sport/${id?.sportId}/match/${
+        id?.matchId
+      }/announceCricketResult`,
+  },
+  getMatchesList: {
+    method: "get",
+    url: (sportId) => `/user/${userID()}/sport/${sportId}/getMatchesList`,
+  },
 };
 
 export default endpoints;

@@ -562,7 +562,13 @@ const setFancyResults = (id, data) => {
 const suspendFancyResult = (id, data) => {
   return apiRequest("suspendFancyResult", data, id);
 };
+const announceCricketResults = (id, data) => {
+  return apiRequest("announceCricketResults", data, id);
+};
 
+const getMatchesList = (sportId, data) => {
+  return apiRequest("getMatchesList", data, sportId);
+};
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -708,4 +714,6 @@ export {
   getFancyResults,
   setFancyResults,
   suspendFancyResult,
+  announceCricketResults,
+  getMatchesList,
 };

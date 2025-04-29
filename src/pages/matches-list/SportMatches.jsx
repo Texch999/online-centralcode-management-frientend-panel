@@ -5,7 +5,12 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { FaArrowLeft, FaSearch } from "react-icons/fa";
-import { getAllMatches, suspendMatchCentral } from "../../api/apiMethods";
+import {
+  announceCricketResults,
+  getAllMatches,
+  getMatchesList,
+  suspendMatchCentral,
+} from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import moment from "moment";
 import { CgUnblock } from "react-icons/cg";
@@ -14,10 +19,14 @@ import SuccessPopup from "../popups/SuccessPopup";
 import utcDate from "../../utils/utcDateConversion";
 import { customStyles } from "../../components/ReactSelectStyles";
 import Select from "react-select";
+import { useSelector } from "react-redux";
+import ErrorComponent from "../../components/ErrorComponent";
+import { Spinner } from "react-bootstrap";
 
 const SportMatches = () => {
   const navigate = useNavigate();
   const { match, id } = useParams();
+
   const [isActive, setIsACtive] = useState(false);
   const [matchId, setMatchId] = useState(null);
   const [status, setStatus] = useState(null);
@@ -40,19 +49,32 @@ const SportMatches = () => {
   const [successPopup, setSuccessPopup] = useState(false);
   const [search, setSearch] = useState("");
 
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const [matchDropdownData, setMatchDropdownData] = useState([]);
+  const [selectedMatchId, setSelectedMatchId] = useState("");
+  const [selectedTeam, setSelectedTeam] = useState("");
+  console.log(matchDropdownData, "=====matchDropdownData");
+
   const handleFancy = (sport, match) => {
     navigate(`/fancy-results/${sport}/${match}`);
   };
 
-  const filterData = matchesData?.filter((item) =>
-    item?.eventName?.toLowerCase().includes(search.toLowerCase())
+  const matchOptions = matchDropdownData?.map((item) => ({
+    value: item.id,
+    label: item.eventName,
+  }));
+
+  const selectedMatch = matchDropdownData.find(
+    (item) => item.id === selectedMatchId
   );
 
-  const selectOptions = [
-    { value: "Option 1", label: "Option 1" },
-    { value: "Option 2", label: "Option 2" },
-    { value: "Option 3", label: "Option 3" },
-  ];
+  const teamOptions =
+    selectedMatch?.selectOpt?.map((opt) => ({
+      value: opt.key,
+      label: opt.value,
+    })) || [];
 
   const cols = [
     { header: "S No", field: "sno" },
@@ -75,12 +97,15 @@ const SportMatches = () => {
   const data = matchesData?.map((item, index) => {
     const currentTimeUTC = moment().utc();
     const startDateUTC = moment(item?.startDate);
-    const localTime=new Date(item?.startDate) 
+    // const localTime = new Date(item?.startDate);
 
     let isLive = false;
-    if (currentTimeUTC.diff(startDateUTC) > 0) {
+    if (currentTimeUTC === startDateUTC) {
       isLive = true;
     }
+    // if (currentTimeUTC.diff(startDateUTC) > 0) {
+    //   isLive = true;
+    // }
 
     return {
       sno: index + 1,
@@ -94,15 +119,19 @@ const SportMatches = () => {
       ),
       date: (
         <div className="pointer d-flex ">
-          {moment(localTime).format("YYYY-MM-DD HH:mm")}
+          {moment(item?.startDate).format("YYYY-MM-DD HH:mm:ss")}
         </div>
       ),
       matchid: <div>{item?.id}</div>,
       market: (
         <div>
-          {item?.isBookmac === true && "BookMark"}
-          {item?.isFancy === true && "Fancy"}
-          {item?.isOdds === true && "Odds"}
+          {[
+            item?.isBookmac === true && "BookMaker",
+            item?.isFancy === true && "Fancy",
+            item?.isOdds === true && "Odds",
+          ]
+            .filter(Boolean)
+            .join(", ")}
         </div>
       ),
       winner: <div>-</div>,
@@ -123,6 +152,29 @@ const SportMatches = () => {
       pl: <div className="dark-orange-clr">{item?.pl || 0}</div>,
       action: (
         <div className="flex-center gap-3">
+          {item?.isFancy === true && (
+            <>
+              {item?.isClosed === 2 ? (
+                <div className="pointer d-flex">
+                  <BsEye
+                    size={18}
+                    className="orange-clr"
+                    onClick={() => {
+                      handleFancy(item?.sportId, item?.id);
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="d-flex">
+                  <BsEye
+                    size={18}
+                    className="orange-clr disabled"
+                    title="Access denied"
+                  />
+                </div>
+              )}
+            </>
+          )}
           {item?.isClosed === 2 ? (
             <CgUnblock
               size={18}
@@ -140,24 +192,6 @@ const SportMatches = () => {
             />
           )}
 
-          {item?.isClosed === 2 ? (
-            <div className="pointer d-flex">
-              <BsEye
-                size={18}
-                className="orange-clr"
-                onClick={() => handleFancy(item?.sportId, item?.id)}
-              />
-            </div>
-          ) : (
-            <div className="d-flex">
-              <BsEye
-                size={18}
-                className="orange-clr disabled"
-                title="Access denied"
-              />
-            </div>
-          )}
-
           <div className="rust-red-btn w-fit pointer ">Rollback</div>
           {/* <div className="green-dark-bg w-fit pointer">Active</div> */}
         </div>
@@ -166,14 +200,16 @@ const SportMatches = () => {
   });
 
   //integration
-  const fetchAllMatches = (limit, offset, id) => {
+  const fetchAllMatches = (limit, offset, id, startDate, endDate) => {
     setLoading(true);
     const params = {
       limit: limit,
       offset: offset,
       id: id,
+      startDate: startDate,
+      endDate: endDate,
     };
-    console.log(params, "params==>");
+
     getAllMatches(params)
       .then((response) => {
         if (response) {
@@ -192,6 +228,18 @@ const SportMatches = () => {
     const offset = (currentPage - 1) * itemsPerPage;
     fetchAllMatches(limit, offset, id);
   }, [id]);
+  const [dateError, setDateError] = useState("");
+
+  const handleSubmit = () => {
+    if (!fromDate || !toDate) {
+      setDateError("Please select both From and To dates");
+      return;
+    }
+
+    const limit = itemsPerPage;
+    const offset = (currentPage - 1) * itemsPerPage;
+    fetchAllMatches(limit, offset, id, fromDate, toDate);
+  };
 
   const statusId = status === 2 ? 1 : 2;
   const suspendMatch = () => {
@@ -201,10 +249,11 @@ const SportMatches = () => {
       matchId: matchId,
       status: statusId,
     };
+    setLoading(true);
     suspendMatchCentral({ sportId: sportId, matchId: matchId }, payload)
       .then((response) => {
         if (response) {
-          console.log(response?.data);
+          setLoading(false);
           setMessage(response?.message);
           setSuccessPopup(true);
           setIsACtive(false);
@@ -216,13 +265,73 @@ const SportMatches = () => {
       })
       .catch((error) => {
         setError(error?.message);
+        setLoading(false);
       });
   };
 
+  const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  //announce cricket results
+  const announceResults = (match) => {
+    if (!selectedMatchId) {
+      setFormError("select match");
+      return;
+    } else if (!selectedTeam) {
+      setFormError("select winner team");
+      return;
+    }
+    setFormError("");
+
+    const payload = {
+      matchId: match,
+      winningName: selectedTeam,
+    };
+    setIsLoading(true);
+    announceCricketResults({ sportId: id, matchId: match }, payload)
+      .then((response) => {
+        if (response) {
+          setIsLoading(false);
+          setMessage(response?.message);
+          setSuccessPopup(true);
+          setTimeout(() => {
+            setSuccessPopup(false);
+          }, 3000);
+          setSelectedMatchId("");
+          setSelectedTeam("");
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
+      });
+  };
+
+  const fetchSportMatches = () => {
+    getMatchesList(id)
+      .then((response) => {
+        if (response) {
+          setMatchDropdownData(response?.list);
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  useEffect(() => {
+    fetchSportMatches();
+  }, []);
+
   const handlePageChange = ({ limit, offset }) => {
-    console.log(id);
     fetchAllMatches(limit, offset, id);
   };
+
   return (
     <div className="">
       <div className="d-flex flex-between mt-1 mb-2 align-items-center">
@@ -249,104 +358,111 @@ const SportMatches = () => {
         </div>
       </div>
 
-      <div className="white-btn my-2 br-5 py-3 px-2 box-shadow col-12 d-flex flex-between">
-        <div className="col-2 flex-column ">
-          <label className="black-text4 small-font mb-1">Select Sports</label>
+      {error && <ErrorComponent error={error} />}
+
+      <div className="input-bg my-2 br-5 py-3 px-2 box-shadow col-12 d-flex flex-between">
+        <div className="col-4 flex-column ">
+          <label className=" black-text4 small-font mb-1">Select Match</label>
           <Select
             className="small-font"
-            options={selectOptions}
+            options={matchOptions}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
             menuPlacement="auto"
             classNamePrefix="custom-react-select"
+            onChange={(selected) => {
+              setSelectedMatchId(selected.value);
+              setSelectedTeam("");
+            }}
           />
         </div>
 
-        <div className="col-2 flex-column ">
-          <label className="black-text4 small-font mb-1">Select Match</label>
-          <Select
-            className="small-font"
-            options={selectOptions}
-            placeholder="Select"
-            styles={customStyles}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-            classNamePrefix="custom-react-select"
-          />
-        </div>
-
-        <div className="col-2 flex-column ">
-          <label className="black-text4 small-font mb-1">Select Market</label>
-          <Select
-            className="small-font"
-            options={selectOptions}
-            placeholder="Select"
-            styles={customStyles}
-            maxMenuHeight={120}
-            menuPlacement="auto"
-            classNamePrefix="custom-react-select"
-          />
-        </div>
-
-        <div className="col-2 flex-column ">
+        <div className="col-4 flex-column mx-2">
           <label className="black-text4 small-font mb-1">Select Winner</label>
           <Select
             className="small-font"
-            options={selectOptions}
+            options={teamOptions}
             placeholder="Select"
             styles={customStyles}
             maxMenuHeight={120}
             menuPlacement="auto"
             classNamePrefix="custom-react-select"
+            value={
+              teamOptions.find((opt) => opt.value === selectedTeam) || null
+            }
+            onChange={(selected) => setSelectedTeam(selected.value)}
           />
         </div>
 
-        <div className="align-self-end saffron-btn2 small-font pointer col-2">
-          Set Results
+        <div
+          className={`align-self-end saffron-btn2 small-font pointer col-3 ${
+            isLoading ? "disabled-btn" : ""
+          }`}
+          onClick={() => announceResults(selectedMatchId)}
+        >
+          {isLoading ? (
+            <>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span className="ms-2">Set Results</span>
+            </>
+          ) : (
+            <div>Set Results</div>
+          )}
         </div>
       </div>
+
+      {formError && <div className="small-font red-font">{formError}</div>}
 
       <div className="d-flex flex-between align-items-center">
-        <div className="col-8 col-lg-7 d-flex flex-between my-3">
-          <div className="col-3 flex-column me-3">
-            <label className="black-text4 small-font mb-1">Sports</label>
-            <Select
-              className="small-font"
-              options={selectOptions}
-              placeholder="Select"
-              styles={customStyles}
-              maxMenuHeight={120}
-              menuPlacement="auto"
-              classNamePrefix="custom-react-select"
-            />
-          </div>
-          <div className="col-3 flex-column ">
+        <div className="col-7 col-lg-6 d-flex flex-between my-3">
+          <div className="col-4 flex-column ">
             <label className="black-text4 small-font mb-1">From</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-          <div className="col-3 flex-column mx-2">
-            <label className="black-text4 small-font mb-1">To</label>
-            <input className="input-css2 small-font" type="date" />
-          </div>
-
-          <div className="align-self-end saffron-btn2 small-font pointer col-2">
-            Submit
-          </div>
-        </div>
-
-        <div className="col-2 col-lg-2 mt-4">
-          <div className="white-btn d-flex align-items-center br-5 px-1">
-            <input className="small-font all-none" placeholder="Search..." />
-            <FaSearch
-              size={16}
-              className="grey-clr me-1"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+            <input
+              className="input-css2 small-font"
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
             />
+          </div>
+          <div className="col-4 flex-column">
+            <label className="black-text4 small-font mb-1">To</label>
+            <input
+              className="input-css2 small-font"
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+            />
+          </div>
+
+          <div
+            className="align-self-end saffron-btn2 small-font pointer col-2"
+            onClick={handleSubmit}
+          >
+            {loading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="ms-2">Submit</span>
+              </>
+            ) : (
+              <div>Submit</div>
+            )}
           </div>
         </div>
       </div>
+      {dateError && <div className="red-font small-font mb-2">{dateError}</div>}
 
       {loading ? (
         <div className="d-flex flex-column flex-center mt-10rem align-items-center">
@@ -374,6 +490,7 @@ const SportMatches = () => {
         onSubmit={suspendMatch}
         setSuccessPopup={setSuccessPopup}
         message={message}
+        blockLoader={loading}
       />
       <SuccessPopup
         successPopupOpen={successPopup}
