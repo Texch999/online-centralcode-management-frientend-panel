@@ -297,7 +297,7 @@ const SportMatches = () => {
           setTimeout(() => {
             setSuccessPopup(false);
           }, 3000);
-          setSelectedMatchId("");
+          setSelectedMatchId(null);
           setSelectedTeam("");
         }
       })
