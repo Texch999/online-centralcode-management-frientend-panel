@@ -1153,14 +1153,12 @@ button:disabled {
 }
 
 .error-bg {
-  background: #FFC6C6;
-  color: #FF3C3C;
-
+  background: #ffc6c6;
+  color: #ff3c3c;
 }
 
 .s-errors li {
   margin-bottom: 2px;
-
 }
 
 .s-errors li:last-child {
@@ -1168,7 +1166,7 @@ button:disabled {
 }
 
 .profile-default {
-  background-image: url('../public/assets/user.png');
+  background-image: url("../public/assets/user.png");
   height: 100%;
   width: 100%;
   background-repeat: no-repeat;
@@ -1187,9 +1185,19 @@ button:disabled {
   align-items: center;
   z-index: 1000;
 }
-.pb-2rem{
+.pb-2rem {
   padding-bottom: 2rem;
 }
-.capitalize-text{
+.capitalize-text {
   text-transform: capitalize;
+}
+.green-dark-bg {
+  background: rgba(24, 185, 98, 1);
+  border-radius: 0.35rem;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.5rem;
+  text-align: center;
 }

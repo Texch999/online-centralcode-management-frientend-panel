@@ -14,6 +14,7 @@ import {
 } from "../../api/apiMethods";
 import SuccessPopup from "../popups/SuccessPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { CircleLoader } from "react-spinners";
 
 const FancyResult = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const FancyResult = () => {
   const [isActive, setIsACtive] = useState(false);
   const [status, setStatus] = useState(null);
   const [fancy, setFancy] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleActive = (fancyId, status) => {
     setIsACtive(!isActive);
@@ -59,15 +61,37 @@ const FancyResult = () => {
 
         <input
           type="text"
+          maxLength={11}
           placeholder="Enter Result"
-          className="white-input w-fit"
+          className={`white-input w-fit ${status === 2 ? "disabled-btn" : ""}`}
           value={result[item?.fancyId] || ""}
           disabled={item.status === 2}
+          // onChange={(e) => {
+          //   const inputVal = e.target.value.replace(/\D/g, "");
+          //   setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
+
+          //   setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+          // }}
           onChange={(e) => {
             const inputVal = e.target.value.replace(/\D/g, "");
-            setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
 
-            setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+            if (inputVal === "") {
+              setResult((prev) => ({ ...prev, [item.fancyId]: "" }));
+              setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+              return;
+            }
+
+            const numericValue = Number(inputVal);
+
+            if (numericValue > 99999999999) {
+              setResultError((prev) => ({
+                ...prev,
+                [item.fancyId]: "Value must be between 0 and 99999999999",
+              }));
+            } else {
+              setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
+              setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+            }
           }}
         />
 
@@ -111,6 +135,7 @@ const FancyResult = () => {
         ) : (
           <div
             className="rust-red-btn w-fit px-4 pointer"
+            title="You don't have access to active!"
             // onClick={() => handleActive(item?.fancyId, item?.status)}
           >
             Suspended
@@ -122,14 +147,17 @@ const FancyResult = () => {
   }));
 
   const fetchFancyResults = () => {
+    setLoading(true);
     getFancyResults(sportId, matchId)
       .then((response) => {
         if (response) {
           console.log(response?.records);
           setFancyData(response?.records);
+          setLoading(false);
         }
       })
       .catch((error) => {
+        setLoading(false);
         setError(error?.message);
       });
   };
@@ -226,6 +254,7 @@ const FancyResult = () => {
       matchId: matchId,
       fancy_id: fancy,
     };
+
     suspendFancyResult({ sportId: sportId, matchId: matchId }, payload)
       .then((response) => {
         if (response) {
@@ -257,7 +286,16 @@ const FancyResult = () => {
         </span>
       </div>
 
-      <ScrollTable columns={cols} data={data} tableHeight={"table-80vh"} />
+      {loading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>
+      ) : (
+        <ScrollTable columns={cols} data={data} tableHeight={"table-80vh"} />
+      )}
 
       <SuccessPopup
         successPopupOpen={successPopup}

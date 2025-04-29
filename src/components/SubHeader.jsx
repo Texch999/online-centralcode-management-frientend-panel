@@ -85,6 +85,7 @@ function SubHeader() {
           { label: "Reference Data", path: "/reference-data" },
           { label: "Privacy Policy", path: "/privacy-policy" },
           { label: "Activity Logs", path: "/activity-logs" },
+          { label: "Matches List", path: "/matches-list" },
         ],
       },
       {
@@ -320,7 +321,6 @@ function SubHeader() {
           // { label: "View Downline List", path: "/downline-list" },
           { label: "Offline Payment Cards", path: "/offline-payment-modes" },
           { label: "Payment Details", path: "/payment-details" },
-        
         ],
       },
       {
@@ -403,8 +403,9 @@ function SubHeader() {
           >
             <Dropdown.Toggle
               variant="none"
-              className={`${activeIndex === index ? "grey-btn" : "balck-btn"
-                } br-0px flex-center w-100`}
+              className={`${
+                activeIndex === index ? "grey-btn" : "balck-btn"
+              } br-0px flex-center w-100`}
               id={`dropdown-${index}`}
             >
               <span className="medium-font">{menu.label}</span>

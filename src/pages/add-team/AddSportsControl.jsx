@@ -147,7 +147,7 @@ const AddSportsControl = () => {
           className="yellow-bg px-2  white-font small-font  br-5 align-items-center pointer"
           onClick={() => navigate(-1)}
         >
-          <FaAngleLeft size={18} className="my-1"/>
+          <FaAngleLeft size={18} className="my-1" />
           Back
         </div>
       </div>
@@ -203,7 +203,7 @@ const AddSportsControl = () => {
           <div className="my-4 row align-items-center ">
             <div className="col-6">
               <div className="my-1 medium-font">Management Password:</div>
-              <div className="input-bg br-5 py-2 px-2 flex-between border-grey3">
+              <div className="input-bg br-5 py-1 px-2 flex-between border-grey3">
                 <input
                   type={passwordVisible ? "text" : "password"}
                   className="all-none small-font w-100"
@@ -230,12 +230,14 @@ const AddSportsControl = () => {
             <div className="col-6">
               <div className="self-end">
                 <div
-                  className="saffron-btn2 white-font py-2 text-center mt-4 rounded balck-font pointer medium-font"
+                  className={`saffron-bg  py-2 white-font text-center mt-4 rounded balck-font pointer medium-font ${
+                    isloading ? "disabled-btn" : ""
+                  }`}
                   onClick={handleSubmit}
-                  disabled={isloading === true ? true : false}
+                  // disabled={isloading === true ? "disabled-btn" : false}
                 >
                   {isloading ? (
-                    <>
+                    <div className="">
                       <Spinner
                         as="span"
                         animation="border"
@@ -244,7 +246,7 @@ const AddSportsControl = () => {
                         aria-hidden="true"
                       />
                       <span className="ms-2">Submit</span>
-                    </>
+                    </div>
                   ) : (
                     <div>Submit</div>
                   )}

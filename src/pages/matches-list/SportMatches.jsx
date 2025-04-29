@@ -4,13 +4,16 @@ import { MdBlock, MdKeyboardArrowRight } from "react-icons/md";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Table from "../../components/Table";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { getAllMatches, suspendMatchCentral } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
 import moment from "moment";
 import { CgUnblock } from "react-icons/cg";
 import { BsEye } from "react-icons/bs";
 import SuccessPopup from "../popups/SuccessPopup";
+import utcDate from "../../utils/utcDateConversion";
+import { customStyles } from "../../components/ReactSelectStyles";
+import Select from "react-select";
 
 const SportMatches = () => {
   const navigate = useNavigate();
@@ -35,30 +38,49 @@ const SportMatches = () => {
   const [currentPage, setCurrentPage] = useState(page);
   const [matchesData, setMatchesData] = useState([]);
   const [successPopup, setSuccessPopup] = useState(false);
+  const [search, setSearch] = useState("");
 
-  const handleFancy = (sport,match) => {
+  const handleFancy = (sport, match) => {
     navigate(`/fancy-results/${sport}/${match}`);
   };
 
-  const cols = [
-    { header: "S No", field: "sno", width: "8%" },
-    { header: "Upcoming Matches", field: "games", width: "20%" },
-    { header: "Date", field: "date", width: "20%" },
-    { header: "Status", field: "status", width: "10%" },
+  const filterData = matchesData?.filter((item) =>
+    item?.eventName?.toLowerCase().includes(search.toLowerCase())
+  );
 
-    { header: "Profit & Loss", field: "pl", width: "10%" },
+  const selectOptions = [
+    { value: "Option 1", label: "Option 1" },
+    { value: "Option 2", label: "Option 2" },
+    { value: "Option 3", label: "Option 3" },
+  ];
+
+  const cols = [
+    { header: "S No", field: "sno" },
+
+    { header: "Date", field: "date" },
+    { header: "Upcoming Matches", field: "games" },
+    { header: "MatchId", field: "matchid" },
+    { header: "Market", field: "market" },
+    { header: "Winner", field: "winner" },
+    { header: "IP", field: "ip" },
+    { header: "Status", field: "status" },
+
+    { header: "Profit & Loss", field: "pl" },
     {
       header: <div className="flex-center">Action</div>,
       field: "action",
-      width: "10%",
     },
   ];
 
   const data = matchesData?.map((item, index) => {
-    const currentTimeUTC = new Date().toISOString();
-    const isLive =
-      new Date(item?.startDate).getTime() >= currentTimeUTC &&
-      item?.isClosed === 2;
+    const currentTimeUTC = moment().utc();
+    const startDateUTC = moment(item?.startDate);
+    const localTime=new Date(item?.startDate) 
+
+    let isLive = false;
+    if (currentTimeUTC.diff(startDateUTC) > 0) {
+      isLive = true;
+    }
 
     return {
       sno: index + 1,
@@ -66,25 +88,33 @@ const SportMatches = () => {
         <div className="pointer d-flex gap-2">
           <div>{item?.eventName}</div>
           <div>
-            {isLive && (
-              <div className="green-bg black-font br-5 px-2">Live</div>
-            )}
+            {isLive && <div className="green-bg black-font px-2">Live</div>}
           </div>
         </div>
       ),
       date: (
         <div className="pointer d-flex ">
-          {moment(item?.startDate).utc().format("YYYY-MM-DD HH:mm")}
+          {moment(localTime).format("YYYY-MM-DD HH:mm")}
         </div>
       ),
+      matchid: <div>{item?.id}</div>,
+      market: (
+        <div>
+          {item?.isBookmac === true && "BookMark"}
+          {item?.isFancy === true && "Fancy"}
+          {item?.isOdds === true && "Odds"}
+        </div>
+      ),
+      winner: <div>-</div>,
+      ip: <div>-</div>,
       status: (
         <div>
           {item?.isClosed === 1 ? (
-            <div className="red-clr">
+            <div className="red-clr gap-1 white-space align-items-center">
               <span className="round-red-dot mx-1"></span>Blocked
             </div>
           ) : (
-            <div className="green-clr">
+            <div className="green-clr gap-1 align-items-center white-space">
               <span className="round-green-dot mx-1"></span>Active
             </div>
           )}
@@ -92,7 +122,7 @@ const SportMatches = () => {
       ),
       pl: <div className="dark-orange-clr">{item?.pl || 0}</div>,
       action: (
-        <div className="flex-center gap-2">
+        <div className="flex-center gap-3">
           {item?.isClosed === 2 ? (
             <CgUnblock
               size={18}
@@ -104,14 +134,32 @@ const SportMatches = () => {
           ) : (
             <MdBlock
               size={18}
-              className="red-font pointer"
+              className="red-font"
+              title="You don't have access to active!"
               // onClick={() => handleActiveModal(item?.id, item?.isClosed)}
             />
           )}
 
-          <div className="pointer d-flex">
-            <BsEye size={18} className="orange-clr" onClick={()=>handleFancy(item?.sportId,item?.id)} />
-          </div>
+          {item?.isClosed === 2 ? (
+            <div className="pointer d-flex">
+              <BsEye
+                size={18}
+                className="orange-clr"
+                onClick={() => handleFancy(item?.sportId, item?.id)}
+              />
+            </div>
+          ) : (
+            <div className="d-flex">
+              <BsEye
+                size={18}
+                className="orange-clr disabled"
+                title="Access denied"
+              />
+            </div>
+          )}
+
+          <div className="rust-red-btn w-fit pointer ">Rollback</div>
+          {/* <div className="green-dark-bg w-fit pointer">Active</div> */}
         </div>
       ),
     };
@@ -198,6 +246,105 @@ const SportMatches = () => {
             <FaArrowLeft className="me-1 d-flex" />
             Back
           </span>
+        </div>
+      </div>
+
+      <div className="white-btn my-2 br-5 py-3 px-2 box-shadow col-12 d-flex flex-between">
+        <div className="col-2 flex-column ">
+          <label className="black-text4 small-font mb-1">Select Sports</label>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+        </div>
+
+        <div className="col-2 flex-column ">
+          <label className="black-text4 small-font mb-1">Select Match</label>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+        </div>
+
+        <div className="col-2 flex-column ">
+          <label className="black-text4 small-font mb-1">Select Market</label>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+        </div>
+
+        <div className="col-2 flex-column ">
+          <label className="black-text4 small-font mb-1">Select Winner</label>
+          <Select
+            className="small-font"
+            options={selectOptions}
+            placeholder="Select"
+            styles={customStyles}
+            maxMenuHeight={120}
+            menuPlacement="auto"
+            classNamePrefix="custom-react-select"
+          />
+        </div>
+
+        <div className="align-self-end saffron-btn2 small-font pointer col-2">
+          Set Results
+        </div>
+      </div>
+
+      <div className="d-flex flex-between align-items-center">
+        <div className="col-8 col-lg-7 d-flex flex-between my-3">
+          <div className="col-3 flex-column me-3">
+            <label className="black-text4 small-font mb-1">Sports</label>
+            <Select
+              className="small-font"
+              options={selectOptions}
+              placeholder="Select"
+              styles={customStyles}
+              maxMenuHeight={120}
+              menuPlacement="auto"
+              classNamePrefix="custom-react-select"
+            />
+          </div>
+          <div className="col-3 flex-column ">
+            <label className="black-text4 small-font mb-1">From</label>
+            <input className="input-css2 small-font" type="date" />
+          </div>
+          <div className="col-3 flex-column mx-2">
+            <label className="black-text4 small-font mb-1">To</label>
+            <input className="input-css2 small-font" type="date" />
+          </div>
+
+          <div className="align-self-end saffron-btn2 small-font pointer col-2">
+            Submit
+          </div>
+        </div>
+
+        <div className="col-2 col-lg-2 mt-4">
+          <div className="white-btn d-flex align-items-center br-5 px-1">
+            <input className="small-font all-none" placeholder="Search..." />
+            <FaSearch
+              size={16}
+              className="grey-clr me-1"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
         </div>
       </div>
 
