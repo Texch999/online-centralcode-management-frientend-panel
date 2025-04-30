@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../../components/Table";
 import { IoMdAdd } from "react-icons/io";
 import { SlPencil } from "react-icons/sl";
 import AddNewSportsProvider from "./AddNewSportsProvider";
 import SportsNewVendor from "./SportsNewVendor";
+import { getAllVendors } from "../../../../api/apiMethods";
+import { useSelector } from "react-redux";
+import { CircleLoader } from "react-spinners";
 
 const SportsVendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
@@ -11,8 +14,15 @@ const SportsVendorRegistration = () => {
   const [addNewProvider, setAddNewProvider] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const [isEditVendor, setISEditVendor] = useState(false);
-  const showEditModal = () => {
+  const [vendorsData, setVendorsData] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const allCountries = useSelector((item) => item?.allCountries);
+  const [marketId, setMarketId] = useState(null);
+
+  const showEditModal = (id) => {
     setISEditVendor(true);
+    setMarketId(id);
   };
   const addNewProviderModal = () => {
     setIsActiveBtn(true);
@@ -22,10 +32,16 @@ const SportsVendorRegistration = () => {
     setActiveBtn(index);
   };
 
+  const getCountryName = (id) => {
+    const country = allCountries.find((c) => c.id === id);
+    console.log(country);
+    return country ? country.name : "Unknown";
+  };
+
   const cols = [
     { header: "S No", field: "sno", width: "10%" },
     { header: "Vendor Name", field: "vendor", width: "15%" },
-    { header: "Vendor %", field: "vendorper", width: "10%" },
+    { header: "Vendor Percentage/Monthly", field: "vendorper", width: "10%" },
     { header: "Vendor Country", field: "country", width: "15%" },
     { header: "Providers", field: "providers", width: "20%" },
     { header: "Profit & Loss", field: "pl", width: "20%" },
@@ -36,41 +52,64 @@ const SportsVendorRegistration = () => {
     },
   ];
 
-  const data = [
-    {
-      sno: <div>1</div>,
-      vendor: <div>Jitendra</div>,
-      vendorper: <div>15%</div>,
-      country: <div>India</div>,
-      providers: (
-        <div className="flex-column">
-          <div className="mb-3">Ezugi</div>
-          <div className="mb-3">Evolution</div>
-          <div className="mb-3">Asian Games</div>
-          <div className="mb-3">Pragmatic Play</div>
-          <div className="mb-3">Sexy Gaming</div>
-        </div>
-      ),
-      pl: (
-        <div className="d-flex flex-column">
-          <div className="green-clr mb-3">50000000</div>
-          <div className="dark-orange-clr mb-3">60000000</div>
-          <div className="green-clr mb-3">20000000</div>
-          <div className="green-clr mb-3">40000000</div>
-          <div className="dark-orange-clr mb-3">65000000</div>
-        </div>
-      ),
-      action: (
-        <div className="flex-end">
-          <SlPencil
-            size={18}
-            className="pointer me-2 orange-clr"
-            onClick={showEditModal}
-          />
-        </div>
-      ),
-    },
-  ];
+  const data = vendorsData?.map((item, index) => ({
+    sno: <div>{index + 1}</div>,
+    vendor: <div>{item?.vendorName}</div>,
+    vendorper: (
+      <div>
+        {/* amounttype===1 percentage */}
+        {item?.percentage}%
+      </div>
+    ),
+    country: <div>{getCountryName(item?.vendorCountry)}</div>,
+    providers: (
+      <div className="flex-column">
+        {item?.vendorMarkets?.map((provider) => (
+          <div className="mb-3">{provider?.sportName}</div>
+        ))}
+      </div>
+    ),
+    pl: (
+      <div className="flex-column">
+        {item?.vendorMarkets?.map((provider) => (
+          <div className="mb-3">{provider?.pl || 0}</div>
+        ))}
+      </div>
+    ),
+    action: (
+      <div className="flex-end">
+        <SlPencil
+          size={15}
+          className="pointer me-2 orange-clr"
+          onClick={() => showEditModal(item?.vendorMarkets?.marketId)}
+        />
+      </div>
+    ),
+  }));
+
+  //get all vendors
+  const fetchAllVendors = () => {
+    setLoading(true);
+    getAllVendors()
+      .then((response) => {
+        if (response) {
+          setLoading(false);
+          setVendorsData(response?.data);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
+      });
+  };
+  useEffect(() => {
+    fetchAllVendors();
+  }, []);
 
   return (
     <div>
@@ -116,7 +155,18 @@ const SportsVendorRegistration = () => {
                 />
               </div>
             ) : (
-              <Table columns={cols} data={data} itemsPerPage={4} />
+              <>
+                {loading ? (
+                  <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+                    <CircleLoader color="#3498db" size={40} />
+                    <div className="medium-font black-font my-3">
+                      Just a moment...............⏳
+                    </div>
+                  </div>
+                ) : (
+                  <Table columns={cols} data={data} itemsPerPage={4} />
+                )}
+              </>
             )}
           </div>
         )}

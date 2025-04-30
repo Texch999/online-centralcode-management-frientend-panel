@@ -1,5 +1,6 @@
 .orange-clr {
-  color: #fc9b4e;
+  /* color: #fc9b4e; */
+  color: rgba(255, 163, 16, 1);
 }
 .dashboard-white-bg {
   color: #ffffff;

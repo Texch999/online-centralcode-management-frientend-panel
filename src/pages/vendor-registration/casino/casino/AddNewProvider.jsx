@@ -89,7 +89,7 @@ const AddNewProvider = ({ show, setShow }) => {
           )}
 
           <div
-            className="my-2 saffron-btn2 br-5 mx-2 pointer"
+            className="my-2 saffron-bg py-2 white-font text-center br-5 mx-2 pointer"
             onClick={handleSubmit}
           >
             Submit

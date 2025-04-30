@@ -861,6 +861,7 @@ const endpoints = {
         data?.adminPanelId
       }`,
   },
+  //sports
   getSportsList: {
     method: "get",
     url: `/user/${userID()}/sportsList`,
@@ -922,6 +923,25 @@ const endpoints = {
   getMatchesList: {
     method: "get",
     url: (sportId) => `/user/${userID()}/sport/${sportId}/getMatchesList`,
+  },
+
+  // vendor creation
+
+  createVendor: {
+    method: "post",
+    url: `/user/${userID()}/vendor`,
+  },
+  getAllVendors: {
+    method: "get",
+    url: `/user/${userID()}/getVendorDetails`,
+  },
+  getVendorById: {
+    method: "get",
+    url: (id) => `/user/${userID()}/getVendorDetails/${id}`,
+  },
+  getMarketOptions: {
+    method: "get",
+    url: `/user/${userID()}/getOptions`,
   },
 };
 

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../../components/Table";
 import { IoMdAdd } from "react-icons/io";
 import AddNewProvider from "./AddNewProvider";
 import RegisterNewVendor from "./RegisterNewVendor";
 import { SlPencil } from "react-icons/sl";
+import { getAllVendors } from "../../../../api/apiMethods";
 
 const VendorRegistration = () => {
   const buttons = ["Vendor List", "Register New Vendor"];
@@ -11,6 +12,7 @@ const VendorRegistration = () => {
   const [addNewProvider, setAddNewProvider] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
   const [isEditVendor, setISEditVendor] = useState(false);
+
   const showEditModal = () => {
     setISEditVendor(true);
   };
@@ -71,6 +73,8 @@ const VendorRegistration = () => {
       ),
     },
   ];
+
+
 
   return (
     <div>

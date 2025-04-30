@@ -569,6 +569,19 @@ const announceCricketResults = (id, data) => {
 const getMatchesList = (sportId, data) => {
   return apiRequest("getMatchesList", data, sportId);
 };
+
+const createVendor = (data) => {
+  return apiRequest("createVendor", data);
+};
+const getVendorById = (id, data) => {
+  return apiRequest("getVendorById", data, id);
+};
+const getAllVendors = (data) => {
+  return apiRequest("getAllVendors", data);
+};
+const getMarketOptions = (data) => {
+  return apiRequest("getMarketOptions", data);
+};
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -716,4 +729,8 @@ export {
   suspendFancyResult,
   announceCricketResults,
   getMatchesList,
+  createVendor,
+  getVendorById,
+  getAllVendors,
+  getMarketOptions,
 };

@@ -48,14 +48,12 @@ const SportMatches = () => {
   const [matchesData, setMatchesData] = useState([]);
   const [successPopup, setSuccessPopup] = useState(false);
   const [search, setSearch] = useState("");
-
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-
   const [matchDropdownData, setMatchDropdownData] = useState([]);
   const [selectedMatchId, setSelectedMatchId] = useState("");
   const [selectedTeam, setSelectedTeam] = useState("");
-  console.log(matchDropdownData, "=====matchDropdownData");
+  const [dateError, setDateError] = useState("");
 
   const handleFancy = (sport, match) => {
     navigate(`/fancy-results/${sport}/${match}`);
@@ -228,13 +226,13 @@ const SportMatches = () => {
     const offset = (currentPage - 1) * itemsPerPage;
     fetchAllMatches(limit, offset, id);
   }, [id]);
-  const [dateError, setDateError] = useState("");
 
   const handleSubmit = () => {
     if (!fromDate || !toDate) {
       setDateError("Please select both From and To dates");
       return;
     }
+    setDateError("");
 
     const limit = itemsPerPage;
     const offset = (currentPage - 1) * itemsPerPage;
@@ -371,6 +369,10 @@ const SportMatches = () => {
             maxMenuHeight={120}
             menuPlacement="auto"
             classNamePrefix="custom-react-select"
+            value={
+              matchOptions.find((option) => option.value === selectedMatchId) ||
+              null
+            }
             onChange={(selected) => {
               setSelectedMatchId(selected.value);
               setSelectedTeam("");
@@ -442,7 +444,9 @@ const SportMatches = () => {
           </div>
 
           <div
-            className="align-self-end saffron-btn2 small-font pointer col-2"
+            className={`align-self-end saffron-btn2 small-font pointer col-2 ${
+              loading ? "disabled-btn" : ""
+            }`}
             onClick={handleSubmit}
           >
             {loading ? (

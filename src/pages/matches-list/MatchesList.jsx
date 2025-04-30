@@ -5,8 +5,6 @@ import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getSportsList, getSportsListCentral } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
-import { useDispatch } from "react-redux";
-import { setGamesData } from "../../redux/action";
 
 const MatchesList = () => {
   const navigate = useNavigate();
@@ -19,7 +17,6 @@ const MatchesList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
-  const dispatch = useDispatch();
 
   const handleGameMatches = (match, id) => {
     navigate(`/matches-list/${match}/${id}`);
@@ -52,7 +49,6 @@ const MatchesList = () => {
         if (response) {
           setLoading(false);
           setSportsData(response?.data);
-          dispatch(setGamesData(response?.data));
           setTotalRecords(response?.count);
         }
       })

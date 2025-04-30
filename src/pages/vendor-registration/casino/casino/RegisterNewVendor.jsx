@@ -213,12 +213,12 @@ const RegisterNewVendor = ({ isEdit, setIsEdit }) => {
         <div className="col-4 felx-column text-black "></div>
         {isEdit === true ? (
           <div className="col-4 felx-column align-items-center text-black ">
-            <div className="saffron-btn2 br-5 mx-2 my-2 pointer">Update</div>
+            <div className="saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer">Update</div>
           </div>
         ) : (
           <div className="col-4 felx-column text-black">
             <div
-              className="saffron-btn2 br-5 mx-2 my-2 pointer"
+              className="saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer"
               onClick={handleSubmit}
             >
               Submit
