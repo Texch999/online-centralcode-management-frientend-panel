@@ -18,11 +18,13 @@ const SportsVendorRegistration = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
-  const [marketId, setMarketId] = useState(null);
+  const [vendorId, setVendorId] = useState(null);
+  console.log(vendorId,"mar id")
 
   const showEditModal = (id) => {
+    console.log(id,"rkkk")
     setISEditVendor(true);
-    setMarketId(id);
+    setVendorId(id);
   };
   const addNewProviderModal = () => {
     setIsActiveBtn(true);
@@ -51,6 +53,8 @@ const SportsVendorRegistration = () => {
       width: "10%",
     },
   ];
+
+  console.log(vendorsData,"vendorsData")
 
   const data = vendorsData?.map((item, index) => ({
     sno: <div>{index + 1}</div>,
@@ -81,7 +85,7 @@ const SportsVendorRegistration = () => {
         <SlPencil
           size={15}
           className="pointer me-2 orange-clr"
-          onClick={() => showEditModal(item?.vendorMarkets?.marketId)}
+          onClick={() => showEditModal(item?.id)}
         />
       </div>
     ),
@@ -152,6 +156,7 @@ const SportsVendorRegistration = () => {
                 <SportsNewVendor
                   isEdit={isEditVendor}
                   setIsEdit={setISEditVendor}
+                  vendorId={vendorId}
                 />
               </div>
             ) : (
@@ -170,9 +175,9 @@ const SportsVendorRegistration = () => {
             )}
           </div>
         )}
-        {activeBtn === 1 && <SportsNewVendor />}
+        {activeBtn === 1 && <SportsNewVendor vendorId={vendorId}/>}
       </div>
-      <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider} />
+      <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider}/>
     </div>
   );
 };
