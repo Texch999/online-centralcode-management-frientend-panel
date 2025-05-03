@@ -61,8 +61,7 @@ const SportsVendorRegistration = () => {
     vendor: <div>{item?.vendorName}</div>,
     vendorper: (
       <div>
-        {/* amounttype===1 percentage */}
-        {item?.percentage}%
+        {item?.amountType === 2 ? `${item?.percentage}%` : item?.monthlyAmount}
       </div>
     ),
     country: <div>{getCountryName(item?.vendorCountry)}</div>,

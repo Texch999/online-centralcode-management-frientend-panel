@@ -42,7 +42,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
   const [positionDropdown, setPositionDropdown] = useState(false);
   const [positionMap, setPositionMap] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState(null);
+  const [statusMap, setStatusMap] = useState({});
 
   const handleDropdown = () => {
     setPositionDropdown(!positionDropdown);
@@ -140,7 +140,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
         setVendorName(data.vendorName || "");
         setCompanyName(data.vendorCompany || "");
         setMaxLoseAmtGame(data.maxLsAmtGame || "");
-        setStatus(data?.vendorMarkets?.providers?.status);
+        // setStatus(data?.vendorMarkets?.providers?.status);
 
         const selectedSportOption = selectSports.find(
           (opt) => opt.value === data.vendorType
@@ -169,6 +169,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
         const markets = {};
         const positions = {};
         const liveApis = {};
+        const status = {};
 
         data?.vendorMarkets?.forEach((item) => {
           // Match sport by name to get internal string ID
@@ -177,17 +178,17 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
           );
 
           if (matchedSport) {
-            const sportId = matchedSport.id; // string ID from sportsData
-            sports.push(sportId); // ✅ for checkboxes
+            const sportId = matchedSport.id;
+            sports.push(sportId);
 
-            // Set selected providers for this sport
             markets[sportId] = item.providers.map((p) => p.prvId);
 
-            // Set positions and liveApi status per provider
             positions[sportId] = {};
+            if (!status[sportId]) status[sportId] = {};
             item.providers.forEach((p) => {
               positions[sportId][p.prvId] = p.position || 0;
               liveApis[p.prvId] = item.isLiveApi || 0;
+              status[sportId][p.prvId] = p.status || 1;
             });
           }
         });
@@ -196,6 +197,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
         setSelectedMarkets(markets);
         setPositionMap(positions);
         setLiveApiStatusMap(liveApis);
+        setStatusMap(status);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -233,8 +235,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
     if (allSelectedMarkets.length === 0) {
       validationErrors.push("At least one market must be selected.");
     }
-    if (!selectedMarkets.length)
-      validationErrors.push("At least one market must be selected.");
+    // if (!selectedMarkets.length)
+    //   validationErrors.push("At least one market must be selected.");
     if (!maxLoseAmtGame)
       validationErrors.push("Max Lose Amount for Game is required.");
 
@@ -251,11 +253,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
       setError(validationErrors);
       return;
     }
-    validationErrors([]);
     setError([]);
 
     const vendorMarkets = [];
-
     selectedSports.forEach((sportId) => {
       const marketId = Number(sportId.slice(8, -5));
       const markets = selectedMarkets[sportId] || [];
@@ -266,6 +266,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
           prvId: marId,
           position: positionMap[sportId]?.[marId] || 0,
           isLiveApi: liveApiStatusMap[marId] || 0,
+          ...(isEdit && {
+            status: statusMap[sportId]?.[marId] || 1,
+          }),
         });
       });
     });
@@ -289,10 +292,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
       maxLsAmtGame: maxLoseAmtGame,
       vendorMarkets,
     };
-
-    const apiCall = isEdit ? updateVendor(vendorId) : createVendor;
     setLoading(true);
-    apiCall(payload)
+    const apiCall = isEdit
+      ? updateVendor(vendorId, payload)
+      : createVendor(payload);
+    apiCall
       .then((response) => {
         if (response) {
           setMsg(response?.message);
@@ -540,7 +544,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
                       </div>
                       <div className="">
                         <div className="small-font mb-1 white-space">
-                          Mon Amount
+                          Amount
                         </div>
                         <input
                           type="text"
@@ -582,151 +586,170 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
               </div>
             </div>
           </div>
+          {selectedSports.length > 0 && (
+            <div className="my-3 row text-black">
+              <div className="col-4 flex-column">
+                <div className="small-font mb-2">Select Providers</div>
 
-          <div className="my-3 row text-black">
-            <div className="col-4 flex-column">
-              <div className="small-font mb-2">Select Providers</div>
-
-              <div className="d-flex flex-column gap-3">
-                {selectedSports
-                  .map((id) => sportsData.find((sport) => sport.id === id))
-                  .filter(Boolean)
-                  .map((sport) => (
-                    <div key={sport.id} className="p-2 radius">
-                      <div className="medium-font black-clr mb-2">
-                        {sport.name}
-                      </div>
-
-                      {marketsData?.map((mar) => (
-                        <div key={mar.id} className="mb-2">
-                          <label className="input-css p-1 pointer flex-between w-100">
-                            <div className="d-flex gap-2 align-items-center">
-                              <input
-                                type="checkbox"
-                                className="me-2"
-                                checked={selectedMarkets[sport.id]?.includes(
-                                  mar.id
-                                )}
-                                onChange={(e) => {
-                                  handleSelectMarket(
-                                    sport.id,
-                                    mar.id,
-                                    e.target.checked
-                                  );
-                                }}
-                              />
-                              <span className="small-font">{mar.name}</span>
-                            </div>
-                            <div onClick={handleDropdown}>
-                              {positionDropdown ? (
-                                <FaAngleUp />
-                              ) : (
-                                <FaAngleDown />
-                              )}
-                            </div>
-                          </label>
-
-                          {selectedMarkets[sport.id]?.includes(mar.id) && (
-                            <>
-                              <div className="my-1 small-font">
-                                Select Position
-                              </div>
-                              <div className="d-flex gap-2 flex-wrap input-bg br-5 p-1 mb-3">
-                                {positions?.map((item, index) => (
-                                  <div
-                                    key={index}
-                                    onClick={() =>
-                                      handleSelectPosition(
-                                        sport.id,
-                                        mar.id,
-                                        item
-                                      )
-                                    }
-                                    className={`rounded-pill px-2 py-1 pointer small-font ${
-                                      positionMap[sport.id]?.[mar.id] === item
-                                        ? "saffron-bg white-font"
-                                        : "white-bg black-clr"
-                                    }`}
-                                  >
-                                    {item}
-                                  </div>
-                                ))}
-                              </div>
-
-                              {/* Live API selection per market */}
-                              <div className="d-flex gap-2 align-items-center flex-between input-bg br-5 p-1 mb-3">
-                                <div className="small-font">
-                                  Result Live Api
-                                </div>
-                                <div className="d-flex gap-3">
-                                  <div
-                                    className={`rounded-pill px-1 py-1 pointer small-font ${
-                                      liveApiStatusMap[mar.id] === 1
-                                        ? "saffron-bg white-font"
-                                        : "white-bg black-clr"
-                                    }`}
-                                    onClick={() =>
-                                      handleSelectLiveApi(sport.id, mar.id, 1)
-                                    }
-                                  >
-                                    Yes
-                                  </div>
-                                  <div
-                                    className={`rounded-pill px-2 py-1 pointer small-font ${
-                                      liveApiStatusMap[mar.id] === 2
-                                        ? "saffron-bg white-font"
-                                        : "white-bg black-clr"
-                                    }`}
-                                    onClick={() =>
-                                      handleSelectLiveApi(sport.id, mar.id, 2)
-                                    }
-                                  >
-                                    No
-                                  </div>
-                                </div>
-                              </div>
-                            </>
-                          )}
+                <div className="d-flex flex-column gap-3">
+                  {selectedSports
+                    .map((id) => sportsData.find((sport) => sport.id === id))
+                    .filter(Boolean)
+                    .map((sport) => (
+                      <div key={sport.id} className="p-2 radius">
+                        <div className="medium-font black-clr mb-2">
+                          {sport.name}
                         </div>
-                      ))}
-                    </div>
-                  ))}
-              </div>
-            </div>
 
-            <div className="col-4 felx-column text-black "></div>
-            {isEdit === true ? (
-              <div className="col-4 felx-column align-items-center text-black ">
-                <div className="saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer">
-                  Update
+                        {marketsData?.map((mar) => (
+                          <div key={mar.id} className="mb-2">
+                            <label className="input-css p-1 pointer flex-between w-100">
+                              <div className="d-flex gap-2 align-items-center">
+                                <input
+                                  type="checkbox"
+                                  className="me-2"
+                                  checked={selectedMarkets[sport.id]?.includes(
+                                    mar.id
+                                  )}
+                                  onChange={(e) => {
+                                    handleSelectMarket(
+                                      sport.id,
+                                      mar.id,
+                                      e.target.checked
+                                    );
+                                  }}
+                                />
+                                <span className="small-font">{mar.name}</span>
+                              </div>
+                              <div onClick={handleDropdown}>
+                                {positionDropdown ? (
+                                  <FaAngleUp />
+                                ) : (
+                                  <FaAngleDown />
+                                )}
+                              </div>
+                            </label>
+
+                            {selectedMarkets[sport.id]?.includes(mar.id) && (
+                              <>
+                                <div className="my-1 small-font">
+                                  Select Position
+                                </div>
+                                <div className="d-flex gap-2 flex-wrap input-bg br-5 p-1 mb-3">
+                                  {positions?.map((item, index) => (
+                                    <div
+                                      key={index}
+                                      onClick={() =>
+                                        handleSelectPosition(
+                                          sport.id,
+                                          mar.id,
+                                          item
+                                        )
+                                      }
+                                      className={`rounded-pill px-2 py-1 pointer small-font ${
+                                        positionMap[sport.id]?.[mar.id] === item
+                                          ? "saffron-bg white-font"
+                                          : "white-bg black-clr"
+                                      }`}
+                                    >
+                                      {item}
+                                    </div>
+                                  ))}
+                                </div>
+
+                                {/* Live API selection per market */}
+                                <div className="d-flex gap-2 align-items-center flex-between input-bg br-5 p-1 mb-3">
+                                  <div className="small-font">
+                                    Result Live Api
+                                  </div>
+                                  <div className="d-flex gap-3">
+                                    <div
+                                      className={`rounded-pill px-1 py-1 pointer small-font ${
+                                        liveApiStatusMap[mar.id] === 1
+                                          ? "saffron-bg white-font"
+                                          : "white-bg black-clr"
+                                      }`}
+                                      onClick={() =>
+                                        handleSelectLiveApi(sport.id, mar.id, 1)
+                                      }
+                                    >
+                                      Yes
+                                    </div>
+                                    <div
+                                      className={`rounded-pill px-2 py-1 pointer small-font ${
+                                        liveApiStatusMap[mar.id] === 2
+                                          ? "saffron-bg white-font"
+                                          : "white-bg black-clr"
+                                      }`}
+                                      onClick={() =>
+                                        handleSelectLiveApi(sport.id, mar.id, 2)
+                                      }
+                                    >
+                                      No
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
                 </div>
               </div>
-            ) : (
-              <div className="col-4 felx-column text-black">
-                <div
-                  className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
-                    loadng ? "disabled-btn" : ""
-                  }`}
-                  onClick={onSubmit}
-                >
-                  {loadng ? (
-                    <>
-                      <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      />
-                      <span className="ms-2">Submit</span>
-                    </>
-                  ) : (
-                    <div>Submit</div>
-                  )}
+
+              <div className="col-4 felx-column text-black "></div>
+              {isEdit === true ? (
+                <div className="col-4 felx-column align-items-center text-black ">
+                  <div
+                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                      loadng ? "disabled-btn" : ""
+                    }`}
+                    onClick={onSubmit}
+                  >
+                    {loadng ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        <span className="ms-2">Update</span>
+                      </>
+                    ) : (
+                      <div>Update</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              ) : (
+                <div className="col-4 felx-column text-black">
+                  <div
+                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                      loadng ? "disabled-btn" : ""
+                    }`}
+                    onClick={onSubmit}
+                  >
+                    {loadng ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        <span className="ms-2">Submit</span>
+                      </>
+                    ) : (
+                      <div>Submit</div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <SuccessPopup
             successPopupOpen={successModal}
