@@ -295,12 +295,12 @@ function Header() {
                   >
                     Market Results
                   </Dropdown.Item>
-                  <Dropdown.Item
+                  {/* <Dropdown.Item
                     className="white-btn white-hover small-font"
                     onClick={() => navigate("/matches-list")}
                   >
                     Matches List
-                  </Dropdown.Item>
+                  </Dropdown.Item> */}
                 </Dropdown.Menu>
               </Dropdown>
             )}
