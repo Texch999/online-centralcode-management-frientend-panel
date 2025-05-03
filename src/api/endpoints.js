@@ -943,6 +943,10 @@ const endpoints = {
     method: "get",
     url: `/user/${userID()}/getOptions`,
   },
+  updateVendor:{
+    method:"post",
+    url:(id)=>`/user/${userID()}/vendor/${id}`
+  },
 };
 
 export default endpoints;

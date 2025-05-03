@@ -19,10 +19,10 @@ const SportsVendorRegistration = () => {
   const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
   const [vendorId, setVendorId] = useState(null);
-  console.log(vendorId,"mar id")
+  console.log(vendorId, "mar id");
 
   const showEditModal = (id) => {
-    console.log(id,"rkkk")
+    console.log(id, "rkkk");
     setISEditVendor(true);
     setVendorId(id);
   };
@@ -54,7 +54,7 @@ const SportsVendorRegistration = () => {
     },
   ];
 
-  console.log(vendorsData,"vendorsData")
+  console.log(vendorsData, "vendorsData");
 
   const data = vendorsData?.map((item, index) => ({
     sno: <div>{index + 1}</div>,
@@ -175,9 +175,9 @@ const SportsVendorRegistration = () => {
             )}
           </div>
         )}
-        {activeBtn === 1 && <SportsNewVendor vendorId={vendorId}/>}
+        {activeBtn === 1 && <SportsNewVendor />}
       </div>
-      <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider}/>
+      <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider} />
     </div>
   );
 };

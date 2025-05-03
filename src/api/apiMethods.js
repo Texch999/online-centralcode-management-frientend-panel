@@ -582,6 +582,9 @@ const getAllVendors = (data) => {
 const getMarketOptions = (data) => {
   return apiRequest("getMarketOptions", data);
 };
+const updateVendor = (id, data) => {
+  return apiRequest("updateVendor", data, id);
+};
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -733,4 +736,5 @@ export {
   getVendorById,
   getAllVendors,
   getMarketOptions,
+  updateVendor,
 };
