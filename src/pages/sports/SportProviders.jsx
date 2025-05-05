@@ -1,37 +1,58 @@
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Table from "../../components/Table";
 import { BsEye } from "react-icons/bs";
 import { FaArrowLeft } from "react-icons/fa";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import {
+  getProviders,
+  getProvidersById,
+  suspendProvider,
+} from "../../api/apiMethods";
+import { CircleLoader } from "react-spinners";
+import SuccessPopup from "../popups/SuccessPopup";
 
 const SportProviders = () => {
   const navigate = useNavigate();
   const { vendor, provider } = useParams();
-  const handleGameMatches = (match) => {
-    if (provider === "Odds") {
-      navigate(`/central-sports/${vendor}/${provider}/${match}`);
-    } else if (provider === "Fancy") {
-      navigate(`/central-sports/${vendor}/${provider}/${match}`);
-    } else if (provider === "Bookmaker 1") {
-      navigate(`/central-sports/${vendor}/${provider}/${match}`);
-    } else if (provider === "Bookmaker 2") {
-      navigate(`/central-sports/${vendor}/${provider}/${match}`);
-    } else if (provider === "Live Streaming") {
-      navigate(`/central-sports/${vendor}/${provider}/${match}`);
-    } else if (provider === "Scoreboard") {
-      navigate(`/central-sports/${vendor}/${provider}/${match}`);
-    }
-  };
+  const location = useLocation();
+  const { vId, mId } = location.state || {};
+  const [providersData, setProvidersData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const [msg, setMsg] = useState("");
+  // const handleGameMatches = (match) => {
+  //   if (provider === "Odds") {
+  //     navigate(`/central-sports/${vendor}/${provider}/${match}`);
+  //   } else if (provider === "Fancy") {
+  //     navigate(`/central-sports/${vendor}/${provider}/${match}`);
+  //   } else if (provider === "Bookmaker 1") {
+  //     navigate(`/central-sports/${vendor}/${provider}/${match}`);
+  //   } else if (provider === "Bookmaker 2") {
+  //     navigate(`/central-sports/${vendor}/${provider}/${match}`);
+  //   } else if (provider === "Live Streaming") {
+  //     navigate(`/central-sports/${vendor}/${provider}/${match}`);
+  //   } else if (provider === "Scoreboard") {
+  //     navigate(`/central-sports/${vendor}/${provider}/${match}`);
+  //   }
+  // };
   const [isActive, setIsACtive] = useState(false);
-  const handleActiveModal = () => {
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState(null);
+  const [prvId, setPrvId] = useState(null);
+  const handleActiveModal = (id, status) => {
+    console.log(id, status, "sangrammmmmmmmm");
     setIsACtive(!isActive);
+    setPrvId(id);
+    setStatus(status);
   };
   const cols = [
     { header: "S No", field: "sno", width: "8%" },
     { header: "Games", field: "games", width: "40%" },
-    { header: "", field: "eye", width: "10%" },
+    { header: "Posistion", field: "pos", width: "10%" },
+
+    // { header: "", field: "eye", width: "10%" },
     { header: "Status", field: "status", width: "10%" },
 
     { header: "Profit&Loss", field: "pl", width: "10%" },
@@ -42,225 +63,96 @@ const SportProviders = () => {
     },
   ];
 
-  const data = [
-    {
-      sno: 1,
-      games: (
-        <div className="pointer" onClick={() => handleGameMatches("Cricket")}>
-          Cricket
-        </div>
-      ),
-      eye: (
-        <div className="pointer d-flex justify-content-end">
-          <BsEye
-            size={18}
-            className="orange-clr"
-            onClick={() => handleGameMatches("Cricket")}
-          />
-        </div>
-      ),
-      status: (
-        <div className="green-clr">
-          <span className="round-green-dot mx-1"></span>ON
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">50000000</div>,
-      action: (
-        <div className="flex-center">
-          <div class="form-check form-switch" onClick={handleActiveModal}>
-            <input
-              class="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
+  const data = providersData?.map((item, index) => ({
+    sno: index + 1,
+    games: (
+      <div
+        className="pointer"
+        // onClick={() => handleGameMatches(item?.prvName)}
+      >
+        {item?.prvName}
+      </div>
+    ),
+    pos: <div className="">{item?.position}</div>,
+    status: (
+      <div>
+        {item?.status === 1 ? (
+          <div className="green-clr">
+            <span className="round-green-dot mx-1"></span>ON
           </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="">2</div>,
-      games: (
-        <div className="pointer" onClick={() => handleGameMatches("Football")}>
-          Football
-        </div>
-      ),
-      eye: (
-        <div className="pointer d-flex justify-content-end">
-          <BsEye
-            className="orange-clr"
-            size={18}
-            onClick={() => handleGameMatches("Football")}
-          />
-        </div>
-      ),
-      status: (
-        <div className="dark-orange-clr">
-          <span className="round-red-dot mx-1"></span>OFF
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">50000000</div>,
-      action: (
-        <div className="flex-center">
-          <div class="form-check form-switch" onClick={handleActiveModal}>
-            <input
-              class="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
+        ) : (
+          <div className="red-clr">
+            <span className="round-red-dot mx-1"></span>OFF
           </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="">3</div>,
-      games: (
-        <div className="pointer" onClick={() => handleGameMatches("Tennis")}>
-          Tennis
-        </div>
-      ),
-      eye: (
-        <div className="pointer d-flex justify-content-end">
-          <BsEye
-            className="orange-clr"
-            size={18}
-            onClick={() => handleGameMatches("Tennis")}
+        )}
+      </div>
+    ),
+    pl: <div className="dark-orange-clr">{item?.pnl || 0}</div>,
+    action: (
+      <div className="flex-center">
+        <div
+          class="form-check form-switch"
+          onClick={() => handleActiveModal(item?.id, item?.status)}
+        >
+          <input
+            class="form-check-input w-40"
+            type="checkbox"
+            role="switch"
+            checked={item?.status === 2}
+            id="flexSwitchCheckDefault"
+            readOnly
           />
         </div>
-      ),
+      </div>
+    ),
+  }));
 
-      status: (
-        <div className="green-clr">
-          <span className="round-green-dot mx-1"></span>ON
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">50000000</div>,
-      action: (
-        <div className="flex-center">
-          <div class="form-check form-switch" onClick={handleActiveModal}>
-            <input
-              class="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="">4</div>,
-      games: (
-        <div className="pointer" onClick={() => handleGameMatches("Kabbadi")}>
-          Kabbadi
-        </div>
-      ),
-      eye: (
-        <div className="pointer d-flex justify-content-end">
-          <BsEye
-            className="orange-clr"
-            size={18}
-            onClick={() => handleGameMatches("Kabaddi")}
-          />
-        </div>
-      ),
-      status: (
-        <div className="dark-orange-clr">
-          <span className="round-red-dot mx-1"></span>OFF
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">50000000</div>,
-      action: (
-        <div className="flex-center">
-          <div class="form-check form-switch" onClick={handleActiveModal}>
-            <input
-              class="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="">5</div>,
-      games: (
-        <div
-          className="pointer"
-          onClick={() => handleGameMatches("HorseRacing")}
-        >
-          Horse Racing
-        </div>
-      ),
-      eye: (
-        <div className="pointer d-flex justify-content-end">
-          <BsEye
-            className="orange-clr"
-            size={18}
-            onClick={() => handleGameMatches("HorseRacing")}
-          />
-        </div>
-      ),
-      status: (
-        <div className="dark-orange-clr">
-          <span className="round-red-dot mx-1"></span>OFF
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">50000000</div>,
-      action: (
-        <div className="flex-center">
-          <div class="form-check form-switch" onClick={handleActiveModal}>
-            <input
-              class="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      sno: <div className="">6</div>,
-      games: (
-        <div
-          className="pointer"
-          onClick={() => handleGameMatches("Greyhound Racing")}
-        >
-          GreyHound Racing
-        </div>
-      ),
-      eye: (
-        <div className="pointer d-flex justify-content-end">
-          <BsEye
-            className="orange-clr"
-            size={18}
-            onClick={() => handleGameMatches("GreyhoundRacing")}
-          />
-        </div>
-      ),
-      status: (
-        <div className="dark-orange-clr">
-          <span className="round-red-dot mx-1"></span>OFF
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">50000000</div>,
-      action: (
-        <div className="flex-center">
-          <div class="form-check form-switch" onClick={handleActiveModal}>
-            <input
-              class="form-check-input w-40"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
+  const fetchProviders = () => {
+    setLoading(true);
+    getProvidersById(vId, mId)
+      .then((response) => {
+        if (response) {
+          setLoading(false);
+          setProvidersData(response?.data);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
+      });
+  };
+  useEffect(() => {
+    fetchProviders();
+  }, [vId, mId]);
+
+  const statusId = status === 1 ? 2 : 1;
+
+  const blockProvider = () => {
+    setLoading(true);
+    suspendProvider({ vId, statusId, prvId })
+      .then((response) => {
+        if (response) {
+          setLoading(false);
+          setMsg(response?.message);
+          setSuccessPopupOpen(true);
+          setIsACtive(false);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+          }, 3000);
+          fetchProviders();
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.message);
+      });
+  };
+
   return (
     <div>
       <div className="d-flex flex-between mt-3 mb-2">
@@ -287,12 +179,31 @@ const SportProviders = () => {
           Total P/L : <span className="green-clr mx-1">20000</span>
         </div>
       </div>
-      <Table columns={cols} data={data} itemsPerPage={10} />
+      {loading ? (
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
+        </div>
+      ) : (
+        <Table columns={cols} data={data} itemsPerPage={10} />
+      )}
       <ConfirmationPopup
         confirmationPopupOpen={isActive}
         setConfirmationPopupOpen={setIsACtive}
-        discription={"Are You Sure to Active this Match"}
-        submitButton={"Active"}
+        discription={`Are You Sure to ${
+          status === 1 ? "In-Active" : "Active"
+        } this Provider`}
+        submitButton={`${status === 1 ? "In-Active" : "Active"}`}
+        onSubmit={blockProvider}
+        blockLoader={loading}
+      />
+      <SuccessPopup
+        successPopupOpen={successPopupOpen}
+        setSuccessPopupOpen={setSuccessPopupOpen}
+        discription={msg}
+        loader={loading}
       />
     </div>
   );

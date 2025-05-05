@@ -585,6 +585,13 @@ const getMarketOptions = (data) => {
 const updateVendor = (id, data) => {
   return apiRequest("updateVendor", data, id);
 };
+const suspendProvider = (id, data) => {
+  return apiRequest("suspendProvider", data, id);
+};
+const getProvidersById = (vId, mId) => {
+  return apiRequest("getProvidersById", vId, { vId, mId });
+};
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -737,4 +744,6 @@ export {
   getAllVendors,
   getMarketOptions,
   updateVendor,
+  getProvidersById,
+  suspendProvider,
 };

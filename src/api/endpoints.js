@@ -943,9 +943,21 @@ const endpoints = {
     method: "get",
     url: `/user/${userID()}/getOptions`,
   },
-  updateVendor:{
-    method:"post",
-    url:(id)=>`/user/${userID()}/vendor/${id}`
+  updateVendor: {
+    method: "post",
+    url: (id) => `/user/${userID()}/vendor/${id}`,
+  },
+  suspendProvider: {
+    method: "post",
+    url: (id) =>
+      `/user/${userID()}/vendor/${id?.vId}/status/${id?.statusId}/provider/${
+        id?.prvId
+      }`,
+  },
+  getProvidersById: {
+    method: "get",
+    url: (data) =>
+      `/user/${userID()}/getVendorProviders/${data?.vId}/market/${data?.mId}`,
   },
 };
 

@@ -511,7 +511,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
                       <input
                         type="text"
                         inputMode="numeric"
-                        placeholder="Enter Price"
+                        placeholder="Enter Percentage"
                         className="all-none"
                         value={per}
                         maxLength={9}
