@@ -959,6 +959,10 @@ const endpoints = {
     url: (data) =>
       `/user/${userID()}/getVendorProviders/${data?.vId}/market/${data?.mId}`,
   },
+  createProvider: {
+    method: "post",
+    url: `/user/${userID()}/createPrvOrGame`,
+  },
 };
 
 export default endpoints;

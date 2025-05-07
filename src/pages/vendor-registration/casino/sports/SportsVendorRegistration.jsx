@@ -19,10 +19,8 @@ const SportsVendorRegistration = () => {
   const [loading, setLoading] = useState(false);
   const allCountries = useSelector((item) => item?.allCountries);
   const [vendorId, setVendorId] = useState(null);
-  console.log(vendorId, "mar id");
 
   const showEditModal = (id) => {
-    console.log(id, "rkkk");
     setISEditVendor(true);
     setVendorId(id);
   };
@@ -36,7 +34,6 @@ const SportsVendorRegistration = () => {
 
   const getCountryName = (id) => {
     const country = allCountries.find((c) => c.id === id);
-    console.log(country);
     return country ? country.name : "Unknown";
   };
 
@@ -53,8 +50,6 @@ const SportsVendorRegistration = () => {
       width: "10%",
     },
   ];
-
-  console.log(vendorsData, "vendorsData");
 
   const data = vendorsData?.map((item, index) => ({
     sno: <div>{index + 1}</div>,
@@ -156,6 +151,7 @@ const SportsVendorRegistration = () => {
                   isEdit={isEditVendor}
                   setIsEdit={setISEditVendor}
                   vendorId={vendorId}
+                  fetch={fetchAllVendors}
                 />
               </div>
             ) : (
@@ -174,7 +170,7 @@ const SportsVendorRegistration = () => {
             )}
           </div>
         )}
-        {activeBtn === 1 && <SportsNewVendor />}
+        {activeBtn === 1 && <SportsNewVendor fetch={fetchAllVendors} />}
       </div>
       <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider} />
     </div>

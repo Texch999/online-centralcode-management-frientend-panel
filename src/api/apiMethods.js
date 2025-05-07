@@ -591,6 +591,9 @@ const suspendProvider = (id, data) => {
 const getProvidersById = (vId, mId) => {
   return apiRequest("getProvidersById", vId, { vId, mId });
 };
+const createProvider = (data) => {
+  return apiRequest("createProvider", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -746,4 +749,5 @@ export {
   updateVendor,
   getProvidersById,
   suspendProvider,
+  createProvider,
 };

@@ -38,12 +38,12 @@ const Sports = () => {
     },
     { header: "VendorName & Company", field: "vendorname", width: "20%" },
     { header: "Vendor %", field: "vendorper", width: "10%" },
-    { header: "Vendor Monthly", field: "vendormon", width: "10%" },
+    { header: "Vendor Monthly Amt", field: "vendormon", width: "10%" },
     { header: "Vendor Country", field: "country", width: "10%" },
     {
       header: (
         <div className="d-flex w-100">
-          <div className="col-4">Providers</div>
+          <div className="col-4">Games</div>
           <div className="col-2 flex-center"></div>
           {/* <div className="col-2 flex-center">Action</div> */}
           <div className="col-3 flex-center">Profit&Loss</div>
@@ -62,8 +62,12 @@ const Sports = () => {
         <div>{item?.vendorCompany}</div>
       </div>
     ),
-    vendorper: <div>{item?.percentage}%</div>,
-    vendormon: <div>{item?.monthlyAmount}</div>,
+    vendorper: (
+      <div>{item?.percentage !== null ? `${item?.percentage}%` : "-"}</div>
+    ),
+    vendormon: (
+      <div>{item?.monthlyAmount !== null ? item?.monthlyAmount : "-"}</div>
+    ),
     country: <div>{getCountryName(item?.vendorCountry)}</div>,
     all: (
       <div className="flex-column">
@@ -85,7 +89,7 @@ const Sports = () => {
             </div>
             <div className="col-2">
               <BsEye
-                className="orange-clr"
+                className="orange-clr pointer"
                 size={18}
                 onClick={() =>
                   handleSportNextPage(

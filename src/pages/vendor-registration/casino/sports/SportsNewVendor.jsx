@@ -11,14 +11,10 @@ import {
   updateVendor,
 } from "../../../../api/apiMethods";
 import { useSelector } from "react-redux";
-import e from "cors";
 import { Spinner } from "react-bootstrap";
 import ErrorComponent from "../../../../components/ErrorComponent";
-import { IoArrowBack, IoArrowUp } from "react-icons/io5";
 
-const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
-  console.log(vendorId, "vendorId");
-
+const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [vendorName, setVendorName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -66,7 +62,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
     path ? selectSports.find((opt) => opt.value === "sports") : null
   );
   const handleVendorName = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, "");
+    const value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
     setVendorName(value);
   };
 
@@ -93,6 +89,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
     setLiveApiStatusMap({});
     setSelectedSports([]);
     setPositionMap({});
+    setError("");
   };
 
   const getSports = () => {
@@ -140,7 +137,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
         setVendorName(data.vendorName || "");
         setCompanyName(data.vendorCompany || "");
         setMaxLoseAmtGame(data.maxLsAmtGame || "");
-        // setStatus(data?.vendorMarkets?.providers?.status);
 
         const selectedSportOption = selectSports.find(
           (opt) => opt.value === data.vendorType
@@ -163,8 +159,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
           setPer(data.percentage || "");
         }
 
-        // Sports & Markets
-
         const sports = [];
         const markets = {};
         const positions = {};
@@ -172,7 +166,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
         const status = {};
 
         data?.vendorMarkets?.forEach((item) => {
-          // Match sport by name to get internal string ID
           const matchedSport = sportsData.find(
             (sport) => sport.name === item.sportName
           );
@@ -235,8 +228,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
     if (allSelectedMarkets.length === 0) {
       validationErrors.push("At least one market must be selected.");
     }
-    // if (!selectedMarkets.length)
-    //   validationErrors.push("At least one market must be selected.");
     if (!maxLoseAmtGame)
       validationErrors.push("Max Lose Amount for Game is required.");
 
@@ -247,6 +238,23 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
       if (!billingDate) validationErrors.push("Billing Date is required.");
     } else if (amtType?.value === 2) {
       if (!per) validationErrors.push("Percentage value is required.");
+    }
+    const missingPositions = [];
+
+    selectedSports.forEach((sportId) => {
+      const markets = selectedMarkets[sportId] || [];
+      markets.forEach((marId) => {
+        const pos = positionMap[sportId]?.[marId];
+        if (pos === undefined || pos === null || pos === "") {
+          missingPositions.push(
+            `Missing position for Sport ID: ${sportId}, Market ID: ${marId}`
+          );
+        }
+      });
+    });
+
+    if (missingPositions.length > 0) {
+      validationErrors.push("Position is required for selected markets.");
     }
 
     if (validationErrors.length > 0) {
@@ -304,8 +312,12 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
           setSuccessModal(true);
           setTimeout(() => {
             setSuccessModal(false);
+            if (isEdit) {
+              setIsEdit(false);
+            }
           }, 3000);
           reset();
+          fetch();
         }
       })
       .catch((error) => {
@@ -335,7 +347,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
       return updatedSelectedMarkets;
     });
 
-    // Handle live API status map for this sport and market
     if (!checked) {
       const updatedMap = { ...liveApiStatusMap };
       delete updatedMap[marketId];
@@ -343,15 +354,35 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
     }
   };
 
-  // Handle selecting a position for a market
   const handleSelectPosition = (sportId, marketId, position) => {
-    setPositionMap((prevPositionMap) => ({
-      ...prevPositionMap,
-      [sportId]: { ...prevPositionMap[sportId], [marketId]: position },
-    }));
+    setPositionMap((prev) => {
+      const current = prev[sportId]?.[marketId];
+
+      if (current === position) {
+        const updatedMarket = { ...prev[sportId] };
+        delete updatedMarket[marketId];
+
+        if (Object.keys(updatedMarket).length === 0) {
+          const { [sportId]: _, ...rest } = prev;
+          return rest;
+        }
+
+        return {
+          ...prev,
+          [sportId]: updatedMarket,
+        };
+      }
+
+      return {
+        ...prev,
+        [sportId]: {
+          ...prev[sportId],
+          [marketId]: position,
+        },
+      };
+    });
   };
 
-  // Handle setting the live API status for a market
   const handleSelectLiveApi = (sportId, marketId, status) => {
     setLiveApiStatusMap((prevStatusMap) => ({
       ...prevStatusMap,
@@ -372,17 +403,17 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
             <div className="d-flex flex-column">
               <div className="flex-start">
                 <div
-                  className="rounded-pill px-2 py-1 border small-font flex-center black-text4"
+                  className="rounded-pill px-2 py-1 border small-font flex-center black-text4 pointer"
                   onClick={() => setIsEdit(false)}
                 >
-                  <FaArrowLeft className="me-2 d-flex orange-clr" />
+                  <FaArrowLeft className="me-2 d-flex orange-clr pointer" />
                   Back
                 </div>
               </div>
               <div className="dot-line-black my-3"></div>
             </div>
           )}
-          <ErrorComponent error={error} />
+          {error && <ErrorComponent error={error} />}
 
           <div className="row text-black">
             <div className="col-4 felx-column">
@@ -403,7 +434,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
               <input
                 type="text"
                 placeholder="Enter Vendor Name"
-                className="input-css small-font text-black w-100 pointer"
+                className="input-css small-font text-black w-100 "
                 value={vendorName}
                 onChange={handleVendorName}
               />
@@ -413,7 +444,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
               <input
                 type="text"
                 placeholder="Enter Vendor Company"
-                className="input-css small-font text-black w-100 pointer"
+                className="input-css small-font text-black w-100  "
                 value={companyName}
                 onChange={handleCompany}
               />
@@ -483,7 +514,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
 
                         setMaxLoseAmtGame(val);
                       }}
-                      // onChange={(e) => setMaxLoseAmtGame(e.target.value)}
                     />
                   </div>
                 </div>
@@ -514,20 +544,20 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
                         placeholder="Enter Percentage"
                         className="all-none"
                         value={per}
-                        maxLength={9}
+                        maxLength={5}
                         onChange={(e) => {
-                          const val = e.target.value;
+                          let val = e.target.value;
 
-                          if (!/^\d*$/.test(val)) return;
+                          if (!/^\d*\.?\d{0,4}$/.test(val)) return;
 
-                          if (val.startsWith("0")) return;
+                          if (val.startsWith(".")) {
+                            val = "0" + val;
+                          }
 
-                          const num = Number(val);
-                          if (num > 999999999) return;
+                          if (/^0\d+/.test(val)) return;
 
                           setPer(val);
                         }}
-                        // onChange={(e) => setPer(e.target.value)}
                       />
                     </div>
                   ) : (
@@ -562,7 +592,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
 
                             setMonthlyAmt(val);
                           }}
-                          // onChange={(e) => setMonthlyAmt(e.target.value)}
                         />
                       </div>
                     </div>
@@ -657,7 +686,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId }) => {
                                   ))}
                                 </div>
 
-                                {/* Live API selection per market */}
                                 <div className="d-flex gap-2 align-items-center flex-between input-bg br-5 p-1 mb-3">
                                   <div className="small-font">
                                     Result Live Api

@@ -42,14 +42,13 @@ const SportProviders = () => {
   const [status, setStatus] = useState(null);
   const [prvId, setPrvId] = useState(null);
   const handleActiveModal = (id, status) => {
-    console.log(id, status, "sangrammmmmmmmm");
     setIsACtive(!isActive);
     setPrvId(id);
     setStatus(status);
   };
   const cols = [
     { header: "S No", field: "sno", width: "8%" },
-    { header: "Games", field: "games", width: "40%" },
+    { header: "Providers", field: "games", width: "40%" },
     { header: "Posistion", field: "pos", width: "10%" },
 
     // { header: "", field: "eye", width: "10%" },
@@ -98,7 +97,7 @@ const SportProviders = () => {
             class="form-check-input w-40"
             type="checkbox"
             role="switch"
-            checked={item?.status === 2}
+            checked={item?.status === 1}
             id="flexSwitchCheckDefault"
             readOnly
           />
@@ -170,13 +169,13 @@ const SportProviders = () => {
 
         <div className="small-font flex-between">
           <span
-            className="input-css2 rounded-pill me-4 px-3 text-black py-1 flex-center pointer hover-orange-clr"
+            className="input-css2 rounded-pill me-1 px-3 text-black py-1 flex-center pointer hover-orange-clr"
             onClick={() => navigate(-1)}
           >
             <FaArrowLeft className="me-1 d-flex" />
             Back
           </span>
-          Total P/L : <span className="green-clr mx-1">20000</span>
+        
         </div>
       </div>
       {loading ? (
