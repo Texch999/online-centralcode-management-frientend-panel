@@ -46,7 +46,7 @@ const MatchResultHistory = () => {
   return (
     <div>
       <div className="d-flex flex-between mt-1 mb-2 align-items-center">
-        <div className="black-text large-font fw-600">Sport Matches Results History</div>
+        <div className=" large-font fw-600 yellow-font">Sport Matches Results History</div>
         <div className="small-font flex-between">
           <span
             className="input-css2 rounded-pill me-1 px-3 text-black py-1 flex-center pointer hover-orange-clr"

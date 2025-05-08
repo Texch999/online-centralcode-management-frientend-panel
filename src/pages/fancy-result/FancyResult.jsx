@@ -72,9 +72,41 @@ const FancyResult = () => {
 
           //   setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
           // }}
+
+          // onChange={(e) => {
+          //   const inputVal = e.target.value;
+          //   if (inputVal.startsWith("0")) return;
+          //   if(!/^\d*$/.test(inputVal))return;
+
+          //   if (inputVal === "") {
+          //     setResult((prev) => ({ ...prev, [item.fancyId]: "" }));
+          //     setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+          //     return;
+          //   }
+
+          //   const numericValue = Number(inputVal);
+
+          //   if (numericValue > 99999999999) {
+          //     setResultError((prev) => ({
+          //       ...prev,
+          //       [item.fancyId]: "Value must be between 0 and 99999999999",
+          //     }));
+          //   } else {
+          //     setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
+          //     setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
+          //   }
+          // }}
+
           onChange={(e) => {
-            const inputVal = e.target.value.replace(/\D/g, "");
-            if (inputVal.startsWith("0")) return;
+            let inputVal = e.target.value;
+
+            if (!/^\d*\.?\d{0,2}$/.test(inputVal)) return;
+
+            if (/^0\d+/.test(inputVal)) return;
+
+            if (inputVal.startsWith(".")) {
+              inputVal = "0" + inputVal;
+            }
 
             if (inputVal === "") {
               setResult((prev) => ({ ...prev, [item.fancyId]: "" }));
@@ -82,7 +114,7 @@ const FancyResult = () => {
               return;
             }
 
-            const numericValue = Number(inputVal);
+            const numericValue = parseFloat(inputVal);
 
             if (numericValue > 99999999999) {
               setResultError((prev) => ({
@@ -277,7 +309,7 @@ const FancyResult = () => {
   return (
     <div>
       <div className="d-flex flex-between mb-2">
-        <h6 className="my-2">Fancy Result</h6>
+        <h6 className="my-2 yellow-font large-font">Fancy Result</h6>
         <span
           className="input-css2 rounded-pill me-1 px-2 text-black py-1 flex-center pointer hover-orange-clr small-font"
           onClick={() => navigate(-1)}

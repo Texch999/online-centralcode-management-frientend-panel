@@ -80,7 +80,7 @@ const MatchesList = () => {
       <div className="d-flex flex-between mt-3 mb-2">
         <div className="large-font pointer flex-center">
           <span
-            className="black- fw-600 large-font"
+            className="yellow-font fw-600 large-font"
             onClick={() => navigate(-2)}
           >
             Matches List

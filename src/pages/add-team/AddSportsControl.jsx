@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaAngleLeft, FaChevronLeft } from "react-icons/fa";
+import { FaAngleLeft, FaArrowLeft, FaChevronLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   addSportsControl,
@@ -35,6 +35,7 @@ const AddSportsControl = () => {
   const [pswd, setPswd] = useState("");
   const [selectedSportsData, setSelectedSportsData] = useState([]);
   const [formError, setFormError] = useState("");
+  const [pswdError, setPswdError] = useState("");
 
   const handleToggleSport = (id) => {
     setSelectedSports((prev) =>
@@ -45,7 +46,6 @@ const AddSportsControl = () => {
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const [pswdError, setPswdError] = useState("");
 
   const validatePassword = (value) => {
     const pattern =
@@ -158,13 +158,13 @@ const AddSportsControl = () => {
       <div className="yellow-font align-items-center d-flex flex-between">
         <div className="fw-600 capitalize-text">{params?.website}</div>
 
-        <div
-          className="yellow-bg px-2  white-font small-font  br-5 align-items-center pointer"
+        <span
+          className="input-css2 rounded-pill me-1 px-2 text-black py-1 flex-center pointer hover-orange-clr small-font"
           onClick={() => navigate(-1)}
         >
-          <FaAngleLeft size={18} className="my-1" />
+          <FaArrowLeft className="me-1 d-flex" />
           Back
-        </div>
+        </span>
       </div>
       <div className="my-3">
         <div className="d-flex gap-3">
@@ -198,23 +198,29 @@ const AddSportsControl = () => {
           <div className="yellow-bg py-1 white-font fw-600 rounded-top px-2 medium-font">{`${
             active === 0 ? "Sports" : "Casino"
           } Type`}</div>
-          <div className="white-btn rounded-bottom flex-wrap p-2 gap-2">
-            {sportsData?.map((item, index) => (
-              <div
-                key={index}
-                className="light-bg d-flex gap-2 medium-font black-font p-2 align-items-center br-5"
-              >
-                <div className="small-font">{item?.name}</div>
-                <input
-                  type="checkbox"
-                  id="Games"
-                  className="me-2"
-                  checked={selectedSports.includes(item?.id)}
-                  onChange={() => handleToggleSport(item?.id)}
-                />
-              </div>
-            ))}
-          </div>
+          {sportsData.length > 0 && active === 0 ? (
+            <div className="white-btn rounded-bottom flex-wrap p-2 gap-2">
+              {sportsData?.map((item, index) => (
+                <div
+                  key={index}
+                  className="light-bg d-flex gap-2 medium-font black-font p-2 align-items-center br-5"
+                >
+                  <div className="small-font">{item?.name}</div>
+                  <input
+                    type="checkbox"
+                    id="Games"
+                    className="me-2"
+                    checked={selectedSports.includes(item?.id)}
+                    onChange={() => handleToggleSport(item?.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="white-btn rounded-bottom  small-font flex-wrap p-2 gap-2">
+              No Casino Games are not available
+            </div>
+          )}
           <div className="my-4 row align-items-end">
             <div className="col-6">
               <div className="small-font mb-1">Management Password:</div>
@@ -224,6 +230,7 @@ const AddSportsControl = () => {
                   className="all-none small-font w-100 me-2"
                   placeholder="Enter Password"
                   value={pswd}
+                  maxLength={36}
                   onChange={(e) => validatePassword(e.target.value)}
                 />
                 <span
@@ -245,7 +252,7 @@ const AddSportsControl = () => {
             <div className="col-6">
               <div className="">
                 <div
-                  className={`saffron-bg py-2 px-3 white-font text-center rounded black-font pointer small-font ${
+                  className={`saffron-bg py-2 px-3 white-font text-center rounded  pointer small-font ${
                     isloading ? "disabled-btn" : ""
                   }`}
                   onClick={handleSubmit}
@@ -260,7 +267,7 @@ const AddSportsControl = () => {
                         role="status"
                         aria-hidden="true"
                       />
-                      <span className="ms-2">Submit</span>
+                      <span className="ms-2 ">Submit</span>
                     </>
                   ) : (
                     "Submit"
