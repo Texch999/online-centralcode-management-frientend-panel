@@ -81,8 +81,8 @@ const SportMatches = () => {
     { header: "Upcoming Matches", field: "games" },
     { header: "MatchId", field: "matchid" },
     { header: "Market", field: "market" },
-    { header: "Winner", field: "winner" },
-    { header: "IP", field: "ip" },
+    // { header: "Winner", field: "winner" },
+    // { header: "IP", field: "ip" },
     { header: "Status", field: "status" },
 
     { header: "Profit & Loss", field: "pl" },
@@ -95,15 +95,12 @@ const SportMatches = () => {
   const data = matchesData?.map((item, index) => {
     const currentTimeUTC = moment().utc();
     const startDateUTC = moment(item?.startDate);
-    // const localTime = new Date(item?.startDate);
+
 
     let isLive = false;
     if (currentTimeUTC === startDateUTC) {
       isLive = true;
     }
-    // if (currentTimeUTC.diff(startDateUTC) > 0) {
-    //   isLive = true;
-    // }
 
     return {
       sno: index + 1,
@@ -117,7 +114,7 @@ const SportMatches = () => {
       ),
       date: (
         <div className="pointer d-flex ">
-          {moment(item?.startDate).format("YYYY-MM-DD HH:mm:ss")}
+          {moment(item?.startDate).format("YYYY-MM-DD HH:mm ")}
         </div>
       ),
       matchid: <div>{item?.id}</div>,
@@ -132,13 +129,13 @@ const SportMatches = () => {
             .join(", ")}
         </div>
       ),
-      winner: <div>-</div>,
-      ip: <div>-</div>,
+      // winner: <div>-</div>,
+      // ip: <div>-</div>,
       status: (
         <div>
           {item?.isClosed === 1 ? (
             <div className="red-clr gap-1 white-space align-items-center">
-              <span className="round-red-dot mx-1"></span>Blocked
+              <span className="round-red-dot mx-1"></span>In-Active
             </div>
           ) : (
             <div className="green-clr gap-1 align-items-center white-space">

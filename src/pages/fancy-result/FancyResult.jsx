@@ -74,6 +74,7 @@ const FancyResult = () => {
           // }}
           onChange={(e) => {
             const inputVal = e.target.value.replace(/\D/g, "");
+            if (inputVal.startsWith("0")) return;
 
             if (inputVal === "") {
               setResult((prev) => ({ ...prev, [item.fancyId]: "" }));
@@ -104,7 +105,7 @@ const FancyResult = () => {
     ),
     fid: (
       <div className="d-flex flex-column small-font">
-        <div className="mb-1">{item?.fancyId}</div>
+        <div className="mb-1 ">{item?.fancyId}</div>
         {item?.status === 1 ? (
           <div
             className="px-4 saffron-btn2 w-fit pointer"

@@ -5,6 +5,7 @@ import { BsEye } from "react-icons/bs";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { getSportsList, getSportsListCentral } from "../../api/apiMethods";
 import { CircleLoader } from "react-spinners";
+import { MdManageHistory } from "react-icons/md";
 
 const MatchesList = () => {
   const navigate = useNavigate();
@@ -25,18 +26,24 @@ const MatchesList = () => {
   const cols = [
     { header: "S No", field: "sno", width: "8%" },
     { header: "Games", field: "games", width: "40%" },
-    { header: "Action", field: "eye", width: "10%" },
+    { header: <div className="flex-center">Action</div>, field: "eye", width: "5%" },
+    { header: <div className="flex-center">History</div>, field: "history", width: "5%" },
   ];
 
   const data = sportsData?.map((item, index) => ({
     sno: index + 1,
     games: <div className="pointer">{item?.name}</div>,
-    eye: (
+    eye: (    
       <div
-        className="pointer d-flex "
+        className="pointer d-flex flex-center"
         onClick={() => handleGameMatches(item?.name, item?.id)}
       >
         <BsEye size={18} className="orange-clr" />
+      </div>
+    ),
+    history: (
+      <div  className="flex-center pointer" onClick={()=>navigate("/matche-result-history")}>
+        <MdManageHistory size={18} className="orange-clr" />
       </div>
     ),
   }));

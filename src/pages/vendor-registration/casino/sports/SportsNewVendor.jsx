@@ -215,10 +215,20 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   }, [isEdit]);
 
   const onSubmit = () => {
+    if (error) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     const validationErrors = [];
 
     if (!selectedSport) validationErrors.push("Vendor Type is required.");
     if (!vendorName.trim()) validationErrors.push("Vendor Name is required.");
+    if (!vendorName || vendorName.trim().length < 5) {
+      validationErrors.push("Vendor name must be at least 5 characters long.");
+    }
+    if (!vendorName || vendorName.trim().length > 36) {
+      validationErrors.push("Vendor name must be at least 36 characters long.");
+    }
     if (!companyName.trim())
       validationErrors.push("Vendor Company is required.");
     if (!selecctedCountry) validationErrors.push("Vendor Country is required.");
@@ -330,6 +340,12 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
         }
       });
   };
+
+  useEffect(() => {
+    if (error) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [error]);
 
   const handleSelectMarket = (sportId, marketId, checked) => {
     setSelectedMarkets((prevSelectedMarkets) => {
@@ -511,7 +527,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                         if (val.startsWith("0")) return;
                         const num = Number(val);
                         if (num > 999999999) return;
-
                         setMaxLoseAmtGame(val);
                       }}
                     />

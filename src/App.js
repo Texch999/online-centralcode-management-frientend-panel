@@ -114,6 +114,7 @@ import MultimarketDashboard from "./pages/add-team/components/MultimarketDashboa
 import AddSportsControl from "./pages/add-team/AddSportsControl";
 import MatchesList from "./pages/matches-list/MatchesList";
 import SportMatches from "./pages/matches-list/SportMatches";
+import MatchResultHistory from "./pages/matches-list/MatchResultHistory";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -379,6 +380,7 @@ function App() {
                 />
                 <Route path="/matches-list" element={<MatchesList />} />
                 <Route path="/matches-list/:match/:id" element={<SportMatches />} />
+                <Route path="/matche-result-history" element={<MatchResultHistory />} />
               </Routes>
             </div>
           </div>

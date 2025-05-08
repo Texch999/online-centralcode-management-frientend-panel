@@ -283,18 +283,19 @@ function Header() {
                   >
                     Sports
                   </Dropdown.Item>
-                  <Dropdown.Item
+                  {/* removed in ccnetrall added in management fancy,market */}
+                  {/* <Dropdown.Item
                     className="white-btn white-hover small-font"
                     onClick={() => navigate("/fancy-results")}
                   >
                     Fancy Results
-                  </Dropdown.Item>
-                  <Dropdown.Item
+                  </Dropdown.Item> */}
+                  {/* <Dropdown.Item
                     className="white-btn white-hover small-font"
                     onClick={() => navigate("/market-results")}
                   >
                     Market Results
-                  </Dropdown.Item>
+                  </Dropdown.Item> */}
                   {/* <Dropdown.Item
                     className="white-btn white-hover small-font"
                     onClick={() => navigate("/matches-list")}
