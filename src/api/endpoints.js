@@ -864,8 +864,8 @@ const endpoints = {
   //sports
   getSportsList: {
     method: "get",
-    // url: `/user/${userID()}/sportsList`,
-    url: `/user/${userID()}/gameList`,
+    url: `/user/${userID()}/sportsList`,
+    // url: `/user/${userID()}/gameList`,
   },
   addSportsControl: {
     method: "post",

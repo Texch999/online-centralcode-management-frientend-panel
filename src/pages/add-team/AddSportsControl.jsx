@@ -9,7 +9,6 @@ import {
 import { CircleLoader } from "react-spinners";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorComponent from "../../components/ErrorComponent";
-import { IoEye } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Spinner } from "react-bootstrap";
 
@@ -37,11 +36,42 @@ const AddSportsControl = () => {
   const [formError, setFormError] = useState("");
   const [pswdError, setPswdError] = useState("");
 
+  // const handleToggleSport = (id) => {
+  //   setSelectedSports((prev) =>
+  //     prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+  //   );
+  // };
+
+
+
+
   const handleToggleSport = (id) => {
-    setSelectedSports((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    const slicedId = id.slice(8, -5);
+  
+    const matchIndex = selectedSports.findIndex(
+      (selectedId) => selectedId.slice(8, -5) === slicedId
     );
+  
+    if (matchIndex !== -1) {
+      // Uncheck: remove matching full ID
+      const updated = [...selectedSports];
+      updated.splice(matchIndex, 1);
+      setSelectedSports(updated);
+    } else {
+      // Check: add full ID
+      setSelectedSports([...selectedSports, id]);
+    }
   };
+  
+
+  // const handleToggleSport = (id) => {
+  //   const slicedId = id.slice(8, -5);
+  //   setSelectedSports((prev) =>
+  //     prev.includes(slicedId)
+  //       ? prev.filter((item) => item !== slicedId)
+  //       : [...prev, slicedId]
+  //   );
+  // };
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -66,7 +96,6 @@ const AddSportsControl = () => {
       .then((response) => {
         if (response) {
           setLoading(false);
-
           setSportsData(response?.data);
         }
       })
@@ -90,7 +119,8 @@ const AddSportsControl = () => {
       .then((response) => {
         if (response) {
           setLoading(false);
-          const selectedIds = response.data.map((sport) => sport.id);
+          const selectedIds = response?.data?.map((sport) =>  sport.id);
+          
           setSelectedSportsData(response.data);
           setSelectedSports(selectedIds);
         }
@@ -210,7 +240,13 @@ const AddSportsControl = () => {
                     type="checkbox"
                     id="Games"
                     className="me-2"
-                    checked={selectedSports.includes(item?.id)}
+                    // checked={selectedSports.includes(item?.id)}
+                    // checked={selectedSports.includes(item?.id.slice(8, -5))}
+                    checked={
+                      selectedSports.some(
+                        (selectedId) => selectedId.slice(8, -5) === item.id.slice(8, -5)
+                      )
+                    }
                     onChange={() => handleToggleSport(item?.id)}
                   />
                 </div>

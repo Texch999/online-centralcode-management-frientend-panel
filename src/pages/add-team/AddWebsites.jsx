@@ -111,7 +111,7 @@ const AddWibsites = () => {
     }
   };
 
-  const handleControl = (web,id) => {
+  const handleControl = (web, id) => {
     navigate(`/gamecontrol/${web}/${id}`);
   };
 
@@ -174,13 +174,16 @@ const AddWibsites = () => {
             setStatus(website?.status);
           }}
         />
-
-        <div
-          className="yellow-bg white-font br-5 px-2 py-1 pointer"
-          onClick={() => handleControl(website?.web_name,website?.id)}
-        >
-          Control
-        </div>
+        {website?.status === 1 ? (
+          <div
+            className="pointer yellow-bg white-font br-5 px-2 py-1"
+            onClick={() => handleControl(website?.web_name, website?.id)}
+          >
+            Control
+          </div>
+        ) : (
+          <div className="opacity-50 cursor-not-allowed yellow-bg white-font br-5 px-2 py-1">Control</div>
+        )}
       </div>
     ),
   }));
