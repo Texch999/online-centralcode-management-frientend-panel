@@ -36,42 +36,20 @@ const AddSportsControl = () => {
   const [formError, setFormError] = useState("");
   const [pswdError, setPswdError] = useState("");
 
-  // const handleToggleSport = (id) => {
-  //   setSelectedSports((prev) =>
-  //     prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-  //   );
-  // };
-
-
-
-
   const handleToggleSport = (id) => {
     const slicedId = id.slice(8, -5);
-  
     const matchIndex = selectedSports.findIndex(
       (selectedId) => selectedId.slice(8, -5) === slicedId
     );
-  
+
     if (matchIndex !== -1) {
-      // Uncheck: remove matching full ID
       const updated = [...selectedSports];
       updated.splice(matchIndex, 1);
       setSelectedSports(updated);
     } else {
-      // Check: add full ID
       setSelectedSports([...selectedSports, id]);
     }
   };
-  
-
-  // const handleToggleSport = (id) => {
-  //   const slicedId = id.slice(8, -5);
-  //   setSelectedSports((prev) =>
-  //     prev.includes(slicedId)
-  //       ? prev.filter((item) => item !== slicedId)
-  //       : [...prev, slicedId]
-  //   );
-  // };
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -119,8 +97,8 @@ const AddSportsControl = () => {
       .then((response) => {
         if (response) {
           setLoading(false);
-          const selectedIds = response?.data?.map((sport) =>  sport.id);
-          
+          const selectedIds = response?.data?.map((sport) => sport.id);
+
           setSelectedSportsData(response.data);
           setSelectedSports(selectedIds);
         }
@@ -242,11 +220,10 @@ const AddSportsControl = () => {
                     className="me-2"
                     // checked={selectedSports.includes(item?.id)}
                     // checked={selectedSports.includes(item?.id.slice(8, -5))}
-                    checked={
-                      selectedSports.some(
-                        (selectedId) => selectedId.slice(8, -5) === item.id.slice(8, -5)
-                      )
-                    }
+                    checked={selectedSports.some(
+                      (selectedId) =>
+                        selectedId.slice(8, -5) === item.id.slice(8, -5)
+                    )}
                     onChange={() => handleToggleSport(item?.id)}
                   />
                 </div>
