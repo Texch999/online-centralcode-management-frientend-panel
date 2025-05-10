@@ -1,13 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CircleLoader } from "react-spinners";
 import Table from "../../components/Table";
 import { Spinner } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getOldMatchesHistory } from "../../api/apiMethods";
+import { useLocation, useParams } from "react-router-dom";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import moment from "moment";
 
 const MatchResultHistory = () => {
+  const { id } = useParams();
+  const location = useLocation();
+  const match = location?.state?.match;
+
+  console.log(id, "paramsss");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [matchData, setMatchData] = useState([]);
+  const [error, setError] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [totalRecords, setTotalRecords] = useState(null);
+  const itemsPerPage = 4;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [dateError, setDateError] = useState("");
+
   const cols = [
     { header: "S No", field: "sno" },
     { header: "Date", field: "date" },
@@ -20,33 +40,111 @@ const MatchResultHistory = () => {
     { header: "Profit & Loss", field: "pl" },
   ];
 
-  const data = [
-    {
-      sno: 1,
-      games: (
-        <div className="pointer d-flex gap-2">
-          <div>event name</div>
-        </div>
-      ),
-      date: <div className="pointer d-flex ">2025-05-08</div>,
-      matchid: <div>1</div>,
-      market: <div>Bookmaker</div>,
-      winner: <div>-</div>,
-      ip: <div>-</div>,
-      status: (
-        <div>
+  const data = matchData?.map((item, index) => ({
+    sno: index + 1,
+    games: (
+      <div className="pointer d-flex flex-column gap-2">
+        <div>{item?.competitionName}</div>
+        <div>{item?.eventName}</div>
+      </div>
+    ),
+    date: (
+      <div className="pointer d-flex ">
+        {moment(item?.startDate).format("hh-mm A")}
+      </div>
+    ),
+    matchid: <div>{item?.id}</div>,
+    market: (
+      <div>
+        {[
+          item?.isBookmac === true && "BookMaker",
+          item?.isFancy === true && "Fancy",
+          item?.isOdds === true && "Odds",
+        ]
+          .filter(Boolean)
+          .join(", ")}
+      </div>
+    ),
+    winner: <div>{item?.winningTeam}</div>,
+    ip: <div>{item?.ip}</div>,
+    status: (
+      <div>
+        {item?.isClosed === 1 ? (
           <div className="red-clr gap-1 white-space align-items-center">
-            <span className="round-red-dot mx-1"></span>Blocked
+            <span className="mx-1"></span>Closed
           </div>
-        </div>
-      ),
-      pl: <div className="dark-orange-clr">0</div>,
-    },
-  ];
+        ) : (
+          <div className="red-clr gap-1 white-space align-items-center">
+            <span className=" mx-1"></span>Not Closed
+          </div>
+        )}
+      </div>
+    ),
+    pl: <div className="dark-orange-clr">{item?.totalpl}</div>,
+  }));
+
+  const fetchMatchesHistory = (limit, offset, id, startDate, endDate) => {
+    setLoading(true);
+    const params = {
+      limit: limit,
+      offset: offset,
+      id: id,
+      startDate: startDate,
+      endDate: endDate,
+    };
+    getOldMatchesHistory(params)
+      .then((response) => {
+        setLoading(false);
+        if (response) {
+          setMatchData(response?.list);
+          setTotalRecords(response?.total);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        const errMsg = error?.message;
+        if (Array.isArray(errMsg)) {
+          setError(errMsg);
+        } else {
+          setError([errMsg]);
+        }
+      });
+  };
+  useEffect(() => {
+    const limit = itemsPerPage;
+    const offset = (currentPage - 1) * itemsPerPage;
+    fetchMatchesHistory(limit, offset, id);
+  }, [id]);
+  const handlePageChange = ({ limit, offset }) => {
+    fetchMatchesHistory(limit, offset, id);
+  };
+
+  const handleSubmit = () => {
+    if (!fromDate || !toDate) {
+      setDateError("Please select both From and To dates");
+      return;
+    }
+    setDateError("");
+
+    const limit = itemsPerPage;
+    const offset = (currentPage - 1) * itemsPerPage;
+    fetchMatchesHistory(limit, offset, id, fromDate, toDate);
+  };
   return (
     <div>
       <div className="d-flex flex-between mt-1 mb-2 align-items-center">
-        <div className=" large-font fw-600 yellow-font">Sport Matches Results History</div>
+        <div className="large-font pointer flex-center">
+          <span
+            className=" fw-600 large-font grey-clr align-items-center"
+            onClick={() => navigate(-1)}
+          >
+            Matches History
+            <MdKeyboardArrowRight size={20} />
+          </span>
+          <span className="yellow-font" onClick={() => navigate(-1)}>
+            {match}
+          </span>
+        </div>
         <div className="small-font flex-between">
           <span
             className="input-css2 rounded-pill me-1 px-3 text-black py-1 flex-center pointer hover-orange-clr"
@@ -64,8 +162,8 @@ const MatchResultHistory = () => {
             <input
               className="input-css2 small-font"
               type="date"
-              //   value={fromDate}
-              //   onChange={(e) => setFromDate(e.target.value)}
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
             />
           </div>
           <div className="col-4 flex-column">
@@ -73,8 +171,8 @@ const MatchResultHistory = () => {
             <input
               className="input-css2 small-font"
               type="date"
-              //   value={toDate}
-              //   onChange={(e) => setToDate(e.target.value)}
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
             />
           </div>
 
@@ -82,6 +180,7 @@ const MatchResultHistory = () => {
             className={`align-self-end saffron-btn2 small-font pointer col-2 ${
               loading ? "disabled-btn" : ""
             }`}
+            onClick={handleSubmit}
           >
             {loading ? (
               <>
@@ -100,6 +199,7 @@ const MatchResultHistory = () => {
           </div>
         </div>
       </div>
+      {dateError && <div className="red-font small-font mb-2">{dateError}</div>}
 
       {loading ? (
         <div className="d-flex flex-column flex-center mt-10rem align-items-center">
@@ -109,7 +209,13 @@ const MatchResultHistory = () => {
           </div>
         </div>
       ) : (
-        <Table columns={cols} data={data} />
+        <Table
+          columns={cols}
+          data={data}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          totalRecords={totalRecords}
+        />
       )}
     </div>
   );

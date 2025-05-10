@@ -55,6 +55,9 @@ const SportMatches = () => {
   const [selectedTeam, setSelectedTeam] = useState("");
   const [dateError, setDateError] = useState("");
 
+  const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleFancy = (sport, match) => {
     navigate(`/fancy-results/${sport}/${match}`);
   };
@@ -95,7 +98,6 @@ const SportMatches = () => {
   const data = matchesData?.map((item, index) => {
     const currentTimeUTC = moment().utc();
     const startDateUTC = moment(item?.startDate);
-
 
     let isLive = false;
     if (currentTimeUTC === startDateUTC) {
@@ -263,9 +265,6 @@ const SportMatches = () => {
         setLoading(false);
       });
   };
-
-  const [formError, setFormError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   //announce cricket results
   const announceResults = (match) => {

@@ -325,7 +325,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
             if (isEdit) {
               setIsEdit(false);
             }
-          }, 3000);
+          }, 2000);
           reset();
           fetch();
         }
@@ -436,6 +436,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
               <label className="small-font mb-1">Vendor Type</label>
               <Select
                 className="small-font"
+                isSearchable={false}
                 options={selectSports}
                 placeholder="Select"
                 styles={customStyles}
@@ -453,6 +454,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                 className="input-css small-font text-black w-100 "
                 value={vendorName}
                 onChange={handleVendorName}
+                maxLength={100}
               />
             </div>
             <div className="col-4 felx-column">
@@ -463,6 +465,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                 className="input-css small-font text-black w-100  "
                 value={companyName}
                 onChange={handleCompany}
+                maxLength={100}
               />
             </div>
           </div>
@@ -511,14 +514,14 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
                 <div className="my-2">
                   <label className="small-font mb-1">
-                    Max Loose Amount for Game
+                    Max Loose Amount for Sport
                   </label>
                   <div className="input-css small-font text-black">
                     <input
                       type="text"
                       inputMode="numeric"
                       className="all-none w-100"
-                      placeholder="Enter amount"
+                      placeholder="Enter amount"    
                       value={maxLoseAmtGame}
                       maxLength={9}
                       onChange={(e) => {
@@ -544,6 +547,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       className="small-font"
                       options={priceOptions}
                       placeholder="Select"
+                      isSearchable={false}
                       styles={customStyles}
                       maxMenuHeight={120}
                       menuPlacement="auto"
@@ -595,7 +599,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           type="text"
                           inputMode="numeric"
                           className="input-css small-font w-100"
-                          placeholder="Enter Amount"
+                          placeholder="Enter"
+                          
                           value={monthlyAmt}
                           maxLength={9}
                           onChange={(e) => {
@@ -613,8 +618,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                   )}
                 </div>
 
-                <div className="my-2">
-                  <label className="small-font mb-1">
+                {/* <div className="my-2"> */}
+                  {/* <label className="small-font mb-1">
                     Max Loose Amount for Table
                   </label>
                   <div className="input-css small-font text-black">
@@ -625,8 +630,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       value={maxLoseAmtTable}
                       onChange={(e) => setMaxLoseAmtTable(e.target.value)}
                     />
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
               </div>
             </div>
           </div>

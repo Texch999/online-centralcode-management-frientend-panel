@@ -160,7 +160,7 @@ const SportProviders = () => {
             Sports
             <MdKeyboardArrowRight size={20} />
           </span>
-          <span className="black-text" onClick={() => navigate(-1)}>
+          <span className="yellow-font" onClick={() => navigate(-1)}>
             {vendor}
             <MdKeyboardArrowRight size={20} />
             {provider}

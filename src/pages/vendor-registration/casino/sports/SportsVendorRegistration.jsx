@@ -7,8 +7,10 @@ import SportsNewVendor from "./SportsNewVendor";
 import { getAllVendors } from "../../../../api/apiMethods";
 import { useSelector } from "react-redux";
 import { CircleLoader } from "react-spinners";
+import { useLocation } from "react-router-dom";
 
 const SportsVendorRegistration = () => {
+  const location = useLocation();
   const buttons = ["Vendor List", "Register New Vendor"];
   const [activeBtn, setActiveBtn] = useState(0);
   const [addNewProvider, setAddNewProvider] = useState(false);
@@ -20,12 +22,16 @@ const SportsVendorRegistration = () => {
   const allCountries = useSelector((item) => item?.allCountries);
   const [vendorId, setVendorId] = useState(null);
 
+  useEffect(() => {
+    setIsActiveBtn(false);
+  }, [location.pathname]);
+
   const showEditModal = (id) => {
     setISEditVendor(true);
     setVendorId(id);
   };
   const addNewProviderModal = () => {
-    setIsActiveBtn(true);
+    setIsActiveBtn(!isActiveBtn);
     setAddNewProvider(!addNewProvider);
   };
   const handleClick = (index) => {
@@ -42,7 +48,7 @@ const SportsVendorRegistration = () => {
     { header: "Vendor Name", field: "vendor", width: "15%" },
     { header: "Vendor Percentage/Monthly", field: "vendorper", width: "10%" },
     { header: "Vendor Country", field: "country", width: "15%" },
-    { header: "Providers", field: "providers", width: "20%" },
+    { header: "Sports", field: "providers", width: "20%" },
     { header: "Profit & Loss", field: "pl", width: "20%" },
     {
       header: <div className="flex-end">Action</div>,
@@ -172,7 +178,12 @@ const SportsVendorRegistration = () => {
         )}
         {activeBtn === 1 && <SportsNewVendor fetch={fetchAllVendors} />}
       </div>
-      <AddNewSportsProvider show={addNewProvider} setShow={setAddNewProvider} />
+      <AddNewSportsProvider
+        show={addNewProvider}
+        setShow={setAddNewProvider}
+        setIsActiveBtn={setIsActiveBtn}
+        fetch={fetchAllVendors}
+      />
     </div>
   );
 };

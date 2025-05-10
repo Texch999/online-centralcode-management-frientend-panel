@@ -380,7 +380,7 @@ function App() {
                 />
                 <Route path="/matches-list" element={<MatchesList />} />
                 <Route path="/matches-list/:match/:id" element={<SportMatches />} />
-                <Route path="/matche-result-history" element={<MatchResultHistory />} />
+                <Route path="/matches-result-history/:id" element={<MatchResultHistory />} />
               </Routes>
             </div>
           </div>

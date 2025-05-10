@@ -11,7 +11,6 @@ const Sports = () => {
   const navigate = useNavigate();
 
   const handleSportNextPage = (vendor, provider, vId, mId) => {
-    console.log(vId, mId, "hhh");
     navigate(`/central-sports/${vendor}/${provider}`, {
       state: { vId, mId },
     });
@@ -43,11 +42,9 @@ const Sports = () => {
     {
       header: (
         <div className="d-flex w-100">
-          <div className="col-4">Games</div>
-          <div className="col-2 flex-center"></div>
-          {/* <div className="col-2 flex-center">Action</div> */}
-          <div className="col-3 flex-center">Profit&Loss</div>
-          <div className="col-3 flex-end">Status</div>
+          <div className="col-6">Sports</div>
+          <div className="col-4 flex-center">Profit&Loss</div>
+          <div className="col-4 ">View</div>
         </div>
       ),
       field: "all",
@@ -75,19 +72,13 @@ const Sports = () => {
           <div className="d-flex w-100 ">
             <div
               key={index}
-              className="col-4"
-              onClick={() =>
-                handleSportNextPage(
-                  item?.vendorName,
-                  market?.sportName,
-                  item?.id,
-                  market?.marketId
-                )
-              }
+              className="col-6"
             >
               {market?.sportName}
             </div>
-            <div className="col-2">
+
+            <div className="col-4 flex-center green-clr">{market?.pnl}</div>
+            <div className="col-4 d-flex ">
               <BsEye
                 className="orange-clr pointer"
                 size={18}
@@ -100,32 +91,6 @@ const Sports = () => {
                   )
                 }
               />
-            </div>
-
-            {/* <div className="col-2 d-flex justify-content-center">
-              <div
-                className="form-check form-switch"
-                onClick={handleActiveModal}
-              >
-                <input
-                  className="form-check-input w-40"
-                  type="checkbox"
-                  role="switch"
-                  id={`switch-${item.id}-${market.marketId}`}
-                />
-              </div>
-            </div> */}
-            <div className="col-3 flex-center green-clr">{market?.pnl}</div>
-            <div className="col-3 d-flex justify-content-end">
-              <span
-                className={`${
-                  market?.status === 1
-                    ? "active-btn-table"
-                    : "inactive-btn-table"
-                } d-flex my-1`}
-              >
-                {market?.status === 1 ? "Active" : "In-Active"}
-              </span>
             </div>
           </div>
         ))}

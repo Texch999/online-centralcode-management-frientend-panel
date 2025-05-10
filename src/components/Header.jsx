@@ -60,7 +60,7 @@ function Header() {
 
   const loginData = useSelector((item) => item?.loginData);
   const handleRegisterBtn = () => {
-    setIsActiveBtn(true);
+    setIsActiveBtn(!isActiveBtn);
     const path =
       window?.location?.pathname === "/central-casino"
         ? "/vendor-registration"
@@ -69,7 +69,6 @@ function Header() {
   };
 
   const handleNotification = () => {
-    console.log(unreadCount);
     setNotificationPopup(true);
   };
 

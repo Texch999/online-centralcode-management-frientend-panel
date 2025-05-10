@@ -5,7 +5,7 @@ import { createProvider } from "../../../../api/apiMethods";
 import SuccessPopup from "../../../popups/SuccessPopup";
 import ErrorComponent from "../../../../components/ErrorComponent";
 
-const AddNewSportsProvider = ({ show, setShow }) => {
+const AddNewSportsProvider = ({ show, setShow, setIsActiveBtn, fetch }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [provider, setProvider] = useState("");
@@ -20,6 +20,11 @@ const AddNewSportsProvider = ({ show, setShow }) => {
   const handleGame = (e) => {
     const value = e.target.value;
     setGame(value);
+  };
+  const handleClose = () => {
+    setShow(false);
+    setIsActiveBtn(false);
+    setError("");
   };
 
   const onSubmit = () => {
@@ -52,10 +57,14 @@ const AddNewSportsProvider = ({ show, setShow }) => {
           }, 3000);
           setProvider("");
           setGame("");
+          setError("");
+          setIsActiveBtn(false);
+          fetch();
         }
       })
       .catch((error) => {
         setLoading(false);
+        setIsActiveBtn(false);
         const errMsg = error?.message;
         if (Array.isArray(errMsg)) {
           setError(errMsg);
@@ -74,27 +83,27 @@ const AddNewSportsProvider = ({ show, setShow }) => {
               <IoCloseSharp
                 className="pointer"
                 size={18}
-                onClick={() => setShow(false)}
+                onClick={handleClose}
               />
             </div>
             {error && <ErrorComponent error={error} />}
             <div className="small-font text-black">
               <div className="felx-column mt-3">
-                <label className="mb-1">Providers</label>
+                <label className="mb-1">Market</label>
                 <input
                   type="text"
-                  placeholder="Enter Game"
-                  className="input-css small-font text-black w-100 pointer"
+                  placeholder="Enter Market"
+                  className="input-css small-font text-black w-100"
                   value={provider}
                   onChange={handleProvider}
                 />
               </div>
               <div className="flex-column mt-3">
-                <label className="mb-1">Games</label>
+                <label className="mb-1">Sport</label>
                 <input
                   type="text"
-                  placeholder="Enter Game"
-                  className="input-css small-font text-black w-100 pointer"
+                  placeholder="Enter Sport"
+                  className="input-css small-font text-black w-100"
                   value={game}
                   onChange={handleGame}
                 />

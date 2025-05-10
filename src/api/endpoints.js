@@ -964,6 +964,15 @@ const endpoints = {
     method: "post",
     url: `/user/${userID()}/createPrvOrGame`,
   },
+  getOldMatchesHistory: {
+    method: "get",
+    // url: (id) => `/user/${userID()}/sport/${id}/getAllOldMatches`,
+    url: (params) => {
+      const { id, ...filteredParams } = params;
+      const query = new URLSearchParams(filteredParams).toString();
+      return `/user/${userID()}/sport/${id}/getAllOldMatches?${query}`;
+    },
+  },
 };
 
 export default endpoints;

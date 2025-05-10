@@ -594,6 +594,9 @@ const getProvidersById = (vId, mId) => {
 const createProvider = (data) => {
   return apiRequest("createProvider", data);
 };
+const getOldMatchesHistory = (params) => {
+  return apiRequest("getOldMatchesHistory", {}, params);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -750,4 +753,5 @@ export {
   getProvidersById,
   suspendProvider,
   createProvider,
+  getOldMatchesHistory,
 };
