@@ -62,7 +62,7 @@ const MatchResultHistory = () => {
           item?.isOdds === true && "Odds",
         ]
           .filter(Boolean)
-          .join(", ")}
+          .join(", ") || "-"}
       </div>
     ),
     winner: <div>{item?.winningTeam}</div>,

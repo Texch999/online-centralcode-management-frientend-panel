@@ -89,10 +89,22 @@ const SportMatches = () => {
     { header: "Status", field: "status" },
 
     { header: "Profit & Loss", field: "pl" },
-    {
-      header: <div className="flex-center">Action</div>,
+
+       {
+      header: (
+        <div className="d-flex w-100">
+          <div className="col-3"></div>
+          <div className="col-3 flex-center"></div>
+          <div className="col-4 "></div>
+        </div>
+      ),
       field: "action",
+      width: "25%",
     },
+    // {
+    //   header: <div className="flex-center">Action</div>,
+    //   field: "action",
+    // },
   ];
 
   const data = matchesData?.map((item, index) => {
@@ -128,7 +140,7 @@ const SportMatches = () => {
             item?.isOdds === true && "Odds",
           ]
             .filter(Boolean)
-            .join(", ")}
+            .join(", ") || "-"}
         </div>
       ),
       // winner: <div>-</div>,
@@ -148,11 +160,11 @@ const SportMatches = () => {
       ),
       pl: <div className="dark-orange-clr">{item?.pl || 0}</div>,
       action: (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 align-items-center">
           {item?.isFancy === true && (
             <>
               {item?.isClosed === 2 ? (
-                <div className="pointer d-flex">
+                <div className="pointer d-flex col-3">
                   <BsEye
                     size={18}
                     className="orange-clr"
@@ -162,7 +174,7 @@ const SportMatches = () => {
                   />
                 </div>
               ) : (
-                <div className="d-flex">
+                <div className="d-flex col-3">
                   <BsEye
                     size={18}
                     className="orange-clr disabled"
@@ -175,7 +187,7 @@ const SportMatches = () => {
           {item?.isClosed === 2 ? (
             <CgUnblock
               size={18}
-              className="green-font pointer"
+              className="green-font pointer col-3"
               onClick={() =>
                 handleActiveModal(item?.id, item?.isClosed, item?.sportId)
               }
@@ -183,13 +195,13 @@ const SportMatches = () => {
           ) : (
             <MdBlock
               size={18}
-              className="red-font"
+              className="red-font col-3"
               title="You don't have access to active!"
               // onClick={() => handleActiveModal(item?.id, item?.isClosed)}
             />
           )}
 
-          <div className="rust-red-btn w-fit pointer ">Rollback</div>
+          <div className="rust-red-btn w-fit pointer col-4">Rollback</div>
           {/* <div className="green-dark-bg w-fit pointer">Active</div> */}
         </div>
       ),

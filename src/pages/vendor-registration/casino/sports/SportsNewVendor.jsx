@@ -399,11 +399,28 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     });
   };
 
+  // const handleSelectLiveApi = (sportId, marketId, status) => {
+  //   setLiveApiStatusMap((prevStatusMap) => ({
+  //     ...prevStatusMap,
+  //     [marketId]: status,
+  //   }));
+  // };
+
   const handleSelectLiveApi = (sportId, marketId, status) => {
-    setLiveApiStatusMap((prevStatusMap) => ({
-      ...prevStatusMap,
-      [marketId]: status,
-    }));
+    setLiveApiStatusMap((prev) => {
+      const current = prev[marketId];
+
+      if (current === status) {
+        const updated = { ...prev };
+        delete updated[marketId];
+        return updated;
+      }
+
+      return {
+        ...prev,
+        [marketId]: status,
+      };
+    });
   };
 
   return (
@@ -521,7 +538,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       type="text"
                       inputMode="numeric"
                       className="all-none w-100"
-                      placeholder="Enter amount"    
+                      placeholder="Enter amount"
                       value={maxLoseAmtGame}
                       maxLength={9}
                       onChange={(e) => {
@@ -600,7 +617,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           inputMode="numeric"
                           className="input-css small-font w-100"
                           placeholder="Enter"
-                          
                           value={monthlyAmt}
                           maxLength={9}
                           onChange={(e) => {
@@ -619,7 +635,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                 </div>
 
                 {/* <div className="my-2"> */}
-                  {/* <label className="small-font mb-1">
+                {/* <label className="small-font mb-1">
                     Max Loose Amount for Table
                   </label>
                   <div className="input-css small-font text-black">
