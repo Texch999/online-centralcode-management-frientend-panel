@@ -148,7 +148,7 @@ const SportMatches = () => {
       ),
       pl: <div className="dark-orange-clr">{item?.pl || 0}</div>,
       action: (
-        <div className="flex-center gap-3">
+        <div className="d-flex gap-3">
           {item?.isFancy === true && (
             <>
               {item?.isClosed === 2 ? (
