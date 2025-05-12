@@ -125,12 +125,15 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     fetchMarkets();
   }, []);
 
+  const [dataById, setDataById] = useState([]);
+
   //get  by id
   const fetchAllVendorById = () => {
     setIsLoading(true);
     getVendorById(vendorId)
       .then((response) => {
         setIsLoading(false);
+        setDataById(response?.data);
         const data = response?.data;
         if (!data) return;
 
@@ -179,9 +182,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
             positions[sportId] = {};
             if (!status[sportId]) status[sportId] = {};
             item.providers.forEach((p) => {
-              positions[sportId][p.prvId] = p.position || 0;
-              liveApis[p.prvId] = item.isLiveApi || 0;
-              status[sportId][p.prvId] = p.status || 1;
+              positions[sportId][p.prvId] = p.position;
+              liveApis[p.prvId] = item.isLiveApi;
+              status[sportId][p.prvId] = p.status;
             });
           }
         });
@@ -213,6 +216,16 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
       setLiveApiStatusMap({});
     }
   }, [isEdit]);
+
+  useEffect(() => {
+    if (isEdit && dataById) {
+      const initialStatusMap = {};
+      dataById?.vendorMarkets?.forEach((market) => {
+        initialStatusMap[market.prvId] = market.isLiveApi;
+      });
+      setLiveApiStatusMap(initialStatusMap);
+    }
+  }, [isEdit, dataById]);
 
   const onSubmit = () => {
     if (error) {
@@ -407,6 +420,13 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   // };
 
   const handleSelectLiveApi = (sportId, marketId, status) => {
+    setLiveApiStatusMap((prev) => ({
+      ...prev,
+      [marketId]: status,
+    }));
+  };
+
+  const handleSelectLiveApiaa = (sportId, marketId, status) => {
     setLiveApiStatusMap((prev) => {
       const current = prev[marketId];
 
@@ -729,7 +749,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                   <div className="d-flex gap-3">
                                     <div
                                       className={`rounded-pill px-1 py-1 pointer small-font ${
-                                        liveApiStatusMap[mar.id] === 1
+                                        (liveApiStatusMap[mar.id] || 0) === 1
                                           ? "saffron-bg white-font"
                                           : "white-bg black-clr"
                                       }`}
@@ -741,7 +761,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                     </div>
                                     <div
                                       className={`rounded-pill px-2 py-1 pointer small-font ${
-                                        liveApiStatusMap[mar.id] === 2
+                                        (liveApiStatusMap[mar.id] || 0) === 2
                                           ? "saffron-bg white-font"
                                           : "white-bg black-clr"
                                       }`}
