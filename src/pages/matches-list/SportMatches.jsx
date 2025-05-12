@@ -80,15 +80,15 @@ const SportMatches = () => {
   const cols = [
     // { header: "S No", field: "sno" },
 
-    { header: "Date", field: "date" },
-    { header: "Upcoming Matches", field: "games" },
-    { header: "MatchId", field: "matchid" },
-    { header: "Market", field: "market" },
+    { header: "Date", field: "date",width:"10%" },
+    { header: "Upcoming Matches", field: "games",width:"25%" },
+    { header: "MatchId", field: "matchid",width:"10%" },
+    { header: "Market", field: "market",width:"10%" },
     // { header: "Winner", field: "winner" },
     // { header: "IP", field: "ip" },
-    { header: "Status", field: "status" },
+    { header: "Status", field: "status",width:"10%" },
 
-    { header: "Profit & Loss", field: "pl" },
+    { header: "Profit & Loss", field: "pl",width:"10%"},
 
     {
       header: (
@@ -96,11 +96,11 @@ const SportMatches = () => {
           Action
           <div className="col-2"></div>
           <div className="col-2 flex-center"></div>
-          <div className="col-4 "></div>
+          <div className="col-3 "></div>
         </div>
       ),
       field: "action",
-      width: "15%",
+      width: "10%",
     },
     // {
     //   header: <div className="flex-center">Action</div>,
@@ -162,7 +162,7 @@ const SportMatches = () => {
       ),
       pl: <div className="dark-orange-clr">{item?.pl || 0}</div>,
       action: (
-        <div className="d-flex gap-3 align-items-center">
+        <div className="d-flex gap-3 w-100 align-items-center">
           {item?.isFancy === true ? (
             <>
               {item?.isClosed === 2 ? (
@@ -205,7 +205,7 @@ const SportMatches = () => {
             />
           )}
 
-          <div className="rust-red-btn w-fit pointer col-4">Rollback</div>
+          <div className="rust-red-btn w-fit pointer col-2">Rollback</div>
           {/* <div className="green-dark-bg w-fit pointer">Active</div> */}
         </div>
       ),

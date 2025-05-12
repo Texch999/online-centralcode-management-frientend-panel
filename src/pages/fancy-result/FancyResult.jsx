@@ -73,20 +73,9 @@ const FancyResult = () => {
       <div className="d-flex flex-column small-font">
         <div className="mb-1">{item?.name}</div>
         {item?.status === 1 ? (
-          <div
-            className="green-btn w-fit px-4 pointer"
-            onClick={() => handleActive(item?.fancyId, item?.status)}
-          >
-            Active
-          </div>
+          <div className="green-btn w-fit px-4 pointer">Active</div>
         ) : (
-          <div
-            className="rust-red-btn w-fit px-4 pointer"
-            title="You don't have access to active!"
-            // onClick={() => handleActive(item?.fancyId, item?.status)}
-          >
-            Suspended
-          </div>
+          <div className="rust-red-btn w-fit px-4 pointer">Suspended</div>
         )}
       </div>
     ),
@@ -103,16 +92,6 @@ const FancyResult = () => {
     sport: (
       <div className="d-flex flex-column small-font">
         <div className="mb-1">{fancyData?.matchDetails?.sportName}</div>
-        {/* <input
-          type="text"
-          placeholder="Enter Result"
-          className="white-input w-fit"
-          disabled={item.status === 2} 
-          onChange={(e) => setResult(e.target.value.replace(/\D/g, ""))}
-        />
-        {resultError && (
-          <div className="red-font small-font">{resultError}</div>
-        )} */}
 
         <input
           type="text"
@@ -121,37 +100,6 @@ const FancyResult = () => {
           className={`white-input w-fit ${status === 2 ? "disabled-btn" : ""}`}
           value={result[item?.fancyId] || ""}
           disabled={item.status === 2}
-          // onChange={(e) => {
-          //   const inputVal = e.target.value.replace(/\D/g, "");
-          //   setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
-
-          //   setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
-          // }}
-
-          // onChange={(e) => {
-          //   const inputVal = e.target.value;
-          //   if (inputVal.startsWith("0")) return;
-          //   if(!/^\d*$/.test(inputVal))return;
-
-          //   if (inputVal === "") {
-          //     setResult((prev) => ({ ...prev, [item.fancyId]: "" }));
-          //     setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
-          //     return;
-          //   }
-
-          //   const numericValue = Number(inputVal);
-
-          //   if (numericValue > 99999999999) {
-          //     setResultError((prev) => ({
-          //       ...prev,
-          //       [item.fancyId]: "Value must be between 0 and 99999999999",
-          //     }));
-          //   } else {
-          //     setResult((prev) => ({ ...prev, [item.fancyId]: inputVal }));
-          //     setResultError((prev) => ({ ...prev, [item.fancyId]: "" }));
-          //   }
-          // }}
-
           onChange={(e) => {
             let inputVal = e.target.value;
 
@@ -308,6 +256,7 @@ const FancyResult = () => {
         if (response) {
           console.log(response?.data);
           setMessage(response?.message);
+
           setSuccessPopup(true);
           setTimeout(() => {
             setSuccessPopup(false);
@@ -330,6 +279,7 @@ const FancyResult = () => {
             );
             return { ...prevData, fancy: newFancy };
           });
+          fetchFancyResults(sportId,matchId)
         }
       })
       .catch((error) => {
