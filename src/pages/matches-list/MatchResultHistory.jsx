@@ -27,11 +27,12 @@ const MatchResultHistory = () => {
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
   const [dateError, setDateError] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const cols = [
     { header: "S No", field: "sno" },
     { header: "Date", field: "date" },
-    { header: "Upcoming Matches", field: "games" },
+    { header: "Completed Matches", field: "games" },
     { header: "MatchId", field: "matchid" },
     { header: "Market", field: "market" },
     { header: "Winner", field: "winner" },
@@ -49,8 +50,9 @@ const MatchResultHistory = () => {
       </div>
     ),
     date: (
-      <div className="pointer d-flex ">
-        {moment(item?.startDate).format("hh-mm A")}
+      <div className="pointer d-flex flex-column">
+        <div>{moment(item?.startDate).format("YYYY-MM-DD")}</div>
+        <div>{moment(item?.startDate).format("hh-mm A")}</div>
       </div>
     ),
     matchid: <div>{item?.id}</div>,
@@ -83,7 +85,14 @@ const MatchResultHistory = () => {
     pl: <div className="dark-orange-clr">{item?.totalpl}</div>,
   }));
 
-  const fetchMatchesHistory = (limit, offset, id, startDate, endDate) => {
+  const fetchMatchesHistory = (
+    limit,
+    offset,
+    id,
+    startDate,
+    endDate,
+    callback
+  ) => {
     setLoading(true);
     const params = {
       limit: limit,
@@ -96,12 +105,15 @@ const MatchResultHistory = () => {
       .then((response) => {
         setLoading(false);
         if (response) {
+          setLoading(false);
+          if (callback) callback();
           setMatchData(response?.list);
           setTotalRecords(response?.total);
         }
       })
       .catch((error) => {
         setLoading(false);
+        if (callback) callback();
         const errMsg = error?.message;
         if (Array.isArray(errMsg)) {
           setError(errMsg);
@@ -125,10 +137,13 @@ const MatchResultHistory = () => {
       return;
     }
     setDateError("");
+    setSubmitLoading(true);
 
     const limit = itemsPerPage;
     const offset = (currentPage - 1) * itemsPerPage;
-    fetchMatchesHistory(limit, offset, id, fromDate, toDate);
+    fetchMatchesHistory(limit, offset, id, fromDate, toDate, () => {
+      setSubmitLoading(false);
+    });
   };
   return (
     <div>
@@ -163,7 +178,10 @@ const MatchResultHistory = () => {
               className="input-css2 small-font"
               type="date"
               value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
+              onChange={(e) => {
+                setFromDate(e.target.value);
+                setDateError("");
+              }}
             />
           </div>
           <div className="col-4 flex-column">
@@ -172,17 +190,20 @@ const MatchResultHistory = () => {
               className="input-css2 small-font"
               type="date"
               value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
+              onChange={(e) => {
+                setToDate(e.target.value);
+                setDateError("");
+              }}
             />
           </div>
 
           <div
             className={`align-self-end saffron-btn2 small-font pointer col-2 ${
-              loading ? "disabled-btn" : ""
+              submitLoading ? "disabled-btn" : ""
             }`}
             onClick={handleSubmit}
           >
-            {loading ? (
+            {submitLoading ? (
               <>
                 <Spinner
                   as="span"

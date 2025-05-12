@@ -217,16 +217,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     }
   }, [isEdit]);
 
-  useEffect(() => {
-    if (isEdit && dataById) {
-      const initialStatusMap = {};
-      dataById?.vendorMarkets?.forEach((market) => {
-        initialStatusMap[market.prvId] = market.isLiveApi;
-      });
-      setLiveApiStatusMap(initialStatusMap);
-    }
-  }, [isEdit, dataById]);
-
   const onSubmit = () => {
     if (error) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -419,14 +409,14 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   //   }));
   // };
 
-  const handleSelectLiveApi = (sportId, marketId, status) => {
+  const handleSelectLiveApisss = (sportId, marketId, status) => {
     setLiveApiStatusMap((prev) => ({
       ...prev,
       [marketId]: status,
     }));
   };
 
-  const handleSelectLiveApiaa = (sportId, marketId, status) => {
+  const handleSelectLiveApi = (sportId, marketId, status) => {
     setLiveApiStatusMap((prev) => {
       const current = prev[marketId];
 
@@ -519,7 +509,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     <input
                       type="checkbox"
                       id={item?.id}
-                      className="me-2"
+                      className="me-2 pointer"
                       checked={selectedSports.includes(item.id)}
                       onChange={(e) => {
                         const updated = e.target.checked
@@ -749,7 +739,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                   <div className="d-flex gap-3">
                                     <div
                                       className={`rounded-pill px-1 py-1 pointer small-font ${
-                                        (liveApiStatusMap[mar.id] || 0) === 1
+                                        liveApiStatusMap[mar.id] === 1
                                           ? "saffron-bg white-font"
                                           : "white-bg black-clr"
                                       }`}
@@ -761,7 +751,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                     </div>
                                     <div
                                       className={`rounded-pill px-2 py-1 pointer small-font ${
-                                        (liveApiStatusMap[mar.id] || 0) === 2
+                                        liveApiStatusMap[mar.id] === 2
                                           ? "saffron-bg white-font"
                                           : "white-bg black-clr"
                                       }`}

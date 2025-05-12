@@ -26,7 +26,6 @@ import { Spinner } from "react-bootstrap";
 const SportMatches = () => {
   const navigate = useNavigate();
   const { match, id } = useParams();
-
   const [isActive, setIsACtive] = useState(false);
   const [matchId, setMatchId] = useState(null);
   const [status, setStatus] = useState(null);
@@ -54,9 +53,10 @@ const SportMatches = () => {
   const [selectedMatchId, setSelectedMatchId] = useState("");
   const [selectedTeam, setSelectedTeam] = useState("");
   const [dateError, setDateError] = useState("");
-
   const [formError, setFormError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const handleFancy = (sport, match) => {
     navigate(`/fancy-results/${sport}/${match}`);
@@ -78,7 +78,7 @@ const SportMatches = () => {
     })) || [];
 
   const cols = [
-    { header: "S No", field: "sno" },
+    // { header: "S No", field: "sno" },
 
     { header: "Date", field: "date" },
     { header: "Upcoming Matches", field: "games" },
@@ -90,16 +90,17 @@ const SportMatches = () => {
 
     { header: "Profit & Loss", field: "pl" },
 
-       {
+    {
       header: (
-        <div className="d-flex w-100">
-          <div className="col-3"></div>
-          <div className="col-3 flex-center"></div>
+        <div className="d-flex w-100 flex-center ms-5">
+          Action
+          <div className="col-2"></div>
+          <div className="col-2 flex-center"></div>
           <div className="col-4 "></div>
         </div>
       ),
       field: "action",
-      width: "25%",
+      width: "15%",
     },
     // {
     //   header: <div className="flex-center">Action</div>,
@@ -117,7 +118,7 @@ const SportMatches = () => {
     }
 
     return {
-      sno: index + 1,
+      // sno: index + 1,
       games: (
         <div className="pointer d-flex gap-2">
           <div>{item?.eventName}</div>
@@ -127,8 +128,9 @@ const SportMatches = () => {
         </div>
       ),
       date: (
-        <div className="pointer d-flex ">
-          {moment(item?.startDate).format("YYYY-MM-DD HH:mm ")}
+        <div className="pointer d-flex flex-column">
+          <div>{moment(item?.startDate).format("YYYY-MM-DD")}</div>
+          <div>{moment(item?.startDate).format("hh-mm A")}</div>
         </div>
       ),
       matchid: <div>{item?.id}</div>,
@@ -161,10 +163,10 @@ const SportMatches = () => {
       pl: <div className="dark-orange-clr">{item?.pl || 0}</div>,
       action: (
         <div className="d-flex gap-3 align-items-center">
-          {item?.isFancy === true && (
+          {item?.isFancy === true ? (
             <>
               {item?.isClosed === 2 ? (
-                <div className="pointer d-flex col-3">
+                <div className="pointer d-flex col-2">
                   <BsEye
                     size={18}
                     className="orange-clr"
@@ -174,7 +176,7 @@ const SportMatches = () => {
                   />
                 </div>
               ) : (
-                <div className="d-flex col-3">
+                <div className="d-flex col-2">
                   <BsEye
                     size={18}
                     className="orange-clr disabled"
@@ -183,11 +185,13 @@ const SportMatches = () => {
                 </div>
               )}
             </>
+          ) : (
+            <div className="col-2"></div>
           )}
           {item?.isClosed === 2 ? (
             <CgUnblock
               size={18}
-              className="green-font pointer col-3"
+              className="green-font pointer col-2"
               onClick={() =>
                 handleActiveModal(item?.id, item?.isClosed, item?.sportId)
               }
@@ -195,7 +199,7 @@ const SportMatches = () => {
           ) : (
             <MdBlock
               size={18}
-              className="red-font col-3"
+              className="red-font col-2"
               title="You don't have access to active!"
               // onClick={() => handleActiveModal(item?.id, item?.isClosed)}
             />
@@ -209,7 +213,7 @@ const SportMatches = () => {
   });
 
   //integration
-  const fetchAllMatches = (limit, offset, id, startDate, endDate) => {
+  const fetchAllMatches = (limit, offset, id, startDate, endDate, callback) => {
     setLoading(true);
     const params = {
       limit: limit,
@@ -223,12 +227,14 @@ const SportMatches = () => {
       .then((response) => {
         if (response) {
           setLoading(false);
+          if (callback) callback();
           setMatchesData(response?.list);
           setTotalRecords(response?.total);
         }
       })
       .catch((error) => {
         setLoading(false);
+        if (callback) callback();
         setError(error?.message);
       });
   };
@@ -244,10 +250,13 @@ const SportMatches = () => {
       return;
     }
     setDateError("");
+    setSubmitLoading(true);
 
     const limit = itemsPerPage;
     const offset = (currentPage - 1) * itemsPerPage;
-    fetchAllMatches(limit, offset, id, fromDate, toDate);
+    fetchAllMatches(limit, offset, id, fromDate, toDate, () => {
+      setSubmitLoading(false);
+    });
   };
 
   const statusId = status === 2 ? 1 : 2;
@@ -281,10 +290,10 @@ const SportMatches = () => {
   //announce cricket results
   const announceResults = (match) => {
     if (!selectedMatchId) {
-      setFormError("select match");
+      setFormError("Select Match");
       return;
     } else if (!selectedTeam) {
-      setFormError("select winner team");
+      setFormError("Select Winner Team");
       return;
     }
     setFormError("");
@@ -306,6 +315,11 @@ const SportMatches = () => {
           setSelectedMatchId(null);
           setSelectedTeam("");
         }
+        const limit = itemsPerPage;
+        const offset = (currentPage - 1) * itemsPerPage;
+        fetchAllMatches(limit, offset, id);
+        fetchSportMatches(id);
+        setError("");
       })
       .catch((error) => {
         setIsLoading(false);
@@ -384,6 +398,7 @@ const SportMatches = () => {
             onChange={(selected) => {
               setSelectedMatchId(selected.value);
               setSelectedTeam("");
+              setFormError("");
             }}
           />
         </div>
@@ -401,7 +416,10 @@ const SportMatches = () => {
             value={
               teamOptions.find((opt) => opt.value === selectedTeam) || null
             }
-            onChange={(selected) => setSelectedTeam(selected.value)}
+            onChange={(selected) => {
+              setSelectedTeam(selected.value);
+              setFormError("");
+            }}
           />
         </div>
 
@@ -438,7 +456,10 @@ const SportMatches = () => {
               className="input-css2 small-font"
               type="date"
               value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
+              onChange={(e) => {
+                setFromDate(e.target.value);
+                setDateError("");
+              }}
             />
           </div>
           <div className="col-4 flex-column">
@@ -447,17 +468,20 @@ const SportMatches = () => {
               className="input-css2 small-font"
               type="date"
               value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
+              onChange={(e) => {
+                setToDate(e.target.value);
+                setDateError("");
+              }}
             />
           </div>
 
           <div
             className={`align-self-end saffron-btn2 small-font pointer col-2 ${
-              loading ? "disabled-btn" : ""
+              submitLoading ? "disabled-btn" : ""
             }`}
             onClick={handleSubmit}
           >
-            {loading ? (
+            {submitLoading ? (
               <>
                 <Spinner
                   as="span"

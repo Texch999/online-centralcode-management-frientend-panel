@@ -15,6 +15,7 @@ import {
 import SuccessPopup from "../popups/SuccessPopup";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { CircleLoader } from "react-spinners";
+import Table from "../../components/Table";
 
 const FancyResult = () => {
   const navigate = useNavigate();
@@ -31,12 +32,66 @@ const FancyResult = () => {
   const [status, setStatus] = useState(null);
   const [fancy, setFancy] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [activeBtn, setActiveBtn] = useState(0);
 
   const handleActive = (fancyId, status) => {
     setIsACtive(!isActive);
     setStatus(status);
     setFancy(fancyId);
   };
+
+  const btns = ["Fancy Result", "Declared Fancy"];
+
+  const fancycols = [
+    { header: "Sport", field: "sport" },
+
+    { header: "Fancy Name", field: "fname" },
+    { header: "Fancy ID", field: "fid" },
+    { header: "Match Name", field: "match" },
+  ];
+
+  const decdata = fancyData?.declaredFancy?.map((item) => ({
+    sport: (
+      <div className="d-flex flex-column small-font">
+        <div className="mb-1">{fancyData?.matchDetails?.sportName}</div>
+
+        <input
+          type="text"
+          placeholder="Enter Result"
+          className="white-input w-fit"
+          value={item?.result || 0}
+          readOnly
+        />
+      </div>
+    ),
+    fid: (
+      <div className="d-flex flex-column small-font">
+        <div className="mb-1 ">{item?.fancyId}</div>
+      </div>
+    ),
+    fname: (
+      <div className="d-flex flex-column small-font">
+        <div className="mb-1">{item?.name}</div>
+        {item?.status === 1 ? (
+          <div
+            className="green-btn w-fit px-4 pointer"
+            onClick={() => handleActive(item?.fancyId, item?.status)}
+          >
+            Active
+          </div>
+        ) : (
+          <div
+            className="rust-red-btn w-fit px-4 pointer"
+            title="You don't have access to active!"
+            // onClick={() => handleActive(item?.fancyId, item?.status)}
+          >
+            Suspended
+          </div>
+        )}
+      </div>
+    ),
+    match: <div>{fancyData?.matchDetails?.eventName}</div>,
+  }));
 
   const cols = [
     { header: "Sport", field: "sport" },
@@ -309,7 +364,8 @@ const FancyResult = () => {
   return (
     <div>
       <div className="d-flex flex-between mb-2">
-        <h6 className="my-2 yellow-font large-font">Fancy Result</h6>
+        <h6 className="my-2 yellow-font large-font">Fancy Results</h6>
+
         <span
           className="input-css2 rounded-pill me-1 px-2 text-black py-1 flex-center pointer hover-orange-clr small-font"
           onClick={() => navigate(-1)}
@@ -317,6 +373,20 @@ const FancyResult = () => {
           <FaArrowLeft className="me-1 d-flex" />
           Back
         </span>
+      </div>
+
+      <div className="d-flex gap-4 mb-3">
+        {btns?.map((btn, index) => (
+          <div
+            key={index}
+            className={`${
+              activeBtn === index ? "saffron-btn" : "white-btn"
+            } br-5 medium-font pointer black-font`}
+            onClick={() => setActiveBtn(index)}
+          >
+            {btn}
+          </div>
+        ))}
       </div>
 
       {loading ? (
@@ -327,7 +397,17 @@ const FancyResult = () => {
           </div>
         </div>
       ) : (
-        <ScrollTable columns={cols} data={data} tableHeight={"table-80vh"} />
+        <>
+          {activeBtn === 0 ? (
+            <ScrollTable
+              columns={cols}
+              data={data}
+              tableHeight={"table-80vh"}
+            />
+          ) : (
+            <Table columns={fancycols} data={decdata} />
+          )}
+        </>
       )}
 
       <SuccessPopup
