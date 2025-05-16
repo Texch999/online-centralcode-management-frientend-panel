@@ -622,7 +622,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                         onChange={(e) => {
                           let val = e.target.value;
 
-                          if (!/^\d*\.?\d{0,4}$/.test(val)) return;
+                          if (!/^\d*\.?\d{0,3}$/.test(val)) return;
 
                           if (val.startsWith(".")) {
                             val = "0" + val;

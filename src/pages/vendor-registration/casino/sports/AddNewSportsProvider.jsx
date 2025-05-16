@@ -44,8 +44,19 @@ const AddNewSportsProvider = ({ show, setShow, setIsActiveBtn, fetch }) => {
     // }
     setLoading(true);
 
-    const paylaod = { providerName: provider, gameName: game };
-    createProvider(paylaod)
+    const payload = {};
+    if (provider?.trim()) payload.providerName = provider.trim();
+    if (game?.trim()) payload.gameName = game.trim();
+
+ 
+    if (Object.keys(payload).length === 0) {
+      setError(["Please enter at least one field."]);
+      setLoading(false);
+      return;
+    }
+
+    // const paylaod = { providerName: provider, gameName: game };
+    createProvider(payload)
       .then((response) => {
         if (response) {
           setLoading(false);
@@ -89,7 +100,7 @@ const AddNewSportsProvider = ({ show, setShow, setIsActiveBtn, fetch }) => {
             {error && <ErrorComponent error={error} />}
             <div className="small-font text-black">
               <div className="felx-column mt-3">
-                <label className="mb-1">Market</label>
+                <label className="mb-1">Provider</label>
                 <input
                   type="text"
                   placeholder="Enter Market"
