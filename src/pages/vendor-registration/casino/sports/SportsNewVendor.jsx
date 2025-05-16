@@ -39,6 +39,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [positionMap, setPositionMap] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [statusMap, setStatusMap] = useState({});
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
 
   const handleDropdown = () => {
     setPositionDropdown(!positionDropdown);
@@ -56,6 +57,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const countryOptions = allCountries?.map((item) => ({
     value: item?.id,
     label: item?.name,
+  }));
+
+  const currencyOptions = allCountries?.map((item) => ({
+    value: item?.id,
+    label: item?.currency_name,
   }));
 
   const [selectedSport, setSelectedSport] = useState(
@@ -79,6 +85,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     setVendorName("");
     setSelectedSport(null);
     setSelectedCountry(null);
+    setSelectedCurrency(null);
     setCompanyName("");
     setAmtType(null);
     setMonthlyAmt("");
@@ -298,6 +305,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
       vendorName: vendorName,
       vendorType: selectedSport?.value,
       vendorCountry: selecctedCountry?.value,
+      currency: selectedCurrency?.value,
       vendorCompany: companyName,
       amountType: amtType?.value,
 
@@ -526,18 +534,38 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
             <div className="col-4 felx-column">
               <div className="d-flex flex-column">
-                <div className="small-font mb-1">Vendor Country</div>
+                <div className="d-flex flex-between align-items-center w-100">
+                  <div className="w-50 me-3">
+                    <div className="small-font mb-1">Vendor Country</div>
 
-                <Select
-                  className="small-font"
-                  options={countryOptions}
-                  placeholder="Select"
-                  styles={customStyles}
-                  maxMenuHeight={120}
-                  menuPlacement="auto"
-                  value={selecctedCountry}
-                  onChange={(select) => setSelectedCountry(select)}
-                />
+                    <Select
+                      className="small-font"
+                      isDisabled={isEdit}
+                      options={countryOptions}
+                      placeholder="Select"
+                      styles={customStyles}
+                      maxMenuHeight={120}
+                      menuPlacement="auto"
+                      value={selecctedCountry}
+                      onChange={(select) => setSelectedCountry(select)}
+                    />
+                  </div>
+                  <div className="w-50 me-3">
+                    <div className="small-font mb-1">Vendor Currency</div>
+
+                    <Select
+                      className="small-font"
+                      options={currencyOptions}
+                      isDisabled={isEdit}
+                      placeholder="Select"
+                      styles={customStyles}
+                      maxMenuHeight={120}
+                      menuPlacement="auto"
+                      value={selectedCurrency}
+                      onChange={(select) => setSelectedCurrency(select)}
+                    />
+                  </div>
+                </div>
 
                 <div className="my-2">
                   <label className="small-font mb-1">
