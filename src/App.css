@@ -908,7 +908,9 @@
 .border-danger {
   border: 1px solid red !important;
 }
-
+.border-orange {
+  border: 1px solid rgba(255, 163, 16, 1) !important;
+}
 .error {
   color: rgb(237, 53, 53) !important;
   font-size: 0.8rem;

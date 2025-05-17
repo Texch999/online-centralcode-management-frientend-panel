@@ -973,6 +973,14 @@ const endpoints = {
       return `/user/${userID()}/sport/${id}/getAllOldMatches?${query}`;
     },
   },
+  vendorPayment: {
+    method: "post",
+    url: `/user/${userID()}/vendorPayment`,
+  },
+  getVendorAccounts: {
+    method: "get",
+    url: `/user/${userID()}/getVendorAccounts`,
+  },
 };
 
 export default endpoints;

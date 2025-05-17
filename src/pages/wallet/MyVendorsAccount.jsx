@@ -1,153 +1,96 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
+import VendorPaymentModal from "./VendorPaymentModal";
+import { getVendorAccounts } from "../../api/apiMethods";
 
 function MyVendorsAccount() {
+  const [vendorPayment, setVendorPayment] = useState(false);
   const navigate = useNavigate();
+  const [vendorData, setVendorData] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const VENDOR_COLUMNS = [
     { header: "Vendor Name", field: "vendor_name" },
-    { header: "Providing", field: "providing" },
+    { header: "Providers", field: "providing" },
     { header: "M. Rent", field: "monthly_rent" },
     { header: "Percentage (%)", field: "percentage" },
     { header: "Billing Date", field: "billing_date" },
-    { header: "Loading Cas. Chip", field: "loading_cash_chip" },
-    { header: "Billing Cas.", field: "billing_cash" },
-    { header: "Used Cas. Chip", field: "used_cash_chip" },
-    { header: "Bal. Cas. Chip", field: "balance_cash_chip" },
+    // { header: "Loading Cas. Chip", field: "loading_cash_chip" },
+    // { header: "Billing Cas.", field: "billing_cash" },
+    // { header: "Used Cas. Chip", field: "used_cash_chip" },
+    // { header: "Bal. Cas. Chip", field: "balance_cash_chip" },
     { header: "Total Amt.", field: "total_amount" },
     { header: "Paid Amt.", field: "paid_amount" },
     { header: "Balance", field: "balance" },
   ];
 
-  const VENDOR_DATA = [
-    {
-      vendor_name: (
-        <div>
-          Mishra
-          <br />
-          Dubai
-          <br />
-          Sports
+  const handleVendorPayemnt = () => {
+    setVendorPayment(true);
+  };
+  const VENDOR_DATA = vendorData?.map((item, index) => ({
+    vendor_name: (
+      <div>
+        {item?.vendorName}
+        <br />
+        <div>{item?.vendorCompany}</div>
+      </div>
+    ),
+    providing: (
+      <div className="d-flex flex-column gap-1">
+        {item?.providers?.map((prv, index) => (
+          <div key={index}>{prv}</div>
+        ))}
+      </div>
+    ),
+    monthly_rent: (
+      <div>{item?.amountType === 1 ? `${item?.rentAmount}` : "-"}</div>
+    ),
+    percentage: (
+      <div>{item?.amountType === 2 ? `${item?.percentage}%` : "-"}</div>
+    ),
+    billing_date: (
+      <div>{item?.amountType === 1 ? `${item?.billingDate}` : "-"}</div>
+    ),
+    // loading_cash_chip: "-",
+    // billing_cash: "-",
+    // used_cash_chip: "-",
+    // balance_cash_chip: "-",
+    total_amount: <div className="green-font">{item?.totalAmount}</div>,
+    paid_amount: <div className="yellow-font">{item?.paidAmount}</div>,
+    balance: (
+      <div>
+        <div className="red-font">{item?.balanceAmount}</div>
+        <div
+          className="green-btn mt-2"
+          onClick={() => navigate("/settled-history")}
+        >
+          Settled
         </div>
-      ),
-      providing: (
-        <div>
-          Odds
-          <br />
-          Fancy
-          <br />
-          Live Stream
-          <br />
-          Score Board
-        </div>
-      ),
-      monthly_rent: 500000,
-      percentage: "-",
-      billing_date: "07-10-2024",
-      loading_cash_chip: "-",
-      billing_cash: "-",
-      used_cash_chip: "-",
-      balance_cash_chip: "-",
-      total_amount: <div className="green-font">10000000</div>,
-      paid_amount: <div className="yellow-font">10000000</div>,
-      balance: (
-        <div>
-          <div className="red-font">10000000</div>
-          <div
-            className="green-btn mt-2"
-            onClick={() => navigate("/settled-history")}
-          >
-            Settled
-          </div>
-        </div>
-      ),
-    },
-    {
-      vendor_name: (
-        <div>
-          Jordan
-          <br />
-          Dubai
-          <br />
-          Casino
-        </div>
-      ),
-      providing: (
-        <div>
-          Ezugi
-          <br />
-          Evolution
-          <br />
-          Pragmatic Play
-          <br />
-          Sexy Games
-        </div>
-      ),
-      monthly_rent: "-",
-      percentage: "5%",
-      billing_date: "07-10-2024",
-      loading_cash_chip: 10000000,
-      billing_cash: 10000000,
-      used_cash_chip: 10000000,
-      balance_cash_chip: 10000000,
-      total_amount: <div className="green-font">10000000</div>,
-      paid_amount: <div className="yellow-font">10000000</div>,
-      balance: (
-        <div>
-          <div className="red-font">10000000</div>
-          <div
-            className="green-btn mt-2"
-            onClick={() => navigate("/settled-history")}
-          >
-            Settled
-          </div>
-        </div>
-      ),
-    },
-    {
-      vendor_name: (
-        <div>
-          Jordan
-          <br />
-          Dubai
-          <br />
-          Casino
-        </div>
-      ),
-      providing: (
-        <div>
-          Ezugi
-          <br />
-          Evolution
-          <br />
-          Pragmatic Play
-          <br />
-          Sexy Games
-        </div>
-      ),
-      monthly_rent: "-",
-      percentage: "5%",
-      billing_date: "07-10-2024",
-      loading_cash_chip: 10000000,
-      billing_cash: 10000000,
-      used_cash_chip: 10000000,
-      balance_cash_chip: 10000000,
-      total_amount: <div className="green-font">10000000</div>,
-      paid_amount: <div className="yellow-font">10000000</div>,
-      balance: (
-        <div>
-          <div className="red-font">10000000</div>
-          <div
-            className="green-btn mt-2"
-            onClick={() => navigate("/settled-history")}
-          >
-            Settled
-          </div>
-        </div>
-      ),
-    },
-  ];
+      </div>
+    ),
+  }));
+
+  // vednor account data
+
+  const fetchVendorData = () => {
+    setLoading(true);
+    getVendorAccounts()
+      .then((response) => {
+        if (response) {
+          setLoading(false);
+          setVendorData(response?.data);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    fetchVendorData();
+  }, []);
 
   return (
     <div>
@@ -170,8 +113,26 @@ function MyVendorsAccount() {
             <span className=" medium-font">1000000000</span>
           </div>
         </div>
-        <div className="white-btn2 medium-font px-3">Settled History</div>
+        <div className="d-flex gap-2">
+          <div
+            className="white-btn2 medium-font px-3 pointer"
+            onClick={handleVendorPayemnt}
+          >
+            Pay Vendor
+          </div>
+          <div
+            className="white-btn2 medium-font px-3 pointer"
+            onClick={() => navigate("/settled-history")}
+          >
+            Settled History
+          </div>
+        </div>
       </div>
+      <VendorPaymentModal
+        vendorPaymentModal={vendorPayment}
+        setVendorPaymentModal={setVendorPayment}
+        data={vendorData}
+      />
       <Table columns={VENDOR_COLUMNS} data={VENDOR_DATA} itemsPerPage={2} />
     </div>
   );

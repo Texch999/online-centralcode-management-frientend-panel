@@ -5,8 +5,10 @@ import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import SettledPopup from "./SettledPopup";
+import { useNavigate } from "react-router-dom";
 
 function SettledHistory() {
+  const navigate = useNavigate();
   const [setteledPopupOpen, setSettledPopupOpen] = useState(false);
   const handleSettledPopupOpen = () => {
     setSettledPopupOpen(true);
@@ -76,8 +78,8 @@ function SettledHistory() {
   return (
     <div>
       <div className="flex-between mb-3 mt-2">
-        <h6 className="d-flex yellow-font mb-0">
-          <span>My Vendors Account</span>
+        <h6 className="d-flex yellow-font mb-0" >
+          <span onClick={()=>navigate(-1)}>My Vendors Account</span>
           <span className="ms-2 flex-center">
             <FiChevronRight />
             Settled History
