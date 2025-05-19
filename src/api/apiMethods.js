@@ -603,6 +603,9 @@ const vendorPayment = (data) => {
 const getVendorAccounts = (data) => {
   return apiRequest("getVendorAccounts", data);
 };
+const getSettledHistory = (data) => {
+  return apiRequest("getSettledHistory", data);
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -762,4 +765,5 @@ export {
   getOldMatchesHistory,
   vendorPayment,
   getVendorAccounts,
+  getSettledHistory,
 };

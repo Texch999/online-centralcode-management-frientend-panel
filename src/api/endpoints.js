@@ -981,6 +981,10 @@ const endpoints = {
     method: "get",
     url: `/user/${userID()}/getVendorAccounts`,
   },
+  getSettledHistory: {
+    method: "get",
+    url: `/user/${userID()}/vendorPayments`,
+  },
 };
 
 export default endpoints;
