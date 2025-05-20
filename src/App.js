@@ -115,6 +115,7 @@ import AddSportsControl from "./pages/add-team/AddSportsControl";
 import MatchesList from "./pages/matches-list/MatchesList";
 import SportMatches from "./pages/matches-list/SportMatches";
 import MatchResultHistory from "./pages/matches-list/MatchResultHistory";
+import DownlineCommSettlement from "./pages/ownerSettings/DownlineCommSettlement";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -265,7 +266,10 @@ function App() {
                 <Route path="/client-rental-sheet" element={<ClientRental />} />
                 {/* Sports Routes */}
                 <Route path="/central-sports" element={<Sports />} />
-                <Route path="/fancy-results/:sportId/:matchId" element={<FancyResult />} />
+                <Route
+                  path="/fancy-results/:sportId/:matchId"
+                  element={<FancyResult />}
+                />
                 <Route path="/market-results" element={<MarketResult />} />
                 <Route
                   path="/central-sports/:vendor/:provider"
@@ -295,6 +299,10 @@ function App() {
                 />
                 <Route path="/reference-data" element={<ReferenceData />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route
+                  path="/downline-comm-settlement"
+                  element={<DownlineCommSettlement />}
+                />
                 <Route path="/results" element={<Result />} />{" "}
                 <Route
                   path="/results/:matchName"
@@ -379,8 +387,14 @@ function App() {
                   element={<AddSportsControl />}
                 />
                 <Route path="/matches-list" element={<MatchesList />} />
-                <Route path="/matches-list/:match/:id" element={<SportMatches />} />
-                <Route path="/matches-result-history/:id" element={<MatchResultHistory />} />
+                <Route
+                  path="/matches-list/:match/:id"
+                  element={<SportMatches />}
+                />
+                <Route
+                  path="/matches-result-history/:id"
+                  element={<MatchResultHistory />}
+                />
               </Routes>
             </div>
           </div>

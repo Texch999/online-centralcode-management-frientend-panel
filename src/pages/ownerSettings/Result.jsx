@@ -256,7 +256,6 @@ const Result = () => {
     { header: "Result Date & Time", field: "resultDateTime", width: "12%" },
     { header: "View Fancy", field: "viewFancy", width: "8%" },
   ];
-
   const CRICKET_DATA = [
     {
       dateTime: <div>1-10-2024 16:11:00</div>,

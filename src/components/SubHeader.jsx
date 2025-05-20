@@ -86,6 +86,7 @@ function SubHeader() {
           { label: "Privacy Policy", path: "/privacy-policy" },
           { label: "Activity Logs", path: "/activity-logs" },
           { label: "Matches List", path: "/matches-list" },
+          { label: "Downline Comm Sett", path: "downline-comm-settlement" },
         ],
       },
       {

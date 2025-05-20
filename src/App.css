@@ -388,6 +388,9 @@
 .yellow-bg {
   background: #ffa310 !important;
 }
+.yellow-border {
+  border: 1px solid #ffa310 !important;
+}
 
 .blue-font {
   color: #1912c8;
@@ -1207,5 +1210,3 @@ button:disabled {
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
 }
-
-
