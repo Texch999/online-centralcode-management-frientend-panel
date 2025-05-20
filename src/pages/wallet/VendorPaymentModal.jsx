@@ -40,8 +40,6 @@ const VendorPaymentModal = ({
     exchange: item?.exchange,
   }));
 
-  console.log(currency, "currencycurrency");
-
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [vendorCurr, setVendorCurr] = useState(null);
 
@@ -70,19 +68,20 @@ const VendorPaymentModal = ({
     return secFin;
   };
 
+  const wholeInr = Math.round(inrAmount);
+ console.log(wholeInr,",wholeInr")
   //vendor payment
   const submitVendorPayment = () => {
     const payload = {
-      venId: 2,
-      venName: "",
-      vendorType: 1,
-      currency: 1,
-      paymentMode: "Bank Transfer",
-      amount: 5000,
-      inrAmount: 50000,
+      venId: selectedVendor?.id,
+      vendorType: vendorType,
+      currency: currency?.value,
+      paymentMode: paymentMode,
+      amount: currencyAmount,
+      inrAmount: wholeInr,
     };
     setLoading(true);
-    vendorPayment()
+    vendorPayment(payload)
       .then((response) => {
         if (response) {
           setLoading(false);
@@ -156,7 +155,7 @@ const VendorPaymentModal = ({
               menuPlacement="auto"
               value={currency}
               onChange={(selected) => {
-                console.log(selected,"ggggg");
+                console.log(selected, "ggggg");
                 setCurrency(selected);
               }}
             />
@@ -167,6 +166,8 @@ const VendorPaymentModal = ({
               className="input-bg rounded p-2 grey-font all-none"
               type="text"
               placeholder="Enter"
+              value={paymentMode}
+              onChange={(e) => setPaymentMode(e.target.value)}
             />
           </div>
           <div className="col-6 flex-column mt-3">
@@ -179,9 +180,11 @@ const VendorPaymentModal = ({
               onChange={(e) => {
                 const amt = parseFloat(e.target.value) || 0;
                 setCurrencyAmount(amt);
-                const fullCurrency = allCountries.find(c => c.id === currency.value);
+                const fullCurrency = allCountries.find(
+                  (c) => c.id === currency.value
+                );
                 if (amt && fullCurrency?.exchange) {
-                  const inr = currencyConvert(amt, 1, currency.exchange);
+                  const inr = currencyConvert(amt, 1, fullCurrency.exchange);
                   setInrAmount(inr);
                 }
               }}
