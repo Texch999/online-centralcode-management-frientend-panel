@@ -606,6 +606,9 @@ const getVendorAccounts = (data) => {
 const getSettledHistory = (data) => {
   return apiRequest("getSettledHistory", data);
 };
+const deleteVendorpayment = (vId,payId) => {
+  return apiRequest("deleteVendorpayment",vId, {vId,payId});
+};
 
 export {
   managementDwnProfileDirPaymentDetails,
@@ -766,4 +769,5 @@ export {
   vendorPayment,
   getVendorAccounts,
   getSettledHistory,
+  deleteVendorpayment,
 };

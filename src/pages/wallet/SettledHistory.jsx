@@ -6,13 +6,39 @@ import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import SettledPopup from "./SettledPopup";
 import { useNavigate } from "react-router-dom";
-import { getSettledHistory } from "../../api/apiMethods";
+import { deleteVendorpayment, getSettledHistory } from "../../api/apiMethods";
+import ConfirmationPopup from "../popups/ConfirmationPopup";
+import { useSelector } from "react-redux";
+import SuccessPopup from "../popups/SuccessPopup";
+import moment from "moment/moment";
 
 function SettledHistory() {
   const navigate = useNavigate();
   const [setteledPopupOpen, setSettledPopupOpen] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [statusId, setStatusId] = useState(null);
+  const [blockLoader, setBlockLoader] = useState(false);
+  const [successPopupOpen, setSuccessPopupOpen] = useState(false);
+  const allCountries = useSelector((item) => item?.allCountries);
+  const [msg, setMsg] = useState("");
+  const [venId, setVId] = useState(null);
+  const [paymentId, setPayId] = useState(null);
   const handleSettledPopupOpen = () => {
     setSettledPopupOpen(true);
+  };
+  const [data, setData] = useState([]);
+  const [error, setError] = useState([]);
+  const handleDelete = (vid, payid, status) => {
+    setConfirmationModal(true);
+    setVId(vid);
+    setPayId(payid);
+    setStatusId(status);
+  };
+
+  const getCurrencyName = (id) => {
+    const currency = allCountries.find((c) => c.id === id);
+    console.log(currency);
+    return currency ? currency.currency_name : "Unknown";
   };
   const SETTLED_HISTORY_COLUMNS = [
     { header: "Date & Time", field: "date_time" },
@@ -24,72 +50,83 @@ function SettledHistory() {
     { header: "Paid Amt. (Rs)", field: "paid_amount_rs" },
     { field: "action", width: "5%" },
   ];
-  const SETTLED_HISTORY_DATA = [
-    {
-      date_time: "07-10-2024, 16:25:00",
-      pay_from: "Owner",
-      received_to: "Mishra - Dubai - Sports",
-      transaction_type: "NEFT/RTGS",
-      paid_amount: 4000,
-      currency: "USD",
-      paid_amount_rs: <div className="yellow-font">4000000</div>,
-      action: (
-        <div className="flex-end">
-          <SlPencil
-            size={18}
-            className="black-text me-2"
-            onClick={handleSettledPopupOpen}
-          />
-          <FaRegTrashCan size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      date_time: "07-10-2024, 16:25:00",
-      pay_from: "Owner",
-      received_to: "Mishra - Dubai - Sports",
-      transaction_type: "NEFT/RTGS",
-      paid_amount: 4000,
-      currency: "USD",
-      paid_amount_rs: <div className="yellow-font">4000000</div>,
-      action: (
-        <div className="flex-end">
-          <SlPencil size={18} className="black-text me-2" />
-          <FaRegTrashCan size={18} className="black-text" />
-        </div>
-      ),
-    },
-    {
-      date_time: "07-10-2024, 16:25:00",
-      pay_from: "Owner",
-      received_to: "Mishra - Dubai - Sports",
-      transaction_type: "NEFT/RTGS",
-      paid_amount: 4000,
-      currency: "USD",
-      paid_amount_rs: <div className="yellow-font">4000000</div>,
-      action: (
-        <div className="flex-end">
-          <SlPencil size={18} className="black-text me-2" />
-          <FaRegTrashCan size={18} className="black-text" />
-        </div>
-      ),
-    },
-  ];
 
   const getPayemnts = () => {
     getSettledHistory()
       .then((response) => {
         if (response) {
-          console.log(response?.data);
+          setData(response?.venPayments);
         }
       })
       .catch((error) => {
-        console.log(error?.message);
+        setError(error?.message);
       });
   };
   useEffect(() => {
     getPayemnts();
   }, []);
+
+  // suspend pay
+  const suspendVendorPayment = () => {
+    setBlockLoader(true);
+    setConfirmationModal(true);
+    deleteVendorpayment(venId, paymentId)
+      .then((response) => {
+        if (response) {
+          setBlockLoader(false);
+          setMsg(response?.message);
+          setSuccessPopupOpen(true);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+            setConfirmationModal(false);
+          }, 3000);
+        }
+      })
+      .catch((error) => {
+        setBlockLoader(false);
+        setError(error?.message);
+      });
+  };
+
+  const SETTLED_HISTORY_DATA = data?.map((item) => ({
+    date_time: moment(item?.created_date).format("YYYY-MM-DD hh:mm A"),
+    pay_from: item?.payfrom,
+    received_to: item?.name, // no field from api
+    transaction_type: item?.paymentMode,
+    paid_amount: item?.amount, // here whic amount need to dispaly inr or cur amount
+    currency: getCurrencyName(item?.currency),
+    paid_amount_rs: <div className="yellow-font">{item?.inrAmount}</div>,
+    action: (
+      <div className="flex-end">
+        <div>
+          {item?.status === 1 ? (
+            <SlPencil
+              size={18}
+              className="black-text me-2"
+              onClick={handleSettledPopupOpen}
+            />
+          ) : (
+            <SlPencil
+              size={18}
+              className="black-text me-2 disabled-btn"
+              // onClick={handleSettledPopupOpen}
+            />
+          )}
+        </div>
+        <div>
+          {item?.status === 1 ? (
+            <FaRegTrashCan
+              size={18}
+              className="black-text"
+              onClick={() => handleDelete(item?.venId, item?.id, item?.status)}
+            />
+          ) : (
+            <FaRegTrashCan size={18} className="black-text disabled-btn" />
+          )}
+        </div>
+      </div>
+    ),
+  }));
 
   return (
     <div>
@@ -142,6 +179,26 @@ function SettledHistory() {
         setteledPopupOpen={setteledPopupOpen}
         setSettledPopupOpen={setSettledPopupOpen}
       />
+
+      <ConfirmationPopup
+        confirmationPopupOpen={confirmationModal}
+        setConfirmationPopupOpen={() => setConfirmationModal(false)}
+        discription={`Are you sure you want to ${
+          statusId === 1 ? "In-Active" : "Active"
+        } this Payment Mode?`}
+        submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
+        onSubmit={suspendVendorPayment}
+        blockLoader={blockLoader}
+        setBlockLoader={setBlockLoader}
+      />
+
+      {successPopupOpen && (
+        <SuccessPopup
+          successPopupOpen={successPopupOpen}
+          setSuccessPopupOpen={setSuccessPopupOpen}
+          discription={msg}
+        />
+      )}
     </div>
   );
 }

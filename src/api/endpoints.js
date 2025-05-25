@@ -985,6 +985,13 @@ const endpoints = {
     method: "get",
     url: `/user/${userID()}/vendorPayments`,
   },
+  deleteVendorpayment: {
+    method: "post",
+    url: (data) =>
+      `/user/${userID()}/vendor/${data?.vId}/delete/vendorPayment/${
+        data?.payId
+      }`,
+  },
 };
 
 export default endpoints;

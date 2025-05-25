@@ -43,9 +43,8 @@ const OfflinePaymentModes = () => {
   const allCountries = useSelector((item) => item?.allCountries);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
-  const [blockLoader,setBlockLoader]=useState(false)
-  console.log(blockLoader,"==>blockLoader");
-  
+  const [blockLoader, setBlockLoader] = useState(false);
+  console.log(blockLoader, "==>blockLoader");
 
   const hanldeAddModal = () => {
     setShowAddModal(true);
@@ -126,31 +125,27 @@ const OfflinePaymentModes = () => {
     setConfirmationModal(true);
     setOfflinePaymentModeId(id);
     setStatusId(status);
-   
   };
 
   const suspendStatus = () => {
-  
-    
-    setBlockLoader(true)
+    setBlockLoader(true);
     setConfirmationModal(true);
     suspenManagementOfflinePaymentModes(offlinePaymnetModeId, status_id)
       .then((response) => {
         if (response.status === true) {
-          setBlockLoader(false)
+          setBlockLoader(false);
           setConfirmationModal(false);
           setSuccessPopupOpen(true);
-         
+
           getAllManPaymentModes(page, pageSize);
           setMsg(response?.message);
-          
         }
       })
       .catch((error) => {
         setError(error?.message[0]?.message);
         setConfirmationModal(false);
         setErrorPopup(true);
-        setBlockLoader(false)
+        setBlockLoader(false);
         setTimeout(() => {
           setErrorPopup(false);
         }, 2000);
@@ -233,8 +228,6 @@ const OfflinePaymentModes = () => {
     }
   };
 
-
-  
   return (
     <div>
       {!loading && (
