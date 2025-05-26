@@ -65,7 +65,6 @@ const OfflineDepositPopup = ({
     const chipsValue = Number(selectedChips);
     const paidValue = finalPaidAmount === "" ? 0 : Number(finalPaidAmount);
     const oldCredit = selectedDetails?.creditBalance || 0;
-    console.log(paidValue, "==paidValue")
     let newCredit;
     if (selectedDetails?.creditAllowed === 1) {
       // When credit is allowed: new credit = old + (chips - paid)
@@ -88,7 +87,6 @@ const OfflineDepositPopup = ({
       payload.remarks = remark;
     }
 
-    console.log(payload, "==>payload")
     setIsLoading(true);
     ManagementOfflineDepositeTicketCreation(selectedDetails?.id, payload)
       .then((response) => {
@@ -185,7 +183,6 @@ const OfflineDepositPopup = ({
       ? selectedDetails?.maxCreditLimit - selectedDetails?.creditBalance
       : 0;
 
-  console.log(selectedDetails, "==>selectedDetails")
   return (
     <Modal show={depositPopup} centered className="confirm-popup" size="md">
       <Modal.Body>

@@ -13,7 +13,6 @@ const MultimarketDashboard = ({ dwnlnId }) => {
   const navigate = useNavigate();
   const [blockWebsiteModal, setBlockWebsiteModal] = useState(false);
   const [webMarketDtls, setWebMarketDtls] = useState([]);
-  console.log(webMarketDtls, "webMarketDtls");
   const [webList, setWebList] = useState([]);
   const [adminWebsiteId, setAdminWebsiteId] = useState(null);
   const [adminStatusId, setAdminStatusId] = useState(null);
@@ -25,13 +24,11 @@ const MultimarketDashboard = ({ dwnlnId }) => {
     setAdminStatusId(status);
     setDirId(dir);
   };
-  console.log(adminWebsiteId, "adminWebsiteId");
   const getWebMarketDtls = () => {
     getMultiMarket(dwnlnId)
       .then((res) => {
         setWebMarketDtls(res.data);
         setWebList(res?.data?.accessWebsites);
-        console.log(res);
       })
       .catch((error) => {
         console.log(error);

@@ -6,7 +6,6 @@ const CreditReferencePopup = ({ show, onHide }) => {
   const [credit, setCredit] = useState("");
 
   const handleSubmit = () => {
-    console.log(credit);
     if (credit === "") {
       alert("Please enter a valid credit reference");
       return;

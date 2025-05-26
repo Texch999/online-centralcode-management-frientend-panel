@@ -55,11 +55,6 @@ const EditBroadcastPopup = ({
 
     const { website, location, ...formDataWithoutWebsiteAndLocation } =
       formData;
-    console.log(
-      "formDataWithoutWebsiteAndLocation",
-      formDataWithoutWebsiteAndLocation
-    );
-    console.log("id", id);
 
     try {
       const response = await editBroadCasting(

@@ -383,7 +383,6 @@ const PromotionType = () => {
   const activePromotions = searchQuery ? filteredPromotions : promotionsIMages;
 
   useEffect(() => {
-    console.log("filteredPromotions");
   }, [filteredPromotions]);
 
   const PROMOTIONSIMAGES_DATA = activePromotions?.map((promotionsImage) => ({

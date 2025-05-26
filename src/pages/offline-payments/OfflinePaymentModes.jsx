@@ -44,7 +44,6 @@ const OfflinePaymentModes = () => {
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
   const [blockLoader, setBlockLoader] = useState(false);
-  console.log(blockLoader, "==>blockLoader");
 
   const hanldeAddModal = () => {
     setShowAddModal(true);
@@ -67,12 +66,10 @@ const OfflinePaymentModes = () => {
 
   const getCountryName = (id) => {
     const country = allCountries.find((c) => c.id === id);
-    console.log(country);
     return country ? country.name : "Unknown";
   };
   const getCurrencyName = (id) => {
     const currency = allCountries.find((c) => c.id === id);
-    console.log(currency);
     return currency ? currency.currency_name : "Unknown";
   };
 
@@ -188,11 +185,6 @@ const OfflinePaymentModes = () => {
 
       action: (
         <div className="d-flex gap-2 my-1">
-          {console.log(
-            item?.status,
-            Number(item?.status) === 1,
-            "===>  item?.status === "
-          )}
           {item?.status === 1 ? (
             <span>
               <SlPencil
@@ -292,9 +284,8 @@ const OfflinePaymentModes = () => {
         <ConfirmationPopup
           confirmationPopupOpen={confirmationModal}
           setConfirmationPopupOpen={() => setConfirmationModal(false)}
-          discription={`Are you sure you want to ${
-            statusId === 1 ? "In-Active" : "Active"
-          } this Payment Mode?`}
+          discription={`Are you sure you want to ${statusId === 1 ? "In-Active" : "Active"
+            } this Payment Mode?`}
           submitButton={`${statusId === 1 ? "In-Active" : "Active"}`}
           onSubmit={suspendStatus}
           blockLoader={blockLoader}

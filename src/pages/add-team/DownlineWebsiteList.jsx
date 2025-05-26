@@ -24,7 +24,6 @@ const DownlineWebsiteList = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [userWebsitesData, setUserWebsitesData] = useState([]);
-  console.log(userWebsitesData, "userr");
   const dataFetched = useRef(false);
   const { user, userId, adminWebsite, adminWebsiteId } = useParams();
   const [loading, setLoading] = useState(false);
@@ -32,7 +31,6 @@ const DownlineWebsiteList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState("");
   const [errorPopup, setErrorPopup] = useState(false);
   const [wName, setWName] = useState("");
-  console.log(wName, "ww");
   const [statusId, setStatusId] = useState(null);
   const [userWebsiteId, setUserWebsiteId] = useState(null);
 
@@ -92,7 +90,6 @@ const DownlineWebsiteList = () => {
     dwnlineUserWebsites(userWebsiteId)
       .then((response) => {
         if (response.status === true) {
-          console.log(response?.data);
           fetchDownlineUserWebsitesList();
         } else {
           setError("something went wrong");

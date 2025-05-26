@@ -116,7 +116,6 @@ const DepositePopup = ({ setDepositePopup, depositePopup, handleSuccessPopupOpen
     const totalValue = roundedRentChipValue;
 
     // chip calculation for the share & royality
-    console.log(roundedRentChipValue, "====>selected chips")
     const shareChipValue = Number(formData?.selectedChips * (selectedWebDetails?.share / 100));
     const roundedShareChipValue = shareChipValue > 0 ? rceil(shareChipValue, -3) : 0;
 

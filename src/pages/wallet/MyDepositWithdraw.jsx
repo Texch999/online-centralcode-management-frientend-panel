@@ -74,7 +74,6 @@ function MyDepositWithdraw() {
       })
       .catch((error) => {
         setError(error?.message);
-        console.log("fetchDeposits error", error);
       })
   };
 
@@ -149,7 +148,6 @@ function MyDepositWithdraw() {
       })
       .catch((error) => {
         setError(error?.message);
-        console.log("fetchDeposits error", error);
       })
   }
 

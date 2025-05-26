@@ -11,7 +11,6 @@ const CasinoProvider = () => {
   const [onBlockPopup, setOnBlockPopup] = useState(false);
 
   const { provider } = useParams();
-  console.log(provider,"==>pranay");
   const navigation = useNavigate();
   const handleMatchClick = (matchName) => {
     navigation(

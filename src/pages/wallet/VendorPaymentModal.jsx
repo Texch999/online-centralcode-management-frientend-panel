@@ -25,7 +25,6 @@ const VendorPaymentModal = ({
   const [paymentMode, setPaymentMode] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState(0);
   const [inrAmount, setInrAmount] = useState(0);
-  console.log(inrAmount);
   const vendorsList = data?.map((ven, index) => ({
     value: ven?.id,
     label: ven?.vendorName,
@@ -62,14 +61,12 @@ const VendorPaymentModal = ({
   };
 
   const currencyConvert = (amount, firstCur, secCur) => {
-    console.log(amount, firstCur, secCur, "==>exchnage value ");
     const secFin =
       (parseFloat(amount) / parseFloat(firstCur)) * parseFloat(secCur);
     return secFin;
   };
 
   const wholeInr = Math.round(inrAmount);
- console.log(wholeInr,",wholeInr")
   //vendor payment
   const submitVendorPayment = () => {
     const payload = {
@@ -85,7 +82,6 @@ const VendorPaymentModal = ({
       .then((response) => {
         if (response) {
           setLoading(false);
-          console.log(response?.data);
         }
       })
       .catch((error) => {
@@ -155,7 +151,6 @@ const VendorPaymentModal = ({
               menuPlacement="auto"
               value={currency}
               onChange={(selected) => {
-                console.log(selected, "ggggg");
                 setCurrency(selected);
               }}
             />

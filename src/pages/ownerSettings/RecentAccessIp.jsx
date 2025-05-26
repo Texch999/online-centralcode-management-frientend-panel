@@ -167,7 +167,6 @@ const RecentAccessIp = () => {
     if (userRole === "director") {
       if (activeTab === "employees") {
         getDirectorEmplyessLogsById(limit, offset,)
-        console.log("hello i am not here")
       } else if (activeTab === "admins") {
         console.log("Integrated Soon")
       }

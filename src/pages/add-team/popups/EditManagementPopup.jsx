@@ -36,8 +36,6 @@ function EditManagementPopup({
     setShowPassword(!showPassword);
   };
 
-  console.log(initialLoading, "==>initialLoading");
-
   useEffect(() => {
     // Check if employeeData has any keys or values
     if (employeeData && Object.keys(employeeData).length > 0) {
@@ -56,7 +54,6 @@ function EditManagementPopup({
           }
         })
         .catch((error) => {
-          console.log(error, "error");
           if (error) {
             setErrors(error.message);
           } else {
@@ -121,7 +118,6 @@ function EditManagementPopup({
         if (error) {
           setErrors(error);
           setLoader(false);
-          console.log("update clicked");
           setBackendErrors(error?.message);
         } else {
           setErrors("Something Went Wrong");

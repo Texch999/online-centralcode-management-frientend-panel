@@ -262,7 +262,6 @@ const AddDirectorAdmin = () => {
   const blockUnblock = () => {
     blockDirector(selectedDirectorId)
       .then((response) => {
-        console.log(response, "resp");
         setDiscription(response?.message);
         setConfirmationPopup(false);
         setSuccessPopupOpen(true);
@@ -709,7 +708,6 @@ const AddDirectorAdmin = () => {
       GetAllSuperAdmin(limit, offset);
     } else if (role === "management" || role === "accounts") {
       GetAllDirectors(limit, offset);
-      console.log("halde popup calling");
     }
   };
 

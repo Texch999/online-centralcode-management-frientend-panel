@@ -23,12 +23,10 @@ import { useSearchParams } from "react-router-dom";
 
 const PrivacyPolicy = () => {
   const [countries, setCountries] = useState([]);
-  console.log(countries, "ggggg");
   const [addPrivacyModal, setAddPrivacyModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [privacyList, setPrivacyList] = useState([]);
   const [error, setError] = useState("");
-  // const [countries, setCountries] = useState([]);
   const [showPrivacyText, setShowPrivacyText] = useState("");
   const [privacyPolicyId, setPrivacyPolicyId] = useState(null);
   const [websites, setWebsites] = useState([]);
@@ -86,7 +84,6 @@ const PrivacyPolicy = () => {
     value: item?.id,
     label: item?.web_name,
   }));
-  console.log(availablePrivacyWebsiteId, "gg");
 
   const hanldeWebsites = (id) => {
     setSelectWebsite(true);

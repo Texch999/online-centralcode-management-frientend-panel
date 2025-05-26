@@ -24,8 +24,6 @@ const EditBannerPopup = ({
   onSubmit,
   onSubmitResult,
 }) => {
-  console.log("selectedBannerId", selectedBannerId);
-  console.log("websitesList", websitesList);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     register_id: null,
@@ -64,7 +62,6 @@ const EditBannerPopup = ({
   };
 
   const selectedWebName = selectedWebsite?.web_name;
-  console.log("selectedWebName", selectedWebName);
 
   const selectPages = selectedWebName
     ? Object.entries(pageMappings[selectedWebName] || {}).map(
@@ -83,8 +80,8 @@ const EditBannerPopup = ({
         })
       )
     : [];
-  console.log("poster_type", formData.poster_type);
-  const [errors, setErrors] = useState({
+
+    const [errors, setErrors] = useState({
     start: "",
     end: "",
     changes: "",

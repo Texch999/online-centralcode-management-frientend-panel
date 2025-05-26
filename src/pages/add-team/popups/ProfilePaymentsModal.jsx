@@ -19,7 +19,6 @@ const ProfilePaymentsModal = ({
   countryId,
   getDirPaymentDetails,
 }) => {
-  console.log(dirPaymentGatewayProfileId, "dirPaymentGatewayProfileId");
   const [upiID, setUpiID] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [bankIFSC, setBankIFSC] = useState("");
@@ -44,7 +43,6 @@ const ProfilePaymentsModal = ({
   const fetchProfilePaymentDetailsById = () => {
     getDirPayDetailsByIdProfile(manDirProfileId)
       .then((response) => {
-        console.log("response", response);
         if (response.status === true) {
           setAccHolderName(response?.data?.acc_hold_name || "");
           setAccountNumber(response?.data?.bank_acc_no || "");
@@ -58,7 +56,6 @@ const ProfilePaymentsModal = ({
       })
       .catch((error) => {
         setError(error?.message);
-        console.log(error?.message, "errorr");
       });
   };
 
@@ -154,7 +151,6 @@ const ProfilePaymentsModal = ({
       );
 
       if (response.status === true) {
-        console.log(response, "handldirtPaymentAddEdit");
         setMsg(response?.message);
         onHide();
         getDirPaymentDetails();
@@ -169,7 +165,6 @@ const ProfilePaymentsModal = ({
       setTimeout(() => {
         setErrorPopupOpen(false);
       });
-      console.log(error?.message, "errorr");
     }
   };
 

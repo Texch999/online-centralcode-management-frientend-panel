@@ -174,7 +174,6 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
   const [error, setError] = useState("");
 
   const dirProfileData = useSelector((item) => item?.dirProfileData);
-  console.log(dirProfileData, "dirProfileData");
 
   // Validation error states
   const [nameError, setNameError] = useState("");
@@ -189,7 +188,6 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
   // Populate form when data changes
   useEffect(() => {
     if (data) {
-      console.log("Editing data:", data); // Debug log
       setName(data.name || "");
       setPhoneNumber(data.phone_no || "");
       setProfilePhoto(null); // Reset file input
@@ -278,8 +276,6 @@ const EditProfilePopup = ({ show, onHide, data, reload, getById }) => {
       // setErrorPopupOpen(true);
     }
   };
-
-  console.log(error,"pranayyyyy")
 
   return (
     <>

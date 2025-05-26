@@ -20,7 +20,6 @@ import Table from "../../components/Table";
 const FancyResult = () => {
   const navigate = useNavigate();
   const { sportId, matchId } = useParams();
-  console.log(sportId, matchId, "gangaaa");
   const [sportsData, setSportsData] = useState([]);
   const [error, setError] = useState("");
   const [fancyData, setFancyData] = useState([]);
@@ -187,7 +186,6 @@ const FancyResult = () => {
     getFancyResults(sportId, matchId)
       .then((response) => {
         if (response) {
-          console.log(response?.records);
           setFancyData(response?.records);
           setLoading(false);
         }
@@ -254,7 +252,6 @@ const FancyResult = () => {
     setFancyResults({ sportId: sportId, matchId: matchId }, payload)
       .then((response) => {
         if (response) {
-          console.log(response?.data);
           setMessage(response?.message);
 
           setSuccessPopup(true);
@@ -296,7 +293,6 @@ const FancyResult = () => {
     suspendFancyResult({ sportId: sportId, matchId: matchId }, payload)
       .then((response) => {
         if (response) {
-          console.log(response?.data);
           setMessage(response?.message);
           setSuccessPopup(true);
           setIsACtive(false);

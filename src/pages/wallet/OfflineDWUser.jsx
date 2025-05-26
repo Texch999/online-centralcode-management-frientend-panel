@@ -35,7 +35,6 @@ const OfflineDWUser = () => {
     };
     getDirById({ userId, params })
       .then((response) => {
-        console.log(response?.list);
         setDataById(response?.list);
       })
       .catch((error) => {

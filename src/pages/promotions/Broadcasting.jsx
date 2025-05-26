@@ -163,7 +163,6 @@ const Broadcasting = () => {
   const getWebsites = async () => {
     try {
       const response = await getWebsitesList();
-      // console.log(response, "redlknoshc");
       if ((response.status = 200)) {
         setWebsitesList(response?.data);
       }

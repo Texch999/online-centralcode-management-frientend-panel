@@ -4,7 +4,6 @@ import { FiChevronRight } from "react-icons/fi";
 
 function Userslist() {
   const { matchName } = useParams();
-  console.log(matchName, "==>userDetails");
   return (
     <div>
       <div className="flex-between mb-3 mt-4">

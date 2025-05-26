@@ -160,7 +160,6 @@ function AddDirectorPopup({
       }
 
       if (response?.status === true) {
-        console.log("Operation successful", response);
         onClose();
         if (!isEditMode) {
           GetAllDirectorEmployees();

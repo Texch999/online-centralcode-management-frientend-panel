@@ -57,8 +57,6 @@ function ResetPasswordPopup({
     }
   }, [resetPasswordPopup, reset]);
 
-  console.log(resetPasswordErrrors, "==>resetPasswordErrrors9999");
-
   return (
     <>
       {/* Reset Password Modal */}

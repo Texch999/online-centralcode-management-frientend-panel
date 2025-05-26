@@ -144,7 +144,6 @@ function EditNewDirector() {
     }
 
     setErrors(newErrors);
-    console.log(newErrors, "==>newErrors");
     return Object.keys(newErrors).length === 0;
   };
 
@@ -152,7 +151,6 @@ function EditNewDirector() {
     const errors = {};
 
     userWebsites.forEach((site) => {
-      console.log(site, "===>site");
       if (!site.admin_panel_id) {
         errors[`admin_panel_id_${site.id}`] = "Admin panel ID is required.";
       }
@@ -188,22 +186,10 @@ function EditNewDirector() {
         }
       } else if (site.commission_type == "2" || site.commission_type == "3") {
         if (!site.share || site.share == 0) {
-          console.log(
-            !site.share,
-            site.share == 0,
-            !site.share || site.share > 0,
-            "==>!site.share || site.share > 0"
-          );
           errors[`share_${site.id}`] = "Downline share is required.";
         }
 
         // if (!site.downline_comm || site.downline_comm == 0) {
-        //   console.log(
-        //     !site.share,
-        //     site.share > 0,
-        //     !site.share || site.share == 0,
-        //     "==>!site.share || site.share > 0"
-        //   );
         //   errors[`downline_comm_${site.id}`] =
         //     "Downline commission is required.";
         // }
@@ -291,7 +277,6 @@ function EditNewDirector() {
         }
       }
     });
-    console.log(errors);
     return errors;
   };
 
@@ -495,14 +480,11 @@ function EditNewDirector() {
 
     const websiteErrors = validateAddWebsites(addWebsites);
     const isFormValid = validateForm();
-    if (!isFormValid) {
-      console.log("Form is invalid. Errors:");
-      return;
-    }
+    if (!isFormValid) return;
+
     const errors = { ...adminUserSiteErrors, ...websiteErrors };
 
     if (Object.keys(errors).length > 0) {
-      console.log(errors, "==>errors");
       setErrors(errors);
       return;
     }
@@ -1290,7 +1272,6 @@ function EditNewDirector() {
         <form className="custom-form small-font p-3">
           <div className="row align-items-center">
             <div>Active</div>
-            {console.log(adminWebsites, "==>adminWebsites")}
             {adminWebsites?.map((data, index) => (
               <div
                 key={index}
@@ -1313,7 +1294,6 @@ function EditNewDirector() {
                     const currentCommissionType =
                       commissionTypeChanges[userWebsite.website_access_id] ||
                       userWebsite.commission_type;
-                    console.log(userWebsite, "===>userWebsite")
                     return (
                       <div key={userIndex} className="w-100 mt-3 my-2  row">
                         <div className="col-2 d-flex flex-column mt-4">
@@ -1404,10 +1384,6 @@ function EditNewDirector() {
                             )}
 
                             <div className="col-2">
-                              {console.log(
-                                errors,
-                                "==>{errors[`max_chips_monthly_${userWebsite.id}`]"
-                              )}
                               <label className="small-font my-1">
                                 Monthly Amount
                               </label>

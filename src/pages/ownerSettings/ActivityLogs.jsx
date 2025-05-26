@@ -111,7 +111,6 @@ const ActivityLogs = () => {
   };
 
   const handleTabClick = (tab, type) => {
-    console.log(type, "==>/activity-logs")
     setType(type);
     setActiveTab(tab);
   };
@@ -124,7 +123,6 @@ const ActivityLogs = () => {
       if (activeTab === "employees") {
         getDirectorDownlineLoginLogsList(limit, offset)
       } else if (activeTab === "admins") {
-        console.log("Integrated Soon")
         setLogsData([]);
       }
     } else {

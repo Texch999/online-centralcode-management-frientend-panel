@@ -155,7 +155,6 @@ const AddNewOfflinePaymentModal = ({
         setSuccessPopupOpen(true);
 
       } else {
-        console.log("error");
         setloading(false)
       }
     } catch (error) {

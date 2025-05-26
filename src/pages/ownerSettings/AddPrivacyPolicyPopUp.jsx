@@ -61,8 +61,6 @@ const AddPrivacyPolicyPopUp = ({
     setSelectedStatus(selectOptionStatus);
   };
 
-  console.log(websites, "===>websites");
-
   const countryOptions = countriesData.map((item) => ({
     value: item?.id,
     label: item?.name,

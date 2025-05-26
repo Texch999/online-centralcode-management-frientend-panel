@@ -23,7 +23,6 @@ const EditPrivacyPolicy = ({
   const [error, setError] = useState("");
   const [showPrivacyText, setShowPrivacyText] = useState({ description: "" });
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
-  console.log(showPrivacyText?.description, "showPrivacyText");
   const [errorPopup, setErrorPopup] = useState(false);
 
   const [websites, setWebsites] = useState([]);
@@ -40,7 +39,6 @@ const EditPrivacyPolicy = ({
       .then((response) => {
         if (response.status === true) {
           setWebsites(response?.data);
-          console.log(response?.data, "shshhs");
         } else {
           setError("Something Went Wrong");
         }

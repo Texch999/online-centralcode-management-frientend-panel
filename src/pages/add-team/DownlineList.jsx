@@ -182,7 +182,6 @@ const DownlineList = () => {
     managemnetViewDownlinelist()
       .then((response) => {
         if (response?.status === true) {
-          console.log(response?.list);
           setDownlineList(response?.list);
         } else {
           setError("something went wrong");
@@ -211,7 +210,6 @@ const DownlineList = () => {
     dwnlineDSASuspend(userId)
       .then((response) => {
         if (response?.status === true) {
-          console.log(response?.data);
           fetchAllViewDownlineList();
         } else {
           setError("something went wrong");

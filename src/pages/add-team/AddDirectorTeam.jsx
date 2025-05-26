@@ -26,7 +26,6 @@ function AddDirectorTeam() {
   const [directorEmployeeId, setdirectorEmployeeId] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
 
-  console.log(selectedUser, "selectedUser");
   const handleBlockPopup = (id, name) => {
     setConfirmationPopup(true);
     setdirectorEmployeeId(id);
@@ -93,7 +92,6 @@ function AddDirectorTeam() {
     getDirectorEmployees({ limit: 10, offset: 0 })
       .then((response) => {
         if (response.status === true) {
-          console.log(response.data, "responseemployees");
           setTableData(response.data);
         } else {
           console.log("There Is Some Error");

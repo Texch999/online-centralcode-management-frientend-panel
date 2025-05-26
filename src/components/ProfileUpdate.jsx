@@ -95,7 +95,6 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
 
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  console.log(selectedFile, "sleetdFile");
   const handleImage = (e) => {
     const file = e.target.files[0];
     setProfileImg(URL.createObjectURL(file));
@@ -216,7 +215,6 @@ const ProfileUpdate = ({ setUpdateProfille }) => {
       if (response?.status === true) {
         // const file = response?.data?.[0]?.fileName;
         const file = response?.data;
-        console.log(file, "fileee");
         setPhotoPath(file);
         localStorage.setItem("photo", file);
         setMsg(response?.message);

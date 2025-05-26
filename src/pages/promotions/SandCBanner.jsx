@@ -84,10 +84,6 @@ const SandCBanner = () => {
     return ACTIVE_BTNS[0];
   });
 
-  console.log("selectedImage", selectedImage);
-  console.log("selectedVideo", selectedVideo);
-  console.log("selectedVideoBanner", selectedVideoBanner);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page"));
   const currentPage = page || 1;
@@ -192,7 +188,6 @@ const SandCBanner = () => {
   };
 
   const handleSelectWebsites = (selected) => {
-    console.log("selected", selected);
     setSelectWebsites(selected);
     setErrors((prev) => ({ ...prev, selectWebsites: "" }));
     const selectedWebsitelabel = selected?.label;
@@ -239,7 +234,6 @@ const SandCBanner = () => {
   };
 
   const handleFileChange = (event, type) => {
-    console.log("type", type);
     const file = event.target.files[0];
     if (!file) return;
 
@@ -291,7 +285,6 @@ const SandCBanner = () => {
   };
 
   const handleCreateBanner = async () => {
-    console.log("clickedddddddddd");
 
     let newErrors = {};
 
@@ -321,12 +314,9 @@ const SandCBanner = () => {
     }
 
     if (Object.keys(newErrors).length > 0) {
-      console.log("Validation Errors:", newErrors);
       setErrors(newErrors);
       return;
     }
-
-    console.log("Validation Passed. Proceeding...");
 
     const formData = new FormData();
     formData.append("register_id", localStorage.getItem("user_id"));
@@ -361,7 +351,6 @@ const SandCBanner = () => {
 
     setLoading(true);
     try {
-      console.log("tryingggggg");
       const response = await createBanner(formData);
       if (response.status === 200) {
         setMessage(response.message);
@@ -456,7 +445,6 @@ const SandCBanner = () => {
         setSuccessPopupOpen(true);
       }
     } catch (error) {
-      console.log("error", error);
       setLoading(false);
       setMessage(error?.message);
       setErrorPopupOpen(true);
@@ -530,7 +518,6 @@ const SandCBanner = () => {
       label: item?.label || "Unknown",
     }))
     .filter((item) => item.value !== null);
-  console.log(selectOptionsWebsites);
 
   const CRICKET_COLUMNS = [
     { header: "Date & Time", field: "dateTime", width: "10%" },

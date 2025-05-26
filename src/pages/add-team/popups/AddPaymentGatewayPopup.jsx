@@ -1026,7 +1026,6 @@ const AddPaymentGatewayPopup = ({
       setSuccessPopupOpen(true);
       resetFields();
       getDirectorAccountData();
-      console.log("api calling dir")
       setTimeout(() => {
         setSuccessPopupOpen(false);
         setOnAddPaymentGateway(false);

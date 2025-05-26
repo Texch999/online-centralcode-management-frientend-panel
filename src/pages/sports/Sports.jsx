@@ -26,7 +26,6 @@ const Sports = () => {
 
   const getCountryName = (id) => {
     const country = allCountries.find((c) => c.id === id);
-    console.log(country);
     return country ? country.name : "Unknown";
   };
   const cols = [

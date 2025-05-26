@@ -49,7 +49,6 @@ const ReferenceData = () => {
   };
 
   const handlePageChange = () => {
-    console.log(page, pageSize, "page, pageSize");
     if (activeBtn === "Rejection Reasons") {
       getRejReasons(intialpage, pageSize);
     } else {

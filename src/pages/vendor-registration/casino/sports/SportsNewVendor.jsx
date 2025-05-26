@@ -445,7 +445,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     <>
       {isLoading ? (
         <div className="spinner" style={{ zIndex: 1000 }}>
-          {console.log("loading......")}
           <div className="spinner-circle"></div>
         </div>
       ) : (

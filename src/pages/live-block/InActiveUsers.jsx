@@ -26,7 +26,6 @@ function InActiveUsers() {
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 4;
   const [totalRecords, setTotalRecords] = useState(0);
-  console.log(totalRecords, "totalRecords");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || 1);
   const [currentPage, setCurrentPage] = useState(page);
@@ -134,7 +133,6 @@ function InActiveUsers() {
     getInActiveUsers(params)
       .then((response) => {
         if (response?.status === true) {
-          console.log(response?.data, "userss");
           setUsersData(response?.data);
           setTotalRecords(response?.totalCount?.count);
         } else {
@@ -210,7 +208,6 @@ function InActiveUsers() {
     suspendInActiveUsers(websiteId, userId)
       .then((response) => {
         if (response.status === true) {
-          console.log(response?.data);
           fetchAllUsers(limit, offset, website_id);
           setMsg(response?.message);
           setShowDeletePopup(false)

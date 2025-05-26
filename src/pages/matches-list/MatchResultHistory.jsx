@@ -14,7 +14,6 @@ const MatchResultHistory = () => {
   const location = useLocation();
   const match = location?.state?.match;
 
-  console.log(id, "paramsss");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [matchData, setMatchData] = useState([]);

@@ -101,7 +101,6 @@ const OfflineDW = () => {
     };
     getOfflineDWDirectors(params)
       .then((response) => {
-        console.log(response?.list);
         setData(response?.list);
         setTotalRecords(response?.count);
       })

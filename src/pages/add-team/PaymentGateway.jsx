@@ -117,7 +117,6 @@ const PaymentGateway = () => {
         setTotalRecords(response?.meta?.totalCount);
       }
     } catch (error) {
-      console.log(error?.message);
       setError(error?.message);
       setErrorPopup(true);
       setTimeout(() => {
@@ -279,13 +278,11 @@ const PaymentGateway = () => {
     setLoading(true);
     getDirectorAccountDetails({ page, pageSize })
       .then((response) => {
-        console.log("getDirectorAccountDetails success", response.data);
         setAccountList(response.data);
         settotalDirRecords(response?.totalCount);
       })
       .catch((error) => {
         setError(error?.message);
-        console.log("getDirectorAccountDetails error", error);
       })
       .finally(() => {
         setLoading(false);
@@ -304,12 +301,10 @@ const PaymentGateway = () => {
     setLoading(true);
     getCountries()
       .then((response) => {
-        // console.log("getCountries success", response.data);
         setCountries(response.data);
       })
       .catch((error) => {
         setError(error?.message);
-        // console.log("getCountries error", error);
       })
       .finally(() => {
         setLoading(false);
@@ -330,7 +325,6 @@ const PaymentGateway = () => {
 
   const suspendStatus = () => {
     setBlockLoading(true);
-    console.log("block clicked again 567");
 
     suspendDirectorAccountPaymentDetails(paymentId, status_id)
       .then((response) => {

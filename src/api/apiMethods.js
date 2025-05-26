@@ -159,15 +159,12 @@ export const blockAndUnblock = (id, data) =>
 
 //VijayaLakshmi
 const getPromotionsTypes = (params) => {
-  console.log("params", params);
   return apiRequest("getPromotionsTypes", {}, params);
 };
 export const getPromotionsTypesDirector = (params) => {
-  console.log("params", params);
   return apiRequest("getPromotionsTypesDirector", {}, params);
 };
 const getPromotionsImage = (params) => {
-  console.log("params", params);
   return apiRequest("getPromotionsImage", {}, params);
 };
 const createPromotionImages = (data) => {
@@ -187,7 +184,6 @@ export const createBroadCasting = (data) => {
   return apiRequest("createBroadCasting", data);
 };
 export const editBroadCasting = (id, data) => {
-  console.log(id, "id");
   return apiRequest("editBroadCasting", data, id);
 };
 export const statusBroadCasting = (id, data) => {

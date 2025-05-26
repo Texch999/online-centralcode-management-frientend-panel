@@ -60,7 +60,6 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
       .then((response) => {
         if (response?.status === true) {
           setCountryData(response?.data);
-          console.log(response, "countries");
         } else {
           setError("Something Went Wrong");
         }
@@ -74,13 +73,10 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
   }, [show]);
   const [adminWebsite, setAllAdminWebsite] = useState();
 
-  console.log(adminWebsite, "adminWebsite");
-
   const GetAllAdminWebsites = () => {
     getAdminWebsites()
       .then((response) => {
         if (response?.status === true) {
-          console.log(response.data, "AdminWebsites");
           setAllAdminWebsite(response.data);
         } else {
           setError("Something Went Wrong");
@@ -98,21 +94,18 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
     value: Number(value),
     label,
   }));
-  console.log(adminRoless, "adminRoless");
+
   const handleRoleChange = (selectedOption) => {
     setRoleId(selectedOption.value);
   };
   const [selectedAdmin, setSelectedAdmin] = useState(null);
   const [userWebsites, setUserWebsites] = useState([]);
-  console.log(selectedAdmin, "selectedAdmin");
 
   const handleAdminRoleChange = (selectedOption) => {
-    console.log("Selected Admin:", selectedOption);
     setSelectedAdmin(selectedOption);
     const adminData = adminWebsite.find(
       (admin) => admin.id === selectedOption.value
     );
-    console.log("User Websites Found:", adminData?.userWebsites || []);
     setUserWebsites(adminData?.userWebsites || []);
   };
 
@@ -160,7 +153,6 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
       },
     }));
   };
-  console.log(websiteDetails, "websiteDetails");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -231,7 +223,6 @@ const AddDirectorAdminModal = ({ show, handleClose, getDirectorDwnSAList }) => {
         }
       })
       .catch((error) => console.log(error));
-    console.log("Final Submitted Data:", finalData);
     alert(JSON.stringify(finalData, null, 2));
   };
 

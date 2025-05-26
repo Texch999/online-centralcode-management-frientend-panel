@@ -322,7 +322,6 @@ function AddNewDirectorSuperAdmin() {
   };
 
   const handleSubmit = (e) => {
-    console.log("management clicked");
 
     e.preventDefault();
     let hasErrors = false;
@@ -330,7 +329,6 @@ function AddNewDirectorSuperAdmin() {
 
     const loginErrors = validateForm();
     if (Object.keys(loginErrors).length > 0) {
-      console.log(loginErrors, "=>loginErrors");
       hasErrors = true;
       setErrors(loginErrors);
     }
@@ -364,19 +362,14 @@ function AddNewDirectorSuperAdmin() {
     if (hasErrors) {
       return;
     }
-    if (!validateForm()) {
-      console.log("Form validation failed");
-      return;
-    }
+    if (!validateForm()) return;
 
-    if (!validateForm()) {
-      console.log("Form validation failed");
-      return;
-    }
+
+    if (!validateForm()) return;
+
 
     if (!selectedAdmins || Object.keys(selectedAdmins).length === 0) {
       setShowWebsiteCreationErrors("Please select at least one Admin Website");
-      console.log("No admin website selected");
       return;
     }
 
@@ -486,7 +479,6 @@ function AddNewDirectorSuperAdmin() {
         }
       })
       .catch((error) => {
-        console.log(error, "==>error");
         setLoader(false);
         setShowWebsiteCreationErrors(
           error.message[0].message || error.message[0]

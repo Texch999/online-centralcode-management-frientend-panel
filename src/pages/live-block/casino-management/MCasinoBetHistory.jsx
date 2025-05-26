@@ -22,7 +22,6 @@ const MCasinoBetHistory = () => {
   ];
 
   const { gamename, usergame, bethistory } = useParams();
-  console.log(gamename, usergame, bethistory, "==>priya");
   const navigate = useNavigate();
   const BET_HISTORY_COLUMNS = [
     { header: "S. No", field: "sno" },

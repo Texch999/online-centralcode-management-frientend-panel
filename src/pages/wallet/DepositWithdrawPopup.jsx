@@ -46,7 +46,6 @@ function DepositWithdrawPopup({
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption.value);
-    console.log("Selected Reason ID:", selectedOption);
   };
 
   const [ticketaction, setTicketAction] = useState("");

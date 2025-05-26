@@ -35,8 +35,6 @@ function EditDirectorAdminPopup({
   const [selectedCountryId, setSelectedCountryId] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
 
-  console.log(accountType, "accountType");
-
   const handleCountryChange = (event) => {
     const selectedCode = event.target.value;
     const selectedCountry = countryData?.find(
@@ -57,16 +55,12 @@ function EditDirectorAdminPopup({
   };
 
   const [selectedAdminRoleIds, setSelectedAdminRoleIds] = useState([]);
-  console.log(selectedAdminRoleIds, "selectedAdminRoleIds");
-  console.log(roleId, "roleId");
-  console.log(countryData, "countryData");
 
   const GetAllCountries = () => {
     getCountries()
       .then((response) => {
         if (response?.status === true) {
           setCountryData(response?.data);
-          console.log(response, "countries");
         } else {
           setError("Something Went Wrong");
         }
@@ -79,12 +73,10 @@ function EditDirectorAdminPopup({
     GetAllCountries();
   }, []);
   const [adminWebsite, setAllAdminWebsite] = useState();
-  console.log(adminWebsite, "adminWebsite");
   const GetAllAdminWebsites = () => {
     getAdminWebsites()
       .then((response) => {
         if (response?.status === true) {
-          console.log(response.data, "AdminWebsites");
           setAllAdminWebsite(response.data);
         } else {
           setError("Something Went Wrong");
@@ -98,14 +90,12 @@ function EditDirectorAdminPopup({
     GetAllAdminWebsites();
   }, []);
   const [userWebsite, setAllUserWebsite] = useState();
-  console.log(userWebsite, "userWebsite");
 
   const GetAllUserWebsites = () => {
     getUserWebsites()
       .then((response) => {
         if (response?.status === true) {
           setAllUserWebsite(response.data);
-          console.log(response, "userWebsites");
         } else {
           setError("Something Went Wrong");
         }
@@ -124,9 +114,7 @@ function EditDirectorAdminPopup({
   }));
 
   const handleAdminRoleChange = (selectedOption) => {
-    console.log(selectedOption, "Selected Option");
     const selectedId = selectedOption ? selectedOption.value : null;
-    console.log(selectedId, "Selected ID");
     setSelectedAdminRoleIds(selectedId);
   };
 
@@ -155,12 +143,10 @@ function EditDirectorAdminPopup({
   };
 
   const [directorData, setDirectorData] = useState();
-  console.log(directorData, "directorData");
   const GetIndividualDirectors = () => {
     getDirectorDetailsById(directorId)
       .then((response) => {
         if (response) {
-          console.log(response, "response12356");
           setDirectorData(response.data);
         } else {
           setError("No employee data found");
@@ -225,7 +211,6 @@ function EditDirectorAdminPopup({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
   };
 
   return (

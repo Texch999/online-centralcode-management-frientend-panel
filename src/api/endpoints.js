@@ -1,6 +1,5 @@
 const userID = () => {
   const id = localStorage.getItem("user_id");
-  console.log(id, "id");
   if (!id) {
     console.error("User ID is not available.");
     return null;
@@ -117,9 +116,8 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/banners/user/${id}${
-        query ? `?${query}` : ""
-      }`;
+      return `/${user}/${userID()}/banners/user/${id}${query ? `?${query}` : ""
+        }`;
     },
   },
 
@@ -369,9 +367,8 @@ const endpoints = {
       const user = userid === "1" ? "director" : "user";
       const { id, ...filteredParams } = params;
       const query = new URLSearchParams(filteredParams).toString();
-      return `/${user}/${userID()}/broadcastings/${id}${
-        query ? `?${query}` : ""
-      }`;
+      return `/${user}/${userID()}/broadcastings/${id}${query ? `?${query}` : ""
+        }`;
     },
   },
 
@@ -615,8 +612,7 @@ const endpoints = {
   readNotificationsforDirector: {
     method: "patch",
     url: (data) =>
-      `/director/${userID()}/notifications/${data.id}/readStatus/${
-        data.status
+      `/director/${userID()}/notifications/${data.id}/readStatus/${data.status
       }`,
   },
   DirectorOffilneDepositTicket: {
@@ -857,8 +853,7 @@ const endpoints = {
   getAdminUserWebsitesListProfile: {
     method: "get",
     url: (data) =>
-      `/user/${userID()}/director/${data?.dirId}/adminPanel/${
-        data?.adminPanelId
+      `/user/${userID()}/director/${data?.dirId}/adminPanel/${data?.adminPanelId
       }`,
   },
   //sports
@@ -886,7 +881,6 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const { id, ...filteredParams } = params;
-      console.log(params, "parmasss");
       const query = new URLSearchParams(filteredParams).toString();
       return `/user/${userID()}/sport/${id}/getAllMatches?${query}`;
     },
@@ -903,22 +897,19 @@ const endpoints = {
   setFancyResults: {
     method: "post",
     url: (id) =>
-      `/user/${userID()}/sport/${id?.sportId}/match/${
-        id?.matchId
+      `/user/${userID()}/sport/${id?.sportId}/match/${id?.matchId
       }/announceFancyResult`,
   },
   suspendFancyResult: {
     method: "post",
     url: (id) =>
-      `/user/${userID()}/sport/${id?.sportId}/match/${
-        id?.matchId
+      `/user/${userID()}/sport/${id?.sportId}/match/${id?.matchId
       }/suspendFancyResult`,
   },
   announceCricketResults: {
     method: "post",
     url: (id) =>
-      `/user/${userID()}/sport/${id?.sportId}/match/${
-        id?.matchId
+      `/user/${userID()}/sport/${id?.sportId}/match/${id?.matchId
       }/announceCricketResult`,
   },
   getMatchesList: {
@@ -951,8 +942,7 @@ const endpoints = {
   suspendProvider: {
     method: "post",
     url: (id) =>
-      `/user/${userID()}/vendor/${id?.vId}/status/${id?.statusId}/provider/${
-        id?.prvId
+      `/user/${userID()}/vendor/${id?.vId}/status/${id?.statusId}/provider/${id?.prvId
       }`,
   },
   getProvidersById: {
@@ -988,8 +978,7 @@ const endpoints = {
   deleteVendorpayment: {
     method: "post",
     url: (data) =>
-      `/user/${userID()}/vendor/${data?.vId}/delete/vendorPayment/${
-        data?.payId
+      `/user/${userID()}/vendor/${data?.vId}/delete/vendorPayment/${data?.payId
       }`,
   },
 };

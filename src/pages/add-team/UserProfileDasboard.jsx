@@ -265,7 +265,6 @@ const DefaultBottomShow = ({ userData, id, getById }) => {
     dirProfileBlockUnblock(id)
       .then((response) => {
         if (response?.status === true) {
-          console.log(response?.data);
           setMsg(response?.message);
           setShowSuccessPopup(true);
           setTimeout(() => {
@@ -406,7 +405,6 @@ const UserProfileDashboard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [directorData, setDirectorData] = useState([]);
-  console.log(directorData, "---directorData");
   const [error, setError] = useState("");
   const [editData, setEditData] = useState([]);
   const [errorPopupOpen, setErrorPopupOpen] = useState(false);
@@ -462,7 +460,6 @@ const UserProfileDashboard = () => {
     getDirectorDetailsById(id)
       .then((response) => {
         if (response) {
-          console.log(response, "response12357");
           setDirectorData(response.data);
           dispatch(setDirProfileData(response?.data));
         } else {
@@ -492,7 +489,6 @@ const UserProfileDashboard = () => {
     setShowResetPasswordPopup(false);
   };
   const allCountries = useSelector((item) => item.allCountries);
-  console.log(allCountries, "allCountries");
 
   const getCountryName = (id) => {
     const country = allCountries.find((c) => c.id === id);

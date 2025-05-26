@@ -99,7 +99,6 @@ function Tickets() {
       .catch((error) => {
         setApiLoading(false);
         setError(error?.message);
-        console.log("fetchDeposits error", error);
       });
   };
 
@@ -126,7 +125,6 @@ function Tickets() {
       .catch((error) => {
         setIsPopupSpnner(false)
         setError(error?.message);
-        console.log("fetchDeposits error", error);
       });
   };
 

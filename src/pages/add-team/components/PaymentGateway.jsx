@@ -40,7 +40,6 @@ const PaymentGateway = ({ dwnlnId }) => {
   const [showPaymentGatewayData, setShowPaymentGatewayData] = useState([]);
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item.allCountries);
-  console.log(allCountries, "allCountries");
   const itemsPerPage = 2;
   const [totalRecords, setTotalRecords] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -106,7 +105,6 @@ const PaymentGateway = ({ dwnlnId }) => {
     managementDwnProfileDirPaymentDetails(params)
       .then((response) => {
         if (response.status === true) {
-          console.log(response.data, "response.data");
           setShowPaymentGatewayData(response?.data);
           setTotalRecords(response?.totalCount);
         } else {
@@ -114,7 +112,6 @@ const PaymentGateway = ({ dwnlnId }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
         setError(error?.message);
       })
       .finally(() => {

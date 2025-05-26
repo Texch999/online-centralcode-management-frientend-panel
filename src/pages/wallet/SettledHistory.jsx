@@ -37,7 +37,6 @@ function SettledHistory() {
 
   const getCurrencyName = (id) => {
     const currency = allCountries.find((c) => c.id === id);
-    console.log(currency);
     return currency ? currency.currency_name : "Unknown";
   };
   const SETTLED_HISTORY_COLUMNS = [

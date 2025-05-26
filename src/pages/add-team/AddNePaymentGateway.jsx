@@ -42,7 +42,6 @@ const AddNePaymentGateway = () => {
   const { actionType } = location.state || {};
 
   const handleAddModal = (id, country, available_id) => {
-    console.log("add paymnetdetails popup");
     setAddPaymentId(id);
     setCountryId(country);
     setOnAddPaymentGateway(true);
@@ -83,7 +82,6 @@ const AddNePaymentGateway = () => {
         })
         .catch((error) => {
           setError(error?.message);
-          console.log("getDirectorAccountDetails error", error);
         });
     } else {
       console.log("No valid fetch function executed");
@@ -106,7 +104,6 @@ const AddNePaymentGateway = () => {
       .catch((error) => {
         setLoading(false);
         setError(error?.message);
-        console.log("getDirectorAccountDetails error", error);
       });
   };
   useEffect(() => {
@@ -174,7 +171,6 @@ const AddNePaymentGateway = () => {
     <>
       {loading ? (
         <div className="spinner" style={{ zIndex: 1000 }}>
-          {console.log("loading......")}
           <div className="spinner-circle"></div>
         </div>
       ) : (

@@ -21,8 +21,6 @@ function RiskSports() {
     setActiveSport(sport);
   };
 
-  console.log(activeSport, "===>activeSport");
-
   const HIGH_PROFIT_PLAYERS_COLUMNS = [
     { header: "S.NO", field: "s_no" },
     { header: "U.ID", field: "name" },
