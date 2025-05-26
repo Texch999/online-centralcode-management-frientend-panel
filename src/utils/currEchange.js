@@ -2,7 +2,6 @@
 //a mount default 1
 // first curr value 
 const currencyConvert = (amount, firstCur, secCur) => {
-
     const secFin = (parseFloat(amount) / parseFloat(firstCur)) * parseFloat(secCur);
     return secFin;
 }

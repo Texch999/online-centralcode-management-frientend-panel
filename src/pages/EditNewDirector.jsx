@@ -29,7 +29,6 @@ function EditNewDirector() {
   const location = useLocation();
   const mode = location.state?.mode || "add";
   const userId = location.state?.userId;
-  console.log(userId, "idddd userparams");
   const Role = localStorage.getItem("role_code");
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [showManagementPassword, setShowManagementPassword] = useState(false);
@@ -38,12 +37,12 @@ function EditNewDirector() {
   const [managementPassword, setManagementPassword] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
+  const [platformFee, setPlatformFee] = useState("");
   const [countryData, setCountryData] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
   const [adminWebsite, setAllAdminWebsite] = useState([]);
   const [individualDirectorData, setIndividualDirectorData] = useState(null);
-  const [individualSuperAdminData, setIndividualSuperAdminData] =
-    useState(null);
+  const [individualSuperAdminData, setIndividualSuperAdminData] = useState(null);
   const [websiteDetails, setWebsiteDetails] = useState({});
   const [selectedRole, setSelectedRole] = useState("");
   const [userWebsites, setUserWebsites] = useState([]);
@@ -80,7 +79,6 @@ function EditNewDirector() {
     const country = allCountries.find((country) => country.id === locationId);
     return country?.name.charAt(0).toUpperCase() + country?.name.slice(1);
   };
-  console.log(loader, "==>loader");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,11 +130,19 @@ function EditNewDirector() {
     if (!managementPassword) {
       newErrors.managementPassword = "Management Password is required.";
     }
+
     if (isCreditAllowed) {
       if (!creditreference) {
         newErrors.creditreference = "Credit Limit is required.";
       }
     }
+
+    if (!platformFee) {
+      newErrors.platformFee = "Platform Fee is required.";
+    } else if (parseFloat(platformFee) < 0) {
+      newErrors.platformFee = "Platform fee must be at least 1";
+    }
+
     setErrors(newErrors);
     console.log(newErrors, "==>newErrors");
     return Object.keys(newErrors).length === 0;
@@ -165,10 +171,10 @@ function EditNewDirector() {
           errors[`max_chips_monthly_${site.id}`] =
             "Max chips monthly is required.";
         }
-        if (!site.downline_comm || site.downline_comm == 0) {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission is required.";
-        }
+        // if (!site.downline_comm || site.downline_comm == 0) {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission is required.";
+        // }
 
         if (
           site.is_casino === "1" &&
@@ -191,16 +197,16 @@ function EditNewDirector() {
           errors[`share_${site.id}`] = "Downline share is required.";
         }
 
-        if (!site.downline_comm || site.downline_comm == 0) {
-          console.log(
-            !site.share,
-            site.share > 0,
-            !site.share || site.share == 0,
-            "==>!site.share || site.share > 0"
-          );
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission is required.";
-        }
+        // if (!site.downline_comm || site.downline_comm == 0) {
+        //   console.log(
+        //     !site.share,
+        //     site.share > 0,
+        //     !site.share || site.share == 0,
+        //     "==>!site.share || site.share > 0"
+        //   );
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission is required.";
+        // }
 
         if (!site.caschip_values || site.caschip_values == "") {
           errors[`caschip_values_${site.id}`] =
@@ -234,16 +240,16 @@ function EditNewDirector() {
             "Max chips monthly is required.";
         }
 
-        if (!site.downline_comm || site.downline_comm.trim() === "") {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission is required.";
-        } else if (isNaN(site.downline_comm)) {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission must be a number.";
-        } else if (parseInt(site.downline_comm) > 100) {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission must be less than or equal to 100.";
-        }
+        // if (!site.downline_comm || site.downline_comm.trim() === "") {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission is required.";
+        // } else if (isNaN(site.downline_comm)) {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission must be a number.";
+        // } else if (parseInt(site.downline_comm) > 100) {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission must be less than or equal to 100.";
+        // }
 
         if (
           site.is_casino === "1" &&
@@ -265,16 +271,16 @@ function EditNewDirector() {
             "Downline share must be less than or equal to 100.";
         }
 
-        if (!site.downline_comm || site.downline_comm.trim() === "") {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission is required.";
-        } else if (isNaN(site.downline_comm)) {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission must be a number.";
-        } else if (parseInt(site.downline_comm) > 100) {
-          errors[`downline_comm_${site.id}`] =
-            "Downline commission must be less than or equal to 100.";
-        }
+        // if (!site.downline_comm || site.downline_comm.trim() === "") {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission is required.";
+        // } else if (isNaN(site.downline_comm)) {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission must be a number.";
+        // } else if (parseInt(site.downline_comm) > 100) {
+        //   errors[`downline_comm_${site.id}`] =
+        //     "Downline commission must be less than or equal to 100.";
+        // }
 
         if (!site.caschip_values || site.caschip_values.trim() === "") {
           errors[`caschip_values_${site.id}`] =
@@ -306,6 +312,7 @@ function EditNewDirector() {
               setIsCreditAllowed(response.data.is_credit == 1);
               setCreditReference(response.data.credit_reference || 0);
               setCreditBalance(response.data.credit_balance || 0);
+              setPlatformFee(response.data.platform_fee || 0);
               if (response.data.accessWebsites.length > 0) {
                 const updatedUserWebsites = response.data.accessWebsites.map(
                   (site) => {
@@ -331,8 +338,8 @@ function EditNewDirector() {
                           chip_percentage: site.chip_percentage || "",
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
-                          downline_comm: site.downline_comm || "",
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
                         };
@@ -346,8 +353,8 @@ function EditNewDirector() {
                           chip_percentage: site.chip_percentage || "",
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
-                          downline_comm: site.downline_comm || "",
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
                         };
@@ -361,8 +368,8 @@ function EditNewDirector() {
                           chip_percentage: site.chip_percentage || "",
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
-                          downline_comm: site.downline_comm || "",
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
                         };
@@ -376,8 +383,10 @@ function EditNewDirector() {
               }
             }
           })
-          .catch((error) =>
+          .catch((error) => {
+            setLoader(false);
             console.error("Error fetching director details:", error)
+          }
           );
       } else if (Role === "director") {
         getSuperAdminDetailsById(userId);
@@ -416,12 +425,12 @@ function EditNewDirector() {
                           chip_percentage: site.rentPercentage || "",
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                         };
                       case 2:
                         return {
                           ...basePayload,
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                           share: site.share || "",
                           caschip_values: site.caschip_values || "",
                           rent_start_date: site.rent_start_date || "",
@@ -431,7 +440,7 @@ function EditNewDirector() {
                           chip_percentage: site.rentPercentage || "",
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                         };
                       case 3:
                         return {
@@ -446,7 +455,7 @@ function EditNewDirector() {
                           chip_percentage: site.rentPercentage || "",
                           is_casino: site.is_casino || false,
                           caschip_values: site.caschip_values || "",
-                          downline_comm: site.downline_comm || "",
+                          // downline_comm: site.downline_comm || "",
                         };
                       default:
                         return basePayload;
@@ -507,6 +516,7 @@ function EditNewDirector() {
       parent_password: managementPassword,
       is_credit: isCreditAllowed == true ? 1 : 2,
       credit_reference: isCreditAllowed == true ? creditreference : 0,
+      platformFee: platformFee,
       accessWebsites: [
         ...userWebsites.map((site) => ({
           id: site.id,
@@ -529,7 +539,7 @@ function EditNewDirector() {
             : {
               is_primary: site.is_primary == 1 ? 1 : 2,
               share: parseFloat(site.share) || null,
-              downline_comm: parseFloat(site.downline_comm) || null,
+              // downline_comm: parseFloat(site.downline_comm) || null,
               caschip_values: parseFloat(site.caschip_values) || null,
               is_primary: site.is_primary,
             }),
@@ -561,7 +571,7 @@ function EditNewDirector() {
             ...(site.is_casino === 1
               ? { caschip_values: parseFloat(site.caschip_values) || null }
               : {}),
-            downline_comm: parseFloat(site.downline_comm) || null,
+            // downline_comm: parseFloat(site.downline_comm) || null,
           }))
           : [],
     };
@@ -595,6 +605,7 @@ function EditNewDirector() {
       country_id: parseInt(selectedCountryCode),
       currency_id: parseInt(selectedCurrencyCode),
       name: name,
+      platformFee: platformFee,
       parent_password: managementPassword,
       accessWebsites: [
         ...userWebsites.map((site) => ({
@@ -688,7 +699,7 @@ function EditNewDirector() {
         chip_percentage: site.chip_percentage,
         is_casino: site.is_casino,
         caschip_values: site.caschip_values,
-        downline_comm: formatFloatValue(site.downline_comm),
+        // downline_comm: formatFloatValue(site.downline_comm),
         share: formatFloatValue(site.share),
         status: site.status,
         is_primary: site.is_primary == 1 ? 1 : 2,
@@ -1130,6 +1141,53 @@ function EditNewDirector() {
               {errors.selectedCountryCode && (
                 <span className="text-danger small-font">
                   {errors.selectedCountryCode}
+                </span>
+              )}
+            </div>
+
+            <div className="p-1  col-2 position-relative">
+              <label className="small-font my-1">Platform Fee</label>
+              <div className="w-100 rounded border-grey3  input-css4">
+                <input
+                  type="text"
+                  placeholder="Enter platform fee"
+                  className="border-grey3 small-font rounded all-none input-css w-100"
+                  value={platformFee}
+                  // onChange={(e) => setPlatformFee(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    if (value === "") {
+                      setPlatformFee("");
+                      return;
+                    }
+
+                    if (/^([0-4](\.\d{0,2})?|5(\.0{0,2})?)?$/.test(value)) {
+                      setPlatformFee(value);
+                    } else if (/^5$|^5\.$|^5\.0$|^5\.00$/.test(value)) {
+
+                      setPlatformFee(value);
+                    }
+                  }}
+                  onBlur={(e) => {
+                    let numericValue = parseFloat(e.target.value);
+
+                    if (isNaN(numericValue) || numericValue < 0) {
+                      numericValue = 0;
+                    } else if (numericValue > 5) {
+                      numericValue = 5;
+                    }
+
+                    const formattedValue = numericValue.toFixed(2);
+                    setPlatformFee(formattedValue);
+                  }}
+                  required
+                />
+              </div>
+
+              {errors?.platformFee && (
+                <span className="text-danger small-font error">
+                  {errors?.platformFee}
                 </span>
               )}
             </div>
@@ -1826,7 +1884,7 @@ function EditNewDirector() {
                                 </span>
                               )}
                             </div>
-                            <div className="col-2">
+                            {/* <div className="col-2">
                               <label className="small-font my-1 fw-600">
                                 Commission (less than 5%)
                               </label>
@@ -1891,7 +1949,7 @@ function EditNewDirector() {
                                   {errors[`downline_comm_${userWebsite.id}`]}
                                 </span>
                               )}
-                            </div>
+                            </div> */}
                             <div className="col-1">
                               <label className="small-font my-1 white-space fw-600">
                                 Casino chip Value
@@ -2574,7 +2632,7 @@ function EditNewDirector() {
                                             )}
                                         </div>
 
-                                        <div className="col position-relative">
+                                        {/* <div className="col position-relative">
                                           <label className="small-font my-1 fw-600 d-block">
                                             Commission (less than 5%)
                                           </label>
@@ -2675,7 +2733,7 @@ function EditNewDirector() {
                                                 }
                                               </span>
                                             )}
-                                        </div>
+                                        </div> */}
 
                                         <div className="col position-relative">
                                           <label className="small-font fw-600 my-1 d-block">
@@ -2860,7 +2918,7 @@ function EditNewDirector() {
                                             )}
                                         </div>
 
-                                        <div className="col position-relative">
+                                        {/* <div className="col position-relative">
                                           <label className="small-font fw-600 my-1 d-block">
                                             Commission (less than 5%)
                                           </label>
@@ -2955,7 +3013,7 @@ function EditNewDirector() {
                                                 }
                                               </span>
                                             )}
-                                        </div>
+                                        </div> */}
 
                                         <div className="col position-relative">
                                           <label className="small-font my-1 fw-600 d-block">
