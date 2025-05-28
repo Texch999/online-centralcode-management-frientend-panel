@@ -11,6 +11,10 @@ function MyVendorsAccount() {
   const [vendorData, setVendorData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const filteredData = vendorData.filter((item) =>
+    item?.vendorName?.toLowerCase().includes(searchInput.toLowerCase())
+  );
   const VENDOR_COLUMNS = [
     { header: "Vendor Name", field: "vendor_name" },
     { header: "Providers", field: "providing" },
@@ -29,7 +33,7 @@ function MyVendorsAccount() {
   const handleVendorPayemnt = () => {
     setVendorPayment(true);
   };
-  const VENDOR_DATA = vendorData?.map((item, index) => ({
+  const VENDOR_DATA = filteredData?.map((item, index) => ({
     vendor_name: (
       <div>
         {item?.vendorName}
@@ -98,7 +102,12 @@ function MyVendorsAccount() {
         <h6 className="yellow-font mb-0">My Vendors Account</h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
+          <input
+            className="small-font all-none"
+            placeholder="Search by vendor name..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
         </div>
       </div>
       <div className="flex-between mb-3">
@@ -133,7 +142,13 @@ function MyVendorsAccount() {
         setVendorPaymentModal={setVendorPayment}
         data={vendorData}
       />
-      <Table columns={VENDOR_COLUMNS} data={VENDOR_DATA} itemsPerPage={2} />
+      {loading ? (
+        <div className="spinner">
+          <div className="spinner-circle"></div>
+        </div>
+      ) : (
+        <Table columns={VENDOR_COLUMNS} data={VENDOR_DATA} itemsPerPage={2} />
+      )}
     </div>
   );
 }

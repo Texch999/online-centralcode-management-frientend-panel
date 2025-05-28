@@ -602,8 +602,14 @@ const getVendorAccounts = (data) => {
 const getSettledHistory = (data) => {
   return apiRequest("getSettledHistory", data);
 };
-const deleteVendorpayment = (vId,payId) => {
-  return apiRequest("deleteVendorpayment",vId, {vId,payId});
+const deleteVendorpayment = (vId, payId) => {
+  return apiRequest("deleteVendorpayment", vId, { vId, payId });
+};
+const getPyamentById = (payId, data) => {
+  return apiRequest("getPyamentById", data, payId);
+};
+const updatePayment = (id, data) => {
+  return apiRequest("updatePayment", data, id);
 };
 
 export {
@@ -766,4 +772,6 @@ export {
   getVendorAccounts,
   getSettledHistory,
   deleteVendorpayment,
+  getPyamentById,
+  updatePayment,
 };

@@ -80,15 +80,15 @@ const SportMatches = () => {
   const cols = [
     // { header: "S No", field: "sno" },
 
-    { header: "Date", field: "date",width:"10%" },
-    { header: "Upcoming Matches", field: "games",width:"25%" },
-    { header: "MatchId", field: "matchid",width:"10%" },
-    { header: "Market", field: "market",width:"10%" },
+    { header: "Date", field: "date", width: "10%" },
+    { header: "Upcoming Matches", field: "games", width: "25%" },
+    { header: "MatchId", field: "matchid", width: "10%" },
+    { header: "Market", field: "market", width: "10%" },
     // { header: "Winner", field: "winner" },
     // { header: "IP", field: "ip" },
-    { header: "Status", field: "status",width:"10%" },
+    { header: "Status", field: "status", width: "10%" },
 
-    { header: "Profit & Loss", field: "pl",width:"10%"},
+    { header: "Profit & Loss", field: "pl", width: "10%" },
 
     {
       header: (
@@ -145,8 +145,6 @@ const SportMatches = () => {
             .join(", ") || "-"}
         </div>
       ),
-      // winner: <div>-</div>,
-      // ip: <div>-</div>,
       status: (
         <div>
           {item?.isClosed === 1 ? (
@@ -201,12 +199,10 @@ const SportMatches = () => {
               size={18}
               className="red-font col-2"
               title="You don't have access to active!"
-              // onClick={() => handleActiveModal(item?.id, item?.isClosed)}
             />
           )}
 
           <div className="rust-red-btn w-fit pointer col-2">Rollback</div>
-          {/* <div className="green-dark-bg w-fit pointer">Active</div> */}
         </div>
       ),
     };

@@ -11,6 +11,7 @@ import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { useSelector } from "react-redux";
 import SuccessPopup from "../popups/SuccessPopup";
 import moment from "moment/moment";
+import { Spinner } from "react-bootstrap";
 
 function SettledHistory() {
   const navigate = useNavigate();
@@ -22,17 +23,39 @@ function SettledHistory() {
   const allCountries = useSelector((item) => item?.allCountries);
   const [msg, setMsg] = useState("");
   const [venId, setVId] = useState(null);
-  const [paymentId, setPayId] = useState(null);
-  const handleSettledPopupOpen = () => {
+  const [payId, setPayId] = useState(null);
+  const [editPaymentId, setEditPaymentId] = useState();
+  const [settledName, setSettledName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const handleSettledPopupOpen = (id, name, vid) => {
     setSettledPopupOpen(true);
+    setEditPaymentId(id);
+    setSettledName(name);
+    setVId(vid);
   };
   const [data, setData] = useState([]);
   const [error, setError] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [dateError, setDateError] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const filteredData = data?.filter((item) =>
+    item?.name?.toLowerCase().includes(searchInput.toLowerCase())
+  );
   const handleDelete = (vid, payid, status) => {
     setConfirmationModal(true);
     setVId(vid);
     setPayId(payid);
     setStatusId(status);
+  };
+
+  const handleSubmit = () => {
+    if (!fromDate || !toDate) {
+      setDateError("Please select both From and To dates");
+      return;
+    }
+    setDateError("");
   };
 
   const getCurrencyName = (id) => {
@@ -51,13 +74,16 @@ function SettledHistory() {
   ];
 
   const getPayemnts = () => {
+    setLoading(true);
     getSettledHistory()
       .then((response) => {
         if (response) {
+          setLoading(false);
           setData(response?.venPayments);
         }
       })
       .catch((error) => {
+        setLoading(false);
         setError(error?.message);
       });
   };
@@ -69,7 +95,7 @@ function SettledHistory() {
   const suspendVendorPayment = () => {
     setBlockLoader(true);
     setConfirmationModal(true);
-    deleteVendorpayment(venId, paymentId)
+    deleteVendorpayment(venId, payId)
       .then((response) => {
         if (response) {
           setBlockLoader(false);
@@ -87,10 +113,10 @@ function SettledHistory() {
       });
   };
 
-  const SETTLED_HISTORY_DATA = data?.map((item) => ({
+  const SETTLED_HISTORY_DATA = filteredData?.map((item) => ({
     date_time: moment(item?.created_date).format("YYYY-MM-DD hh:mm A"),
     pay_from: item?.payfrom,
-    received_to: item?.name, // no field from api
+    received_to: item?.name,
     transaction_type: item?.paymentMode,
     paid_amount: item?.amount, // here whic amount need to dispaly inr or cur amount
     currency: getCurrencyName(item?.currency),
@@ -102,7 +128,9 @@ function SettledHistory() {
             <SlPencil
               size={18}
               className="black-text me-2"
-              onClick={handleSettledPopupOpen}
+              onClick={() =>
+                handleSettledPopupOpen(item?.id, item?.name, item?.venId)
+              }
             />
           ) : (
             <SlPencil
@@ -139,7 +167,12 @@ function SettledHistory() {
         </h6>
         <div className="input-pill d-flex align-items-center rounded-pill px-2">
           <FaSearch size={16} className="grey-clr me-2" />
-          <input className="small-font all-none" placeholder="Search..." />
+          <input
+            className="small-font all-none"
+            placeholder="Search by receiver... "
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
         </div>
       </div>
       <div className="flex-between mb-3">
@@ -154,29 +187,73 @@ function SettledHistory() {
             <span className=" medium-font">1000000000</span>
           </div>
         </div>
-        <div className="white-btn2 medium-font px-3">Settled History</div>
+        {/* <div className="white-btn2 medium-font px-3">Settled History</div> */}
       </div>
       <div className="row mb-3 w-50">
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">From</label>
-          <input className="input-css2 small-font" type="date" />
+          {/* <input className="input-css2 small-font" type="date" /> */}
+          <input
+            className="input-css2 small-font"
+            type="date"
+            value={fromDate}
+            onChange={(e) => {
+              setFromDate(e.target.value);
+              setDateError("");
+            }}
+          />
         </div>
         <div className="col flex-column">
           <label className="black-text4 small-font mb-1">To</label>
-          <input className="input-css2 small-font" type="date" />
+          {/* <input className="input-css2 small-font" type="date" /> */}
+          <input
+            className="input-css2 small-font"
+            type="date"
+            value={toDate}
+            onChange={(e) => {
+              setToDate(e.target.value);
+              setDateError("");
+            }}
+          />
         </div>
         <div className="col  flex-column d-flex align-items-end justify-content-end">
-          <button className="w-100 saffron-btn2 small-font">Submit</button>
+          <button
+            className={`w-100 saffron-btn2 small-font ${
+              submitLoading ? "disabled-btn" : ""
+            }`}
+            onClick={handleSubmit}
+          >
+            {submitLoading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="ms-2">Submit</span>
+              </>
+            ) : (
+              <div>Submit</div>
+            )}
+          </button>
         </div>
       </div>
-      <Table
-        columns={SETTLED_HISTORY_COLUMNS}
-        data={SETTLED_HISTORY_DATA}
-        itemsPerPage={2}
-      />
+      {loading ? (
+        <div className="spinner">
+          <div className="spinner-circle"></div>
+        </div>
+      ) : (
+        <Table columns={SETTLED_HISTORY_COLUMNS} data={SETTLED_HISTORY_DATA} />
+      )}
       <SettledPopup
         setteledPopupOpen={setteledPopupOpen}
         setSettledPopupOpen={setSettledPopupOpen}
+        setEditPaymentId={setEditPaymentId}
+        editPaymentId={editPaymentId}
+        settledName={settledName}
+        venId={venId}
       />
 
       <ConfirmationPopup
