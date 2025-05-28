@@ -5,7 +5,7 @@ import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
 import { FaRegTrashCan } from "react-icons/fa6";
 import SettledPopup from "./SettledPopup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { deleteVendorpayment, getSettledHistory } from "../../api/apiMethods";
 import ConfirmationPopup from "../popups/ConfirmationPopup";
 import { useSelector } from "react-redux";
@@ -28,6 +28,11 @@ function SettledHistory() {
   const [settledName, setSettledName] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const itemsPerPage = 5;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [totalRecords, setTotalRecords] = useState([]);
   const handleSettledPopupOpen = (id, name, vid) => {
     setSettledPopupOpen(true);
     setEditPaymentId(id);
@@ -50,14 +55,6 @@ function SettledHistory() {
     setStatusId(status);
   };
 
-  const handleSubmit = () => {
-    if (!fromDate || !toDate) {
-      setDateError("Please select both From and To dates");
-      return;
-    }
-    setDateError("");
-  };
-
   const getCurrencyName = (id) => {
     const currency = allCountries.find((c) => c.id === id);
     return currency ? currency.currency_name : "Unknown";
@@ -73,13 +70,22 @@ function SettledHistory() {
     { field: "action", width: "5%" },
   ];
 
-  const getPayemnts = () => {
+  const getPayemnts = (limit, offset, fromDate, toDate, callback) => {
+    const params = {
+      offset: offset,
+      limit: limit,
+      fromDate: fromDate,
+      toDate: toDate,
+    };
+
     setLoading(true);
-    getSettledHistory()
+    getSettledHistory(params)
       .then((response) => {
         if (response) {
           setLoading(false);
+          if (callback) callback();
           setData(response?.venPayments);
+          setTotalRecords(response?.totalCount);
         }
       })
       .catch((error) => {
@@ -88,8 +94,27 @@ function SettledHistory() {
       });
   };
   useEffect(() => {
-    getPayemnts();
+    const limit = itemsPerPage;
+    const offset = (page - 1) * itemsPerPage;
+    getPayemnts(limit, offset);
   }, []);
+
+  const handleSubmit = () => {
+    if (!fromDate || !toDate) {
+      setDateError("Please select both From and To dates");
+      return;
+    }
+    setDateError("");
+    const limit = itemsPerPage;
+    const offset = (currentPage - 1) * itemsPerPage;
+    getPayemnts(limit, offset, fromDate, toDate, () => {
+      setSubmitLoading(false);
+    });
+  };
+
+  const handlePageChange = ({ limit, offset }) => {
+    getPayemnts(limit, offset);
+  };
 
   // suspend pay
   const suspendVendorPayment = () => {
@@ -245,7 +270,13 @@ function SettledHistory() {
           <div className="spinner-circle"></div>
         </div>
       ) : (
-        <Table columns={SETTLED_HISTORY_COLUMNS} data={SETTLED_HISTORY_DATA} />
+        <Table
+          columns={SETTLED_HISTORY_COLUMNS}
+          data={SETTLED_HISTORY_DATA}
+          handlePageChange={handlePageChange}
+          itemsPerPage={itemsPerPage}
+          totalRecords={totalRecords}
+        />
       )}
       <SettledPopup
         setteledPopupOpen={setteledPopupOpen}

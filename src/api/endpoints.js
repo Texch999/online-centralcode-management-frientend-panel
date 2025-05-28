@@ -981,7 +981,11 @@ const endpoints = {
   },
   getSettledHistory: {
     method: "get",
-    url: `/user/${userID()}/vendorPayments`,
+    url: (params) => {
+      const query = new URLSearchParams(params).toString();
+      return `/user/${userID()}/vendorPayments?${query}`;
+    },
+    // url: `/user/${userID()}/vendorPayments?fromDate=2025-05-01&toDate=2025-05-29&offset=0&limit=10`,
   },
   deleteVendorpayment: {
     method: "post",
@@ -995,10 +999,12 @@ const endpoints = {
     url: (payId) => `/user/${userID()}/vendorPayment/${payId}`,
   },
   updatePayment: {
-    
     method: "post",
     url: (id) => {
-      return `/user/${userID()}/vendor/${id?.venId}/vendorPayment/${id?.editPaymentId}`},
+      return `/user/${userID()}/vendor/${id?.venId}/vendorPayment/${
+        id?.editPaymentId
+      }`;
+    },
   },
 };
 

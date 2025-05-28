@@ -599,8 +599,8 @@ const vendorPayment = (data) => {
 const getVendorAccounts = (data) => {
   return apiRequest("getVendorAccounts", data);
 };
-const getSettledHistory = (data) => {
-  return apiRequest("getSettledHistory", data);
+const getSettledHistory = (params) => {
+  return apiRequest("getSettledHistory", {},params);
 };
 const deleteVendorpayment = (vId, payId) => {
   return apiRequest("deleteVendorpayment", vId, { vId, payId });
