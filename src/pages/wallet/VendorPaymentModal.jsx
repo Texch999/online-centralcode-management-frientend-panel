@@ -12,7 +12,7 @@ import SuccessPopup from "../popups/SuccessPopup";
 const VendorPaymentModal = ({
   vendorPaymentModal,
   setVendorPaymentModal,
-  data,
+  data,fetchVendorData
 }) => {
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item?.allCountries);
@@ -21,14 +21,22 @@ const VendorPaymentModal = ({
   const [msg, setMsg] = useState("");
   const handleCancel = () => {
     setVendorPaymentModal(false);
+    setSelectedVendor(null);
+    setVendorName("");
+    setVendorType(null);
+    setCurrency(null);
+    setPaymentMode("");
+    setCurrencyAmount(0);
+    setInrAmount(0);
+    setVendorCurr(null);
   };
 
   const [vendorName, setVendorName] = useState("");
   const [vendorType, setVendorType] = useState(null);
   const [currency, setCurrency] = useState(null);
   const [paymentMode, setPaymentMode] = useState("");
-  const [currencyAmount, setCurrencyAmount] = useState(0);
-  const [inrAmount, setInrAmount] = useState(0);
+  const [currencyAmount, setCurrencyAmount] = useState(null);
+  const [inrAmount, setInrAmount] = useState(null);
   const vendorsList = data?.map((ven, index) => ({
     value: ven?.id,
     label: ven?.vendorName,
@@ -127,7 +135,7 @@ const VendorPaymentModal = ({
           setTimeout(() => {
             setSuccessPopupOpen(false);
           }, 2000);
-          data();
+          fetchVendorData();
         }
       })
       .catch((error) => {
@@ -227,19 +235,40 @@ const VendorPaymentModal = ({
               <input
                 className="input-bg rounded p-2 grey-font all-none"
                 type="text"
-                placeholder="Enter"
+                placeholder="Enter amount"
+                maxLength={11}
                 value={currencyAmount}
                 onChange={(e) => {
-                  const amt = parseFloat(e.target.value) || 0;
+                  const value = e.target.value;
+                  if (value === "") {
+                    setCurrencyAmount("");
+                    setInrAmount("");
+                    return;
+                  }
+
+                  const amt = parseFloat(value);
                   setCurrencyAmount(amt);
+
                   const fullCurrency = allCountries.find(
                     (c) => c.id === currency.value
                   );
-                  if (amt && fullCurrency?.exchange) {
+                  if (!isNaN(amt) && fullCurrency?.exchange) {
                     const inr = currencyConvert(amt, 1, fullCurrency.exchange);
                     setInrAmount(inr);
                   }
                 }}
+
+                // onChange={(e) => {
+                //   const amt = parseFloat(e.target.value);
+                //   setCurrencyAmount(amt);
+                //   const fullCurrency = allCountries.find(
+                //     (c) => c.id === currency.value
+                //   );
+                //   if (amt && fullCurrency?.exchange) {
+                //     const inr = currencyConvert(amt, 1, fullCurrency.exchange);
+                //     setInrAmount(inr);
+                //   }
+                // }}
               />
             </div>
             <div className="col-6 flex-column mt-3">

@@ -141,6 +141,7 @@ function MyVendorsAccount() {
         vendorPaymentModal={vendorPayment}
         setVendorPaymentModal={setVendorPayment}
         data={vendorData}
+        fetchVendorData={fetchVendorData}
       />
       {loading ? (
         <div className="spinner">
