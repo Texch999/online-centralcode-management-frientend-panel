@@ -126,10 +126,13 @@ function SettledHistory() {
           setBlockLoader(false);
           setMsg(response?.message);
           setSuccessPopupOpen(true);
+          setConfirmationModal(false);
           setTimeout(() => {
             setSuccessPopupOpen(false);
-            setConfirmationModal(false);
-          }, 3000);
+          }, 2000);
+          const limit = itemsPerPage;
+          const offset = (currentPage - 1) * itemsPerPage;
+          getPayemnts(limit, offset);
         }
       })
       .catch((error) => {
@@ -285,6 +288,7 @@ function SettledHistory() {
         editPaymentId={editPaymentId}
         settledName={settledName}
         venId={venId}
+        getPayemnts={getPayemnts}
       />
 
       <ConfirmationPopup

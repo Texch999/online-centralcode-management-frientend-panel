@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ErrorComponent from "../../components/ErrorComponent";
 import SuccessPopup from "../popups/SuccessPopup";
-import { resolvePath } from "react-router-dom";
+import { resolvePath, useSearchParams } from "react-router-dom";
 
 function SettledPopup({
   setteledPopupOpen,
@@ -16,6 +16,7 @@ function SettledPopup({
   editPaymentId,
   settledName,
   venId,
+  getPayemnts,
 }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,10 @@ function SettledPopup({
   const [hasAmountEdited, setHasAmountEdited] = useState(false);
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  const itemsPerPage = 5;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || 1);
+  const [currentPage, setCurrentPage] = useState(page);
 
   const handleCurrencyAmountChange = (e) => {
     setCurrencyAmount(e.target.value);
@@ -113,6 +118,9 @@ function SettledPopup({
             setSuccessPopupOpen(false);
           }, 3000);
           fetchpaymentById();
+          const limit = itemsPerPage;
+          const offset = (currentPage - 1) * itemsPerPage;
+          getPayemnts(limit, offset);
         }
       })
       .catch((error) => {
