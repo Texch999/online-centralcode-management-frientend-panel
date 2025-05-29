@@ -22,6 +22,7 @@ import Select from "react-select";
 import { useSelector } from "react-redux";
 import ErrorComponent from "../../components/ErrorComponent";
 import { Spinner } from "react-bootstrap";
+import { CiStreamOn } from "react-icons/ci";
 
 const SportMatches = () => {
   const navigate = useNavigate();
@@ -109,13 +110,16 @@ const SportMatches = () => {
   ];
 
   const data = matchesData?.map((item, index) => {
-    const currentTimeUTC = moment().utc();
-    const startDateUTC = moment(item?.startDate);
+    // const currentTimeUTC = moment().utc();
+    // const startDateUTC = moment(item?.startDate);
+    const openDate = item?.startDate;
 
-    let isLive = false;
-    if (currentTimeUTC === startDateUTC) {
-      isLive = true;
-    }
+    // let isLive = false;
+    // if (currentTimeUTC === startDateUTC) {
+    //   isLive = true;
+    // }
+
+    const isLive = moment().isSameOrAfter(moment.utc(openDate).local());
 
     return {
       // sno: index + 1,
@@ -123,7 +127,13 @@ const SportMatches = () => {
         <div className="pointer d-flex gap-2">
           <div>{item?.eventName}</div>
           <div>
-            {isLive && <div className="green-bg black-font px-2">Live</div>}
+            {/* {isLive && <div className="green-bg black-font px-2">Live</div>} */}
+            {isLive && (
+              <>
+                <CiStreamOn size={22} className="ml-5 clr-radio green-bg" />
+                <span>Live</span>
+              </>
+            )}
           </div>
         </div>
       ),
