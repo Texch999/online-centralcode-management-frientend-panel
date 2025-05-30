@@ -20,6 +20,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [companyName, setCompanyName] = useState("");
   const [sportsData, setSportsData] = useState([]);
   const [error, setError] = useState("");
+  console.log(error, "errorrrrrrrr");
   const allCountries = useSelector((item) => item?.allCountries);
   const [maxLoseAmtGame, setMaxLoseAmtGame] = useState(null);
   const [maxLoseAmtTable, setMaxLoseAmtTable] = useState(null);
@@ -40,6 +41,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [statusMap, setStatusMap] = useState({});
   const [selectedCurrency, setSelectedCurrency] = useState(null);
+  const [errors, setErrors] = useState("");
 
   const handleDropdown = () => {
     setPositionDropdown(!positionDropdown);
@@ -54,9 +56,18 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     { value: 1, label: "Price" },
   ];
   const [amtType, setAmtType] = useState(priceOptions[0]);
+  // const countryOptions = allCountries?.map((item) => ({
+  //   value: item?.id,
+  //   label: item?.name,
+  // }));
+
   const countryOptions = allCountries?.map((item) => ({
     value: item?.id,
     label: item?.name,
+    currency: {
+      value: item?.id,
+      label: item?.currency_name,
+    },
   }));
 
   const currencyOptions = allCountries?.map((item) => ({
@@ -96,7 +107,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     setLiveApiStatusMap({});
     setSelectedSports([]);
     setPositionMap({});
-    setError("");
+    setError([]);
   };
 
   const getSports = () => {
@@ -110,7 +121,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
       })
       .catch((error) => {
         setIsLoading(false);
-        setError(error?.message);
+        // setErrors(error?.message);
+        const errMsg = error?.message;
+        setErrors(Array.isArray(errMsg) ? errMsg : [errMsg]);
       });
   };
   useEffect(() => {
@@ -125,7 +138,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
         }
       })
       .catch((error) => {
-        setError(error?.message);
+        // setErrors(error?.message);
+        const errMsg = error?.message;
+        setErrors(Array.isArray(errMsg) ? errMsg : [errMsg]);
       });
   };
   useEffect(() => {
@@ -157,9 +172,13 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
         const selectedAmtType = priceOptions.find(
           (opt) => opt.value === data.amountType
         );
+        const selectedCurrencyOption = currencyOptions.find(
+          (opt) => opt.value === data.currency
+        );
 
         setSelectedSport(selectedSportOption || null);
         setSelectedCountry(selectedCountryOption || null);
+        setSelectedCurrency(selectedCurrencyOption || null);
         setAmtType(selectedAmtType || null);
 
         if (data.amountType === 1) {
@@ -191,8 +210,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
             item.providers.forEach((p) => {
               positions[sportId][p.prvId] = p.position;
               liveApis[p.prvId] = item.isLiveApi;
+
               status[sportId][p.prvId] = p.status;
             });
+            // liveApis[item.marketId] = item.isLiveApi;
+           
           }
         });
 
@@ -225,12 +247,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   }, [isEdit]);
 
   const onSubmit = () => {
+    setLoading(true);
     if (error) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
     const validationErrors = [];
-
     if (!selectedSport) validationErrors.push("Vendor Type is required.");
     if (!vendorName.trim()) validationErrors.push("Vendor Name is required.");
     if (!vendorName || vendorName.trim().length < 5) {
@@ -242,6 +263,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     if (!companyName.trim())
       validationErrors.push("Vendor Company is required.");
     if (!selecctedCountry) validationErrors.push("Vendor Country is required.");
+    if (!selectedCurrency) validationErrors.push("Currency is required.");
     if (!selectedSports.length)
       validationErrors.push("At least one sport must be selected.");
     const allSelectedMarkets = Object.values(selectedMarkets).flat();
@@ -279,10 +301,10 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
     if (validationErrors.length > 0) {
       setError(validationErrors);
+      setLoading(false);
       return;
     }
     setError([]);
-
     const vendorMarkets = [];
     selectedSports.forEach((sportId) => {
       const marketId = Number(sportId.slice(8, -5));
@@ -304,8 +326,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     const payload = {
       vendorName: vendorName,
       vendorType: selectedSport?.value,
-      vendorCountry: selecctedCountry?.value,
-      currency: selectedCurrency?.value,
       vendorCompany: companyName,
       amountType: amtType?.value,
 
@@ -320,8 +340,13 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
       maxLsAmtGame: maxLoseAmtGame,
       vendorMarkets,
+
+      ...(!isEdit && {
+        vendorCountry: selecctedCountry?.value,
+        currency: selectedCurrency?.value,
+      }),
     };
-    setLoading(true);
+
     const apiCall = isEdit
       ? updateVendor(vendorId, payload)
       : createVendor(payload);
@@ -410,13 +435,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     });
   };
 
-  // const handleSelectLiveApi = (sportId, marketId, status) => {
-  //   setLiveApiStatusMap((prevStatusMap) => ({
-  //     ...prevStatusMap,
-  //     [marketId]: status,
-  //   }));
-  // };
-
   const handleSelectLiveApisss = (sportId, marketId, status) => {
     setLiveApiStatusMap((prev) => ({
       ...prev,
@@ -463,7 +481,12 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
               <div className="dot-line-black my-3"></div>
             </div>
           )}
-          {error && <ErrorComponent error={error} />}
+
+          {Array.isArray(error) && error.length > 0 && (
+            <ErrorComponent error={error} />
+          )}
+
+          {errors && <ErrorComponent error={error} />}
 
           <div className="row text-black">
             <div className="col-4 felx-column">
@@ -507,27 +530,31 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
           <div className="my-3 row text-black">
             <div className="col-4 felx-column">
               <div className="small-font mb-1">Select Sports</div>
-              <div className="d-flex flex-wrap small-font">
-                {sportsData?.map((item) => (
-                  <label
-                    htmlFor="ezugi"
-                    className="input-css p-2 me-2 pointer flex-between mb-2"
-                  >
-                    <input
-                      type="checkbox"
-                      id={item?.id}
-                      className="me-2 pointer"
-                      checked={selectedSports.includes(item.id)}
-                      onChange={(e) => {
-                        const updated = e.target.checked
-                          ? [...selectedSports, item.id]
-                          : selectedSports.filter((id) => id !== item.id);
-                        setSelectedSports(updated);
-                      }}
-                    />
-                    <span>{item?.name}</span>
-                  </label>
-                ))}
+              <div className="d-flex flex-wrap small-font pointer">
+                {sportsData?.length > 0 ? (
+                  sportsData?.map((item) => (
+                    <label
+                      htmlFor="ezugi"
+                      className="input-css p-2 me-2 pointer flex-between mb-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id={item?.id}
+                        className="me-2 pointer"
+                        checked={selectedSports.includes(item.id)}
+                        onChange={(e) => {
+                          const updated = e.target.checked
+                            ? [...selectedSports, item.id]
+                            : selectedSports.filter((id) => id !== item.id);
+                          setSelectedSports(updated);
+                        }}
+                      />
+                      <span>{item?.name}</span>
+                    </label>
+                  ))
+                ) : (
+                  <div className="text-black">No Sports are available</div>
+                )}
               </div>
             </div>
 
@@ -546,7 +573,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       maxMenuHeight={120}
                       menuPlacement="auto"
                       value={selecctedCountry}
-                      onChange={(select) => setSelectedCountry(select)}
+                      // onChange={(select) => setSelectedCountry(select)}
+                      onChange={(select) => {
+                        setSelectedCountry(select);
+                        setSelectedCurrency(select.currency);
+                      }}
                     />
                   </div>
                   <div className="w-50 me-3">
@@ -690,15 +721,15 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
           </div>
           {selectedSports.length > 0 && (
             <div className="my-3 row text-black">
-              <div className="col-4 flex-column">
+              <div className="col-12 flex-column">
                 <div className="small-font mb-2">Select Providers</div>
 
-                <div className="d-flex flex-column gap-3">
+                <div className="row">
                   {selectedSports
                     .map((id) => sportsData.find((sport) => sport.id === id))
                     .filter(Boolean)
                     .map((sport) => (
-                      <div key={sport.id} className="p-2 radius">
+                      <div key={sport.id} className="col-md-4 col-3">
                         <div className="medium-font black-clr mb-2">
                           {sport.name}
                         </div>
@@ -799,14 +830,15 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                 </div>
               </div>
 
-              <div className="col-4 felx-column text-black "></div>
-              {isEdit === true ? (
+              {/* <div className="col-4 felx-column text-black "></div> */}
+              {/* {isEdit === true ? (
                 <div className="col-4 felx-column align-items-center text-black ">
                   <div
                     className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
                       loadng ? "disabled-btn" : ""
                     }`}
                     onClick={onSubmit}
+                    disabled={loadng}
                   >
                     {loadng ? (
                       <>
@@ -831,6 +863,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       loadng ? "disabled-btn" : ""
                     }`}
                     onClick={onSubmit}
+                    disabled={loadng}
                   >
                     {loadng ? (
                       <>
@@ -848,9 +881,62 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           )}
+          <div className="my-2 d-flex flex-end">
+            {isEdit === true ? (
+                <div className="col-4 felx-column align-items-center text-black ">
+                  <div
+                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                      loadng ? "disabled-btn" : ""
+                    }`}
+                    onClick={onSubmit}
+                    disabled={loadng}
+                  >
+                    {loadng ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        <span className="ms-2">Update</span>
+                      </>
+                    ) : (
+                      <div>Update</div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="col-4 felx-column text-black">
+                  <div
+                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                      loadng ? "disabled-btn" : ""
+                    }`}
+                    onClick={onSubmit}
+                    disabled={loadng}
+                  >
+                    {loadng ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        <span className="ms-2">Submit</span>
+                      </>
+                    ) : (
+                      <div>Submit</div>
+                    )}
+                  </div>
+                </div>
+              )} 
+          </div>
 
           <SuccessPopup
             successPopupOpen={successModal}
