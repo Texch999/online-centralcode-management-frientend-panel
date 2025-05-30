@@ -214,7 +214,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
               status[sportId][p.prvId] = p.status;
             });
             // liveApis[item.marketId] = item.isLiveApi;
-           
           }
         });
 
@@ -886,56 +885,56 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
           )}
           <div className="my-2 d-flex flex-end">
             {isEdit === true ? (
-                <div className="col-4 felx-column align-items-center text-black ">
-                  <div
-                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
-                      loadng ? "disabled-btn" : ""
-                    }`}
-                    onClick={onSubmit}
-                    disabled={loadng}
-                  >
-                    {loadng ? (
-                      <>
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        <span className="ms-2">Update</span>
-                      </>
-                    ) : (
-                      <div>Update</div>
-                    )}
-                  </div>
+              <div className="col-4 felx-column align-items-center text-black ">
+                <div
+                  className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                    loadng ? "disabled-btn" : ""
+                  }`}
+                  onClick={onSubmit}
+                  disabled={loadng}
+                >
+                  {loadng ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Update</span>
+                    </>
+                  ) : (
+                    <div>Update</div>
+                  )}
                 </div>
-              ) : (
-                <div className="col-4 felx-column text-black">
-                  <div
-                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
-                      loadng ? "disabled-btn" : ""
-                    }`}
-                    onClick={onSubmit}
-                    disabled={loadng}
-                  >
-                    {loadng ? (
-                      <>
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        <span className="ms-2">Submit</span>
-                      </>
-                    ) : (
-                      <div>Submit</div>
-                    )}
-                  </div>
+              </div>
+            ) : (
+              <div className="col-4 felx-column text-black">
+                <div
+                  className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                    loadng ? "disabled-btn" : ""
+                  }`}
+                  onClick={onSubmit}
+                  disabled={loadng}
+                >
+                  {loadng ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Submit</span>
+                    </>
+                  ) : (
+                    <div>Submit</div>
+                  )}
                 </div>
-              )} 
+              </div>
+            )}
           </div>
 
           <SuccessPopup
