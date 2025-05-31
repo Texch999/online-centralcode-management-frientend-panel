@@ -207,9 +207,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
             positions[sportId] = {};
             if (!status[sportId]) status[sportId] = {};
+            if (!liveApis[sportId]) liveApis[sportId] = {};
             item.providers.forEach((p) => {
               positions[sportId][p.prvId] = p.position;
-              liveApis[p.prvId] = item.isLiveApi;
+              // liveApis[p.prvId] = item.isLiveApi;
+              liveApis[sportId][p.prvId] = item.isLiveApi;
 
               status[sportId][p.prvId] = p.status;
             });
@@ -314,7 +316,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
           marketId,
           prvId: marId,
           position: positionMap[sportId]?.[marId] || 0,
-          isLiveApi: liveApiStatusMap[marId] || 0,
+          // isLiveApi: liveApiStatusMap[marId] || 0,
+          isLiveApi: liveApiStatusMap[sportId]?.[marId] || 0,
           ...(isEdit && {
             status: statusMap[sportId]?.[marId] || 1,
           }),
@@ -434,29 +437,51 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     });
   };
 
-  const handleSelectLiveApisss = (sportId, marketId, status) => {
-    setLiveApiStatusMap((prev) => ({
-      ...prev,
-      [marketId]: status,
-    }));
-  };
-
   const handleSelectLiveApi = (sportId, marketId, status) => {
     setLiveApiStatusMap((prev) => {
-      const current = prev[marketId];
+      const current = prev[sportId]?.[marketId];
 
       if (current === status) {
-        const updated = { ...prev };
-        delete updated[marketId];
-        return updated;
+        const updatedSport = { ...prev[sportId] };
+        delete updatedSport[marketId];
+
+        if (Object.keys(updatedSport).length === 0) {
+          const { [sportId]: _, ...rest } = prev;
+          return rest;
+        }
+
+        return {
+          ...prev,
+          [sportId]: updatedSport,
+        };
       }
 
       return {
         ...prev,
-        [marketId]: status,
+        [sportId]: {
+          ...prev[sportId],
+          [marketId]: status,
+        },
       };
     });
   };
+
+  // const handleSelectLiveApi = (sportId, marketId, status) => {
+  //   setLiveApiStatusMap((prev) => {
+  //     const current = prev[marketId];
+
+  //     if (current === status) {
+  //       const updated = { ...prev };
+  //       delete updated[marketId];
+  //       return updated;
+  //     }
+
+  //     return {
+  //       ...prev,
+  //       [marketId]: status,
+  //     };
+  //   });
+  // };
 
   return (
     <>
@@ -604,13 +629,13 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     <input
                       type="text"
                       inputMode="numeric"
+                      pattern="\d*"
                       className="all-none w-100"
                       placeholder="Enter amount"
                       value={maxLoseAmtGame}
                       maxLength={9}
                       onChange={(e) => {
-                        const val = e.target.value;
-                        if (!/^\d*$/.test(val)) return;
+                        let val = e.target.value.replace(/\D/g, "");
                         if (val.startsWith("0")) return;
                         const num = Number(val);
                         if (num > 999999999) return;
@@ -650,9 +675,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                         maxLength={5}
                         onChange={(e) => {
                           let val = e.target.value;
-
                           if (!/^\d*\.?\d{0,3}$/.test(val)) return;
-
                           if (val.startsWith(".")) {
                             val = "0" + val;
                           }
@@ -687,8 +710,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           value={monthlyAmt}
                           maxLength={9}
                           onChange={(e) => {
-                            const val = e.target.value;
-                            if (!/^\d*$/.test(val)) return;
+                            // const val = e.target.value;
+                            let val = e.target.value.replace(/\D/g, "");
+                            // if (!/^\d*$/.test(val)) return;
                             if (val.startsWith("0")) return;
                             const num = Number(val);
                             if (num > 999999999) return;
@@ -796,7 +820,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                   <div className="d-flex gap-3">
                                     <div
                                       className={`rounded-pill px-1 py-1 pointer small-font ${
-                                        liveApiStatusMap[mar.id] === 1
+                                        // liveApiStatusMap[mar.id] === 1
+                                        liveApiStatusMap[sport.id]?.[mar.id] ===
+                                        1
                                           ? "saffron-bg white-font"
                                           : "white-bg black-clr"
                                       }`}
@@ -808,7 +834,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                     </div>
                                     <div
                                       className={`rounded-pill px-2 py-1 pointer small-font ${
-                                        liveApiStatusMap[mar.id] === 2
+                                        // liveApiStatusMap[mar.id] === 2
+                                        liveApiStatusMap[sport.id]?.[mar.id] ===
+                                        2
                                           ? "saffron-bg white-font"
                                           : "white-bg black-clr"
                                       }`}
