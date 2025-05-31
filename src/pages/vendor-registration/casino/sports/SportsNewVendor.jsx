@@ -251,16 +251,23 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     const validationErrors = [];
     if (!selectedSport) validationErrors.push("Vendor Type is required.");
     if (!vendorName.trim()) validationErrors.push("Vendor Name is required.");
-    if (!vendorName || vendorName.trim().length < 5) {
-      validationErrors.push("Vendor name must be at least 5 characters long.");
+    if (
+      !vendorName ||
+      vendorName.trim().length < 5 ||
+      vendorName.trim().length > 36
+    ) {
+      validationErrors.push(
+        "Vendor name must be at least 5-36 characters long."
+      );
     }
-    if (!vendorName || vendorName.trim().length > 36) {
-      validationErrors.push("Vendor name must be at least 36 characters long.");
-    }
+    // if (!vendorName || vendorName.trim().length > 36) {
+    //   validationErrors.push("Vendor name must be at least 36 characters long.");
+    // }
     if (!companyName.trim())
       validationErrors.push("Vendor Company is required.");
     if (!selecctedCountry) validationErrors.push("Vendor Country is required.");
-    if (!selectedCurrency) validationErrors.push("Currency is required.");
+    if (!selectedCurrency)
+      validationErrors.push("Vendor Currency is required.");
     if (!selectedSports.length)
       validationErrors.push("At least one sport must be selected.");
     const allSelectedMarkets = Object.values(selectedMarkets).flat();
@@ -643,7 +650,9 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
               <div className="d-flex flex-column">
                 <div className="d-flex flex-between align-items-center w-100">
                   <div className="w-30 me-3">
-                    <div className="small-font mb-1">Monthly Price/Per</div>
+                    <div className="small-font mb-1 white-space">
+                      Amount Type
+                    </div>
                     <Select
                       className="small-font"
                       options={priceOptions}
@@ -657,7 +666,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     />
                   </div>
                   {amtType?.value === 2 ? (
-                    <div className="input-css small-font text-balck w-70 mt-4">
+                    <div className="input-css small-font text-balck w-70 mt-3">
                       <input
                         type="text"
                         inputMode="numeric"
@@ -667,12 +676,10 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                         maxLength={5}
                         onChange={(e) => {
                           let val = e.target.value.replace(/[^0-9.]/g, "");
-
                           if (!/^\d*\.?\d{0,3}$/.test(val)) return;
                           if (val.startsWith(".")) {
                             val = "0" + val;
                           }
-
                           if (/^0\d+/.test(val)) return;
 
                           setPer(val);
@@ -703,9 +710,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           value={monthlyAmt}
                           maxLength={9}
                           onChange={(e) => {
-                            // const val = e.target.value;
                             let val = e.target.value.replace(/\D/g, "");
-                            // if (!/^\d*$/.test(val)) return;
                             if (val.startsWith("0")) return;
                             const num = Number(val);
                             if (num > 999999999) return;
@@ -770,6 +775,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                 />
                                 <span className="small-font">{mar.name}</span>
                               </div>
+
                               <div onClick={handleDropdown}>
                                 {positionDropdown ? (
                                   <FaAngleUp />
@@ -849,8 +855,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     ))}
                 </div>
               </div>
-
-      
             </div>
           )}
           <div className="my-2 d-flex flex-end">
