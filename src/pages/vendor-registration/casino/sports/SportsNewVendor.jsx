@@ -64,10 +64,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const countryOptions = allCountries?.map((item) => ({
     value: item?.id,
     label: item?.name,
-    currency: {
-      value: item?.id,
-      label: item?.currency_name,
-    },
   }));
 
   const currencyOptions = allCountries?.map((item) => ({
@@ -558,7 +554,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                 {sportsData?.length > 0 ? (
                   sportsData?.map((item) => (
                     <label
-                      htmlFor="ezugi"
+                      htmlFor={item?.id}
                       className="input-css p-2 me-2 pointer flex-between mb-2"
                     >
                       <input
@@ -597,14 +593,10 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       maxMenuHeight={120}
                       menuPlacement="auto"
                       value={selecctedCountry}
-                      // onChange={(select) => setSelectedCountry(select)}
-                      onChange={(select) => {
-                        setSelectedCountry(select);
-                        setSelectedCurrency(select.currency);
-                      }}
+                      onChange={(select) => setSelectedCountry(select)}
                     />
                   </div>
-                  <div className="w-50 me-3">
+                  <div className="w-50">
                     <div className="small-font mb-1">Vendor Currency</div>
 
                     <Select
@@ -650,7 +642,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
             <div className="col-4 felx-column text-black ">
               <div className="d-flex flex-column">
                 <div className="d-flex flex-between align-items-center w-100">
-                  <div className="w-40 me-3">
+                  <div className="w-30 me-3">
                     <div className="small-font mb-1">Monthly Price/Per</div>
                     <Select
                       className="small-font"
@@ -665,7 +657,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     />
                   </div>
                   {amtType?.value === 2 ? (
-                    <div className="input-css small-font text-balck w-50 mt-3">
+                    <div className="input-css small-font text-balck w-70 mt-4">
                       <input
                         type="text"
                         inputMode="numeric"
@@ -674,7 +666,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                         value={per}
                         maxLength={5}
                         onChange={(e) => {
-                          let val = e.target.value;
+                          let val = e.target.value.replace(/[^0-9.]/g, "");
+
                           if (!/^\d*\.?\d{0,3}$/.test(val)) return;
                           if (val.startsWith(".")) {
                             val = "0" + val;
@@ -687,8 +680,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       />
                     </div>
                   ) : (
-                    <div className="w-60 flex-between">
-                      <div className="w-40 me-1 ">
+                    <div className="w-70 flex-between">
+                      <div className="me-2">
                         <div className="small-font mb-1">Billing Date</div>
                         <input
                           type="date"
@@ -857,69 +850,19 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                 </div>
               </div>
 
-              {/* <div className="col-4 felx-column text-black "></div> */}
-              {/* {isEdit === true ? (
-                <div className="col-4 felx-column align-items-center text-black ">
-                  <div
-                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
-                      loadng ? "disabled-btn" : ""
-                    }`}
-                    onClick={onSubmit}
-                    disabled={loadng}
-                  >
-                    {loadng ? (
-                      <>
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        <span className="ms-2">Update</span>
-                      </>
-                    ) : (
-                      <div>Update</div>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="col-4 felx-column text-black">
-                  <div
-                    className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
-                      loadng ? "disabled-btn" : ""
-                    }`}
-                    onClick={onSubmit}
-                    disabled={loadng}
-                  >
-                    {loadng ? (
-                      <>
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        <span className="ms-2">Submit</span>
-                      </>
-                    ) : (
-                      <div>Submit</div>
-                    )}
-                  </div>
-                </div>
-              )} */}
+      
             </div>
           )}
           <div className="my-2 d-flex flex-end">
             {isEdit === true ? (
               <div className="col-4 felx-column align-items-center text-black ">
-                <div
-                  className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                <button
+                  type="submit"
+                  disabled={loadng}
+                  className={`w-100 saffron-btn rounded small-font pointer ${
                     loadng ? "disabled-btn" : ""
                   }`}
                   onClick={onSubmit}
-                  disabled={loadng}
                 >
                   {loadng ? (
                     <>
@@ -935,16 +878,17 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                   ) : (
                     <div>Update</div>
                   )}
-                </div>
+                </button>
               </div>
             ) : (
               <div className="col-4 felx-column text-black">
-                <div
-                  className={`saffron-bg text-center white-font medium-font py-2 br-5 mx-2 my-2 pointer ${
+                <button
+                  type="submit"
+                  disabled={loadng}
+                  className={`w-100 saffron-btn rounded small-font pointer ${
                     loadng ? "disabled-btn" : ""
                   }`}
                   onClick={onSubmit}
-                  disabled={loadng}
                 >
                   {loadng ? (
                     <>
@@ -960,7 +904,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                   ) : (
                     <div>Submit</div>
                   )}
-                </div>
+                </button>
               </div>
             )}
           </div>
