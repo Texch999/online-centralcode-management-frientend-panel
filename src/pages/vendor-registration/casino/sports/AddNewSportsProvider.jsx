@@ -50,7 +50,7 @@ const AddNewSportsProvider = ({ show, setShow, setIsActiveBtn, fetch }) => {
 
  
     if (Object.keys(payload).length === 0) {
-      setError(["Please enter at least one field."]);
+      setError(["Please enter provider or sport."]);
       setLoading(false);
       return;
     }

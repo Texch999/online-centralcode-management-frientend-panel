@@ -167,9 +167,7 @@ function Header() {
           <div className="d-flex align-items-center">
             {role_name === "owner" && (
               <div
-                className={`flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2 ${
-                  isActiveBtn ? "active-saffron-btn white-text" : ""
-                }`}
+                className="flex-center grey-border px-3 py-2 rounded-pill me-2 pointer black-text2"
                 onClick={handleRegisterBtn}
               >
                 <ImUserPlus size={18} />

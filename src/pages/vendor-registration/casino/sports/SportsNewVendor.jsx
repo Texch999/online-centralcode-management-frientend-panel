@@ -254,11 +254,11 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     if (!vendorName.trim()) validationErrors.push("Vendor Name is required.");
     if (
       !vendorName ||
-      vendorName.trim().length < 5 ||
-      vendorName.trim().length > 36
+      vendorName.trim().length < 2 ||
+      vendorName.trim().length > 60
     ) {
       validationErrors.push(
-        "Vendor name must be at least 5-36 characters long."
+        "Vendor name must be at least 2-60 characters long."
       );
     }
     // if (!vendorName || vendorName.trim().length > 36) {
@@ -770,7 +770,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                     </div>
                   ) : (
                     <div className="w-70 flex-between">
-                      <div className="me-2">
+                      <div className="me-2 w-50">
                         <div className="small-font mb-1">Billing Date</div>
                         <input
                           type="date"
@@ -780,7 +780,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           onChange={(e) => setBillingDate(e.target.value)}
                         />
                       </div>
-                      <div className="">
+                      <div className="w-50">
                         <div className="small-font mb-1 white-space">
                           Amount
                         </div>
