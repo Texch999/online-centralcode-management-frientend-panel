@@ -20,6 +20,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [companyName, setCompanyName] = useState("");
   const [sportsData, setSportsData] = useState([]);
   const [error, setError] = useState("");
+  console.log(error, "errorrrrrrrr");
   const allCountries = useSelector((item) => item?.allCountries);
   const [maxLoseAmtGame, setMaxLoseAmtGame] = useState(null);
   const [maxLoseAmtTable, setMaxLoseAmtTable] = useState(null);
@@ -43,6 +44,10 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [errors, setErrors] = useState("");
   const [dropdownMap, setDropdownMap] = useState({});
 
+  // const handleDropdown = () => {
+  //   setPositionDropdown(!positionDropdown);
+  // };
+
   const path = window.location.pathname === "/sports-vendor-registration";
 
   const selectSports = [{ value: 1, label: "Sports" }];
@@ -52,6 +57,10 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     { value: 1, label: "Price" },
   ];
   const [amtType, setAmtType] = useState(priceOptions[0]);
+  // const countryOptions = allCountries?.map((item) => ({
+  //   value: item?.id,
+  //   label: item?.name,
+  // }));
 
   const countryOptions = allCountries?.map((item) => ({
     value: item?.id,
@@ -79,14 +88,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const positions = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
-
-  const handleDropdown = (sportId, providerId) => {
-    const key = `${sportId}-${providerId}`;
-    setDropdownMap((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
 
   const reset = () => {
     setVendorName("");
@@ -134,6 +135,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
         }
       })
       .catch((error) => {
+        // setErrors(error?.message);
         const errMsg = error?.message;
         setErrors(Array.isArray(errMsg) ? errMsg : [errMsg]);
       });
@@ -205,9 +207,12 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
             if (!liveApis[sportId]) liveApis[sportId] = {};
             item.providers.forEach((p) => {
               positions[sportId][p.prvId] = p.position;
+              // liveApis[p.prvId] = item.isLiveApi;
               liveApis[sportId][p.prvId] = item.isLiveApi;
+
               status[sportId][p.prvId] = p.status;
             });
+            // liveApis[item.marketId] = item.isLiveApi;
           }
         });
 
@@ -315,6 +320,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
           marketId,
           prvId: marId,
           position: positionMap[sportId]?.[marId] || 0,
+          // isLiveApi: liveApiStatusMap[marId] || 0,
           isLiveApi: liveApiStatusMap[sportId]?.[marId] || 0,
           ...(isEdit && {
             status: statusMap[sportId]?.[marId] || 1,
@@ -383,7 +389,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     }
   }, [error]);
 
-  const handleSelectMarket = (sportId, marketId, checked) => {
+  const handleSelectMarketttt = (sportId, marketId, checked) => {
     setSelectedMarkets((prevSelectedMarkets) => {
       const updatedSelectedMarkets = { ...prevSelectedMarkets };
       if (checked) {
@@ -405,6 +411,53 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
       setLiveApiStatusMap(updatedMap);
     }
   };
+
+  const handleSelectMarket = (sportId, marketId, isChecked) => {
+  setSelectedMarkets((prev) => {
+    const prevList = prev[sportId] || [];
+    const newList = isChecked
+      ? [...prevList, marketId]
+      : prevList.filter((id) => id !== marketId);
+
+    return {
+      ...prev,
+      [sportId]: newList,
+    };
+  });
+
+  // Show dropdown immediately when checkbox is checked
+  if (isChecked) {
+    setDropdownMap((prev) => ({
+      ...prev,
+      [`${sportId}-${marketId}`]: true,
+    }));
+  } else {
+    // Clear everything when unchecked
+    setDropdownMap((prev) => {
+      const updated = { ...prev };
+      delete updated[`${sportId}-${marketId}`];
+      return updated;
+    });
+
+    // Optional: clear position and live API
+    setPositionMap((prev) => {
+      const updated = { ...prev };
+      if (updated[sportId]) {
+        delete updated[sportId][marketId];
+      }
+      return updated;
+    });
+
+    setLiveApiStatusMap((prev) => {
+      const updated = { ...prev };
+      if (updated[sportId]) {
+        delete updated[sportId][marketId];
+      }
+      return updated;
+    });
+  }
+};
+
 
   const handleSelectPosition = (sportId, marketId, position) => {
     setPositionMap((prev) => {
@@ -463,6 +516,23 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
       };
     });
   };
+
+  // const handleSelectLiveApi = (sportId, marketId, status) => {
+  //   setLiveApiStatusMap((prev) => {
+  //     const current = prev[marketId];
+
+  //     if (current === status) {
+  //       const updated = { ...prev };
+  //       delete updated[marketId];
+  //       return updated;
+  //     }
+
+  //     return {
+  //       ...prev,
+  //       [marketId]: status,
+  //     };
+  //   });
+  // };
 
   return (
     <>
@@ -547,6 +617,12 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                         id={item?.id}
                         className="me-2 pointer"
                         checked={selectedSports.includes(item.id)}
+                        // onChange={(e) => {
+                        //   const updated = e.target.checked
+                        //     ? [...selectedSports, item.id]
+                        //     : selectedSports.filter((id) => id !== item.id);
+                        //   setSelectedSports(updated);
+                        // }}
                         onChange={(e) => {
                           const checked = e.target.checked;
                           const updated = checked
@@ -556,6 +632,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           setSelectedSports(updated);
 
                           if (!checked) {
+                            // Clear dependent data
                             setSelectedMarkets((prev) => {
                               const newMarkets = { ...prev };
                               delete newMarkets[item.id];
@@ -747,66 +824,35 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
                         {marketsData?.map((mar) => (
                           <div key={mar.id} className="mb-2">
-                            <label className="input-css p-1 pointer flex-between w-100">
-                              <div className="d-flex gap-2 align-items-center">
-                                <input
-                                  type="checkbox"
-                                  className="me-2"
-                                  checked={selectedMarkets[sport.id]?.includes(
-                                    mar.id
-                                  )}
-                                  onChange={(e) => {
-                                    const checked = e.target.checked;
-
-                                    handleSelectMarket(
-                                      sport.id,
-                                      mar.id,
-                                      checked
-                                    );
-
-                                    const key = `${sport.id}-${mar.id}`;
-
-                                    setDropdownMap((prev) => ({
-                                      ...prev,
-                                      [key]: checked,
-                                    }));
-
-                                    if (!checked) {
-                                      setPositionMap((prev) => {
-                                        const newMap = { ...prev };
-                                        if (newMap[sport.id]) {
-                                          delete newMap[sport.id][mar.id];
-                                          if (
-                                            Object.keys(newMap[sport.id])
-                                              .length === 0
-                                          ) {
-                                            delete newMap[sport.id];
-                                          }
-                                        }
-                                        return newMap;
-                                      });
-
-                                      setLiveApiStatusMap((prev) => {
-                                        const newMap = { ...prev };
-                                        if (newMap[sport.id]) {
-                                          delete newMap[sport.id][mar.id];
-                                          if (
-                                            Object.keys(newMap[sport.id])
-                                              .length === 0
-                                          ) {
-                                            delete newMap[sport.id];
-                                          }
-                                        }
-                                        return newMap;
-                                      });
-                                    }
-                                  }}
-                                />
-
-                                <span className="small-font">{mar.name}</span>
-                              </div>
+                            <div className="input-css p-1 pointer flex-between w-100">
+                              <label className="">
+                                <div className="d-flex gap-2 align-items-center">
+                                  <input
+                                    type="checkbox"
+                                    className="me-2"
+                                    checked={selectedMarkets[
+                                      sport.id
+                                    ]?.includes(mar.id)}
+                                    onChange={(e) => {
+                                      handleSelectMarket(
+                                        sport.id,
+                                        mar.id,
+                                        e.target.checked
+                                      );
+                                    }}
+                                  />
+                                  <span className="small-font">{mar.name}</span>
+                                </div>
+                              </label>
                               <div
-                                onClick={() => handleDropdown(sport.id, mar.id)}
+                                // onClick={() => handleDropdown(sport.id, mar.id)}
+                                onClick={() => {
+                                  setDropdownMap((prev) => ({
+                                    ...prev,
+                                    [`${sport.id}-${mar.id}`]:
+                                      !prev[`${sport.id}-${mar.id}`],
+                                  }));
+                                }}
                               >
                                 {dropdownMap[`${sport.id}-${mar.id}`] ? (
                                   <FaAngleUp />
@@ -814,10 +860,10 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                   <FaAngleDown />
                                 )}
                               </div>
-                            </label>
+                            </div>
 
-                            {dropdownMap[`${sport.id}-${mar.id}`] &&
-                              selectedMarkets[sport.id]?.includes(mar.id) && (
+                            {(dropdownMap[`${sport.id}-${mar.id}`] ||
+                              selectedMarkets[sport.id]?.includes(mar.id)) && (
                                 <>
                                   <div className="my-1 small-font">
                                     Select Position
@@ -852,6 +898,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                     <div className="d-flex gap-3">
                                       <div
                                         className={`rounded-pill px-1 py-1 pointer small-font ${
+                                          // liveApiStatusMap[mar.id] === 1
                                           liveApiStatusMap[sport.id]?.[
                                             mar.id
                                           ] === 1
@@ -870,6 +917,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                       </div>
                                       <div
                                         className={`rounded-pill px-2 py-1 pointer small-font ${
+                                          // liveApiStatusMap[mar.id] === 2
                                           liveApiStatusMap[sport.id]?.[
                                             mar.id
                                           ] === 2
