@@ -4,6 +4,7 @@ import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import VendorPaymentModal from "./VendorPaymentModal";
 import { getVendorAccounts } from "../../api/apiMethods";
+import { CircleLoader } from "react-spinners";
 
 function MyVendorsAccount() {
   const [vendorPayment, setVendorPayment] = useState(false);
@@ -12,6 +13,8 @@ function MyVendorsAccount() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [isSettledId, setIsSettledId] = useState("");
+  const [vendorName, setVendorName] = useState("");
   const filteredData = vendorData.filter((item) =>
     item?.vendorName?.toLowerCase().includes(searchInput.toLowerCase())
   );
@@ -32,6 +35,13 @@ function MyVendorsAccount() {
 
   const handleVendorPayemnt = () => {
     setVendorPayment(true);
+    setIsSettledId("");
+    setVendorName("");
+  };
+  const handleSettled = (id, name) => {
+    setVendorPayment(true);
+    setIsSettledId(id);
+    setVendorName(name);
   };
   const VENDOR_DATA = filteredData?.map((item, index) => ({
     vendor_name: (
@@ -67,8 +77,8 @@ function MyVendorsAccount() {
       <div>
         <div className="red-font">{item?.balanceAmount}</div>
         <div
-          className="green-btn mt-2"
-          onClick={() => navigate("/settled-history")}
+          className="green-btn mt-2 pointer"
+          onClick={() => handleSettled(item?.id, item?.vendorName)}
         >
           Settled
         </div>
@@ -111,7 +121,7 @@ function MyVendorsAccount() {
         </div>
       </div>
       <div className="flex-between mb-3">
-        <div className="w-50 d-flex p-3 grey-bg2 rounded">
+        <div className="w-50 d-flex p-2 grey-bg2 rounded">
           <div className="col-4 pe-3 flex-center">
             <span className="w-100 saffron-btn2 medium-font">
               Owner Balance
@@ -142,10 +152,16 @@ function MyVendorsAccount() {
         setVendorPaymentModal={setVendorPayment}
         data={vendorData}
         fetchVendorData={fetchVendorData}
+        isSettledId={isSettledId}
+        setIsSettledId={setIsSettledId}
+        vName={vendorName}
       />
       {loading ? (
-        <div className="spinner">
-          <div className="spinner-circle"></div>
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
         </div>
       ) : (
         <Table columns={VENDOR_COLUMNS} data={VENDOR_DATA} itemsPerPage={2} />

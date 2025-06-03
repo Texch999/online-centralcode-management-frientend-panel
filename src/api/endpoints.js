@@ -1006,6 +1006,10 @@ const endpoints = {
       }`;
     },
   },
+  settleVendorById: {
+    method: "get",
+    url: (vId) => `/user/${userID()}/vendor/${vId}/getVendorAcc`,
+  },
 };
 
 export default endpoints;

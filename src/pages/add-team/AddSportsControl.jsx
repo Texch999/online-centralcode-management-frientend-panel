@@ -264,8 +264,9 @@ const AddSportsControl = () => {
 
             <div className="col-6">
               <div className="">
-                <div
-                  className={`saffron-bg py-2 px-3 white-font text-center rounded  pointer small-font ${
+                <button
+                  type="submit"
+                  className={`w-100 saffron-btn2 small-font ${
                     isloading ? "disabled-btn" : ""
                   }`}
                   onClick={handleSubmit}
@@ -285,7 +286,7 @@ const AddSportsControl = () => {
                   ) : (
                     "Submit"
                   )}
-                </div>
+                </button>
               </div>
             </div>
           </div>

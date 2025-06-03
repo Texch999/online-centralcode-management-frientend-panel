@@ -600,7 +600,7 @@ const getVendorAccounts = (data) => {
   return apiRequest("getVendorAccounts", data);
 };
 const getSettledHistory = (params) => {
-  return apiRequest("getSettledHistory", {},params);
+  return apiRequest("getSettledHistory", {}, params);
 };
 const deleteVendorpayment = (vId, payId) => {
   return apiRequest("deleteVendorpayment", vId, { vId, payId });
@@ -610,6 +610,9 @@ const getPyamentById = (payId, data) => {
 };
 const updatePayment = (id, data) => {
   return apiRequest("updatePayment", data, id);
+};
+const settleVendorById = (vId, data) => {
+  return apiRequest("settleVendorById", data, vId);
 };
 
 export {
@@ -774,4 +777,5 @@ export {
   deleteVendorpayment,
   getPyamentById,
   updatePayment,
+  settleVendorById,
 };

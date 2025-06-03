@@ -270,17 +270,21 @@ input[type="number"] {
   left: 40%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: 
-    radial-gradient(farthest-side,#db7e0c 94%,#0000) top/8px 8px no-repeat,
-    conic-gradient(#0000 30%,#f4a908);
-  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+  background: radial-gradient(farthest-side, #db7e0c 94%, #0000) top/8px 8px
+      no-repeat,
+    conic-gradient(#0000 30%, #f4a908);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
   animation: l13 1s infinite linear;
 }
-@keyframes l13{ 
-  100%{transform: rotate(1turn)}
+@keyframes l13 {
+  100% {
+    transform: rotate(1turn);
+  }
 }
 @keyframes l24 {
-  100% {transform: rotate(1turn)}
+  100% {
+    transform: rotate(1turn);
+  }
 }
 @keyframes l5-0 {
   80% {
@@ -290,16 +294,15 @@ input[type="number"] {
     transform: rotate(0.5turn);
   }
 }
-.white-opacity{
+.white-opacity {
   background-color: #ffffff;
   opacity: 0.7;
 }
-.my-load{
+.my-load {
   height: 100%;
   width: 100%;
-background-color: #ffffff;
-position: absolute;
+  background-color: #ffffff;
+  position: absolute;
   z-index: 10;
   opacity: 0.5;
-  
 }

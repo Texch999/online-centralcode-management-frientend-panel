@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { FiChevronRight } from "react-icons/fi";
 import Table from "../../components/Table";
 import { SlPencil } from "react-icons/sl";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaArrowLeftLong, FaRegTrashCan } from "react-icons/fa6";
 import SettledPopup from "./SettledPopup";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { deleteVendorpayment, getSettledHistory } from "../../api/apiMethods";
@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import SuccessPopup from "../popups/SuccessPopup";
 import moment from "moment/moment";
 import { Spinner } from "react-bootstrap";
+import { CircleLoader } from "react-spinners";
+import { RiArrowLeftSLine } from "react-icons/ri";
 
 function SettledHistory() {
   const navigate = useNavigate();
@@ -155,7 +157,7 @@ function SettledHistory() {
           {item?.status === 1 ? (
             <SlPencil
               size={18}
-              className="black-text me-2"
+              className="black-text me-2 pointer"
               onClick={() =>
                 handleSettledPopupOpen(item?.id, item?.name, item?.venId)
               }
@@ -172,7 +174,7 @@ function SettledHistory() {
           {item?.status === 1 ? (
             <FaRegTrashCan
               size={18}
-              className="black-text"
+              className="black-text pointer"
               onClick={() => handleDelete(item?.venId, item?.id, item?.status)}
             />
           ) : (
@@ -187,24 +189,24 @@ function SettledHistory() {
     <div>
       <div className="flex-between mb-3 mt-2">
         <h6 className="d-flex yellow-font mb-0">
-          <span onClick={() => navigate(-1)}>My Vendors Account</span>
-          <span className="ms-2 flex-center">
-            <FiChevronRight />
+          <span onClick={() => navigate(-1)} className="grey-font pointer">
+            My Vendors Account
+          </span>
+          <span className="ms-1 flex-center pointer">
+            <FiChevronRight className="fw-800" />
             Settled History
           </span>
         </h6>
-        <div className="input-pill d-flex align-items-center rounded-pill px-2">
-          <FaSearch size={16} className="grey-clr me-2" />
-          <input
-            className="small-font all-none"
-            placeholder="Search by receiver... "
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
+        <div
+          className="input-pill d-flex align-items-center rounded-pill px-2 small-font pointer"
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft className="me-1" />
+          Back
         </div>
       </div>
       <div className="flex-between mb-3">
-        <div className="w-50 d-flex p-3 grey-bg2 rounded">
+        <div className="w-50 d-flex p-2 grey-bg2 rounded">
           <div className="col-4 pe-3 flex-center">
             <span className="w-100 saffron-btn2 medium-font">
               Owner Balance
@@ -215,62 +217,79 @@ function SettledHistory() {
             <span className=" medium-font">1000000000</span>
           </div>
         </div>
-        {/* <div className="white-btn2 medium-font px-3">Settled History</div> */}
       </div>
-      <div className="row mb-3 w-50">
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">From</label>
-          {/* <input className="input-css2 small-font" type="date" /> */}
+      <div className="d-flex flex-between">
+        <div className="row mb-3 w-50">
+          <div className="col flex-column">
+            <label className="black-text4 small-font mb-1">From</label>
+            {/* <input className="input-css2 small-font" type="date" /> */}
+            <input
+              className="input-css2 small-font"
+              type="date"
+              value={fromDate}
+              onChange={(e) => {
+                setFromDate(e.target.value);
+                setDateError("");
+              }}
+            />
+          </div>
+          <div className="col flex-column">
+            <label className="black-text4 small-font mb-1">To</label>
+            {/* <input className="input-css2 small-font" type="date" /> */}
+            <input
+              className="input-css2 small-font"
+              type="date"
+              value={toDate}
+              onChange={(e) => {
+                setToDate(e.target.value);
+                setDateError("");
+              }}
+            />
+          </div>
+          <div className="col  flex-column d-flex align-items-end justify-content-end">
+            <button
+              type="submit"
+              disabled={submitLoading}
+              className={`w-100 saffron-btn2 small-font pointer ${
+                submitLoading ? "disabled-btn" : ""
+              }`}
+              onClick={handleSubmit}
+            >
+              {submitLoading ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span className="ms-2">Submit</span>
+                </>
+              ) : (
+                <div>Submit</div>
+              )}
+            </button>
+          </div>
+        </div>
+        <div className="input-pill d-flex align-items-center rounded-pill px-2">
+          <FaSearch size={16} className="grey-clr me-2" />
           <input
-            className="input-css2 small-font"
-            type="date"
-            value={fromDate}
-            onChange={(e) => {
-              setFromDate(e.target.value);
-              setDateError("");
-            }}
+            className="small-font all-none"
+            placeholder="Search by receiver... "
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
         </div>
-        <div className="col flex-column">
-          <label className="black-text4 small-font mb-1">To</label>
-          {/* <input className="input-css2 small-font" type="date" /> */}
-          <input
-            className="input-css2 small-font"
-            type="date"
-            value={toDate}
-            onChange={(e) => {
-              setToDate(e.target.value);
-              setDateError("");
-            }}
-          />
-        </div>
-        <div className="col  flex-column d-flex align-items-end justify-content-end">
-          <button
-            className={`w-100 saffron-btn2 small-font ${
-              submitLoading ? "disabled-btn" : ""
-            }`}
-            onClick={handleSubmit}
-          >
-            {submitLoading ? (
-              <>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-                <span className="ms-2">Submit</span>
-              </>
-            ) : (
-              <div>Submit</div>
-            )}
-          </button>
-        </div>
       </div>
+
+      {dateError && <div className="red-font small-font mb-2">{dateError}</div>}
       {loading ? (
-        <div className="spinner">
-          <div className="spinner-circle"></div>
+        <div className="d-flex flex-column flex-center mt-10rem align-items-center">
+          <CircleLoader color="#3498db" size={40} />
+          <div className="medium-font black-font my-3">
+            Just a moment...............⏳
+          </div>
         </div>
       ) : (
         <Table

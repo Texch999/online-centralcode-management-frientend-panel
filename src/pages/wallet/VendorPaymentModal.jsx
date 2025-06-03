@@ -3,8 +3,8 @@ import { IoCloseSharp } from "react-icons/io5";
 import Select from "react-select";
 import { customStyles } from "../../components/ReactSelectStyles";
 import "../add-team/style.css";
-import { vendorPayment } from "../../api/apiMethods";
-import { useState } from "react";
+import { settleVendorById, vendorPayment } from "../../api/apiMethods";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ErrorComponent from "../../components/ErrorComponent";
 import SuccessPopup from "../popups/SuccessPopup";
@@ -12,7 +12,11 @@ import SuccessPopup from "../popups/SuccessPopup";
 const VendorPaymentModal = ({
   vendorPaymentModal,
   setVendorPaymentModal,
-  data,fetchVendorData
+  data,
+  fetchVendorData,
+  isSettledId,
+  setIsSettledId,
+  vName,
 }) => {
   const [error, setError] = useState("");
   const allCountries = useSelector((item) => item?.allCountries);
@@ -37,6 +41,7 @@ const VendorPaymentModal = ({
   const [paymentMode, setPaymentMode] = useState("");
   const [currencyAmount, setCurrencyAmount] = useState(null);
   const [inrAmount, setInrAmount] = useState(null);
+  const [settleData, setSettleData] = useState([]);
   const vendorsList = data?.map((ven, index) => ({
     value: ven?.id,
     label: ven?.vendorName,
@@ -124,6 +129,10 @@ const VendorPaymentModal = ({
           setLoading(false);
           setMsg(response?.message);
           setSuccessPopupOpen(true);
+          setVendorPaymentModal(false);
+          setTimeout(() => {
+            setSuccessPopupOpen(false);
+          }, 2000);
           setSelectedVendor(null);
           setVendorName("");
           setVendorType(null);
@@ -132,9 +141,6 @@ const VendorPaymentModal = ({
           setCurrencyAmount(0);
           setInrAmount(0);
           setVendorCurr(null);
-          setTimeout(() => {
-            setSuccessPopupOpen(false);
-          }, 2000);
           fetchVendorData();
         }
       })
@@ -144,14 +150,40 @@ const VendorPaymentModal = ({
       });
   };
 
+
+  const fetchVendorSettleById = (isSettledId) => {
+    settleVendorById(isSettledId)
+      .then((resposne) => {
+        if (resposne) {
+          setSettleData(resposne?.data);
+        }
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+  useEffect(() => {
+    if (isSettledId) {
+      fetchVendorSettleById(isSettledId);
+    }
+  }, [isSettledId]);
+
   return (
     <>
       <Modal show={vendorPaymentModal} centered size="md">
         <Modal.Body>
           <div className="flex-between black-text4">
-            <h6 className="fw-600 mb-0">Vendor Payment</h6>
+            <h6 className="fw-600 mb-0">{` ${
+              isSettledId
+                ? `Settle Vendor Payemnt - ${vName}`
+                : "Vendor Payment"
+            } `}</h6>
 
-            <IoCloseSharp size={20} onClick={handleCancel} />
+            <IoCloseSharp
+              size={20}
+              onClick={handleCancel}
+              className="pointer"
+            />
           </div>
           <ErrorComponent error={error} />
           <div className="row small-font mb-3">
@@ -283,6 +315,8 @@ const VendorPaymentModal = ({
             </div>
             <div className="col-12 mt-3 d-flex align-items-end justify-content-end">
               <button
+                type="submit"
+                disabled={loading}
                 className={`w-100 saffron-btn2 small-font ${
                   loading ? "disabled-btn" : ""
                 }`}

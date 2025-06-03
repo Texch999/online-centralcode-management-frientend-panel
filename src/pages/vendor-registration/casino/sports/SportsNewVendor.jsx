@@ -53,8 +53,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const selectSports = [{ value: 1, label: "Sports" }];
 
   const priceOptions = [
-    { value: 2, label: "Percentage" },
-    { value: 1, label: "Price" },
+    { value: 2, label: "Percentage" },// share , royalty
+    { value: 1, label: "Rental" },//rental
   ];
   const [amtType, setAmtType] = useState(priceOptions[0]);
   // const countryOptions = allCountries?.map((item) => ({
@@ -413,51 +413,50 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   };
 
   const handleSelectMarket = (sportId, marketId, isChecked) => {
-  setSelectedMarkets((prev) => {
-    const prevList = prev[sportId] || [];
-    const newList = isChecked
-      ? [...prevList, marketId]
-      : prevList.filter((id) => id !== marketId);
+    setSelectedMarkets((prev) => {
+      const prevList = prev[sportId] || [];
+      const newList = isChecked
+        ? [...prevList, marketId]
+        : prevList.filter((id) => id !== marketId);
 
-    return {
-      ...prev,
-      [sportId]: newList,
-    };
-  });
-
-  // Show dropdown immediately when checkbox is checked
-  if (isChecked) {
-    setDropdownMap((prev) => ({
-      ...prev,
-      [`${sportId}-${marketId}`]: true,
-    }));
-  } else {
-    // Clear everything when unchecked
-    setDropdownMap((prev) => {
-      const updated = { ...prev };
-      delete updated[`${sportId}-${marketId}`];
-      return updated;
+      return {
+        ...prev,
+        [sportId]: newList,
+      };
     });
 
-    // Optional: clear position and live API
-    setPositionMap((prev) => {
-      const updated = { ...prev };
-      if (updated[sportId]) {
-        delete updated[sportId][marketId];
-      }
-      return updated;
-    });
+    // Show dropdown immediately when checkbox is checked
+    if (isChecked) {
+      setDropdownMap((prev) => ({
+        ...prev,
+        [`${sportId}-${marketId}`]: true,
+      }));
+    } else {
+      // Clear everything when unchecked
+      setDropdownMap((prev) => {
+        const updated = { ...prev };
+        delete updated[`${sportId}-${marketId}`];
+        return updated;
+      });
 
-    setLiveApiStatusMap((prev) => {
-      const updated = { ...prev };
-      if (updated[sportId]) {
-        delete updated[sportId][marketId];
-      }
-      return updated;
-    });
-  }
-};
+      // Optional: clear position and live API
+      setPositionMap((prev) => {
+        const updated = { ...prev };
+        if (updated[sportId]) {
+          delete updated[sportId][marketId];
+        }
+        return updated;
+      });
 
+      setLiveApiStatusMap((prev) => {
+        const updated = { ...prev };
+        if (updated[sportId]) {
+          delete updated[sportId][marketId];
+        }
+        return updated;
+      });
+    }
+  };
 
   const handleSelectPosition = (sportId, marketId, position) => {
     setPositionMap((prev) => {
@@ -516,23 +515,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
       };
     });
   };
-
-  // const handleSelectLiveApi = (sportId, marketId, status) => {
-  //   setLiveApiStatusMap((prev) => {
-  //     const current = prev[marketId];
-
-  //     if (current === status) {
-  //       const updated = { ...prev };
-  //       delete updated[marketId];
-  //       return updated;
-  //     }
-
-  //     return {
-  //       ...prev,
-  //       [marketId]: status,
-  //     };
-  //   });
-  // };
 
   return (
     <>
@@ -864,80 +846,69 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
                             {(dropdownMap[`${sport.id}-${mar.id}`] ||
                               selectedMarkets[sport.id]?.includes(mar.id)) && (
-                                <>
-                                  <div className="my-1 small-font">
-                                    Select Position
-                                  </div>
-                                  <div className="d-flex gap-2 flex-wrap input-bg br-5 p-1 mb-3">
-                                    {positions?.map((item, index) => (
-                                      <div
-                                        key={index}
-                                        onClick={() =>
-                                          handleSelectPosition(
-                                            sport.id,
-                                            mar.id,
-                                            item
-                                          )
-                                        }
-                                        className={`rounded-pill px-2 py-1 pointer small-font ${
-                                          positionMap[sport.id]?.[mar.id] ===
+                              <>
+                                <div className="my-1 small-font">
+                                  Select Position
+                                </div>
+                                <div className="d-flex gap-2 flex-wrap input-bg br-5 p-1 mb-3">
+                                  {positions?.map((item, index) => (
+                                    <div
+                                      key={index}
+                                      onClick={() =>
+                                        handleSelectPosition(
+                                          sport.id,
+                                          mar.id,
                                           item
-                                            ? "saffron-bg white-font"
-                                            : "white-bg black-clr"
-                                        }`}
-                                      >
-                                        {item}
-                                      </div>
-                                    ))}
-                                  </div>
+                                        )
+                                      }
+                                      className={`rounded-pill px-2 py-1 pointer small-font ${
+                                        positionMap[sport.id]?.[mar.id] === item
+                                          ? "saffron-bg white-font"
+                                          : "white-bg black-clr"
+                                      }`}
+                                    >
+                                      {item}
+                                    </div>
+                                  ))}
+                                </div>
 
-                                  <div className="d-flex gap-2 align-items-center flex-between input-bg br-5 p-1 mb-3">
-                                    <div className="small-font">
-                                      Result Live Api
+                                <div className="d-flex gap-2 align-items-center flex-between input-bg br-5 p-1 mb-3">
+                                  <div className="small-font">
+                                    Result Live Api
+                                  </div>
+                                  <div className="d-flex gap-3">
+                                    <div
+                                      className={`rounded-pill px-1 py-1 pointer small-font ${
+                                        // liveApiStatusMap[mar.id] === 1
+                                        liveApiStatusMap[sport.id]?.[mar.id] ===
+                                        1
+                                          ? "saffron-bg white-font"
+                                          : "white-bg black-clr"
+                                      }`}
+                                      onClick={() =>
+                                        handleSelectLiveApi(sport.id, mar.id, 1)
+                                      }
+                                    >
+                                      Yes
                                     </div>
-                                    <div className="d-flex gap-3">
-                                      <div
-                                        className={`rounded-pill px-1 py-1 pointer small-font ${
-                                          // liveApiStatusMap[mar.id] === 1
-                                          liveApiStatusMap[sport.id]?.[
-                                            mar.id
-                                          ] === 1
-                                            ? "saffron-bg white-font"
-                                            : "white-bg black-clr"
-                                        }`}
-                                        onClick={() =>
-                                          handleSelectLiveApi(
-                                            sport.id,
-                                            mar.id,
-                                            1
-                                          )
-                                        }
-                                      >
-                                        Yes
-                                      </div>
-                                      <div
-                                        className={`rounded-pill px-2 py-1 pointer small-font ${
-                                          // liveApiStatusMap[mar.id] === 2
-                                          liveApiStatusMap[sport.id]?.[
-                                            mar.id
-                                          ] === 2
-                                            ? "saffron-bg white-font"
-                                            : "white-bg black-clr"
-                                        }`}
-                                        onClick={() =>
-                                          handleSelectLiveApi(
-                                            sport.id,
-                                            mar.id,
-                                            2
-                                          )
-                                        }
-                                      >
-                                        No
-                                      </div>
+                                    <div
+                                      className={`rounded-pill px-2 py-1 pointer small-font ${
+                                        // liveApiStatusMap[mar.id] === 2
+                                        liveApiStatusMap[sport.id]?.[mar.id] ===
+                                        2
+                                          ? "saffron-bg white-font"
+                                          : "white-bg black-clr"
+                                      }`}
+                                      onClick={() =>
+                                        handleSelectLiveApi(sport.id, mar.id, 2)
+                                      }
+                                    >
+                                      No
                                     </div>
                                   </div>
-                                </>
-                              )}
+                                </div>
+                              </>
+                            )}
                           </div>
                         ))}
                       </div>
