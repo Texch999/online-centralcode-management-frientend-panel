@@ -79,10 +79,10 @@ const VendorPaymentModal = ({
     }
   };
 
-  const currencyConvert = (amount, firstCur, secCur) => {
-    const secFin =
-      (parseFloat(amount) / parseFloat(firstCur)) * parseFloat(secCur);
-    return secFin;
+  const convertChipsToInr = (chipVal, amount, exchange) => {
+    const amountInr = parseFloat(amount) / parseFloat(exchange);
+    const inrChips = parseFloat(amountInr) * parseFloat(chipVal);
+    return inrChips;
   };
 
   const wholeInr = Math.round(inrAmount);
@@ -190,180 +190,179 @@ const VendorPaymentModal = ({
     <>
       <Modal show={vendorPaymentModal} centered size="md">
         <Modal.Body>
-          {isSettledId && loader && (
-            <div className="my-load">
-              <div className="loader"></div>
-            </div>
-          )}
-          <div className="flex-between black-text4">
-            <h6 className="fw-600 mb-0">{` ${
-              isSettledId
-                ? `Settle Vendor Payemnt - ${vName}`
-                : "Vendor Payment"
-            } `}</h6>
+          <div style={{ position: "relative" }}>
+            {isSettledId && loader && (
+              <div className="my-load">
+                <div className="loader"></div>
+              </div>
+            )}
+            <div className="flex-between black-text4">
+              <h6 className="fw-600 mb-0">{` ${
+                isSettledId
+                  ? `Settle Vendor Payemnt - ${vName}`
+                  : "Vendor Payment"
+              } `}</h6>
 
-            <IoCloseSharp
-              size={20}
-              onClick={handleCancel}
-              className="pointer"
-            />
-          </div>
-          <ErrorComponent error={error} />
-          <div className="row small-font mb-3">
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Select Vendor</label>
-              <Select
-                className="small-font"
-                options={vendorsList}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                value={vendorsList.find((v) => v.value === selectedVendor?.id)}
-                onChange={handleVendorChange}
-                isDisabled={!!isSettledId}
-                isSearchable={false}
+              <IoCloseSharp
+                size={20}
+                onClick={handleCancel}
+                className="pointer"
               />
             </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Select Type</label>
-              <Select
-                className="small-font"
-                options={selectOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                value={selectOptions.find((opt) => opt.value === vendorType)}
-                isDisabled
-              />
-            </div>
-            <div className="col-12 mt-3">
-              <div className="input-css d-flex flex-between border-orange">
-                <div>Wallet Bal</div>
-                <div>
-                  {selectedVendor?.totalAmount || 0}{" "}
-                  {
-                    allCountries.find((c) => c.id === selectedVendor?.currency)
-                      ?.currency_symbol
-                  }
+            <ErrorComponent error={error} />
+            <div className="row small-font mb-3">
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Select Vendor</label>
+                <Select
+                  className="small-font"
+                  options={vendorsList}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  value={vendorsList.find(
+                    (v) => v.value === selectedVendor?.id
+                  )}
+                  onChange={handleVendorChange}
+                  isDisabled={!!isSettledId}
+                  isSearchable={false}
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Select Type</label>
+                <Select
+                  className="small-font"
+                  options={selectOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  value={selectOptions.find((opt) => opt.value === vendorType)}
+                  isDisabled
+                />
+              </div>
+              <div className="col-12 mt-3">
+                <div className="input-css d-flex flex-between border-orange">
+                  <div>Wallet Bal</div>
+                  <div>
+                    {selectedVendor?.totalAmount || 0}{" "}
+                    {
+                      allCountries.find(
+                        (c) => c.id === selectedVendor?.currency
+                      )?.currency_symbol
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-12 mt-3">
-              <div className="input-css d-flex flex-between border-orange">
-                <div>Pending Bal</div>
-                <div>
-                  {" "}
-                  {selectedVendor?.balanceAmount || 0}{" "}
-                  {
-                    allCountries.find((c) => c.id === selectedVendor?.currency)
-                      ?.currency_symbol
-                  }
+              <div className="col-12 mt-3">
+                <div className="input-css d-flex flex-between border-orange">
+                  <div>Pending Bal</div>
+                  <div>
+                    {" "}
+                    {selectedVendor?.balanceAmount || 0}{" "}
+                    {
+                      allCountries.find(
+                        (c) => c.id === selectedVendor?.currency
+                      )?.currency_symbol
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-6 flex-column mt-3 ">
-              <label className="mb-1 black-text4">Select Currency</label>
-              <Select
-                className="small-font"
-                options={countryOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                value={currency}
-                onChange={(selected) => {
-                  setCurrency(selected);
-                }}
-                isDisabled
-              />
-            </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Payment Mode</label>
-              <input
-                className="input-bg rounded p-2 grey-font all-none"
-                type="text"
-                placeholder="Enter"
-                value={paymentMode}
-                onChange={(e) => setPaymentMode(e.target.value)}
-              />
-            </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Currency Amt</label>
-              <input
-                className="input-bg rounded p-2 grey-font all-none"
-                type="text"
-                placeholder="Enter amount"
-                maxLength={11}
-                value={currencyAmount}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "") {
-                    setCurrencyAmount("");
-                    setInrAmount("");
-                    return;
-                  }
+              <div className="col-6 flex-column mt-3 ">
+                <label className="mb-1 black-text4">Select Currency</label>
+                <Select
+                  className="small-font"
+                  options={countryOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  value={currency}
+                  onChange={(selected) => {
+                    setCurrency(selected);
+                  }}
+                  isDisabled
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Payment Mode</label>
+                <input
+                  className="input-bg rounded p-2 grey-font all-none"
+                  type="text"
+                  placeholder="Enter"
+                  value={paymentMode}
+                  onChange={(e) => setPaymentMode(e.target.value)}
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Currency Amt</label>
+                <input
+                  className="input-bg rounded p-2 grey-font all-none"
+                  type="text"
+                  placeholder="Enter amount"
+                  maxLength={11}
+                  value={currencyAmount}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "") {
+                      setCurrencyAmount("");
+                      setInrAmount("");
+                      return;
+                    }
 
-                  const amt = parseFloat(value);
-                  setCurrencyAmount(amt);
+                    const amt = parseFloat(value);
+                    setCurrencyAmount(amt);
+                    console.log(amt, "amt");
 
-                  const fullCurrency = allCountries.find(
-                    (c) => c.id === currency.value
-                  );
-                  if (!isNaN(amt) && fullCurrency?.exchange) {
-                    const inr = currencyConvert(amt, 1, fullCurrency.exchange);
-                    setInrAmount(inr);
-                  }
-                }}
-
-                // onChange={(e) => {
-                //   const amt = parseFloat(e.target.value);
-                //   setCurrencyAmount(amt);
-                //   const fullCurrency = allCountries.find(
-                //     (c) => c.id === currency.value
-                //   );
-                //   if (amt && fullCurrency?.exchange) {
-                //     const inr = currencyConvert(amt, 1, fullCurrency.exchange);
-                //     setInrAmount(inr);
-                //   }
-                // }}
-              />
-            </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Amount in INR</label>
-              <input
-                className="input-bg rounded p-2 grey-font all-none"
-                type="text"
-                placeholder=""
-                value={inrAmount}
-                readOnly
-              />
-            </div>
-            <div className="col-12 mt-3 d-flex align-items-end justify-content-end">
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-100 saffron-btn2 small-font ${
-                  loading ? "disabled-btn" : ""
-                }`}
-                onClick={submitVendorPayment}
-              >
-                {loading ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                    <span className="ms-2">Submit</span>
-                  </>
-                ) : (
-                  <div>Submit</div>
-                )}
-              </button>
+                    const fullCurrency = allCountries.find(
+                      (c) => c.id === currency.value
+                    );
+                    if (!isNaN(amt) && fullCurrency?.exchange) {
+                      const inr = convertChipsToInr(
+                        1,
+                        amt,
+                        fullCurrency.exchange
+                      );
+                      setInrAmount(inr.toFixed(2));
+                    }
+                  }}
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Amount in INR</label>
+                <input
+                  className="input-bg rounded p-2 grey-font all-none"
+                  type="text"
+                  placeholder=""
+                  value={inrAmount}
+                  readOnly
+                />
+              </div>
+              <div className="col-12 mt-3 d-flex align-items-end justify-content-end">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-100 saffron-btn2 small-font ${
+                    loading ? "disabled-btn" : ""
+                  }`}
+                  onClick={submitVendorPayment}
+                >
+                  {loading ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Submit</span>
+                    </>
+                  ) : (
+                    <div>Submit</div>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </Modal.Body>

@@ -20,7 +20,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [companyName, setCompanyName] = useState("");
   const [sportsData, setSportsData] = useState([]);
   const [error, setError] = useState("");
-  console.log(error, "errorrrrrrrr");
   const allCountries = useSelector((item) => item?.allCountries);
   const [maxLoseAmtGame, setMaxLoseAmtGame] = useState(null);
   const [maxLoseAmtTable, setMaxLoseAmtTable] = useState(null);
@@ -44,23 +43,16 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const [errors, setErrors] = useState("");
   const [dropdownMap, setDropdownMap] = useState({});
 
-  // const handleDropdown = () => {
-  //   setPositionDropdown(!positionDropdown);
-  // };
-
   const path = window.location.pathname === "/sports-vendor-registration";
 
   const selectSports = [{ value: 1, label: "Sports" }];
 
+  //  for sports only  rental
   const priceOptions = [
-    { value: 2, label: "Percentage" }, // share , royalty
     { value: 1, label: "Rental" }, //rental
+    //{value:2,label:"Percentage"}   share, royalty
   ];
   const [amtType, setAmtType] = useState(priceOptions[0]);
-  // const countryOptions = allCountries?.map((item) => ({
-  //   value: item?.id,
-  //   label: item?.name,
-  // }));
 
   const countryOptions = allCountries?.map((item) => ({
     value: item?.id,
@@ -69,7 +61,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
 
   const currencyOptions = allCountries?.map((item) => ({
     value: item?.id,
-    label: item?.currency_name,
+    label: `${item?.currency_name} - ${item?.code}`,
   }));
 
   const [selectedSport, setSelectedSport] = useState(
@@ -551,7 +543,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
             <ErrorComponent error={error} />
           )}
 
-          {errors && <ErrorComponent error={error} />}
+          {errors && <ErrorComponent error={errors} />}
 
           <div className="row text-black">
             <div className="col-4 felx-column">
@@ -559,6 +551,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
               <Select
                 className="small-font"
                 isSearchable={false}
+                isDisabled={isEdit}
                 options={selectSports}
                 placeholder="Select"
                 styles={customStyles}
@@ -759,6 +752,7 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       maxMenuHeight={120}
                       menuPlacement="auto"
                       value={amtType}
+                      isDisabled={isEdit}
                       onChange={(val) => setAmtType(val)}
                     />
                   </div>
@@ -913,7 +907,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                   <div className="d-flex gap-3">
                                     <div
                                       className={`rounded-pill px-1 py-1 pointer small-font ${
-                                        // liveApiStatusMap[mar.id] === 1
                                         liveApiStatusMap[sport.id]?.[mar.id] ===
                                         1
                                           ? "saffron-bg white-font"
@@ -927,7 +920,6 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                                     </div>
                                     <div
                                       className={`rounded-pill px-2 py-1 pointer small-font ${
-                                        // liveApiStatusMap[mar.id] === 2
                                         liveApiStatusMap[sport.id]?.[mar.id] ===
                                         2
                                           ? "saffron-bg white-font"

@@ -44,6 +44,7 @@ function SettledPopup({
   const handleCancel = () => {
     setSettledPopupOpen(false);
     setEditPaymentId(null);
+    setError("");
   };
   const currencyConvert = (amount, firstCur, secCur) => {
     const secFin =
@@ -127,6 +128,7 @@ function SettledPopup({
           }, 3000);
           getPayemnts(limit, offset);
           setEditPaymentId(null);
+          setError("");
         }
       })
       .catch((error) => {
@@ -139,92 +141,94 @@ function SettledPopup({
     <>
       <Modal show={setteledPopupOpen} centered size="md">
         <Modal.Body>
-          {loading && (
-            <div className="my-load">
-              <div className="loader"></div>
-            </div>
-          )}
-          <div className="flex-between black-text4">
-            <h6 className="fw-600 mb-0">{`Edit vendor Payment (${settledName})`}</h6>
-            <IoCloseSharp
-              size={20}
-              onClick={handleCancel}
-              className="pointer"
-            />
-          </div>
-          <ErrorComponent error={error} />
-          <div className="row small-font mb-3">
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Select Currency</label>
-              <Select
-                className="small-font"
-                options={countryOptions}
-                placeholder="Select"
-                styles={customStyles}
-                maxMenuHeight={120}
-                menuPlacement="auto"
-                value={selectedCurrency}
-                // onChange={(option) => setSelectedCurrency(option)}
-                isDisabled={true}
+          <div style={{ position: "relative" }}>
+            {loading && (
+              <div className="my-load">
+                <div className="loader"></div>
+              </div>
+            )}
+            <div className="flex-between black-text4">
+              <h6 className="fw-600 mb-0">{`Edit vendor Payment (${settledName})`}</h6>
+              <IoCloseSharp
+                size={20}
+                onClick={handleCancel}
+                className="pointer"
               />
             </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Payment Mode</label>
-              <input
-                className="input-bg rounded p-2 grey-font all-none"
-                type="text"
-                placeholder="Enter"
-                value={paymentMode}
-                onChange={(e) => setPaymentMode(e.target.value)}
-              />
-            </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Currency</label>
-              <input
-                className="input-bg rounded p-2 grey-font all-none"
-                type="number"
-                placeholder="Currency Amount"
-                value={currencyAmount}
-                // onChange={(e) => setCurrencyAmount(e.target.value)}
-                onChange={handleCurrencyAmountChange}
-              />
-            </div>
-            <div className="col-6 flex-column mt-3">
-              <label className="mb-1 black-text4">Amount in INR</label>
-              <input
-                className="input-bg rounded p-2 grey-font all-none"
-                type="number"
-                placeholder="INR Amount"
-                value={inrAmount}
-                // onChange={(e) => setInrAmount(e.target.value)}
-                disabled
-              />
-            </div>
+            <ErrorComponent error={error} />
+            <div className="row small-font mb-3">
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Select Currency</label>
+                <Select
+                  className="small-font"
+                  options={countryOptions}
+                  placeholder="Select"
+                  styles={customStyles}
+                  maxMenuHeight={120}
+                  menuPlacement="auto"
+                  value={selectedCurrency}
+                  // onChange={(option) => setSelectedCurrency(option)}
+                  isDisabled={true}
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Payment Mode</label>
+                <input
+                  className="input-bg rounded p-2 grey-font all-none"
+                  type="text"
+                  placeholder="Enter"
+                  value={paymentMode}
+                  onChange={(e) => setPaymentMode(e.target.value)}
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Currency</label>
+                <input
+                  className="input-bg rounded p-2 grey-font all-none"
+                  type="number"
+                  placeholder="Currency Amount"
+                  value={currencyAmount}
+                  // onChange={(e) => setCurrencyAmount(e.target.value)}
+                  onChange={handleCurrencyAmountChange}
+                />
+              </div>
+              <div className="col-6 flex-column mt-3">
+                <label className="mb-1 black-text4">Amount in INR</label>
+                <input
+                  className="input-bg rounded p-2 grey-font all-none"
+                  type="number"
+                  placeholder="INR Amount"
+                  value={inrAmount}
+                  // onChange={(e) => setInrAmount(e.target.value)}
+                  disabled
+                />
+              </div>
 
-            <div className="col-12 mt-3 d-flex align-items-end justify-content-end">
-              <button
-                type="submit"
-                disabled={load}
-                className={`w-100 saffron-btn2 small-font ${
-                  load ? "disabled-btn" : ""
-                }`}
-                onClick={onUpdate}
-              >
-                {load ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                    <span className="ms-2">Update</span>
-                  </>
-                ) : (
-                  <div>Update</div>
-                )}
-              </button>
+              <div className="col-12 mt-3 d-flex align-items-end justify-content-end">
+                <button
+                  type="submit"
+                  disabled={load}
+                  className={`w-100 saffron-btn2 small-font ${
+                    load ? "disabled-btn" : ""
+                  }`}
+                  onClick={onUpdate}
+                >
+                  {load ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      <span className="ms-2">Update</span>
+                    </>
+                  ) : (
+                    <div>Update</div>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </Modal.Body>

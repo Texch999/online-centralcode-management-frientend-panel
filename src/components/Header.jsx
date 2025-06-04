@@ -103,7 +103,10 @@ function Header() {
   }, []);
 
   const handleLogout = () => {
-    if (userRole === "management") {
+    if (userRole === "owner") {
+      localStorage.clear();
+      navigate("/master/login");
+    } else if (userRole === "management") {
       localStorage.clear();
       navigate("/master/login");
     } else if (userRole === "director") {
