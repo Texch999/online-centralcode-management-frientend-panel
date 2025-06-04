@@ -43,6 +43,7 @@ const VendorPaymentModal = ({
   const [currencyAmount, setCurrencyAmount] = useState(null);
   const [inrAmount, setInrAmount] = useState(null);
   const [settleData, setSettleData] = useState([]);
+  const [loader, setLoader] = useState(false);
   const vendorsList = data?.map((ven, index) => ({
     value: ven?.id,
     label: ven?.vendorName,
@@ -144,6 +145,7 @@ const VendorPaymentModal = ({
           setInrAmount(null);
           setVendorCurr(null);
           fetchVendorData();
+          setIsSettledId(false);
         }
       })
       .catch((error) => {
@@ -152,31 +154,18 @@ const VendorPaymentModal = ({
       });
   };
 
-  // const fetchVendorSettleById = (isSettledId) => {
-  //   settleVendorById(isSettledId)
-  //     .then((resposne) => {
-  //       if (resposne) {
-  //         setSettleData(resposne?.data);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.message);
-  //     });
-  // };
   useEffect(() => {
-    if (isSettledId && allCountries?.length > 0) {
+    if (isSettledId) {
+      setLoader(true);
       settleVendorById(isSettledId)
         .then((response) => {
           if (response?.data) {
+            setLoader(false);
             const vendor = response.data;
-
-            // Set all form fields
             setSelectedVendor(vendor);
             setVendorName(vendor.vendorName);
             setVendorType(vendor.vendorType);
             setVendorCurr(vendor.currency);
-
-            // Set currency dropdown value
             const matchedCurrency = allCountries.find(
               (c) => c.id === vendor.currency
             );
@@ -191,15 +180,21 @@ const VendorPaymentModal = ({
           }
         })
         .catch((error) => {
+          setLoader(false);
           setError(error?.message || "Failed to fetch vendor.");
         });
     }
-  }, [isSettledId, allCountries]);
+  }, [isSettledId]);
 
   return (
     <>
       <Modal show={vendorPaymentModal} centered size="md">
         <Modal.Body>
+          {isSettledId && loader && (
+            <div className="my-load">
+              <div className="loader"></div>
+            </div>
+          )}
           <div className="flex-between black-text4">
             <h6 className="fw-600 mb-0">{` ${
               isSettledId
@@ -227,6 +222,7 @@ const VendorPaymentModal = ({
                 value={vendorsList.find((v) => v.value === selectedVendor?.id)}
                 onChange={handleVendorChange}
                 isDisabled={!!isSettledId}
+                isSearchable={false}
               />
             </div>
             <div className="col-6 flex-column mt-3">
@@ -339,7 +335,7 @@ const VendorPaymentModal = ({
               <input
                 className="input-bg rounded p-2 grey-font all-none"
                 type="text"
-                placeholder="Amt in Inr"
+                placeholder=""
                 value={inrAmount}
                 readOnly
               />

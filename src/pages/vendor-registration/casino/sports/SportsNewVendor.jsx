@@ -53,8 +53,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
   const selectSports = [{ value: 1, label: "Sports" }];
 
   const priceOptions = [
-    { value: 2, label: "Percentage" },// share , royalty
-    { value: 1, label: "Rental" },//rental
+    { value: 2, label: "Percentage" }, // share , royalty
+    { value: 1, label: "Rental" }, //rental
   ];
   const [amtType, setAmtType] = useState(priceOptions[0]);
   // const countryOptions = allCountries?.map((item) => ({
@@ -666,6 +666,18 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       menuPlacement="auto"
                       value={selecctedCountry}
                       onChange={(select) => setSelectedCountry(select)}
+                      filterOption={(option, searchText) => {
+                        const lettersOnly = searchText.replace(
+                          /[^a-zA-Z]/g,
+                          ""
+                        );
+                        return option.label
+                          .toLowerCase()
+                          .includes(lettersOnly.toLowerCase());
+                      }}
+                      onInputChange={(inputValue) => {
+                        return inputValue.replace(/[^a-zA-Z]/g, "");
+                      }}
                     />
                   </div>
                   <div className="w-50">
@@ -681,6 +693,18 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                       menuPlacement="auto"
                       value={selectedCurrency}
                       onChange={(select) => setSelectedCurrency(select)}
+                      filterOption={(option, searchText) => {
+                        const lettersOnly = searchText.replace(
+                          /[^a-zA-Z]/g,
+                          ""
+                        );
+                        return option.label
+                          .toLowerCase()
+                          .includes(lettersOnly.toLowerCase());
+                      }}
+                      onInputChange={(inputValue) => {
+                        return inputValue.replace(/[^a-zA-Z]/g, "");
+                      }}
                     />
                   </div>
                 </div>

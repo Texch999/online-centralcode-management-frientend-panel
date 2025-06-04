@@ -78,7 +78,7 @@ function MyVendorsAccount() {
         <div className="red-font">{item?.balanceAmount}</div>
         {item?.balanceAmount > 1000 && (
           <div
-            className="saffron-bg br-5 px-4 py-1 white-font  mt-2 pointer"
+            className="saffron-bg br-5 px-4 py-1 white-font  mt-2 pointer ms-1"
             onClick={() => handleSettled(item?.id, item?.vendorName)}
           >
             Settle
