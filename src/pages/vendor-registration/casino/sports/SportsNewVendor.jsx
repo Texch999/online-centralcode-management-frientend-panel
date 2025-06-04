@@ -89,6 +89,14 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ];
 
+  const today = new Date();
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(today.getMonth() - 1);
+
+  const formatDate = (date) => date.toISOString().split("T")[0];
+  const minDate = formatDate(oneMonthAgo);
+  const maxDate = formatDate(today);
+
   const reset = () => {
     setVendorName("");
     setSelectedSport(null);
@@ -784,6 +792,8 @@ const SportsNewVendor = ({ isEdit, setIsEdit, vendorId, fetch }) => {
                           placeholder="Select date"
                           value={billingDate}
                           onChange={(e) => setBillingDate(e.target.value)}
+                          min={minDate}
+                          max={maxDate}
                         />
                       </div>
                       <div className="w-50">
