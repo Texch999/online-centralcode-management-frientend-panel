@@ -24,6 +24,7 @@ const VendorPaymentModal = ({
   const [successPopupOpen, setSuccessPopupOpen] = useState(false);
   const [msg, setMsg] = useState("");
   const handleCancel = () => {
+    setError("");
     setVendorPaymentModal(false);
     setSelectedVendor(null);
     setVendorName("");
@@ -133,6 +134,7 @@ const VendorPaymentModal = ({
           setTimeout(() => {
             setSuccessPopupOpen(false);
           }, 2000);
+          setError("");
           setSelectedVendor(null);
           setVendorName("");
           setVendorType(null);
@@ -150,23 +152,49 @@ const VendorPaymentModal = ({
       });
   };
 
-
-  const fetchVendorSettleById = (isSettledId) => {
-    settleVendorById(isSettledId)
-      .then((resposne) => {
-        if (resposne) {
-          setSettleData(resposne?.data);
-        }
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
+  // const fetchVendorSettleById = (isSettledId) => {
+  //   settleVendorById(isSettledId)
+  //     .then((resposne) => {
+  //       if (resposne) {
+  //         setSettleData(resposne?.data);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error?.message);
+  //     });
+  // };
   useEffect(() => {
-    if (isSettledId) {
-      fetchVendorSettleById(isSettledId);
+    if (isSettledId && allCountries?.length > 0) {
+      settleVendorById(isSettledId)
+        .then((response) => {
+          if (response?.data) {
+            const vendor = response.data;
+
+            // Set all form fields
+            setSelectedVendor(vendor);
+            setVendorName(vendor.vendorName);
+            setVendorType(vendor.vendorType);
+            setVendorCurr(vendor.currency);
+
+            // Set currency dropdown value
+            const matchedCurrency = allCountries.find(
+              (c) => c.id === vendor.currency
+            );
+            if (matchedCurrency) {
+              setCurrency({
+                value: matchedCurrency.id,
+                label: `${matchedCurrency.name} - ${matchedCurrency.currency_name} - ${matchedCurrency.currency_symbol}`,
+              });
+            } else {
+              setCurrency(null);
+            }
+          }
+        })
+        .catch((error) => {
+          setError(error?.message || "Failed to fetch vendor.");
+        });
     }
-  }, [isSettledId]);
+  }, [isSettledId, allCountries]);
 
   return (
     <>
@@ -196,7 +224,9 @@ const VendorPaymentModal = ({
                 styles={customStyles}
                 maxMenuHeight={120}
                 menuPlacement="auto"
+                value={vendorsList.find((v) => v.value === selectedVendor?.id)}
                 onChange={handleVendorChange}
+                isDisabled={!!isSettledId}
               />
             </div>
             <div className="col-6 flex-column mt-3">
@@ -250,6 +280,7 @@ const VendorPaymentModal = ({
                 onChange={(selected) => {
                   setCurrency(selected);
                 }}
+                isDisabled
               />
             </div>
             <div className="col-6 flex-column mt-3">

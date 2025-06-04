@@ -76,12 +76,14 @@ function MyVendorsAccount() {
     balance: (
       <div>
         <div className="red-font">{item?.balanceAmount}</div>
-        <div
-          className="green-btn mt-2 pointer"
-          onClick={() => handleSettled(item?.id, item?.vendorName)}
-        >
-          Settled
-        </div>
+        {item?.balanceAmount > 1000 && (
+          <div
+            className="green-btn mt-2 pointer"
+            onClick={() => handleSettled(item?.id, item?.vendorName)}
+          >
+            Settled
+          </div>
+        )}
       </div>
     ),
   }));
