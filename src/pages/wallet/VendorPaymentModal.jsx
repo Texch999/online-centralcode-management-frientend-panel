@@ -140,8 +140,8 @@ const VendorPaymentModal = ({
           setVendorType(null);
           setCurrency(null);
           setPaymentMode("");
-          setCurrencyAmount(0);
-          setInrAmount(0);
+          setCurrencyAmount(null);
+          setInrAmount(null);
           setVendorCurr(null);
           fetchVendorData();
         }

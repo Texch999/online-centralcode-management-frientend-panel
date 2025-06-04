@@ -19,8 +19,8 @@ function MyVendorsAccount() {
     item?.vendorName?.toLowerCase().includes(searchInput.toLowerCase())
   );
   const VENDOR_COLUMNS = [
-    { header: "Vendor Name", field: "vendor_name" },
-    { header: "Providers", field: "providing" },
+    { header: "Vendor Name", field: "vendor_name",width:"20%" },
+    { header: "Providers", field: "providing",width:"20%" },
     { header: "M. Rent", field: "monthly_rent" },
     { header: "Percentage (%)", field: "percentage" },
     { header: "Billing Date", field: "billing_date" },
@@ -74,14 +74,14 @@ function MyVendorsAccount() {
     total_amount: <div className="green-font">{item?.totalAmount}</div>,
     paid_amount: <div className="yellow-font">{item?.paidAmount}</div>,
     balance: (
-      <div>
+      <div  className="d-flex align-items-center flex-between">
         <div className="red-font">{item?.balanceAmount}</div>
         {item?.balanceAmount > 1000 && (
           <div
-            className="green-btn mt-2 pointer"
+            className="saffron-bg br-5 px-4 py-1 white-font  mt-2 pointer"
             onClick={() => handleSettled(item?.id, item?.vendorName)}
           >
-            Settled
+            Settle
           </div>
         )}
       </div>
