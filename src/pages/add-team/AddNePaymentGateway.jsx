@@ -55,7 +55,7 @@ const AddNePaymentGateway = () => {
     // "Cash",
     "Payment Gateway",
   ];
-  
+
   const modes = [
     { title: "Bank Transfer", mode: 1 },
     { title: "E-Wallets", mode: 2 },
@@ -114,21 +114,18 @@ const AddNePaymentGateway = () => {
   useEffect(() => {
     if (offlinePaymentModes.length > 0 && paymentModes.length > 0) {
       const combinedData = offlinePaymentModes.flatMap((offlineMode) => {
-        // Extract the numeric payment_mode_id from offlineMode.id
         const slicedId = Number(offlineMode.id.slice(3, -3));
 
-        // Find all paymentModes that match the slicedId
         const matchingPaymentModes = paymentModes.filter(
           (paymentMode) => paymentMode.payment_mode_id === slicedId
         );
 
-        // If matching records exist, merge them, otherwise keep offlineMode as is
         return matchingPaymentModes.length > 0
           ? matchingPaymentModes.map((paymentMode) => ({
-              ...offlineMode,
-              ...paymentMode,
-              isEnabled: true,
-            }))
+            ...offlineMode,
+            ...paymentMode,
+            isEnabled: true,
+          }))
           : [{ ...offlineMode, isEnabled: false }];
       });
 
@@ -229,9 +226,8 @@ const AddNePaymentGateway = () => {
                     {tabNames.map((tabName, index) => (
                       <div
                         key={index}
-                        className={`border col text-center py-2 medium-font fw-600 text-nowrap ${
-                          selectedTab === index ? "saffron-btn2 px2" : "rounded"
-                        }`}
+                        className={`border col text-center py-2 medium-font fw-600 text-nowrap ${selectedTab === index ? "saffron-btn2 px2" : "rounded"
+                          }`}
                         style={{ cursor: "pointer" }}
                         onClick={() => setSelectedTab(index)}
                       >
@@ -267,16 +263,16 @@ const AddNePaymentGateway = () => {
               setDiscription={setDiscription}
               setSuccessPopupOpen={setSuccessPopupOpen}
 
-              // show={AddPaymentGatewayModal}
-              // setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
-              // addpaymentId={addpaymentId}
-              // setAddPaymentId={setAddPaymentId}
-              // countryId={countryId}
-              // setCountryId={setCountryId}
-              // availablePaymentModeId={availablePaymentModeId}
-              // setAvailablePaymentModeId={setAvailablePaymentModeId}
-              // setDiscription={setDiscription}
-              // setSuccessPopupOpen={setSuccessPopupOpen}
+            // show={AddPaymentGatewayModal}
+            // setOnAddPaymentGateway={() => setOnAddPaymentGateway(false)}
+            // addpaymentId={addpaymentId}
+            // setAddPaymentId={setAddPaymentId}
+            // countryId={countryId}
+            // setCountryId={setCountryId}
+            // availablePaymentModeId={availablePaymentModeId}
+            // setAvailablePaymentModeId={setAvailablePaymentModeId}
+            // setDiscription={setDiscription}
+            // setSuccessPopupOpen={setSuccessPopupOpen}
             />
           )}
 
