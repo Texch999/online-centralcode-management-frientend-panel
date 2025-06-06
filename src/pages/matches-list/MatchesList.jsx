@@ -29,24 +29,43 @@ const MatchesList = () => {
     });
   };
 
+  // const cols = [
+  //   { header: "S No", field: "sno", width: "8%" },
+  //   { header: "Games", field: "games", width: "40%" },
+  //   { header: "Games", field: "games", width: "40%" },
+  //   {
+  //     header: <div className="flex-center">Action</div>,
+  //     field: "eye",
+  //     width: "5%",
+  //   },
+  //   {
+  //     header: <div className="flex-center">History</div>,
+  //     field: "history",
+  //     width: "5%",
+  //   },
+  // ];
   const cols = [
-    { header: "S No", field: "sno", width: "8%" },
-    { header: "Games", field: "games", width: "40%" },
+    { header: "S No", field: "sno" },
+    { header: "Games", field: "games" },
+    { header: "Odds", field: "odds" },
     {
       header: <div className="flex-center">Action</div>,
       field: "eye",
-      width: "5%",
     },
     {
       header: <div className="flex-center">History</div>,
       field: "history",
-      width: "5%",
     },
   ];
 
   const data = sportsData?.map((item, index) => ({
     sno: index + 1,
-    games: <div className="pointer">{item?.name}</div>,
+    games: <div className="pointer">
+      {console.log(item)}
+      {item?.name}</div>,
+    odds: <div className="pointer"
+      onClick={() => navigate(`/central-sports/odds/${item?.name}`)}>
+      <BsEye size={18} className="orange-clr" /></div>,
     eye: (
       <div
         className="pointer d-flex flex-center"

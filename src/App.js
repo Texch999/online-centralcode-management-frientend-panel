@@ -275,8 +275,13 @@ function App() {
                   path="/central-sports/:vendor/:provider"
                   element={<SportProviders />}
                 />
-                <Route
+
+                {/* <Route
                   path="/central-sports/:vendor/:provider/:match"
+                  element={<Cricket />}
+                /> */}
+                <Route
+                  path="/central-sports/odds/:sportId"
                   element={<Cricket />}
                 />
                 <Route
