@@ -36,7 +36,7 @@ const Sports = () => {
     },
     { header: "VendorName & Company", field: "vendorname", width: "20%" },
     { header: "Vendor %", field: "vendorper", width: "10%" },
-    { header: "Vendor Monthly Amt", field: "vendormon", width: "10%" },
+    { header: "Vendor Monthly Amt", field: "vendormon", width: "13%" },
     { header: "Date", field: "date", width: "10%" },
     { header: "Vendor Country", field: "country", width: "10%" },
     {
@@ -46,16 +46,14 @@ const Sports = () => {
           <div className="col-4 flex-center">Profit&Loss</div>
           <div className="col-4 ">View</div>
         </div>
-      ),
-      field: "all",
-      width: "42%",
+      ), field: "all", width: "20%",
     },
   ];
   const data = vendorsData?.map((item, index) => ({
     sno: index + 1,
     vendorname: (
       <div className="d-flex flex-column">
-        <div>{item?.vendorName}</div>
+        <div className="text-capitalize">{item?.vendorName}</div>
         <div>{item?.vendorCompany}</div>
       </div>
     ),
@@ -66,7 +64,7 @@ const Sports = () => {
       <div>{item?.monthlyAmount !== null ? item?.monthlyAmount : "-"}</div>
     ),
     date: <div>{item?.billingDate !== null ? item?.billingDate : "-"}</div>,
-    country: <div>{getCountryName(item?.vendorCountry)}</div>,
+    country: <div className="text-capitalize">{getCountryName(item?.vendorCountry)}</div>,
     all: (
       <div className="flex-column">
         {item?.vendorMarkets?.map((market, mIdx) => (

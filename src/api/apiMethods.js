@@ -615,6 +615,14 @@ const settleVendorById = (vId, data) => {
   return apiRequest("settleVendorById", data, vId);
 };
 
+const getMatchesInSports = (params) => {
+  return apiRequest("getMatchesInSports", {}, params);
+};
+
+
+
+
+
 export {
   managementDwnProfileDirPaymentDetails,
   UpdateProfileDirpaymentDetailsByMan,
@@ -778,4 +786,5 @@ export {
   getPyamentById,
   updatePayment,
   settleVendorById,
+  getMatchesInSports
 };

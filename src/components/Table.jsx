@@ -108,7 +108,7 @@ function Table({
                   <th
                     key={index}
                     style={{ width: column.width }}
-                    className="small-font fw-600 black-text px-3 py-3"
+                    className="small-font fw-600 black-text px-2 py-3"
                   >
                     {column.header}
                   </th>
