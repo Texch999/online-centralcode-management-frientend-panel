@@ -108,61 +108,67 @@ const MatchIndividualDetails = () => {
             </div>
             {/** Odds */}
             {matchOdds?.length > 0 && matchOdds?.map((detail) => (
-                <div>
-                    <h5 className="medium-font fw-600 text-capitalize">{detail?.vendor_name}</h5>
-                    <div className="text-white odd-category-header d-flex flex-row justify-content-start align-items-center px-2 w-100 py-2 ">
-                        <div className="medium-font fw-600">Match Odds</div>
-                    </div>
-                    <div className="w-100 border-box border" >
-                        {/* Header row */}
-                        <div className="w-100 d-flex fw-600 text-black pb-2 border">
-                            <div className="col-6 ps-2">
-                                Game
-                            </div>
-
-                            <div className="col-3 d-flex justify-content-center">
-                                Back
-                            </div>
-                            <div className="col-3 d-flex justify-content-center">
-                                Lay
-                            </div>
-
+                detail.odds.length > 0 ?
+                    < div >
+                        <h5 className="medium-font fw-600 text-capitalize">{detail?.vendor_name}</h5>
+                        <div className="text-white odd-category-header d-flex flex-row justify-content-start align-items-center px-2 w-100 py-2 ">
+                            <div className="medium-font fw-600">Match Odds</div>
                         </div>
+                        <div className="w-100 border-box border" >
+                            {/* Header row */}
+                            <div className="w-100 d-flex fw-600 text-black pb-2 border">
+                                <div className="col-6 ps-2">
+                                    Game
+                                </div>
 
-                        {/* Odds rows */}
-                        {renderOdds(detail.odds)}
-                    </div>
-                </div>
-            ))}
+                                <div className="col-3 d-flex justify-content-center">
+                                    Back
+                                </div>
+                                <div className="col-3 d-flex justify-content-center">
+                                    Lay
+                                </div>
+
+                            </div>
+
+                            {/* Odds rows */}
+                            {renderOdds(detail.odds)}
+                        </div>
+                    </div> : null
+            ))
+            }
+
             {/** BookMaker */}
-            {bookmaker.length > 0 && bookmaker?.map((detail) => (
-                <div>
-                    <h5 className="medium-font fw-600 text-capitalize">{detail?.vendor_name}</h5>
-                    <div className="text-white odd-category-header d-flex flex-row justify-content-start align-items-center px-2 w-100 py-2 ">
-                        <div className="medium-font fw-600">Match Odds</div>
-                    </div>
-                    <div className="w-100 border-box border" >
-                        {/* Header row */}
-                        <div className="w-100 d-flex fw-600 text-black pb-2 border">
-                            <div className="col-6 ps-2">
-                                Game
+            {
+                bookmaker.length > 0 && bookmaker?.map((detail) => (
+                    detail.bookmakers.length > 0 ?
+                        <div>
+                            <h5 className="medium-font fw-600 text-capitalize">{detail?.vendor_name}</h5>
+                            <div className="text-white odd-category-header d-flex flex-row justify-content-start align-items-center px-2 w-100 py-2 ">
+                                <div className="medium-font fw-600">Match Odds</div>
                             </div>
+                            <div className="w-100 border-box border" >
+                                {/* Header row */}
+                                <div className="w-100 d-flex fw-600 text-black pb-2 border">
+                                    <div className="col-6 ps-2">
+                                        Game
+                                    </div>
 
-                            <div className="col-3 d-flex justify-content-center">
-                                Back
+                                    <div className="col-3 d-flex justify-content-center">
+                                        Back
+                                    </div>
+                                    <div className="col-3 d-flex justify-content-center">
+                                        Lay
+                                    </div>
+
+                                </div>
+
+                                {/* Odds rows */}
+                                {renderOdds(detail.bookmakers)}
                             </div>
-                            <div className="col-3 d-flex justify-content-center">
-                                Lay
-                            </div>
-
-                        </div>
-
-                        {/* Odds rows */}
-                        {renderOdds(detail.odds)}
-                    </div>
-                </div>
-            ))}
-        </div>
+                        </div> : null
+                ))
+            }
+        </div >
     )
 }
 export default MatchIndividualDetails
