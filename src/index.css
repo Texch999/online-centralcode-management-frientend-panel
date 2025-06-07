@@ -125,8 +125,6 @@ input[type="date"] {
   overflow-wrap: break-word;
 }
 
-
-
 .notifications-popup-container .empty-notifications-container {
   min-height: 350px;
   text-align: center;

@@ -10,23 +10,24 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { getMatchesInSports } from "../../api/apiMethods";
 import { useSearchParams } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
+import { showDate } from "../../utils/utcDateConversion";
+import moment from 'moment';
 
 const Cricket = () => {
   const navigate = useNavigate();
-  const { vendor, provider, match, sportId } = useParams();
+  const { match, sportId } = useParams();
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [totalRecords, setTotalRecords] = useState(null);
   const [sportMatchesList, setSportMatchesList] = useState([]);
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
-  const itemsPerPage = 10
-  // getMatchesInSports
+  const itemsPerPage = 8
 
   const getSportMatchesList = async (sportId, limit, offset) => {
     const data = {
       sport: sportId,
-      params: {
+      filter: {
         limit,
         offset
       }
@@ -34,9 +35,8 @@ const Cricket = () => {
     try {
       const response = await getMatchesInSports(data)
       if (response) {
-        console.log(response, "==>resposne")
         setSportMatchesList(response?.list)
-        setTotalRecords(response?.list)
+        setTotalRecords(response?.total)
       }
     } catch (err) {
       setSportMatchesList([])
@@ -120,9 +120,9 @@ const Cricket = () => {
   ];
 
   const TABLE_DATA = sportMatchesList?.map((match) => {
-    // Helper function to render odds for a team
+
     const renderOdds = (teamOdds) => {
-      const odds = teamOdds?.[0]; // Get the first odds object (assuming there's always one)
+      const odds = teamOdds?.[0];
       return (
         <div className="d-flex w-100">
           <div className="col-6 flex-between">
@@ -157,14 +157,26 @@ const Cricket = () => {
       );
     };
 
+    function getMatchStatus(openDateStr) {
+      const today = moment().startOf('day');
+      const openDate = moment(openDateStr).startOf('day');
+
+      if (openDate.isAfter(today)) {
+        return "Upcoming";
+      } else {
+        return "In-play";
+      }
+    }
+
     return {
       watch: (
-        <div className="inplay-btn w-fit py-1 px-2 white-space">In-Play</div>
+        <div className="inplay-btn w-fit py-1 px-2 white-space">
+          {getMatchStatus(match?.openDate)}</div>
       ),
       date: (
         <div className="d-flex flex-column">
-          <div className="white-space">{match?.openDate}</div>
-          <div>{new Date(match?.openDate).toLocaleTimeString()}</div>
+          <div className="white-space">{showDate(match?.openDate, "DATE")}</div>
+          <div>{showDate(match?.openDate, "TIME")}</div>
         </div>
       ),
       match: (
@@ -200,31 +212,35 @@ const Cricket = () => {
         </div>
       ),
       action: (
-        <div className="d-flex" >
-          <FaArrowRight size={23} />
+        <div className="d-flex" onClick={() => navigate(`/matches-Details/${sportId}/${match?.matchId}}`)}>
+          <FaArrowRight className="grey-clr" size={15} />
         </div>
       ),
     };
   });
 
+  const onPageChange = ({ limit, offset }) => {
+    console.log(limit, offset, "===>limit, offset")
+    getSportMatchesList(sportId, limit, offset)
+  }
 
   return (
     <div className="">
       <div className="d-flex flex-between mt-3 mb-2">
         <div className="large-font pointer flex-center">
-          <span className="grey-clr" onClick={() => navigate(-2)}>
+          <span className="grey-clr" onClick={() => navigate(-1)}>
             Sports
             <MdKeyboardArrowRight size={18} />
             {sportId}
           </span>
-          <span onClick={() => navigate(-1)}>
+          {/* <span onClick={() => navigate(-1)}>
             <MdKeyboardArrowRight size={18} />
             {provider}
           </span>
           <span className="black-text4">
             <MdKeyboardArrowRight size={18} />
             {match}
-          </span>
+          </span> */}
         </div>
         <div className="small-font flex-between">
           <span
@@ -237,7 +253,12 @@ const Cricket = () => {
           Total P/L : <span className="green-clr mx-1">2000000000</span>
         </div>
       </div>
-      <Table columns={cols} data={TABLE_DATA} itemsPerPage={5} />
+      <Table
+        columns={cols}
+        data={TABLE_DATA}
+        itemsPerPage={itemsPerPage}
+        onPageChange={onPageChange}
+        totalRecords={totalRecords} />
 
       {/*{provider === "Odds" && (
         <Table columns={cols} data={data} itemsPerPage={5} />

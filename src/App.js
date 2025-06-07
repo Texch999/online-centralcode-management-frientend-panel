@@ -116,6 +116,7 @@ import MatchesList from "./pages/matches-list/MatchesList";
 import SportMatches from "./pages/matches-list/SportMatches";
 import MatchResultHistory from "./pages/matches-list/MatchResultHistory";
 import DownlineCommSettlement from "./pages/ownerSettings/DownlineCommSettlement";
+import MatchIndividualDetails from "./pages/cricket/MatchIndividualDetails";
 
 function App() {
   const isLoggedIn = localStorage?.getItem("isLoggedIn");
@@ -399,6 +400,11 @@ function App() {
                 <Route
                   path="/matches-result-history/:id"
                   element={<MatchResultHistory />}
+                />
+
+                <Route
+                  path="/matches-Details/:sportName/:matchId"
+                  element={<MatchIndividualDetails />}
                 />
               </Routes>
             </div>

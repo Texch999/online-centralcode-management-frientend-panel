@@ -388,6 +388,7 @@
 .yellow-bg {
   background: #ffa310 !important;
 }
+
 .yellow-border {
   border: 1px solid #ffa310 !important;
 }
@@ -911,9 +912,11 @@
 .border-danger {
   border: 1px solid red !important;
 }
+
 .border-orange {
   border: 1px solid rgba(255, 163, 16, 1) !important;
 }
+
 .error {
   color: rgb(237, 53, 53) !important;
   font-size: 0.8rem;
@@ -1190,12 +1193,15 @@ button:disabled {
   align-items: center;
   z-index: 1000;
 }
+
 .pb-2rem {
   padding-bottom: 2rem;
 }
+
 .capitalize-text {
   text-transform: capitalize;
 }
+
 .green-dark-bg {
   background: rgba(24, 185, 98, 1);
   border-radius: 0.35rem;
@@ -1206,7 +1212,16 @@ button:disabled {
   padding: 0.5rem;
   text-align: center;
 }
+
 .custom-padding {
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
+}
+
+.odd-category-header {
+  height: 30%;
+  width: 100%;
+  background-color: #222A4C;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
 }

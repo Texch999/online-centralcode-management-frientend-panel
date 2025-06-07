@@ -1005,9 +1005,14 @@ const endpoints = {
     method: "get",
     url: (params) => {
       const { sport, filter } = params
-      const query = new URLSearchParams(params).toString();
+      const query = new URLSearchParams(filter).toString();
       return `/user/${userID()}/${sport}?${query}`;
     },
+  },
+
+  getIndividualMatchDetails: {
+    method: "get",
+    url: (matchId) => `/user/${userID()}/match/${matchId}`,
   },
 };
 

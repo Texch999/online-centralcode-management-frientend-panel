@@ -17,7 +17,7 @@ import {
   ownerWithdrawTicketApprove,
   ownerWithdrawTicketRejection,
 } from "../../api/apiMethods";
-import utcDate from "../../utils/utcDateConversion";
+import { utcDate } from "../../utils/utcDateConversion";
 import { rfloor } from "../../utils/mathFunctions";
 import { CircleLoader } from "react-spinners";
 

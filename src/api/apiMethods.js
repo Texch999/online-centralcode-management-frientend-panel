@@ -619,7 +619,9 @@ const getMatchesInSports = (params) => {
   return apiRequest("getMatchesInSports", {}, params);
 };
 
-
+const getIndividualMatchDetails = (vId, data) => {
+  return apiRequest("getIndividualMatchDetails", data, vId);
+};
 
 
 
@@ -786,5 +788,6 @@ export {
   getPyamentById,
   updatePayment,
   settleVendorById,
-  getMatchesInSports
+  getMatchesInSports,
+  getIndividualMatchDetails
 };

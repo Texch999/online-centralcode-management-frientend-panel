@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { imgUrl } from "../../api/baseUrl";
 import { rfloor } from "../../utils/mathFunctions";
-import utcDate from "../../utils/utcDateConversion";
+import { utcDate } from "../../utils/utcDateConversion";
+
 function DepositWithdrawPopup({
   depositWithdrawPopupOpen,
   setDepositWithdrawPopupOpen,

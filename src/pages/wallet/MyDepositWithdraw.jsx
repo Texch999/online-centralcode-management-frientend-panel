@@ -17,7 +17,7 @@ import ConfirmationPopup from "../popups/ConfirmationPopup";
 import SuccessPopup from "../popups/SuccessPopup";
 import ErrorPopup from "../popups/ErrorPopup";
 import { MdDelete } from "react-icons/md";
-import utcDate from "../../utils/utcDateConversion";
+import {utcDate} from "../../utils/utcDateConversion";
 
 function MyDepositWithdraw() {
   const [depositePopup, setDepositePopup] = useState(false);
